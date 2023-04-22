@@ -16,7 +16,7 @@
     </template>
     <div
       v-else
-      class="fixed top-0 left-0 z-100 flex h-full w-full items-center justify-center bg-white"
+      class="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-white"
     >
       <div class="flex flex-wrap justify-center">
         <LoadingAnimation :status="0" />
@@ -92,9 +92,10 @@ onMounted(() => {
 })
 
 const languageStore = useLanguageStore()
-languageStore.updateLocaleGlobalMessages()
 
 const mainStore = useMainStore()
+
+languageStore.updateLocaleGlobalMessages().then(() => mainStore.updateTitle())
 
 const { currentRoute } = useRouter()
 </script>

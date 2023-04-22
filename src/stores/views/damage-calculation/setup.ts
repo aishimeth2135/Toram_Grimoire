@@ -1,12 +1,11 @@
-import { computed } from 'vue'
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation'
-import { CalcResultOptions } from '@/lib/Calculation/Damage/Calculation/base'
 import {
+  CalcResultOptions,
+  Calculation,
   CalculationContainerIds,
   CalculationItemIds,
-} from '@/lib/Calculation/Damage/Calculation/enums'
+} from '@/lib/Damage/DamageCalculation'
 
 import { calcStructCritical, calcStructWithoutCritical } from './consts'
 

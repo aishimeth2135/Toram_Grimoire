@@ -1,7 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
-import { SkillTypes } from '@/lib/Skill/Skill/enums'
+import { SkillTypes } from '@/lib/Skill/Skill'
 
 import { SkillBuildState } from '../../../stores/views/character/skill'
 import { CharacterBuildBindOnCharacter } from '../Character'

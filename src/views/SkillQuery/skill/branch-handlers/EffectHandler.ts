@@ -1,8 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 import type {
   HandleBranchTextPropsMap,

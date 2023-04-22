@@ -4,7 +4,7 @@ import {
   BagPotionsCategory,
   BagPotionsObtainCategory,
   BagPotionsRoot,
-} from '@/lib/Items/BagItem/BagPotion'
+} from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
 

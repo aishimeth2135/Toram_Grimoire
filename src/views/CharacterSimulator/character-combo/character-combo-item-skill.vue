@@ -20,7 +20,7 @@
       </div>
       <cy-button-icon
         icon="mdi:delete-outline"
-        class="absolute top-0 right-0"
+        class="absolute right-0 top-0"
         @click="comboSkillState.comboSkill.remove()"
       />
     </div>
@@ -63,9 +63,11 @@
 import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ComboSkillState } from '@/lib/Character/CharacterCombo'
-import { CharacterComboTags } from '@/lib/Character/CharacterCombo/enums'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import {
+  CharacterComboTags,
+  ComboSkillState,
+} from '@/lib/Character/CharacterCombo'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 

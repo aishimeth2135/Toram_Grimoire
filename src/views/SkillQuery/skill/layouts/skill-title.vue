@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { Skill } from '@/lib/Skill/Skill'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 interface Props {
   skill: Skill

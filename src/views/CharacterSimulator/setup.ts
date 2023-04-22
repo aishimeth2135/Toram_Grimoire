@@ -10,10 +10,10 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
-import { PotionBuild } from '@/lib/Character/PotionBuild/PotionBuild'
-import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
-import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
+import { PotionBuild } from '@/lib/Character/PotionBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 
 export function setupCharacterStore() {
   const store = useCharacterStore()

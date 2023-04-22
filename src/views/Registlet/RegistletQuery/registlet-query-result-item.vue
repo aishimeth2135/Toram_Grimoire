@@ -2,7 +2,7 @@
   <CardRow :selected="detailVisible">
     <div class="sticky top-0 z-1 min-w-max">
       <div
-        class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
+        class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': detailVisible }"
         @click="detailVisible = !detailVisible"
       >
@@ -44,10 +44,10 @@
     <cy-transition>
       <div
         v-if="detailVisible"
-        class="max-w-full bg-white pt-1.5 pb-3 pl-4 pr-3"
+        class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5"
       >
         <div
-          class="mt-1 mb-2 rounded border border-l-2 border-red-10 py-3 px-4"
+          class="mb-2 mt-1 rounded border border-l-2 border-red-10 px-4 py-3"
         >
           <!-- prettier-ignore-attribute v-if -->
           <div v-if="(item.link instanceof StatBase)" class="flex items-center">
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div>
-          <table class="border-separate border-spacing-y-2 border-spacing-x-4">
+          <table class="border-separate border-spacing-x-4 border-spacing-y-2">
             <tr>
               <td class="text-right text-sm text-stone-40">
                 {{ t('registlet-query.detail.obtain-levels') }}
@@ -127,7 +127,7 @@ import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { StatBase } from '@/lib/Character/Stat'
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import CardRow from '@/components/card/card-row.vue'
 

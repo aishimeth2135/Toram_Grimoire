@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="flex flex-wrap items-center rounded border-1 border-primary-10 bg-white py-0.5 px-4"
+      class="flex flex-wrap items-center rounded border-1 border-primary-10 bg-white px-4 py-0.5"
     >
       <div class="my-1 flex items-center">
         <cy-icon-text icon="mdi-sword" block>
@@ -29,8 +29,9 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'

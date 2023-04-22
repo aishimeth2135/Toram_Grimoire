@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { BagPotion, BagPotionsCategory } from '@/lib/Items/BagItem/BagPotion'
+import { BagPotion, BagPotionsCategory } from '@/lib/Items/BagItem'
 
 import { CharacterBuildBindOnCharacter } from '../Character'
 

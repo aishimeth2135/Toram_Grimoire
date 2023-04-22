@@ -72,9 +72,10 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItem,
+  SkillComputingContainer,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputingContainer'
 

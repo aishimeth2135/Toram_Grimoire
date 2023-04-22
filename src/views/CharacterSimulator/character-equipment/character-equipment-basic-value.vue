@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 
 interface Props {
   equipment: CharacterEquipment

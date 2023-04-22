@@ -25,7 +25,7 @@
     >
       <div
         v-if="category.origin.weaponOnly && !isWeapon"
-        class="absolute top-0 left-0 z-1 h-full w-full cursor-not-allowed bg-white opacity-50"
+        class="absolute left-0 top-0 z-1 h-full w-full cursor-not-allowed bg-white opacity-50"
       />
       <cy-icon-text class="w-full" small text-color="fuchsia-60">
         {{ category.origin.title }}
@@ -73,9 +73,12 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
-import { EnchantCategory, EnchantEquipment } from '@/lib/Enchant/Enchant'
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import {
+  EnchantCategory,
+  EnchantEquipment,
+  EnchantEquipmentTypes,
+} from '@/lib/Enchant/Enchant'
 
 import { EnchantStatOptionBase } from './setup'
 

@@ -1,49 +1,24 @@
 import { defineStore } from 'pinia'
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 
 import { useMainStore } from '@/stores/app/main'
 
 import CY from '@/shared/utils/Cyteria'
 
-import { EnchantBuild } from '@/lib/Enchant/Enchant'
-import type { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
+import { EnchantBuild, EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
 
-interface EnchantStoreConfig {
-  characterLevel: number
-  smithLevel: number
-}
+import {
+  EnchantStoreConfig,
+  enchantConfig,
+  updateCharacterMaxLevel,
+} from './config'
 
 interface EnchantStoreSaveData {
   builds: EnchantBuildSaveData[]
   index: number
   config: EnchantStoreConfig
 }
-
-let characterMaxLevel = 260
-
-export const enchantConfig: EnchantStoreConfig = (() => {
-  const _characterLevel = ref(characterMaxLevel)
-  const _smithLevel = ref(0)
-  return reactive({
-    characterLevel: computed<number>({
-      get() {
-        return _characterLevel.value
-      },
-      set(value) {
-        _characterLevel.value = Math.max(0, Math.min(characterMaxLevel, value))
-      },
-    }),
-    smithLevel: computed<number>({
-      get() {
-        return _smithLevel.value
-      },
-      set(value) {
-        _smithLevel.value = Math.max(0, Math.min(300, value))
-      },
-    }),
-  })
-})()
 
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--'
 
@@ -55,7 +30,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
 
   const mainStore = useMainStore()
   if (mainStore.devMode) {
-    characterMaxLevel = 900
+    updateCharacterMaxLevel(900)
   }
 
   const currentBuild = computed<EnchantBuild | null>(

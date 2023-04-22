@@ -3,11 +3,12 @@ import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { RegistletItemBaseSkill } from '@/lib/Registlet/Registlet'
+import { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
-import SkillComputingContainer, {
+import {
   EquipmentRestrictions,
   SkillBranchItem,
+  SkillComputingContainer,
   SkillEffectItem,
   SkillEffectItemHistory,
   SkillItem,

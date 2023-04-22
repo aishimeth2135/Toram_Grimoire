@@ -3,7 +3,7 @@ import { Ref } from 'vue'
 
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 
-import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
 export function setupCharacterFoodStore() {
   const store = useCharacterFoodStore()

@@ -1,9 +1,10 @@
 import { splitComma } from '@/shared/utils/string'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItem,
   SkillBranchItemSuffix,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 import { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 

@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
-import { DataStoreIds } from '@/stores/app/datas/enums'
+import { DataStoreIds } from '@/stores/app/datas'
 import { useInitializeStore } from '@/stores/app/initialize'
 import { InitializeStatus } from '@/stores/app/initialize/enums'
 import { useLanguageStore } from '@/stores/app/language'

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap items-center p-1 pr-3 pb-0.5">
+  <div class="flex flex-wrap items-center p-1 pb-0.5 pr-3">
     <div class="mt-0.5">
       <cy-input-counter
         v-if="
@@ -45,10 +45,11 @@ import type { WritableComputedRef } from 'vue'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
 import StackHandler from './branch-handlers/StackHandler'

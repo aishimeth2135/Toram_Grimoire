@@ -3,8 +3,6 @@ import { markRaw } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 import { splitComma } from '@/shared/utils/string'
 
-import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
-
 import {
   EquipmentTypes,
   MainWeaponTypeList,
@@ -200,6 +198,32 @@ class StatRestriction extends Stat {
   }
 }
 
+interface EquipmentRestrictionsParam {
+  main?: EquipmentTypes | null
+  sub?: EquipmentTypes | null
+  body?: EquipmentTypes | null
+  other?: string | null
+}
+
+class EquipmentRestrictions {
+  main: EquipmentTypes | null
+  sub: EquipmentTypes | null
+  body: EquipmentTypes | null
+  other: string | null
+
+  constructor({
+    main = null,
+    sub = null,
+    body = null,
+    other = null,
+  }: EquipmentRestrictionsParam = {}) {
+    this.main = main
+    this.sub = sub
+    this.body = body
+    this.other = other
+  }
+}
+
 interface StatRestrictionSaveData {
   id: string
   value: number
@@ -207,5 +231,5 @@ interface StatRestrictionSaveData {
   restriction: EquipmentRestrictions | null
 }
 
-export { StatRestriction }
+export { StatRestriction, EquipmentRestrictions }
 export type { StatRestrictionSaveData }

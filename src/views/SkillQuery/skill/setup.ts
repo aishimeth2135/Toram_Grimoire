@@ -1,15 +1,13 @@
-import { computed, ref, toRaw } from 'vue'
-import type { Ref } from 'vue'
+import { Ref, computed, ref, toRaw } from 'vue'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
-  SkillBranchItem,
-  SkillEffectItem,
-} from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
+  SkillBranchItem,
   SkillBranchResultBase,
   SkillBranchStatResult,
-} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+  SkillComputingContainer,
+  SkillEffectItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 

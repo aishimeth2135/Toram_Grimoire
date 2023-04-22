@@ -31,7 +31,7 @@
         <div
           v-for="(history, historyIdx) in eft.historys"
           :key="historyIdx"
-          class="border-l-2 border-t border-l-blue-60 border-t-blue-30 px-3 pt-2 pb-3"
+          class="border-l-2 border-t border-l-blue-60 border-t-blue-30 px-3 pb-3 pt-2"
         >
           <div class="text-blue-60">{{ history.date }}</div>
           <div class="mt-2">
@@ -65,7 +65,7 @@
 
 <script lang="ts" setup>
 import { StatComputed } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatTypes } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
 

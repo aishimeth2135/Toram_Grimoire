@@ -3,8 +3,8 @@ import { Ref } from 'vue'
 
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
-import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
-import { GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
+import { GetSkillLevelHandler } from '@/lib/Skill/drawSkillTree'
 
 type MenuMode = 'skill' | 'star-gem'
 

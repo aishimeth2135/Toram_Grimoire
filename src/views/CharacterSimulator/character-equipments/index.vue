@@ -50,7 +50,7 @@ import {
   MainWeaponTypeList,
   SubArmorTypeList,
   SubWeaponTypeList,
-} from '@/lib/Character/CharacterEquipment/enums'
+} from '@/lib/Character/CharacterEquipment'
 
 import Notify from '@/setup/Notify'
 

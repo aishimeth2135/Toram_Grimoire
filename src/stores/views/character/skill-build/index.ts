@@ -4,7 +4,7 @@ import type { ComputedRef, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
+import { SkillBuild } from '../../../../lib/Character/SkillBuild'
 
 export const useCharacterSkillBuildStore = defineStore(
   'view-character-skill-build',

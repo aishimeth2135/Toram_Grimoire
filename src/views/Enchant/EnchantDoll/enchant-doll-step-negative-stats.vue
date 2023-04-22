@@ -203,9 +203,11 @@ import { computed } from 'vue'
 import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums'
-import { AutoFindNegaitveStatsTypes } from '@/lib/Enchant/Enchant/doll/enums'
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant'
+import {
+  AutoFindNegaitveStatsTypes,
+  EnchantDollBaseTypes,
+} from '@/lib/Enchant/EnchantDoll'
 
 import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 

@@ -2,7 +2,7 @@
   <CardRow :selected="contents.detail">
     <div class="sticky top-0 z-1 min-w-max">
       <div
-        class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
+        class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': contents.detail }"
         @click="toggle('contents/detail')"
       >
@@ -98,7 +98,7 @@
     <cy-transition>
       <div
         v-if="contents.detail"
-        class="overscroll-none relative max-w-full bg-white pt-2 pb-3 pl-4 pr-3"
+        class="overscroll-none relative max-w-full bg-white pb-3 pl-4 pr-3 pt-2"
       >
         <div v-if="originEquipment.extra" class="mb-2">
           <cy-icon-text
@@ -226,7 +226,7 @@
                 </span>
               </div>
             </div>
-            <div class="pl-3 pb-3">
+            <div class="pb-3 pl-3">
               <div
                 v-if="originEquipment.recipe['cost']"
                 class="flex items-center"
@@ -276,7 +276,7 @@
               <div
                 v-for="data in obtainsDatas"
                 :key="data.iid"
-                class="px-1 pt-1.5 pb-2"
+                class="px-1 pb-2 pt-1.5"
               >
                 <div class="flex items-center">
                   <cy-icon-text
@@ -318,13 +318,13 @@
       </div>
       <div
         v-else-if="state.currentMode === SearchModes.Dye"
-        class="ml-4 mb-3 border-l-2 border-solid border-primary-30 pl-2"
+        class="mb-3 ml-4 border-l-2 border-solid border-primary-30 pl-2"
       >
         <div class="divide-y divide-primary-20">
           <div
             v-for="item in dyeObtains"
             :key="item.iid"
-            class="px-1 pt-1.5 pb-2"
+            class="px-1 pb-2 pt-1.5"
           >
             <div class="flex items-center">
               <cy-icon-text
@@ -368,7 +368,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { BagItemObtain } from '@/lib/Items/BagItem'
 
@@ -466,7 +466,7 @@ const dyeObtains = computed(() => {
 }
 
 .row-attr {
-  @apply mb-1 mr-2.5 inline-flex border-1 border-primary-20 py-1 px-3 text-sm;
+  @apply mb-1 mr-2.5 inline-flex border-1 border-primary-20 px-3 py-1 text-sm;
 
   & > span:first-child {
     @apply text-gray-50;

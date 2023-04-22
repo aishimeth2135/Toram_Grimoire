@@ -2,7 +2,7 @@
   <div class="px-2">
     <div class="mb-3">
       <div
-        class="flex cursor-pointer items-center border-l-2 py-1 px-2 duration-200 hover:border-primary-30"
+        class="flex cursor-pointer items-center border-l-2 px-2 py-1 duration-200 hover:border-primary-30"
         :class="contents.basicMenu ? 'border-primary-30' : 'border-primary-30'"
         @click="toggle('contents/basicMenu')"
       >
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div
-        class="mt-3 flex cursor-pointer items-center border-l-2 py-1 px-2 duration-200 hover:border-primary-30"
+        class="mt-3 flex cursor-pointer items-center border-l-2 px-2 py-1 duration-200 hover:border-primary-30"
         :class="contents.targetMenu ? 'border-primary-30' : 'border-primary-30'"
         @click="toggle('contents/targetMenu')"
       >
@@ -175,7 +175,7 @@
           />
         </div>
       </div>
-      <div class="space-y-1 pt-3 pb-2">
+      <div class="space-y-1 pb-2 pt-3">
         <div>
           <cy-icon-text
             icon="ic-outline-info"
@@ -227,8 +227,8 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
-import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
-import { EnemyElements } from '@/lib/Enemy/enums'
+import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
+import { EnemyElements } from '@/lib/Enemy/Enemy'
 
 import ToggleService from '@/setup/ToggleService'
 

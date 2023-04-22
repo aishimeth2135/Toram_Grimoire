@@ -10,7 +10,6 @@ parserOptions:
   parsers:
     ts: '@typescript-eslint/parser'
 plugins:
-  - jsdoc
   - import
 settings:
   import/resolver:
@@ -29,8 +28,6 @@ settings:
   import/extensions:
     - .js
     - .ts
-  jsdoc:
-    mode: closure
 globals:
   defineProps: readonly
   defineEmits: readonly
@@ -139,10 +136,15 @@ rules:
   #   - warn
   #   - always
   # import
-  import/no-unresolved:
-    - error
-    - commonjs: true
-      ignore: ['^virtual:', '\?worker$']
+  # import/no-unresolved:
+  #   - error
+  #   - commonjs: true
+  #     ignore: ['^virtual:', '\?worker$']
+
+  # close this for perf, open manually to checking
+  # import/no-cycle:
+  #   - error
+
   # vue
   # vue/html-indent:
   #   - warn

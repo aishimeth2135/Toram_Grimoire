@@ -1,4 +1,4 @@
-import { EnemyBoss } from './base'
+import { EnemyBoss } from './Enemy'
 
 export default class EnemySystem {
   bosses: EnemyBoss[]

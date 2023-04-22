@@ -1,3 +1,10 @@
+import {
+  SkillBranchItem,
+  SkillBranchItemBaseChilds,
+  SkillBranchItemSuffix,
+  SkillComputingContainer,
+} from '.'
+
 import Grimoire from '@/shared/Grimoire'
 import {
   HandleFormulaMethods,
@@ -10,14 +17,9 @@ import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
 import { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
-import { ResultContainerTypes } from '@/lib/common/ResultContainer/enums'
+import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
-import SkillComputingContainer, {
-  SkillBranchItem,
-  SkillBranchItemBaseChilds,
-  SkillBranchItemSuffix,
-} from '.'
-import { SkillBranchNames } from '../Skill/enums'
+import { SkillBranchNames } from '../Skill'
 import {
   SkillBranchResult,
   SkillBranchStatResult,

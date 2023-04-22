@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
 export const useCharacterRegistletBuildStore = defineStore(
   'view-character-registlet-build',

@@ -147,7 +147,7 @@
           </template>
         </EquipmentItem>
       </transition-group>
-      <cy-default-tips v-else class="py-6 px-4">
+      <cy-default-tips v-else class="px-4 py-6">
         {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
       </cy-default-tips>
     </template>
@@ -189,8 +189,7 @@
 import { Ref, computed, inject, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EquipmentField } from '@/lib/Character/Character'
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 import {
   AdditionalGear,
   Avatar,

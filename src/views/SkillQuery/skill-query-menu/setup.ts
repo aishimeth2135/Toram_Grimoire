@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { SkillTree } from '@/lib/Skill/Skill'
 import {
   EquipmentRestrictions,

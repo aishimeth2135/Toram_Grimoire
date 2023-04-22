@@ -2,17 +2,19 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
-  SkillBranchItemBaseChilds,
-  SkillBranchItemOverwriteRecords,
-  SkillBranchItemSuffix,
-  SkillEffectItemHistory,
-} from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchResult,
   SkillBranchResultBase,
-} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+} from '@/lib/Skill/SkillComputingContainer'
+import {
+  SkillBranchItemBaseChilds,
+  SkillBranchItemOverwriteRecords,
+  SkillBranchItemSuffix,
+  SkillComputingContainer,
+  SkillEffectItemHistory,
+} from '@/lib/Skill/SkillComputingContainer'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
 import {
   ComputedBranchHelperResult,
   HandleBranchTextPropsMap,
@@ -23,8 +25,7 @@ import {
   handleBranchTextProps,
   handleBranchValueProps,
 } from '@/lib/Skill/SkillComputingContainer/compute'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
-import { ResultContainerTypes } from '@/lib/common/ResultContainer/enums'
+import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import DisplayDataContainer from './DisplayDataContainer'
 import { handleFunctionHighlight, numberStringToPercentage } from './utils'

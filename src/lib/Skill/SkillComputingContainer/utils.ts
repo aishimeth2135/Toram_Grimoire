@@ -3,23 +3,22 @@ import { shallowReactive } from 'vue'
 import { handleFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { StatComputed } from '@/lib/Character/Stat'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { EquipmentRestrictions, StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill'
-import { SkillBranchNames } from '../Skill/enums'
+import { SkillBranch, SkillEffect, SkillEffectBasicProps } from '../Skill'
+import { SkillBranchNames } from '../Skill'
+import { SkillBranchBuffs } from './SkillBranchBuffs'
+import { SkillBranchItem } from './SkillBranchItem'
 import {
   BRANCH_PROPS_DEFAULT_VALUE,
   EQUIPMENT_TYPE_BODY_ORDER,
   EQUIPMENT_TYPE_MAIN_ORDER,
   EQUIPMENT_TYPE_SUB_ORDER,
 } from './consts'
-import {
+import type {
   BranchGroupState,
   BranchStackState,
-  EquipmentRestrictions,
-  SkillBranchBuffs,
-  SkillBranchItem,
   SkillEffectItem,
   SkillEffectItemBase,
   SkillEffectItemHistory,
@@ -75,7 +74,7 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
   ;(
     Object.entries(origin.basicProps) as [
-      keyof SkillEffectAttrs,
+      keyof SkillEffectBasicProps,
       string | number
     ][]
   ).forEach(([key, value]) => {

@@ -15,36 +15,36 @@ import { isNumberString } from '@/shared/utils/string'
 
 import {
   Character,
+  CharacterBaseStatTypes,
   CharacterStatResult,
   CharacterStatResultVars,
-} from '@/lib/Character/Character'
-import {
-  CharacterBaseStatTypes,
   EquipmentFieldTypes,
-} from '@/lib/Character/Character/enums'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+} from '@/lib/Character/Character'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
+import { PotionBuild, PotionItem } from '@/lib/Character/PotionBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 import {
-  PotionBuild,
-  PotionItem,
-} from '@/lib/Character/PotionBuild/PotionBuild'
-import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
-import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
-import { StatBase, StatComputed, StatRestriction } from '@/lib/Character/Stat'
-import { StatRecorded } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat/enums'
-import { Skill, SkillBranch } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+  StatBase,
+  StatComputed,
+  StatRecorded,
+  StatRestriction,
+  StatTypes,
+  StatValueSourceTypes,
+} from '@/lib/Character/Stat'
+import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   EquipmentRestrictions,
   SkillBranchItem,
   SkillBranchItemSuffix,
+  SkillBranchStatResult,
+  SkillBuffs,
+  SkillComputingContainer,
   SkillEffectItem,
   SkillFormulaExtraProps,
   SkillItem,
 } from '@/lib/Skill/SkillComputingContainer'
-import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
-import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
 import DamageHandler from '@/views/SkillQuery/skill/branch-handlers/DamageHandler'
@@ -810,7 +810,11 @@ export function prepareSetupCharacter() {
         if (stats.has(statId)) {
           stats
             .get(statId)!
-            .add(statContainer.valueSum, statContainer.branch.default)
+            .add(
+              statContainer.valueSum,
+              statContainer.branch.default,
+              StatValueSourceTypes.Skill
+            )
         } else {
           stats.set(
             statId,
@@ -1293,7 +1297,9 @@ export function setupFoodStats(foodBuild: Ref<FoodsBuild | null>) {
     }
     return foodBuild.value.selectedFoods
       .filter(food => food.level !== 0)
-      .map(food => StatRecorded.from(food.stat(), food))
+      .map(food =>
+        StatRecorded.from(food.stat(), food, StatValueSourceTypes.Food)
+      )
   })
 
   return {
@@ -1318,7 +1324,8 @@ export function setupRegistletStats(
         return {
           stat: StatRecorded.from(
             statBase.createStat(StatTypes.Constant, value),
-            item.base
+            item.base,
+            StatValueSourceTypes.Registlet
           ),
           item,
         }
@@ -1342,7 +1349,11 @@ export function setupPotionStats(potionBuild: Ref<PotionBuild | null>) {
     potionBuild.value.items.forEach(item => {
       item.base.stats.forEach(potionStat => {
         statItems.push({
-          stat: StatRecorded.from(potionStat, item.base),
+          stat: StatRecorded.from(
+            potionStat,
+            item.base,
+            StatValueSourceTypes.Potion
+          ),
           item,
         })
       })

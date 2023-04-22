@@ -22,8 +22,9 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'

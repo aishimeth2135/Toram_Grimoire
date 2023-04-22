@@ -29,7 +29,7 @@
       </div>
       <GlossaryTagContentRows
         v-if="!sub || detailVisible"
-        class="pt-3 pb-3.5 pl-3 pr-4"
+        class="pb-3.5 pl-3 pr-4 pt-3"
         :tag="tag"
       />
     </div>
@@ -58,7 +58,7 @@ import { computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import GlossaryTag from '@/lib/Glossary/GlossaryTag'
+import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
 
 import GlossaryTagContentRows from './glossary-tag-content-rows.vue'
 

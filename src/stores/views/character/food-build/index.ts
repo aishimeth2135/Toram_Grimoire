@@ -6,7 +6,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { FoodsBase } from '@/lib/Character/Food'
 
-import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
+import { FoodsBuild } from '../../../../lib/Character/FoodBuild'
 
 export const useCharacterFoodStore = defineStore('view-character-food', () => {
   const foodsBase: Ref<FoodsBase | null> = ref(null)

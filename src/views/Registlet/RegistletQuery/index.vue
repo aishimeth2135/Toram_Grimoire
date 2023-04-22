@@ -68,7 +68,7 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import ToggleService from '@/setup/ToggleService'
 

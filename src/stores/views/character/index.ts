@@ -1,26 +1,20 @@
 import { defineStore } from 'pinia'
 import { Ref, computed, readonly, ref } from 'vue'
 
-import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import {
   CharacterEquipment,
   EquipmentSaveData,
 } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
-import { FoodsBuild, FoodsBuildSaveData } from '@/lib/Character/Food/FoodBuild'
-import {
-  PotionBuild,
-  PotionBuildSaveData,
-} from '@/lib/Character/PotionBuild/PotionBuild'
+import { FoodsBuild, FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
+import { PotionBuild, PotionBuildSaveData } from '@/lib/Character/PotionBuild'
 import {
   RegistletBuild,
   RegistletBuildSaveData,
-} from '@/lib/Character/RegistletBuild/RegistletBuild'
-import {
-  SkillBuild,
-  SkillBuildSaveData,
-} from '@/lib/Character/SkillBuild/SkillBuild'
+} from '@/lib/Character/RegistletBuild'
+import { SkillBuild, SkillBuildSaveData } from '@/lib/Character/SkillBuild'
+import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { Skill } from '@/lib/Skill/Skill'
 
 import { useCharacterFoodStore } from './food-build'

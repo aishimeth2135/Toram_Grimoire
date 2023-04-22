@@ -32,7 +32,7 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatTypes } from '@/lib/Character/Stat'
 
 import { StatOptionItem } from './setup'
 

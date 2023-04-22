@@ -1,5 +1,7 @@
-import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
-import { CalculationContainerIds } from '@/lib/Calculation/Damage/Calculation/enums'
+import {
+  CalcStructExpression,
+  CalculationContainerIds,
+} from '@/lib/Damage/DamageCalculation'
 
 export const calcStructCritical: CalcStructExpression = {
   id: 'expected_with_critical',

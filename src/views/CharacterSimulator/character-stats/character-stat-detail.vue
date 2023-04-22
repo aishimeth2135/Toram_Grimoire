@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-0.5 mb-2 flex flex-wrap items-center">
+    <div class="mb-2 mt-0.5 flex flex-wrap items-center">
       <div class="mr-4 flex">
         <cy-icon-text icon="gridicons:stats-alt" color="primary-80">
           {{ characterStatResult.name }}
@@ -56,7 +56,7 @@
                 </div>
               </template>
               <template #popper>
-                <div class="py-2 px-3 text-sm">
+                <div class="px-3 py-2 text-sm">
                   <div
                     v-for="(src, idx) in data.statRecorded.sources"
                     :key="idx"
@@ -138,7 +138,7 @@
         </div>
         <div
           v-if="data.lines.length !== 0"
-          class="mt-0.5 space-y-0.5 pl-2 pb-1"
+          class="mt-0.5 space-y-0.5 pb-1 pl-2"
         >
           <div
             v-for="line in data.lines"
@@ -188,11 +188,11 @@ import {
   CharacterEquipment,
   EquipmentCrystal,
 } from '@/lib/Character/CharacterEquipment'
-import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
-import { BagPotion } from '@/lib/Items/BagItem/BagPotion'
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat'
+import { BagPotion } from '@/lib/Items/BagItem'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 import { SkillBranch } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillBranchNames } from '@/lib/Skill/Skill'
 
 import CharacterStatDetailEquipments from './character-stat-detail-equipments.vue'
 

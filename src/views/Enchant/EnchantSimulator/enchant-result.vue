@@ -173,9 +173,12 @@ import CY from '@/shared/utils/Cyteria'
 import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'
 
-import { EnchantEquipment, EnchantStepStat } from '@/lib/Enchant/Enchant'
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
-import ENCHANT_STATE from '@/lib/Enchant/Enchant/state'
+import {
+  EnchantEquipment,
+  EnchantStepStat,
+  EnchantStepTypes,
+  enchantStates,
+} from '@/lib/Enchant/Enchant'
 
 import Notify from '@/setup/Notify'
 import ToggleService from '@/setup/ToggleService'
@@ -325,7 +328,7 @@ const copyEnchantResultText = () => {
     .join('\n')
   const basePotential =
     equipment.value.basePotential ===
-    ENCHANT_STATE.EquipmentBasePotentialMinimum
+    enchantStates.EquipmentBasePotentialMinimum
       ? ''
       : `${t('enchant-simulator.equipment-base-potential')}｜${
           equipment.value.basePotential

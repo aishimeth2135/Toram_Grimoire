@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, shallowReactive } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
@@ -12,8 +12,8 @@ import {
   InitSkillIcons,
 } from '@/shared/services/Images'
 
-import DamageCalculationSystem from '@/lib/Calculation/Damage'
 import CharacterSystem from '@/lib/Character'
+import DamageCalculationSystem from '@/lib/Damage'
 import EnchantSystem from '@/lib/Enchant'
 import GlossarySystem from '@/lib/Glossary'
 import ItemsSystem from '@/lib/Items'
@@ -22,6 +22,7 @@ import SkillSystem from '@/lib/Skill'
 
 import Notify from '@/setup/Notify'
 
+import { DatasStoreBase } from './DatasStoreBase'
 import { DataStoreIds } from './enums'
 import DownloadDatas from './utils/DownloadDatas'
 import loadCharacterStats from './utils/LoadCharacterStat'
@@ -34,23 +35,7 @@ import loadRegistlet from './utils/LoadRegistlet'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
 
-export const DatasStoreBase: {
-  Items: ItemsSystem | null
-  Character: CharacterSystem | null
-  Glossary: GlossarySystem | null
-  Skill: SkillSystem | null
-  Enchant: EnchantSystem | null
-  DamageCalculation: DamageCalculationSystem | null
-  Registlet: RegistletSystem | null
-} = shallowReactive({
-  Items: null,
-  Character: null,
-  Glossary: null,
-  Skill: null,
-  Enchant: null,
-  DamageCalculation: null,
-  Registlet: null,
-})
+export * from './enums'
 
 interface DataStoreInitHandler {
   (): Promise<() => Promise<void>>

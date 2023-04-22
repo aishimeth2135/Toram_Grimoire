@@ -5,7 +5,7 @@ import { isIntegerString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatTypes } from '@/lib/Character/Stat'
 import { BagItemObtain } from '@/lib/Items/BagItem'
 
 export interface StatOption {

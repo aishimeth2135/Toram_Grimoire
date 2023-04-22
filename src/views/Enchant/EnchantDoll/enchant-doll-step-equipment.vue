@@ -106,7 +106,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant'
 
 import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 

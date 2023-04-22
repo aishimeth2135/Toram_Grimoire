@@ -1,5 +1,5 @@
 import { TextResultContainerPart } from '@/lib/common/ResultContainer'
-import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer/enums'
+import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import {
   TextParseItem,
   getCommonTextParseItems,

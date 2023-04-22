@@ -167,7 +167,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatTypes } from '@/lib/Character/Stat'
 
 import Notify from '@/setup/Notify'
 

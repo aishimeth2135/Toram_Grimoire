@@ -1,12 +1,14 @@
-import { SkillBranchItemBaseChilds } from '.'
-
 import { escapeRegExp, isNumberString, splitComma } from '@/shared/utils/string'
 
-import { StatComputed, StatRecorded } from '@/lib/Character/Stat'
+import {
+  StatComputed,
+  StatRecorded,
+  StatValueSourceTypes,
+} from '@/lib/Character/Stat'
 import {
   ResultContainerTypes,
   TextResultContainerPartTypes,
-} from '@/lib/common/ResultContainer/enums'
+} from '@/lib/common/ResultContainer'
 import {
   ResultContainer,
   ResultContainerBase,
@@ -18,6 +20,8 @@ import {
   getCommonTextParseItems,
   handleParseText,
 } from '@/lib/common/ResultContainer/parseText'
+
+import type { SkillBranchItemBaseChilds } from './SkillBranchItem'
 
 type ResultHandler = (currentResult: string) => string
 
@@ -189,7 +193,11 @@ class SkillBranchStatResult extends SkillBranchResult {
   }
 
   toStatRecorded(value: number): StatRecorded {
-    return StatRecorded.from(this.stat.toStat(value), this.branch.default)
+    return StatRecorded.from(
+      this.stat.toStat(value),
+      this.branch.default,
+      StatValueSourceTypes.Skill
+    )
   }
 }
 

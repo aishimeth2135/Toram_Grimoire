@@ -21,8 +21,8 @@
 <script lang="ts" setup>
 import { computed, h } from 'vue'
 
-import GlossaryTag from '@/lib/Glossary/GlossaryTag'
-import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer/enums'
+import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
+import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import { handleParseText } from '@/lib/common/ResultContainer/parseText'
 
 import { getTextParseItems } from './setup'

@@ -12,7 +12,7 @@ import {
   SkillTreeCategory,
 } from '@/lib/Skill/Skill'
 import type { SkillEffectBase } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillBranchNames } from '@/lib/Skill/Skill'
 
 import type { CsvData, LangCsvData } from './DownloadDatas'
 

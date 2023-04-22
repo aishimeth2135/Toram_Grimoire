@@ -3,7 +3,7 @@ import { markRaw } from 'vue'
 import { StatBase } from '../Character/Stat'
 import { EnchantCategory, EnchantItem } from './Enchant'
 
-export default class {
+export default class EnchantSystem {
   categorys: EnchantCategory[]
 
   constructor() {

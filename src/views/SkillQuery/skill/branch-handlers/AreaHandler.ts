@@ -1,9 +1,10 @@
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
 import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import {
   HandleBranchLangPropsMap,

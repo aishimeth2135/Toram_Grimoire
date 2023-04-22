@@ -56,10 +56,11 @@ export default {
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import SkillComputingContainer, {
+import {
+  SkillComputingContainer,
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillAreaAnimation from './skill-area-animation.vue'
 

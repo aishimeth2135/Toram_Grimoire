@@ -34,7 +34,7 @@
 import {
   SkillBranchResultBase,
   SkillBranchStatResult,
-} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+} from '@/lib/Skill/SkillComputingContainer'
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 import SkillBranchPropValue from './skill-branch-prop-value.vue'

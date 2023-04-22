@@ -93,13 +93,13 @@ import CY from '@/shared/utils/Cyteria'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import {
   DrawSkillTreeData,
+  DrawSkillTreeDataTypes,
   GetSkillLevelHandler,
   SetSkillButtonExtraDataHandle,
   computeDrawSkillTreeData,
   createDrawSkillTreeDefs,
   getSkillIconPatternData,
-} from '@/lib/Skill/utils/DrawSkillTree'
-import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
+} from '@/lib/Skill/drawSkillTree'
 
 interface Props {
   skillTree: SkillTree

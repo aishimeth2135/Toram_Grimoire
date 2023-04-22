@@ -1,7 +1,7 @@
 import { InjectionKey, Ref } from 'vue'
 
 import { EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant'
-import EnchantDoll from '@/lib/Enchant/Enchant/doll'
+import { EnchantDoll } from '@/lib/Enchant/EnchantDoll'
 
 import { SelectItemModes, StepIds } from './setup'
 

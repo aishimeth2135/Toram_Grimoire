@@ -1,16 +1,17 @@
+import type { SkillResult } from '.'
+
 import { computeFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
-import { Character } from '@/lib/Character/Character'
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded } from '@/lib/Character/Stat'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+import {
+  SkillBranchItem,
+  SkillBranchStatResult,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
-
-import { SkillResult } from '.'
 
 export function getSkillStatContainerValid(
   character: Character | null,

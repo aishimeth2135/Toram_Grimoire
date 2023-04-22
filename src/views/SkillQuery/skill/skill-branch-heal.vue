@@ -18,8 +18,9 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'

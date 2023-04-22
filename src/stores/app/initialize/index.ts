@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
-import { DataStoreIds } from '../datas/enums'
+import { DataStoreIds } from '../datas'
 import { useLanguageStore } from '../language'
 import { LocaleViewNamespaces } from '../language/enums'
 import { InitItemStatus, InitializeStatus } from './enums'

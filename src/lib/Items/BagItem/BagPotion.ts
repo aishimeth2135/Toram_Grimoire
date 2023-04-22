@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 
-import { BagItem } from '.'
+import { BagItem } from './BagItem'
 
 class BagPotionsRoot {
   readonly categorys: BagPotionsCategory[]

@@ -1,16 +1,16 @@
 <template>
   <CardRow
-    class="py-2 pl-2 pr-4 relative"
+    class="relative py-2 pl-2 pr-4"
     :class="item.enabled ? 'opacity-100' : 'opacity-60'"
   >
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
-      class="absolute top-3.5 right-3"
+      class="absolute right-3 top-3.5"
       @click="item.remove()"
     />
-    <div class="flex items-center flex-wrap">
-      <div class="flex items-center mr-auto" style="min-width: 14rem">
+    <div class="flex flex-wrap items-center">
+      <div class="mr-auto flex items-center" style="min-width: 14rem">
         <cy-button-check
           v-model:selected="
             // eslint-disable-next-line vue/no-mutating-props
@@ -19,7 +19,7 @@
         />
         <div class="ml-1 text-primary-80">{{ item.base.name }}</div>
       </div>
-      <div v-if="item.enabled" class="flex items-center ml-10 mr-6">
+      <div v-if="item.enabled" class="ml-10 mr-6 flex items-center">
         <span class="text-primary-30">Lv.</span>
         <cy-input-counter
           v-model:value="
@@ -60,7 +60,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import { RegistletItem } from '@/lib/Character/RegistletBuild/RegistletBuild'
+import { RegistletItem } from '@/lib/Character/RegistletBuild'
 import { StatBase } from '@/lib/Character/Stat'
 
 import CardRow from '@/components/card/card-row.vue'

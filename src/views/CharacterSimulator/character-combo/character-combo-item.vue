@@ -76,7 +76,7 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { CharacterCombo, ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
-import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
+import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer'
 
 import CharacterComboItemDamageItem from './character-combo-item-damage-item.vue'
 import CharacterComboItemSkill from './character-combo-item-skill.vue'

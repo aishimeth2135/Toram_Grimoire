@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, reactive, readonly, ref, shallowReactive } from 'vue'
+import { computed, reactive, readonly, ref } from 'vue'
 import { Composer } from 'vue-i18n'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts'
@@ -7,7 +7,7 @@ import CY from '@/shared/utils/Cyteria'
 
 import Notify from '@/setup/Notify'
 
-import { useMainStore } from '../main'
+import { I18nStore } from './I18nStore'
 import {
   LocaleGlobalNamespaces,
   LocaleNamespaces,
@@ -27,12 +27,6 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
   LocaleGlobalNamespaces.Common,
   LocaleGlobalNamespaces.Global,
 ]
-
-export const I18nStore: {
-  i18n: Composer | null
-} = shallowReactive({
-  i18n: null,
-})
 
 export const useLanguageStore = defineStore('app-language', () => {
   const primaryLang = ref(0)
@@ -90,8 +84,6 @@ export const useLanguageStore = defineStore('app-language', () => {
       autoSetLang()
     }
   }
-
-  const mainStore = useMainStore()
 
   type LoadLocaleMessages<
     Namespace extends LocaleNamespaces = LocaleNamespaces
@@ -166,7 +158,6 @@ export const useLanguageStore = defineStore('app-language', () => {
     await loadLocaleMessages(LOCALE_GLOBAL_NAMESPACE_LIST)
 
     i18nMessageLoaded.value = true
-    mainStore.updateTitle()
   }
 
   return {

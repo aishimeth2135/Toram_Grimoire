@@ -23,7 +23,7 @@ import {
   SkillBranchResultBase,
   SkillBranchStatResult,
   SkillBranchTextResult,
-} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+} from '@/lib/Skill/SkillComputingContainer'
 import {
   getCommonTextParseItems,
   handleParseText,
@@ -55,6 +55,7 @@ const RenderDisplayTitle = ({
   title,
 }: {
   title: SkillBranchTextResult | string
+  class?: string
 }) => {
   if (typeof title === 'string') {
     return h('div', title)

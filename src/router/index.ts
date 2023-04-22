@@ -1,15 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
-import { useNavStore } from '@/stores/app/nav'
-import type { NavItem } from '@/stores/app/nav'
+import { NavItem, useNavStore } from '@/stores/app/nav'
 
 import Book from './Book'
 import Bubble from './Bubble'
-import DamageCalculation from './Calculation/Damage'
 import Character from './Character'
+import DamageCalculation from './DamageCalculation'
 import Dev from './Dev'
 import Enchant from './Enchant'
 import Glossary from './Glossary'

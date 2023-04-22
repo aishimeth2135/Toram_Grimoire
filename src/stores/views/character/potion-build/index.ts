@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { PotionBuild } from '@/lib/Character/PotionBuild/PotionBuild'
+import { PotionBuild } from '@/lib/Character/PotionBuild'
 
 export const useCharacterPotionBuildStore = defineStore(
   'view-character-potion-build',

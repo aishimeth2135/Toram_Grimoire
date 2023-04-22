@@ -1,6 +1,6 @@
-import { enchantConfig } from '@/stores/views/enchant'
+import { enchantConfig } from '@/stores/views/enchant/config'
 
-const STATE = {
+export const enchantStates = {
   PotentialCapacity: 100,
   EquipmentBasePotentialMinimum: 15,
   EquipmentItemMaximumNumber: 8,
@@ -15,5 +15,3 @@ const STATE = {
     tec: 255,
   },
 }
-
-export default STATE

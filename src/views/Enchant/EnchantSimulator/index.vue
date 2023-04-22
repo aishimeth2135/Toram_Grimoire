@@ -265,9 +265,12 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import { EnchantBuild, EnchantStep } from '@/lib/Enchant/Enchant'
-import { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import {
+  EnchantBuild,
+  EnchantStep,
+  EnchantBuildSaveData,
+  EnchantEquipmentTypes,
+} from '@/lib/Enchant/Enchant'
 
 import AutoSave from '@/setup/AutoSave'
 import Confirm from '@/setup/Confirm'

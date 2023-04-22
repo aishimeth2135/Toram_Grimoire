@@ -103,7 +103,7 @@
           <cy-icon-text icon="bx-bx-target-lock" small text-color="fuchsia-60">
             {{ t('item-query.options-normal.title') }}
           </cy-icon-text>
-          <div class="py-1 px-2">
+          <div class="px-2 py-1">
             <cy-button-check
               v-for="item in modes[SearchModes.Normal].targets"
               :key="item.value"
@@ -290,7 +290,7 @@
           <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            class="py-1 px-2 duration-200 hover:bg-primary-30 hover:bg-opacity-10"
+            class="px-2 py-1 duration-200 hover:bg-primary-30 hover:bg-opacity-10"
             @click="selectStat(stat)"
           >
             <cy-button-check
@@ -335,7 +335,7 @@ import {
   MainWeaponTypeList,
   SubArmorTypeList,
   SubWeaponTypeList,
-} from '@/lib/Character/CharacterEquipment/enums'
+} from '@/lib/Character/CharacterEquipment'
 
 import ToggleService from '@/setup/ToggleService'
 

@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-import { DataStoreIds } from '@/stores/app/datas/enums'
+import { DataStoreIds } from '@/stores/app/datas'
 
 import { ViewInit } from '@/shared/services/ViewInit'
 

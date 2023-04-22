@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import type { Ref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation'
-import type { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation'
+import {
+  Calculation,
+  CalculationSaveData,
+} from '@/lib/Damage/DamageCalculation'
 
 interface DamageCalculationSaveData {
   calculations: CalculationSaveData[]

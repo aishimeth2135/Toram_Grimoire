@@ -6,7 +6,7 @@ import { isNumberString } from '@/shared/utils/string'
 import {
   SkillBranchResult,
   SkillBranchTextResultPartValue,
-} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+} from '@/lib/Skill/SkillComputingContainer'
 import {
   TextResultContainerPart,
   TextResultContainerPartValue,
@@ -14,7 +14,7 @@ import {
 import {
   ResultContainerTypes,
   TextResultContainerPartTypes,
-} from '@/lib/common/ResultContainer/enums'
+} from '@/lib/common/ResultContainer'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 

@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import { Ref, readonly, ref } from 'vue'
 
-import { MessageNotifyButtonItem, MessageNotifyOptions } from '@/setup/Notify'
+import type {
+  MessageNotifyButtonItem,
+  MessageNotifyOptions,
+} from '@/setup/Notify'
 
 interface NotifyMessageItem {
   icon: string

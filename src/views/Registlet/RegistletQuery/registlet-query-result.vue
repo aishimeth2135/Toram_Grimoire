@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { Ref, computed, nextTick, ref } from 'vue'
 
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import PageControl from '@/setup/PageControl'
 

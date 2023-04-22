@@ -1,6 +1,7 @@
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItemBaseChilds,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import {

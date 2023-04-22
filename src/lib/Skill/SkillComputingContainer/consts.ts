@@ -1,6 +1,6 @@
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
-import { SkillBranchNames } from '../Skill/enums'
+import { SkillBranchNames } from '../Skill'
 
 const BRANCH_PROPS_DEFAULT_VALUE: Partial<
   Record<SkillBranchNames, Record<string, string>>

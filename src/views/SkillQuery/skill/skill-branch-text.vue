@@ -12,9 +12,10 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, {
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
@@ -71,7 +72,7 @@ const rootClassList = computed(() => {
   }
 
   &.is-mark {
-    @apply border-1 border-l-3 border-primary-50 py-3 px-4;
+    @apply border-1 border-l-3 border-primary-50 px-4 py-3;
   }
 
   &.is-group {
@@ -102,7 +103,7 @@ const rootClassList = computed(() => {
       @apply absolute h-4 w-4 bg-primary-50;
     }
     &::before {
-      @apply -top-2 -left-2;
+      @apply -left-2 -top-2;
     }
     &::after {
       @apply -bottom-2 -right-2;

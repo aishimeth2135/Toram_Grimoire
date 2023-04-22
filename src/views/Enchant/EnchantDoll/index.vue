@@ -87,10 +87,12 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import { EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant'
-import EnchantDoll from '@/lib/Enchant/Enchant/doll'
-import { EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums'
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import {
+  EnchantEquipment,
+  EnchantStat,
+  EnchantEquipmentTypes,
+} from '@/lib/Enchant/Enchant'
+import { EnchantDoll, EnchantDollBaseTypes } from '@/lib/Enchant/EnchantDoll'
 import AutoSave from '@/setup/AutoSave'
 import Confirm from '@/setup/Confirm'
 import Notify from '@/setup/Notify'

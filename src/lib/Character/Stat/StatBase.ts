@@ -1,13 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
-import { Food } from '@/lib/Character/Food/FoodBuild'
-import { BagPotion } from '@/lib/Items/BagItem/BagPotion'
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
-import { SkillBranch } from '@/lib/Skill/Skill'
-
-import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
-import { StatTypes, StatValueSourceTypes } from './enums'
+import { StatTypes } from './enums'
 
 interface StatShowData {
   result: string
@@ -73,7 +67,7 @@ class StatBase {
       value = parseFloat(value)
     }
     const handleFormula = (formula: string, unit: string) => {
-      const isPos = value >= 0 || !calc
+      const isPos = typeof value !== 'number' || value >= 0
       const sign = isPos ? '+' : ''
       formula = formula.split('::')[isPos ? 0 : 1] || formula
       let res = formula
@@ -196,7 +190,8 @@ abstract class StatElementBase {
   showValue(value?: StatValue) {
     const showData = this.base.getShowData(this.type, this.value)
     value = value ?? showData.value
-    return `${value >= 0 ? '+' : ''}${value}${showData.tail}`
+    const pretext = typeof value !== 'number' || value >= 0 ? '+' : ''
+    return `${pretext}${value}${showData.tail}`
   }
 
   getShowData() {
@@ -230,101 +225,6 @@ class Stat extends StatElementBase {
   }
 }
 
-type StatValueSourceDetails =
-  | SkillBranch
-  | CharacterEquipment
-  | EquipmentCrystal
-  | Food
-  | RegistletItemBase
-  | BagPotion
-  | null
-class StatValueSource {
-  readonly src: StatValueSourceDetails
-  readonly type: StatValueSourceTypes | null
-  readonly value: number
-
-  constructor(src: StatValueSourceDetails, value: number) {
-    this.src = src
-    this.value = value
-
-    if (this.src instanceof SkillBranch) {
-      this.type = StatValueSourceTypes.Skill
-    } else if (this.src instanceof CharacterEquipment) {
-      this.type = StatValueSourceTypes.Equipment
-    } else if (this.src instanceof Food) {
-      this.type = StatValueSourceTypes.Food
-    } else if (this.src instanceof EquipmentCrystal) {
-      this.type = StatValueSourceTypes.Crystal
-    } else if (this.src instanceof RegistletItemBase) {
-      this.type = StatValueSourceTypes.Registlet
-    } else if (this.src instanceof BagPotion) {
-      this.type = StatValueSourceTypes.Potion
-    } else {
-      this.type = null
-    }
-  }
-}
-
-class StatRecorded extends StatElementBase {
-  private _value: number
-  unknownSourceValue: number
-  sources: StatValueSource[]
-
-  static from(stat: Stat, source: StatValueSourceDetails): StatRecorded {
-    return new StatRecorded(stat.base, stat.type, stat.value, source)
-  }
-
-  constructor(
-    base: StatBase,
-    type: StatTypes,
-    value: number = 0,
-    source: StatValueSourceDetails = null
-  ) {
-    super(base, type)
-    this._value = 0
-    this.sources = []
-    this.unknownSourceValue = 0
-    this.add(value, source)
-  }
-
-  override get value(): number {
-    return this._value
-  }
-
-  add(value: number, source: StatValueSourceDetails): number {
-    if (value !== 0) {
-      this._value += value
-      if (source) {
-        this.sources.push(new StatValueSource(source, value))
-      } else {
-        this.unknownSourceValue += value
-      }
-    }
-    return this.value
-  }
-
-  addStat(stat: StatRecorded) {
-    this._value += stat.value
-    this.sources.push(...stat.sources)
-    this.unknownSourceValue += stat.unknownSourceValue
-  }
-
-  filterSource(filter: (src: StatValueSource) => boolean): StatRecorded {
-    const sources = this.sources.filter(filter)
-    const newStat = new StatRecorded(this.base, this.type)
-    newStat._value = sources.reduce((cur, src) => cur + src.value, 0)
-    newStat.sources = sources
-    return newStat
-  }
-
-  clone(): StatRecorded {
-    const newStat = new StatRecorded(this.base, this.type)
-    newStat._value = this._value
-    newStat.sources = this.sources.slice()
-    return newStat
-  }
-}
-
 class StatComputed extends StatElementBase {
   value: string
 
@@ -342,5 +242,5 @@ class StatComputed extends StatElementBase {
   }
 }
 
-export { Stat, StatComputed, StatRecorded, StatBase, StatValueSource }
-export type { StatValue, StatValueSourceDetails }
+export { Stat, StatComputed, StatBase, StatElementBase }
+export type { StatValue }

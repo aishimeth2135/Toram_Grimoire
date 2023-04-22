@@ -1,7 +1,7 @@
 <template>
   <CardRow :selected="detailVisible">
     <div
-      class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
+      class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
       @click="detailVisible = !detailVisible"
     >
       <cy-icon-text
@@ -45,7 +45,7 @@ import { computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import GlossaryTag from '@/lib/Glossary/GlossaryTag'
+import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'

@@ -133,7 +133,7 @@
     </div>
     <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
       <div class="ml-7 h-3 border-l-1 border-primary-20" />
-      <div class="rounded border-1 border-primary-20 bg-white pt-2.5 pb-2">
+      <div class="rounded border-1 border-primary-20 bg-white pb-2 pt-2.5">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
@@ -154,8 +154,9 @@ import { useI18n } from 'vue-i18n'
 
 import { slotNotEmpty } from '@/shared/utils/vue'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'

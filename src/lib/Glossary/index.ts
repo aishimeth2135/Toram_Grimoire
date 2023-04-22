@@ -1,4 +1,4 @@
-import GlossaryTag from './GlossaryTag'
+import { GlossaryTag } from './GlossaryTag'
 
 export default class GlossarySystem {
   tags: GlossaryTag[]

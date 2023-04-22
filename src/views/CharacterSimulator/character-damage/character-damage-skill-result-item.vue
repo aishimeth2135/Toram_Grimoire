@@ -48,7 +48,7 @@
         @click="toggle('contents/detail')"
       />
     </div>
-    <div v-if="statExtraContainers.length > 0" class="space-y-1 pt-2 pb-1 pl-2">
+    <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
@@ -118,9 +118,8 @@ import { SkillResult } from '@/stores/views/character/setup'
 
 import { markText } from '@/shared/utils/view'
 
-import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
-import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
+import { SkillBranchNames } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
 

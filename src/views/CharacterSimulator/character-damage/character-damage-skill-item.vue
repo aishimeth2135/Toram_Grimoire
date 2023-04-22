@@ -29,7 +29,7 @@
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
     </div>
-    <div v-if="enabled && !invalid" class="pl-10 pr-3 pt-2 pb-5">
+    <div v-if="enabled && !invalid" class="pb-5 pl-10 pr-3 pt-2">
       <div class="space-y-2 pl-2">
         <div
           v-for="result in skillResultsState.results"
@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import CardRow from '@/components/card/card-row.vue'
 

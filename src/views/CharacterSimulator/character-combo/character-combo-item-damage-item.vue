@@ -1,5 +1,5 @@
 <template>
-  <div class="py-2 px-0.5">
+  <div class="px-0.5 py-2">
     <div class="flex items-center">
       <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
         <cy-icon-text :icon="skillIconPath" icon-src="image" color="fuchsia">
@@ -10,8 +10,8 @@
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
     </div>
-    <div class="pl-1 pb-1">
-      <div class="space-y-2 pt-2 pl-2">
+    <div class="pb-1 pl-1">
+      <div class="space-y-2 pl-2 pt-2">
         <div
           v-for="result in skillResultsState.results"
           :key="result.container.instanceId"
@@ -55,7 +55,7 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 import CharacterComboItemDamageResultItem from './character-combo-item-damage-result-item.vue'

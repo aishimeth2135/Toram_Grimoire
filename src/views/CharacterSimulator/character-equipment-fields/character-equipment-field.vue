@@ -48,8 +48,7 @@
 import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EquipmentField } from '@/lib/Character/Character'
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 
 import CharacterEquipmentDetail from '../character-equipment/character-equipment-detail.vue'
 

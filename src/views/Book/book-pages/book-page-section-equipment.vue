@@ -1,5 +1,5 @@
 <template>
-  <cy-loading-content :loading="loading" class="py-3 px-1">
+  <cy-loading-content :loading="loading" class="px-1 py-3">
     <div>
       <EquipmentItem
         v-for="equip in equipments"
@@ -14,7 +14,7 @@
 import { Ref, ref, shallowRef, watch } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
-import { DataStoreIds } from '@/stores/app/datas/enums'
+import { DataStoreIds } from '@/stores/app/datas'
 
 import Grimoire from '@/shared/Grimoire'
 

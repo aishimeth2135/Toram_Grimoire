@@ -9,14 +9,14 @@
     </div>
     <div>
       <div v-for="category in categoryResults" :key="category.id">
-        <div class="text-sm text-primary-40 pt-2">
+        <div class="pt-2 text-sm text-primary-40">
           {{ t(`registlet-query.category.${category.id}`) }}
         </div>
         <CardRows class="mt-1">
           <CardRow
             v-for="item in category.items"
             :key="item.id"
-            class="flex items-center pl-3 pr-3 py-2 hover:!bg-primary-5 cursor-pointer duration-150"
+            class="flex cursor-pointer items-center py-2 pl-3 pr-3 duration-150 hover:!bg-primary-5"
             @click="registletBuild.toggleItem(item)"
           >
             <cy-icon-text
@@ -46,8 +46,11 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
-import { RegistletCategory, RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import {
+  RegistletCategory,
+  RegistletItemBase,
+} from '@/lib/Registlet/RegistletItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'

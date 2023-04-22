@@ -4,19 +4,16 @@ import { Ref, computed, ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation'
+import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import {
+  Calculation,
   CalculationContainerIds,
   CalculationItemIds,
-} from '@/lib/Calculation/Damage/Calculation/enums'
-import { Character } from '@/lib/Character/Character'
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { StatRecorded } from '@/lib/Character/Stat'
-import { StatRestriction } from '@/lib/Character/Stat'
-import { EnemyElements } from '@/lib/Enemy/enums'
-import { Skill, SkillBranch } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+} from '@/lib/Damage/DamageCalculation'
+import { EnemyElements } from '@/lib/Enemy/Enemy'
+import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'

@@ -1,8 +1,7 @@
-import { Character } from '@/lib/Character/Character'
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
-import { EnemyElements } from '@/lib/Enemy/enums'
+import { EnemyElements } from '@/lib/Enemy/Enemy'
 
 export function checkStatRestriction(
   chara: Character,

@@ -18,8 +18,8 @@ import { computed, ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill } from '@/lib/Skill/Skill'
-import { SkillTypes } from '@/lib/Skill/Skill/enums'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { SkillTypes } from '@/lib/Skill/Skill'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 

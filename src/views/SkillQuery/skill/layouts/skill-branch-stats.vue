@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
 

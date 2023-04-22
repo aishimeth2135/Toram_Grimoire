@@ -4,14 +4,14 @@ import { isIntegerString, splitComma } from '@/shared/utils/string'
 import RegistletSystem from '@/lib/Registlet'
 import {
   RegistletCategory,
+  RegistletCategoryIds,
   RegistletInfos,
   RegistletItemBase,
   RegistletItemBaseSkill,
   RegistletItemBaseSpecial,
   RegistletItemBaseStat,
   RegistletItemRow,
-} from '@/lib/Registlet/Registlet'
-import { RegistletCategoryIds } from '@/lib/Registlet/Registlet/enums'
+} from '@/lib/Registlet/RegistletItem'
 import { Skill } from '@/lib/Skill/Skill'
 
 import type { CsvData } from './DownloadDatas'

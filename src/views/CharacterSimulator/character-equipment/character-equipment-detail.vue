@@ -27,7 +27,7 @@
       <cy-popover>
         <CharacterEquipmentEditMask>
           <div
-            class="flex w-72 items-center rounded-2xl border-1 border-solid border-red-20 py-0.5 px-3"
+            class="flex w-72 items-center rounded-2xl border-1 border-solid border-red-20 px-3 py-0.5"
             :class="{ 'opacity-50': !baseValueValid }"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
@@ -107,7 +107,7 @@
     <div :class="{ 'opacity-50': statsDisabled }">
       <div
         v-if="equipment.stats.length > 0"
-        class="relative flex flex-wrap items-center pl-1.5 pr-2 pt-0.5 pb-1.5"
+        class="relative flex flex-wrap items-center pb-1.5 pl-1.5 pr-2 pt-0.5"
       >
         <CharacterEquipmentEditMask
           v-for="stat in equipment.stats"
@@ -128,7 +128,7 @@
           </cy-popover>
         </CharacterEquipmentEditMask>
         <CharacterEquipmentEditMask
-          class="!absolute top-0 -right-2 h-full w-6 hover:bg-primary-5"
+          class="!absolute -right-2 top-0 h-full w-6 hover:bg-primary-5"
           @click="editStat(equipment)"
         />
       </div>
@@ -193,7 +193,7 @@ import {
 import {
   EquipmentKinds,
   EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment/enums'
+} from '@/lib/Character/CharacterEquipment'
 
 import EquipmentTitle from '@/components/common/equipment-title.vue'
 import ShowStat from '@/components/common/show-stat.vue'

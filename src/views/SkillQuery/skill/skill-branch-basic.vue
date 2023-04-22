@@ -18,8 +18,9 @@
 <script lang="ts">
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'

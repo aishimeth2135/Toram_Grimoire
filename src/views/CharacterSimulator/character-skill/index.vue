@@ -79,7 +79,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import { SkillTypes } from '@/lib/Skill/Skill/enums'
+import { SkillTypes } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
 

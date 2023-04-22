@@ -1,5 +1,5 @@
-import { DatasStoreBase } from '@/stores/app/datas'
-import { I18nStore } from '@/stores/app/language'
+import { DatasStoreBase } from '@/stores/app/datas/DatasStoreBase'
+import { I18nStore } from '@/stores/app/language/I18nStore'
 
 import Logger from './services/Logger'
 

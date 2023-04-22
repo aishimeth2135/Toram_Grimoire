@@ -1,9 +1,9 @@
 <template>
-  <CardRow class="pt-2.5 pb-2 px-1">
-    <div class="flex items-start h-full">
+  <CardRow class="px-1 pb-2 pt-2.5">
+    <div class="flex h-full items-start">
       <div class="flex-shrink-0 self-stretch pl-2 pr-3">
         <div
-          class="p-1.5 border-1 rounded-full flex relative bg-white cursor-pointer duration-150 hover:border-primary-40"
+          class="relative flex cursor-pointer rounded-full border-1 bg-white p-1.5 duration-150 hover:border-primary-40"
           :class="
             invalid
               ? 'border-gray-20'
@@ -15,7 +15,7 @@
         >
           <cy-icon-text
             v-if="enabled"
-            class="absolute -top-1.5 -left-1.5"
+            class="absolute -left-1.5 -top-1.5"
             icon="material-symbols:check-circle-rounded"
           />
           <cy-icon-text
@@ -25,7 +25,7 @@
           />
         </div>
       </div>
-      <div class="w-full pt-1 pr-3" :class="{ 'opacity-50': !enabled }">
+      <div class="w-full pr-3 pt-1" :class="{ 'opacity-50': !enabled }">
         <div>
           <div class="flex items-center">
             <div
@@ -41,18 +41,18 @@
               />
             </div>
           </div>
-          <div v-if="invalid" class="text-gray-40 text-sm py-2">
+          <div v-if="invalid" class="py-2 text-sm text-gray-40">
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
           <div v-else-if="skillResultsState.results.length > 0">
-            <div v-if="isMutipleItem" class="text-primary-30 py-1">
+            <div v-if="isMutipleItem" class="py-1 text-primary-30">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
             <CharacterSkillResultItem v-else :result="firstResult" hide-name />
           </div>
         </div>
         <div v-if="!invalid">
-          <div v-if="isMutipleItem" class="pt-1 pb-1.5">
+          <div v-if="isMutipleItem" class="pb-1.5 pt-1">
             <div
               v-for="result in skillResultsState.results"
               :key="result.container.instanceId"
@@ -72,7 +72,7 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import CardRow from '@/components/card/card-row.vue'
 

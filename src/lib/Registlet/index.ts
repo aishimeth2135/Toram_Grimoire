@@ -1,14 +1,15 @@
 import { markRaw } from 'vue'
 
-import { Skill } from '../Skill/Skill'
+import { Skill } from '@/lib/Skill/Skill'
+
 import {
   RegistletCategory,
+  RegistletCategoryIds,
   RegistletItemBase,
   RegistletItemBaseSkill,
   RegistletItemBaseSpecial,
   RegistletItemBaseStat,
-} from './Registlet'
-import { RegistletCategoryIds } from './Registlet/enums'
+} from './RegistletItem'
 
 export default class RegistletSystem {
   skillCategory: RegistletCategory<RegistletItemBaseSkill>

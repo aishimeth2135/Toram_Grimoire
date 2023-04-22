@@ -22,8 +22,9 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import ReferenceHandler from './branch-handlers/ReferenceHandler'

@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
-import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 
 import Notify from '@/setup/Notify'
 

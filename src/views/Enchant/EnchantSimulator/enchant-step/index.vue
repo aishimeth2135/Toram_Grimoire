@@ -76,7 +76,7 @@
           :class="idx !== 0 ? 'border-t border-primary-30' : ''"
         />
       </template>
-      <div v-else-if="step.index === 0" class="px-2 pt-3 pb-2">
+      <div v-else-if="step.index === 0" class="px-2 pb-2 pt-3">
         <div>
           <cy-icon-text small text-color="fuchsia-60">
             {{ t('enchant-simulator.step.button-caption-title') }}
@@ -184,8 +184,7 @@ export default {
 import { computed, inject, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EnchantStep } from '@/lib/Enchant/Enchant'
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
+import { EnchantStep, EnchantStepTypes } from '@/lib/Enchant/Enchant'
 
 import EnchantStepStatView from './enchant-step-stat.vue'
 

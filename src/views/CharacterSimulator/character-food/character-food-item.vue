@@ -1,6 +1,6 @@
 <template>
-  <CardRow class="flex items-center flex-wrap py-2.5 px-1.5">
-    <div class="pl-0.5 flex">
+  <CardRow class="flex flex-wrap items-center px-1.5 py-2.5">
+    <div class="flex pl-0.5">
       <cy-button-check
         v-model:selected="selected"
         inline
@@ -9,7 +9,7 @@
         {{ food.stat().show() }}
       </cy-button-check>
     </div>
-    <div class="flex items-center ml-10">
+    <div class="ml-10 flex items-center">
       <div class="text-primary-30">Lv.</div>
       <cy-input-counter v-model:value="level" :range="foodLevelRange" inline />
     </div>
@@ -20,7 +20,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { Food } from '@/lib/Character/Food/FoodBuild'
+import { Food } from '@/lib/Character/FoodBuild'
 
 import Notify from '@/setup/Notify'
 

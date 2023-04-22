@@ -41,8 +41,8 @@ import { computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { PotionBuild } from '@/lib/Character/PotionBuild/PotionBuild'
-import { BagPotion } from '@/lib/Items/BagItem/BagPotion'
+import { PotionBuild } from '@/lib/Character/PotionBuild'
+import { BagPotion } from '@/lib/Items/BagItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'

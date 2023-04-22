@@ -1,6 +1,6 @@
 <template>
-  <div class="border-1 border-primary-20 rounded-md overflow-hidden">
-    <div class="flex items-center pb-4 pt-3 px-2">
+  <div class="overflow-hidden rounded-md border-1 border-primary-20">
+    <div class="flex items-center px-2 pb-4 pt-3">
       <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
       </cy-button-toggle>
@@ -41,7 +41,7 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
-import { SkillTypes } from '@/lib/Skill/Skill/enums'
+import { SkillTypes } from '@/lib/Skill/Skill'
 
 import CharacterSkillItem from './character-skill-item.vue'
 

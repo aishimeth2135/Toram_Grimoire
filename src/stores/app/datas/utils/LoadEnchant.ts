@@ -1,7 +1,10 @@
 import EnchantSystem from '@/lib/Enchant'
-import { EnchantCategory, EnchantItem } from '@/lib/Enchant/Enchant'
-import type { MaterialPointTypeRange } from '@/lib/Enchant/Enchant/base'
-import { EnchantItemConditions } from '@/lib/Enchant/Enchant/enums'
+import {
+  EnchantCategory,
+  EnchantItem,
+  EnchantItemConditions,
+  MaterialPointTypeRange,
+} from '@/lib/Enchant/Enchant'
 
 import type { CsvData } from './DownloadDatas'
 

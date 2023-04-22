@@ -1,8 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
-import SkillComputingContainer, {
+import {
   SkillBranchItem,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
 import {
   HandleBranchValuePropsMap,

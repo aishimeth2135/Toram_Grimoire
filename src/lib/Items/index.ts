@@ -1,7 +1,7 @@
 import { markRaw } from 'vue'
 
 import { BagCrystal, BagEquipment } from './BagItem'
-import { BagPotionsRoot } from './BagItem/BagPotion'
+import { BagPotionsRoot } from './BagItem'
 
 export default class ItemsSystem {
   equipments: BagEquipment[]

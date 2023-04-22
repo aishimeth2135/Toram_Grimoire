@@ -3,7 +3,7 @@ import { Ref, computed } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { StatBase } from '@/lib/Character/Stat'
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
+import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
 
 export const enum StepIds {

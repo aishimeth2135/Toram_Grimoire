@@ -1,14 +1,14 @@
 import Grimoire from '@/shared/Grimoire'
 import Cyteria from '@/shared/utils/Cyteria'
 
-import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import {
   DrawSkillTreeData,
+  DrawSkillTreeDataTypes,
   GetDrawSetting,
   computeDrawSkillTreeData,
-} from '@/lib/Skill/utils/DrawSkillTree'
-import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
+} from '@/lib/Skill/drawSkillTree'
 
 export async function exportSkillBuildImage(skillBuild: SkillBuild) {
   try {

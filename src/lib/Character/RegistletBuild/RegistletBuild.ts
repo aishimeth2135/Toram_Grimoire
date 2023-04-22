@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import { CharacterBuildBindOnCharacter } from '../Character'
 

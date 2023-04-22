@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { FoodsBase } from './index'
+import type { FoodsBase } from './index'
 import type { FoodAmount } from './index'
 
 function initFoodsBase(foodsBase: FoodsBase) {

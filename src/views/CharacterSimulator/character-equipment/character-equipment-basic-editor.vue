@@ -148,7 +148,7 @@ import { useI18n } from 'vue-i18n'
 import Draggable from 'vuedraggable'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 
 import CharacterEquipmentBasicValue from './character-equipment-basic-value.vue'

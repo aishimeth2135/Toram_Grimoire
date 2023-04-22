@@ -82,8 +82,8 @@ import {
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { CharacterSaveData } from '@/lib/Character/Character'
-import { FoodsBuildSaveData } from '@/lib/Character/Food/FoodBuild'
-import { SkillBuildSaveData } from '@/lib/Character/SkillBuild/SkillBuild'
+import { FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
+import { SkillBuildSaveData } from '@/lib/Character/SkillBuild'
 
 import { setupCharacterStore } from '../setup'
 
