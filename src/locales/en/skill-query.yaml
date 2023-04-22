@@ -26,6 +26,9 @@ branch:
   ailment-title: 命中成功後
   apply-element: 套用{element}。
   unknown-variable: 未知參數
+  dual-element-title: 雙重屬性
+  current-effect-equipments-pretext: 目前
+  compared-effect-equipments-pretext: 比較
   formula-replaced-text:
     BSTR: 基礎STR
     BINT: 基礎INT
@@ -203,5 +206,9 @@ branch:
       mp: 恢復MP
     duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒作用一次。
     constant-pretext: 固定值
+    effective_area:
+      circle: 圓形
+    'effective_area: title': 類型
+    'radius: title': 作用半徑
   reference:
     base-title: 參考連結

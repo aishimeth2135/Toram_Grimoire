@@ -59,6 +59,9 @@ const BRANCH_PROPS_DEFAULT_VALUE: Partial<
     target: 'self',
     frequency: '1',
     constant: '0',
+    effective_area: 'circle',
+    target_offsets: 'auto',
+    end_position: 'self',
   },
   [SkillBranchNames.List]: {
     is_tips: '0',

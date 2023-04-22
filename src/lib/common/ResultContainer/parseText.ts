@@ -36,10 +36,120 @@ export interface TextParseItem<
   Value extends TextResultContainerPartValue = TextResultContainerPartValue
 > {
   id: string
-  pattern: RegExp | string
+  pattern?: RegExp | string
+  parseToken?: {
+    start: string
+    end: string
+  }
   handler: TextParseHandler<Value>
   units?: string[]
   patternGroupsLength?: number
+}
+
+function handleTextSplit(
+  value: string,
+  start: string,
+  end: string,
+  pattern?: RegExp | string
+): string[] {
+  interface TokenItem {
+    type: 'start' | 'end'
+    remove: boolean
+  }
+  // the result of `String.match` may includes `undefined`
+  const result: (string | undefined | TokenItem)[] = []
+
+  let current = ''
+  Array.from(value).forEach(char => {
+    current += char
+    if (current.endsWith(start)) {
+      result.push(current.slice(0, current.length - start.length), {
+        type: 'start',
+        remove: false,
+      })
+      current = ''
+    } else if (current.endsWith(end)) {
+      const target = current.slice(0, current.length - end.length)
+      const match = pattern ? target.match(pattern) : null
+      if (match && match.length > 1) {
+        result.push(...match.slice(1))
+      } else {
+        result.push(target)
+      }
+      result.push({ type: 'end', remove: false })
+      current = ''
+    }
+  })
+
+  if (current !== '') {
+    result.push(current)
+  }
+
+  if (result.length === 1) {
+    return result as string[]
+  }
+
+  // set remove flag
+  const tmpResult: (string | undefined | TokenItem)[] = []
+  const startTokenRefs: TokenItem[] = []
+  const endTokenRefs: TokenItem[] = []
+  result.forEach(item => {
+    if (typeof item === 'string' || item === undefined) {
+      tmpResult.push(item)
+      return
+    }
+
+    if (item.type === 'start') {
+      startTokenRefs.push(item)
+      tmpResult.push(item)
+      return
+    }
+
+    item.remove = true
+
+    if (startTokenRefs.length > 0) {
+      startTokenRefs.shift()!.remove = true
+      endTokenRefs.push(item)
+    } else if (endTokenRefs.length > 0) {
+      endTokenRefs.shift()!.remove = false
+      endTokenRefs.push(item)
+    }
+    tmpResult.push(item)
+  })
+
+  let mergeFlag = false
+
+  // remove and merge items by remove flag
+  const splitResult: (string | undefined)[] = []
+  tmpResult.forEach(item => {
+    if (typeof item === 'string') {
+      if (mergeFlag) {
+        splitResult[splitResult.length - 1] += item
+        mergeFlag = false
+      } else {
+        splitResult.push(item)
+      }
+      return
+    }
+    mergeFlag = false
+
+    if (item === undefined) {
+      splitResult.push(item)
+      return
+    }
+
+    if (!item.remove) {
+      const val = item.type === 'start' ? start : end
+      if (splitResult[splitResult.length - 1] !== undefined) {
+        splitResult[splitResult.length - 1] += val
+        mergeFlag = true
+      } else {
+        splitResult.push(val)
+      }
+    }
+  })
+
+  return splitResult as string[]
 }
 
 export function handleParseText(rootValue: string, order: TextParseItem[]) {
@@ -52,9 +162,21 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
       pattern,
       handler,
       units = [],
+      parseToken,
       patternGroupsLength = 1,
     } = order[currentIdx]
-    const parseParts = value.split(pattern)
+
+    let parseParts: string[]
+
+    if (!parseToken && !pattern) {
+      Grimoire.Logger.warn('handleParseText', 'invalid params.')
+      parseParts = [rootValue]
+    } else {
+      parseParts = !parseToken
+        ? value.split(pattern!)
+        : handleTextSplit(value, parseToken.start, parseToken.end, pattern)
+    }
+
     const parts: TextResultContainerPartValue[] = []
 
     const groupStep = patternGroupsLength + 1
@@ -135,7 +257,10 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
   const units = ['%', 'm']
   const separateParse: TextParseItem<TextResultContainerPart> = {
     id: 'separate',
-    pattern: /\(\(((?:(?!\(\().)+)\)\)/g,
+    parseToken: {
+      start: '((',
+      end: '))',
+    },
     handler([value], context) {
       const parts = context.parseHandlers.value?.(value).parts ?? value
       return new TextResultContainerPart(
@@ -148,7 +273,10 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
   }
   const valueParse: TextParseItem<ResultContainer> = {
     id: 'value',
-    pattern: /\$\{([^}]+)\}/g,
+    parseToken: {
+      start: '${',
+      end: '}',
+    },
     handler(values, context) {
       const value = values[0]
       const computedValue = options.computedValue?.(value) ?? value

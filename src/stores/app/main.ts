@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.6.17'
+const version = '4.6.18'
 
 export const useMainStore = defineStore('app-main', () => {
   const settingVisible = ref(false)
@@ -84,8 +84,9 @@ export const useMainStore = defineStore('app-main', () => {
     serviceWorkerHasUpdate,
     updateTitle,
 
-    toggleSetting: (force?: boolean) =>
-      (settingVisible.value = force ?? !settingVisible.value),
+    toggleSetting: (force?: boolean) => {
+      settingVisible.value = force ?? !settingVisible.value
+    },
     startRouting: () => (routerGuiding.value = true),
     endRouting: () => (routerGuiding.value = false),
     routerGuiding: readonly(routerGuiding),
