@@ -7,6 +7,7 @@
       :extra-columns="extraSuffixBranchDatas"
       main-icon="icon-park-outline:cross-society"
       :main-title="container.get('type')"
+      :has-area="hasArea"
     >
       <skillHealFormula :container="container" />
     </SkillBranchLayoutNormal>
@@ -66,4 +67,6 @@ const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(
   props.computing,
   branchItem
 )
+
+const hasArea = computed(() => container.value.getOrigin('target') === 'party')
 </script>

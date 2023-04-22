@@ -9,6 +9,18 @@
       :class="{ 'sub-content-active': contents.sub }"
     >
       <div class="relative">
+        <div
+          v-if="currentEffectEquipments && contents.sub"
+          class="flex items-center pb-1.5 pl-3 pt-2"
+        >
+          <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
+            {{ t('skill-query.branch.current-effect-equipments-pretext') }}
+          </div>
+          <SkillEquipmentButton
+            :equipments="currentEffectEquipments"
+            selected
+          />
+        </div>
         <component
           :is="currentComponent"
           :branch-item="skillBranchItem"
@@ -24,8 +36,10 @@
       </div>
       <cy-transition>
         <div v-if="!sub && contents.sub">
-          <div class="flex items-center space-x-2 pl-4 pt-2 pb-1">
-            <cy-icon-text icon="ic:round-label" class="flex-shrink-0" />
+          <div class="flex items-center pb-1.5 pl-3 pt-3">
+            <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
+              {{ t('skill-query.branch.compared-effect-equipments-pretext') }}
+            </div>
             <div class="flex flex-wrap items-center">
               <div class="mr-2">
                 <SkillEquipmentButton
@@ -56,10 +70,12 @@
 
 <script lang="ts">
 import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import SkillComputingContainer, {
   SkillBranchItem,
+  SkillEffectItem,
 } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
@@ -105,6 +121,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const { skillBranchItem: branchItem, sub, contentAuto } = toRefs(props)
 
+const { t } = useI18n()
 const { contents, toggle } = ToggleService({
   contents: ['sub'] as const,
 })
@@ -201,6 +218,17 @@ const {
   setCurrentOtherEffectBranch,
 } = setupOtherEffectBranches(branchItem)
 
+const currentEffectEquipments = computed(() => {
+  const current = branchItem.value
+  if (current.id === -1) {
+    return null
+  }
+  if (current.parent instanceof SkillEffectItem) {
+    return current.parent.equipments
+  }
+  return null
+})
+
 const subButtonAvailable = computed(() => {
   if (otherEffectBranches.value.length === 0 || sub.value) {
     return false
@@ -216,7 +244,7 @@ const subButtonAvailable = computed(() => {
   }
 
   & :deep(.skill-formula-function-wrapper) {
-    @apply mx-0.5 inline-flex items-center rounded-md pr-1 pl-1.5;
+    @apply mx-0.5 inline-flex items-center rounded-md pl-1.5 pr-1;
 
     &.key--floor {
       @apply bg-primary-30;
@@ -262,14 +290,14 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute top-0.5 right-1 z-5;
+  @apply absolute right-1 top-0.5 z-5;
 }
 
 .skill-branch-content {
   @apply border-l-0 border-primary-50 pl-0 duration-200;
   transition-property: border-left-width, padding-left;
   &.sub-content-active {
-    @apply border-l-2 pl-3 pb-2;
+    @apply border-l-2 pb-2 pl-3;
   }
 }
 .group-end {

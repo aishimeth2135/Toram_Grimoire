@@ -65,7 +65,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
     )
   }
 
-  const pureDatas = ['name']
+  const pureDatas = ['name', 'target']
 
   const displayData = handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,

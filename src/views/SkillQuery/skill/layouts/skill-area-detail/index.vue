@@ -17,17 +17,18 @@
           </cy-icon-text>
         </div>
       </div>
-      <div class="pt-4 pl-4">
+      <div class="pl-4 pt-4">
         <table>
           <tbody>
             <tr v-for="key in displayAttrsKeys" :key="key">
-              <td class="border-r border-primary-30 pr-2 text-right">
+              <td
+                class="border-r-1 border-primary-20 pr-2 text-right text-stone-50"
+              >
                 {{ displayContainer.title(key) }}
               </td>
-              <td
-                class="pl-2 text-primary-60"
-                v-html="displayContainer.get(key)"
-              />
+              <td class="pl-2 text-primary-60">
+                <SkillBranchPropValue :result="displayContainer.result(key)" />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -63,6 +64,7 @@ import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 import SkillAreaAnimation from './skill-area-animation.vue'
 
 import AreaHandler from '../../branch-handlers/AreaHandler'
+import SkillBranchPropValue from '../skill-branch-prop-value.vue'
 
 interface Props {
   computing: SkillComputingContainer

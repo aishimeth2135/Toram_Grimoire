@@ -1,8 +1,8 @@
 .cy--text-separate {
-  @apply mx-1.5 inline-block border-x border-current px-1.5;
+  @apply mx-1.5 inline-block border-x-1 border-primary-20 px-1.5;
 }
 .cy--text-underline {
-  @apply relative mr-3 mb-1 inline-block border-b border-current px-2;
+  @apply relative mb-1 mr-3 inline-block border-b border-current px-2;
 
   &::before {
     content: '';
@@ -10,7 +10,7 @@
     background-color: currentcolor;
     position: absolute;
 
-    @apply -right-1 -bottom-1 h-2 w-2 rounded-full;
+    @apply -bottom-1 -right-1 h-2 w-2 rounded-full;
   }
 }
 .scrollbar-hide {

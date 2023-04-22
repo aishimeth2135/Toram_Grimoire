@@ -100,8 +100,6 @@ const areaDatas = computed(() => {
       ctner.getOrigin('end_position') === 'self' ? padding + radius : padding
     const by = padding + radius
 
-    // bx += Math.max(0, -1 * startPositionOffsets);
-
     // target
     let tx = bx + targetOffset
     const ty = by

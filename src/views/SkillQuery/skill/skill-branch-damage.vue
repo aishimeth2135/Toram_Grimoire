@@ -313,7 +313,5 @@ const ailmentSuffixBranchItems = computed(() => {
     .map(suffix => ExtraHandler(props.computing, suffix))
 })
 
-const hasArea = computed(() => {
-  return container.value.getOrigin('type') === 'AOE'
-})
+const hasArea = computed(() => container.value.getOrigin('type') === 'AOE')
 </script>
