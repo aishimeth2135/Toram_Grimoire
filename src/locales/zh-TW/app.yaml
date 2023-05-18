@@ -38,9 +38,9 @@ about:
   team:
     title: 團隊
     sub-title: 感謝整個魔法書製作團隊0.0
-    skill-data: 技能資料
-    equipment-data: 裝備資料
-    other: 其他
+    main: 主要成員
+    skill-data: 技能資料協助
+    equipment-data: 裝備資料協助
   sponsor:
     title: 贊助
     sub-title: 感謝所有願意提供贊助的人～

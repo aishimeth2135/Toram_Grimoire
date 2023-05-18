@@ -1,3 +1,4 @@
+import { lastElement } from '@/shared/utils/array'
 import { numberToFixed } from '@/shared/utils/number'
 
 export function handleFunctionHighlight(result: string): string {
@@ -24,7 +25,7 @@ export function handleFunctionHighlight(result: string): string {
         handleStack.push('function')
       }
     } else if (char === ')') {
-      if (handleStack[handleStack.length - 1] === 'normal') {
+      if (lastElement(handleStack) === 'normal') {
         result =
           result.slice(0, idx + offset) +
           '--#>' +

@@ -38,7 +38,7 @@ function DataPath(id: DataPathIds): string {
 
 function DataPathLang(id: DataPathIds): (string | null)[] {
   /**
-   * order of language: [en, zh_tw, ja, zh_cn]
+   * The order of languages: [en, zh_tw, ja, zh_cn]
    */
   switch (id) {
     case DataPathIds.Skill:

@@ -43,3 +43,7 @@ export function splitComma(str: string): string[] {
 export function escapeRegExp(str: string) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+export function lastChar(str: string): string {
+  return str[str.length - 1]
+}

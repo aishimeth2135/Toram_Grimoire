@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import { isNumberString } from '@/shared/utils/string'
+import { isNumberString, lastChar } from '@/shared/utils/string'
 
 import { StatTypes } from './enums'
 
@@ -46,7 +46,7 @@ class StatBase {
 
   title(type: StatTypes): string {
     if (type === StatTypes.Constant) {
-      if (this.hasMultiplier || this.text[this.text.length - 1] === '%') {
+      if (this.hasMultiplier || lastChar(this.text) === '%') {
         return this.text
       }
       const unit = this.constantDisplayFormat.includes('$u') ? '%' : ''

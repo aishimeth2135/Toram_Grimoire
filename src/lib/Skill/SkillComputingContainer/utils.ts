@@ -1,5 +1,6 @@
 import { shallowReactive } from 'vue'
 
+import { lastElement } from '@/shared/utils/array'
 import { handleFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
@@ -297,7 +298,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     }
 
     const mainBranch =
-      resBranches.length !== 0 ? resBranches[resBranches.length - 1] : null
+      resBranches.length !== 0 ? lastElement(resBranches) : null
 
     if (!mainBranch && isMainBranch(branchItem)) {
       resBranches.push(branchItem)
