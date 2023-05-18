@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { lastElement } from '@/shared/utils/array'
 
 import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 
@@ -511,7 +512,7 @@ class EnchantDoll {
       for (let idx = 0; idx < ary.length - 1; ++idx) {
         for (let idx2 = 0; idx2 < stats.length; ++idx2) {
           const items = ary[idx]
-          if (items[items.length - 1] < idx2) {
+          if (lastElement(items) < idx2) {
             const newEl = items.slice()
             newEl.push(idx2)
             res.push(newEl)

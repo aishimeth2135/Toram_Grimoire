@@ -180,6 +180,8 @@ import { useI18n } from 'vue-i18n'
 
 import { CharacterStatResultWithId } from '@/stores/views/character/setup'
 
+import { lastElement } from '@/shared/utils/array'
+
 import {
   CharacterStatFormulaResultConditionalBase,
   StatPartsDetailAdditionalValueItem,
@@ -260,8 +262,8 @@ const handleConditional = (
       .replace(/^\(([^)]+)\)$/, (match, p1) => p1)
 
     strs = str.split(',')
-    if (strs[strs.length - 1] === '') {
-      strs = strs.slice(0, -1)
+    if (lastElement(strs) === '') {
+      strs.pop()
     }
   }
 

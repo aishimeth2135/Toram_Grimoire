@@ -1,6 +1,6 @@
 import jsep from 'jsep'
 
-import { isNumberString } from '@/shared/utils/string'
+import { isNumberString, lastChar } from '@/shared/utils/string'
 
 import {
   getGettersMap,
@@ -11,7 +11,7 @@ import {
 } from './utils'
 
 function trimBrackets(value: string) {
-  while (value[0] === '(' && value[value.length - 1] === ')') {
+  while (value[0] === '(' && lastChar(value) === ')') {
     value = value.slice(1, value.length - 1)
   }
   return value
@@ -71,7 +71,7 @@ interface ParseFormulaOptions {
  * ```
  * #### ex4:
  * ```
- *   formula: func1(20, 30)+100
+ *   formula: "func1(20, 30)+100"
  *   vars: { func1: (value1, value2) => value1 + value2 }
  *   => 50+100
  *   => 150

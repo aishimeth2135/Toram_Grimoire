@@ -1,3 +1,5 @@
+import { lastElement } from '@/shared/utils/array'
+
 import {
   EnchantCategory,
   EnchantEquipment,
@@ -217,8 +219,7 @@ export default class EnchantDollEquipmentContainer {
       if (positivesFilter === 'both' && currentCategory.stats.length > 1) {
         // 把一個正屬移到退潛後再附的附法
         const newDollEq = this.clone()
-        const fakeStat =
-          currentCategory.stats[currentCategory.stats.length - 1].clone()
+        const fakeStat = lastElement(currentCategory.stats).clone()
         newDollEq.virtualStats.push(fakeStat)
         resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative())
       }
@@ -251,7 +252,7 @@ export default class EnchantDollEquipmentContainer {
         if (eq.lastStep!.potentialExtraRate > 1.2) {
           // 例外狀況，補潛力導致倍率不正確。還原至原本的狀態
           while (eq.allSteps.length !== 1) {
-            eq.allSteps[eq.allSteps.length - 1].remove()
+            lastElement(eq.allSteps).remove()
           }
           this.positiveStats = originalPositiveStats
         } else {
@@ -336,7 +337,7 @@ export default class EnchantDollEquipmentContainer {
   checkMakeUpPotential() {
     const eq = this.equipment
     const steps = this.equipment.steps()
-    const step = steps[steps.length - 1]
+    const step = lastElement(steps)
     const negatives = EnchantDollCategory.classifyStats(this.negativeStats)
     this.refreshCategorys(negatives)
 
@@ -375,8 +376,7 @@ export default class EnchantDollEquipmentContainer {
             restore()
             return 'base-potential-not-enough'
           }
-          const ccategory = negatives[negatives.length - 1]
-          const nstat = ccategory.stats[0]
+          const nstat = lastElement(negatives).stats[0]
 
           const find = bstep.stat(nstat.itemBase, nstat.type)
           if (find) {
@@ -453,7 +453,7 @@ export default class EnchantDollEquipmentContainer {
         : null
 
       // 從最大的開始拿
-      let cur = originalPotentialList[originalPotentialList.length - 1]
+      let cur = lastElement(originalPotentialList)
       const allSteps = ceq.steps()
       const firstStep = allSteps[0]
       const checkStepsRemainingPotential = () =>
@@ -476,7 +476,7 @@ export default class EnchantDollEquipmentContainer {
           }
         }
         originalPotentialList.pop()
-        const next = originalPotentialList[originalPotentialList.length - 1]
+        const next = lastElement(originalPotentialList)
         if (!checkStepsRemainingPotential()) {
           cur.stat.value -= 1
           pstat.value += 1
