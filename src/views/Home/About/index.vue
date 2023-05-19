@@ -100,11 +100,23 @@
                     >
                       <div v-if="value === '@line'" class="my-2.5" />
                     </template>
-                    <span v-else class="relative inline-flex pl-4 pr-3">
+                    <span
+                      v-else
+                      class="relative inline-flex pl-4 pr-3"
+                      :class="
+                        typeof value === 'string' && value.endsWith('@hide')
+                          ? 'opacity-0 hover:opacity-100 hover:delay-500 hover:duration-150'
+                          : ''
+                      "
+                    >
                       <div
                         class="absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30"
                       />
-                      <span v-if="typeof value === 'string'">{{ value }}</span>
+                      <span v-if="typeof value === 'string'">
+                        {{
+                          value.endsWith('@hide') ? value.slice(0, -5) : value
+                        }}
+                      </span>
                       <span v-else class="inline-flex flex-wrap items-center">
                         <span>{{ value.main }}</span>
                         <span
@@ -191,7 +203,7 @@ const columns: {
     list: [
       {
         title: 'main',
-        list: ['緋月音', '輕沂'],
+        list: ['緋月音', '輕沂@hide'],
       },
       {
         title: 'skill-data',

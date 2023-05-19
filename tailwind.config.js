@@ -229,6 +229,7 @@ module.exports = {
     'textOverflow',
     'transitionDuration',
     'transitionTimingFunction',
+    'transitionDelay',
 
     'verticalAlign',
     'visibility',
