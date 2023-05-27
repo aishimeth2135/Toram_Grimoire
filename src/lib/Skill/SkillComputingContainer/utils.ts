@@ -196,14 +196,15 @@ function convertEffectEquipment(
   if (main === -1 && sub === -1 && body === -1) {
     return [new EquipmentRestrictions()]
   }
-  const results: Map<string, EquipmentRestrictions> = new Map()
-  const appendResult = (data: EquipmentRestrictions) => {
+  // const results: Map<string, EquipmentRestrictions> = new Map()
+  const results: [string, EquipmentRestrictions][] = []
+  const appendResult = (data: EquipmentRestrictions, isMain = false) => {
     const list = [data.main, data.sub, data.body]
     if (list.every(value => value === null)) {
       return
     }
     const key = list.map(value => (value === null ? '-' : value)).join('|')
-    results.set(key, data)
+    isMain ? results.unshift([key, data]) : results.push([key, data])
   }
 
   const mainData = new EquipmentRestrictions({
@@ -221,7 +222,6 @@ function convertEffectEquipment(
     )
   }
   const firstResult: EquipmentRestrictions = mainData
-  appendResult(mainData)
 
   const subItem = sub === -1 ? null : EQUIPMENT_TYPE_SUB_ORDER[sub]
   if (operator === 1) {
@@ -245,7 +245,9 @@ function convertEffectEquipment(
     )
   }
 
-  return Array.from(results.values())
+  appendResult(mainData, true)
+
+  return [...new Map(results).values()]
 }
 
 function separateSuffixBranches(effectItem: SkillEffectItemBase) {
