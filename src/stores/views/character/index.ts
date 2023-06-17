@@ -20,18 +20,20 @@ import { Skill } from '@/lib/Skill/Skill'
 import { useCharacterFoodStore } from './food-build'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
+import { getSkillBranchState } from './setup/getState'
+import { prepareSetupCharacter } from './setup/setupCharacter'
 import {
-  prepareSetupCharacter,
   setupCharacterSkillItems,
   setupFoodStats,
   setupPotionStats,
   setupRegistletStats,
-} from './setup'
-import setupDamageCalculation, {
+} from './setup/setupCharacterBuilds'
+import { setupCharacters, setupEquipments } from './setup/setupCharacterStates'
+import {
   CalculationOptions,
   TargetProperties,
+  setupDamageCalculation,
 } from './setup/setupDamageCalculation'
-import { setupCharacters, setupEquipments } from './setup/states'
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterSkillBuildStore } from './skill-build'
 
@@ -468,8 +470,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentSkillBuild
   )
 
-  const { setupCharacterSkills, setupCharacterStats, getSkillBranchState } =
-    prepareSetupCharacter()
+  const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
 
   const {
     activeSkillResultStates,

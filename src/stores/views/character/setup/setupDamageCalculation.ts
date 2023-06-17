@@ -1,4 +1,3 @@
-import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -18,6 +17,8 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
+import { SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
+import { SkillResult } from './setupCharacterSkills'
 
 export interface TargetProperties {
   physicalResistance: number
@@ -70,7 +71,7 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
   [EnemyElements.Dark]: EnemyElements.Light,
 }
 
-export default function setupDamageCalculation(
+export function setupDamageCalculation(
   character: Ref<Character | null>,
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number }

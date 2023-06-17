@@ -1,5 +1,3 @@
-import type { SkillResult } from '.'
-
 import { computeFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
@@ -12,6 +10,8 @@ import {
 } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+
+import type { SkillResult } from './setupCharacterSkills'
 
 export function getSkillStatContainerValid(
   character: Character | null,

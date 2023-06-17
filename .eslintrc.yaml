@@ -143,8 +143,8 @@ rules:
   #     ignore: ['^virtual:', '\?worker$']
 
   # close this for perf, open manually to checking
-  import/no-cycle:
-    - error
+  # import/no-cycle:
+  #   - error
 
   # vue
   # vue/html-indent:

@@ -39,5 +39,8 @@ export const enum SkillBranchNames {
   Space = 'space',
   FormulaExtra = 'formula_extra',
 
+  // virtual branch for effect
+  Equipment = 'equipment',
+
   None = '',
 }

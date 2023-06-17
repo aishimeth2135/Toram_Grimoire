@@ -1,6 +1,6 @@
 import { shallowReactive } from 'vue'
 
-import { lastElement } from '@/shared/utils/array'
+import { inplaceAssign, lastElement } from '@/shared/utils/array'
 import { handleFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
@@ -44,32 +44,28 @@ function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
   if (!fromBranches.some(bch => bch.name === SkillBranchNames.Basic)) {
     fromBranches.unshift(effectBasicPropsToBranch(from))
   }
-  branchesOverwrite(
-    to.branchItems,
-    fromBranches,
-    fromBranch => fromBranch.name === '' && fromBranch.isEmpty
-  )
+  branchesOverwrite(to.branchItems, fromBranches)
 }
 
 function effectBasicPropsToBranch(origin: SkillEffect) {
+  const skillTypeList = ['instant', 'casting', 'charging', 'passive', 'extra']
+  const actionTimeList = [
+    'very_slow',
+    'slow',
+    'little_slow',
+    'normal',
+    'little_fast',
+    'fast',
+    'very_fast',
+  ]
+  const inComboList = ['1', '0', 'not_lead']
+
   const CONVERT_LIST: Record<string, (value: string) => string> = {
     mp_cost: value => value,
     range: value => (value === '-' ? 'no_limit' : value),
-    skill_type: value =>
-      ['instant', 'casting', 'charging', 'passive', 'extra'][
-        parseInt(value, 10)
-      ],
-    in_combo: value => ['1', '0', 'not_lead'][parseInt(value, 10)],
-    action_time: value =>
-      [
-        'very_slow',
-        'slow',
-        'little_slow',
-        'normal',
-        'little_fast',
-        'fast',
-        'very_fast',
-      ][parseInt(value, 10)],
+    skill_type: value => skillTypeList[parseInt(value, 10)],
+    in_combo: value => inComboList[parseInt(value, 10)],
+    action_time: value => actionTimeList[parseInt(value, 10)],
     casting_time: value => value,
   }
   const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
@@ -89,15 +85,10 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   return branch
 }
 
-function branchesOverwrite<Branch extends SkillBranch | SkillBranchItem>(
+function branchesOverwrite(
   to: SkillBranchItem[],
-  from: Branch[],
-  isEmpty: (branch: Branch) => boolean
+  from: SkillBranch[] | SkillBranchItem[]
 ) {
-  /**
-   * If some fromBranch.name === '' && fromBranch.isEmpty`.
-   * Remove branch which id` is same as fromBranch in toBranches.`
-   */
   from.forEach(fromBranch => {
     if (fromBranch.id === -1) {
       return
@@ -106,7 +97,11 @@ function branchesOverwrite<Branch extends SkillBranch | SkillBranchItem>(
     if (idx === -1) {
       return
     }
-    if (isEmpty(fromBranch)) {
+    /**
+     * If some `fromBranch.name === '' && fromBranch.isEmpty`.
+     * Remove branch which `id` is same as `fromBranch` in `toBranches`.
+     */
+    if (fromBranch.name === '' && fromBranch.isEmpty) {
       to.splice(idx, 1)
       return
     }
@@ -127,21 +122,20 @@ function branchOverwrite(
     to.clearProp()
   }
 
-  ;[...(from instanceof SkillBranch ? from.props : from.allProps)].forEach(
-    ([key, value]) => {
-      if (value === '' && to.prop(key)) {
-        to.removeProp(key)
-        to.record.props.remove.push(key)
+  const propMap = from instanceof SkillBranch ? from.props : from.allProps
+  for (const [key, value] of propMap) {
+    if (value === '' && to.prop(key)) {
+      to.removeProp(key)
+      to.record.props.remove.push(key)
+    } else {
+      if (to.hasProp(key)) {
+        to.record.props.overwrite.push(key)
       } else {
-        if (to.hasProp(key)) {
-          to.record.props.overwrite.push(key)
-        } else {
-          to.record.props.append.push(key)
-        }
-        to.setProp(key, value)
+        to.record.props.append.push(key)
       }
+      to.setProp(key, value)
     }
-  )
+  }
 
   from.stats.forEach(stat => {
     const idx = to.stats.findIndex(_stat => stat.equals(_stat))
@@ -163,10 +157,9 @@ function branchOverwrite(
 
 /**
  * Should call after branch be overwritten.
- * @param eft
  */
-function initBranchSpecialProps(eft: SkillEffectItem) {
-  eft.branchItems.forEach(bch => {
+function initBranchSpecialProps(effectItem: SkillEffectItem) {
+  effectItem.branchItems.forEach(bch => {
     if (
       (bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) &&
       bch.hasProp('buffs')
@@ -250,7 +243,7 @@ function convertEffectEquipment(
   return [...new Map(results).values()]
 }
 
-function separateSuffixBranches(effectItem: SkillEffectItemBase) {
+function classifyBranches(effectItem: SkillEffectItemBase) {
   type SuffixBranchListKey = SkillBranchNames | '@global'
   const suffixBranchList = {
     [SkillBranchNames.Damage]: [
@@ -290,12 +283,23 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
   ]
   const isMainBranch = (_bch: SkillBranchItem) =>
     mainBranchNameList.includes(_bch.name)
+
+  const auxiliaryBranchNameList = [SkillBranchNames.Equipment]
+  const isAuxiliaryBranch = (_bch: SkillBranchItem) =>
+    auxiliaryBranchNameList.includes(_bch.name)
+
   const resBranches: SkillBranchItem[] = []
+  const resAuxiliaryBranches: SkillBranchItem[] = []
   let spaceFlag = false
 
   effectItem.branchItems.forEach(branchItem => {
     if (branchItem.is(SkillBranchNames.Space)) {
       spaceFlag = true
+      return
+    }
+
+    if (isAuxiliaryBranch(branchItem)) {
+      resAuxiliaryBranches.push(branchItem)
       return
     }
 
@@ -322,15 +326,12 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     }
   })
 
-  effectItem.branchItems.splice(
-    0,
-    effectItem.branchItems.length,
-    ...resBranches
-  )
+  inplaceAssign(effectItem.branchItems, resBranches)
+  inplaceAssign(effectItem.auxiliaryBranchItems, resAuxiliaryBranches)
 }
 
 function handleVirtualBranches(effectItem: SkillEffectItemBase) {
-  const newBranchItems = effectItem.branchItems.filter(branchItem => {
+  effectItem.branchItems.forEach(branchItem => {
     const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.is(SkillBranchNames.Group)) {
         const groupState: BranchGroupState = {
@@ -343,22 +344,12 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
         branchItem.groupState = groupState
         return false
       }
+
       return true
     })
 
-    branchItem.suffixBranches.splice(
-      0,
-      branchItem.suffixBranches.length,
-      ...filtered
-    )
-
-    return true
+    inplaceAssign(branchItem.suffixBranches, filtered)
   })
-  effectItem.branchItems.splice(
-    0,
-    effectItem.branchItems.length,
-    ...newBranchItems
-  )
 }
 
 export function initBranchesPostpone(effectItem: SkillEffectItem) {
@@ -457,12 +448,8 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
       meetFirstBranchHasId = true
       history.nextEffect = nextEffect
     })
-    branchesOverwrite(
-      toBranches,
-      fromBranches,
-      fromBranch => fromBranch.name === '' && fromBranch.isEmpty
-    )
-    history.branchItems.splice(0, history.branchItems.length, ...toBranches)
+    branchesOverwrite(toBranches, fromBranches)
+    inplaceAssign(history.branchItems, toBranches)
   })
 }
 
@@ -534,7 +521,7 @@ export {
   convertEffectEquipment,
   effectOverwrite,
   initBranchSpecialProps,
-  separateSuffixBranches,
+  classifyBranches,
   handleVirtualBranches,
   initStackStates,
   regressHistoryBranches,

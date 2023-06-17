@@ -1,10 +1,18 @@
+import { computeFormula } from '@/shared/utils/data'
+
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
-import type { Skill, SkillEffect, SkillEffectHistory } from '../Skill'
+import {
+  Skill,
+  SkillBranchNames,
+  SkillEffect,
+  SkillEffectHistory,
+} from '../Skill'
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
 import {
+  classifyBranches,
   convertEffectEquipment,
   effectOverwrite,
   handleVirtualBranches,
@@ -15,7 +23,6 @@ import {
   initStackStates,
   normalizeBaseBranches,
   regressHistoryBranches,
-  separateSuffixBranches,
   setBranchAttrsDefaultValue,
 } from './utils'
 
@@ -38,12 +45,16 @@ abstract class SkillEffectItemBase {
 
   readonly parent: SkillItem
 
+  // init in `classifyBranches`
+  readonly auxiliaryBranchItems: SkillBranchItem<SkillEffectItemBase>[]
+
   // reactive: init in `initStackStates`
   readonly stackStates: BranchStackState[]
 
   constructor(parent: SkillItem) {
     this.parent = parent
     this.stackStates = []
+    this.auxiliaryBranchItems = []
   }
 
   getStackState(stackId: number) {
@@ -55,6 +66,8 @@ abstract class SkillEffectItemBase {
  * @vue-reactive raw
  */
 class SkillEffectItem extends SkillEffectItemBase {
+  declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItem>[]
+
   override branchItems: SkillBranchItem<SkillEffectItem>[]
 
   readonly equipments: EquipmentRestrictions[]
@@ -88,18 +101,28 @@ class SkillEffectItem extends SkillEffectItemBase {
 
     regressHistoryBranches(this)
 
-    separateSuffixBranches(this)
+    classifyBranches(this)
     handleVirtualBranches(this)
     initBranchesPostpone(this)
 
     this.historys.forEach(history => {
-      separateSuffixBranches(history)
+      classifyBranches(history)
       handleVirtualBranches(history)
       initStackStates(history)
       initHistoryNexts(history)
     })
 
     initStackStates(this)
+  }
+
+  private computedEquipmentBranchValue(
+    value: string,
+    scope: { getSkillLevel?: (skillId: string) => number }
+  ): boolean {
+    if (!value) {
+      return false
+    }
+    return computeFormula(value, scope, false) as boolean
   }
 
   equipmentMatch(
@@ -131,6 +154,42 @@ class SkillEffectItem extends SkillEffectItemBase {
       }
     }
 
+    const extraEquipments = (() => {
+      const equipmentBranch = this.auxiliaryBranchItems.find(bch =>
+        bch.is(SkillBranchNames.Equipment)
+      )
+
+      if (!equipmentBranch) {
+        return null
+      }
+
+      const scope = {
+        getSkillLevel: (skillId: string) => {
+          if (!getSkillLevel) {
+            return 0
+          }
+          const skill =
+            this.parent.skill.parent.parent.parent.findSkillById(skillId)
+          return skill ? getSkillLevel(skill) : 0
+        },
+      }
+
+      return {
+        main: this.computedEquipmentBranchValue(
+          equipmentBranch.prop('main'),
+          scope
+        ),
+        sub: this.computedEquipmentBranchValue(
+          equipmentBranch.prop('sub'),
+          scope
+        ),
+        body: this.computedEquipmentBranchValue(
+          equipmentBranch.prop('body'),
+          scope
+        ),
+      }
+    })()
+
     return equipments.some(effectEquipment => {
       if (
         effectEquipment.main === null &&
@@ -141,6 +200,9 @@ class SkillEffectItem extends SkillEffectItemBase {
       }
       return (['main', 'sub', 'body'] as const).every(key => {
         if (effectEquipment[key] === null) {
+          return true
+        }
+        if (extraEquipments && extraEquipments[key]) {
           return true
         }
         return effectEquipment[key] === equipment[key]
@@ -167,6 +229,8 @@ class SkillEffectItem extends SkillEffectItemBase {
  * @vue-reactive raw
  */
 class SkillEffectItemHistory extends SkillEffectItemBase {
+  declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItemHistory>[]
+
   override branchItems: SkillBranchItem<SkillEffectItemHistory>[]
 
   readonly origin: SkillEffectHistory
