@@ -7,7 +7,12 @@
         </div>
         <div v-for="(bch, idx) in eft.branches" :key="idx">
           <code class="text-violet-60">
-            {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name}` }}
+            {{
+              `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replaceAll(
+                ' ',
+                '_'
+              )}`
+            }}
           </code>
           <div class="mt-1 space-y-1 pl-2">
             <div>
@@ -18,9 +23,9 @@
             </div>
             <div>
               <div v-for="stat in bch.stats" :key="stat.valueId">
-                <code class="text-primary-70">{{
-                  `${stat.baseId}${getStatTypeShorthand(stat)}:`
-                }}</code>
+                <code class="text-primary-70">
+                  {{ `${stat.baseId}${getStatTypeShorthand(stat)}:` }}
+                </code>
                 <code class="ml-2 text-primary-60">{{ stat.value }}</code>
               </div>
             </div>
@@ -37,7 +42,12 @@
           <div class="mt-2">
             <div v-for="(bch, idx) in history.branches" :key="idx">
               <code class="text-violet-60">
-                {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name}` }}
+                {{
+                  `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replaceAll(
+                    ' ',
+                    '_'
+                  )}`
+                }}
               </code>
               <div class="mt-1 space-y-1 pl-2">
                 <div>
@@ -48,9 +58,9 @@
                 </div>
                 <div>
                   <div v-for="stat in bch.stats" :key="stat.valueId">
-                    <code class="text-primary-70">{{
-                      `${stat.baseId}${getStatTypeShorthand(stat)}:`
-                    }}</code>
+                    <code class="text-primary-70">
+                      {{ `${stat.baseId}${getStatTypeShorthand(stat)}:` }}
+                    </code>
                     <code class="ml-2 text-primary-60">{{ stat.value }}</code>
                   </div>
                 </div>

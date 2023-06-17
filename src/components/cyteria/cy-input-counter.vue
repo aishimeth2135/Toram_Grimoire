@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter border bg-white outline-none duration-300 rounded-sm"
+      class="cy--input-counter rounded-sm border bg-white outline-none duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
@@ -46,8 +46,10 @@
           :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[1]!)"
         />
-        <span v-if="$slots['unit']" class="ml-1 text-sm">
-          <slot name="unit" />
+        <span v-if="$slots['unit'] || unit" class="ml-1 text-sm">
+          <slot name="unit">
+            {{ unit }}
+          </slot>
         </span>
       </div>
     </div>
@@ -77,6 +79,7 @@ interface Props {
   inputWidth?: string | null
   title?: string
   titleIcon?: string
+  unit?: string
 }
 interface Emits {
   (evt: 'update:value', value: number): void

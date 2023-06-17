@@ -1,13 +1,13 @@
 <template>
   <div class="inline-block">
     <transition mode="out-in" :css="false" @leave="leave">
-      <svg-icon
+      <cy-icon
         v-if="!available"
         key="1"
-        icon-id="potum"
+        icon="@potum"
         class="custom-icon start-icon"
       />
-      <svg-icon v-else key="2" icon-id="potum" class="custom-icon start-icon" />
+      <cy-icon v-else key="2" icon="@potum" class="custom-icon start-icon" />
     </transition>
     <!-- <transition
       appear

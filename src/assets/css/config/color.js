@@ -23,7 +23,7 @@ const baseColors = {
   emerald: tcColors.emerald,
   red: tcColors.red,
   gray: tcColors.gray,
-  stone: tcColors.stone,
+  stone: tcColors.slate,
 }
 
 // pattern: fuchsia|violet|blue|cyan|orange|emerald|red|gray|stone

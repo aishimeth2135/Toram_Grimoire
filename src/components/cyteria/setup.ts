@@ -10,11 +10,26 @@ export function normalizeColorString(color: string) {
   return color
 }
 
-export function normalizeIconColorString(color: string) {
+function normalizeIconColorString(color: string) {
   if (!color.includes('-') && color !== 'white') {
     return color + '-30'
   }
   return color
+}
+
+export function useIconColor(
+  color: Ref<string | null | undefined>,
+  defaultValue: string
+) {
+  const iconColor = computed(() => {
+    if (!color.value) {
+      return defaultValue
+    }
+    return normalizeIconColorString(color.value)
+  })
+
+  const iconClass = computed(() => `text-${iconColor.value}`)
+  return { iconClass }
 }
 
 export function useColorString(

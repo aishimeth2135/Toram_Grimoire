@@ -160,7 +160,7 @@ const areaDatas = computed(() => {
     datas.push(tar)
 
     height = grid(by + radius + padding)
-    const widthBx = radius > tx - bx ? bx : tx
+    const widthBx = ax === bx && radius > tx - bx ? bx : tx
     width = grid(widthBx + padding + radius + Math.max(0, endPositionOffsets))
   } else if (type === 'line') {
     // character
@@ -407,7 +407,6 @@ const Render = () => {
       height: datas.height,
       viewBox: `0 0 ${datas.width} ${datas.height}`,
       preserveAspectRatio: 'xMidYMid meet',
-      class: 'max-h-64 max-w-full',
     },
     childs
   )

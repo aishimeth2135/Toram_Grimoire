@@ -2,7 +2,10 @@
   <cy-transition>
     <div class="m-3 flex flex-wrap items-center p-3">
       <div>
-        <SkillAreaAnimation :container="container" />
+        <SkillAreaAnimation
+          :container="container"
+          class="max-h-64 max-w-full"
+        />
         <div class="text-center">
           <cy-icon-text
             icon="bx-bxs-circle"

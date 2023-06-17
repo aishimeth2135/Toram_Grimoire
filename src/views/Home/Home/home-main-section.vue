@@ -1,18 +1,20 @@
 <template>
   <section class="flex flex-col">
     <div
-      class="relative z-5 mb-auto mt-auto space-y-3 py-2"
+      class="relative z-5 my-auto space-y-3 py-2"
       :class="{ 'pt-8': device.isMobile }"
     >
-      <div v-for="(group, idx) in groups" :key="group.id">
-        <HomeLinkGroup v-bind="groupDatas[idx]">
-          <HomeLinkButton
-            v-for="data in group.links"
-            :key="data.name + '|' + data.pathName"
-            :data="data"
-          />
-        </HomeLinkGroup>
-      </div>
+      <HomeLinkGroup
+        v-for="(group, idx) in groups"
+        v-bind="groupDatas[idx]"
+        :key="group.id"
+      >
+        <HomeLinkButton
+          v-for="data in group.links"
+          :key="data.name + '|' + data.pathName"
+          :data="data"
+        />
+      </HomeLinkGroup>
     </div>
   </section>
 </template>

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="relative rounded border-1 border-l-2 border-emerald-30 bg-white pt-2.5 pb-2"
+    class="relative rounded border-1 border-l-2 border-emerald-30 bg-white pb-2 pt-2.5"
   >
     <div class="flex items-start pb-0.5 pl-2.5">
       <IconCircle icon="game-icons:beveled-star" icon-color="emerald-30" />
-      <div class="pl-3 pt-1">
+      <div class="pl-3 pr-2 pt-1">
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>
           <div class="ml-3 text-sm text-emerald-30">
@@ -33,7 +33,7 @@
     <cy-transition>
       <div
         v-show="registletItemState.enabled"
-        class="mt-2 border-t border-emerald-20 px-4 pt-4 pb-2"
+        class="mt-2 border-t border-emerald-20 px-4 pb-2 pt-4"
       >
         <div>
           <cy-input-counter
@@ -65,7 +65,7 @@
         registletItemState.enabled
       "
       color="emerald"
-      class="absolute top-1.5 right-0"
+      class="absolute right-0 top-1.5"
     />
   </div>
 </template>

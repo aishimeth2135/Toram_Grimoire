@@ -5,7 +5,7 @@ import { useCssModule } from 'vue'
 import IconBase from './icon/icon-base.vue'
 
 import { IconSrc } from './icon/setup'
-import { normalizeIconColorString } from './setup'
+import { useIconColor } from './setup'
 
 interface Props {
   icon?: string
@@ -29,15 +29,13 @@ const iconStyle = computed(() => {
 
 const classes = useCssModule()
 
-const iconColor = computed(() => {
-  if (!props.color) {
-    return 'primary-30'
-  }
-  return normalizeIconColorString(props.color)
-})
+const { iconClass: iconBaseClass } = useIconColor(
+  computed(() => props.color),
+  'primary-30'
+)
 
 const iconClass = computed(() => {
-  const baseClass = [`text-${iconColor.value}`]
+  const baseClass = [iconBaseClass.value]
 
   if (props.small) {
     baseClass.push(classes.sm)

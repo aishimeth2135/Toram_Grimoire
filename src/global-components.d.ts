@@ -12,6 +12,7 @@ import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
 import CyHoverFloat from '@/components/cyteria/cy-hover-float.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
 import CyIconText from '@/components/cyteria/cy-icon-text.vue'
+import CyIcon from '@/components/cyteria/cy-icon.vue'
 import CyInputCounter from '@/components/cyteria/cy-input-counter.vue'
 import CyListItem from '@/components/cyteria/cy-list-item.vue'
 import CyLoadingContent from '@/components/cyteria/cy-loading-content.vue'
@@ -22,9 +23,8 @@ import CyPopover from '@/components/cyteria/cy-popover/cy-popover.vue'
 import CyTitleInput from '@/components/cyteria/cy-title-input.vue'
 import CyTopHeader from '@/components/cyteria/cy-top-header.vue'
 import CyTransition from '@/components/cyteria/cy-transition.vue'
-import SvgIcon from '@/components/cyteria/icon/svg-icon.vue'
-
-import CyIcon from './components/cyteria/cy-icon.vue'
+import CyTab from '@/components/cyteria/tabs/cy-tab.vue'
+import CyTabs from '@/components/cyteria/tabs/cy-tabs.vue'
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -56,6 +56,7 @@ declare module 'vue' {
     CyButtonToggle: typeof CyButtonToggle
     CyButtonIcon: typeof CyButtonIcon
 
-    SvgIcon: typeof SvgIcon
+    CyTabs: typeof CyTabs
+    CyTab: typeof CyTab
   }
 }
