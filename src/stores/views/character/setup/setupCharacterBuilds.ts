@@ -29,7 +29,7 @@ export function useGetSkillLevel(
   skillBuild: Ref<SkillBuild | null>
 ) {
   return (skill: Skill) => {
-    if (!skillItemStates.get(skill)?.effectItem) {
+    if (!skillItemStates.get(skill)?.effectItem.value) {
       return 0
     }
 
