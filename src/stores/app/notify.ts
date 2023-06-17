@@ -4,7 +4,7 @@ import { Ref, readonly, ref } from 'vue'
 import type {
   MessageNotifyButtonItem,
   MessageNotifyOptions,
-} from '@/setup/Notify'
+} from '@/shared/setup/Notify'
 
 interface NotifyMessageItem {
   icon: string

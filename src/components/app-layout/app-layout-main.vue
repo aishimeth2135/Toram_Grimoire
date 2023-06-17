@@ -29,7 +29,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { useDevice } from '@/setup/Device'
+import { useDevice } from '@/shared/setup/Device'
 
 interface Props {
   noAside?: boolean

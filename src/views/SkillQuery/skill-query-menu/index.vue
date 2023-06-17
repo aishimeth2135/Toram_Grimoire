@@ -137,7 +137,7 @@ import {
 } from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

@@ -12,7 +12,7 @@
         {{ t('character-simulator.browse-equipments.equipped') }}
       </span>
     </cy-list-item>
-    <div v-if="contents.detail" class="pl-5 pr-2 pb-2">
+    <div v-if="contents.detail" class="pb-2 pl-5 pr-2">
       <CharacterEquipmentDetail :equipment="equipment" inner-item />
       <div class="mt-3 flex items-center space-x-2">
         <cy-button-circle icon="bx:copy-alt" small @click="copyEquipment" />
@@ -31,10 +31,10 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import EquipmentTitle from '@/components/common/equipment-title.vue'
 

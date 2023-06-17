@@ -252,7 +252,7 @@ import { useSettingStore } from '@/stores/app/setting'
 import { APP_STORAGE_KEYS } from '@/shared/consts'
 import CY from '@/shared/utils/Cyteria'
 
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 import AppSettingsRow from './app-settings/app-settings-row.vue'
 
@@ -412,7 +412,7 @@ const appFontOptions = [
   }
 
   & > fieldset {
-    @apply border-0 border-t-1 border-solid border-primary-30 py-2 px-2;
+    @apply border-0 border-t-1 border-solid border-primary-30 px-2 py-2;
 
     & > .caption {
       @apply mb-2;

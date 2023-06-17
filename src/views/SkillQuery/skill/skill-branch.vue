@@ -72,14 +72,14 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import ToggleService from '@/shared/setup/ToggleService'
+
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputingContainer'
-
-import ToggleService from '@/setup/ToggleService'
 
 import SkillBranchBasic from './skill-branch-basic.vue'
 import SkillBranchDamage from './skill-branch-damage.vue'

@@ -20,9 +20,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { Food } from '@/lib/Character/FoodBuild'
+import Notify from '@/shared/setup/Notify'
 
-import Notify from '@/setup/Notify'
+import { Food } from '@/lib/Character/FoodBuild'
 
 import CardRow from '@/components/card/card-row.vue'
 

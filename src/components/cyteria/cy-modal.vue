@@ -51,7 +51,7 @@
             <div class="modal-extra" @click="showExtraContent">
               <slot name="extra-content" />
             </div>
-            <div class="absolute right-4 -bottom-16">
+            <div class="absolute -bottom-16 right-4">
               <cy-button-circle
                 v-show="extraContent.main"
                 color="blue"
@@ -70,9 +70,8 @@
 import { CSSProperties, Ref, computed, ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import ToggleService from '@/shared/setup/ToggleService'
 import { remToPixels } from '@/shared/utils/element'
-
-import ToggleService from '@/setup/ToggleService'
 
 export default {
   name: 'CyModal',
@@ -155,7 +154,7 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed top-0 left-0 z-100 flex h-full w-full justify-center bg-black bg-opacity-20;
+  @apply fixed left-0 top-0 z-100 flex h-full w-full justify-center bg-black bg-opacity-20;
 
   & > .modal-wrapper {
     @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full bg-opacity-100;

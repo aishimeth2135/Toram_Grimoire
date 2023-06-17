@@ -2,7 +2,7 @@
   <section v-if="currentCharacter" class="px-2">
     <div class="pb-2">
       <div class="flex flex-wrap items-center px-2">
-        <div class="mt-2 mr-2 w-60">
+        <div class="mr-2 mt-2 w-60">
           <cy-options
             :value="currentCharacter"
             :options="
@@ -148,9 +148,9 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import { Character } from '@/lib/Character/Character'
+import Notify from '@/shared/setup/Notify'
 
-import Notify from '@/setup/Notify'
+import { Character } from '@/lib/Character/Character'
 
 import { setupCharacterStore } from './setup'
 

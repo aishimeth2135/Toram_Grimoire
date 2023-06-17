@@ -189,6 +189,9 @@
 import { Ref, computed, inject, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
+
 import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 import {
   AdditionalGear,
@@ -200,9 +203,6 @@ import {
   SubArmor,
   SubWeapon,
 } from '@/lib/Character/CharacterEquipment'
-
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
 
 import EquipmentItem from '@/components/common/equipment-item.vue'
 

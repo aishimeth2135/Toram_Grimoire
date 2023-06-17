@@ -57,8 +57,7 @@ import { useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { RouteLinkData } from '@/shared/consts'
-
-import { useDevice } from '@/setup/Device'
+import { useDevice } from '@/shared/setup/Device'
 
 interface Props {
   data: RouteLinkData

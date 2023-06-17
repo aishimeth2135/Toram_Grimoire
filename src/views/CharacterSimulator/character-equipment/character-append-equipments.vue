@@ -12,7 +12,7 @@
       <cy-title-input
         v-model:value="searchText"
         icon="ic-outline-category"
-        class="sticky top-0 z-1 bg-white pt-1 pb-2"
+        class="sticky top-0 z-1 bg-white pb-2 pt-1"
         :placeholder="
           t(
             'character-simulator.append-equipments.search-equipment-placeholder'
@@ -110,11 +110,10 @@ import { Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
+import PageControl from '@/shared/setup/PageControl'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-
-import Notify from '@/setup/Notify'
-import PageControl from '@/setup/PageControl'
 
 import EquipmentItem from '@/components/common/equipment-item.vue'
 

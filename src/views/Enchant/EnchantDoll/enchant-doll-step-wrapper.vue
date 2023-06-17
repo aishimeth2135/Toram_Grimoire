@@ -26,7 +26,7 @@
 import { inject, useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 import { EnchantDollInjectionKey } from './injection-keys'
 import { StepIds } from './setup'

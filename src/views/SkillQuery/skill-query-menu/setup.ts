@@ -1,15 +1,14 @@
-import { computed, ref, watch } from 'vue'
-import type { Ref } from 'vue'
+import { Ref, computed, ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
-import { SkillTree } from '@/lib/Skill/Skill'
 import {
   EquipmentRestrictions,
   EquipmentRestrictionsBaseKeys,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Character/Stat'
+import { SkillTree } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
 
 function setupEquipmentSelect(

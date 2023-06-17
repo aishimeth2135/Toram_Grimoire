@@ -44,8 +44,7 @@ import { RouteRecordName, useRouter } from 'vue-router'
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
 import { ROUTE_LINK_DATAS } from '@/shared/consts'
-
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import { IconSrc } from '@/components/cyteria/icon/setup'
 import { AppRouteNames } from '@/router/enums'

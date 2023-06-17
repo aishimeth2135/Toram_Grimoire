@@ -272,9 +272,9 @@ import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
 import { CalculationSaveData } from '@/lib/Damage/DamageCalculation'
 
-import AutoSave from '@/setup/AutoSave'
-import ExportBuild from '@/setup/ExportBuild'
-import ToggleService from '@/setup/ToggleService'
+import AutoSave from '@/shared/setup/AutoSave'
+import ExportBuild from '@/shared/setup/ExportBuild'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

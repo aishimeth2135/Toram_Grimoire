@@ -326,6 +326,7 @@ import { useI18n } from 'vue-i18n'
 import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
 
 import Grimoire from '@/shared/Grimoire'
+import ToggleService from '@/shared/setup/ToggleService'
 import { isNumberString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
@@ -336,8 +337,6 @@ import {
   SubArmorTypeList,
   SubWeaponTypeList,
 } from '@/lib/Character/CharacterEquipment'
-
-import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

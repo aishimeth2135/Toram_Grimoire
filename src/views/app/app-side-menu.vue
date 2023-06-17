@@ -31,7 +31,7 @@ import { useMainStore } from '@/stores/app/main'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
-// import useDevice from '@/setup/Device'
+// import useDevice from '@/shared/setup/Device'
 import AppSideMenuContent from './app-side-menu-content.vue'
 
 export default {
@@ -55,7 +55,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
 .app-left-menu--wrapper {
   --app-left-menu-padding-right: 32px;
 
-  @apply fixed top-0 left-0 z-50 h-full overflow-x-hidden opacity-100;
+  @apply fixed left-0 top-0 z-50 h-full overflow-x-hidden opacity-100;
   background-color: var(--app-body-bg-color);
   padding-left: calc((100% - var(--app-screen-max-width)) / 2);
   width: calc(

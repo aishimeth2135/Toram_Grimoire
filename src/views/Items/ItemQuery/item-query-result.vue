@@ -25,9 +25,9 @@
 <script lang="ts" setup>
 import { Ref, nextTick, ref, toRefs } from 'vue'
 
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import PageControl from '@/shared/setup/PageControl'
 
-import PageControl from '@/setup/PageControl'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'

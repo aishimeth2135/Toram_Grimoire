@@ -15,7 +15,6 @@ importOrder:
   - ^@/stores/.+$
   - ^@/shared/.+$
   - ^@/lib/.+$
-  - ^@/setup/.+$
   - ^@/.+$
   - (?!@/).+\.vue$
   - ^[./].+$

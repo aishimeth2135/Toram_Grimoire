@@ -81,7 +81,7 @@ import { useCharacterStore } from '@/stores/views/character'
 
 import { SkillTypes } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import CharacterSkillTab from './character-skill-tab/index.vue'
 

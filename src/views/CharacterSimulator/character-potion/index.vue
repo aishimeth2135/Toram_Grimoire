@@ -93,8 +93,8 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import CharacterPotionCategory from './character-potion-category.vue'
 import CharacterPotionEdit from './character-potion-edit.vue'

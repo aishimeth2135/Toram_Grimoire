@@ -2,7 +2,7 @@
   <hr class="cy--hr" />
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'CyHr',
 }

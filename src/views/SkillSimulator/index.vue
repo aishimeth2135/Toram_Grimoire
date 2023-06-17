@@ -52,7 +52,7 @@ import { useCharacterStore } from '@/stores/views/character'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 

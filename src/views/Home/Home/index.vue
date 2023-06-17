@@ -69,9 +69,8 @@ import { Ref, ref } from 'vue'
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'
 
+import { useDevice } from '@/shared/setup/Device'
 import Cyteria from '@/shared/utils/Cyteria'
-
-import { useDevice } from '@/setup/Device'
 
 import { AppRouteNames } from '@/router/enums'
 

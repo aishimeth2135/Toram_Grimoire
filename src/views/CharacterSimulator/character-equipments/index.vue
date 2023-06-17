@@ -52,7 +52,7 @@ import {
   SubWeaponTypeList,
 } from '@/lib/Character/CharacterEquipment'
 
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 import CharacterEquipmentsItem from './character-equipments-item.vue'
 

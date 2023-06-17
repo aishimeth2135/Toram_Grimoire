@@ -272,11 +272,11 @@ import {
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 
-import AutoSave from '@/setup/AutoSave'
-import Confirm from '@/setup/Confirm'
-import ExportBuild from '@/setup/ExportBuild'
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
+import AutoSave from '@/shared/setup/AutoSave'
+import Confirm from '@/shared/setup/Confirm'
+import ExportBuild from '@/shared/setup/ExportBuild'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

@@ -62,7 +62,7 @@ import { useLeftMenuStore } from '@/stores/app/left-menu'
 
 import CY from '@/shared/utils/Cyteria'
 
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 import AppSettings from './app-settings.vue'
 
@@ -83,7 +83,7 @@ const copyCurrentUrl = () => {
 
 <style lang="postcss" scoped>
 .app-left-menu--wrapper {
-  @apply fixed top-0 left-0 h-full w-64 opacity-100;
+  @apply fixed left-0 top-0 h-full w-64 opacity-100;
 
   &.fade-enter-from,
   &.fade-leave-to {
@@ -102,7 +102,7 @@ const copyCurrentUrl = () => {
 
 @media screen and (max-width: 82rem) {
   .app-left-menu--wrapper {
-    @apply top-0 left-0 right-auto z-100 h-full bg-black bg-opacity-50;
+    @apply left-0 right-auto top-0 z-100 h-full bg-black bg-opacity-50;
     width: calc(100% + 30rem);
 
     &.fade-enter-from,
@@ -121,7 +121,7 @@ const copyCurrentUrl = () => {
 }
 
 .app-left-menu--link-button {
-  @apply w-full cursor-pointer bg-opacity-25 py-1.5 px-4;
+  @apply w-full cursor-pointer bg-opacity-25 px-4 py-1.5;
 
   &:hover,
   &.selected {

@@ -1,28 +1,31 @@
-<script>
-import { h, mergeProps } from 'vue'
+<template>
+  <Render />
+</template>
+
+<script lang="tsx" setup>
+import { mergeProps, useAttrs } from 'vue'
 
 import Icons from '@/shared/services/SvgIcons'
 
-function SvgIcon(props, context) {
+interface Props {
+  iconId?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  iconId: '',
+})
+
+const attrs = useAttrs()
+
+const Render = () => {
   const tmp = document.createElement('template')
   tmp.innerHTML = Icons(props.iconId)
-  const svgEl = tmp.content.firstChild
-  const tmpAttrs = {}
+  const svgEl = tmp.content.firstChild as HTMLElement
+  const tmpAttrs: Record<string, string> = {}
   Array.from(svgEl.attributes).forEach(item => {
     tmpAttrs[item.name] = item.value
   })
-  const attrs = mergeProps(tmpAttrs, context.attrs)
-  return h('svg', {
-    ...attrs,
-    innerHTML: svgEl.innerHTML,
-  })
+  const newAttrs = mergeProps(tmpAttrs, attrs)
+  return <svg {...newAttrs} v-html={svgEl.innerHTML}></svg>
 }
-SvgIcon.props = {
-  iconId: {
-    type: String,
-    default: '',
-  },
-}
-
-export default SvgIcon
 </script>

@@ -230,7 +230,7 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'

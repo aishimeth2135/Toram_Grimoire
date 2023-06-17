@@ -45,7 +45,7 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import PageControl from '@/setup/PageControl'
+import PageControl from '@/shared/setup/PageControl'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'

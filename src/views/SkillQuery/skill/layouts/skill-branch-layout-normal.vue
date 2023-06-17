@@ -152,14 +152,13 @@
 import { computed, toRefs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import ToggleService from '@/shared/setup/ToggleService'
 import { slotNotEmpty } from '@/shared/utils/vue'
 
 import {
   SkillBranchItem,
   SkillComputingContainer,
 } from '@/lib/Skill/SkillComputingContainer'
-
-import ToggleService from '@/setup/ToggleService'
 
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'

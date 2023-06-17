@@ -169,6 +169,8 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 import CY from '@/shared/utils/Cyteria'
 import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'
@@ -179,9 +181,6 @@ import {
   EnchantStepTypes,
   enchantStates,
 } from '@/lib/Enchant/Enchant'
-
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
 
 import { getSuccessRateDisplay } from './utils'
 

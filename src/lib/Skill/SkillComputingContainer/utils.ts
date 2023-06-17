@@ -11,19 +11,19 @@ import { SkillBranch, SkillEffect, SkillEffectBasicProps } from '../Skill'
 import { SkillBranchNames } from '../Skill'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
 import { SkillBranchItem } from './SkillBranchItem'
-import {
-  BRANCH_PROPS_DEFAULT_VALUE,
-  EQUIPMENT_TYPE_BODY_ORDER,
-  EQUIPMENT_TYPE_MAIN_ORDER,
-  EQUIPMENT_TYPE_SUB_ORDER,
-} from './consts'
 import type {
   BranchGroupState,
   BranchStackState,
   SkillEffectItem,
   SkillEffectItemBase,
   SkillEffectItemHistory,
-} from './index'
+} from './SkillEffectItem'
+import {
+  BRANCH_PROPS_DEFAULT_VALUE,
+  EQUIPMENT_TYPE_BODY_ORDER,
+  EQUIPMENT_TYPE_MAIN_ORDER,
+  EQUIPMENT_TYPE_SUB_ORDER,
+} from './consts'
 
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
   let basicBranch = effectItem.branchItems.find(branchItem =>

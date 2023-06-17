@@ -16,10 +16,9 @@
 <script lang="ts" setup>
 import { CSSProperties, computed, useCssModule } from 'vue'
 
+import { useViewport } from '@/shared/setup/Device'
 import { createEmptyArray } from '@/shared/utils/array'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
-
-import { useViewport } from '@/setup/Device'
 
 interface StarShadow {
   x: number

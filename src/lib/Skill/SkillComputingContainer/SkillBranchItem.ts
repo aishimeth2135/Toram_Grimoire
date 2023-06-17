@@ -11,7 +11,7 @@ import type {
   BranchGroupState,
   SkillEffectItem,
   SkillEffectItemBase,
-} from './SkillComputingContainer'
+} from './SkillEffectItem'
 
 type SkillBranchItemOverwriteRecord<T> = {
   overwrite: T[]

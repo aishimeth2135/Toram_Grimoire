@@ -231,5 +231,7 @@ interface StatRestrictionSaveData {
   restriction: EquipmentRestrictions | null
 }
 
+type EquipmentRestrictionsBaseKeys = 'main' | 'sub' | 'body'
+
 export { StatRestriction, EquipmentRestrictions }
-export type { StatRestrictionSaveData }
+export type { StatRestrictionSaveData, EquipmentRestrictionsBaseKeys }

@@ -19,8 +19,7 @@
 
 <script lang="ts" setup>
 import { ROUTE_LINK_DATAS } from '@/shared/consts'
-
-import { useDevice } from '@/setup/Device'
+import { useDevice } from '@/shared/setup/Device'
 
 import { AppRouteNames } from '@/router/enums'
 

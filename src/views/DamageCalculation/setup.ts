@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { setupCalculationExpectedResult } from '@/stores/views/damage-calculation/setup'
 
+import Notify from '@/shared/setup/Notify'
+
 import {
   CalcItemContainer,
   CalcStructExpression,
@@ -12,8 +14,6 @@ import {
   CalculationContainerIds,
   CalculationItemIds,
 } from '@/lib/Damage/DamageCalculation'
-
-import Notify from '@/setup/Notify'
 
 import { calcStructDisplay, calcStructDisplayCritical } from './consts'
 

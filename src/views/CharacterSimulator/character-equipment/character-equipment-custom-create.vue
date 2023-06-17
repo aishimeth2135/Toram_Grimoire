@@ -94,6 +94,8 @@
 import { Ref, computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import ToggleService from '@/shared/setup/ToggleService'
+
 import {
   AdditionalGear,
   Avatar,
@@ -111,8 +113,6 @@ import {
   SubArmorTypeList,
   SubWeaponTypeList,
 } from '@/lib/Character/CharacterEquipment'
-
-import ToggleService from '@/setup/ToggleService'
 
 import CharacterEquipmentBasicEditor from './character-equipment-basic-editor.vue'
 

@@ -213,11 +213,10 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 
 import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import { SkillTree } from '@/lib/Skill/Skill'
-
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

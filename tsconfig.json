@@ -2,29 +2,33 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-    "noImplicitOverride": true,
-    "resolveJsonModule": true,
     "sourceMap": true,
+    "lib": ["esnext", "dom", "dom.iterable", "webworker"],
+    "skipLibCheck": true,
+
+    /* "bundler" mode */
+    "moduleResolution": "node",
+    "noEmit": true,
     "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "noImplicitOverride": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+
+    /* Linting */
+    "strict": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "outDir": "built",
     "types": ["vite/client", "vite-plugin-pwa/client"],
     "paths": {
       "@/*": ["src/*"]
-    },
-    "lib": ["esnext", "dom", "dom.iterable", "webworker"],
-    "noEmit": true
+    }
   },
-  "include": ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "src/dev"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

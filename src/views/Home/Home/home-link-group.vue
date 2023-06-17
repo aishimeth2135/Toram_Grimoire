@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useDevice } from '@/setup/Device'
+import { useDevice } from '@/shared/setup/Device'
 
 interface Props {
   icon: string

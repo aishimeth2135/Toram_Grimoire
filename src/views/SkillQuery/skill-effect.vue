@@ -85,7 +85,7 @@ import { useI18n } from 'vue-i18n'
 import { Skill } from '@/lib/Skill/Skill'
 import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import GlossaryTagPopover from '../GlossaryQuery/glossary-tag-popover.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'

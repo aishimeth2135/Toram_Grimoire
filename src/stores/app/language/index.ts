@@ -3,9 +3,8 @@ import { computed, reactive, readonly, ref } from 'vue'
 import { Composer } from 'vue-i18n'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts'
+import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
-
-import Notify from '@/setup/Notify'
 
 import { I18nStore } from './I18nStore'
 import {

@@ -140,8 +140,8 @@ import {
 import CY from '@/shared/utils/Cyteria'
 import Cyteria from '@/shared/utils/Cyteria'
 
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import CharacterSaveExport from './character-save-export.vue'
 

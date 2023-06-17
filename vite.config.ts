@@ -1,13 +1,13 @@
 import content from '@originjs/vite-plugin-content'
 import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import fs from 'fs'
+import path from 'path'
 import { defineConfig } from 'vite'
 import eslintPlugin from 'vite-plugin-eslint'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
-
-const fs = require('fs')
-const path = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
   const base = '/'
   const plugins = [
     vue(),
+    vueJsx(),
     VitePWA({
       includeAssets: [
         'favicon.svg',

@@ -25,9 +25,9 @@
 <script lang="ts" setup>
 import { Ref, computed, nextTick, ref } from 'vue'
 
-import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
+import PageControl from '@/shared/setup/PageControl'
 
-import PageControl from '@/setup/PageControl'
+import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'

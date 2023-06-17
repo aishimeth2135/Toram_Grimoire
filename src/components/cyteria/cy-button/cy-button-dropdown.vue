@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'

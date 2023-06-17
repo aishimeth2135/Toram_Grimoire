@@ -11,6 +11,7 @@ import {
   InitEquipmentIcons,
   InitSkillIcons,
 } from '@/shared/services/Images'
+import Notify from '@/shared/setup/Notify'
 
 import CharacterSystem from '@/lib/Character'
 import DamageCalculationSystem from '@/lib/Damage'
@@ -19,8 +20,6 @@ import GlossarySystem from '@/lib/Glossary'
 import ItemsSystem from '@/lib/Items'
 import RegistletSystem from '@/lib/Registlet'
 import SkillSystem from '@/lib/Skill'
-
-import Notify from '@/setup/Notify'
 
 import { DatasStoreBase } from './DatasStoreBase'
 import { DataStoreIds } from './enums'

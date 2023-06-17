@@ -109,7 +109,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 import CharacterFoodItem from './character-food-item.vue'
 

@@ -164,12 +164,11 @@ import { Ref, computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
-
-import Notify from '@/setup/Notify'
 
 interface Props {
   visible: boolean

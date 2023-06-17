@@ -150,14 +150,14 @@ import { useRouter } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
 
+import AutoSave from '@/shared/setup/AutoSave'
+import { useDevice } from '@/shared/setup/Device'
+import ToggleService from '@/shared/setup/ToggleService'
+
 import { EquipmentField } from '@/lib/Character/Character'
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Skill } from '@/lib/Skill/Skill'
-
-import AutoSave from '@/setup/AutoSave'
-import { useDevice } from '@/setup/Device'
-import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

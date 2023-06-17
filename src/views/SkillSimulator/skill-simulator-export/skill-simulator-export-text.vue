@@ -29,11 +29,10 @@
 import { Ref, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import Notify from '@/shared/setup/Notify'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-
-import Notify from '@/setup/Notify'
 
 import { exportSkillBuildText } from './utils'
 

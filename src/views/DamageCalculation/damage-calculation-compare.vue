@@ -53,9 +53,9 @@
 import { Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { Calculation } from '@/lib/Damage/DamageCalculation'
+import ToggleService from '@/shared/setup/ToggleService'
 
-import ToggleService from '@/setup/ToggleService'
+import { Calculation } from '@/lib/Damage/DamageCalculation'
 
 import DamageCalculationCompareItem from './damage-calculation-compare-item.vue'
 

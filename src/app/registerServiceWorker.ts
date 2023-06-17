@@ -3,8 +3,7 @@ import { registerSW } from 'virtual:pwa-register'
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 export default function () {
   if (import.meta.env.PROD) {

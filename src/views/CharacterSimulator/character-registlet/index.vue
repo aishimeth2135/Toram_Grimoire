@@ -74,7 +74,7 @@
         {{ t('character-simulator.registlet-build.default-tips') }}
       </cy-default-tips>
     </CardRowsWrapper>
-    <div class="space-y-1 pt-6 pb-2">
+    <div class="space-y-1 pb-2 pt-6">
       <div>
         <cy-icon-text
           icon="ic-outline-info"
@@ -116,7 +116,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
@@ -125,7 +125,7 @@ import CharacterRegistletEdit from './character-registlet-edit.vue'
 import CharacterRegistletItem from './character-registlet-item.vue'
 
 import { setupCharacterRegistletStore } from '../setup'
-import Notify from '@/setup/Notify'
+import Notify from '@/shared/setup/Notify'
 
 const characterStore = useCharacterStore()
 const {

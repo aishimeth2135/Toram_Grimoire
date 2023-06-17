@@ -47,6 +47,7 @@ rules:
   # vue/no-mutating-props: off
   # semi-spacing: error
   # space-infix-ops: error
+  # '@typescript-eslint/no-unused-vars': off
   no-var: error
   eqeqeq: error
   # no-multi-spaces: warn
@@ -103,8 +104,8 @@ rules:
     - functions: false
       classes: false
       typedefs: false
-  '@typescript-eslint/no-unused-vars':
-    - error
+  # '@typescript-eslint/no-unused-vars':
+  #   - error
   '@typescript-eslint/no-shadow':
     - error
   '@typescript-eslint/prefer-enum-initializers':
@@ -142,8 +143,8 @@ rules:
   #     ignore: ['^virtual:', '\?worker$']
 
   # close this for perf, open manually to checking
-  # import/no-cycle:
-  #   - error
+  import/no-cycle:
+    - error
 
   # vue
   # vue/html-indent:

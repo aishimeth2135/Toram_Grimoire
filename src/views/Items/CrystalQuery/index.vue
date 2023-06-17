@@ -1,7 +1,7 @@
 <template>
   <AppLayoutMain>
     <div ref="topElement" />
-    <div class="py-4 px-1">
+    <div class="px-1 py-4">
       <CardRowsWrapper class="mb-4">
         <div class="overflow-x-auto" style="min-height: 75vh">
           <template v-if="currentItems.length !== 0">
@@ -152,8 +152,8 @@ import Grimoire from '@/shared/Grimoire'
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
 
-import PageControl from '@/setup/PageControl'
-import ToggleService from '@/setup/ToggleService'
+import PageControl from '@/shared/setup/PageControl'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

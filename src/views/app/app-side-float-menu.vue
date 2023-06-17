@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { watch } from 'vue'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppSideMenuContent from './app-side-menu-content.vue'
 
@@ -46,7 +46,7 @@ watch(
 
 <style lang="postcss" scoped>
 .app--side-menu {
-  @apply fixed top-3 right-3 z-40 flex flex-col items-end;
+  @apply fixed right-3 top-3 z-40 flex flex-col items-end;
 
   @media (min-width: 880px) {
     display: none !important;
@@ -77,7 +77,7 @@ watch(
 }
 
 .app--side-menu--link-button {
-  @apply w-full cursor-pointer bg-opacity-25 py-1.5 px-4;
+  @apply w-full cursor-pointer bg-opacity-25 px-4 py-1.5;
 
   &:hover {
     @apply bg-primary-30 bg-opacity-10;

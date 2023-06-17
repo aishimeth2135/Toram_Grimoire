@@ -70,7 +70,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
-import ToggleService from '@/setup/ToggleService'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'

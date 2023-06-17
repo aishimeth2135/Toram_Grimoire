@@ -93,10 +93,10 @@ import {
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 import { EnchantDoll, EnchantDollBaseTypes } from '@/lib/Enchant/EnchantDoll'
-import AutoSave from '@/setup/AutoSave'
-import Confirm from '@/setup/Confirm'
-import Notify from '@/setup/Notify'
-import ToggleService from '@/setup/ToggleService'
+import AutoSave from '@/shared/setup/AutoSave'
+import Confirm from '@/shared/setup/Confirm'
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 

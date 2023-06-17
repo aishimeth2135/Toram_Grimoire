@@ -116,12 +116,11 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillResult } from '@/stores/views/character/setup'
 
+import ToggleService from '@/shared/setup/ToggleService'
 import { markText } from '@/shared/utils/view'
 
 import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-
-import ToggleService from '@/setup/ToggleService'
 
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
