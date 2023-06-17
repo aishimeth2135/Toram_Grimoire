@@ -26,6 +26,7 @@ import { PotionBuild, PotionItem } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import {
+  EquipmentRestrictions,
   StatBase,
   StatComputed,
   StatRecorded,
@@ -35,7 +36,6 @@ import {
 } from '@/lib/Character/Stat'
 import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 import {
-  EquipmentRestrictions,
   SkillBranchItem,
   SkillBranchItemSuffix,
   SkillBranchStatResult,
@@ -44,7 +44,7 @@ import {
   SkillEffectItem,
   SkillFormulaExtraProps,
   SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
 import DamageHandler from '@/views/SkillQuery/skill/branch-handlers/DamageHandler'

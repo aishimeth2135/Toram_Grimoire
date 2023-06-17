@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { isNumberString } from '@/shared/utils/string'
 
-import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 

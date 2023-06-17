@@ -335,9 +335,8 @@ const nextStep = async () => {
   currentStep.value += 1
 }
 
-const stepAfterEnter = async (el: HTMLElement) => {
-  await nextTick()
-  el.scrollIntoView({ behavior: 'smooth' })
+const stepAfterEnter = (el: Element) => {
+  nextTick(() => el.scrollIntoView({ behavior: 'smooth' }))
 }
 
 const openSelectItem = (mode: SelectItemModes) => {

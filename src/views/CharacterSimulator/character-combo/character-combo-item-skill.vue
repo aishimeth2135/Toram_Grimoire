@@ -9,11 +9,10 @@
         }"
         @click="selectComboSkill(comboSkillState.comboSkill)"
       >
-        <cy-icon-text
+        <cy-icon
           v-if="currentSkill"
-          :icon="skillIconPath!"
-          icon-src="image"
-          icon-width="2.5rem"
+          :path="skillIconPath!"
+          width="2.5rem"
           class="cursor-pointer"
           :class="{ 'opacity-50': !comboSkillState.valid }"
         />

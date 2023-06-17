@@ -108,7 +108,7 @@
     :class="{ 'border-l-2': !root }"
     style="margin-left: -0.2rem"
   >
-    <div v-if="typeof calcStructItem !== 'string'">
+    <div v-if="!!(typeof calcStructItem !== 'string')">
       <template
         v-if="
           calcStructItem.operator === '+' || calcStructItem.operator === '*'
@@ -119,13 +119,13 @@
           :layer="layer + 1"
         />
         <div>
-          <cy-icon-text
+          <cy-icon
             :icon="
               calcStructItem.operator === '+'
                 ? 'mono-icons:add'
                 : 'eva:close-fill'
             "
-            icon-width="2rem"
+            width="2rem"
             class="mt-1"
             :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
           />
@@ -145,13 +145,13 @@
           :key="getCalcItemId(structItem)"
         >
           <div v-if="idx !== 0">
-            <cy-icon-text
+            <cy-icon
               :icon="
                 calcStructItem.operator === '+++'
                   ? 'mono-icons:add'
                   : 'eva:close-fill'
               "
-              icon-width="2rem"
+              width="2rem"
               class="mt-1"
               :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
             />

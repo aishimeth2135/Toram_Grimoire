@@ -1,4 +1,3 @@
-import { IconSrc } from '@/components/cyteria/icon/setup'
 import { AppRouteNames } from '@/router/enums'
 
 export const APP_STORAGE_KEYS = {
@@ -13,7 +12,6 @@ export interface RouteLinkData {
   name: string
   icon: string
   pathName: AppRouteNames
-  iconSrc?: IconSrc
 }
 
 export const ROUTE_LINK_DATAS: RouteLinkData[] = [
@@ -24,9 +22,8 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
   },
   {
     name: 'character-simulator',
-    icon: 'potum',
+    icon: '@potum',
     pathName: AppRouteNames.CharacterSimulator,
-    iconSrc: 'custom',
   },
   {
     name: 'skill-simulator',

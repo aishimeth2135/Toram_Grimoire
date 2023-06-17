@@ -1,6 +1,6 @@
 <template>
   <div class="text-content" :class="rootClassList" @click="rootClicked">
-    <cy-icon-text
+    <cy-icon
       v-if="branchItem.is(SkillBranchNames.Tips)"
       icon="ic:outline-tips-and-updates"
       class="mr-2 mt-0.5"
@@ -16,7 +16,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 

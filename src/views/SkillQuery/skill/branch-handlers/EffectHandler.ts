@@ -4,11 +4,11 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 import type {
   HandleBranchTextPropsMap,
   HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing/compute'
 
 import {
   HandleBranchLangPropsMap,

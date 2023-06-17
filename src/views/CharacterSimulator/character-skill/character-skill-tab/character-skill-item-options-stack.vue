@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap items-center p-1 pr-3">
-    <div class="mt-0.5 mr-2">
+    <div class="mr-2 mt-0.5">
       <cy-input-counter
         v-model:value="stackValue"
         :range="stackValueRange"
@@ -17,14 +17,11 @@
       </cy-input-counter>
     </div>
     <div class="mt-0.5 flex items-center space-x-1 pl-2">
-      <cy-icon-text
-        icon="icon-park-outline:inner-shadow-top-right"
-        class="mr-2"
-      />
+      <cy-icon icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
       <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">
         {{ stackValueRangeOrigin[0] }}
       </div>
-      <cy-icon-text icon="mdi:tilde" icon-width="0.75rem" />
+      <cy-icon icon="mdi:tilde" width="0.75rem" />
       <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">
         {{ stackValueRangeOrigin[1] }}
       </div>
@@ -36,7 +33,7 @@
 import { ComputedRef, computed, toRefs } from 'vue'
 import type { WritableComputedRef } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 

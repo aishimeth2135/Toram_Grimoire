@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="status !== InitializeStatus.Finished"
-    class="fixed top-0 left-0 z-100 flex h-full w-full items-center justify-center bg-white p-4"
+    class="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-white p-4"
   >
     <div class="w-128 max-w-full text-center">
       <div
@@ -26,13 +26,12 @@
             <span class="mr-3 w-full text-primary-60">{{
               t(item.message)
             }}</span>
-            <cy-icon-text
-              block
+            <cy-icon
               :icon="statusIcon(item.status)"
               :class="{
                 'loading-circle': item.status === InitItemStatus.Loading,
               }"
-              :icon-color="
+              :color="
                 item.status === InitItemStatus.Error ? 'orange-60' : 'blue-60'
               "
             />
@@ -40,22 +39,21 @@
         </template>
         <template v-else-if="status <= InitializeStatus.LocaleSuccess">
           <div class="flex items-center justify-center pl-1">
-            <span class="mr-3 w-full text-primary-60">{{
-              t('app.loading-message.init-locale')
-            }}</span>
-            <cy-icon-text
-              block
+            <span class="mr-3 w-full text-primary-60">
+              {{ t('app.loading-message.init-locale') }}
+            </span>
+            <cy-icon
               :icon="statusIcon(status - 10)"
               :class="{
                 'loading-circle': status === InitializeStatus.LocaleLoading,
               }"
-              icon-color="blue-60"
+              color="blue-60"
             />
           </div>
         </template>
       </div>
     </div>
-    <div class="absolute right-4 bottom-4 text-sm">
+    <div class="absolute bottom-4 right-4 text-sm">
       <div>{{ t('app.loading-message.bottom-tips.0') }}</div>
       <div>{{ t('app.loading-message.bottom-tips.1') }}</div>
     </div>

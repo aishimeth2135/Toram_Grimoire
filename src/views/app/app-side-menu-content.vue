@@ -24,7 +24,7 @@
         class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
         @click.stop="toggle('contents/menuLinks')"
       >
-        <cy-icon-text
+        <cy-icon
           :icon="
             contents.menuLinks
               ? 'ic:round-keyboard-double-arrow-up'
@@ -101,7 +101,6 @@ const routeLinks = computed(() => {
         ({
           title: 'app.page-title.' + item.name,
           icon: item.icon,
-          iconSrc: item.iconSrc,
           pathName: item.pathName,
         } as HomeRouteData)
     )

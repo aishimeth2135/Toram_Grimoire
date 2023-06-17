@@ -47,14 +47,14 @@
                   v-else-if="baseValueArrowRate"
                   class="ml-2 flex items-center"
                 >
-                  <cy-icon-text
+                  <cy-icon
                     icon="ic-round-close"
-                    icon-width="0.75rem"
-                    icon-color="emerald"
+                    width="0.75rem"
+                    color="emerald"
                   />
-                  <span class="ml-1 text-emerald-60">{{
-                    baseValueArrowRate
-                  }}</span>
+                  <span class="ml-1 text-emerald-60">
+                    {{ baseValueArrowRate }}
+                  </span>
                 </div>
               </div>
               <span class="ml-auto text-primary-70">

@@ -79,7 +79,7 @@ import {
   SkillBranchItem,
   SkillComputingContainer,
   SkillEffectItem,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import SkillBranchBasic from './skill-branch-basic.vue'
 import SkillBranchDamage from './skill-branch-damage.vue'

@@ -23,11 +23,10 @@
             <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="cyan">
               {{ crystal.origin.enhancer }}
             </cy-icon-text>
-            <cy-icon-text
+            <cy-icon
               v-if="crystal.origin.enhancer"
-              :icon="crystal.origin.crystalBaseIconPath"
-              icon-src="image"
-              ize="small"
+              :path="crystal.origin.crystalBaseIconPath"
+              small
             />
           </template>
         </div>
@@ -43,7 +42,7 @@
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="max-w-full bg-white pt-2 pb-3 pl-6 pr-4">
+      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-6 pr-4 pt-2">
         <div>
           <ShowStat
             v-for="stat in crystal.stats"

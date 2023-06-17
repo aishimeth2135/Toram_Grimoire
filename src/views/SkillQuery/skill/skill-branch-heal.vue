@@ -21,7 +21,7 @@ import { useI18n } from 'vue-i18n'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'

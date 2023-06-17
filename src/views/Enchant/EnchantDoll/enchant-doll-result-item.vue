@@ -18,7 +18,7 @@
       >
         {{ result.operationStepsQuantity }}
       </cy-icon-text>
-      <cy-icon-text
+      <cy-icon
         :icon="
           unfold
             ? 'akar-icons:circle-chevron-up'

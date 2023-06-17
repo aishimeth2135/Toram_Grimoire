@@ -83,7 +83,7 @@ import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { Skill } from '@/lib/Skill/Skill'
-import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
 import ToggleService from '@/shared/setup/ToggleService'
 

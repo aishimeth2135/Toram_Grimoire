@@ -14,10 +14,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import {
-  EquipmentRestrictions,
-  SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
+import { SkillItem } from '@/lib/Skill/SkillComputing'
 
 import SkillEquipmentButton from './skill/skill-equipment-button.vue'
 

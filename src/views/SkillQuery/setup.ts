@@ -2,21 +2,22 @@ import { provide, reactive, ref, shallowRef, watch } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { defineState } from '@/shared/setup/State'
 
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 import {
-  EquipmentRestrictions,
   SkillBranchItem,
   SkillComputingContainer,
   SkillEffectItem,
   SkillEffectItemHistory,
   SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import { ComputingContainerInjectionKey } from './injection-keys'
 
-export const useSkillQueryState = (() => {
+export const useSkillQueryState = defineState(() => {
   const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
   const currentSkillTree: Ref<SkillTree | null> = ref(null)
   const currentSkill: Ref<Skill | null> = ref(null)
@@ -27,17 +28,15 @@ export const useSkillQueryState = (() => {
   const skillLevel = ref(10)
   const characterLevel = ref(300)
 
-  return function () {
-    return {
-      skillLevel,
-      characterLevel,
-      currentSkill,
-      currentSkillTree,
-      currentSkillTreeCategory,
-      currentEquipment,
-    }
+  return {
+    skillLevel,
+    characterLevel,
+    currentSkill,
+    currentSkillTree,
+    currentSkillTreeCategory,
+    currentEquipment,
   }
-})()
+})
 
 export interface SkillRegistletItemState {
   index: number

@@ -23,7 +23,7 @@ import {
   SkillBranchResultBase,
   SkillBranchStatResult,
   SkillBranchTextResult,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 import {
   getCommonTextParseItems,
   handleParseText,

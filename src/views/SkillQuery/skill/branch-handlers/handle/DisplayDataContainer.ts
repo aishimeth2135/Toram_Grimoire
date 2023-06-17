@@ -3,8 +3,8 @@ import type { SkillDisplayData } from '.'
 import {
   SkillBranchResultBase,
   SkillBranchStatResult,
-} from '@/lib/Skill/SkillComputingContainer'
-import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
+import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
 let _autoIncreasement = 0
 export default class DisplayDataContainer<

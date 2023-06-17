@@ -4,12 +4,12 @@ import { isNumberString, splitComma } from '@/shared/utils/string'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 import {
   HandleBranchValuePropsMap,
   computeBranchValue,
   computedBranchHelper,
-} from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing/compute'
 
 import {
   HandleBranchLangPropsMap,

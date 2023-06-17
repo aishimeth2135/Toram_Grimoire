@@ -2,7 +2,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItemBaseChilds,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import {
   HandleBranchLangPropsMap,

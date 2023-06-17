@@ -11,7 +11,7 @@
         >
           {{ historyItem.date }}
         </cy-icon-text>
-        <cy-icon-text
+        <cy-icon
           :icon="
             contents.detail
               ? 'ic:round-keyboard-arrow-up'
@@ -24,7 +24,7 @@
         v-if="introductionBranchItemDatas.length > 0 && !contents.detail"
         class="flex w-full items-start"
       >
-        <cy-icon-text icon="ic:round-label" class="ml-2 mt-1.5" />
+        <cy-icon icon="ic:round-label" class="ml-2 mt-1.5" />
         <div>
           <SkillBranch
             :skill-branch-item="introductionBranchItemDatas[0].branchItem"
@@ -70,18 +70,18 @@
           />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text
+          <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            icon-color="primary-60"
+            color="primary-60"
           />
         </div>
         <div v-if="next && !next.isEmpty">
           <SkillBranch :skill-branch-item="next" :computing="computing" sub />
         </div>
         <div v-else class="history-item-compare-empty">
-          <cy-icon-text icon="mdi:book-remove-outline">{{
-            t('skill-query.branch-removed')
-          }}</cy-icon-text>
+          <cy-icon-text icon="mdi:book-remove-outline">
+            {{ t('skill-query.branch-removed') }}
+          </cy-icon-text>
         </div>
       </div>
       <div
@@ -95,9 +95,9 @@
           }}</cy-icon-text>
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text
+          <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            icon-color="primary-60"
+            color="primary-60"
           />
         </div>
         <div>
@@ -121,15 +121,15 @@
           />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text
+          <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            icon-color="primary-60"
+            color="primary-60"
           />
         </div>
         <div class="history-item-compare-empty">
-          <cy-icon-text icon="mdi:book-remove-outline">{{
-            t('skill-query.branch-removed')
-          }}</cy-icon-text>
+          <cy-icon-text icon="mdi:book-remove-outline">
+            {{ t('skill-query.branch-removed') }}
+          </cy-icon-text>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillComputingContainer,
   SkillEffectItemHistory,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import SkillBranch from '../skill/skill-branch.vue'
 

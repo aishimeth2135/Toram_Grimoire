@@ -13,7 +13,7 @@
         <div v-if="characterStatResult.origin.min">
           {{ characterStatResult.origin.min }}
         </div>
-        <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
+        <cy-icon icon="mdi:tilde" width="0.8rem" />
         <div v-if="characterStatResult.origin.max">
           {{ characterStatResult.origin.max }}
         </div>

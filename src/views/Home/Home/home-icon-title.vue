@@ -11,7 +11,7 @@
         invisible: iconWrapperTouched,
       }"
     >
-      <cy-icon-text icon="grimoire-cat" icon-src="custom" icon-width="2.5rem" />
+      <cy-icon icon="@grimoire-cat" width="2.5rem" />
     </div>
     <teleport v-if="iconWrapperTouched" :to="rootEl">
       <div
@@ -20,11 +20,7 @@
         :class="[classes['title-icon'], classes['title-icon-touched']]"
         :style="appIconPositionStyle"
       >
-        <cy-icon-text
-          icon="grimoire-cat"
-          icon-src="custom"
-          icon-width="2.5rem"
-        />
+        <cy-icon icon="@grimoire-cat" width="2.5rem" />
       </div>
     </teleport>
   </div>

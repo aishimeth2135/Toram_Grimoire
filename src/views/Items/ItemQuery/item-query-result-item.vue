@@ -21,10 +21,10 @@
           >
             <span class="inline-flex flex-wrap items-center">
               <span>{{ equipment.name }}</span>
-              <cy-icon-text
+              <cy-icon
                 v-if="firstObtain && firstObtain.isDrop"
                 icon="jam-box"
-                icon-color="orange-60"
+                color="orange-60"
                 class="ml-2"
               />
             </span>
@@ -127,15 +127,14 @@
                 {{ t('item-query.equipment-detail.equipment-type') }}
               </span>
               <span class="ml-2 flex items-center">
-                <cy-icon-text
+                <cy-icon
                   v-if="originEquipment.unknowCategory"
                   icon="mdi-ghost"
                   small
                 />
-                <cy-icon-text
+                <cy-icon
                   v-else
-                  :icon="equipment.getCategoryImagePath()"
-                  icon-src="image"
+                  :path="equipment.getCategoryImagePath()"
                   small
                 />
                 <span class="ml-1 text-primary-50">

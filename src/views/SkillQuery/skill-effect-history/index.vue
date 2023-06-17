@@ -18,7 +18,7 @@ export default {
 <script lang="ts" setup>
 import { inject } from 'vue'
 
-import { SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillEffectItem } from '@/lib/Skill/SkillComputing'
 
 import SkillEffectItemHistory from './skill-effect-history-item.vue'
 

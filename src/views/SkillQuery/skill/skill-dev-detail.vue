@@ -67,7 +67,7 @@
 import { StatComputed } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
-import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
+import { convertEffectEquipment } from '@/lib/Skill/SkillComputing/utils'
 
 import SkillEquipmentButton from './skill-equipment-button.vue'
 

@@ -1,7 +1,4 @@
-import {
-  SkillBranchItem,
-  SkillEffectItem,
-} from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputing'
 
 export function setStackValue(branchItem: SkillBranchItem, value: number) {
   const stackId = branchItem.stackId

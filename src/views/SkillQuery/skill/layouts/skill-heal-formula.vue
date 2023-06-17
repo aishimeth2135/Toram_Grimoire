@@ -9,7 +9,7 @@
         class="attr-item"
         :result="container.result('constant')"
       />
-      <cy-icon-text
+      <cy-icon
         v-if="container.has('constant') && extraValueList.length !== 0"
         icon="ic-round-add"
       />
@@ -20,13 +20,10 @@
       >
         <span class="attr-item space-x-0.5">
           <span>{{ item.text }}</span>
-          <cy-icon-text icon="ic-round-close" />
+          <cy-icon icon="ic-round-close" />
           <span class="text-primary-50" v-html="item.value" />
         </span>
-        <cy-icon-text
-          v-if="idx !== extraValueList.length - 1"
-          icon="ic-round-add"
-        />
+        <cy-icon v-if="idx !== extraValueList.length - 1" icon="ic-round-add" />
       </template>
     </div>
   </div>
@@ -69,7 +66,7 @@ const isSingleValue = computed(() => {
 
 <style lang="postcss" scoped>
 .attr-item {
-  @apply my-1 inline-flex items-center py-0.5 px-1.5;
+  @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }
 
 .heal-formula-main > .heal-formula-main-first + .attr-item {

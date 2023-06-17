@@ -14,7 +14,7 @@ import {
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'

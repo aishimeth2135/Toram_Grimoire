@@ -130,12 +130,9 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillTree } from '@/lib/Skill/Skill'
-import {
-  SkillComputingContainer,
-  EquipmentRestrictions,
-  SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
+import { SkillComputingContainer, SkillItem } from '@/lib/Skill/SkillComputing'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
 import ToggleService from '@/shared/setup/ToggleService'
 

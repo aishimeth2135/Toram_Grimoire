@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 mb-4 flex w-full items-center border-b border-solid border-primary-30 bg-white py-1 px-3"
+    class="fixed top-0 mb-4 flex w-full items-center border-b border-solid border-primary-30 bg-white px-3 py-1"
   >
     <cy-button-icon
       icon="ic:round-menu"
@@ -9,9 +9,8 @@
     <div
       class="inline-flex items-center overflow-y-auto whitespace-nowrap px-2 text-sm"
     >
-      <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
       <template v-for="(item, idx) in navItems" :key="item.path">
-        <cy-icon-text
+        <cy-icon
           v-if="idx !== 0"
           icon="ic-round-keyboard-arrow-right"
           class="mx-2"

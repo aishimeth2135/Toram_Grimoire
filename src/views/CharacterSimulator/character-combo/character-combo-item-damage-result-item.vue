@@ -11,7 +11,7 @@
         <div v-else class="text-primary-30">
           {{ t('character-simulator.character-damage.no-result') }}
         </div>
-        <cy-icon-text
+        <cy-icon
           v-if="frequencyVisible && result.container.get('frequency')"
           icon="ic-round-close"
         />

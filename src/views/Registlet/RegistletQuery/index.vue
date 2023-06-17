@@ -4,7 +4,7 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex w-full items-center">
-          <cy-icon-text icon="ic-outline-search" />
+          <cy-icon icon="ic-outline-search" />
           <input
             v-model="searchText"
             type="text"

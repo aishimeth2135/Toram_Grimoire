@@ -9,7 +9,7 @@ import {
   EquipmentRestrictionsBaseKeys,
 } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
-import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
+import { convertEffectEquipment } from '@/lib/Skill/SkillComputing/utils'
 
 function setupEquipmentSelect(
   skillTree: Ref<SkillTree>,

@@ -5,11 +5,11 @@
         :equipment="equipment"
         :text-color="current ? 'primary-70' : 'primary-90'"
       />
-      <cy-icon-text
+      <cy-icon
         v-if="current"
         icon="carbon-location-current"
         class="ml-auto"
-        icon-color="red-50"
+        color="red-50"
       />
       <slot name="title-end" />
     </div>

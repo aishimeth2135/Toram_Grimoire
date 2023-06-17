@@ -9,11 +9,8 @@
       <template #equip>
         <span class="mx-1 inline-flex items-center text-emerald-60">
           <template v-for="text in equipmentTexts" :key="'text-i-' + text.iid">
-            <cy-icon-text v-if="text.text === '+'" icon="ic-round-add" />
-            <cy-icon-text
-              v-else-if="text.text === '/'"
-              icon="mdi-slash-forward"
-            />
+            <cy-icon v-if="text.text === '+'" icon="ic-round-add" />
+            <cy-icon v-else-if="text.text === '/'" icon="mdi-slash-forward" />
             <span
               v-else-if="text.text === '(' || text.text === ')'"
               :key="'separate-' + text.iid"

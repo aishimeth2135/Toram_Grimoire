@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-icon-text icon="ic:round-label" />
+      <cy-icon icon="ic:round-label" />
       <div class="ml-2 text-primary-70">
         {{ result.container.get('name') }}
       </div>
@@ -12,7 +12,7 @@
         <div v-else class="text-primary-30">
           {{ t('character-simulator.character-damage.no-result') }}
         </div>
-        <cy-icon-text
+        <cy-icon
           v-if="frequencyVisible && result.container.has('frequency')"
           icon="ic-round-close"
         />
@@ -32,7 +32,7 @@
           <div class="text-blue-60">
             {{ armorBreakExpectedResult }}
           </div>
-          <cy-icon-text
+          <cy-icon
             v-if="frequencyVisible && result.container.has('frequency')"
             icon="ic-round-close"
           />

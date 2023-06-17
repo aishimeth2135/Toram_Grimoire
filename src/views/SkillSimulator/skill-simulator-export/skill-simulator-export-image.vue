@@ -12,7 +12,7 @@
         <img :src="currentImage || '#'" class="max-w-none" />
       </div>
       <div v-else class="flex justify-center py-8">
-        <cy-icon-text icon="mdi:image-outline" icon-width="3rem" />
+        <cy-icon icon="mdi:image-outline" width="3rem" />
       </div>
       <div class="mt-6 border border-primary-30 p-3" style="max-width: 27.5rem">
         <cy-icon-text

@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .js,.ts,.vue src/",
+    "lint": "eslint --ext .js,.ts,.vue src/**",
     "lint-ts": "vue-tsc",
     "pretty": "prettier --write src"
   },
@@ -61,7 +61,7 @@
     "postcss-nested": "^5.0.6",
     "postcss-simple-vars": "^6.0.3",
     "prettier": "^2.8.7",
-    "prettier-plugin-tailwindcss": "^0.2.7",
+    "prettier-plugin-tailwindcss": "^0.3.0",
     "tailwindcss": "^3.3.1",
     "terser": "^5.14.2",
     "tinycolor2": "^1.4.2",

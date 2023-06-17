@@ -102,7 +102,7 @@
               </cy-icon-text>
             </template>
           </cy-input-counter>
-          <cy-icon-text icon="ic:baseline-drag-indicator" class="ml-auto" />
+          <cy-icon icon="ic:baseline-drag-indicator" class="ml-auto" />
         </div>
       </template>
     </Draggable>

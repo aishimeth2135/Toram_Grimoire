@@ -23,7 +23,7 @@
           <template v-if="state.currentMode === SearchModes.Normal">
             <div class="mode-normal-title ml-2">
               <div class="input-container">
-                <cy-icon-text icon="ic-outline-search" class="icon" />
+                <cy-icon icon="ic-outline-search" />
                 <input
                   v-model="modes[SearchModes.Normal].searchText"
                   type="text"
@@ -62,14 +62,14 @@
           </template>
           <template v-else-if="state.currentMode === SearchModes.ItemLevel">
             <div class="flex items-center">
-              <cy-icon-text icon="jam-hammer" class="ml-2" />
+              <cy-icon icon="jam-hammer" class="ml-2" />
               <input
                 v-model="itemLevelMinimum"
                 type="text"
                 placeholder="0"
                 class="inline-block w-14 border-0 p-1 text-center"
               />
-              <cy-icon-text icon="mdi-tilde" />
+              <cy-icon icon="mdi-tilde" />
               <input
                 v-model="itemLevelMaximum"
                 type="text"
@@ -81,7 +81,7 @@
           <template v-else-if="state.currentMode === SearchModes.Dye">
             <div class="mode-dye-title">
               <div class="input-container">
-                <cy-icon-text icon="ic-outline-palette" class="ml-2" />
+                <cy-icon icon="ic-outline-palette" class="ml-2" />
                 <input
                   v-model="modes[SearchModes.Dye].searchText"
                   type="text"

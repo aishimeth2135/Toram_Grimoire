@@ -10,7 +10,7 @@
       class="flex h-24 w-full cursor-pointer items-center justify-center"
       @click="currentCharacter!.comboBuild.appendCombo()"
     >
-      <cy-icon-text icon="ic-round-add-circle-outline" icon-width="2.5rem" />
+      <cy-icon icon="ic-round-add-circle-outline" width="2.5rem" />
     </div>
     <div class="border-t border-primary-50 pt-3">
       <cy-icon-text

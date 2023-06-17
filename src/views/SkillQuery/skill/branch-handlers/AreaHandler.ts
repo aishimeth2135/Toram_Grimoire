@@ -2,9 +2,9 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
-import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
+import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
   HandleBranchLangPropsMap,

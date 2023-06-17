@@ -11,10 +11,10 @@
     <template #default>
       <div class="flex items-center">
         <template v-for="(iconData, idx) in iconDatas" :key="iconData.iid">
-          <cy-icon-text
+          <cy-icon
             v-if="idx !== 0"
             icon="mdi-slash-forward"
-            icon-color="primary-50"
+            color="primary-50"
           />
           <div class="flex items-center space-x-1">
             <template v-for="icon in iconData.icons" :key="icon.iid">
@@ -45,7 +45,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
 import { IconSrc } from '@/components/cyteria/icon/setup'
 

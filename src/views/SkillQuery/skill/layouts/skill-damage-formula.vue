@@ -10,7 +10,7 @@
       <span v-if="container.has('base')" class="attr-item">
         {{ container.get('base') }}
       </span>
-      <cy-icon-text
+      <cy-icon
         v-if="container.has('base') && container.has('constant')"
         icon="ic-round-add"
       />
@@ -19,12 +19,12 @@
         :result="container.result('constant')"
       />
       <span v-if="container.has('constant')" class="divider" />
-      <cy-icon-text icon="ic-round-close" />
+      <cy-icon icon="ic-round-close" />
       <SkillBranchPropValue
         class="attr-item"
         :result="container.result('multiplier')"
       />
-      <cy-icon-text
+      <cy-icon
         v-if="container.has('extra_constant')"
         icon="ic-round-add"
       />
@@ -36,7 +36,7 @@
         v-if="container.has('extra_constant') && frequencyVisible"
         class="divider border-orange-60"
       />
-      <cy-icon-text
+      <cy-icon
         v-if="frequencyVisible && container.has('frequency')"
         icon="ic-round-close"
       />

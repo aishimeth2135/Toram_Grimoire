@@ -1,8 +1,8 @@
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing'
+import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
   HandleBranchLangPropsMap,

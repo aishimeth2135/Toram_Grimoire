@@ -19,7 +19,7 @@
             class="flex cursor-pointer items-center py-2 pl-3 pr-3 duration-150 hover:!bg-primary-5"
             @click="registletBuild.toggleItem(item)"
           >
-            <cy-icon-text
+            <cy-icon
               icon="game-icons:beveled-star"
               :class="{ 'opacity-0': !registletBuild.itemSelected(item) }"
             />

@@ -50,7 +50,7 @@
       </template>
       <template #default>
         <div v-if="mode === 'normal'" class="flex w-full items-center">
-          <cy-icon-text icon="ic-outline-search" />
+          <cy-icon icon="ic-outline-search" />
           <input
             v-model="modeNormal.searchText"
             type="text"

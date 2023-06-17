@@ -1,13 +1,13 @@
 <template>
   <AppLayoutMain class="h-full">
     <div class="flex h-full w-full items-center justify-center">
-      <cy-icon-text
+      <cy-icon
         :icon="
           mainStore.devMode
             ? 'mdi:weather-partly-cloudy'
             : 'mdi:weather-night-partly-cloudy'
         "
-        icon-width="5rem"
+        width="5rem"
         @click="iconClick"
       />
     </div>

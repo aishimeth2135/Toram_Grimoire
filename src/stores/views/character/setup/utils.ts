@@ -9,7 +9,7 @@ import { StatRecorded } from '@/lib/Character/Stat'
 import {
   SkillBranchItem,
   SkillBranchStatResult,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 

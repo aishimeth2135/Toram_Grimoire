@@ -46,7 +46,7 @@ import { computed, toRefs } from 'vue'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 

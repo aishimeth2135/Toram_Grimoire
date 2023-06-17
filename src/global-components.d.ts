@@ -24,6 +24,8 @@ import CyTopHeader from '@/components/cyteria/cy-top-header.vue'
 import CyTransition from '@/components/cyteria/cy-transition.vue'
 import SvgIcon from '@/components/cyteria/icon/svg-icon.vue'
 
+import CyIcon from './components/cyteria/cy-icon.vue'
+
 declare module 'vue' {
   export interface GlobalComponents {
     RouterView: typeof RouterView
@@ -32,6 +34,7 @@ declare module 'vue' {
     CyModal: typeof CyModal
     CyInputCounter: typeof CyInputCounter
     CyListItem: typeof CyListItem
+    CyIcon: typeof CyIcon
     CyIconText: typeof CyIconText
     CyTitleInput: typeof CyTitleInput
     CyOptions: typeof CyOptions

@@ -32,7 +32,7 @@
           class="flex cursor-pointer items-center justify-end px-3 py-0.5"
           @click="toggle('contents/resultDetail', null, false)"
         >
-          <cy-icon-text
+          <cy-icon
             :icon="
               contents.resultDetail
                 ? 'akar-icons:circle-chevron-down'

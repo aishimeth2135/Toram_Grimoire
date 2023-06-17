@@ -1,13 +1,7 @@
 <template>
   <div class="flex items-center justify-center px-2 py-4">
     <div class="flex items-center whitespace-normal">
-      <cy-icon-text
-        :icon="icon"
-        :icon-src="iconSrc"
-        icon-width="2.75rem"
-        icon-color="primary-30"
-        class="mr-3"
-      />
+      <cy-icon :icon="icon" :icon-src="iconSrc" width="2.75rem" class="mr-3" />
       <span :style="contentStyle" class="text-primary-70">
         <slot />
       </span>

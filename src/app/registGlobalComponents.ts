@@ -13,6 +13,7 @@ import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
 import CyHoverFloat from '@/components/cyteria/cy-hover-float.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
 import CyIconText from '@/components/cyteria/cy-icon-text.vue'
+import CyIcon from '@/components/cyteria/cy-icon.vue'
 import CyInputCounter from '@/components/cyteria/cy-input-counter.vue'
 import CyListItem from '@/components/cyteria/cy-list-item.vue'
 import CyLoadingContent from '@/components/cyteria/cy-loading-content.vue'
@@ -30,6 +31,7 @@ export default function (app: App<Element>) {
   app.component('cy-default-tips', CyDefaultTips)
   app.component('cy-hover-float', CyHoverFloat)
   app.component('cy-hr', CyHr)
+  app.component('cy-icon', CyIcon)
   app.component('cy-icon-text', CyIconText)
   app.component('cy-input-counter', CyInputCounter)
   app.component('cy-list-item', CyListItem)

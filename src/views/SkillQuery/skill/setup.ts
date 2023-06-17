@@ -7,7 +7,7 @@ import {
   SkillBranchStatResult,
   SkillComputingContainer,
   SkillEffectItem,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 

@@ -1,6 +1,6 @@
 <template>
-  <AppLayoutMain class="h-full">
-    <div ref="icon-defs" style="position: absolute" />
+  <AppLayoutMain class="relative h-full">
+    <div style="position: absolute" v-html="currentIcon" />
     <div
       class="main--bubble pointer-events-none"
       :class="{ 'display-bg': displayBg }"
@@ -62,6 +62,7 @@ export default {
       viewBox: '0 0 24 24',
       displayBg: false,
       resizeListener: null,
+      currentIcon: '',
     }
   },
   computed: {
@@ -85,10 +86,11 @@ export default {
     const iconName = this.$route.params.iconName
 
     const setIcon = data => {
-      this.$refs[
-        'icon-defs'
-      ].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><defs><g id="bubble--icon-group">${data.iconData}</g></defs></svg>`
       this.viewBox = `0 0 ${data.width} ${data.height}`
+      this.currentIcon =
+        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">` +
+        `<defs><g id="bubble--icon-group">${data.iconData}</g></defs>` +
+        `</svg>`
       setInterval(this.createIcon, this.generationInterval)
     }
 
@@ -192,7 +194,7 @@ export default {
   height: 100%;
   margin: 0 0.5vw;
   position: absolute;
-  z-index: -1;
+  z-index: 51;
   overflow-y: hidden;
   left: 0;
 

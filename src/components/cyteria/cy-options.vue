@@ -11,7 +11,7 @@
             :value="value"
           />
           <div v-else class="flex w-full justify-center py-0.5">
-            <cy-icon-text icon="ic:outline-help-outline" />
+            <cy-icon icon="ic:outline-help-outline" />
           </div>
         </div>
       </slot>
@@ -36,7 +36,7 @@
             @click="emit('add-item'), hide()"
           >
             <div class="flex py-0.5">
-              <cy-icon-text icon="ic-round-add-circle-outline" />
+              <cy-icon icon="ic-round-add-circle-outline" />
             </div>
           </div>
         </slot>
@@ -85,7 +85,7 @@ const emit = defineEmits<Emits>()
 }
 
 .cy--options-item {
-  @apply flex cursor-pointer py-1.5 px-2 duration-200;
+  @apply flex cursor-pointer px-2 py-1.5 duration-200;
 
   &:hover,
   &.cy--options-item-selected {

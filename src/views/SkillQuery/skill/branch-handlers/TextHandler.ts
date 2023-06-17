@@ -1,8 +1,8 @@
 import {
   SkillBranchItemBaseChilds,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing'
+import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import { cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'

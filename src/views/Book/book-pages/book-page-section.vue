@@ -1,11 +1,12 @@
 <template>
   <div>
-    <component :is="sectionComponent" :section="section" />
+    <Render />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { h } from 'vue'
 
 import BookPageSectionContent from './book-page-section-content.vue'
 import BookPageSectionDetail from './book-page-section-detail.vue'
@@ -32,6 +33,10 @@ const sectionComponent = computed(() => {
   }
   return null
 })
+
+const Render = () => {
+  return h(sectionComponent, { section: props.section })
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -51,7 +56,7 @@ const sectionComponent = computed(() => {
   h4,
   h5,
   h6 {
-    @apply mt-6 mb-4 border-primary-30 px-0.5 pb-0.5 text-primary-70;
+    @apply mb-4 mt-6 border-primary-30 px-0.5 pb-0.5 text-primary-70;
   }
 
   p,
@@ -59,7 +64,7 @@ const sectionComponent = computed(() => {
   dl,
   table,
   pre {
-    @apply mt-0 mb-4;
+    @apply mb-4 mt-0;
   }
 
   p {
@@ -101,7 +106,7 @@ const sectionComponent = computed(() => {
     @apply pl-2.5;
   }
   ul > li {
-    @apply relative pl-5 pb-1;
+    @apply relative pb-1 pl-5;
   }
   ul > li::before {
     content: '';
@@ -112,7 +117,7 @@ const sectionComponent = computed(() => {
     @apply pl-4;
   }
   ol > li {
-    @apply ml-2 pl-1.5 pb-1;
+    @apply ml-2 pb-1 pl-1.5;
   }
   ol > li::marker {
     @apply text-primary-30;
@@ -120,7 +125,7 @@ const sectionComponent = computed(() => {
 
   hr {
     height: 1px;
-    @apply my-4 mx-1 border-0 bg-primary-30;
+    @apply mx-1 my-4 border-0 bg-primary-30;
   }
 
   code {

@@ -6,7 +6,7 @@ import {
   SkillComputingContainer,
   SkillEffectItem,
   SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import type { SkillRegistletItemState } from './setup'
 

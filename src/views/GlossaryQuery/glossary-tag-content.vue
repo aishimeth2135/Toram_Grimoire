@@ -10,7 +10,7 @@
         <span v-if="categoryRow" class="ml-3 text-sm text-primary-30">
           {{ categoryRow.value[0] }}
         </span>
-        <cy-icon-text
+        <cy-icon
           v-if="sub"
           :icon="
             detailVisible
@@ -19,12 +19,12 @@
           "
           class="ml-4"
         />
-        <cy-icon-text
+        <cy-icon
           v-if="!sub"
           icon="ic:round-label"
           class="absolute -left-5 top-0"
-          icon-width="1.45rem"
-          icon-color="primary-20"
+          width="1.45rem"
+          color="primary-20"
         />
       </div>
       <GlossaryTagContentRows

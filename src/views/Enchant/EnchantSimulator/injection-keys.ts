@@ -4,7 +4,7 @@ import { EnchantStep } from '@/lib/Enchant/Enchant'
 
 interface EnchantSimulatorInjection {
   rootState: {
-    statDisplayMode: 0 | 1
+    statDisplayMode: number
   }
   openSelectItem: (type: 'step', target: EnchantStep, once?: boolean) => void
 }

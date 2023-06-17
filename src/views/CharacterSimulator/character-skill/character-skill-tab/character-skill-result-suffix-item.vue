@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'

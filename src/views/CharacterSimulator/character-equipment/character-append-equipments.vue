@@ -31,7 +31,7 @@
             <span class="ml-4 text-sm text-primary-30">
               {{ getObtainText(item) }}
             </span>
-            <cy-icon-text icon="ic-round-add" class="ml-auto" />
+            <cy-icon icon="ic-round-add" class="ml-auto" />
           </template>
         </EquipmentItem>
       </div>
@@ -96,7 +96,7 @@
               <span class="ml-4 text-sm text-primary-30">
                 {{ getObtainText(item) }}
               </span>
-              <cy-icon-text icon="ic-round-close" class="ml-auto" />
+              <cy-icon icon="ic-round-close" class="ml-auto" />
             </template>
           </EquipmentItem>
         </div>

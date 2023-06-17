@@ -59,8 +59,8 @@ import { useI18n } from 'vue-i18n'
 import {
   SkillComputingContainer,
   SkillBranchItem,
-} from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 
 import SkillAreaAnimation from './skill-area-animation.vue'
 

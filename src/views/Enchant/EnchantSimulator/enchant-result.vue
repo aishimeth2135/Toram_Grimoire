@@ -147,7 +147,7 @@
               :key="text"
               class="flex items-start"
             >
-              <cy-icon-text icon="ic-outline-near-me" class="mr-2" />
+              <cy-icon icon="ic-outline-near-me" class="mr-2" />
               <span v-html="text"></span>
             </div>
           </div>

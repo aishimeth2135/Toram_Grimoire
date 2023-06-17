@@ -4,7 +4,7 @@
       <div
         class="flex h-10 w-10 items-center justify-center rounded-full bg-white bg-opacity-75"
       >
-        <cy-icon-text :icon="icon" :color="color" icon-width="1.25rem" />
+        <cy-icon :icon="icon" :color="color" width="1.25rem" />
       </div>
     </div>
     <div class="flex flex-wrap pl-2 pr-6">
@@ -16,7 +16,7 @@
       <div
         class="flex h-8 w-8 items-center justify-center rounded-full bg-white bg-opacity-75"
       >
-        <cy-icon-text :icon="icon" :color="color" icon-width="1.125rem" />
+        <cy-icon :icon="icon" :color="color" width="1.125rem" />
       </div>
     </div>
     <div class="flex flex-wrap pl-2">

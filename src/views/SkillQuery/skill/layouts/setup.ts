@@ -6,7 +6,7 @@ import { isNumberString } from '@/shared/utils/string'
 import {
   SkillBranchResult,
   SkillBranchTextResultPartValue,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 import {
   TextResultContainerPart,
   TextResultContainerPartValue,

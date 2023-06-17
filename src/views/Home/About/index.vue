@@ -34,10 +34,10 @@
                   backgroundImage: `url('${discordGroupData.splashUrl}')`,
                 }"
               />
-              <cy-icon-text
+              <cy-icon
                 icon="mdi:discord"
                 class="absolute right-2 top-2"
-                icon-width="2rem"
+                width="2rem"
               />
               <div
                 class="flex w-full items-center rounded-b-lg bg-primary-20 px-4 py-2.5"
@@ -131,16 +131,30 @@
               </div>
             </div>
           </template>
-          <div v-if="column.title === 'author'" class="mt-4 px-3">
+          <div v-if="column.title === 'author'" class="mt-3 px-3">
             <a
               href="https://github.com/aishimeth2135/Toram_Grimoire"
               target="_blank"
+              class="inline-flex items-center text-cyan-60 opacity-75 duration-150 hover:opacity-100"
             >
-              <cy-icon-text
+              <cy-icon
                 icon="mdi:github"
-                icon-color="cyan-60"
-                icon-width="2rem"
+                color="cyan-60"
+                width="2rem"
+                class="mr-2.5"
               />
+              {{ t('app.about.author.github-message') }}
+              <span
+                class="ml-3 inline-flex items-center rounded-lg border-1 border-cyan-60/50 py-0.5 pl-2 pr-4"
+              >
+                <cy-icon
+                  icon="ic:round-star-border"
+                  color="cyan-60"
+                  width="1.375rem"
+                  class="mr-2"
+                />
+                Star
+              </span>
             </a>
           </div>
         </div>

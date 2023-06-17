@@ -4,17 +4,15 @@ import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 import { StatComputed } from '@/lib/Character/Stat'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
-  SkillBranchResult,
-  SkillBranchResultBase,
-} from '@/lib/Skill/SkillComputingContainer'
-import {
+  FormulaDisplayModes,
   SkillBranchItemBaseChilds,
   SkillBranchItemOverwriteRecords,
   SkillBranchItemSuffix,
+  SkillBranchResult,
+  SkillBranchResultBase,
   SkillComputingContainer,
   SkillEffectItemHistory,
-} from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 import {
   ComputedBranchHelperResult,
   HandleBranchTextPropsMap,
@@ -24,7 +22,7 @@ import {
   handleBranchStats,
   handleBranchTextProps,
   handleBranchValueProps,
-} from '@/lib/Skill/SkillComputingContainer/compute'
+} from '@/lib/Skill/SkillComputing/compute'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import DisplayDataContainer from './DisplayDataContainer'

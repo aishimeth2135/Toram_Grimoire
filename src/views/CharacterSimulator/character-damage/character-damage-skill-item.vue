@@ -9,12 +9,7 @@
         style="min-width: 10rem"
       >
         <cy-button-check :selected="enabled" />
-        <cy-icon-text
-          :text-color="!invalid ? 'fuchsia-70' : 'gray-60'"
-          :icon="skillIconPath"
-          icon-src="image"
-          class="ml-1.5"
-        />
+        <cy-icon :path="skillIconPath" class="ml-1.5" />
         <span class="ml-2 text-primary-70">
           {{ skillResultsState.skill.name }}
         </span>

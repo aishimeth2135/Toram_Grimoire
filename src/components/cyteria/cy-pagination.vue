@@ -28,7 +28,7 @@
     </div>
     <div class="flex items-center space-x-0.5 text-sm text-primary-30">
       <span>{{ value }}</span>
-      <cy-icon-text icon="mdi:slash-forward" icon-color="primary-30" small />
+      <cy-icon icon="mdi:slash-forward" small />
       <span>{{ maxPage }}</span>
     </div>
   </div>

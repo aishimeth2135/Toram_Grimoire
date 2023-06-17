@@ -16,11 +16,10 @@
 <script lang="ts">
 import { PropType, computed, defineComponent } from 'vue'
 
-import Color from '@/shared/services/Color'
-
 import IconBase from './icon/icon-base.vue'
 
 import { IconBaseProps } from './icon/setup'
+import { useColorString } from './setup'
 
 export default defineComponent({
   props: {
@@ -82,31 +81,18 @@ export default defineComponent({
       return props.iconWidth
     })
 
-    const handleColorValue = (
-      type: 'icon' | 'text',
-      value: undefined | null | string,
-      defaultValue: string
-    ) => {
-      if (typeof value !== 'string') {
-        if (props.color) {
-          let color = props.color
-          if (!color.includes('-') && color !== 'white') {
-            color += '-60'
-          }
-          value =
-            type === 'icon' && !props.singleColor ? Color.lighten(color) : color
-        } else {
-          value = 'default'
-        }
-      }
-      return value === 'default' ? defaultValue : value
-    }
+    const baseColor = computed(() => props.color)
 
-    const iconColor = computed(() =>
-      handleColorValue('icon', props.iconColor, 'primary-30')
+    const iconColor = useColorString(
+      baseColor,
+      computed(() => props.iconColor),
+      'primary-30',
+      computed(() => !props.singleColor)
     )
-    const textColor = computed(() =>
-      handleColorValue('text', props.textColor, 'primary-90')
+    const textColor = useColorString(
+      baseColor,
+      computed(() => props.textColor),
+      'primary-90'
     )
 
     const rootClass = computed(() => {

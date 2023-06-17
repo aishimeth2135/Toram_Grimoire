@@ -13,10 +13,7 @@
           class="step-container flex h-48 cursor-pointer items-center justify-center border border-primary-30 duration-200 hover:border-primary-50"
           @click="appendStep"
         >
-          <cy-icon-text
-            icon="ic-round-add-circle-outline"
-            icon-width="3.5rem"
-          />
+          <cy-icon icon="ic-round-add-circle-outline" width="3.5rem" />
         </div>
       </div>
     </div>

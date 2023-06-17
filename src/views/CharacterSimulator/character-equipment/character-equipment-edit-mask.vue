@@ -2,7 +2,7 @@
   <div class="edit-mask-content">
     <slot />
     <div class="edit-mask">
-      <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
+      <cy-icon icon="ic:round-mode-edit" width="1.5rem" />
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default defineComponent({
   @apply relative inline-block cursor-pointer rounded-md;
 
   & > .edit-mask {
-    @apply absolute top-0 left-0 z-1 flex h-full w-full items-center justify-center bg-white bg-opacity-0 opacity-0 duration-300;
+    @apply absolute left-0 top-0 z-1 flex h-full w-full items-center justify-center bg-white bg-opacity-0 opacity-0 duration-300;
   }
 
   &:hover > .edit-mask {

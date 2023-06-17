@@ -33,7 +33,7 @@
           class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-1 border-primary-30 duration-200 hover:border-primary-50"
           @click="selectComboSkill(combo.appendSkill())"
         >
-          <cy-icon-text icon="ic-round-add" icon-width="2.25rem" />
+          <cy-icon icon="ic-round-add" width="2.25rem" />
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { CharacterCombo, ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
-import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBuffs } from '@/lib/Skill/SkillComputing'
 
 import CharacterComboItemDamageItem from './character-combo-item-damage-item.vue'
 import CharacterComboItemSkill from './character-combo-item-skill.vue'

@@ -24,14 +24,11 @@
       </cy-icon-text>
     </div>
     <div class="ml-4 mt-0.5 flex items-center space-x-1">
-      <cy-icon-text
-        icon="icon-park-outline:inner-shadow-top-right"
-        class="mr-2"
-      />
+      <cy-icon icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
       <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">
         {{ stackValueRangeOrigin[0] }}
       </div>
-      <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
+      <cy-icon icon="mdi:tilde" width="0.8rem" />
       <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">
         {{ stackValueRangeOrigin[1] }}
       </div>
@@ -48,8 +45,8 @@ import { isNumberString } from '@/shared/utils/string'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
 import StackHandler from './branch-handlers/StackHandler'

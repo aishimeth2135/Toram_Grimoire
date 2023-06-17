@@ -117,7 +117,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-} from '@/lib/Skill/SkillComputingContainer'
+} from '@/lib/Skill/SkillComputing'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 

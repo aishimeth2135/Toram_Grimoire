@@ -2,7 +2,7 @@
   <div style="min-width: 20rem">
     <cy-list-item @click="toggle('contents/detail')">
       <div class="mr-2 flex">
-        <cy-icon-text icon="ic:baseline-drag-indicator" />
+        <cy-icon icon="ic:baseline-drag-indicator" />
       </div>
       <EquipmentTitle
         :equipment="equipment"

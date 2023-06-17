@@ -30,21 +30,13 @@
             <cy-icon-text icon="mdi-rhombus-outline" color="blue">
               {{ stat.text }}
             </cy-icon-text>
-            <cy-icon-text
-              icon="ic-round-add"
-              icon-color="blue-30"
-              class="ml-auto"
-            />
+            <cy-icon icon="ic-round-add" color="blue-30" class="ml-auto" />
           </template>
           <template v-else-if="statOptionSelected(stat) === '-'">
             <cy-icon-text icon="mdi-rhombus-outline" color="red">
               {{ stat.text }}
             </cy-icon-text>
-            <cy-icon-text
-              icon="ic-round-delete"
-              icon-color="red-30"
-              class="ml-auto"
-            />
+            <cy-icon icon="ic-round-delete" color="red-30" class="ml-auto" />
           </template>
           <cy-icon-text
             v-else-if="statOptionSelected(stat) === '#'"
