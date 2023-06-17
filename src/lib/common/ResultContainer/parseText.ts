@@ -255,22 +255,6 @@ interface ParseValueOptions {
 
 export function getCommonTextParseItems(options: ParseValueOptions = {}) {
   const units = ['%', 'm']
-  const separateParse: TextParseItem<TextResultContainerPart> = {
-    id: 'separate',
-    parseToken: {
-      start: '((',
-      end: '))',
-    },
-    handler([value], context) {
-      const parts = context.parseHandlers.value?.(value).parts ?? value
-      return new TextResultContainerPart(
-        TextResultContainerPartTypes.Separate,
-        parts,
-        context.unit
-      )
-    },
-    units,
-  }
   const valueParse: TextParseItem<ResultContainer> = {
     id: 'value',
     parseToken: {
@@ -287,6 +271,22 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
       )
       container.displayOptions.unit = context.unit
       return container
+    },
+    units,
+  }
+  const separateParse: TextParseItem<TextResultContainerPart> = {
+    id: 'separate',
+    parseToken: {
+      start: '((',
+      end: '))',
+    },
+    handler([value], context) {
+      const parts = context.parseHandlers.value?.(value).parts ?? value
+      return new TextResultContainerPart(
+        TextResultContainerPartTypes.Separate,
+        parts,
+        context.unit
+      )
     },
     units,
   }
@@ -312,8 +312,8 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
   }
 
   return {
-    separate: separateParse,
     value: valueParse,
+    separate: separateParse,
     glossaryTag: glossaryTagParse,
   }
 }
