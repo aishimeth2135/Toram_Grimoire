@@ -69,7 +69,7 @@ export const useMainStore = defineStore('app-main', () => {
 
   const previewMode =
     window.location.hostname.startsWith('doll-preview') ||
-    window.location.hostname.startsWith('localhost')
+    window.location.hostname.startsWith('127.0.0.1')
 
   return {
     settingVisible: settingVisible,

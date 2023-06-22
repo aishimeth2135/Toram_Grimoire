@@ -15,7 +15,11 @@
             class="cy--modal--close-btn"
             @click.stop="closeModal"
           />
-          <div class="modal-container" @click.stop>
+          <div
+            class="modal-container"
+            :class="{ 'h-full': heightFull }"
+            @click.stop
+          >
             <div v-if="slots['title'] || title" class="px-4 pb-2">
               <slot name="title">
                 <cy-icon-text :icon="titleIcon" text-color="primary-70">
@@ -84,6 +88,7 @@ interface Props {
   visible: boolean
   verticalPosition?: 'start' | 'center'
   width?: 'normal' | 'auto' | 'wide'
+  heightFull?: boolean
   footer?: boolean
   title?: string
   titleIcon?: string
@@ -97,6 +102,7 @@ const props = withDefaults(defineProps<Props>(), {
   verticalPosition: 'center',
   width: 'normal',
   footer: false,
+  heightFull: false,
 })
 const emit = defineEmits<Emits>()
 

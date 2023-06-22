@@ -206,11 +206,11 @@ import {
 
 import EquipmentItem from '@/components/common/equipment-item.vue'
 
-import CharacterEquipmentDetail from './character-equipment/character-equipment-detail.vue'
-import CharacterStatCompare from './character-stats/character-stat-compare.vue'
+import CharacterEquipmentDetail from '../character-equipment/character-equipment-detail.vue'
+import CharacterStatCompare from '../character-stats/character-stat-compare.vue'
 
-import { CharacterSimulatorInjectionKey } from './injection-keys'
-import { setupCharacterStore } from './setup'
+import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean

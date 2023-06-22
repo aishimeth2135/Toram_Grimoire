@@ -252,8 +252,8 @@ class SkillBranchTextResult
     }
 
     const items = [
-      commonParseItems.value,
       commonParseItems.separate,
+      commonParseItems.value,
       commonParseItems.glossaryTag,
     ]
 

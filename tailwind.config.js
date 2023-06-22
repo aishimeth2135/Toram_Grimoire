@@ -126,6 +126,9 @@ module.exports = {
     fontFamily: {
       mono: "'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', var(--app-main-font), monospace",
     },
+    screens: {
+      cp: '800px',
+    },
     colors: colorsConfig,
     borderWidth,
     outlineWidth: borderWidth,

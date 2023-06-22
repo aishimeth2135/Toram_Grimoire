@@ -33,7 +33,11 @@ import { Ref, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useLanguageStore } from '@/stores/app/language'
+import { useMainStore } from '@/stores/app/main'
 
+import { debounce } from '@/shared/utils/function'
+
+import { AppRouteNames } from '@/router/enums'
 import AppConfirm from '@/views/app/app-confirm.vue'
 import AppInitialize from '@/views/app/app-initialize.vue'
 import AppLoading from '@/views/app/app-loading.vue'
@@ -42,10 +46,6 @@ import AppSetting from '@/views/app/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
-
-import { AppRouteNames } from './router/enums'
-import { debounce } from './shared/utils/function'
-import { useMainStore } from './stores/app/main'
 
 export default {
   name: 'App',
