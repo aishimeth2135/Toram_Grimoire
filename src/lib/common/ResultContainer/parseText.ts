@@ -42,6 +42,8 @@ export interface TextParseItem<
     end: string
   }
   handler: TextParseHandler<Value>
+  beforeParse?: (value: string) => string
+  beforeNext?: (value: string) => string
   units?: string[]
   patternGroupsLength?: number
 }
@@ -117,6 +119,8 @@ function handleTextSplit(
     tmpResult.push(item)
   })
 
+  console.log(tmpResult.slice())
+
   let mergeFlag = false
 
   // remove and merge items by remove flag
@@ -161,6 +165,8 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
     const {
       pattern,
       handler,
+      beforeParse,
+      beforeNext,
       units = [],
       parseToken,
       patternGroupsLength = 1,
@@ -172,9 +178,15 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
       Grimoire.Logger.warn('handleParseText', 'invalid params.')
       parseParts = [rootValue]
     } else {
+      const currentValue = beforeParse?.(value) ?? value
       parseParts = !parseToken
-        ? value.split(pattern!)
-        : handleTextSplit(value, parseToken.start, parseToken.end, pattern)
+        ? currentValue.split(pattern!)
+        : handleTextSplit(
+            currentValue,
+            parseToken.start,
+            parseToken.end,
+            pattern
+          )
     }
 
     const parts: TextResultContainerPartValue[] = []
@@ -203,6 +215,9 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
         if (currentIdx === order.length - 1) {
           parts.push(str)
           return
+        }
+        if (beforeNext) {
+          str = beforeNext(str)
         }
         const parseResult = handle(str, currentIdx + 1, containers)
         if (
@@ -255,13 +270,42 @@ interface ParseValueOptions {
 
 export function getCommonTextParseItems(options: ParseValueOptions = {}) {
   const units = ['%', 'm']
+
+  let incresement = 0
+  const replacements = new Map<string, string>()
+  const rollbackReplacement = (value: string) => {
+    replacements.forEach((original, replacement) => {
+      if (value.includes(replacement)) {
+        value = value.replace(replacement, `\${${original}}`)
+        replacements.delete(replacement)
+      }
+    })
+    return value
+  }
+
   const separateParse: TextParseItem<TextResultContainerPart> = {
     id: 'separate',
     parseToken: {
       start: '((',
       end: '))',
     },
+    beforeParse(value) {
+      const strs = handleTextSplit(value, '${', '}').map((item, idx) => {
+        if (idx % 2 === 1) {
+          const replacement = `__SEPARATE_PARSE_INNER_VALUE_${incresement}__`
+          incresement += 1
+          replacements.set(replacement, item)
+          return replacement
+        }
+        return item
+      })
+      return strs.join('')
+    },
+    beforeNext(value) {
+      return rollbackReplacement(value)
+    },
     handler([value], context) {
+      value = rollbackReplacement(value)
       const parts = context.parseHandlers.value?.(value).parts ?? value
       return new TextResultContainerPart(
         TextResultContainerPartTypes.Separate,
