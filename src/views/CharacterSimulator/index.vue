@@ -164,7 +164,6 @@ import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import CharacterBasic from './character-basic.vue'
-import CharacterBrowseEquipments from './character-browse-equipments.vue'
 import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
 import CharacterComboView from './character-combo/index.vue'
 import CharacterDamage from './character-damage/index.vue'
@@ -182,6 +181,8 @@ import CharacterRegistlet from './character-registlet/index.vue'
 import CharacterSave from './character-save/index.vue'
 import CharacterSkill from './character-skill/index.vue'
 import CharacterStats from './character-stats/index.vue'
+import CharacterBrowseEquipments from './equipment-browse/character-browse-equipments.vue'
+import EquipmentBrowseMain from './equipment-browse/equipment-browse-main.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
 import {
@@ -216,6 +217,7 @@ const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
     TabIds.Save,
     TabIds.Registlet,
     TabIds.Potion,
+    TabIds.EquipmentBrowse,
   ] as TabIds[],
   sideContents: ['tabs', 'panel'] as const,
 })
@@ -276,6 +278,14 @@ const tabDatas = computed(() => {
     }
   )
 
+  if (mainStore.previewMode) {
+    options.push({
+      id: TabIds.EquipmentBrowse,
+      icon: 'mdi:grid-large',
+      text: t('character-simulator.browse-equipments.action.normal'),
+    })
+  }
+
   return options
 })
 
@@ -300,6 +310,9 @@ const currentTab = computed(() => {
   }
   if (tabs[TabIds.Equipments]) {
     return CharacterEquipments
+  }
+  if (tabs[TabIds.EquipmentBrowse]) {
+    return EquipmentBrowseMain
   }
   return CharacterBasic
 })

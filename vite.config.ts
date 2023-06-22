@@ -79,7 +79,7 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 900,
       target: 'ios11',
       minify: 'terser',
-      cssCodeSplit: false,
+      // cssCodeSplit: false,
     },
     plugins,
   }

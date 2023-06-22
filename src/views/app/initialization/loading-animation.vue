@@ -4,10 +4,15 @@
       <cy-icon
         v-if="!available"
         key="1"
-        icon="@potum"
+        icon="@grimoire-cat"
         class="custom-icon start-icon"
       />
-      <cy-icon v-else key="2" icon="@potum" class="custom-icon start-icon" />
+      <cy-icon
+        v-else
+        key="2"
+        icon="@grimoire-cat"
+        class="custom-icon start-icon"
+      />
     </transition>
     <!-- <transition
       appear
@@ -109,8 +114,8 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .custom-icon {
-  width: 6rem;
-  height: 6rem;
+  width: 4.5rem;
+  height: 4.5rem;
   color: var(--app-primary-30);
 
   &.start-icon {
@@ -123,13 +128,13 @@ onMounted(() => {
     transform: translate(0, 0);
   }
   25% {
-    transform: translate(0, -25%);
+    transform: translate(0, -8%);
   }
   50% {
-    transform: translate(0, 0);
+    transform: translate(0, 8%);
   }
   75% {
-    transform: translate(0, -15%);
+    transform: translate(0, -6%);
   }
   100% {
     transform: translate(0, 0);

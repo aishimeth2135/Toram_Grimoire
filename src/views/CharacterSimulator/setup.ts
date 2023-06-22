@@ -88,4 +88,5 @@ export const enum TabIds {
   Save = 'save',
   Registlet = 'registlet',
   Potion = 'potion',
+  EquipmentBrowse = 'equipmentBrowse',
 }
