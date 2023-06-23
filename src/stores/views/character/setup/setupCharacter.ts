@@ -5,8 +5,8 @@ import Grimoire from '@/shared/Grimoire'
 import {
   Character,
   CharacterBaseStatTypes,
+  CharacterStat,
   CharacterStatResult,
-  CharacterStatResultVars,
   EquipmentFieldTypes,
 } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -315,11 +315,7 @@ export function prepareSetupCharacter() {
 
         const categoryList = Grimoire.Character.characterStatCategoryList
         const pureStats = [...characterPureStats.value]
-        const vars = {
-          ...computedVarsBase.value,
-          computed: {},
-          computedResultStore: {},
-        } as CharacterStatResultVars
+        const vars = CharacterStat.prepareCalcResultVars(computedVarsBase.value)
 
         return categoryList
           .map(

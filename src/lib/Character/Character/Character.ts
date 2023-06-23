@@ -504,20 +504,30 @@ interface StatPartsDetailAdditionalValueItem {
   readonly isMul?: boolean
 }
 
-interface CharacterStatResultVars {
+interface CharacterStatResultInputVars {
   value: {
     [key: string]: number | Record<string, number>
   }
   conditional: {
     [key: string]: boolean | Record<string, boolean>
   }
-  computed: {
+}
+
+interface CharacterStatResultVars extends CharacterStatResultInputVars {
+  value: {
+    [key: string]: number | Record<string, number>
+  }
+  conditional: {
+    [key: string]: boolean | Record<string, boolean>
+  }
+  getterResults: {
     [key: string]: number
   }
-  computedResultStore: {
+  getterOriginalResults: {
     [key: string]: CharacterStatResult
   }
 }
+
 class CharacterStat {
   private _formula!: CharacterStatFormula
 
@@ -601,8 +611,8 @@ class CharacterStat {
     currentStats: StatRecorded[],
     vars: CharacterStatResultVars
   ): CharacterStatResult {
-    if (this.id in vars.computedResultStore) {
-      return vars.computedResultStore[this.id]
+    if (this.id in vars.getterOriginalResults) {
+      return vars.getterOriginalResults[this.id]
     }
     const formula = this._formula
     try {
@@ -700,6 +710,16 @@ class CharacterStat {
       }
     }
   }
+
+  static prepareCalcResultVars(
+    input: CharacterStatResultInputVars
+  ): CharacterStatResultVars {
+    return {
+      ...input,
+      getterResults: {},
+      getterOriginalResults: {},
+    }
+  }
 }
 
 class CharacterStatFormula {
@@ -777,6 +797,21 @@ class CharacterStatFormula {
       )
     }
 
+    const getOriginalResult = (id: string) => {
+      if (!vars.getterOriginalResults[id]) {
+        const stat = allCharacterStatMap[id]
+        if (!stat) {
+          return null
+        }
+        vars.getterOriginalResults[id] = stat.result(pureStats, vars)
+      }
+      return vars.getterOriginalResults[id]
+    }
+
+    const getOriginalResultValue = (id: string) => {
+      return getOriginalResult(id)?.value ?? 0
+    }
+
     const excludeActive = (query: string): number => {
       let stat: StatRecorded | null
       if (query === '#cvalue') {
@@ -827,7 +862,7 @@ class CharacterStatFormula {
     }
     const handlerVars = {
       ...vars.value,
-      ...vars.computed,
+      ...vars.getterResults,
 
       reduceValue: (value: number) => {
         if (
@@ -854,6 +889,7 @@ class CharacterStatFormula {
 
       stat: (query: string) => getStat(query)?.value ?? 0,
       excludeActive,
+      resultValue: getOriginalResultValue,
     }
     const appendGetter = (key: string, handler: () => number) => {
       Object.defineProperty(handlerVars, key, {
@@ -867,7 +903,7 @@ class CharacterStatFormula {
         return statValueVars[key]
       })
     })
-    Object.entries(allCharacterStatMap).forEach(([key, value]) => {
+    Object.keys(allCharacterStatMap).forEach(key => {
       const originalKey = key
       key = '$' + key
       appendGetter(key, () => {
@@ -875,13 +911,12 @@ class CharacterStatFormula {
           console.warn('[CharacterStatFormula.calc] Infinite loop detected.')
           return 0
         }
-        const src = vars.computed
+        const src = vars.getterResults
         if (src[key] !== undefined) {
           return src[key]
         }
-        const originalRes = value.result(pureStats, vars)
-        vars.computedResultStore[originalKey] = originalRes
-        let res = originalRes.value
+        const originalRes = getOriginalResult(originalKey)
+        let res = originalRes?.value ?? 0
         res = typeof res === 'string' ? parseFloat(res) : res
         res = Math.floor(res)
         src[key] = res
@@ -1058,7 +1093,6 @@ export {
 }
 export type {
   CharacterSaveData,
-  CharacterStatResultVars,
   CharacterStatResult,
   CharacterStatFormulaResultConditionalBase,
   StatPartsDetailAdditionalValueItem,
