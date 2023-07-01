@@ -134,7 +134,7 @@
             </cy-icon-text>
           </div>
         </template>
-        <div class="px-1 text-sm text-primary-30">
+        <div v-else class="px-1 text-sm text-primary-30">
           {{ t('character-simulator.equipment-info.crystal-empty') }}
         </div>
       </CharacterEquipmentEditMask>
