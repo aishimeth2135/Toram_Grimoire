@@ -4,12 +4,20 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex w-full items-center">
-          <cy-icon icon="ic-outline-search" />
+          <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
           <input
             v-model="searchText"
             type="text"
             class="ml-2 inline-block w-full border-0 bg-transparent p-1"
             :placeholder="t('global.search')"
+          />
+          <cy-button-icon
+            :class="{
+              invisible: searchText === '',
+            }"
+            class="flex-shrink-0"
+            icon="mdi:close-circle"
+            @click="searchText = ''"
           />
         </div>
       </template>

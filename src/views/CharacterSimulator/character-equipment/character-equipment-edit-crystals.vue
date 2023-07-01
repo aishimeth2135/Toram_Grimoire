@@ -15,6 +15,7 @@
           :placeholder="
             t('character-simulator.select-crystals.search-placeholder')
           "
+          clearable
         />
       </div>
       <div>
@@ -61,12 +62,16 @@
         <div
           v-for="crystal in equipment?.crystals ?? []"
           :key="crystal.id"
-          class="border border-primary-30 bg-white p-3"
+          class="border border-primary-30 bg-white px-3 py-2"
         >
-          <div>
-            <cy-icon-text icon="bx-bx-cube-alt" color="fuchsia">
-              {{ crystal.name }}
-            </cy-icon-text>
+          <div class="flex items-center">
+            <cy-icon :path="crystal.crystalIconPath" />
+            <span class="ml-2 text-cyan-60">{{ crystal.name }}</span>
+            <cy-button-icon
+              class="ml-auto"
+              icon="mdi:close-circle-outline"
+              @click="toggleCrystalSelected(crystal.origin)"
+            />
           </div>
           <div class="mt-1 px-2">
             <ShowStat
@@ -156,9 +161,23 @@ const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
   return crystalCategorys
     .filter(category => availableCrystalCategoryIds.value.includes(category.id))
     .map(category => {
-      const crystals = category.crystals.filter(crystal =>
-        crystal.name.includes(searchText.value)
-      )
+      const text = searchText.value
+
+      const crystals = category.crystals.filter(crystal => {
+        if (crystal.name.toLowerCase().includes(text)) {
+          return true
+        }
+        const categoryCrystals = category.crystals
+        if (categoryCrystals) {
+          const relatedCrystals = crystal.getRelatedCrystals(categoryCrystals)
+          return [
+            ...relatedCrystals.enhancers,
+            ...relatedCrystals.prependeds,
+          ].some(item => item.name.toLowerCase().includes(text))
+        }
+        return false
+      })
+
       return {
         id: category.id,
         crystals,

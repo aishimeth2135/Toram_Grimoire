@@ -12,7 +12,7 @@
           @click="toggleBookmark"
         />
       </div>
-      <ItemQueryResult class="search-result" :equipments="searchResult" />
+      <ItemQueryResult class="min-h-[70vh]" :equipments="searchResult" />
     </div>
     <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem">
       {{ t('item-query.no-result-tips') }}
@@ -21,15 +21,24 @@
       <template #default>
         <div class="flex items-center">
           <template v-if="state.currentMode === SearchModes.Normal">
-            <div class="mode-normal-title ml-2">
-              <div class="input-container">
-                <cy-icon icon="ic-outline-search" />
+            <div class="ml-2 flex w-full items-center">
+              <div class="relative flex w-full items-center">
+                <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
                 <input
                   v-model="modes[SearchModes.Normal].searchText"
                   type="text"
+                  class="ml-2 inline-block w-full border-0 p-1"
                   :placeholder="t('global.search')"
                 />
               </div>
+              <cy-button-icon
+                :class="{
+                  invisible: modes[SearchModes.Normal].searchText === '',
+                }"
+                class="flex-shrink-0"
+                icon="mdi:close-circle"
+                @click="modes[SearchModes.Normal].searchText = ''"
+              />
               <cy-button-icon
                 icon="heroicons-solid:menu"
                 @click="
@@ -79,13 +88,22 @@
             </div>
           </template>
           <template v-else-if="state.currentMode === SearchModes.Dye">
-            <div class="mode-dye-title">
-              <div class="input-container">
-                <cy-icon icon="ic-outline-palette" class="ml-2" />
+            <div class="flex w-full items-center">
+              <div class="relative flex w-full items-center">
+                <cy-icon icon="ic-outline-palette" class="ml-2 flex-shrink-0" />
                 <input
                   v-model="modes[SearchModes.Dye].searchText"
                   type="text"
+                  class="ml-2 inline-block w-full border-0 p-1"
                   :placeholder="t('global.search')"
+                />
+                <cy-button-icon
+                  :class="{
+                    invisible: modes[SearchModes.Dye].searchText === '',
+                  }"
+                  class="flex-shrink-0"
+                  icon="mdi:close-circle"
+                  @click="modes[SearchModes.Dye].searchText = ''"
                 />
               </div>
             </div>
@@ -281,6 +299,7 @@
             :placeholder="
               t('item-query.options-stat.select-stat.search-placeholder')
             "
+            clearable
           />
         </div>
         <div
@@ -736,30 +755,3 @@ const selectMode = (id: SearchModes) => {
   state.displayMode = 0
 }
 </script>
-
-<style lang="postcss" scoped>
-.search-result {
-  min-height: 70vh;
-}
-
-.mode-normal-title,
-.mode-dye-title {
-  display: flex;
-  align-items: center;
-  width: 100%;
-
-  & .input-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-
-    & > input {
-      border: 0;
-      padding: 0.2rem;
-      margin-left: 0.4rem;
-      display: inline-block;
-      width: 100%;
-    }
-  }
-}
-</style>

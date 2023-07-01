@@ -140,9 +140,9 @@
               :key="stat.origin.statId(stat.type)"
               @click="toggleStatSelected(stat)"
             >
-              <cy-button-check selected color="red" inline>{{
-                stat.text
-              }}</cy-button-check>
+              <cy-button-check selected color="red" inline>
+                {{ stat.text }}
+              </cy-button-check>
             </cy-list-item>
           </div>
         </div>

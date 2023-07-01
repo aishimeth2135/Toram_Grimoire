@@ -50,18 +50,26 @@
       </template>
       <template #default>
         <div v-if="mode === 'normal'" class="flex w-full items-center">
-          <cy-icon icon="ic-outline-search" />
+          <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
           <input
             v-model="modeNormal.searchText"
             type="text"
             class="ml-2 inline-block w-full border-0 bg-transparent p-1"
             :placeholder="t('global.search')"
           />
+          <cy-button-icon
+            :class="{
+              invisible: modeNormal.searchText === '',
+            }"
+            icon="mdi:close-circle"
+            class="flex-shrink-0"
+            @click="modeNormal.searchText = ''"
+          />
         </div>
         <cy-button-plain
           v-else-if="mode === 'stat'"
           icon="mdi-rhombus-outline"
-          :color="modeStat.statItem ? 'primary' : 'fuchsia'"
+          :color="modeStat.statItem ? 'primary' : 'red'"
           @click="toggle('modals/selectStat')"
         >
           {{

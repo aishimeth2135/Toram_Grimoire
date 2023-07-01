@@ -15,7 +15,7 @@
       </div>
       <div
         v-if="status < InitializeStatus.BeforeFinished"
-        class="mt-8 flex w-full justify-center bg-white/40 px-4 py-6"
+        class="mt-8 flex min-h-[12rem] w-full justify-center bg-white/40 px-4 py-6"
       >
         <div class="mt-2 inline-block">
           <template v-if="status <= InitializeStatus.ViewSuccess">

@@ -27,6 +27,9 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
     if (index === 0 || characterSystem.findStatBase(row[BASE_NAME])) {
       return
     }
+    if (row[BASE_NAME] === '') {
+      return
+    }
     try {
       const stat = characterSystem.appendStatBase(
         row[BASE_NAME],

@@ -5,7 +5,11 @@
     @close="emit('close')"
   >
     <div class="sticky top-0 mb-3">
-      <cy-title-input v-model:value="searchText" icon="ic:baseline-search" />
+      <cy-title-input
+        v-model:value="searchText"
+        icon="ic:baseline-search"
+        clearable
+      />
     </div>
     <div>
       <cy-list-item
