@@ -119,8 +119,6 @@ function handleTextSplit(
     tmpResult.push(item)
   })
 
-  console.log(tmpResult.slice())
-
   let mergeFlag = false
 
   // remove and merge items by remove flag

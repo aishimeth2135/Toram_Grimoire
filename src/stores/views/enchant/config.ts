@@ -7,7 +7,7 @@ export interface EnchantStoreConfig {
   smithLevel: number
 }
 
-let characterMaxLevel = 260
+let characterMaxLevel = 270
 
 export function updateCharacterMaxLevel(value: number) {
   characterMaxLevel = value
