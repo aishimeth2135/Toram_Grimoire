@@ -5,7 +5,7 @@
       <cy-transition>
         <div
           v-if="currentStep > stepId"
-          class="disabled-mask"
+          :class="classes.disabledMask"
           @click="maskClick"
         />
       </cy-transition>
@@ -60,7 +60,7 @@ const maskClick = () => {
   }
 }
 
-.disabled-mask {
+.disabledMask {
   @apply absolute left-0 top-0 z-5 h-full w-full cursor-not-allowed;
 
   background-color: rgba(var(--app-rgb-white), 0.6);
