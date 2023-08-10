@@ -51,6 +51,22 @@
             :negative-value="stat.value < 0"
           />
         </div>
+        <div
+          v-if="crystal.origin.obtains.length > 0"
+          class="mt-3 flex items-center"
+        >
+          <cy-icon-text
+            icon="mdi:treasure-chest-outline"
+            small
+            icon-color="gray-60"
+            text-color="primary-30"
+          >
+            {{ t('crystal-query.obtain-pretext') }}
+          </cy-icon-text>
+          <span class="ml-0.5 text-sm text-gray-60">
+            {{ crystal.origin.obtains[0].name }}
+          </span>
+        </div>
         <div v-if="crystal.origin.enhancer" class="mt-3 flex items-center">
           <cy-icon-text
             icon="mdi:arrow-up-bold-outline"
