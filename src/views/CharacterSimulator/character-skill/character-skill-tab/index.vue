@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden rounded-md border-1 border-primary-20">
+  <CardRowsWrapper class="overflow-x-auto">
     <div class="flex items-center px-2 pb-4 pt-3">
       <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
@@ -8,7 +8,7 @@
         {{ disableAllButtonTitle }}
       </cy-button-toggle>
     </div>
-    <CardRows :class="{ 'opacity-50': disableAll }">
+    <CardRows :class="{ 'opacity-50': disableAll }" class="min-w-[30rem]">
       <CharacterSkillItem
         v-for="skillResultsState in validResultStates"
         :key="skillResultsState.skill.skillId"
@@ -26,7 +26,7 @@
         :skill-results-state="skillResultsState"
       />
     </CardRows>
-  </div>
+  </CardRowsWrapper>
 </template>
 
 <script lang="ts">
@@ -48,6 +48,7 @@ import CharacterSkillItem from './character-skill-item.vue'
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
 
 import CardRows from '@/components/card/card-rows.vue'
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 
 interface Props {
   type: SkillTypes

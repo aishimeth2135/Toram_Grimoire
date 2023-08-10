@@ -8,7 +8,7 @@
       v-bind="attrs"
       @click="navigate"
     >
-      <cy-icon :icon="data.icon" />
+      <cy-icon :icon="data.icon" class="mr-2.5" />
       <span
         :class="[
           currentRoute.name === data.pathName

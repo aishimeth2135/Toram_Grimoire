@@ -7,7 +7,7 @@
       />
     </div>
     <div class="w-full">
-      <div v-if="!hideName" class="text-primary-70 pt-0.5">
+      <div v-if="!hideName" class="pt-0.5 text-primary-70">
         {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
       </div>
       <div class="py-0.5">
@@ -20,7 +20,7 @@
           :stat-containers="container.statContainers"
         />
       </div>
-      <div class="pl-4 pt-1">
+      <div class="pt-1">
         <CharacterSkillResultSuffixItem
           v-for="suffixContainer in result.suffixContainers"
           :key="suffixContainer.instanceId"

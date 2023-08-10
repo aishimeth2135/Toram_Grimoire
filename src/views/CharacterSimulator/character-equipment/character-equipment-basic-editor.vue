@@ -87,6 +87,7 @@
     <Draggable
       v-model="currentEquipment.stats"
       class="mt-2 space-y-1.5 pl-1.5"
+      handle=".drag-handle"
       :item-key="getStatKey"
     >
       <template #item="{ element: stat }">
@@ -102,7 +103,10 @@
               </cy-icon-text>
             </template>
           </cy-input-counter>
-          <cy-icon icon="ic:baseline-drag-indicator" class="ml-auto" />
+          <cy-icon
+            icon="ic:baseline-drag-indicator"
+            class="drag-handle ml-auto"
+          />
         </div>
       </template>
     </Draggable>

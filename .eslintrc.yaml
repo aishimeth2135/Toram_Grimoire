@@ -104,8 +104,7 @@ rules:
     - functions: false
       classes: false
       typedefs: false
-  # '@typescript-eslint/no-unused-vars':
-  #   - error
+  '@typescript-eslint/no-unused-vars': off
   '@typescript-eslint/no-shadow':
     - error
   '@typescript-eslint/prefer-enum-initializers':
