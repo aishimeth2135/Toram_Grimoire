@@ -134,7 +134,7 @@ const autoNegativeStatsData: Ref<ReturnType<
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
 
 const consts = {
-  autoFindPotentialMinimumLimit: 99,
+  autoFindPotentialMinimumLimit: 130,
 }
 
 const equipmentState = reactive({
