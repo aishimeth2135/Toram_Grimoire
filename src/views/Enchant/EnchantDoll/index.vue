@@ -212,7 +212,7 @@ const autoFindNegaitveStats = async (
       if (originalPotentialUnknow) {
         autoNegativeStatsData.value = doll.value.autoFindNegaitveStats(
           manuallyStats,
-          consts.autoFindPotentialMinimumLimit
+          100
         )
         // if (this.autoNegativeStatsData.realSuccessRate >= 100) {
         //   this.autoFindPotentialMinimumEquipment();
