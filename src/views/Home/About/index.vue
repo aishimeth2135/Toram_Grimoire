@@ -253,6 +253,11 @@ const columns: {
             main: '奇鴉譜月',
             sub: '眾神幣',
           },
+          '@line',
+          {
+            main: '地下酒吧',
+            sub: '眾神幣',
+          },
         ],
       },
       {
