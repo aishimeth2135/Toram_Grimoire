@@ -1,5 +1,5 @@
 <template>
-  <AppLayoutMain v-if="currentCalculation" class="flex flex-col">
+  <AppLayoutMain v-if="currentCalculation">
     <div class="scrollbar-hide max-w-full overflow-x-auto px-1 py-4">
       <div v-if="currentCalculation" class="min-w-max">
         <div
