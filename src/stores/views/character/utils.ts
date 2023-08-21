@@ -28,18 +28,22 @@ export function checkStatRestriction(
   return !!types.other || checkMain || checkMainSub || checkSub || checkBody
 }
 
+export function createElementMap(): Record<EnemyElements, number> {
+  return {
+    [EnemyElements.Neutral]: 0,
+    [EnemyElements.Fire]: 0,
+    [EnemyElements.Water]: 0,
+    [EnemyElements.Earth]: 0,
+    [EnemyElements.Wind]: 0,
+    [EnemyElements.Light]: 0,
+    [EnemyElements.Dark]: 0,
+  }
+}
+
 export function getCharacterElement(
   chara: Character
 ): Record<EnemyElements, number> {
-  const element: Record<EnemyElements, number> = {
-    neutral: 0,
-    fire: 0,
-    water: 0,
-    earth: 0,
-    wind: 0,
-    light: 0,
-    dark: 0,
-  }
+  const element = createElementMap()
 
   let neutralFlag = true
   const setElement = (stat: StatRestriction) => {

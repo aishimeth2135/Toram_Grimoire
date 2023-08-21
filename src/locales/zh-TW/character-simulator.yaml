@@ -91,6 +91,7 @@ character-damage:
   options-base-title: 基本設定
   options-other-title: 其他設定
   armor-break-display: 顯示降防時傷害
+  force-critical: 傷害必定爆擊
   armor-break: 降防
   element-none: 無設定
   no-result: 傷害公式待更新

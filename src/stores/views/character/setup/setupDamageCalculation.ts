@@ -16,7 +16,7 @@ import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
-import { getCharacterElement } from '../utils'
+import { createElementMap, getCharacterElement } from '../utils'
 import { SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
 import { SkillResult } from './setupCharacterSkills'
 
@@ -36,6 +36,7 @@ export interface TargetProperties {
 export interface CalculationOptions {
   proration: number
   comboRate: number
+  forceCritical: boolean
   armorBreakDisplay: boolean
 }
 
@@ -204,7 +205,7 @@ export function setupDamageCalculation(
     const resultValue = (id: string) =>
       statResults.value.find(result => result.id === id)?.resultValue ?? 0
 
-    const isMagicWeapon = () => {
+    const checkMagicWeapon = () => {
       if (!character.value) {
         return false
       }
@@ -228,37 +229,42 @@ export function setupDamageCalculation(
         return elementsRate
       }
       const skillElement = getSkillElement(container.value.branchItem)
-      const magicExtra =
-        container.value.getOrigin('damage_type') === 'magic'
-          ? resultValue('magic_element_dmg')
-          : 0
-      if (skillElement) {
-        const keys = Object.keys(skillElement) as EnemyElements[]
-        keys.forEach(key => {
+      const isMagicWeapon = checkMagicWeapon()
+
+      let magicExtra = 0
+      if (container.value.getOrigin('damage_type') === 'magic') {
+        magicExtra = isMagicWeapon
+          ? resultValue('magic_element_extra_damage')
+          : resultValue('magic_element_against_damage')
+      }
+
+      const calcElement = skillElement ?? currentCharacterElement.value
+      const calcElementKeys = Object.keys(calcElement) as EnemyElements[]
+      const isNotNeutral = calcElementKeys.some(key => {
+        if (key === EnemyElements.Neutral) {
+          return
+        }
+        return calcElement[key] === 1
+      })
+
+      if (isNotNeutral) {
+        calcElementKeys.forEach(key => {
+          if (isMagicWeapon) {
+            elementsRate[key] = magicExtra
+          }
           if (key === EnemyElements.Neutral) {
             return
           }
           const againstKey = againstElementMap[key]
-          if (skillElement[key] === 1) {
-            elementsRate[againstKey] = magicExtra + 25
-          } else if (isMagicWeapon()) {
-            elementsRate[againstKey] = magicExtra
-          }
-        })
-      } else {
-        const keys = Object.keys(
-          currentCharacterElement.value
-        ) as EnemyElements[]
-        keys.forEach(key => {
-          if (key === EnemyElements.Neutral) {
-            return
-          }
-          if (currentCharacterElement.value![key] === 1) {
-            const againstKey = againstElementMap[key]
-            elementsRate[againstKey] = 25
+          if (calcElement[key] === 1) {
+            elementsRate[againstKey] += 25
+            if (!isMagicWeapon) {
+              elementsRate[againstKey] += magicExtra
+            }
           }
         })
       }
+
       return elementsRate
     })
 
@@ -268,7 +274,7 @@ export function setupDamageCalculation(
       }
 
       let extraMagicCriticalRateConvertionRate = 0
-      if (isMagicWeapon()) {
+      if (checkMagicWeapon()) {
         const skillElement = getSkillElement(container.value.branchItem)
         if (
           skillElement?.neutral === 1 ||
@@ -276,6 +282,13 @@ export function setupDamageCalculation(
         ) {
           extraMagicCriticalRateConvertionRate = 25
         }
+      }
+
+      const getElementExtra = (element: EnemyElements) => {
+        return (
+          statValue(`stronger_against_${element}`) +
+          skillElementExtra.value[element]
+        )
       }
 
       return new Map<CalculationItemIds, number>([
@@ -314,43 +327,31 @@ export function setupDamageCalculation(
         [CalculationItemIds.PromisedAccuracyRate, promisedAccuracyRate.value],
         [
           CalculationItemIds.StrongerAgainstNeutral,
-          100 + statValue('stronger_against_neutral'),
+          100 + getElementExtra(EnemyElements.Neutral),
         ],
         [
           CalculationItemIds.StrongerAgainstFire,
-          100 +
-            statValue('stronger_against_fire') +
-            skillElementExtra.value.fire,
+          100 + getElementExtra(EnemyElements.Fire),
         ],
         [
           CalculationItemIds.StrongerAgainstWater,
-          100 +
-            statValue('stronger_against_water') +
-            skillElementExtra.value.water,
+          100 + getElementExtra(EnemyElements.Water),
         ],
         [
           CalculationItemIds.StrongerAgainstEarth,
-          100 +
-            statValue('stronger_against_earth') +
-            skillElementExtra.value.earth,
+          100 + getElementExtra(EnemyElements.Earth),
         ],
         [
           CalculationItemIds.StrongerAgainstWind,
-          100 +
-            statValue('stronger_against_wind') +
-            skillElementExtra.value.wind,
+          100 + getElementExtra(EnemyElements.Wind),
         ],
         [
           CalculationItemIds.StrongerAgainstLight,
-          100 +
-            statValue('stronger_against_light') +
-            skillElementExtra.value.light,
+          100 + getElementExtra(EnemyElements.Light),
         ],
         [
           CalculationItemIds.StrongerAgainstDark,
-          100 +
-            statValue('stronger_against_dark') +
-            skillElementExtra.value.dark,
+          100 + getElementExtra(EnemyElements.Dark),
         ],
 
         [CalculationItemIds.CharacterLevel, character.value.level],
@@ -562,6 +563,10 @@ export function setupDamageCalculation(
             ),
         ],
         [
+          CalculationContainerIds.CriticalRate,
+          calculationOptions.value.forceCritical,
+        ],
+        [
           CalculationContainerIds.StrongerAgainstElement,
           targetProperties.value.element === null,
         ],
@@ -624,16 +629,4 @@ function isValidElement(
     EnemyElements.Dark,
   ]
   return elementsList.includes(element as EnemyElements)
-}
-
-function createElementMap(): Record<EnemyElements, number> {
-  return {
-    [EnemyElements.Neutral]: 0,
-    [EnemyElements.Fire]: 0,
-    [EnemyElements.Water]: 0,
-    [EnemyElements.Earth]: 0,
-    [EnemyElements.Wind]: 0,
-    [EnemyElements.Light]: 0,
-    [EnemyElements.Dark]: 0,
-  }
 }

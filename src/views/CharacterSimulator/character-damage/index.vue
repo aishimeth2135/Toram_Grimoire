@@ -82,6 +82,13 @@
           </cy-icon-text>
           <div class="mt-2">
             <cy-button-check
+              v-model:selected="store.calculationOptions.forceCritical"
+            >
+              {{ t('character-simulator.character-damage.force-critical') }}
+            </cy-button-check>
+          </div>
+          <div class="mt-2">
+            <cy-button-check
               v-model:selected="store.calculationOptions.armorBreakDisplay"
             >
               {{

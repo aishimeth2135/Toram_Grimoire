@@ -2,51 +2,41 @@ import { reactive, watch } from 'vue'
 
 import { debounce } from '@/shared/utils/function'
 
-let _viewport: {
-  width: number
-  height: number
-}
+import { defineState } from './State'
 
-export function useViewport() {
-  if (_viewport === undefined) {
-    _viewport = reactive({
-      width: 0,
-      height: 0,
-    })
-    const update = () => {
-      _viewport.width = window.innerWidth
-      _viewport.height = window.innerHeight
-    }
-    update()
+export const useViewport = defineState(() => {
+  const viewport = reactive({
+    width: 0,
+    height: 0,
+  })
 
-    window.addEventListener('resize', debounce(update, 400))
+  const update = () => {
+    viewport.width = window.innerWidth
+    viewport.height = window.innerHeight
   }
 
-  return { viewport: _viewport }
-}
+  update()
 
-let _device: {
-  isMobile: boolean
-  hasAside: boolean
-}
+  window.addEventListener('resize', debounce(update, 400))
 
-export function useDevice() {
-  if (_device === undefined) {
-    const { viewport } = useViewport()
-    _device = reactive({
-      isMobile: false,
-      hasAside: false,
-    })
+  return { viewport }
+})
 
-    watch(
-      viewport,
-      newViewport => {
-        _device.isMobile = newViewport.width <= 800
-        _device.hasAside = newViewport.width >= 1376
-      },
-      { immediate: true }
-    )
-  }
+export const useDevice = defineState(() => {
+  const { viewport } = useViewport()
+  const device = reactive({
+    isMobile: false,
+    hasAside: false,
+  })
 
-  return { device: _device }
-}
+  watch(
+    viewport,
+    newViewport => {
+      device.isMobile = newViewport.width <= 800
+      device.hasAside = newViewport.width >= 1376
+    },
+    { immediate: true }
+  )
+
+  return { device }
+})

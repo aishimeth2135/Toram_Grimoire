@@ -557,6 +557,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     proration: 250,
     comboRate: 150,
     armorBreakDisplay: false,
+    forceCritical: false,
   })
 
   const {
