@@ -15,16 +15,10 @@ import { EnchantDollCategory } from './EnchantDollCategory'
 import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer'
 import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from './enums'
 
-interface AutoFindNegaitveStatsResultIntegral {
+export interface AutoFindNegaitveStatsResult {
   stats: EnchantStat[]
   realSuccessRate: number
-  equipment: EnchantEquipment
-}
-
-interface AutoFindNegaitveStatsResultPartial {
-  stats: EnchantStat[]
-  realSuccessRate: null
-  equipment: null
+  equipment: EnchantEquipment | null
 }
 
 class EnchantDoll {
@@ -267,7 +261,7 @@ class EnchantDoll {
   autoFindNegaitveStats(
     manuallyStats: EnchantStat[] = [],
     originalPotential: number = 0
-  ): AutoFindNegaitveStatsResultIntegral | AutoFindNegaitveStatsResultPartial {
+  ): AutoFindNegaitveStatsResult {
     const limit = this.numNegativeStats
     const categorys = Grimoire.Enchant.categorys
 
@@ -426,14 +420,14 @@ class EnchantDoll {
             equipment: eq,
           }
         })
-        .filter(item => item !== null) as AutoFindNegaitveStatsResultIntegral[]
+        .filter(item => item !== null) as AutoFindNegaitveStatsResult[]
       return finaleList.sort(
         (item1, item2) => item2.realSuccessRate - item1.realSuccessRate
       )[0]
     }
 
     return {
-      realSuccessRate: null,
+      realSuccessRate: 0,
       equipment: null,
       stats: this.parseNegativeCategorys(negatives, limit),
     }

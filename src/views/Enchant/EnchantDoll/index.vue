@@ -92,7 +92,11 @@ import {
   EnchantStat,
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
-import { EnchantDoll, EnchantDollBaseTypes } from '@/lib/Enchant/EnchantDoll'
+import {
+  AutoFindNegaitveStatsResult,
+  EnchantDoll,
+  EnchantDollBaseTypes,
+} from '@/lib/Enchant/EnchantDoll'
 import AutoSave from '@/shared/setup/AutoSave'
 import Confirm from '@/shared/setup/Confirm'
 import Notify from '@/shared/setup/Notify'
@@ -128,9 +132,8 @@ AutoSave({
 const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
 const currentStep = ref(StepIds.Equipment)
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
-const autoNegativeStatsData: Ref<ReturnType<
-  EnchantDoll['autoFindNegaitveStats']
-> | null> = ref(null)
+const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> =
+  ref(null)
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
 
 const consts = {
@@ -160,7 +163,7 @@ const equipmentIsWeapon = computed(
 )
 
 const autoNegativeStats = computed(() =>
-  autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : []
+  autoNegativeStatsResult.value ? autoNegativeStatsResult.value.stats : []
 )
 
 const negativeStats = computed(() => {
@@ -204,13 +207,13 @@ const autoFindNegaitveStats = async (
   manuallyStats: EnchantStat[],
   originalPotentialUnknow = false
 ) => {
-  autoNegativeStatsData.value = null
+  autoNegativeStatsResult.value = null
   loading.show()
   await nextTick()
   setTimeout(() => {
     try {
       if (originalPotentialUnknow) {
-        autoNegativeStatsData.value = doll.value.autoFindNegaitveStats(
+        autoNegativeStatsResult.value = doll.value.autoFindNegaitveStats(
           manuallyStats,
           100
         )
@@ -219,7 +222,7 @@ const autoFindNegaitveStats = async (
         //   this.autoNegativeStatsData = doll.value.autoFindNegaitveStats(manuallyStats);
         // }
       } else {
-        autoNegativeStatsData.value =
+        autoNegativeStatsResult.value =
           doll.value.autoFindNegaitveStats(manuallyStats)
       }
     } catch (err) {
@@ -241,19 +244,20 @@ const updateAutoFindNegativeStats = (value: boolean) => {
     }
     autoFindNegaitveStats(manuallyStats)
   } else {
-    autoNegativeStatsData.value = null
+    autoNegativeStatsResult.value = null
   }
 }
 
 const autoFindPotentialMinimumEquipment = () => {
-  if (autoNegativeStatsData.value?.equipment) {
-    const data = autoNegativeStatsData.value
-    if (data.realSuccessRate < 100) {
+  if (autoNegativeStatsResult.value?.equipment) {
+    const result = autoNegativeStatsResult.value
+    if (result.realSuccessRate >= 100) {
       currentEquipment.value.originalPotential =
-        consts.autoFindPotentialMinimumLimit
-      return data.equipment
+        result.equipment!.originalPotential
+      return result.equipment
     }
   }
+
   let left = 1,
     right = consts.autoFindPotentialMinimumLimit,
     mid = Math.floor((left + right) / 2)
@@ -267,10 +271,13 @@ const autoFindPotentialMinimumEquipment = () => {
     mid = Math.floor((left + right) / 2)
     cur = doll.value.calc(negativeStats.value, mid)!
   }
+
   if (cur.realSuccessRate < 100) {
     cur = doll.value.calc(negativeStats.value, right)!
   }
+
   currentEquipment.value.originalPotential = cur.originalPotential
+
   return cur
 }
 
