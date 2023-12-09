@@ -249,14 +249,14 @@ const updateAutoFindNegativeStats = (value: boolean) => {
 }
 
 const autoFindPotentialMinimumEquipment = () => {
-  if (autoNegativeStatsResult.value?.equipment) {
-    const result = autoNegativeStatsResult.value
-    if (result.realSuccessRate >= 100) {
-      currentEquipment.value.originalPotential =
-        result.equipment!.originalPotential
-      return result.equipment
-    }
-  }
+  // if (autoNegativeStatsResult.value?.equipment) {
+  //   const result = autoNegativeStatsResult.value
+  //   if (result.realSuccessRate >= 100) {
+  //     currentEquipment.value.originalPotential =
+  //       result.equipment!.originalPotential
+  //     return result.equipment
+  //   }
+  // }
 
   let left = 1,
     right = consts.autoFindPotentialMinimumLimit,
