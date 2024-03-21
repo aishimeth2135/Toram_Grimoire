@@ -29,12 +29,6 @@
   </CardRowsWrapper>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CharacterSkillTab',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -43,12 +37,16 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { SkillTypes } from '@/lib/Skill/Skill'
 
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
+
 import CharacterSkillItem from './character-skill-item.vue'
 
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
 
-import CardRows from '@/components/card/card-rows.vue'
-import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+defineOptions({
+  name: 'CharacterSkillTab',
+})
 
 interface Props {
   type: SkillTypes

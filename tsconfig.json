@@ -7,7 +7,7 @@
     "lib": ["esnext", "dom", "dom.iterable", "webworker"],
     "skipLibCheck": true,
 
-    /* "bundler" mode */
+    /* "bundler" mode (invalid for `vue-i18n`) */
     "moduleResolution": "node",
     "noEmit": true,
     "isolatedModules": true,
@@ -23,7 +23,6 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "outDir": "built",
-    "types": ["vite/client", "vite-plugin-pwa/client"],
     "paths": {
       "@/*": ["src/*"]
     }

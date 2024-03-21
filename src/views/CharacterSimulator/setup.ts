@@ -28,7 +28,7 @@ export function setupCharacterStore() {
     store,
     characters: characters as Ref<Character[]>,
     equipments: equipments as Ref<CharacterEquipment[]>,
-    currentCharacter: currentCharacter as Ref<Character | null>,
+    currentCharacter: currentCharacter,
     characterStatCategoryResults: characterStatCategoryResults as Ref<
       CharacterStatCategoryResult[]
     >,
@@ -80,13 +80,14 @@ export function setupCharacterPotionStore() {
 }
 
 export const enum TabIds {
-  Basic = 'basic',
-  EquipmentFields = 'equipmentFields',
-  Equipments = 'equipments',
-  Skill = 'skill',
-  Food = 'food',
-  Save = 'save',
-  Registlet = 'registlet',
-  Potion = 'potion',
-  EquipmentBrowse = 'equipmentBrowse',
+  Basic,
+  Dashboard,
+  EquipmentFields,
+  Equipments,
+  Skill,
+  Food,
+  Save,
+  Registlet,
+  Potion,
+  EquipmentBrowse,
 }

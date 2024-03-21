@@ -1,0 +1,115 @@
+<script lang="ts" setup>
+import { computed, inject } from 'vue'
+
+import { Character, CharacterBaseStat } from '@/lib/Character/Character'
+
+import CharacterDashboardEquipmentField from './character-dashboard-equipment-field.vue'
+import CharacterDashboardFoodBuild from './character-dashboard-food-build.vue'
+import CharacterDashboardPotionBuild from './character-dashboard-potion-build.vue'
+import CharacterDashboardRegistletBuild from './character-dashboard-registlet-build.vue'
+import CharacterDashboardSkillBuild from './character-dashboard-skill-build.vue'
+
+import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { TabIds, setupCharacterStore } from '../setup'
+
+interface Props {
+  character: Character
+}
+
+const props = defineProps<Props>()
+const { store: characterStore } = setupCharacterStore()
+
+const validBaseStats = computed(() => {
+  return props.character.baseStats
+    .filter(item => item.value > 1)
+    .sort((item1, item2) => item2.value - item1.value)
+})
+
+const primaryBaseStat = computed(() => validBaseStats.value[0])
+const secondaryBaseStat = computed<CharacterBaseStat | null>(
+  () => validBaseStats.value[1] ?? null
+)
+
+const characterState = computed(() =>
+  characterStore.getCharacterState(props.character)
+)
+
+const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
+</script>
+
+<template>
+  <div class="px-3 py-3">
+    <div class="rounded-sm border border-primary-20 wd:flex wd:items-stretch">
+      <div class="w-full flex-shrink-0 px-8 py-5 wd:max-w-xs">
+        <div class="-mx-1 border-b border-primary-10 px-1 text-primary-80">
+          {{ character.name }}
+        </div>
+        <div class="mt-3 text-primary-40">{{ `Lv.${character.level}` }}</div>
+      </div>
+
+      <div v-if="validBaseStats.length > 0" class="flex items-center px-8 py-5">
+        <div
+          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-1 border-red-50"
+        >
+          <span class="text-sm text-primary-50">
+            {{ primaryBaseStat.name }}
+          </span>
+          <span class="pb-1 text-primary-80">
+            {{ primaryBaseStat.value }}
+          </span>
+        </div>
+        <div
+          v-if="secondaryBaseStat"
+          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-1 border-primary-30"
+        >
+          <span class="text-sm text-primary-50">
+            {{ secondaryBaseStat.name }}
+          </span>
+          <span class="pb-1 text-primary-80">
+            {{ secondaryBaseStat.value }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-7 rounded-sm border border-primary-20 wd:flex wd:items-stretch"
+    >
+      <div class="relative w-full py-2 wd:border-r wd:border-primary-10">
+        <cy-button-icon
+          icon="mdi:square-edit-outline"
+          class="absolute right-2 top-2"
+          @click="setCurrentTab(TabIds.EquipmentFields)"
+        />
+        <CharacterDashboardEquipmentField
+          v-for="(equipmentField, idx) in character.equipmentFields.filter(
+            field => field.equipment
+          )"
+          :key="equipmentField.fieldId"
+          :equipment-field="equipmentField"
+          :class="idx % 2 !== 0 ? 'bg-primary-5/50' : ''"
+        />
+      </div>
+      <div class="flex w-full flex-shrink-0 flex-col items-start wd:max-w-sm">
+        <CharacterDashboardSkillBuild
+          v-if="characterState.skillBuild"
+          :skill-build="characterState.skillBuild"
+        />
+        <CharacterDashboardFoodBuild
+          v-if="characterState.foodBuild"
+          class="border-t border-primary-10"
+          :food-build="characterState.foodBuild"
+        />
+        <CharacterDashboardPotionBuild
+          v-if="characterState.potionBuild"
+          class="border-t border-primary-10"
+          :potion-build="characterState.potionBuild"
+        />
+        <CharacterDashboardRegistletBuild
+          v-if="characterState.registletBuild"
+          class="border-t border-primary-10"
+          :registlet-build="characterState.registletBuild"
+        />
+      </div>
+    </div>
+  </div>
+</template>

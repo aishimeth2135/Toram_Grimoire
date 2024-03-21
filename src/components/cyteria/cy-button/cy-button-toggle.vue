@@ -2,7 +2,7 @@
   <CyButtonBase
     v-slot="{ iconClass }"
     v-bind="buttonBaseBinds"
-    class="cy-button-toggle py-1 px-2"
+    class="cy-button-toggle px-2 py-1"
     @click="buttonClick"
   >
     <ButtonIcon
@@ -22,12 +22,12 @@ import { defineComponent } from 'vue'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, getButtonBaseBinds } from './setup'
+import { ButtonBasePropList, getButtonBaseBinds } from './setup'
 
 export default defineComponent({
   emits: ['click', 'update:selected'],
   props: {
-    ...ButtonBaseProps,
+    ...ButtonBasePropList,
   },
   components: {
     CyButtonBase,

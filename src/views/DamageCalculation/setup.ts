@@ -54,17 +54,11 @@ const setupCalcMode = () => {
 
 const setupCalculationStoreState = () => {
   const store = useDamageCalculationStore()
-  const {
-    calculations,
-    currentCalculation,
-  }: {
-    calculations: Ref<Calculation[]>
-    currentCalculation: Ref<Calculation>
-  } = storeToRefs(store)
+  const { calculations, currentCalculation } = storeToRefs(store)
 
   return {
-    calculations,
-    currentCalculation,
+    calculations: calculations as Ref<Calculation[]>,
+    currentCalculation: currentCalculation as Ref<Calculation>,
   }
 }
 

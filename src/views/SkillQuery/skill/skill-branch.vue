@@ -14,7 +14,7 @@
           class="flex items-center pb-1.5 pl-3 pt-2"
         >
           <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
-            {{ t('skill-query.branch.current-effect-equipments-pretext') }}
+            {{ t('skill-query.branch.current-effect-equipments-prefix') }}
           </div>
           <SkillEquipmentButton
             :equipments="currentEffectEquipments"
@@ -38,7 +38,7 @@
         <div v-if="!sub && contents.sub">
           <div class="flex items-center pb-1.5 pl-3 pt-3">
             <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
-              {{ t('skill-query.branch.compared-effect-equipments-pretext') }}
+              {{ t('skill-query.branch.compared-effect-equipments-prefix') }}
             </div>
             <div class="flex flex-wrap items-center">
               <div class="mr-2">

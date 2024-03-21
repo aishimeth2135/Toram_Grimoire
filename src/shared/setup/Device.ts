@@ -1,7 +1,9 @@
-import { reactive, watch } from 'vue'
+import { reactive } from 'vue'
+import { computed } from 'vue'
 
 import { debounce } from '@/shared/utils/function'
 
+import { usePageLayout } from './Layout'
 import { defineState } from './State'
 
 export const useViewport = defineState(() => {
@@ -9,12 +11,10 @@ export const useViewport = defineState(() => {
     width: 0,
     height: 0,
   })
-
   const update = () => {
     viewport.width = window.innerWidth
     viewport.height = window.innerHeight
   }
-
   update()
 
   window.addEventListener('resize', debounce(update, 400))
@@ -24,19 +24,12 @@ export const useViewport = defineState(() => {
 
 export const useDevice = defineState(() => {
   const { viewport } = useViewport()
-  const device = reactive({
-    isMobile: false,
-    hasAside: false,
-  })
+  const { layout } = usePageLayout()
 
-  watch(
-    viewport,
-    newViewport => {
-      device.isMobile = newViewport.width <= 800
-      device.hasAside = newViewport.width >= 1376
-    },
-    { immediate: true }
-  )
+  const device = reactive({
+    isMobile: computed(() => viewport.width <= 800),
+    hasAside: computed(() => viewport.width >= 1376 && !layout.wide),
+  })
 
   return { device }
 })

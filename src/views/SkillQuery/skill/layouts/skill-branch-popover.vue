@@ -3,7 +3,7 @@
     v-if="currentBranchItem && rootComputingContainer"
     tag="span"
     class="inline-block px-0.5"
-    show-triggers="click hover"
+    triggers="click hover"
     popper-class="!border-0"
   >
     <span class="cursor-pointer text-cyan-60 underline">

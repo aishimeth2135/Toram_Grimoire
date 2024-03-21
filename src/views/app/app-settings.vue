@@ -249,7 +249,7 @@ import { useI18n } from 'vue-i18n'
 import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
 
-import { APP_STORAGE_KEYS } from '@/shared/consts'
+import { APP_STORAGE_KEYS } from '@/shared/consts/route'
 import CY from '@/shared/utils/Cyteria'
 
 import Notify from '@/shared/setup/Notify'

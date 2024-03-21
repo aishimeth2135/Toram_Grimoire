@@ -1,54 +1,70 @@
 <template>
-  <section>
-    <div ref="categorysElement">
-      <div v-for="data in categoryResults" :key="data.name" class="mb-4 px-2">
-        <fieldset class="border-t border-solid border-primary-30">
-          <legend class="ml-3 py-0 px-2">
-            <cy-icon-text icon="mdi-creation" text-color="primary-30" small>
-              {{ data.name }}
-            </cy-icon-text>
-          </legend>
-        </fieldset>
-        <div>
-          <cy-popover
+  <SideFloat :visible="visible" @update:visible="emit('close')">
+    <div class="overflow-x-auto">
+      <div class="min-w-[20rem] px-4 py-2 wd:w-[32rem] wd:px-6">
+        <div v-for="data in categoryResults" :key="data.name" class="mb-4 px-2">
+          <div class="py-1 text-sm text-primary-30">
+            {{ data.name }}
+          </div>
+          <CharacterStatItem
             v-for="stat in data.stats"
-            :key="stat.id"
-            class="relative mx-2 my-1 inline-flex cursor-pointer border-b border-solid border-primary-30 px-2"
-            show-triggers="hover click"
-          >
-            <template v-if="!stat.origin.isBoolStat">
-              <span class="mr-3">{{ stat.name }}</span>
-              <span class="text-primary-60">{{ stat.displayValue }}</span>
-            </template>
-            <span v-else class="text-primary-60">{{ stat.name }}</span>
-            <template #popper>
-              <div class="py-2 px-4">
-                <CharacterStatDetail :character-stat-result="stat" />
-              </div>
-            </template>
-          </cy-popover>
+            :key="data.name + stat.id"
+            :character-stat-result="stat"
+            :preview-visible="
+              characterSimulatorOptions.characterStatsDetailPreviewVisible
+            "
+          />
         </div>
       </div>
     </div>
-  </section>
+    <div class="flex items-center px-4 pb-4 text-sm text-gray-40">
+      <cy-icon icon="ic:outline-info" class="mr-2 text-gray-40" />
+      {{
+        t(
+          'character-simulator.character-stat-detail.toggle-detail-visibility-caption'
+        )
+      }}
+    </div>
+    <div class="border-t border-primary-10 px-2.5 pb-5 pt-3">
+      <cy-button-toggle
+        v-model:selected="
+          characterSimulatorOptions.characterStatsDetailPreviewVisible
+        "
+      >
+        {{ t('character-simulator.character-stat-detail.show-detail-preview') }}
+      </cy-button-toggle>
+    </div>
+  </SideFloat>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CharacterStats',
-}
-</script>
-
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue'
+import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import CharacterStatDetail from './character-stat-detail.vue'
+import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 
+import CharacterStatItem from './character-stat-item.vue'
+
+import { CharacterSimulatorInjectionKey } from '../injection-keys'
 import { setupCharacterStore } from '../setup'
 
-const { characterStatCategoryResults } = setupCharacterStore()
+interface Props {
+  visible: boolean
+}
+interface Emits {
+  (evt: 'close'): void
+}
 
-const categorysElement: Ref<HTMLElement | null> = ref(null)
+defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+defineOptions({
+  name: 'CharacterStats',
+})
+
+const { t } = useI18n()
+
+const { characterStatCategoryResults } = setupCharacterStore()
 
 const categoryResults = computed(() => {
   return characterStatCategoryResults.value
@@ -58,4 +74,6 @@ const categoryResults = computed(() => {
     }))
     .filter(item => item.stats.length > 0)
 })
+
+const { characterSimulatorOptions } = inject(CharacterSimulatorInjectionKey)!
 </script>

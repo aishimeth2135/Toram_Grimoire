@@ -10,7 +10,7 @@
       </div>
     </div>
     <div :class="classes.author">
-      <cy-icon icon="@potum" width="1.5rem" color="blue-30" />
+      <cy-icon icon="@potum" width="1.5rem" class="text-blue-30" />
       <div class="ml-2.5 text-xl text-blue-50">Cyteria</div>
     </div>
   </div>

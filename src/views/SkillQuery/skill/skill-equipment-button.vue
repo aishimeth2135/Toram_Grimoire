@@ -14,7 +14,7 @@
           <cy-icon
             v-if="idx !== 0"
             icon="mdi-slash-forward"
-            color="primary-50"
+            class="text-primary-50"
           />
           <div class="flex items-center space-x-1">
             <template v-for="icon in iconData.icons" :key="icon.iid">

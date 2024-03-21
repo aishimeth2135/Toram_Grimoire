@@ -72,7 +72,7 @@
               :value="currentSkillBuild"
               :options="
                 skillBuilds.map(skillBuild => ({
-                  id: skillBuild.instanceId,
+                  id: skillBuild.id,
                   value: skillBuild,
                 }))
               "

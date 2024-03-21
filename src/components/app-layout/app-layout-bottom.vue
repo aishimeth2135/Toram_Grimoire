@@ -1,5 +1,5 @@
 <template>
-  <div class="pointer-events-none sticky bottom-0 z-20 mt-auto w-full p-2">
+  <div class="app-layout--bottom">
     <cy-transition mode="out-in">
       <div
         v-if="slotNotEmpty(slots['main-content'])"

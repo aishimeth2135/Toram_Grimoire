@@ -1,4 +1,8 @@
-import { CharacterBuildBindOnCharacter } from '../Character/CharacterBuild'
+import {
+  CharacterBindingBuild,
+  checkLoadedId,
+  getLoadedId,
+} from '../Character/CharacterBuild'
 import type { FoodBase, FoodsBase } from '../Food'
 
 interface FoodsBuildSaveData {
@@ -13,9 +17,9 @@ interface FoodsBuildSaveData {
 }
 
 let _foodBuildAutoIncreasement = 0
-class FoodsBuild implements CharacterBuildBindOnCharacter {
+class FoodsBuild implements CharacterBindingBuild {
   loadedId: string | null
-  instanceId: number
+  id: number
   name: string
   foods: Food[]
   selectedFoodIndexes: number[]
@@ -23,7 +27,7 @@ class FoodsBuild implements CharacterBuildBindOnCharacter {
 
   constructor(base: FoodsBase, name: string = '') {
     this.loadedId = null
-    this.instanceId = _foodBuildAutoIncreasement
+    this.id = _foodBuildAutoIncreasement
     _foodBuildAutoIncreasement += 1
 
     this.base = base
@@ -73,7 +77,7 @@ class FoodsBuild implements CharacterBuildBindOnCharacter {
   // save and load with json-data
   save(): FoodsBuildSaveData {
     const data = {} as FoodsBuildSaveData
-    data.id = this.instanceId
+    data.id = this.id
     data.name = this.name
 
     data.foods = this.foods.map((food, idx) => ({
@@ -115,7 +119,7 @@ class FoodsBuild implements CharacterBuildBindOnCharacter {
       })
 
       if (typeof id === 'number') {
-        this.loadedId = `${loadCategory}-${id}`
+        this.loadedId = getLoadedId(loadCategory, id)
       }
 
       return {
@@ -130,11 +134,7 @@ class FoodsBuild implements CharacterBuildBindOnCharacter {
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
-    return (
-      this.loadedId !== null &&
-      id !== null &&
-      `${loadCategory}-${id}` === this.loadedId
-    )
+    return checkLoadedId(this, loadCategory, id)
   }
 }
 

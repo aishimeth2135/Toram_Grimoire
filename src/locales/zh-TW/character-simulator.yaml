@@ -2,7 +2,6 @@ character-stats: 角色面板
 character: 角色
 custom-equipment:
   button-title: 自訂裝備
-  default-name-pretext: 自訂
 character-basic:
   title: 角色設定
   character-level: 角色等級
@@ -13,17 +12,25 @@ character-basic:
   remove-character-success: 已成功移除「{name}」
   restore-character-success: 已復原被刪除的「{name}」
   at-least-one-character: 必須至少留下一個角色。
+  character-builds-tip: 技能配置、料理配置等其他配置皆是以角色為單位進行綁定，系統會紀錄每個角色綁定了哪些配置。
+character-dashboard:
+  title: 總覽
 browse-equipments:
   action:
     normal: 裝備清單
     select-field-equipment: 裝備清單
   append-equipments: 新增裝備
+  equip-label: 裝備
+  equip-cancel-label: 取消裝備
+  select-equipment-tips: 選擇的裝備會顯示在這裡
   remove-equipment-tips: 已移除裝備「{name}」。
   removed-equipment-restore-tips: 已復原裝備「{name}」。
   copy-equipment-tips: 已複製裝備。
   move-equipment-title: 移動中
   no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
+  serach-no-equipment-tips: 沒有搜尋到任何裝備。
   equipment-item-actions-tips: 請打開左下角的「顯示全部裝備」以使用整理相關的功能。
+  double-click-to-select-tips: 提示：可以透過雙擊來直接更換裝備
   equipped: 裝備中
   click-edit-tips: 或是點擊上方各區塊可以直接編輯
   auto-arrange-success-tips: 自動整理成功。
@@ -34,12 +41,16 @@ append-equipments:
   search-text-empty-tips: 搜尋的關鍵字須至少一個字元。
   append-equipments-success-tips: 已成功新增{num}件裝備。
   selected-equipments-cleared-tips: 已清除選取的裝備。
+  selected-equipments-default-tips: 已選取的裝備會顯示在這裡。
+  search-stat-tips: 點擊此處以選擇能力
+  current-selected-stat: 目前能力
 create-custom-equipment:
   title: 建立自訂裝備
   select-equipment-type: 選擇裝備類型
   equipment-default-name: 自訂{type}
+  select-equipment-type-message: 請選擇新增的自訂裝備的類型
 equipment-info:
-  equipment: 裝備配置
+  equipment: 裝備
   stability: 穩定度
   refining: 精鍊值
   stat-empty: 此裝備沒有能力
@@ -52,11 +63,16 @@ equipment-basic-editor:
     current-stats: 現存的能力
     appended-stats: 新增的能力
     removed-stats: 移除的能力
+    clone-stats-caption-1: 此功能可以透過複製其他裝備的能力，來新增能力到目前的裝備上。
+    clone-stats-caption-2: 選擇一件裝備後，該裝備的能力會顯示在這裡。可以從中勾選想要複製的裝備能力。
   equipment-basic: 基本設定
   equipment-name: 裝備名稱
   equipment-stats: 裝備能力
   equipment-type: 裝備類型
   equipment-crystal: 鍛晶
+  equipment-label: 裝備標籤
+  label-delete: 刪除標籤
+  label-empty-caption: 目前還沒有任何標籤～點選上方的按扭來新增一個標籤。
   no-equipment-type-selected-tips: 請先選擇一個裝備類別。
   selected-stats-cleared-tips: 已取消更動。
   only-one-element-stat-tips: 一件裝備只能擁有一個屬性，請確認編輯中的能力清單。
@@ -71,9 +87,10 @@ select-crystals:
     - 特殊裝備
     - 通用
 skill-build:
-  title: 技能配置
+  title: 技能
   passive-skills: 被動技能
   active-skills: 主動技能
+  skills-preview: 技能一覽
   disable-skills: 停用{type}
   display-stats-only: 僅顯示有影響角色能力的技能效果
   user-set-title: 參數數值設定
@@ -110,6 +127,8 @@ enemy-elements:
   light: 光屬性
   dark: 暗屬性
 character-stat-detail:
+  show-detail-preview: 顯示簡化版數值
+  toggle-detail-visibility-caption: 點擊任意能力可查看其數值細節。
   base-value: 基礎值
   init-value: 初始值
   additional-value: 額外加成
@@ -142,8 +161,11 @@ character-stat-detail:
       none: 身體防具｜無裝備
 build-common:
   at-least-one-build-tips: 必須至少留下一個配置。
+  select-build-button: 使用此配置
+  build-selected-message: 目前選取的配置
+  move-tips: 透過拖曳可以調整順序
 food-build:
-  title: 料理配置
+  title: 料理
   disable-foods: 停用料理
   food-build: 料理配置
   food-build-name: 料理配置名稱
@@ -156,7 +178,7 @@ food-build:
     - 透過點擊前方的圓點來選取最多五個料理。
     - 原本是0級的料理在提升等級時會自動選取。
 registlet-build:
-  title: 雷吉斯托環配置
+  title: 雷吉斯托環
   disable-registlet: 停用雷吉斯托環
   registlet-build: 托環配置
   edit-registlet: 編輯托環
@@ -165,7 +187,7 @@ registlet-build:
   main-tips-1: 目前還是測試版，部分技能的資料可能尚未補齊而導致該托環沒有效果。發現有哪些托環漏掉時可以反應給開發團隊。
   main-tips-2: 目前僅支援與數值相關的托環，例如：角色能力加成、技能倍率、技能傷害次數等。部分條件較複雜的托環可能尚未支援。
 potion-build:
-  title: 消耗品配置
+  title: 消耗品
   disable-potion: 停用消耗品
   potion: 消耗品
   potion-build: 消耗品配置

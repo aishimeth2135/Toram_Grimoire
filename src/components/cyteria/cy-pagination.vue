@@ -6,9 +6,14 @@
     >
       <cy-button-action
         icon="ic:round-keyboard-double-arrow-left"
+        :disabled="maxPage === 0 || inputValue <= 0"
         @click="inputValue = 1"
       />
-      <cy-button-action icon="ic:round-arrow-back" @click="inputValue -= 1" />
+      <cy-button-action
+        icon="ic:round-arrow-back"
+        :disabled="maxPage === 0 || inputValue <= 0"
+        @click="inputValue -= 1"
+      />
       <input
         v-model.number.lazy="inputValue"
         type="number"
@@ -19,10 +24,12 @@
       />
       <cy-button-action
         icon="ic:round-arrow-forward"
+        :disabled="inputValue >= maxPage"
         @click="inputValue += 1"
       />
       <cy-button-action
         icon="ic:round-keyboard-double-arrow-right"
+        :disabled="inputValue >= maxPage"
         @click="inputValue = maxPage"
       />
     </div>

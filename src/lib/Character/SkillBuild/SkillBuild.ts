@@ -4,7 +4,8 @@ import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
 
 import { SkillBuildState } from '../../../stores/views/character/skill'
-import { CharacterBuildBindOnCharacter } from '../Character'
+import { CharacterBindingBuild } from '../Character'
+import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface SkillState {
   level: number
@@ -24,17 +25,17 @@ interface SkillBuildSaveData {
 }
 
 let _skillBuildAutoIncreasement = 0
-export class SkillBuild implements CharacterBuildBindOnCharacter {
+export class SkillBuild implements CharacterBindingBuild {
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
 
   loadedId: string | null
-  instanceId: number
+  id: number
   name: string
 
   constructor(name: string = '') {
     this.loadedId = null
-    this.instanceId = _skillBuildAutoIncreasement
+    this.id = _skillBuildAutoIncreasement
     _skillBuildAutoIncreasement += 1
 
     this.name = name
@@ -117,10 +118,24 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     )
   }
 
-  get validSkills(): Skill[] {
-    return [...this._skillStatesMap.entries()]
-      .filter(([, state]) => state.level !== 0 && state.enabled)
-      .map(([skill]) => skill)
+  // get validSkills(): Skill[] {
+  //   return [...this._skillStatesMap.entries()]
+  //     .filter(([, state]) => (state.level !== 0 || state.starGemLevel !== 0) && state.enabled)
+  //     .map(([skill]) => skill)
+  // }
+
+  get allSkillLevels(): {
+    enabled: boolean
+    skill: Skill
+    skillLevel: number
+  }[] {
+    return [...this._skillStatesMap.entries()].map(([skill, state]) => {
+      return {
+        enabled: state.enabled,
+        skill,
+        skillLevel: Math.max(state.starGemLevel, state.level),
+      }
+    })
   }
 
   get allSkills(): Skill[] {
@@ -170,7 +185,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
       skillTree => skillTree.skillTreeId
     )
     return {
-      id: this.instanceId,
+      id: this.id,
       name: this.name,
       skillStates,
       selectedSkillTrees,
@@ -218,17 +233,13 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
       }
     })
     if (typeof data.id === 'number' && loadCategory !== null) {
-      newBuild.loadedId = `${loadCategory}-${data.id}`
+      newBuild.loadedId = getLoadedId(loadCategory, data.id)
     }
     return newBuild
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
-    return (
-      this.loadedId !== null &&
-      id !== null &&
-      `${loadCategory}-${id}` === this.loadedId
-    )
+    return checkLoadedId(this, loadCategory, id)
   }
 
   static loadFromLagacy(buildState: SkillBuildState): SkillBuild {

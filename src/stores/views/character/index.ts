@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia'
 import { Ref, computed, readonly, ref } from 'vue'
 
+import { filterNullish } from '@/shared/utils/array'
+
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
+import {
+  CharacterBuildLabel,
+  CharacterBuildLabelSaveData,
+} from '@/lib/Character/Character/CharacterBuildLabel'
 import {
   CharacterEquipment,
   EquipmentSaveData,
@@ -22,6 +28,7 @@ import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import { getSkillBranchState } from './setup/getState'
 import { prepareSetupCharacter } from './setup/setupCharacter'
+import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
 import {
   setupCharacterSkillItems,
   setupFoodStats,
@@ -36,6 +43,7 @@ import {
 } from './setup/setupDamageCalculation'
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterSkillBuildStore } from './skill-build'
+import { migrateCharacterSimulatorSaveData } from './utils'
 
 interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
   idx: number
@@ -70,6 +78,8 @@ interface CharacterSimulatorSaveData {
   registletBuilds: RegistletBuildSaveData[]
 
   potionBuilds: PotionBuildSaveData[]
+
+  buildLabels: CharacterBuildLabelSaveData[]
 }
 
 interface CharacterSimulatorSaveDataRoot {
@@ -88,6 +98,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const skillBuildStore = useCharacterSkillBuildStore()
   const registletBuildStore = useCharacterRegistletBuildStore()
   const potionBuildStore = useCharacterPotionBuildStore()
+  const buildLabelStore = useCharacterBuildLabelStore()
 
   const saveDisabled = ref(false)
 
@@ -115,11 +126,17 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCharacterRegistletBuild,
     setCharacterPotionBuild,
     createCharacter,
+    appendCharacter,
     removeCharacter,
   } = setupCharacters()
 
-  const { equipments, appendEquipments, removeEquipment, moveEquipment } =
-    setupEquipments(currentCharacter)
+  const {
+    equipments,
+    appendEquipment,
+    appendEquipments,
+    removeEquipment,
+    moveEquipment,
+  } = setupEquipments(currentCharacter)
 
   const closeAutoSave = () => {
     autoSaveDisabled.value = false
@@ -130,9 +147,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     characters.value = []
     equipments.value = []
     skillBuildStore.reset()
-    foodStore.resetFoodBuilds()
+    foodStore.resetFoodBuildStore()
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
+    buildLabelStore.resetBuildLabelStore()
   }
 
   const deleteAllSavedData = () => {
@@ -189,13 +207,17 @@ export const useCharacterStore = defineStore('view-character', () => {
     const characterStates = characters.value.map(chara => {
       const state = getCharacterState(chara)
       return {
-        id: chara.instanceId,
-        skillBuildId: state.skillBuild?.instanceId ?? null,
-        foodBuildId: state.foodBuild?.instanceId ?? null,
-        registletBuildId: state.registletBuild?.instanceId ?? null,
-        potionBuildId: state.registletBuild?.instanceId ?? null,
+        id: chara.id,
+        skillBuildId: state.skillBuild?.id ?? null,
+        foodBuildId: state.foodBuild?.id ?? null,
+        registletBuildId: state.registletBuild?.id ?? null,
+        potionBuildId: state.registletBuild?.id ?? null,
       }
     })
+
+    const buildLabelsData = buildLabelStore.buildLabels.map(label =>
+      label.save()
+    )
 
     return {
       version: 'v2',
@@ -205,6 +227,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       foodBuilds: foodBuildsData,
       registletBuilds: registletBuildsData,
       potionBuilds: potionBuildsData,
+      buildLabels: buildLabelsData,
       characterStates,
     }
   }
@@ -215,6 +238,8 @@ export const useCharacterStore = defineStore('view-character', () => {
       saveData: CharacterSimulatorSaveData,
       { ignoreSkillBuilds = false }: { ignoreSkillBuilds?: boolean } = {}
     ) => {
+      migrateCharacterSimulatorSaveData(saveData)
+
       _loadCount += 1
       const loadedCategory = 'common-' + _loadCount
 
@@ -226,6 +251,11 @@ export const useCharacterStore = defineStore('view-character', () => {
         }))
       }
 
+      // build labels
+      saveData.buildLabels.forEach(data => {
+        buildLabelStore.loadBuildLabel(loadedCategory, data)
+      })
+
       const allValidEquipmentsLength = saveData.equipments
         .map(data => data.idx)
         .reduce((cur, item2) => Math.max(cur, item2), 0)
@@ -233,7 +263,11 @@ export const useCharacterStore = defineStore('view-character', () => {
         allValidEquipmentsLength
       ).fill(null)
       saveData.equipments.forEach(data => {
-        const equip = CharacterEquipment.loadEquipment(loadedCategory, data)
+        const equip = CharacterEquipment.loadEquipment(
+          loadedCategory,
+          data,
+          buildLabelStore.buildLabels
+        )
         allValidEquipments[data.idx] = equip
       })
 
@@ -241,13 +275,11 @@ export const useCharacterStore = defineStore('view-character', () => {
         const chara = new Character()
         const load = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (load) {
-          createCharacter(chara, false)
+          appendCharacter(chara, false)
         }
       })
 
-      appendEquipments(
-        allValidEquipments.filter(equip => equip) as CharacterEquipment[]
-      )
+      appendEquipments(filterNullish(allValidEquipments))
 
       if (!ignoreSkillBuilds) {
         saveData.skillBuilds.forEach(buildData => {
@@ -257,10 +289,10 @@ export const useCharacterStore = defineStore('view-character', () => {
       }
 
       saveData.foodBuilds.forEach(data => {
-        const foods = new FoodsBuild(foodStore.foodsBase as FoodsBase)
-        const load = foods.load(loadedCategory, data)
+        const build = new FoodsBuild(foodStore.foodsBase as FoodsBase)
+        const load = build.load(loadedCategory, data)
         if (!load.error) {
-          foodStore.createFoodBuild({ foodBuild: foods }, false)
+          foodStore.appendFoodBuild(build, false)
         }
       })
 
@@ -324,20 +356,8 @@ export const useCharacterStore = defineStore('view-character', () => {
           v2Data
         ) as CharacterSimulatorSaveDataRoot
 
-        // migrate
-        if (!datas.registletBuilds) {
-          datas.registletBuilds = []
-        }
-        if (!datas.potionBuilds) {
-          datas.potionBuilds = []
-        }
-        if (!datas.characterStates) {
-          datas.characterStates = []
-        }
-
         loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
-        foodStore.setCurrentFoodBuild(summary.foodBuildIndex ?? -1)
       } else {
         const prefix = 'app--character-simulator--data-' + index
         if (!window.localStorage.getItem(prefix)) {
@@ -391,6 +411,7 @@ export const useCharacterStore = defineStore('view-character', () => {
             registletBuilds: [],
             characterStates: [],
             potionBuilds: [],
+            buildLabels: [],
           },
           { ignoreSkillBuilds: loadSkillBuildLagacy }
         )
@@ -474,6 +495,8 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const {
     activeSkillResultStates,
+    allActiveSkillResultStatesMap,
+    allPassiveSkillResultStatesMap,
     passiveSkillResultStates,
     nextSkillResultStates,
     skillPureStats,
@@ -600,6 +623,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
     setupOptions,
+    getCharacterState,
 
     autoSaveDisabled: readonly(autoSaveDisabled),
     characterSimulatorInitFinished,
@@ -611,6 +635,8 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     activeSkillResultStates,
     passiveSkillResultStates,
+    allActiveSkillResultStatesMap,
+    allPassiveSkillResultStatesMap,
     nextSkillResultStates,
     damageSkillResultStates,
     getSkillBranchState,
@@ -625,7 +651,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCharacterRegistletBuild,
     setCharacterPotionBuild,
     createCharacter,
+    appendCharacter,
     removeCharacter,
+    appendEquipment,
     appendEquipments,
     removeEquipment,
     moveEquipment,

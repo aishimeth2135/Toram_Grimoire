@@ -8,8 +8,7 @@
       <cy-icon
         v-if="current"
         icon="carbon-location-current"
-        class="ml-auto"
-        color="red-50"
+        class="ml-auto text-red-50"
       />
       <slot name="title-end" />
     </div>

@@ -56,6 +56,7 @@ export interface SkillResult extends SkillResultBase {
 
 export interface SkillResultsState {
   skill: Skill
+  skillLevel: number
   results: SkillResult[]
   stackContainers: DisplayDataContainerAlly[]
   basicContainer: DisplayDataContainerAlly | null
@@ -313,6 +314,11 @@ export function setupCharacterSkills(
       .value
   }
 
+  const allSkills: Skill[] = []
+  Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc =>
+    stc.skillTrees.forEach(st => allSkills.push(...st.skills))
+  )
+
   const {
     activeSkillResults,
     passiveSkillResults,
@@ -321,11 +327,6 @@ export function setupCharacterSkills(
     skillStackContainers,
     skillBasicContainers,
   } = (() => {
-    const allSkills: Skill[] = []
-    Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc =>
-      stc.skillTrees.forEach(st => allSkills.push(...st.skills))
-    )
-
     type ComputingResultsMap = Map<Skill, ComputedRef<SkillResultBase[]>>
     const computingResultsActive: ComputingResultsMap = new Map()
     const computingResultsPassive: ComputingResultsMap = new Map()
@@ -568,7 +569,7 @@ export function setupCharacterSkills(
     }
   })()
 
-  const allSkills = computed(() => skillBuild.value?.allSkills ?? [])
+  const skillBuildAllSkills = computed(() => skillBuild.value?.allSkills ?? [])
 
   const getUsedStackContainers = (
     branchItems: SkillBranchItem[],
@@ -610,40 +611,53 @@ export function setupCharacterSkills(
         )
       })
       const resultStates = reactive({
+        skillLevel: computed(() => skillBuild.value?.getSkillLevel(skill) ?? 0),
         skill,
         stackContainers,
         basicContainer,
         hasOptions,
       }) as SkillResultsState
       const results = computed(() =>
-        resultBases.value.map(
-          item =>
-            ({
-              ...item,
-              root: resultStates,
-            } as SkillResult)
-        )
+        resultBases.value.map(item => {
+          return {
+            ...item,
+            root: resultStates,
+          } as SkillResult
+        })
       )
       resultStates.results = results as unknown as SkillResult[]
       _map.set(skill, resultStates)
     }
-    return computed(() => {
+
+    const resultStates = computed(() => {
       const results: SkillResultsState[] = []
-      allSkills.value.forEach(skill => {
+      skillBuildAllSkills.value.forEach(skill => {
         if (_map.has(skill)) {
           results.push(_map.get(skill)!)
         }
       })
       return results
     })
+
+    const allResultStatesMap = _map
+
+    return {
+      resultStates,
+      allResultStatesMap,
+    }
   }
 
-  const activeSkillResultStates =
-    getSkillResultStatesComputed(activeSkillResults)
-  const passiveSkillResultStates =
-    getSkillResultStatesComputed(passiveSkillResults)
-  const nextSkillResultStates = getSkillResultStatesComputed(nextSkillResults)
-  const damageSkillResultStates =
+  const {
+    allResultStatesMap: allActiveSkillResultStatesMap,
+    resultStates: activeSkillResultStates,
+  } = getSkillResultStatesComputed(activeSkillResults)
+  const {
+    allResultStatesMap: allPassiveSkillResultStatesMap,
+    resultStates: passiveSkillResultStates,
+  } = getSkillResultStatesComputed(passiveSkillResults)
+  const { resultStates: nextSkillResultStates } =
+    getSkillResultStatesComputed(nextSkillResults)
+  const { resultStates: damageSkillResultStates } =
     getSkillResultStatesComputed(damageSkillResults)
 
   const skillStatResults = computed(() => {
@@ -717,6 +731,8 @@ export function setupCharacterSkills(
   return {
     activeSkillResultStates,
     passiveSkillResultStates,
+    allActiveSkillResultStatesMap,
+    allPassiveSkillResultStatesMap,
     nextSkillResultStates,
     damageSkillResultStates,
 

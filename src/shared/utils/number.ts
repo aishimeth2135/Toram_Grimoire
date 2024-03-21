@@ -13,3 +13,13 @@ export function getRandomInt(min: number, max: number): number {
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min)) + min
 }
+
+export function normalizeInteger(value: string | number): number {
+  if (typeof value !== 'number') {
+    value = parseInt(value, 10)
+  }
+  if (Number.isNaN(value)) {
+    value = 0
+  }
+  return value
+}

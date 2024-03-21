@@ -3,7 +3,7 @@
     <div class="heal-formula-main inline-flex flex-wrap items-center">
       <div class="heal-formula-main-first" />
       <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
-        {{ t('skill-query.branch.heal.constant-pretext') }}
+        {{ t('skill-query.branch.heal.constant-prefix') }}
       </span>
       <SkillBranchPropValue
         class="attr-item"

@@ -2,7 +2,7 @@ character-stats: 角色面板
 character: 角色
 custom-equipment:
   button-title: 自订装备
-  default-name-pretext: 自订
+  default-name-prefix: 自订
 character-basic:
   title: 角色设定
   character-level: 角色等级

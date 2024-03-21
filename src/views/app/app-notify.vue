@@ -17,7 +17,7 @@
             <span>{{ msg.counter }}</span>
           </span>
           <div class="inline-flex items-center">
-            <cy-icon :icon="msg.icon" color="primary-5" class="mr-3" />
+            <cy-icon :icon="msg.icon" class="mr-3 text-primary-5" />
             {{ msg.message }}
           </div>
           <div v-if="msg.options.buttons?.length !== 0">

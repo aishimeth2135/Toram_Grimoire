@@ -118,6 +118,14 @@ class BagEquipment extends BagItem {
     this.recipe = {}
     return this.recipe
   }
+
+  isWeapon() {
+    return this.category >= 0 && this.category < 200
+  }
+
+  // isArmor() {
+  //   return this.category >= 200
+  // }
 }
 
 class BagCrystal extends BagItem {

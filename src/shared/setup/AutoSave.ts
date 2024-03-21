@@ -23,6 +23,7 @@ export default function ({ save, loadFirst }: AutoSaveOptions): void {
       save()
     } catch (error) {
       notify(t('common.auto-save.save-unknown-error-tips'))
+      console.error(error)
     }
   }
   const beforeunload = () => saveHandler()

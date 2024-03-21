@@ -15,8 +15,8 @@ export const getTextParseItems = (() => {
       const lagacyGlossaryTagParseItem: TextParseItem = {
         id: 'glossary-tag--lagacy',
         pattern: /#([^\s]+)\s/g,
-        handler(values) {
-          const [value] = values
+        handler(context) {
+          const [value] = context.values
           const text = value.replace(new RegExp('_', 'g'), ' ')
           const newPart = new TextResultContainerPart(
             TextResultContainerPartTypes.GlossaryTag,
@@ -26,11 +26,11 @@ export const getTextParseItems = (() => {
         },
       }
       items = [
+        commonTextParseItems.glossaryTag,
+        lagacyGlossaryTagParseItem,
         markTextParseItems.mark,
         markTextParseItems.underline,
         commonTextParseItems.separate,
-        commonTextParseItems.glossaryTag,
-        lagacyGlossaryTagParseItem,
       ]
     }
     return items

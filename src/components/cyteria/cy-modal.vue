@@ -75,7 +75,7 @@ import { CSSProperties, Ref, computed, ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ToggleService from '@/shared/setup/ToggleService'
-import { remToPixels } from '@/shared/utils/element'
+import { remToPixels } from '@/shared/utils/dom'
 
 export default {
   name: 'CyModal',

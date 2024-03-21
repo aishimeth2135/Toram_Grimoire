@@ -3,14 +3,16 @@ import { isNumberString, lastChar } from '@/shared/utils/string'
 
 import { StatTypes } from './enums'
 
+type StatValue = number | string
+
 interface StatShowData {
   result: string
   title: string
+  realValue: StatValue
   value: string
   tail: string
 }
 
-type StatValue = number | string
 class StatBase {
   static sortStats = function (stats: Stat[], type = 'simple') {
     if (type === 'simple') {
@@ -117,9 +119,19 @@ class StatBase {
     return {
       result: this.show(type, value),
       title,
+      realValue: value,
       value: typeof value === 'number' ? value.toString() : value,
       tail,
     }
+  }
+
+  showValue(type: StatTypes, value: StatValue, useDefaultTail = true) {
+    const showData = this.getShowData(type, value)
+    value = value ?? showData.realValue
+    const prefix = typeof value !== 'number' || value >= 0 ? '+' : ''
+    return `${prefix}${value}${
+      useDefaultTail || this.hasMultiplier ? showData.tail : ''
+    }`
   }
 
   createStat(type: StatTypes, value: number): Stat {
@@ -148,6 +160,10 @@ class StatBase {
       [StatTypes.Total]: '~',
     }[type]
     return `${this.baseId}${typeShorthand}`
+  }
+
+  baseEqual(stat: StatElementBase, type: StatTypes) {
+    return stat.base.baseId === this.baseId && stat.type === type
   }
 }
 
@@ -188,10 +204,7 @@ abstract class StatElementBase {
   }
 
   showValue(value?: StatValue) {
-    const showData = this.base.getShowData(this.type, this.value)
-    value = value ?? showData.value
-    const pretext = typeof value !== 'number' || value >= 0 ? '+' : ''
-    return `${pretext}${value}${showData.tail}`
+    return this.base.showValue(this.type, value ?? this.value)
   }
 
   getShowData() {
@@ -202,8 +215,13 @@ abstract class StatElementBase {
    * If baseId and type are equal, return true.
    * (value do not have to be equal)
    */
-  equals(stat: StatElementBase): boolean {
-    return stat.base === this.base && stat.type === this.type
+  equals(stat: StatElementBase): boolean
+  equals(statBase: StatBase, type: StatTypes): boolean
+  equals(base: StatElementBase | StatBase, type?: StatTypes): boolean {
+    if (base instanceof StatElementBase) {
+      return base.base === this.base && base.type === this.type
+    }
+    return base === this.base && type === this.type
   }
 }
 

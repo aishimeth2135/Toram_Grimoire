@@ -16,6 +16,7 @@
       :options="{
         placement,
         autoSelect,
+        custom,
       }"
       :content-class="popperClass"
       @hidden="fixed = false"
@@ -34,15 +35,31 @@ interface Props {
   tag?: string
   autoSelect?: boolean
   placement?: string
-  showTriggers?: string
+  triggers?: string
   popperClass?: any
+  custom?: boolean
 }
+
+// type Placement =
+//   | 'top'
+//   | 'top-start'
+//   | 'top-end'
+//   | 'right'
+//   | 'right-start'
+//   | 'right-end'
+//   | 'bottom'
+//   | 'bottom-start'
+//   | 'bottom-end'
+//   | 'left'
+//   | 'left-start'
+//   | 'left-end';
 
 const props = withDefaults(defineProps<Props>(), {
   tag: 'div',
   placement: 'bottom-start',
   autoSelect: false,
-  showTriggers: 'click',
+  triggers: 'click',
+  custom: false,
 })
 
 const slots = useSlots()
@@ -52,7 +69,7 @@ const popper: Ref<InstanceType<typeof CyPopper> | null> = ref(null)
 
 const fixed = ref(false)
 
-const innerShowTriggers = computed(() => props.showTriggers.split(' '))
+const innerShowTriggers = computed(() => props.triggers.split(' '))
 
 const onClick = () => {
   if (popper.value && innerShowTriggers.value.includes('click')) {

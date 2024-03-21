@@ -13,7 +13,7 @@ import { Stat, StatBase } from './StatBase'
 import { StatTypes } from './enums'
 
 class StatRestriction extends Stat {
-  restriction: EquipmentRestrictions | null
+  readonly restriction: EquipmentRestrictions | null
 
   constructor(
     base: StatBase,
@@ -44,7 +44,11 @@ class StatRestriction extends Stat {
     )
   }
 
-  isEmpty() {
+  clonePured() {
+    return new StatRestriction(this.base, this.type, this.value, null)
+  }
+
+  isPlain() {
     if (!this.restriction) {
       return true
     }
@@ -173,19 +177,20 @@ class StatRestriction extends Stat {
       restriction,
     }
   }
+
   static load(data: StatRestrictionSaveData) {
     const base = Grimoire.Character.findStatBase(data.id)
     if (base) {
       const stat = base.createStat(data.type, data.value)
 
-      const restriction = new EquipmentRestrictions()
+      let restriction = null
       if (data.restriction !== null) {
-        const dataRestriction = data.restriction
-        ;(['main', 'sub', 'body'] as const).forEach(key => {
-          const type = dataRestriction[key]
-          restriction[key] = type
-        })
-        restriction.other = data.restriction.other
+        restriction = new EquipmentRestrictions()
+        const from = data.restriction
+        restriction.main = from.main
+        restriction.sub = from.sub
+        restriction.body = from.body
+        restriction.other = from.other
       }
 
       return StatRestriction.from(stat, restriction)

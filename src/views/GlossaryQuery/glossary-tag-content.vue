@@ -22,9 +22,8 @@
         <cy-icon
           v-if="!sub"
           icon="ic:round-label"
-          class="absolute -left-5 top-0"
+          class="absolute -left-5 top-0 text-primary-20"
           width="1.45rem"
-          color="primary-20"
         />
       </div>
       <GlossaryTagContentRows

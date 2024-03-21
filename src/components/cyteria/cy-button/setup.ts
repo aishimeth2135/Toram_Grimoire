@@ -1,30 +1,37 @@
-import { PropType } from 'vue'
+import { PropType, computed } from 'vue'
 
-import { IconBaseProps } from '../icon/setup'
+import { AppColors } from '@/shared/services/Color'
 
-export const ButtonIconProps = {
+import { IconBaseProps, IconSrc } from '../icon/setup'
+
+export const ButtonIconPropList = {
   ...IconBaseProps,
   icon: {
     type: String as PropType<string | null>,
   },
 }
 
+export interface ButtonIconProps {
+  icon?: string | null
+  iconSrc?: IconSrc
+}
+
 type ButtonColors =
-  | 'primary'
+  | AppColors.Primary
   | 'bright'
   | 'secondary'
-  | 'cyan'
-  | 'blue'
-  | 'fuchsia'
-  | 'violet'
-  | 'red'
-  | 'orange'
-  | 'emerald'
-  | 'gray'
+  | AppColors.Cyan
+  | AppColors.Blue
+  | AppColors.Fuchsia
+  | AppColors.Violet
+  | AppColors.Red
+  | AppColors.Orange
+  | AppColors.Emerald
+  | AppColors.Gray
 
-export const ButtonBaseProps = {
+export const ButtonBasePropList = {
   color: {
-    type: String as PropType<ButtonColors>,
+    type: String,
     default: 'primary',
   },
   selected: {
@@ -41,18 +48,33 @@ export const ButtonBaseProps = {
   },
 }
 
-interface ButtonBaseComponent {
-  color: ButtonColors
-  selected: boolean
-  disabled: boolean
-  link: boolean
+export interface ButtonBaseProps {
+  color?: string
+  selected?: boolean
+  disabled?: boolean
+  link?: boolean
 }
 
-export function getButtonBaseBinds(component: ButtonBaseComponent) {
+export function useButtonBaseBinding(props: ButtonBaseProps) {
+  const buttonBaseBinding = computed(() => {
+    return {
+      color: props.color,
+      selected: props.selected,
+      disabled: props.disabled,
+      link: props.link,
+    }
+  })
+
   return {
-    color: component.color,
-    selected: component.selected,
-    disabled: component.disabled,
-    link: component.link,
+    buttonBaseBinding,
+  }
+}
+
+export function getButtonBaseBinds(props: ButtonBaseProps) {
+  return {
+    color: props.color,
+    selected: props.selected,
+    disabled: props.disabled,
+    link: props.link,
   }
 }

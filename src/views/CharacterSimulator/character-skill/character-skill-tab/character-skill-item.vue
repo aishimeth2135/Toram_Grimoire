@@ -25,11 +25,18 @@
         <div>
           <div class="flex items-center">
             <div
-              class="cursor-pointer"
-              :class="invalid ? 'text-gray-50' : 'text-primary-80'"
+              class="flex cursor-pointer items-center"
               @click="enabled = !enabled"
             >
-              {{ skillResultsState.skill.name }}
+              <span :class="invalid ? 'text-gray-50' : 'text-primary-80'">
+                {{ skillResultsState.skill.name }}
+              </span>
+              <span
+                :class="invalid ? 'text-gray-40' : 'text-primary-60'"
+                class="ml-1"
+              >
+                {{ `Lv.${skillResultsState.skillLevel}` }}
+              </span>
             </div>
             <div v-if="skillResultsState.hasOptions" class="ml-4 flex">
               <CharacterSkillItemOptions

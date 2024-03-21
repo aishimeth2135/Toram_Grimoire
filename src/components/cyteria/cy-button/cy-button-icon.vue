@@ -15,11 +15,11 @@ import { defineComponent } from 'vue'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, getButtonBaseBinds } from './setup'
+import { ButtonBasePropList, getButtonBaseBinds } from './setup'
 
 export default defineComponent({
   props: {
-    ...ButtonBaseProps,
+    ...ButtonBasePropList,
     icon: {
       type: String,
       required: true,

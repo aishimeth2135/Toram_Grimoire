@@ -1,156 +1,13 @@
-<template>
-  <section v-if="currentCharacter" class="px-2">
-    <div class="pb-2">
-      <div class="flex flex-wrap items-center px-2">
-        <div class="mr-2 mt-2 w-60">
-          <cy-options
-            :value="currentCharacter"
-            :options="
-              characters.map(chara => ({
-                id: chara.instanceId,
-                value: chara,
-              }))
-            "
-            addable
-            @update:value="store.setCurrentCharacter($event)"
-            @add-item="store.createCharacter()"
-          >
-            <template #item="{ value }">
-              <cy-icon-text icon="bx-bxs-face">
-                {{ value.name }}
-              </cy-icon-text>
-            </template>
-          </cy-options>
-        </div>
-        <div class="mt-2 flex items-center space-x-1">
-          <cy-button-circle
-            icon="bx:copy-alt"
-            small
-            @click="copyCurrentCharacter"
-          />
-          <cy-button-circle
-            icon="ic-baseline-delete-outline"
-            color="secondary"
-            small
-            @click="removeCurrentCharacter"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="mt-3">
-      <cy-icon-text
-        icon="mdi-checkbox-multiple-blank-circle-outline"
-        small
-        text-color="fuchsia-60"
-      >
-        {{ t('character-simulator.character-basic.character-name') }}
-      </cy-icon-text>
-    </div>
-    <div class="mt-2 px-2" style="max-width: 25rem">
-      <cy-title-input
-        v-model:value="currentCharacter.name"
-        icon="mdi-clipboard-text-outline"
-      />
-    </div>
-    <div class="content-title">
-      <cy-icon-text
-        icon="mdi-checkbox-multiple-blank-circle-outline"
-        small
-        text-color="fuchsia-60"
-      >
-        {{ t('character-simulator.character-basic.character-level') }}
-      </cy-icon-text>
-    </div>
-    <div class="mt-2 px-2">
-      <cy-input-counter
-        v-model:value="currentCharacter.level"
-        class="counter"
-        :range="[0, 300]"
-      >
-        <template #title>
-          <cy-icon-text icon="bx-bxs-user">
-            {{ t('character-simulator.character-basic.character-level') }}
-          </cy-icon-text>
-        </template>
-      </cy-input-counter>
-    </div>
-    <div class="mt-3">
-      <cy-icon-text
-        icon="mdi-checkbox-multiple-blank-circle-outline"
-        small
-        text-color="fuchsia-60"
-      >
-        {{ t('character-simulator.character-basic.character-stat-points') }}
-      </cy-icon-text>
-    </div>
-    <div class="mt-2 space-y-2 px-2">
-      <div
-        v-for="baseStat in currentCharacter.normalBaseStats"
-        :key="baseStat.name"
-      >
-        <cy-input-counter v-model:value="baseStat.value" :range="baseStatRange">
-          <template #title>
-            <cy-icon-text icon="mdi-rhombus-outline">
-              {{ baseStat.name }}
-            </cy-icon-text>
-          </template>
-        </cy-input-counter>
-      </div>
-      <cy-transition name="fade-slide-right" mode="out-in">
-        <div>
-          <cy-input-counter
-            v-if="currentCharacter.optionalBaseStat"
-            :key="currentCharacter.optionalBaseStat.name"
-            v-model:value="currentCharacter.optionalBaseStat.value"
-            :range="optionalBaseStatRange"
-          >
-            <template #title>
-              <cy-icon-text icon="mdi-rhombus-outline">
-                {{ currentCharacter.optionalBaseStat.name }}
-              </cy-icon-text>
-            </template>
-          </cy-input-counter>
-        </div>
-      </cy-transition>
-    </div>
-    <div class="mt-3">
-      <cy-icon-text
-        icon="mdi-checkbox-multiple-blank-circle-outline"
-        small
-        text-color="fuchsia-60"
-      >
-        {{
-          t('character-simulator.character-basic.character-optional-base-stat')
-        }}
-      </cy-icon-text>
-    </div>
-    <div class="px-2">
-      <div class="flex flex-wrap items-center">
-        <cy-button-radio
-          :selected="!currentCharacter.optionalBaseStat"
-          @click="currentCharacter!.clearOptinalBaseStat()"
-        >
-          {{ t('global.none') }}
-        </cy-button-radio>
-        <cy-button-radio
-          v-for="option in characterOptionalBaseStatOptions"
-          :key="option"
-          :selected="!!currentCharacter!.baseStat(option)"
-          @click="currentCharacter!.setOptionalBaseStat(option)"
-        >
-          {{ option }}
-        </cy-button-radio>
-      </div>
-    </div>
-  </section>
-</template>
-
-<script lang="ts" setup>
+<script lang="tsx" setup>
+import { Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Notify from '@/shared/setup/Notify'
 
 import { Character } from '@/lib/Character/Character'
+
+import CommonBuildPage from './common/common-build-page.vue'
+import CommonPropInput from './common/common-prop-input.vue'
 
 import { setupCharacterStore } from './setup'
 
@@ -164,19 +21,19 @@ const optionalBaseStatRange = [0, 255]
 
 const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
 
-const copyCurrentCharacter = () => {
-  if (currentCharacter.value) {
-    store.createCharacter(currentCharacter.value.clone())
-  }
+const selectedCharacter = ref(currentCharacter.value) as Ref<Character>
+
+const copySelectedCharacter = () => {
+  store.appendCharacter(selectedCharacter.value.clone())
 }
 
-const removeCurrentCharacter = () => {
+const removeSelectedCharacter = () => {
   if (characters.value.length <= 1) {
     notify(t('character-simulator.character-basic.at-least-one-character'))
     return
   }
-  const from = currentCharacter.value!
-  store.removeCharacter()
+  const from = selectedCharacter.value!
+  store.removeCharacter(from)
   notify(
     t('character-simulator.character-basic.remove-character-success', {
       name: from.name,
@@ -188,7 +45,7 @@ const removeCurrentCharacter = () => {
         {
           text: t('global.recovery'),
           click: () => {
-            store.createCharacter(from)
+            store.appendCharacter(from)
             notify(
               t(
                 'character-simulator.character-basic.restore-character-success',
@@ -202,4 +59,111 @@ const removeCurrentCharacter = () => {
     }
   )
 }
+
+const RenderContentTitie = (attrs: { title: string }) => {
+  return (
+    <div class="mt-6 flex w-full max-w-lg items-center">
+      <div class="flex flex-shrink-0 items-center text-sm text-gray-40">
+        {attrs.title}
+      </div>
+      <div class="ml-2 w-full border-b border-stone-20"></div>
+    </div>
+  )
+}
 </script>
+
+<template>
+  <CommonBuildPage
+    v-if="currentCharacter"
+    v-model:selected-build="selectedCharacter"
+    v-model:builds="characters"
+    :current-build="currentCharacter"
+    @select-build="store.setCurrentCharacter"
+    @add-build="store.createCharacter"
+    @copy-build="copySelectedCharacter"
+    @remove-build="removeSelectedCharacter"
+  >
+    <template #header>
+      <div class="pb-4">
+        <cy-icon-text
+          icon="ic-outline-info"
+          text-color="primary-50"
+          small
+          align-v="start"
+        >
+          {{ t('character-simulator.character-basic.character-builds-tip') }}
+        </cy-icon-text>
+      </div>
+    </template>
+    <template #content>
+      <div class="px-2">
+        <RenderContentTitie
+          :title="t('character-simulator.character-basic.character-level')"
+        />
+        <div class="mt-2">
+          <CommonPropInput
+            v-model:value="currentCharacter.level"
+            :title="t('character-simulator.character-basic.character-level')"
+            :range="[0, 300]"
+            type="number"
+          />
+        </div>
+        <RenderContentTitie
+          :title="
+            t('character-simulator.character-basic.character-stat-points')
+          "
+        />
+        <div class="mt-2 space-y-2">
+          <div
+            v-for="baseStat in currentCharacter.normalBaseStats"
+            :key="baseStat.name"
+          >
+            <CommonPropInput
+              v-model:value="baseStat.value"
+              :range="baseStatRange"
+              :title="baseStat.name"
+              type="number"
+            />
+          </div>
+          <cy-transition>
+            <div>
+              <CommonPropInput
+                v-if="currentCharacter.optionalBaseStat"
+                :key="currentCharacter.optionalBaseStat.name"
+                v-model:value="currentCharacter.optionalBaseStat.value"
+                :range="optionalBaseStatRange"
+                :title="currentCharacter.optionalBaseStat.name"
+                type="number"
+              />
+            </div>
+          </cy-transition>
+        </div>
+        <RenderContentTitie
+          :title="
+            t(
+              'character-simulator.character-basic.character-optional-base-stat'
+            )
+          "
+        />
+        <div class="mt-3">
+          <div class="flex flex-wrap items-center">
+            <cy-button-radio
+              :selected="!currentCharacter.optionalBaseStat"
+              @click="currentCharacter!.clearOptinalBaseStat()"
+            >
+              {{ t('global.none') }}
+            </cy-button-radio>
+            <cy-button-radio
+              v-for="option in characterOptionalBaseStatOptions"
+              :key="option"
+              :selected="!!currentCharacter!.baseStat(option)"
+              @click="currentCharacter!.setOptionalBaseStat(option)"
+            >
+              {{ option }}
+            </cy-button-radio>
+          </div>
+        </div>
+      </div>
+    </template>
+  </CommonBuildPage>
+</template>

@@ -22,33 +22,25 @@
   </aside>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
 
+import { usePageLayout } from '@/shared/setup/Layout'
 import Cyteria from '@/shared/utils/Cyteria'
 
-// import useDevice from '@/shared/setup/Device'
 import AppSideMenuContent from './app-side-menu-content.vue'
-
-export default {
-  name: 'AppLeftMenu',
-}
-</script>
-
-<script lang="ts" setup>
-// const { device } = useDevice()
 
 const storageAvailable = Cyteria.storageAvailable('localStorage')
 
-const currentRoute = useRoute()
 const mainStore = useMainStore()
 const leftMenuStore = useLeftMenuStore()
 
-const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
+const { layout } = usePageLayout()
+
+const minimize = computed(() => layout.twoColumns || layout.wide)
 </script>
 
 <style lang="postcss" scoped>

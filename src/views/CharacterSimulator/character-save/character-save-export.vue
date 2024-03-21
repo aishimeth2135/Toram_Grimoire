@@ -222,6 +222,7 @@ const submit = () => {
     foodBuilds: getItems(exportDataItemFoodBuilds),
     registletBuilds: [],
     potionBuilds: [],
+    buildLabels: [],
     characterStates: originalData.value!.characterStates.filter(state =>
       characters.some(item => item.id === state.id)
     ),

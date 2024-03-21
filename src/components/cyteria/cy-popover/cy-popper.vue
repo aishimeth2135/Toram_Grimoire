@@ -5,13 +5,12 @@
         v-if="shown"
         ref="popperElement"
         class="cy--popper"
+        :class="{ 'theme-common': !popperOptions.custom }"
         :style="popperStyle"
         v-bind="attrs"
         @cypopperhide="handlePopperHide"
       >
-        <div
-          :class="[{ 'popper-content': !popperOptions.custom }, contentClass]"
-        >
+        <div class="popper-content" :class="contentClass">
           <slot :hide="() => togglePopper(false)" />
         </div>
       </div>
@@ -92,11 +91,11 @@ const baseMiddlewares: Middleware[] = [
     limiter: limitShift(),
   }),
   size({
-    apply({ width, height }) {
+    apply({ availableWidth, availableHeight }) {
       popperStyle.value = {
         ...popperStyle.value,
-        maxWidth: `${Math.min(width, 512)}px`,
-        maxHeight: `${height}px`,
+        maxWidth: `${Math.min(availableWidth, 512)}px`,
+        maxHeight: `${availableHeight}px`,
       }
     },
     ...overFlowOptions,
@@ -169,19 +168,22 @@ defineExpose({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .cy--popper {
   min-width: 15rem;
 
-  @apply fixed z-100 overflow-y-auto shadow-md;
+  @apply fixed z-100 overflow-y-auto;
+
+  &.theme-common {
+    @apply shadow-md;
+    & > .popper-content {
+      @apply rounded border border-primary-40 bg-white p-0.5;
+    }
+  }
 
   @media screen and (max-width: 15rem) {
     min-width: auto;
     width: 100%;
-  }
-
-  & > .popper-content {
-    @apply border-1 border-primary-30 bg-white;
   }
 }
 </style>

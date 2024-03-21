@@ -49,11 +49,11 @@ export function createPopover(
         limiter: limitShift(),
       }),
       size({
-        apply({ width, height }) {
+        apply({ availableWidth, availableHeight }) {
           popperStyle.value = {
             ...popperStyle.value,
-            maxWidth: `${Math.min(width, 480)}px`,
-            maxHeight: `${height}px`,
+            maxWidth: `${Math.min(availableWidth, 480)}px`,
+            maxHeight: `${availableHeight}px`,
           }
         },
         ...overFlowOptions,

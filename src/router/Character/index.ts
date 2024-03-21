@@ -58,6 +58,7 @@ export default {
       component: CharacterSimulatorView,
       meta: {
         title: 'app.page-title.character-simulator',
+        wideLayout: true,
       },
     },
     {

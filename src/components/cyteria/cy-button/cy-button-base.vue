@@ -12,11 +12,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import { ButtonBaseProps } from './setup'
+import { ButtonBasePropList } from './setup'
 
 export default defineComponent({
   props: {
-    ...ButtonBaseProps,
+    ...ButtonBasePropList,
   },
   computed: {
     classList() {
@@ -87,7 +87,7 @@ export default defineComponent({
 
   &.theme-secondary {
     --button-color-main: var(--app-primary-30);
-    --button-color-main-light: var(--app-primary-30);
+    --button-color-main-light: var(--app-primary-20);
   }
 
   &.theme-cyan {
@@ -121,13 +121,13 @@ export default defineComponent({
   }
 
   &.theme-gray {
-    --button-color-main: var(--app-gray);
+    --button-color-main: var(--app-gray-60);
     --button-color-main-light: var(--app-gray-30);
   }
 
   &.theme-red {
     --button-color-main: var(--app-red-60);
-    --button-color-main-light: var(--app-red-30);
+    --button-color-main-light: var(--app-red-40);
   }
 }
 </style>

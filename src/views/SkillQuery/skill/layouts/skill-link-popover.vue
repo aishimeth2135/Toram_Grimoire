@@ -3,7 +3,7 @@
     v-if="currentSkill"
     tag="span"
     class="inline-block px-0.5"
-    show-triggers="click hover"
+    triggers="click hover"
     popper-class="rounded-md"
   >
     <span class="cursor-pointer text-red-60 underline">

@@ -1,6 +1,6 @@
 import { Comment, Slot } from 'vue'
 
-export const slotNotEmpty = (slot: Slot | undefined, slotProps = {}) => {
+export function slotNotEmpty(slot: Slot | undefined, slotProps = {}) {
   if (!slot) {
     return false
   }

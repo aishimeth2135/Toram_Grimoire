@@ -75,6 +75,14 @@ export function prepareSetupCharacter() {
       return st?.skills.find(_skill => _skill.id === 1) ?? null
     })
 
+    const getSkillLevel = (skillId: string) => {
+      const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
+      if (!skill) {
+        return 0
+      }
+      return skillBuild.value?.getSkillLevel(skill) ?? 0
+    }
+
     const computedVarsBase = computed(() => {
       const chara = character.value!
 
@@ -257,6 +265,9 @@ export function prepareSetupCharacter() {
               EquipmentTypes.Empty
             ),
           },
+        },
+        methods: {
+          getSkillLevel,
         },
       }
     })

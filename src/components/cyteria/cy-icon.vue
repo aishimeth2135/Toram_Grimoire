@@ -29,13 +29,8 @@ const iconStyle = computed(() => {
 
 const classes = useCssModule()
 
-const { iconClass: iconBaseClass } = useIconColor(
-  computed(() => props.color),
-  'primary-30'
-)
-
 const iconClass = computed(() => {
-  const baseClass = [iconBaseClass.value]
+  const baseClass = ['cy-icon--base']
 
   if (props.small) {
     baseClass.push(classes.sm)
@@ -72,7 +67,7 @@ const iconData = computed(() => {
     :src="iconData.src"
     :style="iconStyle"
     :class="iconClass"
-    class="inline-block"
+    class="inline-block flex-shrink-0"
   />
 </template>
 
