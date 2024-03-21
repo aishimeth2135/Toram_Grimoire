@@ -2,12 +2,14 @@ import { computed } from 'vue'
 import { reactive } from 'vue'
 import { ref } from 'vue'
 
+import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
+
 export interface EnchantStoreConfig {
   characterLevel: number
   smithLevel: number
 }
 
-let characterMaxLevel = 270
+let characterMaxLevel = CHARACTER_MAX_LEVEL
 
 export function updateCharacterMaxLevel(value: number) {
   characterMaxLevel = value

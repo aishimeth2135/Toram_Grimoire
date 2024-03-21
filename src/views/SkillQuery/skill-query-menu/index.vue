@@ -78,7 +78,7 @@
         <div class="mt-3">
           <cy-input-counter
             v-model:value="characterLevel"
-            :range="[1, 250]"
+            :range="[1, CHARACTER_MAX_LEVEL]"
             :step="10"
             :title="t('skill-query.character-level')"
           />
@@ -143,6 +143,7 @@ import SkillSwitchEffectButtons from '../skill-switch-effect-buttons.vue'
 
 import { setupEquipmentSelect, setupSkillLevel } from './setup'
 import { useSkillQueryState } from '../setup'
+import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 
 interface Props {
   skillItem: SkillItem | null
