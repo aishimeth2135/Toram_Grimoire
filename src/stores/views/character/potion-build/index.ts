@@ -26,7 +26,7 @@ export const useCharacterPotionBuildStore = defineStore(
           ' ' +
           (builds.value.length + 1).toString()
       )
-      return appendPotionBuild(newBuild)
+      return appendPotionBuild(newBuild, false)
     }
 
     const copyCurrentPotionBuild = () => {

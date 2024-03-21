@@ -4,9 +4,10 @@ import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
-import FloatPageSide from '@/components/app-layout/float-page/float-page-side.vue'
 import FloatPage from '@/components/app-layout/float-page/float-page.vue'
 
+import browseEquipmentEquippedItems from '../browse-equipments/browse-equipment-equipped-items.vue'
+import BrowseEquipmentsMain from '../browse-equipments/browse-equipments-main.vue'
 import CharacterEquipmentDetailsEditBasic from './character-equipment-details-edit-basic.vue'
 import CharacterEquipmentDetailsEditCrystal from './character-equipment-details-edit-crystal.vue'
 import CharacterEquipmentDetailsEditStat from './character-equipment-details-edit-stat.vue'
@@ -15,7 +16,6 @@ import CharacterEquipmentDetails from './character-equipment-details.vue'
 import { CharacterEquipmentEditModes } from './setup'
 
 interface Props {
-  equipment: CharacterEquipment | null
   initMode?: CharacterEquipmentEditModes | null
 }
 interface Emits {
@@ -24,6 +24,10 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+
+const equipment = defineModel<CharacterEquipment | null>('equipment', {
+  required: true,
+})
 
 const { t } = useI18n()
 
@@ -40,46 +44,75 @@ watch(
   }
 )
 
-const updateCurrentMode = (
-  value: CharacterEquipmentEditModes | null,
-  switchToContent: () => void
-) => {
+const updateCurrentMode = (value: CharacterEquipmentEditModes | null) => {
   currentMode.value = value
-  if (value) {
-    switchToContent()
-  }
 }
+
+const enum BrowseMode {
+  Equipped,
+  All,
+}
+
+const browseMode = ref(BrowseMode.Equipped)
 </script>
 
 <template>
   <FloatPage
-    v-slot="{ switchToContent }"
     :visible="!!equipment"
     :title="t('character-simulator.equipment-basic-editor.title')"
     title-icon="ic-round-edit"
-    columns="17rem 17rem"
     @update:visible="emit('close')"
   >
-    <FloatPageSide v-if="equipment">
-      <CharacterEquipmentDetails
-        :current-edit-mode="currentMode"
-        :equipment="equipment"
-        @update:current-edit-mode="updateCurrentMode($event, switchToContent)"
-      />
-    </FloatPageSide>
-    <template v-if="equipment">
-      <CharacterEquipmentDetailsEditBasic
-        v-if="currentMode === CharacterEquipmentEditModes.Basic"
-        :equipment="equipment"
-      />
-      <CharacterEquipmentDetailsEditStat
-        v-if="currentMode === CharacterEquipmentEditModes.Stat"
-        :equipment="equipment"
-      />
-      <CharacterEquipmentDetailsEditCrystal
-        v-if="currentMode === CharacterEquipmentEditModes.Crystal"
-        :equipment="equipment"
-      />
-    </template>
+    <div class="h-full w-full overflow-y-auto wd-lg:flex">
+      <div class="flex-shrink-0 py-2 wd:flex wd-lg:h-full">
+        <CharacterEquipmentDetails
+          :current-edit-mode="currentMode"
+          :equipment="equipment"
+          @update:current-edit-mode="updateCurrentMode($event)"
+        />
+        <div
+          v-if="equipment"
+          class="my-6 w-full max-w-[22rem] overflow-y-auto px-4 wd:my-0 wd:h-full wd:w-[22rem] wd:px-8 wd-lg:h-full"
+        >
+          <CharacterEquipmentDetailsEditBasic
+            v-if="currentMode === CharacterEquipmentEditModes.Basic"
+            :equipment="equipment"
+          />
+          <CharacterEquipmentDetailsEditStat
+            v-if="currentMode === CharacterEquipmentEditModes.Stat"
+            :equipment="equipment"
+          />
+          <CharacterEquipmentDetailsEditCrystal
+            v-if="currentMode === CharacterEquipmentEditModes.Crystal"
+            :equipment="equipment"
+          />
+        </div>
+      </div>
+      <div
+        class="flex flex-shrink-0 flex-col rounded border border-primary-10 bg-white pb-2 wd:flex-grow wd-lg:h-full"
+      >
+        <cy-tabs v-model="browseMode" class="mb-4 px-2">
+          <cy-tab :value="BrowseMode.Equipped">
+            <cy-icon icon="mdi:done-outline" />
+          </cy-tab>
+          <cy-tab :value="BrowseMode.All">
+            <cy-icon icon="mdi:format-list-bulleted" />
+          </cy-tab>
+        </cy-tabs>
+        <div
+          v-if="browseMode === BrowseMode.Equipped"
+          class="mx-2 rounded border border-primary-10"
+        >
+          <browseEquipmentEquippedItems
+            v-model:selected-equipment="equipment"
+          />
+        </div>
+        <BrowseEquipmentsMain
+          v-else-if="browseMode === BrowseMode.All"
+          v-model:selected-equipment="equipment"
+          class="min-h-0 flex-grow"
+        />
+      </div>
+    </div>
   </FloatPage>
 </template>

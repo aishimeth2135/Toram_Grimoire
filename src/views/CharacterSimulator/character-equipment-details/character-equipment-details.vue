@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { computed, inject, useSlots } from 'vue'
+import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-import { slotNotEmpty } from '@/shared/utils/vue'
 
 import {
   CharacterEquipment,
@@ -72,10 +70,6 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
     editEquipment(props.equipment, mode)
   }
 }
-
-const slots = useSlots()
-
-const hasSideButtons = computed(() => slotNotEmpty(slots['side-buttons']))
 </script>
 
 <template>
@@ -83,10 +77,6 @@ const hasSideButtons = computed(() => slotNotEmpty(slots['side-buttons']))
     v-if="equipment"
     class="relative flex w-[16.5rem] flex-shrink-0 flex-col"
   >
-    <div
-      class="absolute left-1.5 top-1.5 h-full w-full bg-primary-5"
-      :style="hasSideButtons ? 'height: calc(100% - 2.125rem)' : ''"
-    />
     <cy-tabs
       v-model="innerEditMode"
       direction="vertical"
@@ -205,9 +195,6 @@ const hasSideButtons = computed(() => slotNotEmpty(slots['side-buttons']))
         class="mt-2.5 w-full justify-end py-2 pl-6 pr-3"
       />
     </cy-tabs>
-    <div v-if="hasSideButtons" class="relative z-1 px-3">
-      <slot name="side-buttons" :equipment="equipment" />
-    </div>
   </div>
   <div
     v-else

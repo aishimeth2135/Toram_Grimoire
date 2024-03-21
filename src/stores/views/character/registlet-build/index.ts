@@ -1,9 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import type { ComputedRef, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-import { removeElement } from '@/shared/utils/array'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
@@ -30,7 +26,7 @@ export const useCharacterRegistletBuildStore = defineStore(
           ' ' +
           (builds.value.length + 1).toString()
       )
-      return appendRegistletBuild(newBuild)
+      return appendRegistletBuild(newBuild, false)
     }
 
     const removeCurrentRegistletBuild = () => {

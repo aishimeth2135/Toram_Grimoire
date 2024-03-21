@@ -5,7 +5,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
-import eslintPlugin from 'vite-plugin-eslint'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
 
@@ -48,7 +47,6 @@ export default defineConfig(({ mode }) => {
       },
     }),
     content(),
-    eslintPlugin(),
   ]
 
   if (useLagacy) {

@@ -26,11 +26,6 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
     pathName: AppRouteNames.CharacterSimulator,
   },
   {
-    name: 'skill-simulator',
-    icon: 'ant-design:build-outlined',
-    pathName: AppRouteNames.SkillSimulator,
-  },
-  {
     name: 'enchant-simulator',
     icon: 'mdi-cube-scan',
     pathName: AppRouteNames.EnchantSimulator,

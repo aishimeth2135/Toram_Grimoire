@@ -1,33 +1,18 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-
 import { useDevice } from '@/shared/setup/Device'
 import { usePageLayout } from '@/shared/setup/Layout'
-
-interface Props {
-  noAside?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), { noAside: false })
 
 const { layout } = usePageLayout()
 
 const { device } = useDevice()
-
-const hasAside = computed(() => device.hasAside && !props.noAside)
 </script>
 
 <template>
-  <main
-    class="app-layout-main--root flex min-h-full w-full justify-center"
-    :class="{ 'has-aside': hasAside }"
-  >
+  <main class="app-layout-container-root min-h-full">
     <div
-      class="app-layout-main--container"
+      class="app-layout-main--container app-layout-horizontal-container"
       :class="{
         'page-two-columns': layout.twoColumns,
-        'page-wide': layout.wide && !device.isMobile,
-        'page-mobile': device.isMobile,
       }"
     >
       <slot></slot>
@@ -40,8 +25,8 @@ const hasAside = computed(() => device.hasAside && !props.noAside)
         </div>
       </template>
     </div>
-    <aside v-if="hasAside" class="app-layout-main--aside">
-      <div class="app-layout-main--aside-container">
+    <aside v-if="device.hasAside" class="app-layout-main--aside">
+      <div class="bg-white py-4">
         <slot name="aside"></slot>
       </div>
     </aside>
@@ -51,8 +36,6 @@ const hasAside = computed(() => device.hasAside && !props.noAside)
 <style lang="postcss">
 .app-layout-main--container {
   @apply flex min-h-full flex-shrink-0 flex-col pb-16;
-
-  width: var(--app-main-content-width);
 }
 
 @media (min-width: 880px) {
@@ -82,52 +65,8 @@ const hasAside = computed(() => device.hasAside && !props.noAside)
   --app-layout-main--aside-scroll-width-extra: 0.5rem;
 }
 
-.app-layout-main--aside-container {
-  @apply bg-white py-4;
-}
-
-.app-layout-main--root.has-aside {
-  padding-left: calc(
-    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
-      var(--app-main-content-padding-x)
-  );
-  padding-right: calc(
-    100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
-      var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
-  );
-}
-
-.app-layout-main--container.page-wide {
-  @apply w-full;
-  padding-left: var(--app-side-menu-minimize-width);
-  padding-right: var(--app-side-menu-minimize-width);
-  max-width: var(--app-screen-max-width);
-
-  & .app-layout--bottom {
-    @apply w-full;
-    padding-left: var(--app-side-menu-minimize-width);
-    padding-right: var(--app-side-menu-minimize-width);
-    max-width: var(--app-screen-max-width);
-  }
-}
-
-.app-layout-main--container.page-mobile {
-  padding-top: 2rem;
-}
-
 /* bottom */
 .app-layout--bottom {
   @apply pointer-events-none fixed bottom-0 z-20 p-2;
-  width: var(--app-main-content-width);
-}
-
-@media (max-width: 816px) {
-  .app-layout-main--container {
-    @apply w-full;
-  }
-
-  .app-layout--bottom {
-    @apply w-full;
-  }
 }
 </style>

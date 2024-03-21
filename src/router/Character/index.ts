@@ -11,13 +11,12 @@ import { AppRouteNames } from '../enums'
 
 const CharacterSimulatorView = () =>
   import('@/views/CharacterSimulator/index.vue')
-const SkillSimulatorView = () => import('@/views/SkillSimulator/index.vue')
 
 export default {
   name: AppRouteNames.Character,
   path: '/character',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(
       LocaleViewNamespaces.CharacterSimulator,
       LocaleViewNamespaces.SkillSimulator,
@@ -44,11 +43,6 @@ export default {
         icon: 'gridicons-user',
         pathName: AppRouteNames.CharacterSimulator,
       },
-      {
-        title: 'app.page-title.skill-simulator',
-        icon: 'bx-bxs-star-half',
-        pathName: AppRouteNames.SkillSimulator,
-      },
     ],
   },
   children: [
@@ -59,14 +53,6 @@ export default {
       meta: {
         title: 'app.page-title.character-simulator',
         wideLayout: true,
-      },
-    },
-    {
-      name: AppRouteNames.SkillSimulator,
-      path: 'skill',
-      component: SkillSimulatorView,
-      meta: {
-        title: 'app.page-title.skill-simulator',
       },
     },
   ],

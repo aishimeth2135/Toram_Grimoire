@@ -16,7 +16,6 @@ const emit = defineEmits<Emits>()
   <cy-tab
     :value="mode"
     class="w-full hover:bg-primary-5/50"
-    plain
     @click="emit('edit', mode)"
   >
     <slot />

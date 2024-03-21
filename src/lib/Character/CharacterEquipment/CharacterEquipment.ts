@@ -14,7 +14,6 @@ import {
 import { StatValueSourceTypes } from '../Stat/enums'
 import {
   BodyArmorTypeList,
-  EquipmentCategorys,
   EquipmentKinds,
   EquipmentTypes,
   MainWeaponTypeList,

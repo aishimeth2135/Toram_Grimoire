@@ -31,7 +31,7 @@
                   'text-orange-60': item.status === InitItemStatus.Error,
                   'text-blue-60': item.status !== InitItemStatus.Error,
                 }"
-                width="1.375rem"
+                width="1.25rem"
               />
               <span class="ml-4 w-full text-primary-70">
                 {{ t(item.message) }}

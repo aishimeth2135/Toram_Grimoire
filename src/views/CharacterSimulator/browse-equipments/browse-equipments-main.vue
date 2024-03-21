@@ -100,7 +100,7 @@ const toggleDisplayMode = () => {
 </script>
 
 <template>
-  <div>
+  <div class="flex h-full max-w-[45rem] flex-col">
     <div class="px-2">
       <div class="flex w-full flex-wrap items-center">
         <BrowseEquipmentsMainFilters
@@ -121,14 +121,17 @@ const toggleDisplayMode = () => {
         </div>
       </div>
     </div>
-    <div v-if="displayMode === DisplayModes.Grid">
+    <div
+      v-if="displayMode === DisplayModes.Grid"
+      class="flex flex-grow flex-col"
+    >
       <div
-        class="mx-1 mb-2 flex flex-wrap items-center rounded-full border border-primary-10 px-5 py-1"
+        class="mx-1.5 mb-2 flex flex-wrap items-center rounded-full border border-primary-50 py-2 pl-5 pr-3"
       >
         <template v-if="selectedEquipment">
           <EquipmentBrowseTitle :equipment="selectedEquipment" class="mr-6" />
           <EquipmentBrowseActions
-            v-if="allowEquip"
+            :equip-disabled="!allowEquip"
             :equipment="selectedEquipment"
             :equipped="currentFieldEquipment === selectedEquipment"
             class="flex-grow"
@@ -140,7 +143,7 @@ const toggleDisplayMode = () => {
           {{ t('character-simulator.browse-equipments.select-equipment-tips') }}
         </span>
       </div>
-      <div>
+      <div class="flex-grow overflow-y-auto">
         <BrowseEquipmentsItem
           v-for="equip in filteredEquipments"
           :key="equip.id"
@@ -153,7 +156,10 @@ const toggleDisplayMode = () => {
         />
       </div>
     </div>
-    <div v-else class="mx-2 mt-2 rounded border border-primary-10 py-0.5">
+    <div
+      v-else
+      class="mx-2 mt-2 flex-grow overflow-y-auto rounded border border-primary-10 py-0.5"
+    >
       <CardRows v-if="filteredEquipments.length > 0">
         <BrowseEquipmentsListItem
           v-for="equip in filteredEquipments"
@@ -178,14 +184,6 @@ const toggleDisplayMode = () => {
       <div v-else>
         {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
       </div>
-    </div>
-    <div
-      v-if="filteredEquipments.length > 0"
-      class="px-4 py-3 text-right text-sm text-gray-40"
-    >
-      {{
-        t('character-simulator.browse-equipments.double-click-to-select-tips')
-      }}
     </div>
   </div>
 </template>

@@ -52,7 +52,6 @@ const groups = (() => {
       id: 'character',
       links: _handle([
         AppRouteNames.CharacterSimulator,
-        AppRouteNames.SkillSimulator,
         AppRouteNames.DamageCalculation,
       ]),
     },

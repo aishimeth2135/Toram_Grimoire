@@ -4,10 +4,7 @@ import { Ref, computed, readonly, ref } from 'vue'
 import { filterNullish } from '@/shared/utils/array'
 
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
-import {
-  CharacterBuildLabel,
-  CharacterBuildLabelSaveData,
-} from '@/lib/Character/Character/CharacterBuildLabel'
+import { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
 import {
   CharacterEquipment,
   EquipmentSaveData,

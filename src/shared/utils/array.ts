@@ -11,7 +11,7 @@ export function createEmptyArray(len: number) {
  * @param len - end index of range
  */
 export function createRange(len: number) {
-  return createEmptyArray(len).map((item, idx) => idx)
+  return createEmptyArray(len).map((_item, idx) => idx)
 }
 
 /**

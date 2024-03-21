@@ -6,28 +6,16 @@ import { useResizeObserver } from '@/shared/setup/ElementObserver'
 import { useTabsContext, useTabsSlider } from './setup'
 
 interface Props {
-  modelValue: T
   direction?: 'horizontal' | 'vertical'
   plain?: boolean
-}
-interface Emits {
-  (evt: 'update:model-value', value: T): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   direction: 'horizontal',
   plain: false,
 })
-const emit = defineEmits<Emits>()
 
-const currentValue = computed<T>({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:model-value', value)
-  },
-})
+const currentValue = defineModel<T>({ required: true })
 
 const sliderStyle: Ref<StyleValue | undefined> = shallowRef(undefined)
 const tabsEl: Ref<HTMLElement | null> = shallowRef(null)
@@ -65,20 +53,28 @@ useResizeObserver(tabsEl, forceUpdateSliderStyle)
 .cy-tabs {
   @apply relative flex flex-wrap items-start;
 
-  .cy-tabs-h {
-    @apply pb-0.5;
+  &.cy-tabs-h.not-plain {
+    @apply border-b-1 border-primary-10;
 
     & > .cy-tab {
-      min-width: 8rem;
+      min-width: 6rem;
     }
   }
 
-  .cy-tabs-v {
-    @apply flex-col items-start pr-0.5;
+  &.cy-tabs-v {
+    @apply flex-col items-start;
+
+    &.not-plain {
+      @apply border-r-1 border-primary-10;
+
+      & > .cy-tab {
+        @apply w-full text-left;
+      }
+    }
   }
 
-  &.not-plain {
-    @apply border-b-1 border-primary-10;
+  &.not-plain > .cy-tab {
+    @apply mt-1 rounded px-6 py-2 hover:bg-primary-10/50;
   }
 }
 </style>

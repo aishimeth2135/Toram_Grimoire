@@ -69,7 +69,9 @@ const addRegistletBuild = () => {
     :current-build="currentRegistletBuild"
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
-    @copy-build="registletStore.appendRegistletBuild(selectedBuild.clone())"
+    @copy-build="
+      registletStore.appendRegistletBuild(selectedBuild.clone(), false)
+    "
     @remove-build="removeSelectedBuild"
   >
     <template #header>

@@ -19,9 +19,8 @@ const colorsConfig = (() => {
   colorGroups.forEach(group => {
     colors[group] = {}
     colorOrders.forEach(order => {
-      colors[group][
-        order
-      ] = `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
+      colors[group][order] =
+        `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
     })
   })
   return {

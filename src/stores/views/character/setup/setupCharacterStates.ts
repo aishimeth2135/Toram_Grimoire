@@ -1,4 +1,4 @@
-import { Ref, computed, ref } from 'vue'
+import { Ref, ref } from 'vue'
 import { ComputedRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -6,11 +6,11 @@ import { lastElement } from '@/shared/utils/array'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 
-import { FoodsBuild } from '../../../../lib/Character/FoodBuild'
-import { SkillBuild } from '../../../../lib/Character/SkillBuild'
 import { useCharacterFoodStore } from '../food-build'
 import { useCharacterPotionBuildStore } from '../potion-build'
 import { useCharacterRegistletBuildStore } from '../registlet-build'

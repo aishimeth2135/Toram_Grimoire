@@ -34,6 +34,7 @@ browse-equipments:
   equipped: 裝備中
   click-edit-tips: 或是點擊上方各區塊可以直接編輯
   auto-arrange-success-tips: 自動整理成功。
+  equipped-equipments-title: 裝備中的裝備
 append-equipments:
   title: 新增裝備
   search-equipment-placeholder: 搜尋裝備名稱...
@@ -91,6 +92,9 @@ skill-build:
   passive-skills: 被動技能
   active-skills: 主動技能
   skills-preview: 技能一覽
+  skill-trees-directory:
+    title: 技能樹目錄
+    caption: 透過點擊技能樹名稱可以快速移動到對應的技能樹。
   disable-skills: 停用{type}
   display-stats-only: 僅顯示有影響角色能力的技能效果
   user-set-title: 參數數值設定
@@ -101,7 +105,23 @@ skill-build:
   formula-text:
     target_def: 目標防禦
     target_level: 目標等級
+  apply-skill-level-tips:
+    - 此次調整技能等級尚未儲存。
+    - 更新技能的等級時，系統將自動更新同一技能樹上相關聯技能的技能等級。若確定要更改請按下上方的確認按鈕。
+  effected-skills-title: 受影響的技能
   no-any-build-tips: 還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。
+  no-any-skill-tips:
+    - 這個配置目前空空如也0.0
+    - 請點選右側的按鈕來新增技能樹。
+  skill-tree-empty-tips: 這個技能樹還沒有任何技能。
+  export-buile-title: 匯出配置
+  export-text: 匯出文字
+  export-text-caption: 以下為系統自動產生的技能清單，按下按鈕可以快速複製。複製後可再依需求自行編輯。
+  export-image: 匯出圖片
+  export-image-caption:
+    - 以下為系統自動產生的技能技能圖片，按下按鈕可以直接進行下載。
+    - 於IOS系統上使用此功能下載圖片時，一部分瀏覽器還不支援「設定檔名」的功能，因此下載圖片時可能會發生副檔名不為PNG的問題。若遇到此問題，請在下載圖片後自行將檔名改成「XXX.png」，該圖片就可以正常顯示。
+    - 如果無法透過按鈕下載圖片，可使用瀏覽器預設的下載圖片的方式進行下載。例如：於電腦上操作時，通常是在圖片上點滑鼠右鍵接著按下儲存。
 character-damage:
   title: 傷害計算
   target-options-title: 目標數值設定

@@ -54,9 +54,9 @@ const moveMode = ref(false)
 </script>
 
 <template>
-  <div class="px-2 wd:flex">
-    <div class="mb-3 border-b border-primary-10 px-1 pb-4 wd:hidden">
-      <div class="flex items-center wd:hidden">
+  <div class="px-2 wd-lg:flex">
+    <div class="mb-3 border-b border-primary-10 px-1 pb-4 wd-lg:hidden">
+      <div class="flex items-center wd-lg:hidden">
         <CommonBuildDropdowns
           v-model="selectedBuild"
           :options="builds"
@@ -107,7 +107,7 @@ const moveMode = ref(false)
         {{ build.name }}
       </template>
     </CommonSideOptions>
-    <div class="wd:w-full">
+    <div class="wd-lg:w-full">
       <CommonSelectBuildContent
         :selected-build="selectedBuild"
         :current-build="innerCurrentBuild"
@@ -116,7 +116,7 @@ const moveMode = ref(false)
       <div class="mt-4">
         <slot name="header" />
       </div>
-      <div class="flex items-center">
+      <div class="mb-2 flex items-center">
         <cy-title-input
           v-model:value="buildName"
           icon="ic:baseline-drive-file-rename-outline"
@@ -135,7 +135,6 @@ const moveMode = ref(false)
           />
         </div>
       </div>
-
       <slot name="content" />
     </div>
     <slot name="modals" />

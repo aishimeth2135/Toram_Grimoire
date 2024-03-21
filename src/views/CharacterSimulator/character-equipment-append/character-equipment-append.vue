@@ -183,7 +183,7 @@ const selectStatOption = (option: StatOption) => {
         <CardRowsWrapper
           class="mt-3 max-h-96 flex-grow overflow-x-auto wd:max-h-none"
         >
-          <div class="min-w-min overflow-y-auto">
+          <div class="h-full min-w-min overflow-y-auto">
             <div ref="topElement"></div>
             <CardRows v-if="currentItems.length > 0">
               <CharacterEquipmentAppendItem

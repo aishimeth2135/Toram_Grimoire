@@ -23,7 +23,8 @@ const currentTab = ref(0)
 
 const characterStore = useCharacterStore()
 
-const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
+const { store, skillBuilds, currentSkillBuild } =
+  setupCharacterSkillBuildStore()
 
 const selectedBuild = ref(currentSkillBuild.value) as Ref<SkillBuild | null>
 
@@ -34,6 +35,15 @@ const buildMatched = computed(
 const currentDisplayedTab = computed(() =>
   buildMatched.value ? currentTab.value : 2
 )
+
+const addSkillBuild = () => {
+  selectedBuild.value = store.createSkillBuild()
+}
+
+const removeSkillBuild = () => {
+  const idx = store.removeSkillBuild(selectedBuild.value!)
+  selectedBuild.value = skillBuilds.value[idx]
+}
 </script>
 
 <template>
@@ -42,8 +52,10 @@ const currentDisplayedTab = computed(() =>
     v-model:selected-build="selectedBuild"
     v-model:builds="skillBuilds"
     :current-build="currentSkillBuild"
-    builds-readonly
     @select-build="characterStore.setCharacterSkillBuild"
+    @add-build="addSkillBuild"
+    @copy-build="store.appendSkillBuild(selectedBuild.clone(), false)"
+    @remove-build="removeSkillBuild"
   >
     <template #content>
       <cy-tabs
@@ -60,17 +72,15 @@ const currentDisplayedTab = computed(() =>
           {{ t('character-simulator.skill-build.skills-preview') }}
         </cy-tab>
       </cy-tabs>
-      <div class="overflow-x-auto py-4">
-        <div style="min-width: 25rem">
-          <CharacterSkillTab
-            v-if="currentDisplayedTab !== 2"
-            :skill-build="selectedBuild"
-            :type="
-              currentDisplayedTab === 0 ? SkillTypes.Active : SkillTypes.Passive
-            "
-          />
-          <CharacterSkillPreviewTab v-else :skill-build="selectedBuild" />
-        </div>
+      <div class="min-w-[22.5rem] overflow-x-auto py-4">
+        <CharacterSkillTab
+          v-if="currentDisplayedTab !== 2"
+          :skill-build="selectedBuild"
+          :type="
+            currentDisplayedTab === 0 ? SkillTypes.Active : SkillTypes.Passive
+          "
+        />
+        <CharacterSkillPreviewTab v-else :skill-build="selectedBuild" />
       </div>
     </template>
   </CommonBuildPage>

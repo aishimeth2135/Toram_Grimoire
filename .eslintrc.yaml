@@ -28,11 +28,11 @@ settings:
   import/extensions:
     - .js
     - .ts
-globals:
-  defineProps: readonly
-  defineEmits: readonly
-  defineExpose: readonly
-  withDefaults: readonly
+# globals:
+#   defineProps: readonly
+#   defineEmits: readonly
+#   defineExpose: readonly
+#   withDefaults: readonly
 rules:
   # no-use-before-define: off
   # no-unused-vars: off

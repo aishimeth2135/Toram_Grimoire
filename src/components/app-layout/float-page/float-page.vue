@@ -1,38 +1,3 @@
-<template>
-  <teleport to="#app-float-pages">
-    <cy-transition>
-      <div
-        v-if="innerVisible"
-        class="app-layout-float-page-wrapper"
-        :style="columnsStyle"
-        v-bind="attrs"
-      >
-        <div class="app-layout-float-page">
-          <div
-            class="flex flex-shrink-0 items-center border-b border-primary-10 px-4 py-3"
-          >
-            <div class="flex items-center text-primary-80">
-              <cy-icon :icon="titleIcon" class="mr-3" />
-              {{ title }}
-            </div>
-            <cy-button-icon
-              icon="ic:round-arrow-back"
-              class="ml-auto"
-              @click="closePage"
-            />
-          </div>
-          <div v-if="slotNotEmpty(slots.top)" class="flex-shrink-0 px-4">
-            <slot name="top" />
-          </div>
-          <div ref="containerEl" class="app-layout-float-page--container">
-            <slot :switch-to-content="switchToContent" />
-          </div>
-        </div>
-      </div>
-    </cy-transition>
-  </teleport>
-</template>
-
 <script lang="ts" setup>
 import { Ref, StyleValue, computed, ref, useAttrs, useSlots } from 'vue'
 
@@ -105,6 +70,43 @@ const { registPageClose } = useFloatPageClose()
 registPageClose(innerVisible, closePage)
 </script>
 
+<template>
+  <teleport to="#app-float-pages">
+    <cy-transition>
+      <div
+        v-if="innerVisible"
+        class="app-layout-float-page-wrapper"
+        :style="columnsStyle"
+        v-bind="attrs"
+      >
+        <div class="app-layout-float-page">
+          <div
+            class="flex flex-shrink-0 items-center border-b border-primary-10 px-4 py-3"
+          >
+            <div class="flex items-center text-primary-80">
+              <cy-icon :icon="titleIcon" class="mr-3" />
+              {{ title }}
+            </div>
+            <cy-button-icon
+              icon="ic:round-close"
+              class="ml-auto"
+              @click="closePage"
+            />
+          </div>
+          <div v-if="slotNotEmpty(slots.top)" class="flex-shrink-0 px-4">
+            <slot name="top" />
+          </div>
+          <div ref="containerEl" class="app-layout-float-page--container">
+            <div class="app-layout-float-page--container-inner">
+              <slot :switch-to-content="switchToContent" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </cy-transition>
+  </teleport>
+</template>
+
 <style lang="postcss">
 .app-layout-float-page-wrapper {
   @apply pointer-events-none fixed left-0 top-0 h-full;
@@ -121,7 +123,10 @@ registPageClose(innerVisible, closePage)
 
 /* ==== container ==== */
 .app-layout-float-page--container {
-  @apply flex h-full min-h-0 w-full px-4 py-6;
+  @apply flex h-full min-h-0 w-full;
+}
+.app-layout-float-page--container-inner {
+  @apply h-full w-full px-4 py-6;
 }
 
 .app-layout-float-page--side {

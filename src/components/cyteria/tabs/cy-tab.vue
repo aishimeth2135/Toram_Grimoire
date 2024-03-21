@@ -6,12 +6,10 @@ import { useTabContext } from './setup'
 interface Props {
   value: any
   disabled?: boolean
-  plain?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
-  plain: false,
 })
 
 const navEl: Ref<HTMLElement | null> = ref(null)
@@ -109,7 +107,7 @@ const tabClicked = () => {
     class="cy-tab"
     :class="[
       tabSelected ? 'text-primary-80' : 'text-stone-50',
-      { 'not-plain': !plain, 'tab-disabled': disabled },
+      { 'tab-disabled': disabled },
     ]"
     v-bind:[idBind.name]="idBind.value"
     @click="tabClicked"
@@ -120,11 +118,7 @@ const tabClicked = () => {
 
 <style lang="postcss">
 .cy-tab {
-  @apply cursor-pointer duration-150;
-
-  &.not-plain {
-    @apply mt-1 rounded px-7 py-2 hover:bg-primary-10/50;
-  }
+  @apply cursor-pointer text-center duration-150;
 
   &.tab-disabled {
     @apply cursor-not-allowed text-stone-40 hover:bg-gray-10/50;

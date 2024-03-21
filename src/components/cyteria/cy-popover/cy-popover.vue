@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, ref, useSlots } from 'vue'
+import { Ref, computed, ref, useSlots, watch } from 'vue'
 
 import CyPopper from './cy-popper.vue'
 
@@ -38,6 +38,7 @@ interface Props {
   triggers?: string
   popperClass?: any
   custom?: boolean
+  disabled?: boolean
 }
 
 // type Placement =
@@ -60,6 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
   autoSelect: false,
   triggers: 'click',
   custom: false,
+  disabled: false,
 })
 
 const slots = useSlots()
@@ -72,6 +74,10 @@ const fixed = ref(false)
 const innerShowTriggers = computed(() => props.triggers.split(' '))
 
 const onClick = () => {
+  if (props.disabled) {
+    return
+  }
+
   if (popper.value && innerShowTriggers.value.includes('click')) {
     popper.value.togglePopper(
       innerShowTriggers.value.includes('hover') ? true : undefined
@@ -80,6 +86,10 @@ const onClick = () => {
   }
 }
 const onHover = () => {
+  if (props.disabled) {
+    return
+  }
+
   if (
     popper.value &&
     innerShowTriggers.value.includes('hover') &&
@@ -88,4 +98,13 @@ const onHover = () => {
     popper.value.togglePopper()
   }
 }
+
+watch(
+  () => props.disabled,
+  value => {
+    if (value) {
+      popper.value?.togglePopper(false)
+    }
+  }
+)
 </script>

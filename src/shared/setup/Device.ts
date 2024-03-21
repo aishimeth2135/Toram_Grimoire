@@ -28,6 +28,8 @@ export const useDevice = defineState(() => {
 
   const device = reactive({
     isMobile: computed(() => viewport.width <= 800),
+    isWide: computed(() => viewport.width >= 800),
+    isWideLarge: computed(() => viewport.width >= 1120),
     hasAside: computed(() => viewport.width >= 1376 && !layout.wide),
   })
 

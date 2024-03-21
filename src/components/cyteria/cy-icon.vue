@@ -5,12 +5,10 @@ import { useCssModule } from 'vue'
 import IconBase from './icon/icon-base.vue'
 
 import { IconSrc } from './icon/setup'
-import { useIconColor } from './setup'
 
 interface Props {
   icon?: string
   path?: string
-  color?: string
   width?: string
   small?: boolean
 }

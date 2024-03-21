@@ -61,7 +61,12 @@ const allColors = [
 ]
 
 const removeLabel = (label: CharacterBuildLabel) => {
+  currentEditedLabel.value = null
   removeBuildLabel(label, equipments.value)
+}
+
+const closeEditingLabel = () => {
+  currentEditedLabel.value = null
 }
 </script>
 
@@ -112,8 +117,8 @@ const removeLabel = (label: CharacterBuildLabel) => {
                     v-for="color in allColors"
                     :key="color"
                     :value="color"
-                    plain
                     class="flex justify-center p-2"
+                    @click="closeEditingLabel"
                   >
                     <div
                       class="h-3.5 w-3.5 flex-shrink-0 rounded"
@@ -138,7 +143,7 @@ const removeLabel = (label: CharacterBuildLabel) => {
           </template>
         </Draggable>
       </CardRows>
-      <div class="px-4 py-4 text-sm text-primary-50">
+      <div v-else class="px-4 py-4 text-sm text-primary-50">
         {{
           t('character-simulator.equipment-basic-editor.label-empty-caption')
         }}

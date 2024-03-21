@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import CardRow from '@/components/card/card-row.vue'
@@ -17,23 +14,20 @@ interface Props {
   selected?: boolean
   equipped?: boolean
   invalid?: boolean
-  allowEquip: boolean
+  allowEquip?: boolean
 }
 interface Emits {
   (evt: 'equip', equipment: CharacterEquipment): void
   (evt: 'equip-cancel'): void
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   selected: false,
   equipped: false,
   invalid: false,
+  allowEquip: false,
 })
 const emit = defineEmits<Emits>()
-
-const current = computed(() => props.equipment)
-
-const { t } = useI18n()
 </script>
 
 <template>
@@ -84,7 +78,11 @@ const { t } = useI18n()
         </div>
       </div>
       <div v-if="selected" class="mt-3 border-t border-primary-10 px-4 py-2.5">
-        <EquipmentBrowseActions :equipment="equipment" :equipped="equipped" />
+        <EquipmentBrowseActions
+          :equipment="equipment"
+          :equipped="equipped"
+          :equip-disabled="!allowEquip"
+        />
       </div>
     </CardRow>
   </BrowseEquipmentsItemWrapper>

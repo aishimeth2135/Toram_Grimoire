@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import { Ref, computed, ref } from 'vue'
+import { Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Notify from '@/shared/setup/Notify'
@@ -102,7 +102,7 @@ const RenderContentTitie = (attrs: { title: string }) => {
         />
         <div class="mt-2">
           <CommonPropInput
-            v-model:value="currentCharacter.level"
+            v-model:value="selectedCharacter.level"
             :title="t('character-simulator.character-basic.character-level')"
             :range="[0, 300]"
             type="number"
@@ -115,7 +115,7 @@ const RenderContentTitie = (attrs: { title: string }) => {
         />
         <div class="mt-2 space-y-2">
           <div
-            v-for="baseStat in currentCharacter.normalBaseStats"
+            v-for="baseStat in selectedCharacter.normalBaseStats"
             :key="baseStat.name"
           >
             <CommonPropInput
@@ -128,11 +128,11 @@ const RenderContentTitie = (attrs: { title: string }) => {
           <cy-transition>
             <div>
               <CommonPropInput
-                v-if="currentCharacter.optionalBaseStat"
-                :key="currentCharacter.optionalBaseStat.name"
-                v-model:value="currentCharacter.optionalBaseStat.value"
+                v-if="selectedCharacter.optionalBaseStat"
+                :key="selectedCharacter.optionalBaseStat.name"
+                v-model:value="selectedCharacter.optionalBaseStat.value"
                 :range="optionalBaseStatRange"
-                :title="currentCharacter.optionalBaseStat.name"
+                :title="selectedCharacter.optionalBaseStat.name"
                 type="number"
               />
             </div>
@@ -148,16 +148,16 @@ const RenderContentTitie = (attrs: { title: string }) => {
         <div class="mt-3">
           <div class="flex flex-wrap items-center">
             <cy-button-radio
-              :selected="!currentCharacter.optionalBaseStat"
-              @click="currentCharacter!.clearOptinalBaseStat()"
+              :selected="!selectedCharacter.optionalBaseStat"
+              @click="selectedCharacter!.clearOptinalBaseStat()"
             >
               {{ t('global.none') }}
             </cy-button-radio>
             <cy-button-radio
               v-for="option in characterOptionalBaseStatOptions"
               :key="option"
-              :selected="!!currentCharacter!.baseStat(option)"
-              @click="currentCharacter!.setOptionalBaseStat(option)"
+              :selected="!!selectedCharacter!.baseStat(option)"
+              @click="selectedCharacter!.setOptionalBaseStat(option)"
             >
               {{ option }}
             </cy-button-radio>

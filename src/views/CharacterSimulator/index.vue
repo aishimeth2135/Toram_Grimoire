@@ -12,11 +12,13 @@
       />
       <CharacterComboView v-if="mainContents.combo" />
       <div v-else>
-        <cy-tabs v-model="currentTab" class="mb-4">
-          <cy-tab v-for="tab in tabDatas" :key="tab.id" :value="tab.id">
-            {{ tab.text }}
-          </cy-tab>
-        </cy-tabs>
+        <AppLayoutTopSticky>
+          <cy-tabs v-model="currentTab" class="mb-4 bg-white">
+            <cy-tab v-for="tab in tabDatas" :key="tab.id" :value="tab.id">
+              {{ tab.text }}
+            </cy-tab>
+          </cy-tabs>
+        </AppLayoutTopSticky>
         <CharacterEquipmentFields
           v-show="currentTab === TabIds.EquipmentFields"
         />
@@ -34,7 +36,13 @@
     </div>
     <AppLayoutBottom>
       <template #main-end>
-        <div class="flex items-center space-x-2">
+        <div class="flex flex-col items-center space-y-2">
+          <cy-button-circle
+            icon="mdi:arrow-top"
+            color="blue"
+            float
+            @click="scrollToPageTop"
+          />
           <cy-button-circle
             :selected="mainContents.characterStats"
             icon="bx-bxs-user-detail"
@@ -51,7 +59,7 @@
             toggle
             @click="toggle('mainContents/damage', null, false)"
           />
-          <cy-button-circle
+          <!-- <cy-button-circle
             v-if="mainStore.devMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
@@ -59,12 +67,12 @@
             float
             toggle
             @click="toggle('mainContents/combo', null, false)"
-          />
+          /> -->
         </div>
       </template>
     </AppLayoutBottom>
     <CharacterEquipmentDetailsFloat
-      :equipment="editedCurrentEquipment"
+      v-model:equipment="editedCurrentEquipment"
       :init-mode="editedEquipmentEditMode"
       @close="editedCurrentEquipment = null"
     />
@@ -81,8 +89,6 @@
 import {
   Ref,
   computed,
-  nextTick,
-  onMounted,
   provide,
   reactive,
   shallowReactive,
@@ -90,11 +96,9 @@ import {
 } from 'vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
-
-import { useMainStore } from '@/stores/app/main'
 
 import { ViewNames } from '@/shared/consts/view'
+import { useAppPageActions } from '@/shared/setup/App'
 import AutoSave from '@/shared/setup/AutoSave'
 import { registViewStatesCleaning } from '@/shared/setup/State'
 import ToggleService from '@/shared/setup/ToggleService'
@@ -105,6 +109,7 @@ import { Skill } from '@/lib/Skill/Skill'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import AppLayoutTopSticky from '@/components/app-layout/app-layout-top-sticky.vue'
 
 import CharacterBasic from './character-basic.vue'
 import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
@@ -140,15 +145,14 @@ const { mainContents, toggle } = ToggleService({
   mainContents: ['characterStats', 'damage', 'combo'] as const,
 })
 
+const { scrollToPageTop } = useAppPageActions()
+
 const { store, characters, currentCharacter } = setupCharacterStore()
 const { store: skillBuildStore, skillBuilds } = setupCharacterSkillBuildStore()
 const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
 const { store: registletStore, registletBuilds } =
   setupCharacterRegistletStore()
 const { store: potionStore, potionBuilds } = setupCharacterPotionStore()
-
-const mainStore = useMainStore()
-const router = useRouter()
 
 const tabDatas = computed(() => {
   const options = []
@@ -263,14 +267,6 @@ if (
 if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
   potionStore.createPotionBuild()
 }
-
-onMounted(async () => {
-  if (mainStore.redirectPathName === 'SkillSimulator') {
-    await nextTick()
-    mainStore.clearRedirectPathName()
-    router.replace({ name: 'SkillSimulator' })
-  }
-})
 
 registViewStatesCleaning(ViewNames.CharacterSimulator)
 </script>

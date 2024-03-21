@@ -31,7 +31,7 @@ const { store, foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
 const selectedBuild = ref(currentFoodBuild.value) as Ref<FoodsBuild>
 
 const copySelectedFoodBuild = () => {
-  store.appendFoodBuild(selectedBuild.value.clone())
+  store.appendFoodBuild(selectedBuild.value.clone(), false)
   notify(t('character-simulator.food-build.copy-food-build-success-tips'))
 }
 
@@ -76,9 +76,7 @@ const disableAll = computed<boolean>({
 })
 
 const addFoodBuild = () => {
-  const build = store.createFoodBuild()
-  characterStore.setCharacterFoodBuild(build)
-  selectedBuild.value = build
+  selectedBuild.value = store.createFoodBuild()
 }
 </script>
 

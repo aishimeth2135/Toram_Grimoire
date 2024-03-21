@@ -68,7 +68,7 @@ const addPotionBuild = () => {
     :current-build="currentPotionBuild"
     @select-build="characterStore.setCharacterPotionBuild"
     @add-build="addPotionBuild"
-    @copy-build="potionStore.appendPotionBuild(selectedBuild.clone())"
+    @copy-build="potionStore.appendPotionBuild(selectedBuild.clone(), false)"
     @remove-build="removeSelectedPotionBuild"
   >
     <template #header>

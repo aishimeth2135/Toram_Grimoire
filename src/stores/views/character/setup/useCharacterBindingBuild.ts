@@ -1,12 +1,9 @@
-import { computed } from 'vue'
-import { ComputedRef } from 'vue'
-import { ref } from 'vue'
-import { Ref } from 'vue'
+import { ComputedRef, Ref, computed, ref } from 'vue'
 
 import { CharacterBindingBuild } from '@/lib/Character/Character'
 
 export function useCharacterBindingBuild<
-  Build extends CharacterBindingBuild
+  Build extends CharacterBindingBuild,
 >() {
   const builds: Ref<Build[]> = ref([])
   const currentBuildIndex = ref(-1)
@@ -36,7 +33,9 @@ export function useCharacterBindingBuild<
       builds.value.splice(idx, 1)
     }
     const nextIdx = Math.min(idx, builds.value.length - 1)
-    currentBuildIndex.value = nextIdx
+    if (idx === currentBuildIndex.value) {
+      currentBuildIndex.value = nextIdx
+    }
     return nextIdx
   }
 

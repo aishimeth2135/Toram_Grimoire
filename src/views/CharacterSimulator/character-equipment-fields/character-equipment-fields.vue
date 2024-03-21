@@ -23,7 +23,7 @@ watch(currentCharacter, newValue => {
 <template>
   <div class="px-2 py-2">
     <div class="pb-2">
-      <cy-tabs v-model:model-value="currentEquipmentField">
+      <cy-tabs v-model="currentEquipmentField">
         <cy-tab
           v-for="field in currentCharacter.equipmentFields"
           :key="field.fieldId"
@@ -42,7 +42,7 @@ watch(currentCharacter, newValue => {
     </div>
     <CharacterEquipmentFieldTab
       :equipment-field="currentEquipmentField"
-      @submit="currentEquipmentField.equipment = $event"
+      @submit="currentEquipmentField.setEquipment($event)"
     />
   </div>
 </template>

@@ -34,7 +34,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
         ' ' +
         (builds.value.length + 1)
     )
-    return appendFoodBuild(newBuild)
+    return appendFoodBuild(newBuild, false)
   }
 
   return {

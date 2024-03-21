@@ -29,7 +29,7 @@ const moveMode = ref(false)
 </script>
 
 <template>
-  <div class="hidden w-72 flex-shrink-0 space-y-0.5 pr-8 wd:block">
+  <div class="hidden w-72 flex-shrink-0 space-y-0.5 pr-8 wd-lg:block">
     <div
       v-if="addable || movable"
       class="mb-3 flex justify-end border-b border-primary-10 pb-1 pt-1"

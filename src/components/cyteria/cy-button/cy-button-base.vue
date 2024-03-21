@@ -45,7 +45,7 @@ export default defineComponent({
   color: var(--button-color-text);
   border-color: var(--button-color-border);
 
-  @apply inline-flex items-center border-0 text-base duration-200;
+  @apply inline-flex flex-shrink-0 items-center border-0 text-base duration-200;
 
   &:deep(.cy-button-base-icon) {
     @apply flex-shrink-0 duration-200;

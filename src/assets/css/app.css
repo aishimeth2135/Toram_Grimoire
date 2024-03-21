@@ -45,3 +45,43 @@
     height: 100vw;
   }
 }
+
+#app-top-sticky {
+  @apply sticky z-10 w-full duration-150;
+}
+
+#app-root .app-layout-horizontal-container {
+  width: var(--app-main-content-width);
+}
+
+#app-root .app-layout-container-root {
+  @apply flex w-full justify-center;
+}
+
+#app-root.page-has-aside .app-layout-container-root {
+  padding-left: calc(
+    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
+      var(--app-main-content-padding-x)
+  );
+  padding-right: calc(
+    100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
+      var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
+  );
+}
+
+#app-root.page-wide .app-layout-horizontal-container {
+  @apply w-full;
+  padding-left: var(--app-side-menu-minimize-width);
+  padding-right: var(--app-side-menu-minimize-width);
+  max-width: var(--app-screen-max-width);
+}
+
+@media (max-width: 816px) {
+  #app-top-sticky {
+    @apply relative;
+  }
+
+  #app-root .app-layout-horizontal-container {
+    @apply w-full;
+  }
+}
