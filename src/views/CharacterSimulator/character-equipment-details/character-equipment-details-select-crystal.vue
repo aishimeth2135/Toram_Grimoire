@@ -29,9 +29,8 @@ const { t } = useI18n()
 
 const searchText = ref('')
 
-const { crystalCategorys, crystalsMap } = (() => {
+const { crystalCategorys } = (() => {
   const crystals = Grimoire.Items.crystals
-  const _crystalsMap = new Map<string, BagCrystal>()
   const categorys = Array(5)
     .fill(0)
     .map((_value, idx) => {
@@ -42,9 +41,8 @@ const { crystalCategorys, crystalsMap } = (() => {
     })
   crystals.forEach(crystal => {
     categorys[crystal.category].crystals.push(crystal)
-    _crystalsMap.set(crystal.id, crystal)
   })
-  return { crystalCategorys: categorys, crystalsMap: _crystalsMap }
+  return { crystalCategorys: categorys }
 })()
 
 const availableCrystalCategoryIds = computed(() => {
@@ -155,7 +153,9 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
 </script>
 
 <template>
-  <CardRowsWrapper class="flex h-full max-w-[20rem] flex-col">
+  <CardRowsWrapper
+    class="flex h-full max-h-[24rem] max-w-[20rem] flex-col wd-lg:max-h-none"
+  >
     <div class="pb-1">
       <CommonSearchInput
         v-model="searchText"

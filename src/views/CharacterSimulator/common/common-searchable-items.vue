@@ -54,7 +54,7 @@ const RenderItem = ({ item }: { item: Item }) => {
 
 <template>
   <CardRowsWrapper
-    class="flex h-full max-h-72 max-w-[20rem] flex-col wd:max-h-none"
+    class="flex h-full max-h-[24rem] max-w-[20rem] flex-col wd-lg:max-h-none"
   >
     <div class="pb-1">
       <CommonSearchInput
@@ -65,7 +65,7 @@ const RenderItem = ({ item }: { item: Item }) => {
       />
     </div>
     <CardRowsDelegation
-      class="h-full overflow-y-auto py-2"
+      class="flex-grow overflow-y-auto py-2"
       @row-clicked="itemClicked"
     >
       <RenderItem v-for="item in items" :key="item.id" :item="item" />

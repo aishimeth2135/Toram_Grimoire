@@ -4,7 +4,7 @@
     tag="span"
     class="inline-block px-0.5"
     triggers="click hover"
-    popper-class="!border-0"
+    popper-content-class="!border-0"
   >
     <span class="cursor-pointer text-cyan-60 underline">
       {{ currentBranchItem.prop('name') }}

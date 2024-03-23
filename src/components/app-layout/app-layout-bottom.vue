@@ -24,7 +24,7 @@
     </cy-transition>
     <div
       v-if="slots['default'] || slots['main-start'] || slots['main-end']"
-      class="flex items-end space-x-2"
+      class="mr-2 flex items-end space-x-2"
     >
       <div v-if="slots['main-start']" class="pointer-events-auto">
         <slot name="main-start"></slot>

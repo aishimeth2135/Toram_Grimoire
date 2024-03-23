@@ -74,7 +74,7 @@ const downloadImage = () => {
       v-model:visible="visible"
       :title="t('character-simulator.skill-build.export-buile-title')"
     >
-      <div class="h-full wd:flex">
+      <div class="h-full w-full p-4 wd:flex">
         <cy-tabs
           v-model="currentExportMode"
           :class="device.isWide ? 'mr-6 min-w-[8rem]' : 'mb-6'"

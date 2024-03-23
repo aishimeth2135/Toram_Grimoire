@@ -123,10 +123,10 @@ const toggleDisplayMode = () => {
     </div>
     <div
       v-if="displayMode === DisplayModes.Grid"
-      class="flex flex-grow flex-col"
+      class="flex flex-grow flex-col px-1"
     >
       <div
-        class="mx-1.5 mb-2 flex flex-wrap items-center rounded-full border border-primary-50 py-2 pl-5 pr-3"
+        class="mx-1.5 mb-2 flex flex-wrap items-center rounded-full border border-primary-50 py-1 pl-5 pr-3"
       >
         <template v-if="selectedEquipment">
           <EquipmentBrowseTitle :equipment="selectedEquipment" class="mr-6" />

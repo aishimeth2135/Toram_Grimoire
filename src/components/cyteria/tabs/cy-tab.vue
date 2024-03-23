@@ -118,7 +118,7 @@ const tabClicked = () => {
 
 <style lang="postcss">
 .cy-tab {
-  @apply cursor-pointer text-center duration-150;
+  @apply cursor-pointer duration-150;
 
   &.tab-disabled {
     @apply cursor-not-allowed text-stone-40 hover:bg-gray-10/50;

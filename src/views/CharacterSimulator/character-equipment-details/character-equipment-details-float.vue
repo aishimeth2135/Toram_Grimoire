@@ -63,7 +63,7 @@ const browseMode = ref(BrowseMode.Equipped)
     title-icon="ic-round-edit"
     @update:visible="emit('close')"
   >
-    <div class="h-full w-full overflow-y-auto wd-lg:flex">
+    <div class="h-full w-full overflow-y-auto px-4 py-4 wd-lg:flex">
       <div class="flex-shrink-0 py-2 wd:flex wd-lg:h-full">
         <CharacterEquipmentDetails
           :current-edit-mode="currentMode"
@@ -72,7 +72,7 @@ const browseMode = ref(BrowseMode.Equipped)
         />
         <div
           v-if="equipment"
-          class="my-6 w-full max-w-[22rem] overflow-y-auto px-4 wd:my-0 wd:h-full wd:w-[22rem] wd:px-8 wd-lg:h-full"
+          class="my-6 w-full max-w-[22rem] overflow-y-auto px-4 wd:mx-4 wd:my-0 wd:h-full wd:w-[22rem]"
         >
           <CharacterEquipmentDetailsEditBasic
             v-if="currentMode === CharacterEquipmentEditModes.Basic"
@@ -89,7 +89,7 @@ const browseMode = ref(BrowseMode.Equipped)
         </div>
       </div>
       <div
-        class="flex flex-shrink-0 flex-col rounded border border-primary-10 bg-white pb-2 wd:flex-grow wd-lg:h-full"
+        class="flex max-h-full max-w-[45.25rem] flex-col rounded border border-primary-10 bg-white pb-2 wd:flex-grow wd-lg:h-full"
       >
         <cy-tabs v-model="browseMode" class="mb-4 px-2">
           <cy-tab :value="BrowseMode.Equipped">
@@ -101,7 +101,7 @@ const browseMode = ref(BrowseMode.Equipped)
         </cy-tabs>
         <div
           v-if="browseMode === BrowseMode.Equipped"
-          class="mx-2 rounded border border-primary-10"
+          class="mx-2 flex-grow overflow-y-auto rounded border border-primary-10"
         >
           <browseEquipmentEquippedItems
             v-model:selected-equipment="equipment"
@@ -110,7 +110,7 @@ const browseMode = ref(BrowseMode.Equipped)
         <BrowseEquipmentsMain
           v-else-if="browseMode === BrowseMode.All"
           v-model:selected-equipment="equipment"
-          class="min-h-0 flex-grow"
+          class="min-h-0 min-w-0 flex-grow"
         />
       </div>
     </div>

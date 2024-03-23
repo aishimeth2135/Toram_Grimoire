@@ -47,7 +47,10 @@ const { t } = useI18n()
           >
             {{ equipment.name }}
           </div>
-          <div v-if="previewStat" class="text-cyan-70">
+          <div
+            v-if="previewStat"
+            :class="previewStat.value > 0 ? 'text-cyan-70' : 'text-red-40'"
+          >
             {{ previewStat.showValue() }}
           </div>
           <div v-else-if="!equipment.unknowCategory" class="flex items-center">

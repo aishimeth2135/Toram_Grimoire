@@ -4,7 +4,7 @@
     tag="span"
     class="inline-block px-0.5"
     triggers="click hover"
-    popper-class="rounded-md"
+    popper-content-class="rounded-md"
   >
     <span class="cursor-pointer text-red-60 underline">
       {{ currentSkill.name }}

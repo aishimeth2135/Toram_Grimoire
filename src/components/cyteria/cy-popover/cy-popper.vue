@@ -171,7 +171,6 @@ defineExpose({
 <style lang="postcss">
 .cy--popper {
   min-width: 15rem;
-
   @apply fixed z-100 overflow-y-auto;
 
   &.theme-common {

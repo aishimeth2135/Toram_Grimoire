@@ -63,13 +63,6 @@ const { currentItems, page, maxPage } = PageControl({
   step: 30,
 })
 
-const previewStatOption = computed(() => {
-  if (currentMode.value !== EquipmentSearchMode.Stat) {
-    return null
-  }
-  return selectedStatOption.value
-})
-
 const topElement: Ref<HTMLElement | null> = ref(null)
 const pageChanged = async () => {
   await nextTick()
@@ -157,6 +150,7 @@ const selectStatOption = (option: StatOption) => {
                     v-model:search-text="statSearchText"
                     :items="statOptionsSearchResults"
                     :selected-item-ids="selectedStatIds"
+                    class="h-full !max-h-none"
                     @select-item="selectStatOption($event), hide()"
                   >
                     <template #item="{ item }">

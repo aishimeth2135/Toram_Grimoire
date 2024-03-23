@@ -80,7 +80,7 @@ const closeEditingLabel = () => {
         @click="createBuildLabel"
       />
     </div>
-    <CardRowsWrapper>
+    <CardRowsWrapper class="max-h-[24rem] overflow-y-auto wd-lg:max-h-none">
       <CardRows v-if="buildLabels.length > 0">
         <Draggable v-model="buildLabels" item-key="id" handle=".drag-handle">
           <template #item="{ element: label }">

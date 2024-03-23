@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <AppLayoutMain>
-    <div class="w-full overflow-x-auto py-2">
+    <div class="w-full overflow-x-auto">
       <CharacterStats
         :visible="mainContents.characterStats"
         @close="toggle('mainContents/characterStats', false)"

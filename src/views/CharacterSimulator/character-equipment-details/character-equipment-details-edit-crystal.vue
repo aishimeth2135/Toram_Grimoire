@@ -26,6 +26,7 @@ const isEditing = ref(false)
         v-for="crystal in equipment.crystals"
         :key="crystal.id"
         :crystal="crystal"
+        @remove="equipment.removeCrystal($event)"
       />
     </div>
     <CharacterEquipmentDetailsSelectCrystal v-else :equipment="equipment" />

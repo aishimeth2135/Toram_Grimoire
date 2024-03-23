@@ -57,6 +57,7 @@ useResizeObserver(tabsEl, forceUpdateSliderStyle)
     @apply border-b-1 border-primary-10;
 
     & > .cy-tab {
+      @apply text-center;
       min-width: 6rem;
     }
   }

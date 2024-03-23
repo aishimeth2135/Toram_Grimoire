@@ -18,7 +18,7 @@
         autoSelect,
         custom,
       }"
-      :content-class="popperClass"
+      :content-class="popperContentClass"
       @hidden="fixed = false"
     >
       <slot name="popper" :hide="hide" />
@@ -36,7 +36,7 @@ interface Props {
   autoSelect?: boolean
   placement?: string
   triggers?: string
-  popperClass?: any
+  popperContentClass?: any
   custom?: boolean
   disabled?: boolean
 }

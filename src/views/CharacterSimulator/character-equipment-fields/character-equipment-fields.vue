@@ -21,7 +21,7 @@ watch(currentCharacter, newValue => {
 
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="px-2 py-2">
+  <div class="px-2">
     <div class="pb-2">
       <cy-tabs v-model="currentEquipmentField">
         <cy-tab

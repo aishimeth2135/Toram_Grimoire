@@ -16,7 +16,7 @@ export async function getSkillBuildImageDataURL(skillBuild: SkillBuild) {
 
     const bodyComputedStyle = getComputedStyle(document.body)
     const whiteColor = bodyComputedStyle.getPropertyValue('--app-white').trim(),
-      pcolorl = bodyComputedStyle.getPropertyValue('--app-light').trim(),
+      pcolorl = bodyComputedStyle.getPropertyValue('--app-primary-20').trim(),
       pcolor3 = bodyComputedStyle.getPropertyValue('--app-primary-50').trim(),
       pcolor4 = bodyComputedStyle.getPropertyValue('--app-primary-60').trim(),
       fontFamily = bodyComputedStyle.getPropertyValue('font-family').trim()

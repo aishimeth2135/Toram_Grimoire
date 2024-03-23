@@ -97,9 +97,7 @@ registPageClose(innerVisible, closePage)
             <slot name="top" />
           </div>
           <div ref="containerEl" class="app-layout-float-page--container">
-            <div class="app-layout-float-page--container-inner">
-              <slot :switch-to-content="switchToContent" />
-            </div>
+            <slot :switch-to-content="switchToContent" />
           </div>
         </div>
       </div>
@@ -125,12 +123,9 @@ registPageClose(innerVisible, closePage)
 .app-layout-float-page--container {
   @apply flex h-full min-h-0 w-full;
 }
-.app-layout-float-page--container-inner {
-  @apply h-full w-full px-4 py-6;
-}
 
 .app-layout-float-page--side {
-  @apply h-full w-full flex-shrink-0;
+  @apply h-full w-full flex-shrink-0 py-4;
   max-width: var(--app-layout-float-page--side-width, auto);
 }
 
@@ -148,7 +143,7 @@ registPageClose(innerVisible, closePage)
 }
 
 .app-layout-float-page--content {
-  @apply flex h-full w-full overflow-y-auto pl-8;
+  @apply flex h-full w-full overflow-y-auto py-4 pl-8;
 }
 
 /* ==== content/inner ==== */
