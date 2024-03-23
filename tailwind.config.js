@@ -238,6 +238,8 @@ module.exports = {
     'verticalAlign',
     'visibility',
 
+    'userSelect',
+
     'whitespace',
     'width',
     'wordBreak',

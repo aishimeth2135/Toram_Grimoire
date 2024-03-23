@@ -28,11 +28,11 @@ const { copyEquipment, removeEquipment } = useEquipmentActions(current)
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center" @click.stop>
     <template v-if="!equipDisabled">
       <template v-if="!equipped">
         <div
-          class="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 hover:border-primary-50 hover:text-primary-60"
+          class="select-none flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 hover:border-primary-50 hover:text-primary-60"
           @click="emit('equip', equipment)"
         >
           <cy-icon icon="ic:round-check-circle" class="text-inherit" />
@@ -43,7 +43,7 @@ const { copyEquipment, removeEquipment } = useEquipmentActions(current)
       </template>
       <template v-else>
         <div
-          class="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 hover:border-primary-50 hover:text-primary-60"
+          class="select-none flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 hover:border-primary-50 hover:text-primary-60"
           @click="emit('equip-cancel')"
         >
           <cy-icon icon="mdi:close" class="text-inherit" />

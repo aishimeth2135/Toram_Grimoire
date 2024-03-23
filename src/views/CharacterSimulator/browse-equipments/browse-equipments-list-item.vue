@@ -82,6 +82,8 @@ const emit = defineEmits<Emits>()
           :equipment="equipment"
           :equipped="equipped"
           :equip-disabled="!allowEquip"
+          @equip="emit('equip', $event)"
+          @equip-cancel="emit('equip-cancel')"
         />
       </div>
     </CardRow>

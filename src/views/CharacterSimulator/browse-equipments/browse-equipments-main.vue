@@ -171,6 +171,7 @@ const toggleDisplayMode = () => {
           :allow-equip="allowEquip"
           @click="selectedEquipment = equip"
           @equip="emit('equip', $event)"
+          @equip-cancel="emit('equip-cancel')"
         />
       </CardRows>
       <div
