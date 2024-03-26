@@ -1,4 +1,4 @@
-import Iconify from '@iconify/iconify'
+import Iconify, { IconifyIcon } from '@iconify/iconify'
 
 /**
  * Get custom icon by icon ID.
@@ -52,7 +52,7 @@ export default function Icons(name: string): string {
   return ''
 }
 
-function loadIconifyData(name: string) {
+function loadIconifyData(name: string): Promise<IconifyIcon | null> {
   return new Promise(resolve => {
     if (Iconify.iconExists(name)) {
       resolve(Iconify.getIcon(name))

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <AppLayoutMain>
-    <div class="w-full overflow-x-auto">
+    <div class="flex min-h-full w-full flex-col overflow-x-auto">
       <CharacterStats
         :visible="mainContents.characterStats"
         @close="toggle('mainContents/characterStats', false)"
@@ -11,7 +11,7 @@
         @close="toggle('mainContents/damage', false)"
       />
       <CharacterComboView v-if="mainContents.combo" />
-      <div v-else>
+      <div v-else class="flex min-h-full flex-col">
         <AppLayoutTopSticky>
           <cy-tabs v-model="currentTab" class="mb-4 bg-white">
             <cy-tab v-for="tab in tabDatas" :key="tab.id" :value="tab.id">
@@ -20,9 +20,9 @@
           </cy-tabs>
         </AppLayoutTopSticky>
         <CharacterEquipmentFields
-          v-show="currentTab === TabIds.EquipmentFields"
+          v-if="currentTab === TabIds.EquipmentFields"
         />
-        <CharacterSkill v-if="currentTab === TabIds.Skill" />
+        <CharacterSkill v-else-if="currentTab === TabIds.Skill" />
         <CharacterFood v-else-if="currentTab === TabIds.Food" />
         <CharacterRegistlet v-else-if="currentTab === TabIds.Registlet" />
         <CharacterPotion v-else-if="currentTab === TabIds.Potion" />

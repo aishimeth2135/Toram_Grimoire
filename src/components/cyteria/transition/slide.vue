@@ -13,7 +13,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 import Velocity from 'velocity-animate'
 
 export default {
