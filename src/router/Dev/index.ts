@@ -8,7 +8,7 @@ export default {
   name: 'Dev',
   path: '/doll/dev',
   component: AppDev,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     ViewInit().then(next)
   },
   meta: {

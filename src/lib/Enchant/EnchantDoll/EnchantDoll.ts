@@ -517,7 +517,7 @@ class EnchantDoll {
     }
     let res = Array(stats.length)
       .fill([])
-      .map((value, idx) => [idx])
+      .map((_value, idx) => [idx])
     while (res.length !== 0 && res[0].length !== stats.length) {
       res = merge(res)
       if (res[0].length === length) {

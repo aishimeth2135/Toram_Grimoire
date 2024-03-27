@@ -16,11 +16,11 @@ export function markText(
   return str
     .replace(
       /\(\(!((?:(?!\(\().)+)\)\)/g,
-      (match, p1) => `<span class="${mark}">${p1}</span>`
+      (_match, p1) => `<span class="${mark}">${p1}</span>`
     )
     .replace(
       /\(\(_((?:(?!\(\().)+)\)\)/g,
-      (match, p1) =>
+      (_match, p1) =>
         `<span class="cy--text-underline ${underline}">${p1}</span>`
     )
 }

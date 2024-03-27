@@ -759,7 +759,7 @@ class EnchantStat {
       }
       return Array(_to - _from)
         .fill(0)
-        .map((item, idx) => idx + _from + 1)
+        .map((_item, idx) => idx + _from + 1)
         .reduce(
           (item1, item2) =>
             item1 + Math.floor((item2 * item2 * bv * rate) / 100),

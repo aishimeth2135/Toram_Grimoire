@@ -41,6 +41,12 @@ interface IconData {
   height: number
 }
 
+interface DisplayedIcon {
+  id: number
+  color: string
+  path: string
+}
+
 const customIconDatas: Record<string, IconData> = {
   potum: {
     iconData:
@@ -70,7 +76,7 @@ export default {
       resizeListener: null,
       currentIcon: '',
     } as {
-      icons: string[]
+      icons: DisplayedIcon[]
       colors: string[] | null
       viewWidth: number
       viewHeight: number
@@ -120,9 +126,12 @@ export default {
     if (customIcon) {
       setIcon(customIconDatas[customIcon])
     } else {
-      loadIconifyData(iconName).then(({ body, width, height }) =>
-        setIcon({ iconData: body, width, height })
-      )
+      loadIconifyData(iconName).then(result => {
+        if (result) {
+          const { body, width = 16, height = 16 } = result
+          setIcon({ iconData: body, width, height })
+        }
+      })
     }
 
     const lis = () => {
@@ -134,7 +143,9 @@ export default {
     this.resizeListener = lis
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.resizeListener)
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener)
+    }
   },
   methods: {
     toggleBackground() {
@@ -159,9 +170,10 @@ export default {
       let flip = true
       while (cur > 0) {
         cur -= yStep()
-        def += `S${xf(
-          flip ? getRandomInt(5, 20) : getRandomInt(-20, -5)
-        )},${cur} ${ox},`
+
+        const flipOffset = flip ? getRandomInt(5, 20) : getRandomInt(-20, -5)
+        def += `S${xf(flipOffset)},${cur} ${ox},`
+
         cur -= yStep()
         def += cur
         flip = !flip
@@ -196,7 +208,7 @@ export default {
         id: this.idCounter,
         color,
         path: `path('${path}')`,
-      }
+      } as DisplayedIcon
 
       this.idCounter += 1
       this.counter += 1

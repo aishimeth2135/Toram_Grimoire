@@ -366,14 +366,17 @@ function handleFormula(
    * ex: convert "角色STR*6/2" to "角色STR*3"
    */
   formulaStr = formulaStr
-    .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, left, operator, right) => {
-      left = parseFloat(left)
-      right = parseFloat(right)
-      return calcNumberBinaryExpression(left, operator, right).toString()
-    })
+    .replace(
+      HANDLE_FORMULA_EXTRA_PATTERN_1,
+      (_match, left, operator, right) => {
+        left = parseFloat(left)
+        right = parseFloat(right)
+        return calcNumberBinaryExpression(left, operator, right).toString()
+      }
+    )
     .replace(
       HANDLE_FORMULA_EXTRA_PATTERN_2,
-      (match, pre, left, operator, right) => {
+      (_match, pre, left, operator, right) => {
         left = parseFloat(left)
         right = parseFloat(right)
         return (

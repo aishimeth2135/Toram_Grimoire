@@ -20,7 +20,7 @@ export default {
   name: AppRouteNames.Book,
   path: '/book',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.BookTemplate)
     ViewInitSlient(DataStoreIds.Stats, DataStoreIds.Items)
     ViewInit().then(next)

@@ -197,7 +197,7 @@ class CharacterStat {
     if (!displayFormula.match(/\$(?:\.\d)?v/)) {
       displayFormula = '$v' + displayFormula
     }
-    return displayFormula.replace(/\$(?:\.(\d))?v/, (match, p1) => {
+    return displayFormula.replace(/\$(?:\.(\d))?v/, (_match, p1) => {
       if (ignoreDecimal) {
         return value.toString()
       }
