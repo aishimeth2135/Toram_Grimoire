@@ -1,5 +1,5 @@
 <template>
-  <AppLayoutMain> </AppLayoutMain>
+  <AppLayoutMain></AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -27,5 +27,6 @@ const currentUrl = computed(() => {
 
 watch(currentUrl, value => {
   const data = downloadCsv(value)
+  console.log(data)
 })
 </script>

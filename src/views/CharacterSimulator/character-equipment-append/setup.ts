@@ -1,4 +1,4 @@
-import { Ref, computed, markRaw, ref, watch } from 'vue'
+import { Ref, computed, markRaw, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { fuzzySearch, prepareFuzzySearch } from '@/shared/utils/data'

@@ -1,3 +1,4 @@
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 import { AppRouteNames } from '@/router/enums'
 
 export const APP_STORAGE_KEYS = {
@@ -11,7 +12,7 @@ export const APP_STORAGE_KEYS = {
 export interface RouteLinkData {
   name: string
   icon: string
-  pathName: AppRouteNames
+  pathName: string
 }
 
 export const ROUTE_LINK_DATAS: RouteLinkData[] = [
@@ -24,6 +25,11 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
     name: 'character-simulator',
     icon: '@potum',
     pathName: AppRouteNames.CharacterSimulator,
+  },
+  {
+    name: 'skill-simulator',
+    icon: 'ant-design:build-outlined',
+    pathName: CharacterSimulatorRouteNames.Skill,
   },
   {
     name: 'enchant-simulator',

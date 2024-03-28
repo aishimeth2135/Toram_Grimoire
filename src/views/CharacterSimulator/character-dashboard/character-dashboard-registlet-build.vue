@@ -4,9 +4,9 @@ import { computed } from 'vue'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { StatBase } from '@/lib/Character/Stat'
 
-import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import { TabIds } from '../setup'
+import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 
 interface Props {
   registletBuild: RegistletBuild
@@ -25,7 +25,7 @@ const displayedItems = computed(() => {
   <CharacterDashboardSideWrapper
     icon="game-icons:beveled-star"
     :title="registletBuild.name"
-    :tab-id="TabIds.Registlet"
+    :tab-path-name="CharacterSimulatorRouteNames.Registlet"
   >
     <div class="space-y-1.5">
       <div

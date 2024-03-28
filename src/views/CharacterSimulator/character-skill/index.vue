@@ -19,7 +19,7 @@ defineOptions({
 
 const { t } = useI18n()
 
-const currentTab = ref(0)
+const currentTab = ref(2)
 
 const characterStore = useCharacterStore()
 

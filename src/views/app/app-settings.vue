@@ -320,7 +320,7 @@ const saveLocalStorage = () => {
   const storage = window.localStorage
   Array(localStorage.length)
     .fill(null)
-    .map((value, idx) => idx)
+    .map((_value, idx) => idx)
     .forEach(idx => {
       const key = storage.key(idx)!
       const item = storage.getItem(key)!
@@ -348,7 +348,7 @@ const loadLocalStorage = () => {
       // reset
       Array(localStorage.length)
         .fill(null)
-        .map((value, idx) => idx)
+        .map((_value, idx) => idx)
         .forEach(idx => {
           const key = storage.key(idx)
           if (key && !key.startsWith('iconify')) {

@@ -63,7 +63,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Ref, ref } from 'vue'
 
 // import { useBookmarkStore } from '@/stores/app/bookmark'
@@ -80,12 +80,10 @@ import HomeIconTitle from './home-icon-title.vue'
 import HomeMainSection from './home-main-section.vue'
 import HomeTitle from './home-title.vue'
 
-export default {
+defineOptions({
   name: 'AppHome',
-}
-</script>
+})
 
-<script lang="ts" setup>
 const storageAvailable = Cyteria.storageAvailable('localStorage')
 
 const mainStore = useMainStore()

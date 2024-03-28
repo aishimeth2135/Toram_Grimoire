@@ -78,16 +78,3 @@ export function setupCharacterPotionStore() {
     currentPotionBuild: currentPotionBuild as Ref<PotionBuild>,
   }
 }
-
-export const enum TabIds {
-  Basic,
-  Dashboard,
-  EquipmentFields,
-  Equipments,
-  Skill,
-  Food,
-  Save,
-  Registlet,
-  Potion,
-  EquipmentBrowse,
-}

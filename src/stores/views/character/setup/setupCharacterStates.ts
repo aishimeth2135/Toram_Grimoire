@@ -110,7 +110,15 @@ export function setupCharacters() {
         ' ' +
         (characters.value.length + 1)
     )
-    return appendCharacter(newCharacter)
+    appendCharacter(newCharacter)
+    const state = getCharacterState(newCharacter)
+    state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
+    state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
+    state.registletBuild =
+      (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
+    state.potionBuild =
+      (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
+    return newCharacter
   }
 
   return {
