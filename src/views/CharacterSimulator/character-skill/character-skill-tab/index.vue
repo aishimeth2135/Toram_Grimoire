@@ -30,10 +30,13 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResultsState } from '@/stores/views/character/setup'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { SkillTypes } from '@/lib/Skill/Skill'
 
@@ -41,8 +44,6 @@ import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 
 import CharacterSkillItem from './character-skill-item.vue'
-
-import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
 
 defineOptions({
   name: 'CharacterSkillTab',
@@ -55,29 +56,25 @@ interface Props {
 const props = defineProps<Props>()
 
 const { t } = useI18n()
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
-const skillResultsStates = computed(() => {
-  return (
-    props.type === SkillTypes.Active
-      ? store.activeSkillResultStates
-      : store.passiveSkillResultStates
-  ) as SkillResultsState[]
+const skillResultsStates = computed<SkillResultsState[]>(() => {
+  return props.type === SkillTypes.Active
+    ? characterStore.activeSkillResultStates
+    : characterStore.passiveSkillResultStates
 })
 
-const { currentSkillBuild } = setupCharacterSkillBuildStore()
+const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 const validResultStates = computed(() => {
   return skillResultsStates.value.filter(
     state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
   )
 })
 
-const postponedSkillResultsStates = computed(() => {
-  return (
-    props.type === SkillTypes.Active
-      ? store.postponedActiveSkillResultStates
-      : store.postponedPassiveSkillResultStates
-  ) as SkillResultsState[]
+const postponedSkillResultsStates = computed<SkillResultsState[]>(() => {
+  return props.type === SkillTypes.Active
+    ? characterStore.postponedActiveSkillResultStates
+    : characterStore.postponedPassiveSkillResultStates
 })
 
 const postponedValidResultStates = computed(() => {
@@ -103,14 +100,14 @@ const allSkillEnabled = computed<boolean>({
 const disableAll = computed<boolean>({
   get() {
     return !(props.type === SkillTypes.Active
-      ? store.setupOptions.handleActiveSkill
-      : store.setupOptions.handlePassiveSkill)
+      ? characterStore.setupOptions.handleActiveSkill
+      : characterStore.setupOptions.handlePassiveSkill)
   },
   set(value) {
     if (props.type === SkillTypes.Active) {
-      store.setupOptions.handleActiveSkill = !value
+      characterStore.setupOptions.handleActiveSkill = !value
     } else {
-      store.setupOptions.handlePassiveSkill = !value
+      characterStore.setupOptions.handlePassiveSkill = !value
     }
   },
 })

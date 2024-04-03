@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import Grimoire from '@/shared/Grimoire'
+import { protectType } from '@/shared/utils/pinia'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 
@@ -33,9 +34,9 @@ export const useCharacterSkillBuildStore = defineStore(
     }
 
     return {
-      skillBuilds: builds,
+      skillBuilds: protectType(builds),
       currentSkillBuildIndex: currentBuildIndex,
-      currentSkillBuild: currentBuild,
+      currentSkillBuild: protectType(currentBuild),
       setCurrentSkillBuild,
       createSkillBuild,
       appendSkillBuild,

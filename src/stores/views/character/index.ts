@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import { Ref, computed, readonly, ref } from 'vue'
 
+import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
+import { protectType } from '@/shared/utils/pinia'
 
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
@@ -38,7 +40,7 @@ import {
   TargetProperties,
   setupDamageCalculation,
 } from './setup/setupDamageCalculation'
-import { SkillBuildState, useCharacterSkillStore } from './skill'
+import { useCharacterSkillStore } from './skill'
 import { useCharacterSkillBuildStore } from './skill-build'
 import { migrateCharacterSimulatorSaveData } from './utils'
 
@@ -48,8 +50,6 @@ interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
 
 interface CharacterStoreSaveSummary {
   characterIndex: number
-  skillBuildIndex?: number
-  foodBuildIndex: number
 }
 
 interface CharacterStoreCharacterStateSaveData {
@@ -97,7 +97,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const potionBuildStore = useCharacterPotionBuildStore()
   const buildLabelStore = useCharacterBuildLabelStore()
 
-  const saveDisabled = ref(false)
+  const logger = new CommonLogger('character-simulator')
 
   const setupOptions = ref({
     handleFood: true,
@@ -127,13 +127,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     removeCharacter,
   } = setupCharacters()
 
-  const {
-    equipments,
-    appendEquipment,
-    appendEquipments,
-    removeEquipment,
-    moveEquipment,
-  } = setupEquipments(currentCharacter)
+  const { equipments, appendEquipment, appendEquipments, removeEquipment } =
+    setupEquipments(currentCharacter)
 
   const closeAutoSave = () => {
     autoSaveDisabled.value = false
@@ -151,37 +146,8 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 
   const deleteAllSavedData = () => {
-    const prefix = 'app--character-simulator--data-'
-    const storage = window.localStorage
-
-    let find = true,
-      cnt = 0
-    const list = [
-      '',
-      '--characters',
-      '--equipments',
-      '--skillBuilds',
-      '--skillBuilds-v2',
-      '--foodBuilds',
-    ]
-    while (find) {
-      const curPrefix = prefix + cnt
-      const finds = list.filter(suffixKey => {
-        const item = curPrefix + suffixKey
-        if (storage.getItem(item) !== null) {
-          // backup[item] = storage.getItem(item);
-          storage.removeItem(item)
-          return true
-        }
-        return false
-      })
-      find = finds.length > 0
-      cnt += 1
-    }
-
-    storage.removeItem(V2_AUTO_SAVE_STORAGE_KEY)
-
-    saveDisabled.value = true
+    window.localStorage.removeItem(V2_AUTO_SAVE_STORAGE_KEY)
+    closeAutoSave()
   }
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
@@ -231,10 +197,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
 
-    return (
-      saveData: CharacterSimulatorSaveData,
-      { ignoreSkillBuilds = false }: { ignoreSkillBuilds?: boolean } = {}
-    ) => {
+    return (saveData: CharacterSimulatorSaveData) => {
       migrateCharacterSimulatorSaveData(saveData)
 
       _loadCount += 1
@@ -253,6 +216,7 @@ export const useCharacterStore = defineStore('view-character', () => {
         buildLabelStore.loadBuildLabel(loadedCategory, data)
       })
 
+      // equipments
       const allValidEquipmentsLength = saveData.equipments
         .map(data => data.idx)
         .reduce((cur, item2) => Math.max(cur, item2), 0)
@@ -268,22 +232,25 @@ export const useCharacterStore = defineStore('view-character', () => {
         allValidEquipments[data.idx] = equip
       })
 
+      // character
       saveData.characters.forEach(charaRow => {
         const chara = new Character()
-        const load = chara.load(loadedCategory, charaRow, allValidEquipments)
-        if (load) {
+        const loadSuccess = chara.load(
+          loadedCategory,
+          charaRow,
+          allValidEquipments
+        )
+        if (loadSuccess) {
           appendCharacter(chara, false)
         }
       })
 
       appendEquipments(filterNullish(allValidEquipments))
 
-      if (!ignoreSkillBuilds) {
-        saveData.skillBuilds.forEach(buildData => {
-          const build = SkillBuild.load(loadedCategory, buildData)
-          skillBuildStore.appendSkillBuild(build, false)
-        })
-      }
+      saveData.skillBuilds.forEach(buildData => {
+        const build = SkillBuild.load(loadedCategory, buildData)
+        skillBuildStore.appendSkillBuild(build, false)
+      })
 
       saveData.foodBuilds.forEach(data => {
         const build = new FoodsBuild(foodStore.foodsBase as FoodsBase)
@@ -304,188 +271,109 @@ export const useCharacterStore = defineStore('view-character', () => {
       })
 
       saveData.characterStates.forEach(item => {
-        const chara = characters.value.find(ch =>
+        const targetCharacter = characters.value.find(ch =>
           ch.matchLoadedId(loadedCategory, item.id)
         )
-        if (chara) {
-          const charaState = getCharacterState(chara)
+        if (targetCharacter) {
+          const characterState = getCharacterState(targetCharacter)
 
           // skill
-          const skillBuild = (skillBuildStore.skillBuilds as SkillBuild[]).find(
-            build => build.matchLoadedId(loadedCategory, item.skillBuildId)
+          const skillBuild = skillBuildStore.skillBuilds.find(build =>
+            build.matchLoadedId(loadedCategory, item.skillBuildId)
           )
-          charaState.skillBuild = skillBuild ?? null
+          characterState.skillBuild = skillBuild ?? null
 
           // food
-          const foodBuild = (foodStore.foodBuilds as FoodsBuild[]).find(build =>
+          const foodBuild = foodStore.foodBuilds.find(build =>
             build.matchLoadedId(loadedCategory, item.foodBuildId)
           )
-          charaState.foodBuild = foodBuild ?? null
+          characterState.foodBuild = foodBuild ?? null
 
           // registlet
-          const registletBuild = (
-            registletBuildStore.registletBuilds as RegistletBuild[]
-          ).find(build =>
-            build.matchLoadedId(loadedCategory, item.registletBuildId)
+          const registletBuild = registletBuildStore.registletBuilds.find(
+            build => build.matchLoadedId(loadedCategory, item.registletBuildId)
           )
-          charaState.registletBuild = registletBuild ?? null
+          characterState.registletBuild = registletBuild ?? null
 
           // potion
-          const potionBuild = (
-            potionBuildStore.potionBuilds as PotionBuild[]
-          ).find(build =>
+          const potionBuild = potionBuildStore.potionBuilds.find(build =>
             build.matchLoadedId(loadedCategory, item.potionBuildId)
           )
-          charaState.potionBuild = potionBuild ?? null
+          characterState.potionBuild = potionBuild ?? null
         }
       })
     }
   })()
 
-  const loadCharacterSimulator = ({ index = 0 }: { index?: number } = {}) => {
+  const loadCharacterSimulator = () => {
     try {
       reset()
 
       const v2Data = window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY)
       if (v2Data !== null) {
-        console.log('[character-simulator] datas version: v2')
+        logger.info('Datas version: v2')
         const { summary, datas } = JSON.parse(
           v2Data
         ) as CharacterSimulatorSaveDataRoot
 
         loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
-      } else {
-        const prefix = 'app--character-simulator--data-' + index
-        if (!window.localStorage.getItem(prefix)) {
-          console.warn(
-            `[character-simulator] index ${index} of data is not exist.`
-          )
-          return
-        }
-        const summary = JSON.parse(
-          window.localStorage.getItem(prefix)!
-        ) as CharacterStoreSaveSummary
-        const characterDatas = JSON.parse(
-          window.localStorage.getItem(prefix + '--characters')!
-        ) as CharacterSaveData[]
-        const equipmentDatas = JSON.parse(
-          window.localStorage.getItem(prefix + '--equipments')!
-        ) as EquipmentSaveDataWithIndex[]
-        const skillBuildsCsv =
-          window.localStorage.getItem(prefix + '--skillBuilds') ?? null
-        const skillBuildsV2OriginalData = window.localStorage.getItem(
-          prefix + '--skillBuilds-v2'
-        )
-        const skillBuildsV2Data = skillBuildsV2OriginalData
-          ? (JSON.parse(skillBuildsV2OriginalData) as SkillBuildSaveData[])
-          : null
-
-        const foodBuildsDataString = window.localStorage.getItem(
-          prefix + '--foodBuilds'
-        )
-        const foodBuilds = foodBuildsDataString
-          ? (JSON.parse(foodBuildsDataString) as FoodsBuildSaveData[])
-          : []
-
-        const loadSkillBuildLagacy = !skillBuildsV2Data
-
-        if (loadSkillBuildLagacy && skillBuildsCsv) {
-          skillStore.loadSkillBuildsCsv({ csvString: skillBuildsCsv })
-          ;(skillStore.skillBuilds as SkillBuildState[]).forEach(state => {
-            const build = SkillBuild.loadFromLagacy(state)
-            skillBuildStore.appendSkillBuild(build)
-          })
-        }
-
-        loadCharacterSimulatorSaveData(
-          {
-            version: '',
-            characters: characterDatas,
-            equipments: equipmentDatas,
-            skillBuilds: skillBuildsV2Data ?? [],
-            foodBuilds,
-            registletBuilds: [],
-            characterStates: [],
-            potionBuilds: [],
-            buildLabels: [],
-          },
-          { ignoreSkillBuilds: loadSkillBuildLagacy }
-        )
-
-        // 讀檔過程會改寫index，因此最後設定index
-        setCurrentCharacter(summary.characterIndex)
-
-        // lagacy
-        if (typeof summary.skillBuildIndex === 'number') {
-          setCharacterSkillBuild(
-            skillBuildStore.skillBuilds[summary.skillBuildIndex] as SkillBuild
-          )
-        }
-
-        foodStore.setCurrentFoodBuild(summary.foodBuildIndex ?? -1)
       }
     } catch (error) {
       reset()
       createCharacter()
       closeAutoSave()
-      console.warn('[character-simulator] unexpected error.')
+      logger.addTitle('loadCharacterSimulator').warn('Unexpected error occurs.')
       throw error
     }
   }
 
   const saveCharacterSimulator = () => {
-    if (saveDisabled.value) {
-      return
-    }
     const datas = createCharacterSimulatorSaveData()
     const summary: CharacterStoreSaveSummary = {
       characterIndex: currentCharacterIndex.value,
-      foodBuildIndex: foodStore.currentFoodBuildIndex,
     }
 
     const originalData =
       window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY) || '{}'
     try {
+      const payload = {
+        summary,
+        datas,
+      } as CharacterSimulatorSaveDataRoot
       window.localStorage.setItem(
         V2_AUTO_SAVE_STORAGE_KEY,
-        JSON.stringify({
-          summary,
-          datas,
-        } as CharacterSimulatorSaveDataRoot)
+        JSON.stringify(payload)
       )
-      const list = [
-        '',
-        '--characters',
-        '--equipments',
-        '--skillBuilds',
-        '--skillBuilds-v2',
-        '--foodBuilds',
-      ]
-      list.some(suffixKey => {
-        const item = 'app--character-simulator--data-0' + suffixKey
-        if (window.localStorage.getItem(item) !== null) {
-          window.localStorage.removeItem(item)
-          return false
-        }
-        return true
-      })
     } catch (err) {
-      console.warn('[character-simulator] Unexpected error.')
-      console.warn(err)
+      logger
+        .addTitle('saveCharacterSimulator')
+        .start('Unexpected error occurs.')
+        .log(err)
+        .end()
       window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, originalData)
     }
   }
 
-  const currentSkillBuild = computed(() => skillBuildStore.currentSkillBuild)
-
-  const currentRegistletBuild = computed(
-    () => registletBuildStore.currentRegistletBuild
+  const currentCharacterState = computed(() =>
+    getCharacterState(currentCharacter.value)
+  )
+  const currentCharacterSkillBuild = computed(
+    () => currentCharacterState.value.skillBuild
+  )
+  const currentCharacterRegistletBuild = computed(
+    () => currentCharacterState.value.registletBuild
+  )
+  const currentCharacterPotionBuild = computed(
+    () => currentCharacterState.value.potionBuild
+  )
+  const currentCharacterFoodBuild = computed(
+    () => currentCharacterState.value.foodBuild
   )
 
   const { skillItemStates } = setupCharacterSkillItems(
     currentCharacter,
-    currentSkillBuild
+    currentCharacterSkillBuild
   )
 
   const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
@@ -499,23 +387,19 @@ export const useCharacterStore = defineStore('view-character', () => {
     skillPureStats,
   } = setupCharacterSkills(
     currentCharacter,
-    currentSkillBuild,
+    currentCharacterSkillBuild,
     skillItemStates,
-    currentRegistletBuild,
+    currentCharacterRegistletBuild,
     setupOptions
   )
 
-  const { allFoodBuildStats } = setupFoodStats(
-    computed(() => foodStore.currentFoodBuild)
-  )
+  const { allFoodBuildStats } = setupFoodStats(currentCharacterFoodBuild)
 
   const { allRegistletBuildStats } = setupRegistletStats(
-    computed(() => registletBuildStore.currentRegistletBuild)
+    currentCharacterRegistletBuild
   )
 
-  const { allPotionBuildStats } = setupPotionStats(
-    computed(() => potionBuildStore.currentPotionBuild)
-  )
+  const { allPotionBuildStats } = setupPotionStats(currentCharacterPotionBuild)
 
   const {
     characterStatCategoryResults,
@@ -525,10 +409,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupCharacterStatCategoryResultsExtended,
   } = setupCharacterStats(
     currentCharacter,
-    currentSkillBuild,
+    currentCharacterSkillBuild,
     skillPureStats,
     allFoodBuildStats,
-    currentRegistletBuild,
+    currentCharacterRegistletBuild,
     allRegistletBuildStats,
     allPotionBuildStats,
     skillItemStates,
@@ -540,16 +424,16 @@ export const useCharacterStore = defineStore('view-character', () => {
   ) => {
     const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(
       comparedCharacter,
-      currentSkillBuild
+      currentCharacterSkillBuild
     )
     const {
       characterStatCategoryResults: comparedCharacterStatCategoryResults,
     } = setupCharacterStats(
       comparedCharacter,
-      currentSkillBuild,
+      currentCharacterSkillBuild,
       skillPureStats,
       allFoodBuildStats,
-      currentRegistletBuild,
+      currentCharacterRegistletBuild,
       allRegistletBuildStats,
       allPotionBuildStats,
       _skillItemStates,
@@ -592,7 +476,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       ...postponedPassiveSkillResultStates.value,
     ])
     const getSkillLevel = (targetSkill: Skill) => {
-      if (!currentSkillBuild.value) {
+      if (!currentCharacterSkillBuild.value) {
         return {
           valid: false,
           level: 0,
@@ -602,7 +486,7 @@ export const useCharacterStore = defineStore('view-character', () => {
         valid: allSkillResultStates.value.some(
           state => state.skill === targetSkill && state.results.length > 0
         ),
-        level: currentSkillBuild.value.getSkillLevel(targetSkill),
+        level: currentCharacterSkillBuild.value.getSkillLevel(targetSkill),
       }
     }
 
@@ -614,12 +498,13 @@ export const useCharacterStore = defineStore('view-character', () => {
   })()
 
   return {
-    characters,
-    equipments,
-    currentCharacter,
+    characters: protectType(characters),
+    equipments: protectType(equipments),
+    currentCharacter: protectType(currentCharacter),
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
     setupOptions,
+    currentCharacterState,
     getCharacterState,
 
     autoSaveDisabled: readonly(autoSaveDisabled),
@@ -653,7 +538,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     appendEquipment,
     appendEquipments,
     removeEquipment,
-    moveEquipment,
 
     // damage calculation
     setupDamageCalculationExpectedResult,

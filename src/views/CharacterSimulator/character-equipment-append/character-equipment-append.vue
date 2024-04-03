@@ -2,6 +2,8 @@
 import { Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import PageControl from '@/shared/setup/PageControl'
 import { useToggleList } from '@/shared/setup/State'
 
@@ -23,7 +25,6 @@ import CommonSearchInput from '../common/common-search-input.vue'
 import CommonSearchableItems from '../common/common-searchable-items.vue'
 import CharacterEquipmentAppendItem from './character-equipment-append-item.vue'
 
-import { setupCharacterStore } from '../setup'
 import { EquipmentSearchMode, StatOption, useEquipmentsSearch } from './setup'
 
 interface Props {
@@ -78,7 +79,7 @@ const appendBagEquipment = (equip: BagEquipment) => {
   toggleAppendedEquipments(CharacterEquipment.fromOriginEquipment(equip))
 }
 
-const { store: characterStore } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const submitSelectedEquipments = () => {
   characterStore.appendEquipments(appendedEquipments.value)

@@ -16,7 +16,7 @@ export default {
   name: AppRouteNames.DamageCalculationBase,
   path: '/damage-calculation',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.DamageCalculation)
     ViewInit(DataStoreIds.DamageCalculation).then(next)
   },

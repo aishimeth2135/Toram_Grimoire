@@ -76,6 +76,12 @@
   max-width: var(--app-screen-max-width);
 }
 
+@media (max-width: 880px) {
+  #app-root.page-wide .app-layout-horizontal-container {
+    @apply pl-0 pr-0;
+  }
+}
+
 @media (max-width: 816px) {
   #app-top-sticky {
     @apply relative;

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <AppLayoutMain>
-    <div class="w-full overflow-x-auto">
+    <div class="flex min-h-full w-full flex-col overflow-x-auto">
       <CharacterStats
         :visible="mainContents.characterStats"
         @close="toggle('mainContents/characterStats', false)"
@@ -11,27 +11,23 @@
         @close="toggle('mainContents/damage', false)"
       />
       <CharacterComboView v-if="mainContents.combo" />
-      <div v-else>
+      <div v-else class="flex min-h-full flex-col">
         <AppLayoutTopSticky>
-          <cy-tabs v-model="currentTab" class="mb-4 bg-white">
-            <cy-tab v-for="tab in tabDatas" :key="tab.id" :value="tab.id">
-              {{ tab.text }}
-            </cy-tab>
+          <cy-tabs :model-value="route.name" class="mb-4 bg-white">
+            <router-link
+              v-for="tab in tabDatas"
+              :key="tab.path"
+              v-slot="{ navigate }"
+              :to="{ name: tab.path }"
+              custom
+            >
+              <cy-tab :value="tab.path" @click="navigate">
+                {{ tab.text }}
+              </cy-tab>
+            </router-link>
           </cy-tabs>
         </AppLayoutTopSticky>
-        <CharacterEquipmentFields
-          v-show="currentTab === TabIds.EquipmentFields"
-        />
-        <CharacterSkill v-if="currentTab === TabIds.Skill" />
-        <CharacterFood v-else-if="currentTab === TabIds.Food" />
-        <CharacterRegistlet v-else-if="currentTab === TabIds.Registlet" />
-        <CharacterPotion v-else-if="currentTab === TabIds.Potion" />
-        <CharacterSave v-else-if="currentTab === TabIds.Save" />
-        <CharacterDashboard
-          v-else-if="currentTab === TabIds.Dashboard && currentCharacter"
-          :character="currentCharacter"
-        />
-        <CharacterBasic v-else-if="currentTab === TabIds.Basic" />
+        <router-view />
       </div>
     </div>
     <AppLayoutBottom>
@@ -86,6 +82,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import {
   Ref,
   computed,
@@ -94,8 +91,15 @@ import {
   shallowReactive,
   shallowRef,
 } from 'vue'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+
+import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
+import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
+import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { ViewNames } from '@/shared/consts/view'
 import { useAppPageActions } from '@/shared/setup/App'
@@ -110,31 +114,16 @@ import { Skill } from '@/lib/Skill/Skill'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutTopSticky from '@/components/app-layout/app-layout-top-sticky.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import CharacterBasic from './character-basic.vue'
 import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
 import CharacterComboView from './character-combo/index.vue'
 import CharacterDamage from './character-damage/index.vue'
-import CharacterDashboard from './character-dashboard/character-dashboard.vue'
 import CharacterEquipmentDetailsFloat from './character-equipment-details/character-equipment-details-float.vue'
-import CharacterEquipmentFields from './character-equipment-fields/character-equipment-fields.vue'
-import CharacterFood from './character-food/index.vue'
-import CharacterPotion from './character-potion/index.vue'
-import CharacterRegistlet from './character-registlet/index.vue'
-import CharacterSave from './character-save/index.vue'
-import CharacterSkill from './character-skill/index.vue'
 import CharacterStats from './character-stats/index.vue'
 
 import { CharacterEquipmentEditModes } from './character-equipment-details/setup'
 import { CharacterSimulatorInjectionKey } from './injection-keys'
-import {
-  TabIds,
-  setupCharacterFoodStore,
-  setupCharacterPotionStore,
-  setupCharacterRegistletStore,
-  setupCharacterSkillBuildStore,
-  setupCharacterStore,
-} from './setup'
 
 defineOptions({
   name: 'CharacterSimulator',
@@ -147,54 +136,59 @@ const { mainContents, toggle } = ToggleService({
 
 const { scrollToPageTop } = useAppPageActions()
 
-const { store, characters, currentCharacter } = setupCharacterStore()
-const { store: skillBuildStore, skillBuilds } = setupCharacterSkillBuildStore()
-const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
-const { store: registletStore, registletBuilds } =
-  setupCharacterRegistletStore()
-const { store: potionStore, potionBuilds } = setupCharacterPotionStore()
+const characterStore = useCharacterStore()
+const skillBuildStore = useCharacterSkillBuildStore()
+const foodStore = useCharacterFoodStore()
+const registletStore = useCharacterRegistletBuildStore()
+const potionStore = useCharacterPotionBuildStore()
+const { skillBuilds } = storeToRefs(skillBuildStore)
+const { registletBuilds } = storeToRefs(registletStore)
+const { potionBuilds } = storeToRefs(potionStore)
+
+const route = useRoute()
+const router = useRouter()
 
 const tabDatas = computed(() => {
   const options = []
 
   options.push(
     {
-      id: TabIds.Basic,
+      path: CharacterSimulatorRouteNames.Basic,
       icon: 'bx-bxs-face',
       text: t('character-simulator.character-basic.title'),
     },
     {
-      id: TabIds.Dashboard,
+      path: CharacterSimulatorRouteNames.Dashboard,
       icon: 'bx-bxs-face',
       text: t('character-simulator.character-dashboard.title'),
     },
     {
-      id: TabIds.EquipmentFields,
+      path: CharacterSimulatorRouteNames.Equipment,
       icon: 'gg-shape-square',
       text: t('character-simulator.equipment-info.equipment'),
     },
     {
-      id: TabIds.Skill,
+      path: CharacterSimulatorRouteNames.Skill,
       icon: 'ant-design:build-outlined',
       text: t('character-simulator.skill-build.title'),
     },
     {
-      id: TabIds.Food,
+      path: CharacterSimulatorRouteNames.Food,
       icon: 'mdi-food-apple',
       text: t('character-simulator.food-build.title'),
     },
     {
-      id: TabIds.Registlet,
+      path: CharacterSimulatorRouteNames.Registlet,
       icon: 'game-icons:beveled-star',
       text: t('character-simulator.registlet-build.title'),
     },
     {
-      id: TabIds.Potion,
+      path: CharacterSimulatorRouteNames.Potion,
       icon: 'mdi:bottle-tonic-outline',
       text: t('character-simulator.potion-build.title'),
     },
     {
-      id: TabIds.Save,
+      path: CharacterSimulatorRouteNames.Save,
       icon: 'mdi-ghost',
       text: t('character-simulator.save-load-control.title'),
     }
@@ -203,7 +197,6 @@ const tabDatas = computed(() => {
   return options
 })
 
-const currentTab = ref(TabIds.EquipmentFields)
 const editedCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
 const editedEquipmentEditMode: Ref<CharacterEquipmentEditModes | null> =
   shallowRef(null)
@@ -237,25 +230,24 @@ const characterSimulatorOptions = reactive({
 provide(CharacterSimulatorInjectionKey, {
   editEquipment,
   selectComboSkill,
-  setCurrentTab: tabId => {
-    currentTab.value = tabId
-  },
   characterSimulatorOptions,
+  setCurrentTab: pathName => router.push({ name: pathName }),
 })
 
 AutoSave({
-  save: () => store.saveCharacterSimulator(),
-  loadFirst: () => store.loadCharacterSimulator(),
+  save: () => {
+    if (!characterStore.autoSaveDisabled) {
+      characterStore.saveCharacterSimulator()
+    }
+  },
+  loadFirst: () => characterStore.loadCharacterSimulator(),
 })
 
 // init
-if (characters.value.length === 0) {
-  store.createCharacter()
-}
 if (skillBuilds.value.length === 0) {
   skillBuildStore.createSkillBuild()
 }
-if (foodBuilds.value.length === 0 || !foodStore.currentFoodBuild) {
+if (foodStore.foodBuilds.length === 0 || !foodStore.currentFoodBuild) {
   foodStore.createFoodBuild()
 }
 if (
@@ -266,6 +258,11 @@ if (
 }
 if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
   potionStore.createPotionBuild()
+}
+
+// create the character at the end to make all builds bound automatically
+if (characterStore.characters.length === 0) {
+  characterStore.createCharacter()
 }
 
 registViewStatesCleaning(ViewNames.CharacterSimulator)

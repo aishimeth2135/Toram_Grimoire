@@ -16,7 +16,6 @@ import {
 } from './CharacterBuild'
 import { CharacterBaseStatTypes, EquipmentFieldTypes } from './enums'
 
-let _characterAutoIncreasement = 0
 class Character implements CharacterBindingBuild {
   private _baseStats: CharacterBaseStat[]
   private _optinalBaseStat: CharacterBaseStat | null
@@ -36,10 +35,12 @@ class Character implements CharacterBindingBuild {
     CharacterBaseStatTypes.CRT,
   ]
 
+  static _autoIncreasement = 0
+
   constructor(name = 'Potum') {
     this.loadedId = null
-    this.id = _characterAutoIncreasement
-    _characterAutoIncreasement += 1
+    this.id = Character._autoIncreasement
+    Character._autoIncreasement += 1
 
     this.name = name
 

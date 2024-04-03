@@ -191,7 +191,7 @@
                   class="mr-4 cursor-pointer"
                   color="orange"
                 >
-                  {{ t('common.Equipment.field.' + typeItem.id) }}
+                  {{ getEquipmentFieldTypeText(typeItem.id, t) }}
                 </cy-button-check>
                 <template v-if="typeItem.types.length > 1">
                   <cy-button-circle
@@ -338,7 +338,7 @@
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -348,6 +348,8 @@ import Grimoire from '@/shared/Grimoire'
 import ToggleService from '@/shared/setup/ToggleService'
 import { isNumberString } from '@/shared/utils/string'
 
+import { EquipmentFieldTypes } from '@/lib/Character/Character'
+import { getEquipmentFieldTypeText } from '@/lib/Character/Character/utils'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import {
   EquipmentKinds,
@@ -373,12 +375,10 @@ import {
   useItemQueryModes,
 } from './setup'
 
-export default {
+defineOptions({
   name: 'ItemQuery',
-}
-</script>
+})
 
-<script lang="ts" setup>
 const equipments = Grimoire.Items.equipments.map(equip =>
   CharacterEquipment.fromOriginEquipment(equip)
 )
@@ -459,7 +459,7 @@ const idComparation = (
   item2: CharacterEquipment
 ) => {
   const id1 = parseInt(item1.origin!.id, 10)
-  const id2 = parseInt(item1.origin!.id, 10)
+  const id2 = parseInt(item2.origin!.id, 10)
   return id2 - id1
 }
 
@@ -538,7 +538,7 @@ const sortOptions: {
 
 const conditions: {
   type: {
-    id: string
+    id: EquipmentFieldTypes
     types: EquipmentTypeOption[]
     selected: boolean
   }[]
@@ -546,12 +546,12 @@ const conditions: {
 } = reactive({
   type: [
     {
-      id: 'main-weapon',
+      id: EquipmentFieldTypes.MainWeapon,
       types: handleEquipmentTypes(MainWeaponTypeList),
       selected: true,
     },
     {
-      id: 'sub-weapon',
+      id: EquipmentFieldTypes.SubWeapon,
       types: [
         ...handleEquipmentTypes(SubWeaponTypeList),
         ...handleEquipmentTypes(SubArmorTypeList),
@@ -559,17 +559,17 @@ const conditions: {
       selected: true,
     },
     {
-      id: 'body-armor',
+      id: EquipmentFieldTypes.BodyArmor,
       types: handleEquipmentTypes([EquipmentTypes.BodyNormal]),
       selected: true,
     },
     {
-      id: 'additional',
+      id: EquipmentFieldTypes.Additional,
       types: handleEquipmentTypes([EquipmentTypes.Additional]),
       selected: true,
     },
     {
-      id: 'special',
+      id: EquipmentFieldTypes.Special,
       types: handleEquipmentTypes([EquipmentTypes.Special]),
       selected: true,
     },
@@ -627,7 +627,7 @@ const validEquipments = computed(() => {
   const validTypes = conditions.type.filter(type => type.selected)
   if (validTypes.length === 0) {
     validTypes.push({
-      id: 'avatar',
+      id: EquipmentFieldTypes.Avatar,
       types: handleEquipmentTypes([EquipmentTypes.Avatar]),
       selected: true,
     })

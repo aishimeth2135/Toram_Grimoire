@@ -38,15 +38,17 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { useCharacterStore } from '@/stores/views/character'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 
 import CharacterStatItem from './character-stat-item.vue'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean
@@ -64,7 +66,7 @@ defineOptions({
 
 const { t } = useI18n()
 
-const { characterStatCategoryResults } = setupCharacterStore()
+const { characterStatCategoryResults } = storeToRefs(useCharacterStore())
 
 const categoryResults = computed(() => {
   return characterStatCategoryResults.value

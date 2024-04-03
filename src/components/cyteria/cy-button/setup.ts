@@ -1,7 +1,6 @@
 import { PropType, computed } from 'vue'
 
-import { AppColors } from '@/shared/services/Color'
-
+// import { AppColors } from '@/shared/services/Color'
 import { IconBaseProps, IconSrc } from '../icon/setup'
 
 export const ButtonIconPropList = {
@@ -16,18 +15,18 @@ export interface ButtonIconProps {
   iconSrc?: IconSrc
 }
 
-type ButtonColors =
-  | AppColors.Primary
-  | 'bright'
-  | 'secondary'
-  | AppColors.Cyan
-  | AppColors.Blue
-  | AppColors.Fuchsia
-  | AppColors.Violet
-  | AppColors.Red
-  | AppColors.Orange
-  | AppColors.Emerald
-  | AppColors.Gray
+// type ButtonColors =
+//   | AppColors.Primary
+//   | 'bright'
+//   | 'secondary'
+//   | AppColors.Cyan
+//   | AppColors.Blue
+//   | AppColors.Fuchsia
+//   | AppColors.Violet
+//   | AppColors.Red
+//   | AppColors.Orange
+//   | AppColors.Emerald
+//   | AppColors.Gray
 
 export const ButtonBasePropList = {
   color: {

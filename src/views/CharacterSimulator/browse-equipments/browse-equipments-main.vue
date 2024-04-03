@@ -182,7 +182,7 @@ const toggleDisplayMode = () => {
           t('character-simulator.browse-equipments.serach-no-equipment-tips')
         }}
       </div>
-      <div v-else>
+      <div v-else class="px-4 py-3 text-sm text-primary-40">
         {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
       </div>
     </div>

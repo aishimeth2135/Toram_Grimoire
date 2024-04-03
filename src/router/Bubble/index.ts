@@ -10,7 +10,7 @@ export default {
   name: AppRouteNames.Bubble,
   path: '/bubble/:iconName/:color?/:number?',
   component: BubbleView,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     ViewInit().then(next)
   },
   meta: {

@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 
 import Notify from '@/shared/setup/Notify'
 import ToggleService from '@/shared/setup/ToggleService'
@@ -16,18 +18,14 @@ import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterRegistletEdit from './character-registlet-edit.vue'
 import CharacterRegistletItem from './character-registlet-item.vue'
 
-import { setupCharacterRegistletStore } from '../setup'
-
 defineOptions({
   name: 'CharacterRegistlet',
 })
 
 const characterStore = useCharacterStore()
-const {
-  currentRegistletBuild,
-  registletBuilds,
-  store: registletStore,
-} = setupCharacterRegistletStore()
+const registletStore = useCharacterRegistletBuildStore()
+const { currentRegistletBuild: selectedBuild, registletBuilds } =
+  storeToRefs(registletStore)
 
 const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({
@@ -35,7 +33,9 @@ const { toggle, modals, controls } = ToggleService({
   controls: ['itemDetail'] as const,
 })
 
-const selectedBuild = ref(currentRegistletBuild.value) as Ref<RegistletBuild>
+const currentRegistletBuild = computed(
+  () => characterStore.currentCharacterState.registletBuild
+)
 
 const disableAll = computed<boolean>({
   get() {
@@ -49,6 +49,9 @@ const disableAll = computed<boolean>({
 const { notify } = Notify()
 
 const removeSelectedBuild = () => {
+  if (!selectedBuild.value) {
+    return
+  }
   if (registletBuilds.value.length <= 1) {
     notify(t('character-simulator.build-common.at-least-one-build-tips'))
     return
@@ -70,7 +73,7 @@ const addRegistletBuild = () => {
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
     @copy-build="
-      registletStore.appendRegistletBuild(selectedBuild.clone(), false)
+      registletStore.appendRegistletBuild(selectedBuild!.clone(), false)
     "
     @remove-build="removeSelectedBuild"
   >
@@ -90,7 +93,7 @@ const addRegistletBuild = () => {
           {{ t('character-simulator.registlet-build.show-detail') }}
         </cy-button-check>
       </div>
-      <CardRowsWrapper class="mt-4 max-w-xl">
+      <CardRowsWrapper v-if="selectedBuild" class="mt-4 max-w-xl">
         <CardRows
           v-if="selectedBuild.items.length > 0"
           :class="{ 'opacity-50': disableAll }"
@@ -131,6 +134,7 @@ const addRegistletBuild = () => {
     </template>
     <template #modals>
       <CharacterRegistletEdit
+        v-if="selectedBuild"
         :visible="modals.edit"
         :registlet-build="selectedBuild"
         @close="toggle('modals/edit', false)"

@@ -17,7 +17,7 @@ export default {
   name: AppRouteNames.Enchant,
   path: '/enchant',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(
       LocaleViewNamespaces.EnchantSimulator,
       LocaleViewNamespaces.EnchantDoll

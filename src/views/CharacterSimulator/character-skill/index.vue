@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
-import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { SkillTypes } from '@/lib/Skill/Skill'
 
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterSkillPreviewTab from './character-skill-preview-tab/character-skill-preview-tab.vue'
 import CharacterSkillTab from './character-skill-tab/index.vue'
-
-import { setupCharacterSkillBuildStore } from '../setup'
 
 defineOptions({
   name: 'CharacterSkill',
@@ -19,14 +18,17 @@ defineOptions({
 
 const { t } = useI18n()
 
-const currentTab = ref(0)
+const currentTab = ref(2)
 
 const characterStore = useCharacterStore()
 
-const { store, skillBuilds, currentSkillBuild } =
-  setupCharacterSkillBuildStore()
+const skillStore = useCharacterSkillBuildStore()
+const { skillBuilds, currentSkillBuild: selectedBuild } =
+  storeToRefs(skillStore)
 
-const selectedBuild = ref(currentSkillBuild.value) as Ref<SkillBuild | null>
+const currentSkillBuild = computed(
+  () => characterStore.currentCharacterState.skillBuild
+)
 
 const buildMatched = computed(
   () => selectedBuild.value === currentSkillBuild.value
@@ -37,11 +39,14 @@ const currentDisplayedTab = computed(() =>
 )
 
 const addSkillBuild = () => {
-  selectedBuild.value = store.createSkillBuild()
+  selectedBuild.value = skillStore.createSkillBuild()
 }
 
 const removeSkillBuild = () => {
-  const idx = store.removeSkillBuild(selectedBuild.value!)
+  if (!selectedBuild.value) {
+    return
+  }
+  const idx = skillStore.removeSkillBuild(selectedBuild.value)
   selectedBuild.value = skillBuilds.value[idx]
 }
 </script>
@@ -54,7 +59,7 @@ const removeSkillBuild = () => {
     :current-build="currentSkillBuild"
     @select-build="characterStore.setCharacterSkillBuild"
     @add-build="addSkillBuild"
-    @copy-build="store.appendSkillBuild(selectedBuild.clone(), false)"
+    @copy-build="skillStore.appendSkillBuild(selectedBuild.clone(), false)"
     @remove-build="removeSkillBuild"
   >
     <template #content>

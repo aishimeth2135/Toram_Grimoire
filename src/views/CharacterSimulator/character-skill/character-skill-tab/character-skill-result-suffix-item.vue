@@ -24,6 +24,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
@@ -31,18 +33,16 @@ import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 
-import { setupCharacterStore } from '../../setup'
-
 interface Props {
   container: DisplayDataContainer<SkillBranchItemSuffix>
 }
 
 const props = defineProps<Props>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const branchItemState = computed(() =>
-  store.getSkillBranchState(props.container.branchItem.default)
+  characterStore.getSkillBranchState(props.container.branchItem.default)
 )
 
 const toggleable = computed(

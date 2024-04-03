@@ -1,5 +1,3 @@
-import Grimoire from '@/shared/Grimoire'
-
 import { BagEquipment } from '@/lib/Items/BagItem'
 
 import { EquipmentTypes } from './enums'

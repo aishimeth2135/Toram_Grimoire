@@ -225,14 +225,14 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return value
         .replace(
           FORMULA_VALUE_TO_PERCENTAGE_PATTERN,
-          (match, p1, p2) => p1 + '*' + numberStringToPercentage(p2)
+          (_match, p1, p2) => p1 + '*' + numberStringToPercentage(p2)
         )
         .replace(MUL_PATTERN, '×')
     })
     container.handle(value =>
       value.replace(
         FORMULA_FLOAT_TO_FIXED,
-        (match, m1, m2) => m1 + m2.slice(0, 4)
+        (_match, m1, m2) => m1 + m2.slice(0, 4)
       )
     )
     container.handle(trimFloatStringZero)
@@ -273,7 +273,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
           }
           return value
         }
-      : (stat: StatComputed, value: string) => value
+      : (_stat: StatComputed, value: string) => value
 
   Object.values(valueDatas).forEach(container => {
     handleContainerFormulaValue(container)

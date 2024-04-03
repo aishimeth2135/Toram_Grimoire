@@ -1,22 +1,18 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { ref } from 'vue'
-import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 
 import Notify from '@/shared/setup/Notify'
-
-import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterFoodItem from './character-food-item.vue'
-
-import { setupCharacterFoodStore } from './setup'
 
 defineOptions({
   name: 'CharacterFood',
@@ -26,22 +22,32 @@ const { t } = useI18n()
 const { notify } = Notify()
 
 const characterStore = useCharacterStore()
-const { store, foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
+const foodStore = useCharacterFoodStore()
 
-const selectedBuild = ref(currentFoodBuild.value) as Ref<FoodsBuild>
+const { currentFoodBuild: selectedBuild, foodBuilds } = storeToRefs(foodStore)
+
+const currentFoodBuild = computed(
+  () => characterStore.currentCharacterState.foodBuild
+)
 
 const copySelectedFoodBuild = () => {
-  store.appendFoodBuild(selectedBuild.value.clone(), false)
+  if (!selectedBuild.value) {
+    return
+  }
+  foodStore.appendFoodBuild(selectedBuild.value.clone(), false)
   notify(t('character-simulator.food-build.copy-food-build-success-tips'))
 }
 
 const removeSelectedFoodBuild = () => {
+  if (!selectedBuild.value) {
+    return
+  }
   if (foodBuilds.value.length <= 1) {
     notify(t('character-simulator.build-common.at-least-one-build-tips'))
     return
   }
   const from = selectedBuild.value
-  const idx = store.removeFoodBuild(from)
+  const idx = foodStore.removeFoodBuild(from)
   selectedBuild.value = foodBuilds.value[idx]
   notify(
     t('character-simulator.food-build.remove-food-build-success-tips'),
@@ -52,7 +58,7 @@ const removeSelectedFoodBuild = () => {
         {
           text: t('global.recovery'),
           click: () => {
-            store.appendFoodBuild(from)
+            foodStore.appendFoodBuild(from)
             notify(
               t(
                 'character-simulator.food-build.restore-food-build-success-tips'
@@ -76,7 +82,7 @@ const disableAll = computed<boolean>({
 })
 
 const addFoodBuild = () => {
-  selectedBuild.value = store.createFoodBuild()
+  selectedBuild.value = foodStore.createFoodBuild()
 }
 </script>
 
@@ -113,7 +119,7 @@ const addFoodBuild = () => {
           </cy-icon-text>
         </div>
       </div>
-      <CardRowsWrapper class="mt-3 max-w-xl">
+      <CardRowsWrapper v-if="selectedBuild" class="mt-3 max-w-xl">
         <CardRows :class="{ 'opacity-50': disableAll }">
           <CharacterFoodItem
             v-for="food in selectedBuild.foods"

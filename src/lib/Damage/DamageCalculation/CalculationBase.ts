@@ -305,6 +305,10 @@ class CalcItemBase {
     return this._max === null ? 9999 : this._max
   }
 
+  get belongCalculationBase() {
+    return this._parent
+  }
+
   setRange(
     min: number | null,
     max: number | null = null,

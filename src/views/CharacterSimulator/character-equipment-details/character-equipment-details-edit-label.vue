@@ -4,6 +4,7 @@ import { Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Draggable from 'vuedraggable'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
 import { AppColors } from '@/shared/services/Color'
@@ -17,8 +18,6 @@ import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 
 import CommonSelectionIcon from '../common/common-selection-icon.vue'
-
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   equipment: CharacterEquipment
@@ -34,7 +33,7 @@ const { createBuildLabel, removeBuildLabel } = buildLabelStore
 
 const { buildLabels } = storeToRefs(buildLabelStore)
 
-const { equipments } = setupCharacterStore()
+const { equipments } = storeToRefs(useCharacterStore())
 
 const currentEquipmentLabelIds = computed(() => {
   return new Set(props.equipment.labels.map(label => label.id))

@@ -44,7 +44,7 @@ export function handleFunctionHighlight(result: string): string {
   }
 
   while (result.match(functionPattern)) {
-    result = result.replace(functionPattern, (match, funcName, params) =>
+    result = result.replace(functionPattern, (_match, funcName, params) =>
       createFormulaText(funcName, params)
     )
   }

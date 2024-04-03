@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { inject } from 'vue'
 
+import { CharacterSimulatorRouteNames } from '@/router/Character'
+
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
-import { TabIds } from '../setup'
 
 interface Props {
   title: string
   icon: string
-  tabId?: TabIds
+  tabPathName?: CharacterSimulatorRouteNames
 }
 
 const props = defineProps<Props>()
@@ -15,8 +16,8 @@ const props = defineProps<Props>()
 const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
 
 const goTab = () => {
-  if (props.tabId) {
-    setCurrentTab(props.tabId)
+  if (props.tabPathName) {
+    setCurrentTab(props.tabPathName)
   }
 }
 </script>

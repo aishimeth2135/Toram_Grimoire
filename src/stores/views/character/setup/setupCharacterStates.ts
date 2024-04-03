@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue'
+import { Ref, ref, shallowReactive } from 'vue'
 import { ComputedRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -36,7 +36,7 @@ export function setupCharacters() {
 
   const getCharacterState = (() => {
     const characterStates = new Map<
-      Character,
+      number,
       {
         skillBuild: SkillBuild | null
         foodBuild: FoodsBuild | null
@@ -45,15 +45,18 @@ export function setupCharacters() {
       }
     >()
     return (chara: Character) => {
-      if (!characterStates.has(chara)) {
-        characterStates.set(chara, {
-          skillBuild: null,
-          foodBuild: null,
-          registletBuild: null,
-          potionBuild: null,
-        })
+      if (!characterStates.has(chara.id)) {
+        characterStates.set(
+          chara.id,
+          shallowReactive({
+            skillBuild: null,
+            foodBuild: null,
+            registletBuild: null,
+            potionBuild: null,
+          })
+        )
       }
-      return characterStates.get(chara)!
+      return characterStates.get(chara.id)!
     }
   })()
 
@@ -110,7 +113,15 @@ export function setupCharacters() {
         ' ' +
         (characters.value.length + 1)
     )
-    return appendCharacter(newCharacter)
+    appendCharacter(newCharacter)
+    const state = getCharacterState(newCharacter)
+    state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
+    state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
+    state.registletBuild =
+      (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
+    state.potionBuild =
+      (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
+    return newCharacter
   }
 
   return {
@@ -163,31 +174,10 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
     return idx - 1
   }
 
-  const moveEquipment = (
-    equipment: CharacterEquipment,
-    offset: number,
-    datum?: CharacterEquipment
-  ) => {
-    if (offset === 0) {
-      return
-    }
-    const datumIdx = equipments.value.indexOf(datum ?? equipment)
-    const equipmentIdx = equipments.value.indexOf(equipment)
-    if (datumIdx > -1 && equipmentIdx > -1) {
-      let targetIdx = datumIdx + offset
-      if (datum) {
-        targetIdx += targetIdx > equipmentIdx ? -1 : 1
-      }
-      equipments.value.splice(equipmentIdx, 1)
-      equipments.value.splice(targetIdx, 0, equipment)
-    }
-  }
-
   return {
     equipments,
     appendEquipment,
     appendEquipments,
     removeEquipment,
-    moveEquipment,
   }
 }

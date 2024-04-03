@@ -1,6 +1,9 @@
 <script lang="tsx" setup>
+import { storeToRefs } from 'pinia'
 import { Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { useCharacterStore } from '@/stores/views/character'
 
 import Notify from '@/shared/setup/Notify'
 
@@ -9,9 +12,8 @@ import { Character } from '@/lib/Character/Character'
 import CommonBuildPage from './common/common-build-page.vue'
 import CommonPropInput from './common/common-prop-input.vue'
 
-import { setupCharacterStore } from './setup'
-
-const { store, characters, currentCharacter } = setupCharacterStore()
+const characterStore = useCharacterStore()
+const { characters, currentCharacter } = storeToRefs(characterStore)
 
 const { t } = useI18n()
 const { notify } = Notify()
@@ -24,7 +26,7 @@ const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
 const selectedCharacter = ref(currentCharacter.value) as Ref<Character>
 
 const copySelectedCharacter = () => {
-  store.appendCharacter(selectedCharacter.value.clone())
+  characterStore.appendCharacter(selectedCharacter.value.clone())
 }
 
 const removeSelectedCharacter = () => {
@@ -33,7 +35,7 @@ const removeSelectedCharacter = () => {
     return
   }
   const from = selectedCharacter.value!
-  store.removeCharacter(from)
+  characterStore.removeCharacter(from)
   notify(
     t('character-simulator.character-basic.remove-character-success', {
       name: from.name,
@@ -45,7 +47,7 @@ const removeSelectedCharacter = () => {
         {
           text: t('global.recovery'),
           click: () => {
-            store.appendCharacter(from)
+            characterStore.appendCharacter(from)
             notify(
               t(
                 'character-simulator.character-basic.restore-character-success',
@@ -78,8 +80,8 @@ const RenderContentTitie = (attrs: { title: string }) => {
     v-model:selected-build="selectedCharacter"
     v-model:builds="characters"
     :current-build="currentCharacter"
-    @select-build="store.setCurrentCharacter"
-    @add-build="store.createCharacter"
+    @select-build="characterStore.setCurrentCharacter"
+    @add-build="characterStore.createCharacter"
     @copy-build="copySelectedCharacter"
     @remove-build="removeSelectedCharacter"
   >

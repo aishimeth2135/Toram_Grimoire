@@ -20,9 +20,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ROUTE_LINK_DATAS } from '@/shared/consts/route'
+import { ROUTE_LINK_DATAS, RouteLinkData } from '@/shared/consts/route'
 import { useDevice } from '@/shared/setup/Device'
 
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 import { AppRouteNames } from '@/router/enums'
 
 import HomeLinkButton from './home-link-button.vue'
@@ -33,11 +34,10 @@ const { device } = useDevice()
 const columns = ROUTE_LINK_DATAS
 
 const groups = (() => {
-  const linkMap = new Map<AppRouteNames, (typeof ROUTE_LINK_DATAS)[number]>()
+  const linkMap = new Map<string, RouteLinkData>()
   columns.forEach(col => linkMap.set(col.pathName, col))
 
-  const _handle = (items: AppRouteNames[]) =>
-    items.map(item => linkMap.get(item)!)
+  const _handle = (items: string[]) => items.map(item => linkMap.get(item)!)
   return [
     {
       id: 'query',
@@ -53,6 +53,7 @@ const groups = (() => {
       links: _handle([
         AppRouteNames.CharacterSimulator,
         AppRouteNames.DamageCalculation,
+        CharacterSimulatorRouteNames.Skill,
       ]),
     },
     {

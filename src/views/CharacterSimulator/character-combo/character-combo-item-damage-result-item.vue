@@ -35,7 +35,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            store.getDamageCalculationSkillBranchState(
+            characterStore.getDamageCalculationSkillBranchState(
               extraContainer.branchItem.default
             ).enabled
           "
@@ -75,6 +75,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResult } from '@/stores/views/character/setup'
 
 import ToggleService from '@/shared/setup/ToggleService'
@@ -88,7 +89,6 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
 import { setupSkilResultExtraStats } from '../character-damage/setup'
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   result: SkillResult
@@ -124,7 +124,7 @@ const enabled = computed({
   },
 })
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 const { contents, toggle } = ToggleService({
   contents: ['detail'] as const,
@@ -139,12 +139,12 @@ const extraStats = computed(() => [
 ])
 
 const { valid, calculation, expectedResult } =
-  store.setupDamageCalculationExpectedResult(
+  characterStore.setupDamageCalculationExpectedResult(
     result,
     extraStats,
-    computed(() => store.targetProperties),
+    computed(() => characterStore.targetProperties),
     computed(() => ({
-      ...store.calculationOptions,
+      ...characterStore.calculationOptions,
       comboRate: props.comboRate,
     }))
   )

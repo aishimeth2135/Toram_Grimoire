@@ -1,7 +1,13 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { Character, CharacterBaseStat } from '@/lib/Character/Character'
+import { useCharacterStore } from '@/stores/views/character'
+
+import { CharacterBaseStat } from '@/lib/Character/Character'
+
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
 import CharacterDashboardEquipmentField from './character-dashboard-equipment-field.vue'
 import CharacterDashboardFoodBuild from './character-dashboard-food-build.vue'
@@ -10,17 +16,13 @@ import CharacterDashboardRegistletBuild from './character-dashboard-registlet-bu
 import CharacterDashboardSkillBuild from './character-dashboard-skill-build.vue'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
-import { TabIds, setupCharacterStore } from '../setup'
 
-interface Props {
-  character: Character
-}
-
-const props = defineProps<Props>()
-const { store: characterStore } = setupCharacterStore()
+const { t } = useI18n()
+const characterStore = useCharacterStore()
+const { currentCharacter: character } = storeToRefs(characterStore)
 
 const validBaseStats = computed(() => {
-  return props.character.baseStats
+  return character.value.baseStats
     .filter(item => item.value > 1)
     .sort((item1, item2) => item2.value - item1.value)
 })
@@ -31,7 +33,7 @@ const secondaryBaseStat = computed<CharacterBaseStat | null>(
 )
 
 const characterState = computed(() =>
-  characterStore.getCharacterState(props.character)
+  characterStore.getCharacterState(character.value)
 )
 
 const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
@@ -78,16 +80,25 @@ const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
         <cy-button-icon
           icon="mdi:square-edit-outline"
           class="absolute right-2 top-2"
-          @click="setCurrentTab(TabIds.EquipmentFields)"
+          @click="setCurrentTab(CharacterSimulatorRouteNames.Equipment)"
         />
-        <CharacterDashboardEquipmentField
-          v-for="(equipmentField, idx) in character.equipmentFields.filter(
-            field => field.equipment
-          )"
-          :key="equipmentField.fieldId"
-          :equipment-field="equipmentField"
-          :class="idx % 2 !== 0 ? 'bg-primary-5/50' : ''"
-        />
+        <template
+          v-if="character.equipmentFields.some(field => !field.isEmpty)"
+        >
+          <CharacterDashboardEquipmentField
+            v-for="(equipmentField, idx) in character.equipmentFields.filter(
+              field => field.equipment
+            )"
+            :key="equipmentField.fieldId"
+            :equipment-field="equipmentField"
+            :class="idx % 2 !== 0 ? 'bg-primary-5/50' : ''"
+          />
+        </template>
+        <div v-else class="px-4 py-2 text-sm text-primary-40">
+          {{
+            t('character-simulator.character-dashboard.no--any-equipment-tips')
+          }}
+        </div>
       </div>
       <div class="flex w-full flex-shrink-0 flex-col items-start wd:max-w-sm">
         <CharacterDashboardSkillBuild

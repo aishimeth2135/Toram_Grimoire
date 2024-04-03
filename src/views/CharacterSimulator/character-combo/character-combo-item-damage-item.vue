@@ -50,6 +50,7 @@
 import { Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
@@ -62,7 +63,6 @@ import CharacterComboItemDamageResultItem from './character-combo-item-damage-re
 import CharacterComboItemResultItem from './character-combo-item-result-item.vue'
 
 import { getContainerStats } from '../character-damage/setup'
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   comboSkillState: ComboSkillState
@@ -70,7 +70,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const resultItemRefs: Ref<
@@ -93,7 +93,7 @@ const previousSkillNextResultsState = computed(() => {
   if (!previousSkill) {
     return null
   }
-  const resultsState = store.nextSkillResultStates.find(
+  const resultsState = characterStore.nextSkillResultStates.find(
     state => (state.skill as Skill) === previousSkill
   ) as SkillResultsState | undefined
   return resultsState ?? null
@@ -105,9 +105,9 @@ const extraStats = computed(() => {
   }
   const stats: StatRecorded[] = []
   previousSkillNextResultsState.value.results.forEach(result => {
-    stats.push(...getContainerStats(store, result.container))
+    stats.push(...getContainerStats(characterStore, result.container))
     result.suffixContainers.forEach(sufContainer => {
-      stats.push(...getContainerStats(store, sufContainer))
+      stats.push(...getContainerStats(characterStore, sufContainer))
     })
   })
   return stats

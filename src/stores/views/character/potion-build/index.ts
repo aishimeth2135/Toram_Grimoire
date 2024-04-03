@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
+import { protectType } from '@/shared/utils/pinia'
+
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
@@ -41,9 +43,9 @@ export const useCharacterPotionBuildStore = defineStore(
     }
 
     return {
-      potionBuilds: builds,
+      potionBuilds: protectType(builds),
       currentPotionBuildIndex: currentBuildIndex,
-      currentPotionBuild: currentBuild,
+      currentPotionBuild: protectType(currentBuild),
       setCurrentPotionBuild,
       createPotionBuild,
       copyCurrentPotionBuild,

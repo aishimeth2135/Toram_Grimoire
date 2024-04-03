@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import { splitComma } from '@/shared/utils/string'
 
 import {
@@ -139,7 +140,7 @@ class StatRestriction extends Stat {
         : restrictionMapping[_restriction]
       if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
-          Grimoire.Logger.start(
+          CommonLogger.start(
             'StatRestriction.fromOrigin',
             'unknown restriction of stat'
           )

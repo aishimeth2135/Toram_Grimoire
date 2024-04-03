@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
-import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import { TabIds, setupCharacterStore } from '../setup'
+import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 
 interface Props {
   skillBuild: SkillBuild
@@ -14,7 +16,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { store: characterStore } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const allSkillLevels = computed(() => props.skillBuild.allSkillLevels)
 
@@ -47,7 +49,7 @@ const activeSkills = computed(() => {
   <CharacterDashboardSideWrapper
     icon="ant-design:build-outlined"
     :title="skillBuild.name"
-    :tab-id="TabIds.Skill"
+    :tab-path-name="CharacterSimulatorRouteNames.Skill"
   >
     <div class="space-y-1.5">
       <div

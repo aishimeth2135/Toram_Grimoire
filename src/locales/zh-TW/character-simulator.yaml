@@ -15,6 +15,7 @@ character-basic:
   character-builds-tip: 技能配置、料理配置等其他配置皆是以角色為單位進行綁定，系統會紀錄每個角色綁定了哪些配置。
 character-dashboard:
   title: 總覽
+  no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
 browse-equipments:
   action:
     normal: 裝備清單
@@ -26,7 +27,6 @@ browse-equipments:
   remove-equipment-tips: 已移除裝備「{name}」。
   removed-equipment-restore-tips: 已復原裝備「{name}」。
   copy-equipment-tips: 已複製裝備。
-  move-equipment-title: 移動中
   no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
   serach-no-equipment-tips: 沒有搜尋到任何裝備。
   equipment-item-actions-tips: 請打開左下角的「顯示全部裝備」以使用整理相關的功能。

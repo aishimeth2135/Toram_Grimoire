@@ -3,8 +3,9 @@ import { InjectionKey } from 'vue'
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
+import { CharacterSimulatorRouteNames } from '@/router/Character'
+
 import { CharacterEquipmentEditModes } from './character-equipment-details/setup'
-import { TabIds } from './setup'
 
 interface CharacterSimulatorInjection {
   editEquipment: (
@@ -12,7 +13,7 @@ interface CharacterSimulatorInjection {
     mode?: CharacterEquipmentEditModes
   ) => void
   selectComboSkill: (comboSkill: CharacterComboSkill) => void
-  setCurrentTab: (tabId: TabIds) => void
+  setCurrentTab: (pathName: CharacterSimulatorRouteNames) => void
   characterSimulatorOptions: {
     characterStatsDetailPreviewVisible: boolean
   }

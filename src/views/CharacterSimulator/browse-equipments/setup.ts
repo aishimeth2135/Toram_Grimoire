@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia'
 import { Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -18,8 +19,6 @@ import {
   SubWeaponTypeList,
 } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
-
-import { setupCharacterStore } from '../setup'
 
 export const useEquipmentsDisplayedItems = defineViewState(
   ViewNames.CharacterSimulator,
@@ -136,7 +135,8 @@ export function useEquipmentsForSearch() {
 export const useEquipmentActions = (
   equipment: Ref<CharacterEquipment | null>
 ) => {
-  const { store, equipments } = setupCharacterStore()
+  const characterStore = useCharacterStore()
+  const { equipments } = storeToRefs(characterStore)
   const { notify } = Notify()
   const { t } = useI18n()
 
@@ -147,7 +147,7 @@ export const useEquipmentActions = (
 
     const newEquip = equipment.value.clone()
     newEquip.name = equipment.value.name + ' *'
-    const appendedEquipment = store.appendEquipment(
+    const appendedEquipment = characterStore.appendEquipment(
       newEquip,
       equipments.value.indexOf(equipment.value) + 1
     )
@@ -167,7 +167,7 @@ export const useEquipmentActions = (
     }
 
     const eq = equipment.value
-    const newIdx = store.removeEquipment(eq)
+    const newIdx = characterStore.removeEquipment(eq)
     equipment.value = equipments.value[newIdx] ?? null
 
     notify(
@@ -181,7 +181,7 @@ export const useEquipmentActions = (
           {
             text: t('global.recovery'),
             click: () => {
-              equipment.value = store.appendEquipment(eq)
+              equipment.value = characterStore.appendEquipment(eq)
               notify(
                 t(
                   'character-simulator.browse-equipments.removed-equipment-restore-tips',

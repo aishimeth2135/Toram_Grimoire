@@ -3,9 +3,9 @@ import { computed } from 'vue'
 
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 
-import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import { TabIds } from '../setup'
+import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 
 interface Props {
   potionBuild: PotionBuild
@@ -24,7 +24,7 @@ const displayedItems = computed(() => {
   <CharacterDashboardSideWrapper
     icon="mdi:bottle-tonic-outline"
     :title="potionBuild.name"
-    :tab-id="TabIds.Potion"
+    :tab-path-name="CharacterSimulatorRouteNames.Potion"
   >
     <div class="space-y-1.5">
       <div

@@ -1,34 +1,30 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { ref } from 'vue'
-import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
 
 import Notify from '@/shared/setup/Notify'
 import ToggleService from '@/shared/setup/ToggleService'
 
-import { PotionBuild } from '@/lib/Character/PotionBuild'
-
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterPotionCategory from './character-potion-category.vue'
 import CharacterPotionEdit from './character-potion-edit.vue'
-
-import { setupCharacterPotionStore } from '../setup'
 
 defineOptions({
   name: 'CharacterPotion',
 })
 
 const characterStore = useCharacterStore()
-const {
-  currentPotionBuild,
-  potionBuilds,
-  store: potionStore,
-} = setupCharacterPotionStore()
+const potionStore = useCharacterPotionBuildStore()
+const { currentPotionBuild: selectedBuild, potionBuilds } =
+  storeToRefs(potionStore)
 
-const selectedBuild = ref(currentPotionBuild.value) as Ref<PotionBuild>
+const currentPotionBuild = computed(
+  () => characterStore.currentCharacterState.potionBuild
+)
 
 const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({
@@ -48,6 +44,9 @@ const disableAll = computed<boolean>({
 const { notify } = Notify()
 
 const removeSelectedPotionBuild = () => {
+  if (!selectedBuild.value) {
+    return
+  }
   if (potionBuilds.value.length <= 1) {
     notify(t('character-simulator.build-common.at-least-one-build-tips'))
     return
@@ -68,7 +67,7 @@ const addPotionBuild = () => {
     :current-build="currentPotionBuild"
     @select-build="characterStore.setCharacterPotionBuild"
     @add-build="addPotionBuild"
-    @copy-build="potionStore.appendPotionBuild(selectedBuild.clone(), false)"
+    @copy-build="potionStore.appendPotionBuild(selectedBuild!.clone(), false)"
     @remove-build="removeSelectedPotionBuild"
   >
     <template #header>
@@ -88,7 +87,7 @@ const addPotionBuild = () => {
         </cy-button-check>
       </div>
       <div
-        v-if="selectedBuild.items.length > 0"
+        v-if="selectedBuild && selectedBuild.items.length > 0"
         class="max-w-2xl space-y-4 pt-2"
         :class="{ 'opacity-50': disableAll }"
       >
@@ -105,6 +104,7 @@ const addPotionBuild = () => {
     </template>
     <template #modals>
       <CharacterPotionEdit
+        v-if="selectedBuild"
         :visible="modals.edit"
         :potion-build="selectedBuild"
         @close="toggle('modals/edit', false)"

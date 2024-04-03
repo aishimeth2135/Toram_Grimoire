@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import EquipmentBrowseItem from './equipment-browse-item.vue'
-
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   current: CharacterEquipment | null
@@ -18,13 +18,13 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { equipments } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const currentEquipments = computed(() => {
   if (!props.filter) {
-    return equipments.value
+    return characterStore.equipments
   }
-  return equipments.value.filter(props.filter)
+  return characterStore.equipments.filter(props.filter)
 })
 </script>
 

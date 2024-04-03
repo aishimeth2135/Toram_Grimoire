@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
-import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import { TabIds } from '../setup'
+import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 
 interface Props {
   foodBuild: FoodsBuild
@@ -16,7 +16,7 @@ defineProps<Props>()
   <CharacterDashboardSideWrapper
     icon="mdi:food-apple"
     :title="foodBuild.name"
-    :tab-id="TabIds.Food"
+    :tab-path-name="CharacterSimulatorRouteNames.Food"
   >
     <div class="5r space-y-1">
       <div

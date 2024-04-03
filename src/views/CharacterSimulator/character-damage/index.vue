@@ -15,7 +15,7 @@
     <div v-if="tabIndex === 0" class="px-3">
       <div class="mt-4">
         <cy-button-check
-          v-model:selected="store.calculationOptions.forceCritical"
+          v-model:selected="characterStore.calculationOptions.forceCritical"
         >
           {{ t('character-simulator.character-damage.force-critical') }}
         </cy-button-check>
@@ -66,12 +66,12 @@
       />
       <div class="mt-3 space-y-2">
         <cy-input-counter
-          v-model:value="store.calculationOptions.proration"
+          v-model:value="characterStore.calculationOptions.proration"
           :range="[50, 250]"
           :title="t('damage-calculation.item-base-titles.proration')"
         />
         <cy-input-counter
-          v-model:value="store.calculationOptions.comboRate"
+          v-model:value="characterStore.calculationOptions.comboRate"
           :range="[10, 150]"
           :title="t('damage-calculation.item-base-titles.combo_multiplier')"
         />
@@ -81,7 +81,7 @@
       />
       <div class="mt-3">
         <cy-button-check
-          v-model:selected="store.calculationOptions.armorBreakDisplay"
+          v-model:selected="characterStore.calculationOptions.armorBreakDisplay"
         >
           {{ t('character-simulator.character-damage.armor-break-display') }}
         </cy-button-check>
@@ -91,37 +91,37 @@
       />
       <div class="mt-3 space-y-2">
         <cy-input-counter
-          v-model:value="store.targetProperties.level"
+          v-model:value="characterStore.targetProperties.level"
           :title="t('damage-calculation.item-base-titles.target_level')"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.def"
+          v-model:value="characterStore.targetProperties.def"
           :title="t('damage-calculation.item-base-titles.target_def')"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.mdef"
+          v-model:value="characterStore.targetProperties.mdef"
           :title="t('damage-calculation.item-base-titles.target_mdef')"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.physicalResistance"
+          v-model:value="characterStore.targetProperties.physicalResistance"
           :title="
             t('damage-calculation.item-base-titles.target_physical_resistance')
           "
           unit="%"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.magicResistance"
+          v-model:value="characterStore.targetProperties.magicResistance"
           :title="
             t('damage-calculation.item-base-titles.target_magic_resistance')
           "
           unit="%"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.dodge"
+          v-model:value="characterStore.targetProperties.dodge"
           :title="t('damage-calculation.item-base-titles.target_dodge')"
         />
         <cy-input-counter
-          v-model:value="store.targetProperties.criticalRateResistance"
+          v-model:value="characterStore.targetProperties.criticalRateResistance"
           :title="
             t(
               'damage-calculation.item-base-titles.target_critical_rate_resistance'
@@ -131,7 +131,9 @@
         />
 
         <cy-input-counter
-          v-model:value="store.targetProperties.criticalRateResistanceTotal"
+          v-model:value="
+            characterStore.targetProperties.criticalRateResistanceTotal
+          "
           :title="
             t(
               'damage-calculation.item-base-titles.target_critical_rate_resistance_total'
@@ -145,7 +147,7 @@
       />
       <div class="mt-2">
         <cy-button-radio-group
-          v-model:value="store.targetProperties.rangeDamage"
+          v-model:value="characterStore.targetProperties.rangeDamage"
           :options="rangeDamageOptions"
         />
       </div>
@@ -154,7 +156,7 @@
       />
       <div class="mt-2">
         <cy-button-radio-group
-          v-model:value="store.targetProperties.element"
+          v-model:value="characterStore.targetProperties.element"
           :options="elementOptions"
         />
       </div>
@@ -163,11 +165,13 @@
 </template>
 
 <script lang="tsx" setup>
-import { computed } from 'vue'
-import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResultsState } from '@/stores/views/character/setup'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
@@ -178,8 +182,6 @@ import CardRows from '@/components/card/card-rows.vue'
 
 // import CardContent from '@/components/card/card-content.vue'
 import CharacterDamageSkillItem from './character-damage-skill-item.vue'
-
-import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean
@@ -195,16 +197,16 @@ defineOptions({
   name: 'CharacterDamage',
 })
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const tabIndex = ref(0)
 
 const skillResultsStates = computed(
-  () => store.damageSkillResultStates as SkillResultsState[]
+  () => characterStore.damageSkillResultStates as SkillResultsState[]
 )
 
-const { currentSkillBuild } = setupCharacterSkillBuildStore()
+const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 const validResultStates = computed(() => {
   return skillResultsStates.value.filter(
     state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0

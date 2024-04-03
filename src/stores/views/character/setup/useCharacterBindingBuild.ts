@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, computed, ref } from 'vue'
+import { Ref, WritableComputedRef, computed, ref } from 'vue'
 
 import { CharacterBindingBuild } from '@/lib/Character/Character'
 
@@ -8,16 +8,26 @@ export function useCharacterBindingBuild<
   const builds: Ref<Build[]> = ref([])
   const currentBuildIndex = ref(-1)
 
-  const currentBuild: ComputedRef<Build | null> = computed(
-    () => builds.value[currentBuildIndex.value] ?? null
-  )
+  const setCurrentBuild = (idx: number | Build | null) => {
+    if (idx === null) {
+      currentBuildIndex.value = -1
+      return
+    }
 
-  const setCurrentBuild = (idx: number | Build) => {
     if (typeof idx !== 'number') {
       idx = builds.value.indexOf(idx)
     }
     currentBuildIndex.value = idx
   }
+
+  const currentBuild: WritableComputedRef<Build | null> = computed({
+    get() {
+      return builds.value[currentBuildIndex.value] ?? null
+    },
+    set(value) {
+      setCurrentBuild(value)
+    },
+  })
 
   const appendBuild = (build: Build, updateIndex = true) => {
     builds.value.push(build)

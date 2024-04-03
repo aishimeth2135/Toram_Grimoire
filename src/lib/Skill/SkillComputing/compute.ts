@@ -92,8 +92,8 @@ function handleHighlight(container: SkillBranchResult) {
         ? 'text-cyan-60'
         : 'text-gray'
       : originalFormula.includes('stack')
-      ? 'text-blue-60'
-      : 'text-primary-50'
+        ? 'text-blue-60'
+        : 'text-primary-50'
   container.mergeDisplayOptions({ classNames: [className] })
 }
 
@@ -348,10 +348,10 @@ function computedBranchHelper(
   const handleFormulaExtra = !formulaExtra
     ? (str: string) => {
         return str
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) =>
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) =>
             getTextKey(p1)
           )
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) =>
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) =>
             getTextKey(p1)
           )
       }
@@ -359,11 +359,11 @@ function computedBranchHelper(
         return str
           .replace(
             HANDLE_FORMULA_EXTRA_PATTERN_1,
-            (match, p1) => getValue(p1) ?? getTextKey(p1)
+            (_match, p1) => getValue(p1) ?? getTextKey(p1)
           )
           .replace(
             HANDLE_FORMULA_EXTRA_PATTERN_2,
-            (match, p1) => getValue(p1) ?? getTextKey(p1)
+            (_match, p1) => getValue(p1) ?? getTextKey(p1)
           )
       }
 

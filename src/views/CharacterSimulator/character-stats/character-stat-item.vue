@@ -180,7 +180,7 @@ const handleConditional = (conditionBase: CharacterStatResultConditionBase) => {
       .replace(/\s+/g, '')
       .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
       .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
-      .replace(/@([a-zA-Z0-9._]+)/g, (match, p1) => {
+      .replace(/@([a-zA-Z0-9._]+)/g, (_match, p1) => {
         return (
           t(
             `character-simulator.character-stat-detail.equipment-restriction-text.${p1}`
@@ -189,7 +189,7 @@ const handleConditional = (conditionBase: CharacterStatResultConditionBase) => {
       })
       .replace(/&&|\|\|/g, match => (match === '&&' ? '+,' : '/,'))
       .replace(/\(|\)/g, match => match + ',')
-      .replace(/^\(([^)]+)\)$/, (match, p1) => p1)
+      .replace(/^\(([^)]+)\)$/, (_match, p1) => p1)
 
     strs = str.split(',')
     if (lastElement(strs) === '') {
@@ -320,7 +320,7 @@ const showStatDetailDatas = computed(() => {
             return
           }
           const eqs = line.title.equipments
-          eqs.forEach((text, idx) => {
+          eqs.forEach((_text, idx) => {
             if (eqs.length - idx < conditionalEqs.length) {
               return
             }
@@ -353,7 +353,7 @@ const showStatDetailDatas = computed(() => {
 const statDetailCaption = computed(() => {
   return props.characterStatResult.origin.caption.replace(
     /\(\(([^)]+)\)\)/g,
-    (match, m1) => `<span class="cy--text-separate">${m1}</span>`
+    (_match, m1) => `<span class="cy--text-separate">${m1}</span>`
   )
 })
 

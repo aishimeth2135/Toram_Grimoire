@@ -1,8 +1,6 @@
 import { DatasStoreBase } from '@/stores/app/datas/DatasStoreBase'
 import { I18nStore } from '@/stores/app/language/I18nStore'
 
-import Logger from './services/Logger'
-
 const Grimoire = {
   get Character() {
     return DatasStoreBase.Character!
@@ -35,8 +33,6 @@ const Grimoire = {
   get i18n() {
     return I18nStore.i18n!
   },
-
-  Logger,
 }
 
 export default Grimoire

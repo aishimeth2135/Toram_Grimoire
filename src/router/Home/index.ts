@@ -14,7 +14,7 @@ export default {
   name: AppRouteNames.Base,
   path: '/',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     ViewInit().then(next)
   },
   meta: {

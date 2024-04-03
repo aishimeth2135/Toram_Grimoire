@@ -2,6 +2,7 @@
 import { Ref, StyleValue, computed, shallowRef } from 'vue'
 
 import { useResizeObserver } from '@/shared/setup/ElementObserver'
+import { nextFrame } from '@/shared/utils/dom'
 
 import { useTabsContext, useTabsSlider } from './setup'
 
@@ -28,7 +29,9 @@ const { idBind } = useTabsContext(tabsContext)
 const { autoUpdateSliderStyle } = useTabsSlider()
 
 const { forceUpdateSliderStyle } = autoUpdateSliderStyle(tabsContext)
-useResizeObserver(tabsEl, forceUpdateSliderStyle)
+useResizeObserver(tabsEl, () => {
+  nextFrame(forceUpdateSliderStyle)
+})
 </script>
 
 <template>

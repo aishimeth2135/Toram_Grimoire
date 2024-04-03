@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
+import { protectType } from '@/shared/utils/pinia'
+
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
@@ -39,9 +41,9 @@ export const useCharacterRegistletBuildStore = defineStore(
     }
 
     return {
-      registletBuilds: builds,
+      registletBuilds: protectType(builds),
       currentRegistletBuildIndex: currentBuildIndex,
-      currentRegistletBuild: currentBuild,
+      currentRegistletBuild: protectType(currentBuild),
       setCurrentRegistletBuild,
       createRegistletBuild,
       removeCurrentRegistletBuild,

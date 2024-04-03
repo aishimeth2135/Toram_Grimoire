@@ -8,8 +8,8 @@
         <div v-for="(bch, idx) in eft.branches" :key="idx">
           <code class="text-violet-60">
             {{
-              `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replaceAll(
-                ' ',
+              `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(
+                /\s/g,
                 '_'
               )}`
             }}
@@ -43,8 +43,8 @@
             <div v-for="(bch, idx) in history.branches" :key="idx">
               <code class="text-violet-60">
                 {{
-                  `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replaceAll(
-                    ' ',
+                  `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(
+                    /\s/g,
                     '_'
                   )}`
                 }}

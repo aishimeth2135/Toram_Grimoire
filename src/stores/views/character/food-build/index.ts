@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { markRaw, readonly, ref } from 'vue'
+import { markRaw, ref } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { protectType } from '@/shared/utils/pinia'
 
 import { FoodsBase } from '@/lib/Character/Food'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
@@ -38,12 +39,12 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
   }
 
   return {
-    foodsBase: readonly(foodsBase),
-    foodBuilds: builds,
+    foodsBase: protectType(foodsBase),
+    foodBuilds: protectType(builds),
     currentFoodBuildIndex: currentBuildIndex,
+    currentFoodBuild: protectType(currentBuild),
 
     initFoodsBase,
-    currentFoodBuild: currentBuild,
     setCurrentFoodBuild: setCurrentBuild,
     createFoodBuild,
     appendFoodBuild,

@@ -52,7 +52,7 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
       ([key, value]) =>
         [key, Grimoire.Enchant.findEnchantItem(value!)!] as [
           string,
-          EnchantItem
+          EnchantItem,
         ]
     )
 
@@ -69,7 +69,7 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
     shorthands.forEach(([pat, origin]) => {
       const mulPattern = new RegExp(`${pat}(\\d+)?%`, 'g')
       let mulFlag = false
-      str = str.replace(mulPattern, (match, m1) => {
+      str = str.replace(mulPattern, (_match, m1) => {
         if (!mulFlag) {
           const type = StatTypes.Multiplier
           let value = 0
@@ -93,7 +93,7 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
       const constPattern = new RegExp(`${pat}(\\d+)?`, 'g')
       let constFlag = false
       const useConst = mulFlag || pat === 'C' || pat === 'CD'
-      str = str.replace(constPattern, (match, m1) => {
+      str = str.replace(constPattern, (_match, m1) => {
         if (!constFlag) {
           let type = useConst ? StatTypes.Constant : StatTypes.Multiplier
           let value = null

@@ -69,6 +69,7 @@
 import { Ref, computed, inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { numberToFixed } from '@/shared/utils/number'
@@ -82,7 +83,6 @@ import CharacterComboItemDamageItem from './character-combo-item-damage-item.vue
 import CharacterComboItemSkill from './character-combo-item-skill.vue'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   index: number
@@ -111,11 +111,11 @@ const expectedDamageSum = computed(() =>
     0
   )
 )
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const getMpCost = (skill: Skill, previous: Skill | null) => {
-  const states = store.damageSkillResultStates as SkillResultsState[]
+  const states = characterStore.damageSkillResultStates as SkillResultsState[]
   const resultState = states.find(
     state => state.skill.skillId === skill.skillId
   )
@@ -123,7 +123,7 @@ const getMpCost = (skill: Skill, previous: Skill | null) => {
     return 0
   }
   const previousResultState = previous
-    ? store.nextSkillResultStates.find(
+    ? characterStore.nextSkillResultStates.find(
         state => state.skill.skillId === previous.skillId
       )
     : null
@@ -143,10 +143,10 @@ const getMpCost = (skill: Skill, previous: Skill | null) => {
 }
 
 const checkSkillValid = (skill: Skill) => {
-  if (!store.skillItemStates.has(skill)) {
+  if (!characterStore.skillItemStates.has(skill)) {
     return false
   }
-  return store.skillItemStates.get(skill)!.effectItem.value !== null
+  return characterStore.skillItemStates.get(skill)!.effectItem.value !== null
 }
 
 const comboSkillStates = computed(() =>
@@ -154,7 +154,8 @@ const comboSkillStates = computed(() =>
 )
 
 const comboSkillStateItems = computed(() => {
-  const allResultsStates = store.damageSkillResultStates as SkillResultsState[]
+  const allResultsStates =
+    characterStore.damageSkillResultStates as SkillResultsState[]
   return comboSkillStates.value
     .map(comboSkillState => {
       const skill = comboSkillState.comboSkill.skill

@@ -8,8 +8,8 @@
             invalid
               ? 'border-gray-20'
               : enabled
-              ? 'border-primary-50'
-              : 'border-primary-20'
+                ? 'border-primary-50'
+                : 'border-primary-20'
           "
           @click="enabled = !enabled"
         >
@@ -70,10 +70,12 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
@@ -82,8 +84,6 @@ import CardRow from '@/components/card/card-row.vue'
 import CharacterSkillItemOptions from './character-skill-item-options.vue'
 import CharacterSkillResultItem from './character-skill-result-item.vue'
 
-import { setupCharacterSkillBuildStore } from '../../setup'
-
 interface Props {
   skillResultsState: SkillResultsState
 }
@@ -91,7 +91,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { t } = useI18n()
-const { currentSkillBuild } = setupCharacterSkillBuildStore()
+const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 
 const skillIconPath = computed(() =>
   getSkillIconPath(props.skillResultsState.skill)

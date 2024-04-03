@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+
+import { useCharacterStore } from '@/stores/views/character'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import BrowseEquipmentsListItem from './browse-equipments-list-item.vue'
-
-import { setupCharacterStore } from '../setup'
 
 const selectedEquipment = defineModel<CharacterEquipment | null>(
   'selectedEquipment',
@@ -14,7 +15,7 @@ const selectedEquipment = defineModel<CharacterEquipment | null>(
   }
 )
 
-const { currentCharacter } = setupCharacterStore()
+const { currentCharacter } = storeToRefs(useCharacterStore())
 
 const fieldEquipments = computed(() => {
   return currentCharacter.value.equipmentFields
