@@ -3,7 +3,7 @@
     <div
       class="mt-6 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white bg-opacity-75"
     >
-      <cy-icon :icon="icon" :color="color" width="1.25rem" />
+      <cy-icon :icon="icon" :class="iconClass" width="1.25rem" />
     </div>
     <div class="flex flex-wrap pl-2 pr-6">
       <slot />
@@ -13,7 +13,7 @@
     <div
       class="mt-4 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white bg-opacity-75"
     >
-      <cy-icon :icon="icon" :color="color" width="1.125rem" />
+      <cy-icon :icon="icon" :class="iconClass" width="1.125rem" />
     </div>
     <div class="flex flex-wrap pl-2">
       <slot />
@@ -22,6 +22,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
+
 import { useDevice } from '@/shared/setup/Device'
 
 interface Props {
@@ -29,9 +31,11 @@ interface Props {
   color: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { device } = useDevice()
+
+const iconClass = computed(() => `text-${props.color}-30`)
 </script>
 <!--
 <style lang="postcss" module>

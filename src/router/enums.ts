@@ -17,7 +17,7 @@ export const enum AppRouteNames {
 
   Character = 'Character',
   CharacterSimulator = 'CharacterSimulator',
-  SkillSimulator = 'SkillSimulator',
+  // SkillSimulator = 'SkillSimulator',
 
   DamageCalculationBase = 'DamageCalculationBase',
   DamageCalculation = 'DamageCalculation',

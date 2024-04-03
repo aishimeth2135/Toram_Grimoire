@@ -1,14 +1,22 @@
+<script lang="ts" setup>
+import { useDevice } from '@/shared/setup/Device'
+import { usePageLayout } from '@/shared/setup/Layout'
+
+const { layout } = usePageLayout()
+
+const { device } = useDevice()
+</script>
+
 <template>
-  <main
-    class="app-layout-main--root flex min-h-full w-full justify-center"
-    :class="{ 'has-aside': device.hasAside && !noAside }"
-  >
+  <main class="app-layout-container-root min-h-full">
     <div
-      class="app-layout-main--container"
-      :class="{ 'two-columns': twoColumns }"
+      class="app-layout-main--container app-layout-horizontal-container"
+      :class="{
+        'page-two-columns': layout.twoColumns,
+      }"
     >
       <slot></slot>
-      <template v-if="twoColumns">
+      <template v-if="layout.twoColumns">
         <div class="two-columns-column">
           <slot name="column(0)" />
         </div>
@@ -17,50 +25,23 @@
         </div>
       </template>
     </div>
-    <aside v-if="!noAside && device.hasAside" class="app-layout-main--aside">
-      <div class="app-layout-main--aside-container">
+    <aside v-if="device.hasAside" class="app-layout-main--aside">
+      <div class="bg-white py-4">
         <slot name="aside"></slot>
       </div>
     </aside>
   </main>
 </template>
 
-<script lang="ts" setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-
-import { useDevice } from '@/shared/setup/Device'
-
-interface Props {
-  noAside?: boolean
-}
-
-withDefaults(defineProps<Props>(), { noAside: false })
-
-const currentRoute = useRoute()
-
-const twoColumns = computed(() => currentRoute.meta.twoColumnsLayout === true)
-
-const { device } = useDevice()
-</script>
-
-<style lang="postcss" scoped>
+<style lang="postcss">
 .app-layout-main--container {
-  @apply flex min-h-full flex-shrink-0 flex-col;
-
-  width: var(--app-main-content-width);
-}
-
-@media (max-width: 816px) {
-  .app-layout-main--container {
-    width: 100%;
-  }
+  @apply flex min-h-full flex-shrink-0 flex-col pb-16;
 }
 
 @media (min-width: 880px) {
-  .app-layout-main--container.two-columns {
+  .app-layout-main--container.page-two-columns {
     @apply h-full w-full flex-row;
-    padding-left: 56px;
+    padding-left: var(--app-side-menu-minimize-width);
     max-width: none;
 
     & > .two-columns-column {
@@ -84,18 +65,8 @@ const { device } = useDevice()
   --app-layout-main--aside-scroll-width-extra: 0.5rem;
 }
 
-.app-layout-main--aside-container {
-  @apply bg-white py-4;
-}
-
-.app-layout-main--root.has-aside {
-  padding-left: calc(
-    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
-      var(--app-main-content-padding-x)
-  );
-  padding-right: calc(
-    100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
-      var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
-  );
+/* bottom */
+.app-layout--bottom {
+  @apply pointer-events-none fixed bottom-0 z-20 p-2;
 }
 </style>

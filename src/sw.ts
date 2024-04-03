@@ -1,3 +1,4 @@
+/// <reference lib="webworker" />
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { RouteHandler, setCacheNameDetails } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'

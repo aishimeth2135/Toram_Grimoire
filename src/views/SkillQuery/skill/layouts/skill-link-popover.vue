@@ -3,8 +3,8 @@
     v-if="currentSkill"
     tag="span"
     class="inline-block px-0.5"
-    show-triggers="click hover"
-    popper-class="rounded-md"
+    triggers="click hover"
+    popper-content-class="rounded-md"
   >
     <span class="cursor-pointer text-red-60 underline">
       {{ currentSkill.name }}

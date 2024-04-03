@@ -16,7 +16,7 @@ export default {
   name: AppRouteNames.Items,
   path: '/items',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(
       LocaleViewNamespaces.ItemQuery,
       LocaleViewNamespaces.CrystalQuery

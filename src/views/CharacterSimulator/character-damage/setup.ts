@@ -9,8 +9,6 @@ import { StatRecorded } from '@/lib/Character/Stat'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
-import { setupCharacterStore } from '../setup'
-
 export function getContainerStats(
   store: ReturnType<typeof useCharacterStore>,
   container: DisplayDataContainer
@@ -31,7 +29,7 @@ export function getContainerStats(
 }
 
 export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
-  const { store } = setupCharacterStore()
+  const store = useCharacterStore()
 
   const extraStats = computed(() => {
     const stats: StatRecorded[] = []
@@ -49,7 +47,7 @@ export function setupStoreDamageCalculationExpectedResult(
   extraStats: Ref<StatRecorded[]>,
   { armorBreak = false } = {}
 ) {
-  const { store } = setupCharacterStore()
+  const store = useCharacterStore()
 
   return store.setupDamageCalculationExpectedResult(
     result,

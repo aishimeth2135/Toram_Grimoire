@@ -2,7 +2,8 @@ import Grimoire from '@/shared/Grimoire'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
-import { CharacterBuildBindOnCharacter } from '../Character'
+import { CharacterBindingBuild } from '../Character'
+import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface RegistletBuildSaveData {
   id: number
@@ -16,18 +17,18 @@ interface RegistletItemSaveData {
   enabled: boolean
 }
 
-class RegistletBuild implements CharacterBuildBindOnCharacter {
+class RegistletBuild implements CharacterBindingBuild {
   private static _autoIncrement: number = 0
 
   private _itemsMap: Map<RegistletItemBase, RegistletItem>
 
-  instanceId: number
+  readonly id: number
   name: string
   loadedId: string | null
   items: RegistletItem[]
 
   constructor(name: string = '') {
-    this.instanceId = RegistletBuild._autoIncrement
+    this.id = RegistletBuild._autoIncrement
     RegistletBuild._autoIncrement += 1
 
     this.loadedId = null
@@ -61,7 +62,7 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
 
   save(): RegistletBuildSaveData {
     return {
-      id: this.instanceId,
+      id: this.id,
       name: this.name,
       items: this.items.map(item => item.save()),
     }
@@ -74,16 +75,12 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
-    return (
-      this.loadedId !== null &&
-      id !== null &&
-      `${loadCategory}-${id}` === this.loadedId
-    )
+    return checkLoadedId(this, loadCategory, id)
   }
 
   static load(loadedCategory: string, data: RegistletBuildSaveData) {
     const newBuild = new RegistletBuild(data.name)
-    newBuild.loadedId = `${loadedCategory}-${data.id}`
+    newBuild.loadedId = getLoadedId(loadedCategory, data.id)
     data.items.forEach(item => {
       const newItem = RegistletItem.load(newBuild, item)
       if (newItem) {

@@ -50,7 +50,7 @@
       <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
-          @set-current-skill="skill => selectCurrentSkill(skill, true)"
+          @set-current-skill="selectCurrentSkill($event, true)"
         />
       </div>
       <div v-if="mainStore.devMode" class="mt-4">

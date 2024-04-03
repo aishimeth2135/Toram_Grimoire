@@ -15,7 +15,7 @@ export default {
   name: AppRouteNames.Skill,
   path: '/skill',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.SkillQuery)
     ViewInit(
       DataStoreIds.Stats,

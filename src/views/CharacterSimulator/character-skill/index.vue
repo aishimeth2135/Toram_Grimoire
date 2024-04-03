@@ -1,100 +1,95 @@
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
+
+import { SkillTypes } from '@/lib/Skill/Skill'
+
+import CommonBuildPage from '../common/common-build-page.vue'
+import CharacterSkillPreviewTab from './character-skill-preview-tab/character-skill-preview-tab.vue'
+import CharacterSkillTab from './character-skill-tab/index.vue'
+
+defineOptions({
+  name: 'CharacterSkill',
+})
+
+const { t } = useI18n()
+
+const currentTab = ref(2)
+
+const characterStore = useCharacterStore()
+
+const skillStore = useCharacterSkillBuildStore()
+const { skillBuilds, currentSkillBuild: selectedBuild } =
+  storeToRefs(skillStore)
+
+const currentSkillBuild = computed(
+  () => characterStore.currentCharacterState.skillBuild
+)
+
+const buildMatched = computed(
+  () => selectedBuild.value === currentSkillBuild.value
+)
+
+const currentDisplayedTab = computed(() =>
+  buildMatched.value ? currentTab.value : 2
+)
+
+const addSkillBuild = () => {
+  selectedBuild.value = skillStore.createSkillBuild()
+}
+
+const removeSkillBuild = () => {
+  if (!selectedBuild.value) {
+    return
+  }
+  const idx = skillStore.removeSkillBuild(selectedBuild.value)
+  selectedBuild.value = skillBuilds.value[idx]
+}
+</script>
+
 <template>
-  <section v-if="currentSkillBuild" class="px-2">
-    <div class="px-2">
-      <div class="w-60">
-        <cy-options
-          :value="currentSkillBuild"
-          :options="
-            skillBuilds.map(skillBuild => ({
-              id: skillBuild.instanceId,
-              value: skillBuild,
-            }))
-          "
-          @update:value="characterStore.setCharacterSkillBuild($event)"
-        >
-          <template #item="{ value }">
-            <cy-icon-text icon="ant-design:build-outlined">
-              {{ value.name }}
-            </cy-icon-text>
-          </template>
-        </cy-options>
-      </div>
-    </div>
-    <cy-hr />
-    <div class="flex max-w-full items-center overflow-x-auto">
-      <cy-button-action
-        :selected="tabs.active"
-        icon="uil:books"
-        @click="toggle('tabs/active', true, false)"
+  <CommonBuildPage
+    v-if="selectedBuild"
+    v-model:selected-build="selectedBuild"
+    v-model:builds="skillBuilds"
+    :current-build="currentSkillBuild"
+    @select-build="characterStore.setCharacterSkillBuild"
+    @add-build="addSkillBuild"
+    @copy-build="skillStore.appendSkillBuild(selectedBuild.clone(), false)"
+    @remove-build="removeSkillBuild"
+  >
+    <template #content>
+      <cy-tabs
+        :model-value="currentDisplayedTab"
+        @update:model-value="currentTab = $event"
       >
-        {{ t('character-simulator.skill-build.active-skills') }}
-      </cy-button-action>
-      <cy-button-action
-        :selected="tabs.passive"
-        icon="uil:books"
-        @click="toggle('tabs/passive', true, false)"
-      >
-        {{ t('character-simulator.skill-build.passive-skills') }}
-      </cy-button-action>
-      <cy-popover class="flex">
-        <cy-button-icon
-          icon="ic:round-settings"
-          :selected="contents.options"
-          @click="toggle('contents/options')"
-        />
-        <template #popper>
-          <div class="p-3">
-            <cy-button-check
-              v-model:selected="
-                characterStore.setupOptions.skillDisplayStatsOnly
-              "
-            >
-              {{ t('character-simulator.skill-build.display-stats-only') }}
-            </cy-button-check>
-          </div>
-        </template>
-      </cy-popover>
-    </div>
-    <div class="overflow-x-auto pt-3">
-      <div style="min-width: 25rem">
+        <cy-tab :value="0" :disabled="!buildMatched">
+          {{ t('character-simulator.skill-build.active-skills') }}
+        </cy-tab>
+        <cy-tab :value="1" :disabled="!buildMatched">
+          {{ t('character-simulator.skill-build.passive-skills') }}
+        </cy-tab>
+        <cy-tab :value="2">
+          {{ t('character-simulator.skill-build.skills-preview') }}
+        </cy-tab>
+      </cy-tabs>
+      <div class="min-w-[22.5rem] overflow-x-auto py-4">
         <CharacterSkillTab
-          :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive"
+          v-if="currentDisplayedTab !== 2"
+          :skill-build="selectedBuild"
+          :type="
+            currentDisplayedTab === 0 ? SkillTypes.Active : SkillTypes.Passive
+          "
         />
+        <CharacterSkillPreviewTab v-else :skill-build="selectedBuild" />
       </div>
-    </div>
-  </section>
+    </template>
+  </CommonBuildPage>
   <cy-default-tips v-else>
     {{ t('character-simulator.skill-build.no-any-build-tips') }}
   </cy-default-tips>
 </template>
-
-<script lang="ts">
-export default {
-  name: 'CharacterSkill',
-}
-</script>
-
-<script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-
-import { useCharacterStore } from '@/stores/views/character'
-
-import { SkillTypes } from '@/lib/Skill/Skill'
-
-import ToggleService from '@/shared/setup/ToggleService'
-
-import CharacterSkillTab from './character-skill-tab/index.vue'
-
-import { setupCharacterSkillBuildStore } from '../setup'
-
-const { t } = useI18n()
-
-const { tabs, contents, toggle } = ToggleService({
-  tabs: [{ name: 'active', default: true }, 'passive'] as const,
-  contents: ['options'] as const,
-})
-
-const characterStore = useCharacterStore()
-
-const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
-</script>

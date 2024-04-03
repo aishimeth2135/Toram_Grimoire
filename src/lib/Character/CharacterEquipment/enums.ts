@@ -63,3 +63,18 @@ export const SubWeaponTypeList = [
 ]
 
 export const SubArmorTypeList = [EquipmentTypes.Shield]
+
+export const BodyArmorTypeList = [
+  EquipmentTypes.BodyNormal,
+  EquipmentTypes.BodyDodge,
+  EquipmentTypes.BodyDefense,
+]
+
+export const AllEquipmentTypeCategorys = new Map([
+  [EquipmentCategorys.MainWeapon, MainWeaponTypeList],
+  [EquipmentCategorys.SubWeapon, SubWeaponTypeList],
+  [EquipmentCategorys.SubArmor, SubArmorTypeList],
+  [EquipmentCategorys.BodyArmor, [EquipmentTypes.BodyNormal]],
+  [EquipmentCategorys.Additional, [EquipmentTypes.Additional]],
+  [EquipmentCategorys.Special, [EquipmentTypes.Special]],
+])

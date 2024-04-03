@@ -173,6 +173,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 .app--draw-skill-tree {
   stroke: var(--app-primary-30);
   stroke-width: 2px;
+  user-select: none;
 
   & > circle.dot {
     fill: var(--app-primary-30);

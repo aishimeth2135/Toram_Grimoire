@@ -33,6 +33,25 @@ class StatValueSource {
     this.type = type
     this.value = value
   }
+
+  // get displayedName(): string {
+  //   const src = this.src
+
+  //   switch (this.type) {
+  //     case StatValueSourceTypes.Skill:
+  //       return (src as SkillBranch).parent.parent.name
+  //     case StatValueSourceTypes.Equipment:
+  //       return (src as CharacterEquipment).name
+  //     case StatValueSourceTypes.Crystal:
+  //       return (src as EquipmentCrystal).name
+  //     case StatValueSourceTypes.Registlet:
+  //       return (src as RegistletItemBase).name
+  //     case StatValueSourceTypes.Potion:
+  //       return (src as BagPotion).name
+  //     default:
+  //       return ''
+  //   }
+  // }
 }
 
 class StatRecorded extends StatElementBase {

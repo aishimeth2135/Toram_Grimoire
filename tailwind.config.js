@@ -19,9 +19,8 @@ const colorsConfig = (() => {
   colorGroups.forEach(group => {
     colors[group] = {}
     colorOrders.forEach(order => {
-      colors[group][
-        order
-      ] = `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
+      colors[group][order] =
+        `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
     })
   })
   return {
@@ -30,6 +29,7 @@ const colorsConfig = (() => {
     white: 'rgba(var(--app-rgb-white), <alpha-value>)',
     transparent: 'transparent',
     current: 'currentcolor',
+    inherit: 'inherit',
   }
 })()
 
@@ -127,7 +127,8 @@ module.exports = {
       mono: "'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', var(--app-main-font), monospace",
     },
     screens: {
-      cp: '800px',
+      'wd': '800px',
+      'wd-lg': '1120px',
     },
     colors: colorsConfig,
     borderWidth,
@@ -236,6 +237,8 @@ module.exports = {
 
     'verticalAlign',
     'visibility',
+
+    'userSelect',
 
     'whitespace',
     'width',

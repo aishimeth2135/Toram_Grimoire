@@ -24,15 +24,8 @@
               <cy-icon
                 v-if="firstObtain && firstObtain.isDrop"
                 icon="jam-box"
-                color="orange-60"
-                class="ml-2"
+                class="ml-2 text-orange-60"
               />
-            </span>
-            <span
-              v-if="equipment.hasRefining && equipment.refining !== 0"
-              class="ml-1 text-blue-60"
-            >
-              +{{ equipment.refining }}
             </span>
           </cy-icon-text>
           <div
@@ -138,7 +131,7 @@
                   small
                 />
                 <span class="ml-1 text-primary-50">
-                  {{ originEquipment.unknowCategory || equipment.categoryText }}
+                  {{ originEquipment.unknowCategory || equipment.typeText }}
                 </span>
               </span>
             </div>

@@ -28,12 +28,16 @@ import ToggleService from '@/shared/setup/ToggleService'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
+import {
+  ButtonBasePropList,
+  ButtonIconPropList,
+  getButtonBaseBinds,
+} from './setup'
 
 export default defineComponent({
   props: {
-    ...ButtonBaseProps,
-    ...ButtonIconProps,
+    ...ButtonBasePropList,
+    ...ButtonIconPropList,
     contentDefaultVisible: {
       type: Boolean,
       default: false,

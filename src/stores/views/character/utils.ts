@@ -1,3 +1,5 @@
+import { CharacterSimulatorSaveData } from '.'
+
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
@@ -7,7 +9,7 @@ export function checkStatRestriction(
   chara: Character,
   stat: StatRestriction
 ): boolean {
-  if (stat.isEmpty()) {
+  if (stat.isPlain()) {
     return true
   }
   const types = stat.restriction!
@@ -94,4 +96,21 @@ export function getCharacterElement(
   }
 
   return element
+}
+
+export function migrateCharacterSimulatorSaveData(
+  datas: CharacterSimulatorSaveData
+) {
+  if (!datas.registletBuilds) {
+    datas.registletBuilds = []
+  }
+  if (!datas.potionBuilds) {
+    datas.potionBuilds = []
+  }
+  if (!datas.characterStates) {
+    datas.characterStates = []
+  }
+  if (!datas.buildLabels) {
+    datas.buildLabels = []
+  }
 }

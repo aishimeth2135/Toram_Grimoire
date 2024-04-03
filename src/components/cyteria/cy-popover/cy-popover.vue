@@ -16,8 +16,9 @@
       :options="{
         placement,
         autoSelect,
+        custom,
       }"
-      :content-class="popperClass"
+      :content-class="popperContentClass"
       @hidden="fixed = false"
     >
       <slot name="popper" :hide="hide" />
@@ -26,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, ref, useSlots } from 'vue'
+import { Ref, computed, ref, useSlots, watch } from 'vue'
 
 import CyPopper from './cy-popper.vue'
 
@@ -34,15 +35,33 @@ interface Props {
   tag?: string
   autoSelect?: boolean
   placement?: string
-  showTriggers?: string
-  popperClass?: any
+  triggers?: string
+  popperContentClass?: any
+  custom?: boolean
+  disabled?: boolean
 }
+
+// type Placement =
+//   | 'top'
+//   | 'top-start'
+//   | 'top-end'
+//   | 'right'
+//   | 'right-start'
+//   | 'right-end'
+//   | 'bottom'
+//   | 'bottom-start'
+//   | 'bottom-end'
+//   | 'left'
+//   | 'left-start'
+//   | 'left-end';
 
 const props = withDefaults(defineProps<Props>(), {
   tag: 'div',
   placement: 'bottom-start',
   autoSelect: false,
-  showTriggers: 'click',
+  triggers: 'click',
+  custom: false,
+  disabled: false,
 })
 
 const slots = useSlots()
@@ -52,9 +71,13 @@ const popper: Ref<InstanceType<typeof CyPopper> | null> = ref(null)
 
 const fixed = ref(false)
 
-const innerShowTriggers = computed(() => props.showTriggers.split(' '))
+const innerShowTriggers = computed(() => props.triggers.split(' '))
 
 const onClick = () => {
+  if (props.disabled) {
+    return
+  }
+
   if (popper.value && innerShowTriggers.value.includes('click')) {
     popper.value.togglePopper(
       innerShowTriggers.value.includes('hover') ? true : undefined
@@ -63,6 +86,10 @@ const onClick = () => {
   }
 }
 const onHover = () => {
+  if (props.disabled) {
+    return
+  }
+
   if (
     popper.value &&
     innerShowTriggers.value.includes('hover') &&
@@ -71,4 +98,13 @@ const onHover = () => {
     popper.value.togglePopper()
   }
 }
+
+watch(
+  () => props.disabled,
+  value => {
+    if (value) {
+      popper.value?.togglePopper(false)
+    }
+  }
+)
 </script>

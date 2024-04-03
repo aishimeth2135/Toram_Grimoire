@@ -216,6 +216,6 @@ branch:
       hp: 恢复HP
       mp: 恢复MP
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒作用一次
-    constant-pretext: 固定值
+    constant-prefix: 固定值
   reference:
     base-title: 参考连结

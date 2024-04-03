@@ -1,18 +1,21 @@
-import { Ref, computed, ref } from 'vue'
+import { Ref, ref, shallowReactive } from 'vue'
+import { ComputedRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { lastElement } from '@/shared/utils/array'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 
-import { FoodsBuild } from '../../../../lib/Character/FoodBuild'
-import { SkillBuild } from '../../../../lib/Character/SkillBuild'
 import { useCharacterFoodStore } from '../food-build'
 import { useCharacterPotionBuildStore } from '../potion-build'
 import { useCharacterRegistletBuildStore } from '../registlet-build'
 import { useCharacterSkillBuildStore } from '../skill-build'
+import { useCharacterBindingBuild } from './useCharacterBindingBuild'
 
 export function setupCharacters() {
   const foodStore = useCharacterFoodStore()
@@ -20,12 +23,20 @@ export function setupCharacters() {
   const registletBuildStore = useCharacterRegistletBuildStore()
   const potionBuildStore = useCharacterPotionBuildStore()
 
-  const currentCharacterIndex = ref(-1)
-  const characters: Ref<Character[]> = ref([])
+  const {
+    builds: characters,
+    currentBuildIndex: currentCharacterIndex,
+    currentBuild: _currentCharacter,
+    setCurrentBuild: _setCurrentCharacter,
+    appendBuild: appendCharacter,
+    removeBuild: removeCharacter,
+  } = useCharacterBindingBuild<Character>()
+
+  const currentCharacter = _currentCharacter as ComputedRef<Character>
 
   const getCharacterState = (() => {
     const characterStates = new Map<
-      Character,
+      number,
       {
         skillBuild: SkillBuild | null
         foodBuild: FoodsBuild | null
@@ -34,29 +45,26 @@ export function setupCharacters() {
       }
     >()
     return (chara: Character) => {
-      if (!characterStates.has(chara)) {
-        characterStates.set(chara, {
-          skillBuild: null,
-          foodBuild: null,
-          registletBuild: null,
-          potionBuild: null,
-        })
+      if (!characterStates.has(chara.id)) {
+        characterStates.set(
+          chara.id,
+          shallowReactive({
+            skillBuild: null,
+            foodBuild: null,
+            registletBuild: null,
+            potionBuild: null,
+          })
+        )
       }
-      return characterStates.get(chara)!
+      return characterStates.get(chara.id)!
     }
   })()
 
-  const currentCharacter = computed<Character>(
-    () => characters.value[currentCharacterIndex.value]
-  )
-
   const setCurrentCharacter = (idx: number | Character) => {
-    if (typeof idx !== 'number') {
-      idx = characters.value.indexOf(idx)
-    }
     const previou = getCharacterState(currentCharacter.value)
-    currentCharacterIndex.value = idx
+    _setCurrentCharacter(idx)
     const current = getCharacterState(currentCharacter.value)
+
     if (current.skillBuild === null) {
       current.skillBuild =
         previou.skillBuild ??
@@ -99,28 +107,21 @@ export function setupCharacters() {
     potionBuildStore.setCurrentPotionBuild(build)
   }
 
-  const createCharacter = (chara?: Character, updateIndex = true) => {
-    if (chara) {
-      characters.value.push(chara)
-    } else {
-      characters.value.push(
-        new Character(
-          Grimoire.i18n.t('character-simulator.character') +
-            ' ' +
-            (characters.value.length + 1)
-        )
-      )
-    }
-    if (updateIndex) {
-      currentCharacterIndex.value = characters.value.length - 1
-    }
-  }
-
-  const removeCharacter = (idx: number = currentCharacterIndex.value) => {
-    characters.value.splice(idx, 1)
-    if (currentCharacterIndex.value >= characters.value.length) {
-      currentCharacterIndex.value = characters.value.length - 1
-    }
+  const createCharacter = () => {
+    const newCharacter = new Character(
+      Grimoire.i18n.t('character-simulator.character') +
+        ' ' +
+        (characters.value.length + 1)
+    )
+    appendCharacter(newCharacter)
+    const state = getCharacterState(newCharacter)
+    state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
+    state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
+    state.registletBuild =
+      (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
+    state.potionBuild =
+      (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
+    return newCharacter
   }
 
   return {
@@ -134,6 +135,7 @@ export function setupCharacters() {
     setCharacterFoodBuild,
     setCharacterRegistletBuild,
     setCharacterPotionBuild,
+    appendCharacter,
     createCharacter,
     removeCharacter,
   }
@@ -141,6 +143,15 @@ export function setupCharacters() {
 
 export function setupEquipments(currentCharacter: Ref<Character>) {
   const equipments: Ref<CharacterEquipment[]> = ref([])
+
+  const appendEquipment = (equip: CharacterEquipment, index = -1) => {
+    if (index < 0 || index >= equipments.value.length) {
+      equipments.value.push(equip)
+      return lastElement(equipments.value)
+    }
+    equipments.value.splice(index, 0, equip)
+    return equipments.value[index + 1]
+  }
 
   const appendEquipments = (eqs: CharacterEquipment[], index = -1) => {
     if (index < 0 || index >= equipments.value.length) {
@@ -160,32 +171,13 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
         }
       })
     }
-  }
-
-  const moveEquipment = (
-    equipment: CharacterEquipment,
-    offset: number,
-    datum?: CharacterEquipment
-  ) => {
-    if (offset === 0) {
-      return
-    }
-    const datumIdx = equipments.value.indexOf(datum ?? equipment)
-    const equipmentIdx = equipments.value.indexOf(equipment)
-    if (datumIdx > -1 && equipmentIdx > -1) {
-      let targetIdx = datumIdx + offset
-      if (datum) {
-        targetIdx += targetIdx > equipmentIdx ? -1 : 1
-      }
-      equipments.value.splice(equipmentIdx, 1)
-      equipments.value.splice(targetIdx, 0, equipment)
-    }
+    return idx - 1
   }
 
   return {
     equipments,
+    appendEquipment,
     appendEquipments,
     removeEquipment,
-    moveEquipment,
   }
 }

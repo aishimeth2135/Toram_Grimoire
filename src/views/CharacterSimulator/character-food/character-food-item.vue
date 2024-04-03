@@ -22,13 +22,12 @@ import { useI18n } from 'vue-i18n'
 
 import Notify from '@/shared/setup/Notify'
 
-import { Food } from '@/lib/Character/FoodBuild'
+import { Food, FoodsBuild } from '@/lib/Character/FoodBuild'
 
 import CardRow from '@/components/card/card-row.vue'
 
-import { setupCharacterFoodStore } from './setup'
-
 interface Props {
+  foodBuild: FoodsBuild
   food: Food
 }
 
@@ -39,24 +38,22 @@ const { notify } = Notify()
 
 const foodLevelRange = [0, 10]
 
-const { currentFoodBuild } = setupCharacterFoodStore()
+const foodBuild = computed(() => props.foodBuild)
 
-const foodIndex = computed(() =>
-  currentFoodBuild.value.foods.indexOf(props.food)
-)
+const foodIndex = computed(() => foodBuild.value.foods.indexOf(props.food))
 
 const selected = computed<boolean>({
   set(value) {
     if (value) {
-      if (!currentFoodBuild.value.appendSelectedFood(foodIndex.value)) {
+      if (!foodBuild.value.appendSelectedFood(foodIndex.value)) {
         notify(t('character-simulator.food-build.selected-food-limit-reached'))
       }
     } else {
-      currentFoodBuild.value.removeSelectedFood(foodIndex.value)
+      foodBuild.value.removeSelectedFood(foodIndex.value)
     }
   },
   get() {
-    return currentFoodBuild.value.foodSelected(foodIndex.value)
+    return foodBuild.value.foodSelected(foodIndex.value)
   },
 })
 

@@ -16,7 +16,7 @@ export default {
   name: AppRouteNames.Registlet,
   path: '/registlet',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.RegistletQuery)
     ViewInit(
       DataStoreIds.Skill,

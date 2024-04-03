@@ -1,17 +1,22 @@
 import { InjectionKey } from 'vue'
 
-import { EquipmentField } from '@/lib/Character/Character'
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
+import { CharacterSimulatorRouteNames } from '@/router/Character'
+
+import { CharacterEquipmentEditModes } from './character-equipment-details/setup'
+
 interface CharacterSimulatorInjection {
-  editCrystal: (equipment: CharacterEquipment) => void
-  editBasic: (equipment: CharacterEquipment) => void
-  editStat: (equipment: CharacterEquipment) => void
-  editEquipmentFieldEquipment: (field: EquipmentField) => void
-  appendEquipments: () => void
-  createCustomEquipment: () => void
+  editEquipment: (
+    equipment: CharacterEquipment,
+    mode?: CharacterEquipmentEditModes
+  ) => void
   selectComboSkill: (comboSkill: CharacterComboSkill) => void
+  setCurrentTab: (pathName: CharacterSimulatorRouteNames) => void
+  characterSimulatorOptions: {
+    characterStatsDetailPreviewVisible: boolean
+  }
 }
 
 export const CharacterSimulatorInjectionKey: InjectionKey<CharacterSimulatorInjection> =

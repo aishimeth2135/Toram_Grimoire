@@ -21,7 +21,7 @@ const baseColors = {
   cyan: tcColors.cyan,
   orange: tcColors.amber,
   emerald: tcColors.emerald,
-  red: tcColors.red,
+  red: tcColors.rose,
   gray: tcColors.gray,
   stone: tcColors.slate,
 }

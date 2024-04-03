@@ -1,19 +1,19 @@
 <template>
-  <div v-if="storageAvailable">
-    <div class="p-4">
-      <cy-default-tips icon="mdi:export" text-align="left">
+  <div v-if="storageAvailable" class="space-y-3">
+    <CharacterSaveRow icon="mdi:export">
+      <div>
         {{
           t('character-simulator.save-load-control.export-save-data-caption')
         }}
-      </cy-default-tips>
-      <div class="px-4 pb-2">
+      </div>
+      <div class="py-2">
         <cy-icon-text small icon="ic:outline-info" text-color="primary-50">
           {{
             t('character-simulator.save-load-control.export-save-data-tips[0]')
           }}
         </cy-icon-text>
       </div>
-      <div class="flex items-center pl-3">
+      <div class="flex items-center py-2">
         <cy-button-action
           icon="mdi:export"
           @click="toggle('modals/exportSaveData', true)"
@@ -26,14 +26,14 @@
           {{ t('global.import') }}
         </cy-button-action>
       </div>
-    </div>
-    <div class="border-t border-primary-30 p-4">
-      <cy-default-tips icon="bx-bx-message-square-dots" text-align="left">
+    </CharacterSaveRow>
+    <CharacterSaveRow icon="bx-bx-message-square-dots">
+      <div>
         {{
           t('character-simulator.save-load-control.manual-save-load-caption')
         }}
-      </cy-default-tips>
-      <div class="pl-3">
+      </div>
+      <div class="pb-2 pt-4">
         <cy-button-action
           icon="ic-round-save"
           @click="store.saveCharacterSimulator()"
@@ -51,14 +51,14 @@
           }}
         </cy-button-action>
       </div>
-    </div>
-    <div class="border-t border-primary-30 p-4">
-      <cy-default-tips icon="mdi-food-apple-outline" text-align="left">
-        <div>
-          {{
-            t('character-simulator.save-load-control.deleta-all-data-caption.0')
-          }}
-        </div>
+    </CharacterSaveRow>
+    <CharacterSaveRow icon="mdi-food-apple-outline">
+      <div>
+        {{
+          t('character-simulator.save-load-control.deleta-all-data-caption.0')
+        }}
+      </div>
+      <div class="py-2">
         <cy-icon-text
           icon="ic-outline-info"
           text-color="primary-50"
@@ -79,8 +79,8 @@
             t('character-simulator.save-load-control.deleta-all-data-caption.2')
           }}
         </cy-icon-text>
-      </cy-default-tips>
-      <div class="pl-3">
+      </div>
+      <div class="py-2">
         <cy-input-counter v-model:value="deleteCounter">
           <template #title>
             <cy-icon-text icon="ic-round-delete">
@@ -111,7 +111,7 @@
           </cy-button-action>
         </div>
       </div>
-    </div>
+    </CharacterSaveRow>
     <CharacterSaveExport
       :visible="modals.exportSaveData"
       @close="toggle('modals/exportSaveData', false)"
@@ -131,6 +131,7 @@ export default {
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CharacterSaveRow from './character-save-row.vue'
 
 import {
   CharacterSimulatorSaveData,

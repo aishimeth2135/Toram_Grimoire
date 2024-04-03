@@ -13,15 +13,17 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
+
+import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
-
-import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean
@@ -35,7 +37,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const showAllSkill = ref(false)
 const allSkills: Skill[] = []
@@ -44,7 +46,7 @@ Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => {
   stc.skillTrees.forEach(st => allSkills.push(...st.skills))
 })
 
-const { currentSkillBuild } = setupCharacterSkillBuildStore()
+const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 const validSkills = computed(() => {
   return allSkills
     .filter(
@@ -52,8 +54,8 @@ const validSkills = computed(() => {
         currentSkillBuild.value!.getSkillLevel(skill) > 0 &&
         !skill.types.includes(SkillTypes.Passive)
     )
-    .filter(skill => store.skillItemStates.has(skill))
-    .map(skill => store.skillItemStates.get(skill)!)
+    .filter(skill => characterStore.skillItemStates.has(skill))
+    .map(skill => characterStore.skillItemStates.get(skill)!)
     .filter(state => {
       const effectItem = state.effectItem.value
       if (!effectItem) {

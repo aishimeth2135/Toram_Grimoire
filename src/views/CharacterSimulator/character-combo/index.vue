@@ -33,19 +33,18 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CharacterCombo',
-}
-</script>
-
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+
+import { useCharacterStore } from '@/stores/views/character'
 
 import CharacterComboItem from './character-combo-item.vue'
 
-import { setupCharacterStore } from '../setup'
+defineOptions({
+  name: 'CharacterCombo',
+})
 
 const { t } = useI18n()
-const { currentCharacter } = setupCharacterStore()
+const { currentCharacter } = storeToRefs(useCharacterStore())
 </script>

@@ -8,11 +8,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .cy--hr {
-  border: 0;
+  @apply mx-2 my-6 border-0 bg-primary-20/50;
+
   height: 1px;
-  background-color: var(--app-primary-30);
-  margin: 1rem 0.4rem;
 }
 </style>

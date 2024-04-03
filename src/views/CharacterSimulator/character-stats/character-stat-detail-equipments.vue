@@ -13,10 +13,10 @@
             <cy-icon v-else-if="text.text === '/'" icon="mdi-slash-forward" />
             <span
               v-else-if="text.text === '(' || text.text === ')'"
-              :key="'separate-' + text.iid"
+              :key="'separate-' + text.id"
               class="mx-2 inline-block h-4 border-l border-solid border-primary-30"
             />
-            <span v-else :key="'text-' + text.iid">
+            <span v-else :key="'text-' + text.id">
               {{ text.text }}
             </span>
           </template>
@@ -27,11 +27,10 @@
 </template>
 
 <script lang="ts" setup>
+import { TextWithId } from '@/shared/utils/data/text'
+
 interface Props {
-  equipmentTexts: {
-    iid: number
-    text: string
-  }[]
+  equipmentTexts: TextWithId[]
 }
 
 defineProps<Props>()

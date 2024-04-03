@@ -370,9 +370,9 @@ export function setupDamageCalculation(
       ])
     })
 
-    const calculation: Ref<Calculation> = ref(
+    const calculation = ref(
       calculationBase.createCalculation('')
-    )
+    ) as Ref<Calculation>
 
     for (const ctner of calculation.value.containers.values()) {
       ctner.enabled = true

@@ -10,7 +10,7 @@
         <div :class="classes.bg1" />
         <div :class="classes.bg2" />
         <div class="relative z-1 pl-[1.625rem] pt-[1.125rem]">
-          <cy-icon :icon="data.icon" width="2.5rem" color="blue-20" />
+          <cy-icon :icon="data.icon" width="2.5rem" class="text-blue-20" />
         </div>
         <div :class="classes.title">
           {{ t('app.page-title.' + data.name) }}
@@ -30,7 +30,7 @@
         <div :class="classes.bg1" />
         <div :class="classes.bg2" />
         <div class="relative z-1 pl-3 pt-2">
-          <cy-icon :icon="data.icon" width="1.5rem" color="blue-20" />
+          <cy-icon :icon="data.icon" width="1.5rem" class="text-blue-20" />
         </div>
         <div :class="classes.title">
           {{ t('app.page-title.' + data.name) }}
@@ -44,7 +44,7 @@
 import { useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { RouteLinkData } from '@/shared/consts'
+import { RouteLinkData } from '@/shared/consts/route'
 import { useDevice } from '@/shared/setup/Device'
 
 interface Props {

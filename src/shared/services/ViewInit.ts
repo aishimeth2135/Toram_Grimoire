@@ -7,7 +7,7 @@ import { InitializeStatus } from '@/stores/app/initialize/enums'
 import { useLanguageStore } from '@/stores/app/language'
 import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import Grimoire from '../Grimoire'
+import { CommonLogger } from './Logger'
 
 interface ViewInitItem {
   id: DataStoreIds
@@ -68,13 +68,15 @@ export async function ViewInit(...inits: DataStoreIds[]) {
     return
   }
 
+  const logger = new CommonLogger('Init')
+
   const initItems = inits.map(id => {
     const loaded = datasStore.checkLoaded(id)
     const promise = loaded
       ? Promise.resolve(() => Promise.resolve())
       : datasStore[`init${id}`]()
     if (!loaded) {
-      Grimoire.Logger.log(`init/${id}`, 'Loading...')
+      logger.addTitle(id).info('Loading...')
     }
     const message = 'app.loading-message.' + id
     return { id, promise, message, loaded } as ViewInitItem
@@ -86,7 +88,7 @@ export async function ViewInit(...inits: DataStoreIds[]) {
   await Promise.all(
     finishedInitItems.map(async item => {
       await item.init()
-      Grimoire.Logger.log(`init/${item.id}`, 'Loading finished.')
+      logger.addTitle(item.id).info('Loading finished.')
       datasStore.loadFinished(item.id)
     })
   )

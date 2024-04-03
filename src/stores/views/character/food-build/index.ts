@@ -1,78 +1,54 @@
 import { defineStore } from 'pinia'
-import { computed, markRaw, readonly, ref } from 'vue'
+import { markRaw, ref } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { protectType } from '@/shared/utils/pinia'
 
 import { FoodsBase } from '@/lib/Character/Food'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
-import { FoodsBuild } from '../../../../lib/Character/FoodBuild'
+import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterFoodStore = defineStore('view-character-food', () => {
+  const {
+    builds,
+    currentBuildIndex,
+    currentBuild,
+    setCurrentBuild,
+    appendBuild: appendFoodBuild,
+    removeBuild: removeFoodBuild,
+    resetBuildStore: resetFoodBuildStore,
+  } = useCharacterBindingBuild<FoodsBuild>()
+
   const foodsBase: Ref<FoodsBase | null> = ref(null)
-  const foodBuilds: Ref<FoodsBuild[]> = ref([])
-  const currentFoodBuildIndex = ref(-1)
 
   const initFoodsBase = () => {
     foodsBase.value = markRaw(new FoodsBase())
   }
 
-  const currentFoodBuild = computed<FoodsBuild | null>(
-    () => foodBuilds.value[currentFoodBuildIndex.value] ?? null
-  )
+  const createFoodBuild = () => {
+    const newBuild = new FoodsBuild(
+      foodsBase.value!,
 
-  const setCurrentFoodBuild = (idx: number | FoodsBuild | null) => {
-    if (idx === null) {
-      currentFoodBuildIndex.value = -1
-      return
-    }
-    if (typeof idx !== 'number') {
-      idx = foodBuilds.value.indexOf(idx)
-    }
-    currentFoodBuildIndex.value = idx
-  }
-
-  const createFoodBuild = (
-    { name, foodBuild }: { name?: string; foodBuild?: FoodsBuild } = {},
-    updateIndex = true
-  ) => {
-    const build =
-      foodBuild ??
-      new FoodsBuild(
-        foodsBase.value!,
-        name ||
-          Grimoire.i18n.t('character-simulator.food-build.food-build') +
-            ' ' +
-            (foodBuilds.value.length + 1)
-      )
-    foodBuilds.value.push(build)
-    if (updateIndex) {
-      currentFoodBuildIndex.value = foodBuilds.value.length - 1
-    }
-    return build
-  }
-
-  const removeFoodBuild = (idx: number) => {
-    foodBuilds.value.splice(idx, 1)
-    if (currentFoodBuildIndex.value >= foodBuilds.value.length) {
-      currentFoodBuildIndex.value = foodBuilds.value.length - 1
-    }
-  }
-
-  const resetFoodBuilds = () => {
-    foodBuilds.value = []
+      Grimoire.i18n.t('character-simulator.food-build.food-build') +
+        ' ' +
+        (builds.value.length + 1)
+    )
+    return appendFoodBuild(newBuild, false)
   }
 
   return {
-    foodsBase: readonly(foodsBase),
-    foodBuilds,
-    currentFoodBuildIndex: readonly(currentFoodBuildIndex),
+    foodsBase: protectType(foodsBase),
+    foodBuilds: protectType(builds),
+    currentFoodBuildIndex: currentBuildIndex,
+    currentFoodBuild: protectType(currentBuild),
 
     initFoodsBase,
-    currentFoodBuild,
-    setCurrentFoodBuild,
+    setCurrentFoodBuild: setCurrentBuild,
     createFoodBuild,
+    appendFoodBuild,
     removeFoodBuild,
-    resetFoodBuilds,
+    resetFoodBuildStore,
   }
 })

@@ -233,28 +233,26 @@ class SkillBranchTextResult
       separate: commonParseItems.separate.handler,
       glossaryTag: commonParseItems.glossaryTag.handler,
     }
-    commonParseItems.value.handler = (values, context) => {
+    commonParseItems.value.handler = context => {
       return SkillBranchResult.from(
-        originalHandlers.value(values, context),
+        originalHandlers.value(context),
         branch,
         key
       )
     }
-    commonParseItems.separate.handler = (values, context) => {
-      return SkillBranchTextResultPart.from(
-        originalHandlers.separate(values, context)
-      )
+    commonParseItems.separate.handler = context => {
+      return SkillBranchTextResultPart.from(originalHandlers.separate(context))
     }
-    commonParseItems.glossaryTag.handler = (values, context) => {
+    commonParseItems.glossaryTag.handler = context => {
       return SkillBranchTextResultPart.from(
-        originalHandlers.glossaryTag(values, context)
+        originalHandlers.glossaryTag(context)
       )
     }
 
     const items = [
-      commonParseItems.separate,
-      commonParseItems.value,
       commonParseItems.glossaryTag,
+      commonParseItems.value,
+      commonParseItems.separate,
     ]
 
     const handleOtherParse = (propKey: string) => {
@@ -266,13 +264,12 @@ class SkillBranchTextResult
         const item: TextParseItem<SkillBranchTextResultPart> = {
           id: propKey,
           pattern: new RegExp(
-            `(${values.map(value => escapeRegExp(value)).join('|')})`,
-            'g'
+            `(${values.map(value => escapeRegExp(value)).join('|')})`
           ),
-          handler([value]) {
+          handler(context) {
             const newPart = new SkillBranchTextResultPart(
               TextResultContainerPartTypes.Other,
-              value
+              context.values[0]
             )
             newPart.subType = propKey
             return newPart

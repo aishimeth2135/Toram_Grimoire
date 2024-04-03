@@ -4,13 +4,13 @@ import CyButtonAction from '@/components/cyteria/cy-button/cy-button-action.vue'
 import CyButtonCheck from '@/components/cyteria/cy-button/cy-button-check.vue'
 import CyButtonCircle from '@/components/cyteria/cy-button/cy-button-circle.vue'
 import CyButtonDropdown from '@/components/cyteria/cy-button/cy-button-dropdown.vue'
+import CyButtonIconAction from '@/components/cyteria/cy-button/cy-button-icon-action.vue'
 import CyButtonIcon from '@/components/cyteria/cy-button/cy-button-icon.vue'
 import CyButtonPlain from '@/components/cyteria/cy-button/cy-button-plain.vue'
 import CyButtonRadioGroup from '@/components/cyteria/cy-button/cy-button-radio-group.vue'
 import CyButtonRadio from '@/components/cyteria/cy-button/cy-button-radio.vue'
 import CyButtonToggle from '@/components/cyteria/cy-button/cy-button-toggle.vue'
 import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
-import CyHoverFloat from '@/components/cyteria/cy-hover-float.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
 import CyIconText from '@/components/cyteria/cy-icon-text.vue'
 import CyIcon from '@/components/cyteria/cy-icon.vue'
@@ -30,7 +30,6 @@ import CyTabs from '@/components/cyteria/tabs/cy-tabs.vue'
 
 export default function (app: App<Element>) {
   app.component('cy-default-tips', CyDefaultTips)
-  app.component('cy-hover-float', CyHoverFloat)
   app.component('cy-hr', CyHr)
   app.component('cy-icon', CyIcon)
   app.component('cy-icon-text', CyIconText)
@@ -53,6 +52,7 @@ export default function (app: App<Element>) {
   app.component('cy-button-radio-group', CyButtonRadioGroup)
   app.component('cy-button-toggle', CyButtonToggle)
   app.component('cy-button-icon', CyButtonIcon)
+  app.component('cy-button-icon-action', CyButtonIconAction)
   app.component('cy-button-dropdown', CyButtonDropdown)
 
   app.component('cy-tabs', CyTabs)

@@ -1,11 +1,7 @@
-#app {
-  height: 100%;
-  width: 100%;
-}
-
 :root {
   --app-screen-max-width: 1376px;
   --app-side-menu-width: 240px;
+  --app-side-menu-minimize-width: 56px;
   --app-main-content-width: 768px;
   --app-main-content-padding-x: 32px;
   --app-favicon-color-main: #ffa4c5;
@@ -52,7 +48,7 @@ body {
   scroll-behavior: smooth;
   color: var(--app-stone-90);
   position: relative;
-  background-color: var(--app-body-bg-color);
+  /* background-color: var(--app-body-bg-color); */
   height: 100%;
   width: 100%;
 }

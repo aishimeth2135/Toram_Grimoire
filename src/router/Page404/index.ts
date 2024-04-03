@@ -10,7 +10,7 @@ export default {
   name: AppRouteNames.UnrecognizedPath,
   path: '/:pathMatch(.*)*',
   component: Page404View,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     ViewInit().then(next)
   },
   meta: {

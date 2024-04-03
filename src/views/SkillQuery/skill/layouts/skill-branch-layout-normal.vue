@@ -2,7 +2,7 @@
   <div class="skill-branch-layout-normal rounded bg-white">
     <div class="rounded border-1 border-l-2 border-red-30 bg-white pb-2">
       <div class="mb-3 flex items-center border-b border-red-20 py-1.5 pl-4">
-        <cy-icon :icon="nameIcon" color="red-30" />
+        <cy-icon :icon="nameIcon" class="text-red-30" />
         <div class="ml-2 text-red-40">{{ container.get('name') }}</div>
       </div>
       <div class="flex items-start">
@@ -10,7 +10,7 @@
           <div
             class="flex flex-shrink-0 rounded-full border border-red-30 bg-white p-1.5"
           >
-            <cy-icon :icon="mainIcon" color="red-30" />
+            <cy-icon :icon="mainIcon" class="text-red-30" />
           </div>
         </div>
         <div class="pl-4 pr-2 pt-1">
@@ -83,9 +83,8 @@
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
             <cy-icon
-              class="ml-2"
+              class="ml-2 text-blue-30"
               icon="material-symbols:60fps-select-rounded"
-              color="blue-30"
             />
           </div>
           <div class="flex flex-wrap items-center">

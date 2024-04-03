@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
+import { CommonLogger } from '@/shared/services/Logger'
 import { isNumberString } from '@/shared/utils/string'
 
 import { StatRestriction } from '@/lib/Character/Stat'
@@ -73,7 +74,7 @@ abstract class BagItem {
     })()
     const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
-      console.warn("[Character] Can't find stat-base with id: " + baseId)
+      CommonLogger.warn('Character', "Can't find stat-base with id: " + baseId)
       return
     }
     const stat = statBase.createStat(type, value)
@@ -117,6 +118,10 @@ class BagEquipment extends BagItem {
   setRecipe(): BagItemRecipe {
     this.recipe = {}
     return this.recipe
+  }
+
+  isWeapon() {
+    return this.category >= 0 && this.category < 200
   }
 }
 

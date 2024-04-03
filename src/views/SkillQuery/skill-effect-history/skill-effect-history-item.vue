@@ -72,7 +72,7 @@
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            color="primary-60"
+            class="text-primary-60"
           />
         </div>
         <div v-if="next && !next.isEmpty">
@@ -97,7 +97,7 @@
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            color="primary-60"
+            class="text-primary-60"
           />
         </div>
         <div>
@@ -123,7 +123,7 @@
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon
             icon="ic:round-keyboard-double-arrow-down"
-            color="primary-60"
+            class="text-primary-60"
           />
         </div>
         <div class="history-item-compare-empty">

@@ -34,7 +34,7 @@
         <div class="mr-3 flex flex-shrink-0">
           <cy-button-toggle
             v-model:selected="
-              store.getDamageCalculationSkillBranchState(
+              characterStore.getDamageCalculationSkillBranchState(
                 suffixContainer.branchItem.default
               ).enabled
             "
@@ -60,11 +60,10 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResult } from '@/stores/views/character/setup'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
-
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   result: SkillResult
@@ -72,12 +71,14 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  store.getDamageCalculationSkillBranchState(container.value.branchItem.default)
+  characterStore.getDamageCalculationSkillBranchState(
+    container.value.branchItem.default
+  )
 )
 </script>

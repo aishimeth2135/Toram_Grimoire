@@ -4,9 +4,9 @@ import type { ImageStore } from '.'
  * convert images to one ImageStore
  */
 export default function LoadSkillIcons(target: ImageStore) {
-  const modules = import.meta.globEager(
-    '/src/assets/images/skill-icons/**/*.png'
-  )
+  const modules = import.meta.glob('/src/assets/images/skill-icons/**/*.png', {
+    eager: true,
+  })
   Object.entries(modules as Record<string, any>).forEach(([path, context]) => {
     const match = path.match(/stc_(\d+)\/st_(\d+)\/si_(\d+)\.png$/)
     if (match) {

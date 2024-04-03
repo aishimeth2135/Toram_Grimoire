@@ -1,16 +1,25 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
+import { normalizeInteger } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
 import type { BagCrystal, BagEquipment } from '@/lib/Items/BagItem'
 
+import { CharacterBuildLabel } from '../Character/CharacterBuildLabel'
 import { StatRecorded } from '../Stat/StatRecorded'
 import {
   StatRestriction,
   StatRestrictionSaveData,
 } from '../Stat/StatRestriction'
 import { StatValueSourceTypes } from '../Stat/enums'
-import { EquipmentKinds, EquipmentTypes } from './enums'
+import {
+  BodyArmorTypeList,
+  EquipmentKinds,
+  EquipmentTypes,
+  MainWeaponTypeList,
+  SubArmorTypeList,
+  SubWeaponTypeList,
+} from './enums'
 
 type EquipmentOrigin = BagEquipment | null
 
@@ -26,10 +35,14 @@ interface EquipmentSaveData {
   stability?: number
   refining?: number
   crystals?: string[]
+  labels?: number[]
 }
 
-let characterEquipmentAutoIncreasement = 0
 abstract class CharacterEquipment {
+  private static _autoIncreasement = 0
+
+  abstract type: EquipmentTypes
+
   private _name: string
 
   loadedId: string | null
@@ -41,9 +54,10 @@ abstract class CharacterEquipment {
   crystals: EquipmentCrystal[]
   refining: number
   stability: number
-  customTypeList?: EquipmentTypes[]
 
-  abstract type: EquipmentTypes
+  labels: CharacterBuildLabel[]
+
+  readonly customTypeList?: EquipmentTypes[]
 
   constructor(
     origin: EquipmentOrigin = null,
@@ -51,8 +65,8 @@ abstract class CharacterEquipment {
     stats: StatRestriction[] = []
   ) {
     this.loadedId = null
-    this.instanceId = characterEquipmentAutoIncreasement
-    characterEquipmentAutoIncreasement += 1
+    this.instanceId = CharacterEquipment._autoIncreasement
+    CharacterEquipment._autoIncreasement += 1
 
     this.origin = origin
     this.stats = stats.map(stat => stat.clone())
@@ -62,6 +76,8 @@ abstract class CharacterEquipment {
     this.crystals = []
     this.refining = 0
     this.stability = 0
+
+    this.labels = []
   }
 
   // TODO: remove getter to support lagacy
@@ -110,15 +126,8 @@ abstract class CharacterEquipment {
     )
   }
 
-  get categoryText() {
-    if (
-      this.type === EquipmentTypes.Additional ||
-      this.type === EquipmentTypes.Special ||
-      this.type === EquipmentTypes.Avatar
-    ) {
-      return Grimoire.i18n.t('common.Equipment.field.' + this.type)
-    }
-    return Grimoire.i18n.t('common.Equipment.category.' + this.type)
+  get typeText() {
+    return CharacterEquipment.getTypeText(this.type)
   }
   get categoryIcon(): string {
     if (this instanceof BodyArmor) {
@@ -143,10 +152,19 @@ abstract class CharacterEquipment {
     return CharacterEquipment.getImagePath(this.type, fieldId)
   }
 
+  get refiningText(): string {
+    if (this.refining < 10) {
+      return this.refining.toString()
+    }
+    return ['E', 'D', 'C', 'B', 'A', 'S'][this.refining - 10]
+  }
+
   static getImagePath(type: EquipmentTypes, fieldId: number = -1): string {
-    return Images.equipmentIcons.get(
-      type + (fieldId === -1 ? '' : `-${fieldId}`)
-    )
+    return Images.equipmentIcons.get(type + (fieldId <= 0 ? '' : `-${fieldId}`))
+  }
+
+  static getTypeText(type: EquipmentTypes) {
+    return Grimoire.i18n.t('common.Equipment.category.' + type)
   }
 
   getAllStats(
@@ -203,6 +221,14 @@ abstract class CharacterEquipment {
   findStat(baseId: string, type: string) {
     return this.stats.find(stat => stat.baseId === baseId && stat.type === type)
   }
+
+  removeStat(stat: StatRestriction) {
+    const idx = this.stats.indexOf(stat)
+    if (idx > -1) {
+      this.stats.splice(idx, 1)
+    }
+  }
+
   appendCrystal(origin: BagCrystal) {
     if (this.hasCrystal) {
       const crystals = this.crystals
@@ -211,6 +237,7 @@ abstract class CharacterEquipment {
       }
     }
   }
+
   removeCrystal(crystal: EquipmentCrystal) {
     if (this.hasCrystal) {
       const crystals = this.crystals
@@ -297,10 +324,10 @@ abstract class CharacterEquipment {
     data.instance = instance
     data.type = this.type
 
-    // == [ stats ] ==================================================
+    // [stats]
     data.stats = this.stats.map(stat => stat.save())
 
-    // == [ other ] ===================================================
+    // [other]
     data.name = this.name
     if (this.hasStability) {
       data.stability = this.stability
@@ -314,8 +341,13 @@ abstract class CharacterEquipment {
       )
     }
 
-    // == [ id ] ======================================================
+    // [id]
     data.id = this.id
+
+    // [label]
+    if (this.labels.length !== 0) {
+      data.labels = this.labels.map(label => label.id)
+    }
 
     return data
   }
@@ -331,7 +363,8 @@ abstract class CharacterEquipment {
 
   static loadEquipment(
     loadCategory: string,
-    data: EquipmentSaveData
+    data: EquipmentSaveData,
+    buildLabels: CharacterBuildLabel[]
   ): CharacterEquipment | null {
     try {
       const {
@@ -344,6 +377,7 @@ abstract class CharacterEquipment {
         atk,
         def,
         crystals,
+        labels,
       } = data
       const stats = data.stats
         .map(stat => StatRestriction.load(stat))
@@ -410,6 +444,16 @@ abstract class CharacterEquipment {
 
       eq.loadedId = `${loadCategory}-${id}`
 
+      if (labels) {
+        eq.labels = labels
+          .map(labelId =>
+            buildLabels.find(buildLabel =>
+              buildLabel.matchLoadedId(loadCategory, labelId)
+            )
+          )
+          .filter(item => item) as CharacterBuildLabel[]
+      }
+
       return eq
     } catch (err) {
       console.warn('[CharacterEquipment.load] Unexpected error.')
@@ -418,36 +462,30 @@ abstract class CharacterEquipment {
     }
   }
 
-  static fromOriginEquipment(item: BagEquipment): CharacterEquipment {
-    /* [
-      0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
-      5'魔導具', 6'拳套', 7'旋風槍', 8'拔刀劍',
-      100'箭矢', 101'小刀', 102'忍術卷軸',
-      200'盾牌',
-      300'身體裝備', 400'追加裝備', 500'特殊裝備',
-    ] */
-    const pre_args = [
-      item,
-      item.name as string,
-      item.stats.map(stat => stat.clone()),
-    ] as const
+  static convertOriginalCategory(category: number) {
+    /*
+      0: 單手劍, 1: 雙手劍, 2: 弓, 3: 弩, 4: 法杖,
+      5: 魔導具, 6: 拳套, 7: 旋風槍, 8: 拔刀劍,
+      100: 箭矢, 101: 小刀, 102: 忍術卷軸,
+      200: 盾牌,
+      300: 身體裝備', 400: 追加裝備', 500: 特殊裝備,
+    */
 
-    if (item.category === -1) {
-      return new Avatar(...pre_args)
+    if (category === -1) {
+      return EquipmentTypes.Avatar
     }
 
-    const stability = item.baseStability
-    if (item.category === 300) {
-      return new BodyArmor(...pre_args, item.baseValue)
+    if (category === 300) {
+      return EquipmentTypes.BodyNormal
     }
-    if (item.category === 400) {
-      return new AdditionalGear(...pre_args, item.baseValue)
+    if (category === 400) {
+      return EquipmentTypes.Additional
     }
-    if (item.category === 500) {
-      return new SpecialGear(...pre_args, item.baseValue)
+    if (category === 500) {
+      return EquipmentTypes.Special
     }
-    if (item.category < 100) {
-      const type = [
+    if (category < 100) {
+      return [
         EquipmentTypes.OneHandSword,
         EquipmentTypes.TwoHandSword,
         EquipmentTypes.Bow,
@@ -457,23 +495,61 @@ abstract class CharacterEquipment {
         EquipmentTypes.Knuckle,
         EquipmentTypes.Halberd,
         EquipmentTypes.Katana,
-      ][item.category]
-
-      return new MainWeapon(...pre_args, type, item.baseValue, stability)
+      ][category]
     }
-    if (item.category < 200) {
-      const type = [
+    if (category < 200) {
+      return [
         EquipmentTypes.Arrow,
         EquipmentTypes.Dagger,
         EquipmentTypes.NinjutsuScroll,
-      ][item.category - 100]
-      return new SubWeapon(...pre_args, type, item.baseValue, stability)
+      ][category - 100]
     }
-    if (item.category < 300) {
-      return new SubArmor(...pre_args, EquipmentTypes.Shield, item.baseValue)
+    if (category < 300) {
+      return EquipmentTypes.Shield
     }
 
-    return new Avatar(...pre_args)
+    return EquipmentTypes.Avatar
+  }
+
+  static fromOriginEquipment(item: BagEquipment): CharacterEquipment {
+    const origin = item
+    const { name, baseValue, baseStability: stability } = item
+    const stats = item.stats.map(stat => stat.clone())
+
+    const type = CharacterEquipment.convertOriginalCategory(item.category)
+
+    if (MainWeaponTypeList.includes(type)) {
+      return new MainWeapon(origin, name, stats, type, baseValue, stability)
+    } else if (SubWeaponTypeList.includes(type)) {
+      return new SubWeapon(origin, name, stats, type, baseValue, stability)
+    } else if (SubArmorTypeList.includes(type)) {
+      return new SubArmor(origin, name, stats, type, baseValue)
+    } else if (BodyArmorTypeList.includes(type)) {
+      return new BodyArmor(origin, name, stats, baseValue)
+    } else if (type === EquipmentTypes.Additional) {
+      return new AdditionalGear(origin, name, stats, baseValue)
+    } else if (type === EquipmentTypes.Special) {
+      return new SpecialGear(origin, name, stats, baseValue)
+    }
+
+    return new Avatar(origin, name, stats)
+  }
+
+  static createEmpty(name: string, type: EquipmentTypes): CharacterEquipment {
+    if (MainWeaponTypeList.includes(type)) {
+      return new MainWeapon(null, name, [], type)
+    } else if (SubWeaponTypeList.includes(type)) {
+      return new SubWeapon(null, name, [], type)
+    } else if (SubArmorTypeList.includes(type)) {
+      return new SubArmor(null, name, [], type)
+    } else if (BodyArmorTypeList.includes(type)) {
+      return new BodyArmor(null, name, [])
+    } else if (type === EquipmentTypes.Additional) {
+      return new AdditionalGear(null, name, [])
+    } else if (type === EquipmentTypes.Special) {
+      return new SpecialGear(null, name, [])
+    }
+    return new Avatar(null, name, [])
   }
 }
 
@@ -489,11 +565,10 @@ abstract class Weapon extends CharacterEquipment {
   ) {
     super(origin, name, stats)
 
-    atk = typeof atk === 'string' ? parseInt(atk, 10) : atk
-
-    this.basicValue = atk
+    this.basicValue = normalizeInteger(atk)
     this.stability = stability
   }
+
   override get hasStability() {
     return true
   }
@@ -563,9 +638,7 @@ abstract class Armor extends CharacterEquipment {
   ) {
     super(origin, name, stats)
 
-    def = typeof def === 'string' ? parseInt(def, 10) : def
-
-    this.basicValue = def
+    this.basicValue = normalizeInteger(def)
   }
 }
 
@@ -585,6 +658,7 @@ class SubArmor extends Armor {
     this.type = type
     this.refining = 0
   }
+
   override get hasRefining() {
     return true
   }
@@ -596,6 +670,8 @@ class BodyArmor extends Armor {
   override customTypeList: EquipmentTypes[]
 
   type: EquipmentTypes
+
+  static _customTypeList: EquipmentTypes[] = BodyArmorTypeList
 
   constructor(
     origin: EquipmentOrigin,
@@ -609,21 +685,20 @@ class BodyArmor extends Armor {
     this.refining = 0
     this.crystals = []
 
-    this.customTypeList = [
-      EquipmentTypes.BodyNormal,
-      EquipmentTypes.BodyDodge,
-      EquipmentTypes.BodyDefense,
-    ]
+    this.customTypeList = BodyArmor._customTypeList
   }
   setType(type: EquipmentTypes) {
     this.type = type
   }
+
   override get hasRefining() {
     return true
   }
+
   override get hasCrystal() {
     return true
   }
+
   override get creatable() {
     return true
   }
@@ -647,9 +722,11 @@ class AdditionalGear extends Armor {
     this.crystals = []
     this.type = EquipmentTypes.Additional
   }
+
   override get hasRefining() {
     return true
   }
+
   override get hasCrystal() {
     return true
   }
@@ -671,6 +748,7 @@ class SpecialGear extends Armor {
     this.crystals = []
     this.type = EquipmentTypes.Special
   }
+
   override get hasCrystal() {
     return true
   }

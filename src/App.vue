@@ -1,11 +1,23 @@
 <template>
   <div
+    id="app-root"
     ref="appElement"
     class="h-full overflow-y-auto"
-    :class="{ 'overscroll-none': mainStore.routerGuiding }"
+    :class="{
+      'overscroll-none': mainStore.routerGuiding,
+      'page-wide': layout.wide && !device.isMobile,
+      'page-has-aside': device.hasAside,
+    }"
   >
     <template v-if="languageStore.i18nMessageLoaded">
       <AppSideMenu v-if="currentRoute.name !== AppRouteNames.Home" />
+      <div id="app-top" />
+      <div
+        id="app-top-sticky"
+        ref="appSticky"
+        class="app-layout-container-root"
+        :style="`top: ${sideMenuButtonVisible ? 0 : -1 * appStickyHeight}px`"
+      />
       <router-view />
       <AppSetting />
       <AppInitialize />
@@ -28,7 +40,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Ref, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -47,12 +59,18 @@ import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
-export default {
-  name: 'App',
-}
-</script>
+import { useDevice } from './shared/setup/Device'
+import { useResizeObserver } from './shared/setup/ElementObserver'
+import { usePageLayout } from './shared/setup/Layout'
 
-<script lang="ts" setup>
+defineOptions({
+  name: 'App',
+})
+
+const { layout } = usePageLayout()
+
+const { device } = useDevice()
+
 const sideMenuButtonVisible = ref(false)
 const appElement: Ref<HTMLElement | null> = ref(null)
 
@@ -75,7 +93,7 @@ const startDetectScroll = (el: HTMLElement) => {
     lastHeight = height
   }
   handler()
-  el.addEventListener('scroll', debounce(handler, 200), { passive: true })
+  el.addEventListener('scroll', debounce(handler, 100), { passive: true })
 }
 
 watch(appElement, value => {
@@ -84,10 +102,21 @@ watch(appElement, value => {
   }
 })
 
+const appSticky: Ref<HTMLElement | null> = ref(null)
+const appStickyHeight = ref(0)
+useResizeObserver(appSticky, () => {
+  if (appSticky.value) {
+    appStickyHeight.value = appSticky.value?.clientHeight
+  }
+})
+
 onMounted(() => {
   const el = document.getElementById('app--error')
   if (el) {
     el.parentElement!.removeChild(el)
+  }
+  if (appSticky.value) {
+    appStickyHeight.value = appSticky.value?.clientHeight
   }
 })
 

@@ -42,15 +42,8 @@ export default function createAppRouter() {
   const navStore = useNavStore()
   const leftMenuStore = useLeftMenuStore()
 
-  router.beforeEach((to, from) => {
+  router.beforeEach(() => {
     mainStore.startRouting()
-
-    if (to.name === 'SkillSimulator') {
-      if (from.name !== 'CharacterSimulator') {
-        mainStore.setRedirectPathName('SkillSimulator')
-        return { name: 'CharacterSimulator' }
-      }
-    }
   })
 
   router.afterEach(to => {

@@ -19,13 +19,17 @@ import { defineComponent } from 'vue'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
+import {
+  ButtonBasePropList,
+  ButtonIconPropList,
+  getButtonBaseBinds,
+} from './setup'
 
 export default defineComponent({
   emits: ['click', 'update:selected'],
   props: {
-    ...ButtonBaseProps,
-    ...ButtonIconProps,
+    ...ButtonBasePropList,
+    ...ButtonIconPropList,
     widthFull: {
       type: Boolean,
       default: false,

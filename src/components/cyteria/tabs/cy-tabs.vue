@@ -1,40 +1,84 @@
-<script lang="ts" setup>
-import { computed } from 'vue'
+<script lang="ts" setup generic="T extends any">
+import { Ref, StyleValue, computed, shallowRef } from 'vue'
 
-import { useTabsContext } from './setup'
+import { useResizeObserver } from '@/shared/setup/ElementObserver'
+import { nextFrame } from '@/shared/utils/dom'
+
+import { useTabsContext, useTabsSlider } from './setup'
 
 interface Props {
-  modelValue: number
   direction?: 'horizontal' | 'vertical'
-}
-interface Emits {
-  (evt: 'update:model-value', value: number): void
+  plain?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   direction: 'horizontal',
-})
-const emit = defineEmits<Emits>()
-
-const tabIndex = computed<number>({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:model-value', value)
-  },
+  plain: false,
 })
 
+const currentValue = defineModel<T>({ required: true })
+
+const sliderStyle: Ref<StyleValue | undefined> = shallowRef(undefined)
+const tabsEl: Ref<HTMLElement | null> = shallowRef(null)
 const isHorizontal = computed(() => props.direction === 'horizontal')
 
-const { idBind } = useTabsContext({ isHorizontal, tabIndex })
+const tabsContext = { tabsEl, isHorizontal, currentValue, sliderStyle }
+
+const { idBind } = useTabsContext(tabsContext)
+
+const { autoUpdateSliderStyle } = useTabsSlider()
+
+const { forceUpdateSliderStyle } = autoUpdateSliderStyle(tabsContext)
+useResizeObserver(tabsEl, () => {
+  nextFrame(forceUpdateSliderStyle)
+})
 </script>
 
 <template>
   <div
+    ref="tabsEl"
     v-bind:[idBind.name]="idBind.value"
-    class="cy-tabs flex flex-wrap items-center border-b-1 border-primary-10"
+    class="cy-tabs"
+    :class="[
+      direction === 'horizontal' ? 'cy-tabs-h' : 'cy-tabs-v',
+      { 'not-plain': !plain },
+    ]"
   >
     <slot />
+    <div
+      class="absolute rounded-full bg-primary-40 ease-linear"
+      :style="sliderStyle"
+    />
   </div>
 </template>
+
+<style lang="postcss">
+.cy-tabs {
+  @apply relative flex flex-wrap items-start;
+
+  &.cy-tabs-h.not-plain {
+    @apply border-b-1 border-primary-10;
+
+    & > .cy-tab {
+      @apply text-center;
+      min-width: 6rem;
+    }
+  }
+
+  &.cy-tabs-v {
+    @apply flex-col items-start;
+
+    &.not-plain {
+      @apply border-r-1 border-primary-10;
+
+      & > .cy-tab {
+        @apply w-full text-left;
+      }
+    }
+  }
+
+  &.not-plain > .cy-tab {
+    @apply mt-1 rounded px-6 py-2 hover:bg-primary-10/50;
+  }
+}
+</style>

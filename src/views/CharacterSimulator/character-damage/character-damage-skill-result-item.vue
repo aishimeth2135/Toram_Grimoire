@@ -22,7 +22,7 @@
         />
       </div>
       <div
-        v-if="valid && store.calculationOptions.armorBreakDisplay"
+        v-if="valid && characterStore.calculationOptions.armorBreakDisplay"
         class="ml-3 flex items-baseline border-l border-primary-30 pl-2.5"
       >
         <div class="mr-2 text-sm text-blue-30">
@@ -56,7 +56,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            store.getDamageCalculationSkillBranchState(
+            characterStore.getDamageCalculationSkillBranchState(
               extraContainer.branchItem.default
             ).enabled
           "
@@ -114,6 +114,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResult } from '@/stores/views/character/setup'
 
 import ToggleService from '@/shared/setup/ToggleService'
@@ -126,7 +127,6 @@ import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
-import { setupCharacterStore } from '../setup'
 import {
   setupSkilResultExtraStats,
   setupStoreDamageCalculationExpectedResult,
@@ -138,7 +138,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 const { contents, toggle } = ToggleService({
   contents: ['detail'] as const,

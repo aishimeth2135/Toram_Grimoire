@@ -28,11 +28,10 @@
                 :icon="statusIcon(item.status)"
                 :class="{
                   'loading-circle': item.status === InitItemStatus.Loading,
+                  'text-orange-60': item.status === InitItemStatus.Error,
+                  'text-blue-60': item.status !== InitItemStatus.Error,
                 }"
-                :color="
-                  item.status === InitItemStatus.Error ? 'orange-60' : 'blue-60'
-                "
-                width="1.375rem"
+                width="1.25rem"
               />
               <span class="ml-4 w-full text-primary-70">
                 {{ t(item.message) }}
@@ -49,7 +48,7 @@
                 :class="{
                   'loading-circle': status === InitializeStatus.LocaleLoading,
                 }"
-                color="blue-60"
+                class="text-blue-60"
               />
             </div>
           </template>

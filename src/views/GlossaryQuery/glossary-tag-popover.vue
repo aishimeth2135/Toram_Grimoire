@@ -3,7 +3,7 @@
     v-if="currentTag"
     tag="span"
     class="inline-block px-0.5"
-    show-triggers="click hover"
+    triggers="click hover"
   >
     <span class="cursor-pointer text-orange-60 underline">
       {{ displayName ?? name }}

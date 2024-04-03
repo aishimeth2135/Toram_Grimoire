@@ -4,7 +4,8 @@ import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
 
 import { SkillBuildState } from '../../../stores/views/character/skill'
-import { CharacterBuildBindOnCharacter } from '../Character'
+import { CharacterBindingBuild } from '../Character'
+import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface SkillState {
   level: number
@@ -23,23 +24,42 @@ interface SkillBuildSaveData {
   selectedSkillTrees: string[]
 }
 
-let _skillBuildAutoIncreasement = 0
-export class SkillBuild implements CharacterBuildBindOnCharacter {
+interface EffectedSkillResult {
+  skill: Skill
+  newLevel: number
+}
+
+function skillTreeIdToInteger(skillTreeId: string): number {
+  const [n1, n2] = skillTreeId.split('-').map(part => parseInt(part, 10))
+  return n1 * 100 + n2
+}
+
+export class SkillBuild implements CharacterBindingBuild {
+  private static _idIncreasement = 0
+
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
 
   loadedId: string | null
-  instanceId: number
+  id: number
   name: string
 
   constructor(name: string = '') {
     this.loadedId = null
-    this.instanceId = _skillBuildAutoIncreasement
-    _skillBuildAutoIncreasement += 1
+    this.id = SkillBuild._idIncreasement
+    SkillBuild._idIncreasement += 1
 
     this.name = name
     this._skillStatesMap = new Map()
     this._skillTreesSet = new Set()
+  }
+
+  hasSkill(skill: Skill): boolean {
+    return this._skillStatesMap.has(skill)
+  }
+
+  hasSkillTree(skillTree: SkillTree): boolean {
+    return this._skillTreesSet.has(skillTree)
   }
 
   getSkillState(skill: Skill): SkillState {
@@ -67,12 +87,24 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     return Math.max(state.level, state.starGemLevel)
   }
 
-  addSkillLevel(skill: Skill, level: number) {
+  increaseSkillLevel(skill: Skill, level: number) {
     const state = this.getSkillState(skill)
-    let levelSet = state.level + level
-    levelSet = Math.min(10, Math.max(levelSet, 0))
+    this.setSkillLevel(skill, state.level + level)
+  }
+
+  setSkillLevel(
+    skill: Skill,
+    level: number,
+    effectedSkills: EffectedSkillResult[] | null = null
+  ) {
+    const state = this.getSkillState(skill)
+    const levelSet = Math.min(10, Math.max(level, 0))
+    effectedSkills =
+      effectedSkills ?? this.checkLevelEffectedSkills(skill, levelSet)
+    effectedSkills.forEach(
+      data => (this.getSkillState(data.skill).level = data.newLevel)
+    )
     state.level = levelSet
-    this.regressSkillTree(skill, levelSet)
   }
 
   addStarGemLevel(skill: Skill, level: number) {
@@ -82,45 +114,146 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     state.starGemLevel = levelSet
   }
 
-  regressSkillTree(start: Skill, level: number): void {
-    if (level < 5) {
-      const stk: Skill[] = [start]
+  // regressSkillTree(start: Skill): void {
+  //   const skillState = this.getSkillState(start)
+  //   const level = skillState.level
+
+  //   if (level < 5) {
+  //     const stk: Skill[] = [start]
+  //     while (stk.length !== 0) {
+  //       const current = stk.pop()!
+  //       current.parent.skills.forEach(skill => {
+  //         if (skill.previous === current.id) {
+  //           stk.push(skill)
+  //           this.getSkillState(skill).level = 0
+  //         }
+  //       })
+  //     }
+  //   }
+  //   if (level > 0) {
+  //     let current = start
+  //     while (current.previous !== -1) {
+  //       const pre = current.parent.skills.find(sk => sk.id === current.previous)
+  //       if (!pre) {
+  //         break
+  //       }
+  //       current = pre
+  //       const state = this.getSkillState(current)
+  //       if (state.level < 5) {
+  //         state.level = 5
+  //       }
+  //     }
+  //   }
+  // }
+
+  checkLevelEffectedSkills(
+    target: Skill,
+    levelSet: number
+  ): EffectedSkillResult[] {
+    const frontSkills = new Set<Skill>()
+    const behindSkills = new Set<Skill>()
+
+    if (levelSet < 5) {
+      const stk: Skill[] = [target]
       while (stk.length !== 0) {
         const current = stk.pop()!
         current.parent.skills.forEach(skill => {
           if (skill.previous === current.id) {
             stk.push(skill)
-            this.getSkillState(skill).level = 0
+            const state = this.getSkillState(skill)
+            if (state.level > 0) {
+              behindSkills.add(skill)
+            }
           }
         })
       }
     }
-    if (level > 0) {
-      let current = start
+    if (levelSet > 0) {
+      let current = target
       while (current.previous !== -1) {
-        const pre = current.parent.skills.find(sk => sk.id === current.previous)
+        const pre = current.parent.skills.find(
+          _skill => _skill.id === current.previous
+        )
         if (!pre) {
           break
         }
         current = pre
         const state = this.getSkillState(current)
         if (state.level < 5) {
-          state.level = 5
+          frontSkills.add(current)
         }
       }
+    }
+
+    const results: EffectedSkillResult[] = []
+
+    frontSkills.forEach(skill => {
+      results.push({
+        skill,
+        newLevel: 5,
+      })
+    })
+    behindSkills.forEach(skill => {
+      results.push({
+        skill,
+        newLevel: 0,
+      })
+    })
+
+    return results
+  }
+
+  getSkillTreePointSum(skillTree: SkillTree) {
+    if (!this._skillTreesSet.has(skillTree)) {
+      return {
+        level: 0,
+        starGemLevel: 0,
+      }
+    }
+
+    let level = 0
+    let starGemLevel = 0
+
+    skillTree.skills.forEach(skill => {
+      if (this.hasSkill(skill) && !skill.parent.attrs.simulatorFlag) {
+        const state = this.getSkillState(skill)
+        level += state.level
+        starGemLevel += Math.max(state.starGemLevel - state.level, 0)
+      }
+    })
+
+    return {
+      level,
+      starGemLevel,
     }
   }
 
   get selectedSkillTrees(): SkillTree[] {
-    return [...this._skillTreesSet.keys()].sort((item1, item2) =>
-      item1.skillTreeId.localeCompare(item2.skillTreeId)
+    return [...this._skillTreesSet.keys()].sort(
+      (item1, item2) =>
+        skillTreeIdToInteger(item1.skillTreeId) -
+        skillTreeIdToInteger(item2.skillTreeId)
     )
   }
 
-  get validSkills(): Skill[] {
-    return [...this._skillStatesMap.entries()]
-      .filter(([, state]) => state.level !== 0 && state.enabled)
-      .map(([skill]) => skill)
+  // get validSkills(): Skill[] {
+  //   return [...this._skillStatesMap.entries()]
+  //     .filter(([, state]) => (state.level !== 0 || state.starGemLevel !== 0) && state.enabled)
+  //     .map(([skill]) => skill)
+  // }
+
+  get allSkillLevels(): {
+    enabled: boolean
+    skill: Skill
+    skillLevel: number
+  }[] {
+    return [...this._skillStatesMap.entries()].map(([skill, state]) => {
+      return {
+        enabled: state.enabled,
+        skill,
+        skillLevel: Math.max(state.starGemLevel, state.level),
+      }
+    })
   }
 
   get allSkills(): Skill[] {
@@ -170,7 +303,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
       skillTree => skillTree.skillTreeId
     )
     return {
-      id: this.instanceId,
+      id: this.id,
       name: this.name,
       skillStates,
       selectedSkillTrees,
@@ -218,17 +351,13 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
       }
     })
     if (typeof data.id === 'number' && loadCategory !== null) {
-      newBuild.loadedId = `${loadCategory}-${data.id}`
+      newBuild.loadedId = getLoadedId(loadCategory, data.id)
     }
     return newBuild
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
-    return (
-      this.loadedId !== null &&
-      id !== null &&
-      `${loadCategory}-${id}` === this.loadedId
-    )
+    return checkLoadedId(this, loadCategory, id)
   }
 
   static loadFromLagacy(buildState: SkillBuildState): SkillBuild {

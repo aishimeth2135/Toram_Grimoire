@@ -1,4 +1,10 @@
-import { ComputedRef, Ref, computed, shallowReadonly } from 'vue'
+import {
+  ComputedRef,
+  Ref,
+  ShallowReactive,
+  computed,
+  shallowReadonly,
+} from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -72,7 +78,7 @@ export function setupCharacterSkillItems(
     stc.skillTrees.forEach(st => allSkills.push(...st.skills))
   )
 
-  const skillItemStates: Map<Skill, SkillItemState> = new Map()
+  const skillItemStates: Map<Skill, ShallowReactive<SkillItemState>> = new Map()
 
   const getSkillLevel = useGetSkillLevel(skillItemStates, skillBuild)
 

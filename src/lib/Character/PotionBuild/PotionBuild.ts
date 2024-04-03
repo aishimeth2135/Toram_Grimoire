@@ -2,7 +2,8 @@ import Grimoire from '@/shared/Grimoire'
 
 import { BagPotion, BagPotionsCategory } from '@/lib/Items/BagItem'
 
-import { CharacterBuildBindOnCharacter } from '../Character'
+import { CharacterBindingBuild } from '../Character'
+import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface PotionBuildSaveData {
   id: number
@@ -14,10 +15,10 @@ interface PotionItemSaveData {
   enabled?: boolean
 }
 
-class PotionBuild implements CharacterBuildBindOnCharacter {
+class PotionBuild implements CharacterBindingBuild {
   private static _autoIncrement = 0
 
-  readonly instanceId: number
+  readonly id: number
   loadedId: string | null
   name: string
 
@@ -27,7 +28,7 @@ class PotionBuild implements CharacterBuildBindOnCharacter {
   readonly categorys: PotionItemsCategory[]
 
   constructor(name: string) {
-    this.instanceId = PotionBuild._autoIncrement
+    this.id = PotionBuild._autoIncrement
     PotionBuild._autoIncrement += 1
     this.loadedId = null
 
@@ -80,7 +81,7 @@ class PotionBuild implements CharacterBuildBindOnCharacter {
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
-    return this.loadedId !== null && `${loadCategory}-${id}` === this.loadedId
+    return checkLoadedId(this, loadCategory, id)
   }
 
   clone(): PotionBuild {
@@ -92,7 +93,7 @@ class PotionBuild implements CharacterBuildBindOnCharacter {
   save(): PotionBuildSaveData {
     const potions = this.items.map(potion => potion.save())
     return {
-      id: this.instanceId,
+      id: this.id,
       name: this.name,
       potions,
     }
@@ -100,7 +101,7 @@ class PotionBuild implements CharacterBuildBindOnCharacter {
 
   static load(loadedCategory: string, data: PotionBuildSaveData): PotionBuild {
     const newBuild = new PotionBuild(data.name)
-    newBuild.loadedId = `${loadedCategory}-${data.id}`
+    newBuild.loadedId = getLoadedId(loadedCategory, data.id)
     data.potions.forEach(potionData => {
       const potion = Grimoire.Items.potionsRoot.findPotionById(potionData.id)
       if (potion) {

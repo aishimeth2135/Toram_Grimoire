@@ -41,6 +41,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
@@ -50,24 +51,23 @@ import CardRow from '@/components/card/card-row.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 import CharacterDamageSkillResultItem from './character-damage-skill-result-item.vue'
 
-import { setupCharacterStore } from '../setup'
-
 interface Props {
   skillResultsState: SkillResultsState
 }
 
 const props = defineProps<Props>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const enabled = computed<boolean>({
   get() {
-    return store.getDamageCalculationSkillState(props.skillResultsState.skill)
-      .enabled
+    return characterStore.getDamageCalculationSkillState(
+      props.skillResultsState.skill
+    ).enabled
   },
   set(value) {
-    store.getDamageCalculationSkillState(
+    characterStore.getDamageCalculationSkillState(
       props.skillResultsState.skill
     ).enabled = value
   },

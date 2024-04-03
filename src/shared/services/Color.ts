@@ -41,3 +41,16 @@ export default class Color {
     return Color.lighten(this.value)
   }
 }
+
+export const enum AppColors {
+  Primary = 'primary',
+  Fuchsia = 'fuchsia',
+  Violet = 'violet',
+  Blue = 'blue',
+  Cyan = 'cyan',
+  Orange = 'orange',
+  Emerald = 'emerald',
+  Red = 'red',
+  Gray = 'gray',
+  Stone = 'stone',
+}

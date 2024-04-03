@@ -121,7 +121,7 @@ function computeDrawSkillTreeData(
 
   const codes = drawTreeCode
     .toUpperCase()
-    .replace(/([A-Z])(\d+)/g, (match, word, count) =>
+    .replace(/([A-Z])(\d+)/g, (_match, word, count) =>
       Array(parseInt(count, 10)).fill(word).join(' ')
     )
     .split(/[\s\n]+/)
@@ -320,7 +320,7 @@ interface SkillIconPatternDataItem {
       y: number
       width: number
       height: number
-    }
+    },
   ]
 }
 

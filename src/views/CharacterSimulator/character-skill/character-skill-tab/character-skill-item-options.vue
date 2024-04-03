@@ -30,6 +30,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
 import {
   SkillFormulaExtraVarState,
   SkillResultsState,
@@ -37,20 +38,18 @@ import {
 
 import CharacterSkillItemOptionsStack from './character-skill-item-options-stack.vue'
 
-import { setupCharacterStore } from '../../setup'
-
 interface Props {
   skillResultsState: SkillResultsState
 }
 
 const props = defineProps<Props>()
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const formulaExtraStates = computed(() => {
   const states: SkillFormulaExtraVarState[] = []
   props.skillResultsState.results.forEach(result => {
-    const branchState = store.getSkillBranchState(
+    const branchState = characterStore.getSkillBranchState(
       result.container.branchItem.default
     )
     states.push(

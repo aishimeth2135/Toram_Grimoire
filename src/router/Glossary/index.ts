@@ -14,7 +14,7 @@ export default {
   name: AppRouteNames.Glossary,
   path: '/glossary',
   component: ViewWrapper,
-  beforeEnter(to, from, next) {
+  beforeEnter(_to, _from, next) {
     ViewInit(DataStoreIds.Glossary).then(next)
   },
   meta: {

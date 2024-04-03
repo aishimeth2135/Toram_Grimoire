@@ -77,6 +77,7 @@ import { useI18n } from 'vue-i18n'
 import {
   CharacterSimulatorSaveData,
   EquipmentSaveDataWithIndex,
+  useCharacterStore,
 } from '@/stores/views/character'
 
 import Cyteria from '@/shared/utils/Cyteria'
@@ -84,8 +85,6 @@ import Cyteria from '@/shared/utils/Cyteria'
 import { CharacterSaveData } from '@/lib/Character/Character'
 import { FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
 import { SkillBuildSaveData } from '@/lib/Character/SkillBuild'
-
-import { setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean
@@ -101,7 +100,7 @@ const emit = defineEmits<Emits>()
 const originalData: Ref<CharacterSimulatorSaveData | null> = ref(null)
 
 const { t } = useI18n()
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 
 const exportFileName = ref('character-simulator-export.txt')
 
@@ -222,6 +221,7 @@ const submit = () => {
     foodBuilds: getItems(exportDataItemFoodBuilds),
     registletBuilds: [],
     potionBuilds: [],
+    buildLabels: [],
     characterStates: originalData.value!.characterStates.filter(state =>
       characters.some(item => item.id === state.id)
     ),
@@ -244,7 +244,7 @@ watch(visible, newValue => {
       target.originalItems = originalItems
       target.items = new Set(originalItems.map(_item => _item.id))
     }
-    const datas = store.createCharacterSimulatorSaveData()
+    const datas = characterStore.createCharacterSimulatorSaveData()
     handle(exportDataItemCharacters, datas.characters)
     handle(exportDataItemEquipments, datas.equipments)
     handle(exportDataItemSkillBuilds, datas.skillBuilds)

@@ -61,7 +61,7 @@
             icon-color="gray-60"
             text-color="primary-30"
           >
-            {{ t('crystal-query.obtain-pretext') }}
+            {{ t('crystal-query.obtain-prefix') }}
           </cy-icon-text>
           <span class="ml-0.5 text-sm text-gray-60">
             {{ crystal.origin.obtains[0].name }}
@@ -74,7 +74,7 @@
             icon-color="cyan-60"
             text-color="primary-30"
           >
-            {{ t('crystal-query.enhancer-pretext') }}
+            {{ t('crystal-query.enhancer-prefix') }}
           </cy-icon-text>
           <span class="ml-0.5 text-sm text-cyan-60">
             {{ crystal.origin.enhancer }}

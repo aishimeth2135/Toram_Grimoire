@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import { APP_STORAGE_KEYS } from '@/shared/consts'
+import { APP_STORAGE_KEYS } from '@/shared/consts/route'
 
 export const useSettingStore = defineStore('app-setting', () => {
   const appFont = ref(

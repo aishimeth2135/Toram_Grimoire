@@ -20,9 +20,13 @@
 
 <script lang="ts" setup>
 import { computed, h } from 'vue'
+import { VNode } from 'vue'
 
 import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
-import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
+import {
+  TextResultContainerPartTypes,
+  TextResultContainerPartValue,
+} from '@/lib/common/ResultContainer'
 import { handleParseText } from '@/lib/common/ResultContainer/parseText'
 
 import { getTextParseItems } from './setup'
@@ -39,9 +43,10 @@ const infoRows = computed(() =>
 
 const textParseItems = getTextParseItems()
 
-const RenderText = ({ text }: { text: string }) => {
-  const { parts } = handleParseText(text, textParseItems)
-  const childs = parts.map(part => {
+const RenderParts = (
+  parts: TextResultContainerPartValue[]
+): (VNode | string)[] => {
+  return parts.map(part => {
     if (typeof part === 'string') {
       return h('span', { innerHTML: part })
     }
@@ -49,7 +54,7 @@ const RenderText = ({ text }: { text: string }) => {
       return h(
         'span',
         { class: 'cy--text-separate text-primary-50' },
-        part.value
+        RenderParts(part.parts)
       )
     } else if (part.type === TextResultContainerPartTypes.GlossaryTag) {
       return h(
@@ -68,6 +73,10 @@ const RenderText = ({ text }: { text: string }) => {
     }
     return part.value
   })
-  return h('span', { key: text }, childs)
+}
+
+const RenderText = ({ text }: { text: string }) => {
+  const { parts } = handleParseText(text, textParseItems)
+  return h('span', { key: text }, RenderParts(parts))
 }
 </script>

@@ -1,24 +1,51 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <AppLayoutMain>
-    <div class="w-full overflow-x-auto py-6">
-      <CharacterStats v-if="mainContents.characterStats" />
-      <CharacterDamage v-else-if="mainContents.damage" />
-      <CharacterComboView v-else-if="mainContents.combo" />
-      <component :is="currentTab" v-else />
+    <div class="flex min-h-full w-full flex-col overflow-x-auto">
+      <CharacterStats
+        :visible="mainContents.characterStats"
+        @close="toggle('mainContents/characterStats', false)"
+      />
+      <CharacterDamage
+        :visible="mainContents.damage"
+        @close="toggle('mainContents/damage', false)"
+      />
+      <CharacterComboView v-if="mainContents.combo" />
+      <div v-else class="flex min-h-full flex-col">
+        <AppLayoutTopSticky>
+          <cy-tabs :model-value="route.name" class="mb-4 bg-white">
+            <router-link
+              v-for="tab in tabDatas"
+              :key="tab.path"
+              v-slot="{ navigate }"
+              :to="{ name: tab.path }"
+              custom
+            >
+              <cy-tab :value="tab.path" @click="navigate">
+                {{ tab.text }}
+              </cy-tab>
+            </router-link>
+          </cy-tabs>
+        </AppLayoutTopSticky>
+        <router-view />
+      </div>
     </div>
     <AppLayoutBottom>
       <template #main-end>
-        <div class="flex items-center space-x-2">
+        <div class="flex flex-col items-center space-y-2">
+          <cy-button-circle
+            icon="mdi:arrow-top"
+            color="blue"
+            float
+            @click="scrollToPageTop"
+          />
           <cy-button-circle
             :selected="mainContents.characterStats"
             icon="bx-bxs-user-detail"
             color="bright"
             float
             toggle
-            @click="
-              toggle('mainContents/characterStats', null, false),
-                toggle('sideContents/tabs', false)
-            "
+            @click="toggle('mainContents/characterStats', null, false)"
           />
           <cy-button-circle
             :selected="mainContents.damage"
@@ -26,99 +53,24 @@
             color="orange"
             float
             toggle
-            @click="
-              toggle('mainContents/damage', null, false),
-                toggle('sideContents/tabs', false)
-            "
+            @click="toggle('mainContents/damage', null, false)"
           />
-          <cy-button-circle
+          <!-- <cy-button-circle
             v-if="mainStore.devMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
             color="emerald"
             float
             toggle
-            @click="
-              toggle('mainContents/combo', null, false),
-                toggle('sideContents/tabs', false)
-            "
-          />
-          <cy-button-circle
-            :selected="sideContents.tabs"
-            icon="ic:round-menu"
-            color="blue"
-            float
-            toggle
-            @click="toggle('sideContents/tabs', null, false)"
-          />
+            @click="toggle('mainContents/combo', null, false)"
+          /> -->
         </div>
       </template>
-      <template v-if="!device.hasAside" #side-buttons>
-        <cy-button-circle
-          :selected="sideContents.panel"
-          icon="ic:outline-space-dashboard"
-          color="cyan"
-          float
-          toggle
-          @click="toggle('sideContents/panel', null, false)"
-        />
-      </template>
-      <template #side-contents>
-        <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="sideContents.tabs">
-            <div style="min-width: 15rem">
-              <cy-list-item
-                v-for="content in tabDatas"
-                :key="content.id"
-                :selected="tabs[content.id]"
-                @click="
-                  toggle(`tabs/${content.id}`, true, false),
-                    toggle('sideContents/tabs', false),
-                    toggle('mainContents', false)
-                "
-              >
-                <cy-icon-text :icon="content.icon">
-                  {{ content.text }}
-                </cy-icon-text>
-              </cy-list-item>
-            </div>
-          </AppLayoutBottomContent>
-          <AppLayoutBottomContent
-            v-else-if="sideContents.panel && !device.hasAside"
-            class="p-2.5 pl-4"
-          >
-            <div style="min-width: 18rem">
-              <CharacterInfoPanel @open-tab="panelOpenTab" />
-            </div>
-          </AppLayoutBottomContent>
-        </cy-transition>
-      </template>
     </AppLayoutBottom>
-    <CharacterBrowseEquipments
-      :visible="modals.browseEquipment"
-      :target-field="editEquipmentCurrentEquipmentField ?? undefined"
-      @close="toggle('modals/browseEquipment')"
-    />
-    <CharacterAppendEquipments
-      :visible="modals.appendEquipments"
-      @close="toggle('modals/appendEquipments', false)"
-    />
-    <CharacterEquipmentBasic
-      :equipment="editBasicCurrentEquipment"
-      @close="editBasicCurrentEquipment = null"
-    />
-    <CharacterEquipmentCustomCreate
-      :visible="modals.createCustomEquipment"
-      @close="toggle('modals/createCustomEquipment', false)"
-    />
-    <CharacterEquipmentBasicEditStat
-      :visible="modals.editStat"
-      :equipment="editStatCurrentEquipment"
-      @close="toggle('modals/editStat', false)"
-    />
-    <CharacterEquipmentEditCrystals
-      :equipment="editCrystalCurrentEquipment"
-      @close="editCrystalCurrentEquipment = null"
+    <CharacterEquipmentDetailsFloat
+      v-model:equipment="editedCurrentEquipment"
+      :init-mode="editedEquipmentEditMode"
+      @close="editedCurrentEquipment = null"
     />
     <CharacterComboSelectSkill
       :visible="!!currentComboSkillState.current"
@@ -126,228 +78,138 @@
       @submit="setComboSkill"
       @close="currentComboSkillState.current = null"
     />
-
-    <template v-if="device.hasAside" #aside>
-      <div style="max-width: 25rem" class="p-4 pl-6">
-        <CharacterInfoPanel @open-tab="panelOpenTab" />
-      </div>
-    </template>
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import {
   Ref,
   computed,
-  nextTick,
-  onMounted,
   provide,
+  reactive,
   shallowReactive,
   shallowRef,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 
-import { useMainStore } from '@/stores/app/main'
+import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
+import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
+import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
+import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
+import { ViewNames } from '@/shared/consts/view'
+import { useAppPageActions } from '@/shared/setup/App'
 import AutoSave from '@/shared/setup/AutoSave'
-import { useDevice } from '@/shared/setup/Device'
+import { registViewStatesCleaning } from '@/shared/setup/State'
 import ToggleService from '@/shared/setup/ToggleService'
 
-import { EquipmentField } from '@/lib/Character/Character'
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Skill } from '@/lib/Skill/Skill'
 
-import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import AppLayoutTopSticky from '@/components/app-layout/app-layout-top-sticky.vue'
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import CharacterBasic from './character-basic.vue'
 import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
 import CharacterComboView from './character-combo/index.vue'
 import CharacterDamage from './character-damage/index.vue'
-import CharacterEquipmentFields from './character-equipment-fields/index.vue'
-import CharacterAppendEquipments from './character-equipment/character-append-equipments.vue'
-import CharacterEquipmentBasicEditStat from './character-equipment/character-equipment-basic-edit-stat.vue'
-import CharacterEquipmentBasic from './character-equipment/character-equipment-basic.vue'
-import CharacterEquipmentCustomCreate from './character-equipment/character-equipment-custom-create.vue'
-import CharacterEquipmentEditCrystals from './character-equipment/character-equipment-edit-crystals.vue'
-import CharacterEquipments from './character-equipments/index.vue'
-import CharacterFood from './character-food/index.vue'
-import CharacterInfoPanel from './character-info-panel.vue'
-import CharacterPotion from './character-potion/index.vue'
-import CharacterRegistlet from './character-registlet/index.vue'
-import CharacterSave from './character-save/index.vue'
-import CharacterSkill from './character-skill/index.vue'
+import CharacterEquipmentDetailsFloat from './character-equipment-details/character-equipment-details-float.vue'
 import CharacterStats from './character-stats/index.vue'
-import CharacterBrowseEquipments from './equipment-browse/character-browse-equipments.vue'
-import EquipmentBrowseMain from './equipment-browse/equipment-browse-main.vue'
 
+import { CharacterEquipmentEditModes } from './character-equipment-details/setup'
 import { CharacterSimulatorInjectionKey } from './injection-keys'
-import {
-  TabIds,
-  setupCharacterFoodStore,
-  setupCharacterPotionStore,
-  setupCharacterRegistletStore,
-  setupCharacterStore,
-} from './setup'
 
-export default {
+defineOptions({
   name: 'CharacterSimulator',
-}
-</script>
-
-<script lang="ts" setup>
-const { t } = useI18n()
-const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
-  modals: [
-    'browseEquipment',
-    'appendEquipments',
-    'createCustomEquipment',
-    'editStat',
-  ] as const,
-  mainContents: ['characterStats', 'damage', 'combo'] as const,
-  tabs: [
-    TabIds.Basic,
-    { name: TabIds.EquipmentFields, default: true },
-    TabIds.Equipments,
-    TabIds.Skill,
-    TabIds.Food,
-    TabIds.Save,
-    TabIds.Registlet,
-    TabIds.Potion,
-    TabIds.EquipmentBrowse,
-  ] as TabIds[],
-  sideContents: ['tabs', 'panel'] as const,
 })
 
-const { store, characters } = setupCharacterStore()
-const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
-const { store: registletStore, registletBuilds } =
-  setupCharacterRegistletStore()
-const { store: potionStore, potionBuilds } = setupCharacterPotionStore()
+const { t } = useI18n()
+const { mainContents, toggle } = ToggleService({
+  mainContents: ['characterStats', 'damage', 'combo'] as const,
+})
 
-const mainStore = useMainStore()
+const { scrollToPageTop } = useAppPageActions()
+
+const characterStore = useCharacterStore()
+const skillBuildStore = useCharacterSkillBuildStore()
+const foodStore = useCharacterFoodStore()
+const registletStore = useCharacterRegistletBuildStore()
+const potionStore = useCharacterPotionBuildStore()
+const { skillBuilds } = storeToRefs(skillBuildStore)
+const { registletBuilds } = storeToRefs(registletStore)
+const { potionBuilds } = storeToRefs(potionStore)
+
+const route = useRoute()
 const router = useRouter()
-const { device } = useDevice()
 
 const tabDatas = computed(() => {
   const options = []
 
   options.push(
     {
-      id: TabIds.Basic,
+      path: CharacterSimulatorRouteNames.Basic,
       icon: 'bx-bxs-face',
       text: t('character-simulator.character-basic.title'),
     },
     {
-      id: TabIds.EquipmentFields,
+      path: CharacterSimulatorRouteNames.Dashboard,
+      icon: 'bx-bxs-face',
+      text: t('character-simulator.character-dashboard.title'),
+    },
+    {
+      path: CharacterSimulatorRouteNames.Equipment,
       icon: 'gg-shape-square',
       text: t('character-simulator.equipment-info.equipment'),
     },
     {
-      id: TabIds.Equipments,
-      icon: 'mdi:sack',
-      text: t('character-simulator.browse-equipments.action.normal'),
-    },
-    {
-      id: TabIds.Skill,
+      path: CharacterSimulatorRouteNames.Skill,
       icon: 'ant-design:build-outlined',
       text: t('character-simulator.skill-build.title'),
     },
     {
-      id: TabIds.Food,
+      path: CharacterSimulatorRouteNames.Food,
       icon: 'mdi-food-apple',
       text: t('character-simulator.food-build.title'),
     },
     {
-      id: TabIds.Registlet,
+      path: CharacterSimulatorRouteNames.Registlet,
       icon: 'game-icons:beveled-star',
       text: t('character-simulator.registlet-build.title'),
     },
     {
-      id: TabIds.Potion,
+      path: CharacterSimulatorRouteNames.Potion,
       icon: 'mdi:bottle-tonic-outline',
       text: t('character-simulator.potion-build.title'),
     },
     {
-      id: TabIds.Save,
+      path: CharacterSimulatorRouteNames.Save,
       icon: 'mdi-ghost',
       text: t('character-simulator.save-load-control.title'),
     }
   )
 
-  if (mainStore.previewMode) {
-    options.push({
-      id: TabIds.EquipmentBrowse,
-      icon: 'mdi:grid-large',
-      text: t('character-simulator.browse-equipments.action.normal'),
-    })
-  }
-
   return options
 })
 
-const currentTab = computed(() => {
-  if (tabs[TabIds.EquipmentFields]) {
-    return CharacterEquipmentFields
-  }
-  if (tabs[TabIds.Skill]) {
-    return CharacterSkill
-  }
-  if (tabs[TabIds.Food]) {
-    return CharacterFood
-  }
-  if (tabs[TabIds.Registlet]) {
-    return CharacterRegistlet
-  }
-  if (tabs[TabIds.Potion]) {
-    return CharacterPotion
-  }
-  if (tabs[TabIds.Save]) {
-    return CharacterSave
-  }
-  if (tabs[TabIds.Equipments]) {
-    return CharacterEquipments
-  }
-  if (tabs[TabIds.EquipmentBrowse]) {
-    return EquipmentBrowseMain
-  }
-  return CharacterBasic
-})
-
-const panelOpenTab = (tabId: TabIds) => {
-  toggle(`tabs/${tabId}`, true, false)
-  toggle('sideContents/panel', false)
-  toggle('mainContents', false)
-}
-
-const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> =
-  shallowRef(null)
-const editBasicCurrentEquipment: Ref<CharacterEquipment | null> =
-  shallowRef(null)
-const editStatCurrentEquipment: Ref<CharacterEquipment | null> =
-  shallowRef(null)
-const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> =
+const editedCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
+const editedEquipmentEditMode: Ref<CharacterEquipmentEditModes | null> =
   shallowRef(null)
 const currentComboSkillState = shallowReactive({
   current: null as CharacterComboSkill | null,
 })
 
-const editCrystal = (equip: CharacterEquipment) => {
-  editCrystalCurrentEquipment.value = equip
-}
-const editBasic = (equip: CharacterEquipment) => {
-  editBasicCurrentEquipment.value = equip
-}
-const editStat = (equip: CharacterEquipment) => {
-  editStatCurrentEquipment.value = equip
-  toggle('modals/editStat', true)
-}
-const editEquipmentFieldEquipment = (field: EquipmentField) => {
-  toggle('modals/browseEquipment', true)
-  editEquipmentCurrentEquipmentField.value = field
+const editEquipment = (
+  equip: CharacterEquipment,
+  initMode?: CharacterEquipmentEditModes
+) => {
+  editedCurrentEquipment.value = equip
+  editedEquipmentEditMode.value = initMode ?? null
 }
 const selectComboSkill = (comboSkill: CharacterComboSkill) => {
   currentComboSkillState.current = comboSkill
@@ -361,41 +223,47 @@ const setComboSkill = (skill: Skill) => {
   currentComboSkillState.current = null
 }
 
+const characterSimulatorOptions = reactive({
+  characterStatsDetailPreviewVisible: false,
+})
+
 provide(CharacterSimulatorInjectionKey, {
-  editCrystal,
-  editBasic,
-  editStat,
-  editEquipmentFieldEquipment,
-  appendEquipments: () => toggle('modals/appendEquipments', true),
-  createCustomEquipment: () => toggle('modals/createCustomEquipment', true),
+  editEquipment,
   selectComboSkill,
+  characterSimulatorOptions,
+  setCurrentTab: pathName => router.push({ name: pathName }),
 })
 
 AutoSave({
-  save: () => store.saveCharacterSimulator(),
-  loadFirst: () => store.loadCharacterSimulator(),
+  save: () => {
+    if (!characterStore.autoSaveDisabled) {
+      characterStore.saveCharacterSimulator()
+    }
+  },
+  loadFirst: () => characterStore.loadCharacterSimulator(),
 })
 
-onMounted(async () => {
-  if (characters.value.length === 0) {
-    store.createCharacter()
-  }
-  if (foodBuilds.value.length === 0 || !foodStore.currentFoodBuild) {
-    foodStore.createFoodBuild()
-  }
-  if (
-    registletBuilds.value.length === 0 ||
-    !registletStore.currentRegistletBuild
-  ) {
-    registletStore.createRegistletBuild()
-  }
-  if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
-    potionStore.createPotionBuild()
-  }
-  if (mainStore.redirectPathName === 'SkillSimulator') {
-    await nextTick()
-    mainStore.clearRedirectPathName()
-    router.replace({ name: 'SkillSimulator' })
-  }
-})
+// init
+if (skillBuilds.value.length === 0) {
+  skillBuildStore.createSkillBuild()
+}
+if (foodStore.foodBuilds.length === 0 || !foodStore.currentFoodBuild) {
+  foodStore.createFoodBuild()
+}
+if (
+  registletBuilds.value.length === 0 ||
+  !registletStore.currentRegistletBuild
+) {
+  registletStore.createRegistletBuild()
+}
+if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
+  potionStore.createPotionBuild()
+}
+
+// create the character at the end to make all builds bound automatically
+if (characterStore.characters.length === 0) {
+  characterStore.createCharacter()
+}
+
+registViewStatesCleaning(ViewNames.CharacterSimulator)
 </script>

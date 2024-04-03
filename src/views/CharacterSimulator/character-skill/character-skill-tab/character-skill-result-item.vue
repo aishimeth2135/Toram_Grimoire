@@ -35,14 +35,13 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
 import { SkillResult } from '@/stores/views/character/setup'
 
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 import CharacterSkillResultSuffixItem from './character-skill-result-suffix-item.vue'
-
-import { setupCharacterStore } from '../../setup'
 
 interface Props {
   result: SkillResult
@@ -53,12 +52,12 @@ const props = withDefaults(defineProps<Props>(), {
   hideName: false,
 })
 
-const { store } = setupCharacterStore()
+const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  store.getSkillBranchState(container.value.branchItem.default)
+  characterStore.getSkillBranchState(container.value.branchItem.default)
 )
 </script>

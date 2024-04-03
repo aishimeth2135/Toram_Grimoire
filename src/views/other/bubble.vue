@@ -24,18 +24,30 @@
   </AppLayoutMain>
 </template>
 
-<script>
+<script lang="ts">
 import { loadIconifyData } from '@/shared/services/SvgIcons'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min //The maximum is inclusive and the minimum is inclusive
 }
 
-const customIconDatas = {
+interface IconData {
+  iconData: string
+  width: number
+  height: number
+}
+
+interface DisplayedIcon {
+  id: number
+  color: string
+  path: string
+}
+
+const customIconDatas: Record<string, IconData> = {
   potum: {
     iconData:
       '<g transform="translate(0,1250) scale(0.1,-0.1)" fill="currentcolor" stroke="none"><path d="M1468 11473 c-29 -34 -57 -98 -75 -173 -15 -62 -18 -111 -16 -277 l2 -201 -102 34 c-112 38 -148 42 -168 18 -15 -18 -20 -114 -8 -164 4 -19 15 -100 24 -180 56 -495 128 -757 306 -1113 76 -153 214 -396 234 -412 7 -6 78 -141 158 -300 364 -728 566 -1026 995 -1466 l163 -168 -50 -203 c-137 -556 -160 -746 -168 -1370 l-5 -428 -55 -82 c-70 -108 -155 -259 -203 -361 -96 -210 -132 -392 -146 -743 l-7 -159 27 -32 c67 -80 199 -105 317 -59 37 14 69 22 73 19 3 -3 8 2 12 11 3 9 15 16 25 16 10 0 62 11 115 25 102 27 198 71 252 118 l34 28 62 -133 c35 -73 79 -160 99 -193 l35 -60 -221 -6 c-231 -6 -245 -8 -492 -40 -169 -23 -172 -23 -310 -44 -354 -53 -385 -59 -435 -85 -45 -23 -42 -7 -42 -205 0 -139 -13 -216 -66 -397 -33 -112 -30 -132 28 -159 33 -16 55 -15 368 12 389 32 865 65 1177 79 264 13 1155 6 1345 -9 74 -6 218 -18 320 -26 221 -19 532 -53 920 -101 157 -19 292 -36 300 -36 8 0 107 9 220 21 113 11 230 23 260 26 30 3 150 14 265 24 950 88 1527 101 2285 51 204 -14 768 -65 993 -91 150 -17 181 -18 205 -7 30 15 28 -14 15 253 -5 103 -2 140 21 264 24 132 25 146 11 167 -8 13 -24 24 -34 24 -10 0 -72 13 -137 29 -467 115 -798 166 -1299 201 -88 7 -183 15 -211 18 l-52 7 80 95 c111 131 206 278 295 455 42 82 77 152 79 154 2 2 31 -19 66 -46 152 -120 255 -176 398 -218 52 -15 163 -61 245 -100 173 -84 230 -105 286 -105 73 0 119 41 148 130 10 32 6 47 -43 175 -168 435 -316 713 -586 1103 -127 183 -128 184 -134 332 -2 63 -7 122 -9 130 -3 8 -11 94 -17 190 -10 158 -18 263 -36 445 -3 33 -12 112 -20 175 -9 63 -18 144 -21 180 -3 36 -9 70 -13 75 -4 6 -13 39 -20 75 -16 81 -73 261 -114 360 -30 72 -31 76 -16 107 8 18 50 68 93 111 42 43 77 86 77 94 0 9 25 41 55 72 30 30 55 59 55 63 1 15 196 243 397 465 155 171 503 524 658 669 154 143 526 469 739 649 293 248 381 320 387 320 10 0 119 180 119 197 0 8 5 23 10 34 23 42 -16 69 -124 89 -33 5 -61 12 -63 13 -2 2 17 22 43 43 72 61 142 134 147 154 7 27 -18 56 -51 63 -52 10 -661 67 -822 76 -219 13 -695 5 -870 -14 -571 -62 -1039 -208 -1763 -551 -295 -140 -1053 -539 -1090 -573 -16 -16 -24 -16 -80 -5 -399 82 -658 113 -957 114 -287 2 -542 -22 -1110 -104 l-235 -34 -110 70 c-194 125 -241 156 -658 427 -423 275 -994 659 -1350 908 -230 161 -773 557 -1107 808 -118 89 -225 167 -237 173 -31 17 -68 15 -85 -5z"/></g>',
@@ -63,6 +75,19 @@ export default {
       displayBg: false,
       resizeListener: null,
       currentIcon: '',
+    } as {
+      icons: DisplayedIcon[]
+      colors: string[] | null
+      viewWidth: number
+      viewHeight: number
+      generationInterval: number
+      iconMaximum: number
+      counter: number
+      idCounter: number
+      viewBox: string
+      displayBg: boolean
+      resizeListener: (() => void) | null
+      currentIcon: string
     }
   },
   computed: {
@@ -71,21 +96,22 @@ export default {
     },
   },
   mounted() {
-    const colors = this.$route.params.color
+    const colors = this.$route.params.color as string
     if (colors && colors !== 'random') {
       this.colors = colors.split('+')
     }
 
-    const iconNumber = this.$route.params.number
+    const iconNumber = this.$route.params.number as string
     if (iconNumber) {
       const [max, interval = this.generationInterval] = iconNumber.split('+')
-      this.iconMaximum = max
-      this.generationInterval = interval
+      this.iconMaximum = parseInt(max, 10)
+      this.generationInterval =
+        typeof interval === 'string' ? parseInt(interval, 10) : interval
     }
 
-    const iconName = this.$route.params.iconName
+    const iconName = this.$route.params.iconName as string
 
-    const setIcon = data => {
+    const setIcon = (data: IconData) => {
       this.viewBox = `0 0 ${data.width} ${data.height}`
       this.currentIcon =
         `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">` +
@@ -100,9 +126,12 @@ export default {
     if (customIcon) {
       setIcon(customIconDatas[customIcon])
     } else {
-      loadIconifyData(iconName).then(({ body, width, height }) =>
-        setIcon({ iconData: body, width, height })
-      )
+      loadIconifyData(iconName).then(result => {
+        if (result) {
+          const { body, width = 16, height = 16 } = result
+          setIcon({ iconData: body, width, height })
+        }
+      })
     }
 
     const lis = () => {
@@ -114,7 +143,9 @@ export default {
     this.resizeListener = lis
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.resizeListener)
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener)
+    }
   },
   methods: {
     toggleBackground() {
@@ -126,8 +157,8 @@ export default {
 
       const ox = Math.floor((getRandomInt(10, 90) * vw) / 100)
 
-      const yf = len => Math.floor((len * vh) / 1000) * 10,
-        xf = len => ox + Math.floor((len * vw) / 10000) * 10,
+      const yf = (len: number) => Math.floor((len * vh) / 1000) * 10,
+        xf = (len: number) => ox + Math.floor((len * vw) / 10000) * 10,
         yStep = (add = 0) => yf(getRandomInt(8 + add, 12 + add))
 
       const start_x = xf(getRandomInt(-20, -5)),
@@ -139,9 +170,10 @@ export default {
       let flip = true
       while (cur > 0) {
         cur -= yStep()
-        def += `S${xf(
-          flip ? getRandomInt(5, 20) : getRandomInt(-20, -5)
-        )},${cur} ${ox},`
+
+        const flipOffset = flip ? getRandomInt(5, 20) : getRandomInt(-20, -5)
+        def += `S${xf(flipOffset)},${cur} ${ox},`
+
         cur -= yStep()
         def += cur
         flip = !flip
@@ -161,7 +193,7 @@ export default {
     },
     randowHexColor() {
       return Array(3)
-        .fill()
+        .fill(undefined)
         .map(() => getRandomInt(0, 255).toString(16))
         .reduce(
           (cur, item) => cur + (item.length === 1 ? '0' + item : item),
@@ -176,7 +208,7 @@ export default {
         id: this.idCounter,
         color,
         path: `path('${path}')`,
-      }
+      } as DisplayedIcon
 
       this.idCounter += 1
       this.counter += 1

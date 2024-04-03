@@ -28,11 +28,11 @@ settings:
   import/extensions:
     - .js
     - .ts
-globals:
-  defineProps: readonly
-  defineEmits: readonly
-  defineExpose: readonly
-  withDefaults: readonly
+# globals:
+#   defineProps: readonly
+#   defineEmits: readonly
+#   defineExpose: readonly
+#   withDefaults: readonly
 rules:
   # no-use-before-define: off
   # no-unused-vars: off
@@ -48,6 +48,7 @@ rules:
   # semi-spacing: error
   # space-infix-ops: error
   # '@typescript-eslint/no-unused-vars': off
+  no-undef: off
   no-var: error
   eqeqeq: error
   # no-multi-spaces: warn
@@ -107,8 +108,8 @@ rules:
   '@typescript-eslint/no-unused-vars': off
   '@typescript-eslint/no-shadow':
     - error
-  '@typescript-eslint/prefer-enum-initializers':
-    - error
+  # '@typescript-eslint/prefer-enum-initializers':
+  #   - error
   '@typescript-eslint/no-duplicate-enum-values':
     - error
   '@typescript-eslint/prefer-literal-enum-member':
@@ -160,6 +161,7 @@ rules:
   # vue/comma-dangle:
   #   - warn
   #   - always-multiline
+  vue/multi-word-component-names: off
   vue/custom-event-name-casing:
     - error
     - kebab-case
