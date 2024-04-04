@@ -56,8 +56,14 @@ const displayedSkills = computed(() => {
   return skillLevels
 })
 
+const enum SkillLevelMode {
+  Level,
+  StarGem,
+}
+
 const skillLevelIncreaseSign = ref(1)
 const skillLevelIncreaseStep = ref(5)
+const skillLevelIncreaseMode = ref(SkillLevelMode.Level)
 
 const getSkillLevel = (skill: Skill) => {
   const { level, starGemLevel } = props.skillBuild.getSkillState(skill)
@@ -65,10 +71,12 @@ const getSkillLevel = (skill: Skill) => {
 }
 
 const handleSkillClick = (skill: Skill) => {
-  props.skillBuild.increaseSkillLevel(
-    skill,
-    skillLevelIncreaseSign.value * skillLevelIncreaseStep.value
-  )
+  const value = skillLevelIncreaseSign.value * skillLevelIncreaseStep.value
+  if (skillLevelIncreaseMode.value === SkillLevelMode.Level) {
+    props.skillBuild.increaseSkillLevel(skill, value)
+  } else {
+    props.skillBuild.increaseStarGemLevel(skill, value)
+  }
 }
 </script>
 
@@ -94,6 +102,24 @@ const handleSkillClick = (skill: Skill) => {
     </template>
     <template v-else>
       <div class="flex items-center justify-end space-x-3 px-3 py-2">
+        <cy-tabs
+          v-model="skillLevelIncreaseMode"
+          class="rounded border border-primary-20"
+          plain
+        >
+          <cy-tab
+            :value="SkillLevelMode.Level"
+            class="flex px-2 py-1.5 hover:bg-primary-10"
+          >
+            <cy-icon icon="mdi:circle-double" />
+          </cy-tab>
+          <cy-tab
+            :value="SkillLevelMode.StarGem"
+            class="flex px-2 py-1.5 hover:bg-primary-10"
+          >
+            <cy-icon icon="mdi:star-four-points-outline" />
+          </cy-tab>
+        </cy-tabs>
         <cy-tabs
           v-model="skillLevelIncreaseSign"
           class="rounded border border-primary-20"

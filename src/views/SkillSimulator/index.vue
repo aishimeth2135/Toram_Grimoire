@@ -87,7 +87,10 @@ const skillClick = (skill: Skill) => {
   if (menuData.value.mode === 'skill') {
     currentSkillBuild.value?.increaseSkillLevel(skill, menuData.value.levelUnit)
   } else if (menuData.value.mode === 'star-gem') {
-    currentSkillBuild.value?.addStarGemLevel(skill, menuData.value.levelUnit)
+    currentSkillBuild.value?.increaseStarGemLevel(
+      skill,
+      menuData.value.levelUnit
+    )
   }
 }
 

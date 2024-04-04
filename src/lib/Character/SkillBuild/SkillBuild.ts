@@ -107,7 +107,7 @@ export class SkillBuild implements CharacterBindingBuild {
     state.level = levelSet
   }
 
-  addStarGemLevel(skill: Skill, level: number) {
+  increaseStarGemLevel(skill: Skill, level: number) {
     const state = this.getSkillState(skill)
     let levelSet = state.starGemLevel + level
     levelSet = Math.min(10, Math.max(levelSet, 0))
