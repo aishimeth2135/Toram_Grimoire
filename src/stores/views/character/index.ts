@@ -125,6 +125,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     createCharacter,
     appendCharacter,
     removeCharacter,
+    cloneCharacter,
   } = setupCharacters()
 
   const { equipments, appendEquipment, appendEquipments, removeEquipment } =
@@ -323,7 +324,11 @@ export const useCharacterStore = defineStore('view-character', () => {
       reset()
       createCharacter()
       closeAutoSave()
-      logger.addTitle('loadCharacterSimulator').warn('Unexpected error occurs.')
+      logger
+        .addTitle('loadCharacterSimulator')
+        .start('Unexpected error occurs.')
+        .log(error)
+        .end()
       throw error
     }
   }
@@ -534,6 +539,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCharacterPotionBuild,
     createCharacter,
     appendCharacter,
+    cloneCharacter,
     removeCharacter,
     appendEquipment,
     appendEquipments,

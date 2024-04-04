@@ -65,7 +65,7 @@ const iconData = computed(() => {
     :src="iconData.src"
     :style="iconStyle"
     :class="iconClass"
-    class="inline-block flex-shrink-0"
+    class="inline-block max-w-none flex-shrink-0"
   />
 </template>
 

@@ -29,40 +29,46 @@ export function setupCharacters() {
     currentBuild: _currentCharacter,
     setCurrentBuild: _setCurrentCharacter,
     appendBuild: appendCharacter,
-    removeBuild: removeCharacter,
+    removeBuild,
   } = useCharacterBindingBuild<Character>()
 
   const currentCharacter = _currentCharacter as ComputedRef<Character>
 
-  const getCharacterState = (() => {
-    const characterStates = new Map<
-      number,
-      {
-        skillBuild: SkillBuild | null
-        foodBuild: FoodsBuild | null
-        registletBuild: RegistletBuild | null
-        potionBuild: PotionBuild | null
-      }
-    >()
-    return (chara: Character) => {
-      if (!characterStates.has(chara.id)) {
-        characterStates.set(
-          chara.id,
-          shallowReactive({
-            skillBuild: null,
-            foodBuild: null,
-            registletBuild: null,
-            potionBuild: null,
-          })
-        )
-      }
-      return characterStates.get(chara.id)!
+  const characterStates = new Map<
+    number,
+    {
+      skillBuild: SkillBuild | null
+      foodBuild: FoodsBuild | null
+      registletBuild: RegistletBuild | null
+      potionBuild: PotionBuild | null
     }
-  })()
+  >()
+  const getCharacterState = (chara: Character) => {
+    if (!characterStates.has(chara.id)) {
+      characterStates.set(
+        chara.id,
+        shallowReactive({
+          skillBuild: null,
+          foodBuild: null,
+          registletBuild: null,
+          potionBuild: null,
+        })
+      )
+    }
+    return characterStates.get(chara.id)!
+  }
+  const removeCharacterState = (chara: Character) => {
+    if (characterStates.has(chara.id)) {
+      characterStates.delete(chara.id)
+    }
+  }
 
   const setCurrentCharacter = (idx: number | Character) => {
     const previou = getCharacterState(currentCharacter.value)
     _setCurrentCharacter(idx)
+    if (!currentCharacter.value) {
+      _setCurrentCharacter(0)
+    }
     const current = getCharacterState(currentCharacter.value)
 
     if (current.skillBuild === null) {
@@ -124,6 +130,25 @@ export function setupCharacters() {
     return newCharacter
   }
 
+  const cloneCharacter = (character: Character) => {
+    const newCharacter = character.clone()
+    appendCharacter(newCharacter, false)
+
+    const characterState = getCharacterState(character)
+    const newCharacterState = getCharacterState(newCharacter)
+    newCharacterState.skillBuild = characterState.skillBuild
+    newCharacterState.foodBuild = characterState.foodBuild
+    newCharacterState.registletBuild = characterState.registletBuild
+    newCharacterState.potionBuild = characterState.potionBuild
+  }
+
+  const removeCharacter = (character: Character) => {
+    const nextIdx = removeBuild(character)
+    removeCharacterState(character)
+    currentCharacterIndex.value = nextIdx
+    return nextIdx
+  }
+
   return {
     characters,
     currentCharacter,
@@ -138,6 +163,7 @@ export function setupCharacters() {
     appendCharacter,
     createCharacter,
     removeCharacter,
+    cloneCharacter,
   }
 }
 

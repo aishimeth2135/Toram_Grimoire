@@ -26,7 +26,7 @@ const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
 const selectedCharacter = ref(currentCharacter.value) as Ref<Character>
 
 const copySelectedCharacter = () => {
-  characterStore.appendCharacter(selectedCharacter.value.clone())
+  characterStore.cloneCharacter(selectedCharacter.value)
 }
 
 const removeSelectedCharacter = () => {
@@ -35,7 +35,8 @@ const removeSelectedCharacter = () => {
     return
   }
   const from = selectedCharacter.value!
-  characterStore.removeCharacter(from)
+  const nextIdx = characterStore.removeCharacter(from)
+  selectedCharacter.value = characterStore.characters[nextIdx]
   notify(
     t('character-simulator.character-basic.remove-character-success', {
       name: from.name,
