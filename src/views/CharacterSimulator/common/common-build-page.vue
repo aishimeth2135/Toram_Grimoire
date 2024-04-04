@@ -62,6 +62,8 @@ const moveMode = ref(false)
           :options="builds"
           :current-value="innerCurrentBuild"
           class="flex-shrink-0"
+          addable
+          @add-item="emit('add-build')"
         >
           <template #item="{ item: build }">
             {{ build.name }}

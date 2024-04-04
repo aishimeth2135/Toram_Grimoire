@@ -67,6 +67,6 @@ const { device } = useDevice()
 
 /* bottom */
 .app-layout--bottom {
-  @apply pointer-events-none fixed bottom-0 z-20 p-2;
+  @apply pointer-events-none sticky bottom-0 z-20 p-2 wd:fixed;
 }
 </style>

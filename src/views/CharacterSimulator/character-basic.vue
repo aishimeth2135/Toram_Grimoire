@@ -63,6 +63,10 @@ const removeSelectedCharacter = () => {
   )
 }
 
+const addCharacater = () => {
+  selectedCharacter.value = characterStore.createCharacter(false)
+}
+
 const RenderContentTitie = (attrs: { title: string }) => {
   return (
     <div class="mt-6 flex w-full max-w-lg items-center">
@@ -82,7 +86,7 @@ const RenderContentTitie = (attrs: { title: string }) => {
     v-model:builds="characters"
     :current-build="currentCharacter"
     @select-build="characterStore.setCurrentCharacter"
-    @add-build="characterStore.createCharacter"
+    @add-build="addCharacater"
     @copy-build="copySelectedCharacter"
     @remove-build="removeSelectedCharacter"
   >

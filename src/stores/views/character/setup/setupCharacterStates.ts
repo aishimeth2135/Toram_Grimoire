@@ -113,13 +113,13 @@ export function setupCharacters() {
     potionBuildStore.setCurrentPotionBuild(build)
   }
 
-  const createCharacter = () => {
+  const createCharacter = (updateIndex: boolean = true) => {
     const newCharacter = new Character(
       Grimoire.i18n.t('character-simulator.character') +
         ' ' +
         (characters.value.length + 1)
     )
-    appendCharacter(newCharacter)
+    appendCharacter(newCharacter, updateIndex)
     const state = getCharacterState(newCharacter)
     state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
     state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
