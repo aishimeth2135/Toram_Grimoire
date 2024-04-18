@@ -249,7 +249,7 @@ export default class EnchantDollEquipmentContainer {
           this.checkMakeUpPotential()
         })
 
-        if (eq.lastStep!.potentialExtraRate > 1.2) {
+        if (eq.lastStep!.potentialExtraRate > 120) {
           // 例外狀況，補潛力導致倍率不正確。還原至原本的狀態
           while (eq.allSteps.length !== 1) {
             lastElement(eq.allSteps).remove()
@@ -288,7 +288,7 @@ export default class EnchantDollEquipmentContainer {
 
         if (
           pstat.originalPotential === 3 &&
-          currentExtraRate === 1.2 &&
+          currentExtraRate === 120 &&
           step.remainingPotential > 0
         ) {
           /**
@@ -446,7 +446,7 @@ export default class EnchantDollEquipmentContainer {
             return (
               item.type === 'step' &&
               item.stat.potential === 3 &&
-              item.stat.belongStep.potentialExtraRate <= 1.2 &&
+              item.stat.belongStep.potentialExtraRate <= 120 &&
               value < item.stat.potentialConvertThreshold
             )
           }) || null
@@ -767,7 +767,7 @@ export default class EnchantDollEquipmentContainer {
           if (idx === 0 && this.flags.hasHandleFirstStep) {
             return null
           }
-          if (potentialExtraRate !== 1 || step.stats.length !== 1) {
+          if (potentialExtraRate !== 100 || step.stats.length !== 1) {
             return null
           }
         }
@@ -783,7 +783,7 @@ export default class EnchantDollEquipmentContainer {
           type: 'step',
           stat,
           value: stat.potentialCost,
-          existedAndNoRate: potentialExtraRate === 1,
+          existedAndNoRate: potentialExtraRate === 100,
         }
       })
       .filter(item => item) as MostUsePotentialStatItemStep[]

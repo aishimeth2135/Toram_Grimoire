@@ -433,7 +433,7 @@ class EnchantEquipment {
       if (idx === 0) {
         return false
       }
-      if (step.potentialExtraRate > 1) {
+      if (step.potentialExtraRate > 100) {
         return true
       }
       if (step.isLastStep) {
@@ -508,9 +508,11 @@ class EnchantStep {
     }
     const er = this.potentialExtraRate
     if (this.type === EnchantStepTypes.Normal) {
-      return this.realPotentialCost(
-        this.stats.reduce((cur, stat) => cur + stat.potentialCost, 0) * er
+      const potentialCostBast = this.stats.reduce(
+        (cur, stat) => cur + stat.potentialCost,
+        0
       )
+      return this.realPotentialCost((potentialCostBast * er) / 100)
     }
     if (this.type === EnchantStepTypes.Each) {
       return this.firstStat ? this.firstStat.potentialCost : 0
@@ -652,7 +654,7 @@ class EnchantStep {
       if (this.potentialCost === old) {
         if (oldType === EnchantStepTypes.Each) {
           return 1
-        } else if (this.potentialExtraRate > 1) {
+        } else if (this.potentialExtraRate > 100) {
           return 0
         }
         return -1
@@ -912,7 +914,7 @@ class EnchantStepStat extends EnchantStat {
           sv = value - cur
         }
         res += this._parent.realPotentialCost(
-          this.calcPotentialCost(sv, cur + prev) * er
+          (this.calcPotentialCost(sv, cur + prev) * er) / 100
         )
         cur += sv
       }
@@ -922,7 +924,7 @@ class EnchantStepStat extends EnchantStat {
 
   get finalPotentialEffect(): number {
     return this._parent.type === EnchantStepTypes.Normal
-      ? -1 * this.potentialCost * this._parent.potentialExtraRate
+      ? (-1 * this.potentialCost * this._parent.potentialExtraRate) / 100
       : -1 * this._parent.potentialCost
   }
 
