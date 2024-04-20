@@ -12,6 +12,8 @@ import SkillTreeDiagram from '@/views/SkillQuery/skill-tree-diagram.vue'
 import CommonEditModeButton from '../../common/common-edit-mode-button.vue'
 import CharacterSkillPreviewItem from './character-skill-preivew-item.vue'
 
+import { useSkillTreeLevelOptions } from './setup'
+
 interface Props {
   skillBuild: SkillBuild
   skillTree: SkillTree
@@ -56,14 +58,7 @@ const displayedSkills = computed(() => {
   return skillLevels
 })
 
-const enum SkillLevelMode {
-  Level,
-  StarGem,
-}
-
-const skillLevelIncreaseSign = ref(1)
-const skillLevelIncreaseStep = ref(5)
-const skillLevelIncreaseMode = ref(SkillLevelMode.Level)
+const { updateSkillLevel } = useSkillTreeLevelOptions()
 
 const getSkillLevel = (skill: Skill) => {
   const { level, starGemLevel } = props.skillBuild.getSkillState(skill)
@@ -71,12 +66,7 @@ const getSkillLevel = (skill: Skill) => {
 }
 
 const handleSkillClick = (skill: Skill) => {
-  const value = skillLevelIncreaseSign.value * skillLevelIncreaseStep.value
-  if (skillLevelIncreaseMode.value === SkillLevelMode.Level) {
-    props.skillBuild.increaseSkillLevel(skill, value)
-  } else {
-    props.skillBuild.increaseStarGemLevel(skill, value)
-  }
+  updateSkillLevel(props.skillBuild, skill)
 }
 </script>
 
@@ -101,53 +91,6 @@ const handleSkillClick = (skill: Skill) => {
       </div>
     </template>
     <template v-else>
-      <div class="flex items-center justify-end space-x-3 px-3 py-2">
-        <cy-tabs
-          v-model="skillLevelIncreaseMode"
-          class="rounded border border-primary-20"
-          plain
-        >
-          <cy-tab
-            :value="SkillLevelMode.Level"
-            class="flex px-2 py-1.5 hover:bg-primary-10"
-          >
-            <cy-icon icon="mdi:circle-double" />
-          </cy-tab>
-          <cy-tab
-            :value="SkillLevelMode.StarGem"
-            class="flex px-2 py-1.5 hover:bg-primary-10"
-          >
-            <cy-icon icon="mdi:star-four-points-outline" />
-          </cy-tab>
-        </cy-tabs>
-        <cy-tabs
-          v-model="skillLevelIncreaseSign"
-          class="rounded border border-primary-20"
-          plain
-        >
-          <cy-tab :value="1" class="flex px-2 py-1.5 hover:bg-primary-10">
-            <cy-icon icon="ic:round-add" />
-          </cy-tab>
-          <cy-tab :value="-1" class="flex px-2 py-1.5 hover:bg-primary-10">
-            <cy-icon icon="ic:round-remove" />
-          </cy-tab>
-        </cy-tabs>
-        <cy-tabs
-          v-model="skillLevelIncreaseStep"
-          class="rounded border border-primary-20"
-          plain
-        >
-          <cy-tab :value="1" class="flex px-1.5 py-1 hover:bg-primary-10">
-            <cy-icon icon="mdi:number-1" width="1.375rem" />
-          </cy-tab>
-          <cy-tab :value="5" class="flex px-1.5 py-1 hover:bg-primary-10">
-            <cy-icon icon="mdi:number-5" width="1.375rem" />
-          </cy-tab>
-          <cy-tab :value="10" class="flex px-1.5 py-1 hover:bg-primary-10">
-            <cy-icon icon="mdi:numeric-10" width="1.375rem" />
-          </cy-tab>
-        </cy-tabs>
-      </div>
       <div class="w-full overflow-x-auto">
         <SkillTreeDiagram
           :skill-tree="skillTree"

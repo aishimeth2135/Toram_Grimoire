@@ -23,18 +23,25 @@
       </div>
     </cy-transition>
     <div
-      v-if="slots['default'] || slots['main-start'] || slots['main-end']"
-      class="mr-2 flex items-end space-x-2"
+      v-if="
+        slots['default'] ||
+        slots['main-start'] ||
+        slots['main-end'] ||
+        slots['main-custom']
+      "
+      class="flex items-end space-x-2"
     >
       <div v-if="slots['main-start']" class="pointer-events-auto">
         <slot name="main-start"></slot>
       </div>
-      <div
-        v-if="slots['default']"
-        class="pointer-events-auto w-full rounded-full border-1 border-primary-30 bg-white px-3 py-1 shadow"
-      >
-        <slot></slot>
-      </div>
+      <slot name="main-custom">
+        <div
+          v-if="slots['default']"
+          class="pointer-events-auto flex-grow rounded-full border border-primary-30 bg-white px-3 py-1 shadow-lg"
+        >
+          <slot></slot>
+        </div>
+      </slot>
       <div v-if="slots['main-end']" class="pointer-events-auto ml-auto">
         <slot name="main-end"></slot>
       </div>

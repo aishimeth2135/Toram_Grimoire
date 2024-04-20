@@ -31,40 +31,44 @@
       </div>
     </div>
     <AppLayoutBottom>
-      <template #main-end>
-        <div class="flex flex-col items-center space-y-2">
-          <cy-button-circle
-            icon="mdi:arrow-top"
-            color="blue"
-            float
-            @click="scrollToPageTop"
-          />
-          <cy-button-circle
-            :selected="mainContents.characterStats"
-            icon="bx-bxs-user-detail"
-            color="bright"
-            float
-            toggle
-            @click="toggle('mainContents/characterStats', null, false)"
-          />
-          <cy-button-circle
-            :selected="mainContents.damage"
-            icon="ic:outline-calculate"
-            color="orange"
-            float
-            toggle
-            @click="toggle('mainContents/damage', null, false)"
-          />
-          <!-- <cy-button-circle
-            v-if="mainStore.devMode"
-            :selected="mainContents.combo"
-            icon="mdi-selection-ellipse-arrow-inside"
-            color="emerald"
-            float
-            toggle
-            @click="toggle('mainContents/combo', null, false)"
-          /> -->
-        </div>
+      <template
+        v-if="route.name === CharacterSimulatorRouteNames.Skill"
+        #main-custom
+      >
+        <CharacterSkillBottomMenu />
+      </template>
+      <template #side-buttons>
+        <cy-button-circle
+          icon="mdi:arrow-top"
+          color="blue"
+          float
+          @click="scrollToPageTop"
+        />
+        <cy-button-circle
+          :selected="mainContents.damage"
+          icon="ic:outline-calculate"
+          color="orange"
+          float
+          toggle
+          @click="toggle('mainContents/damage', null, false)"
+        />
+        <cy-button-circle
+          :selected="mainContents.characterStats"
+          icon="bx-bxs-user-detail"
+          color="bright"
+          float
+          toggle
+          @click="toggle('mainContents/characterStats', null, false)"
+        />
+        <!-- <cy-button-circle
+          v-if="mainStore.devMode"
+          :selected="mainContents.combo"
+          icon="mdi-selection-ellipse-arrow-inside"
+          color="emerald"
+          float
+          toggle
+          @click="toggle('mainContents/combo', null, false)"
+        /> -->
       </template>
     </AppLayoutBottom>
     <CharacterEquipmentDetailsFloat
@@ -120,6 +124,7 @@ import CharacterComboSelectSkill from './character-combo/character-combo-select-
 import CharacterComboView from './character-combo/index.vue'
 import CharacterDamage from './character-damage/index.vue'
 import CharacterEquipmentDetailsFloat from './character-equipment-details/character-equipment-details-float.vue'
+import CharacterSkillBottomMenu from './character-skill/character-skill-bottom-menu.vue'
 import CharacterStats from './character-stats/index.vue'
 
 import { CharacterEquipmentEditModes } from './character-equipment-details/setup'
