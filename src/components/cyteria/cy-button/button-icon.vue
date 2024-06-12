@@ -1,17 +1,13 @@
 <template>
-  <IconBase v-if="icon !== null" :icon="icon" :src="src" />
+  <IconBase v-if="icon" :icon="icon" />
 </template>
 
 <script lang="ts" setup>
 import IconBase from '../icon/icon-base.vue'
 
-interface Props {
-  icon?: string | null
-  src?: 'iconify' | 'custom' | 'image'
-}
+import { IconBaseProps } from '../icon/setup'
 
-withDefaults(defineProps<Props>(), {
-  icon: 'gg-shape-rhombus',
-  src: 'iconify',
-})
+interface Props extends IconBaseProps {}
+
+defineProps<Props>()
 </script>

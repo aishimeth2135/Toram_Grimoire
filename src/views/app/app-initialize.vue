@@ -62,21 +62,20 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AppInitialzie',
-}
-</script>
-
 <script lang="ts" setup>
-import HomeBackgroud from '@/views/Home/Home/home-backgroud.vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
 import { useInitializeStore } from '@/stores/app/initialize'
 import { InitItemStatus, InitializeStatus } from '@/stores/app/initialize/enums'
 
+import HomeBackgroud from '@/views/Home/Home/home-backgroud.vue'
+
 import LoadingAnimation from './initialization/loading-animation.vue'
+
+defineOptions({
+  name: 'AppInitialzie',
+})
 
 const initializeStore = useInitializeStore()
 

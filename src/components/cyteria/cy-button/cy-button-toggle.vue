@@ -1,3 +1,26 @@
+<script lang="ts" setup>
+import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
+
+import { ButtonBaseProps, ButtonIconProps, useButtonBaseBinds } from './setup'
+
+interface Props extends ButtonBaseProps, ButtonIconProps {}
+const props = defineProps<Props>()
+
+interface Emits {
+  (evt: 'click', event: MouseEvent): void
+  (evt: 'update:selected', value: boolean): void
+}
+const emit = defineEmits<Emits>()
+
+const buttonBaseBinds = useButtonBaseBinds(props)
+
+const buttonClick = (evt: MouseEvent) => {
+  emit('click', evt)
+  emit('update:selected', !props.selected)
+}
+</script>
+
 <template>
   <CyButtonBase
     v-slot="{ iconClass }"
@@ -15,37 +38,6 @@
     </div>
   </CyButtonBase>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-import ButtonIcon from './button-icon.vue'
-import CyButtonBase from './cy-button-base.vue'
-
-import { ButtonBasePropList, getButtonBaseBinds } from './setup'
-
-export default defineComponent({
-  emits: ['click', 'update:selected'],
-  props: {
-    ...ButtonBasePropList,
-  },
-  components: {
-    CyButtonBase,
-    ButtonIcon,
-  },
-  computed: {
-    buttonBaseBinds() {
-      return getButtonBaseBinds(this)
-    },
-  },
-  methods: {
-    buttonClick(evt: MouseEvent) {
-      this.$emit('click', evt)
-      this.$emit('update:selected', !this.selected)
-    },
-  },
-})
-</script>
 
 <style lang="postcss" scoped>
 .cy-button-toggle {

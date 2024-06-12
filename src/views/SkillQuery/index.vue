@@ -85,21 +85,15 @@
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'SkillQuery',
-}
-</script>
-
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
-import type { ComputedRef, Ref } from 'vue'
+import { ComputedRef, Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
+import ToggleService from '@/shared/setup/ToggleService'
 
 import {
   Skill,
@@ -108,9 +102,8 @@ import {
   SkillTreeCategory,
 } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/shared/setup/ToggleService'
-
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import { AppRouteNames } from '@/router/enums'
 
 import SkillEffect from './skill-effect.vue'
 import SkillQueryMenu from './skill-query-menu/index.vue'
@@ -119,7 +112,10 @@ import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
 import { setupComputingContainer, useSkillQueryState } from './setup'
-import { AppRouteNames } from '@/router/enums'
+
+defineOptions({
+  name: 'SkillQuery',
+})
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search', 'skillDev'] as const,

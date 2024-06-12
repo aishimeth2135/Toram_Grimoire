@@ -2,7 +2,7 @@
   <div class="px-0.5 py-2">
     <div class="flex items-center">
       <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
-        <cy-icon-text :icon="skillIconPath" icon-src="image" color="fuchsia">
+        <cy-icon-text :icon="skillIconPath" color="fuchsia">
           {{ skillResultsState.skill.name }}
         </cy-icon-text>
       </div>

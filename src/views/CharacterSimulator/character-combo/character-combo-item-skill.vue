@@ -11,7 +11,7 @@
       >
         <cy-icon
           v-if="currentSkill"
-          :path="skillIconPath!"
+          :icon="skillIconPath!"
           width="2.5rem"
           class="cursor-pointer"
           :class="{ 'opacity-50': !comboSkillState.valid }"

@@ -8,7 +8,7 @@
     >
       <template #equip>
         <span class="mx-1 inline-flex items-center text-emerald-60">
-          <template v-for="text in equipmentTexts" :key="'text-i-' + text.iid">
+          <template v-for="text in equipmentTexts" :key="'text-i-' + text.id">
             <cy-icon v-if="text.text === '+'" icon="ic-round-add" />
             <cy-icon v-else-if="text.text === '/'" icon="mdi-slash-forward" />
             <span

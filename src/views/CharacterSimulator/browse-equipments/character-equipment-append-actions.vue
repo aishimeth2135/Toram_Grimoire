@@ -60,7 +60,7 @@ const { displayedItems } = useEquipmentsDisplayedItems()
               hover
               @click="createCustomEquipment(item), hide()"
             >
-              <cy-icon :path="getEquipmentTypeImage(item)" width="1.5rem" />
+              <cy-icon :icon="getEquipmentTypeImage(item)" width="1.5rem" />
             </div>
           </div>
         </div>

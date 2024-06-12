@@ -72,7 +72,7 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   ;(
     Object.entries(origin.basicProps) as [
       keyof SkillEffectBasicProps,
-      string | number
+      string | number,
     ][]
   ).forEach(([key, value]) => {
     if (value !== null) {
@@ -474,7 +474,7 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
           suffix.setHistoryRecord(find.record)
         }
       })
-      history.nexts.set(branchItem, nextClone)
+      history.nexts.set(branchItem.instanceId, nextClone)
     }
   })
 }

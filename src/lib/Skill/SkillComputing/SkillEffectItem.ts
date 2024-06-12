@@ -1,3 +1,4 @@
+import { InstanceId } from '@/shared/services/InstanceId'
 import { computeFormula } from '@/shared/utils/data'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -55,6 +56,10 @@ abstract class SkillEffectItemBase {
     this.parent = parent
     this.stackStates = []
     this.auxiliaryBranchItems = []
+  }
+
+  get visibleBranchItems(): SkillBranchItem[] {
+    return this.branchItems.filter(branch => !branch.propBoolean('invisible'))
   }
 
   getStackState(stackId: number) {
@@ -241,7 +246,8 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   nextEffect!: SkillEffectItemBase
 
   // store the previous branch of every item in branchItems
-  nexts: Map<SkillBranchItem, SkillBranchItem | null>
+  // Map<SkillBranchItem.instanceId, SkillBranchItem | null>
+  nexts: Map<InstanceId, SkillBranchItem | null>
 
   constructor(
     parent: SkillItem,

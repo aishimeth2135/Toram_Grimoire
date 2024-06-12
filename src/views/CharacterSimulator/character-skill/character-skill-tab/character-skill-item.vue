@@ -18,7 +18,7 @@
             class="absolute -left-1.5 -top-1.5"
             icon="material-symbols:check-circle-rounded"
           />
-          <cy-icon :path="skillIconPath" width="1.5rem" />
+          <cy-icon :icon="skillIconPath" width="1.5rem" />
         </div>
       </div>
       <div class="w-full pr-3 pt-1" :class="{ 'opacity-50': !enabled }">

@@ -1,6 +1,11 @@
 import { Ref, StyleValue, computed, onUnmounted, watch } from 'vue'
 
-import { defineState, useContext } from '@/shared/setup/State'
+import {
+  ContextId,
+  getContextIdFromElement,
+  useContext,
+} from '@/shared/setup/ContextState'
+import { defineState } from '@/shared/setup/State'
 import { nextFrame } from '@/shared/utils/dom'
 
 interface TabsComponentContext {
@@ -85,7 +90,10 @@ export function useTabContext(componentContext: TabComponentContext) {
     if (!tabsEl) {
       return
     }
-    const tid = tabsEl.getAttribute(TABS_ID_ATTR_NAME)!
+    const tid = parseInt(
+      tabsEl.getAttribute(TABS_ID_ATTR_NAME)!,
+      10
+    ) as ContextId
     return _getTabsContext(tid)
   }
 
@@ -138,15 +146,17 @@ export function useTabContext(componentContext: TabComponentContext) {
 export const useTabsSlider = defineState(() => {
   const { TAB_ID_ATTR_NAME, getTabContext } = useTabContextState()
 
-  const findTab = (tabsEl: HTMLElement, value: any): HTMLElement => {
-    const tabEls = tabsEl.querySelectorAll(`div[${TAB_ID_ATTR_NAME}]`)
+  const findTab = (tabsEl: HTMLElement, value: any) => {
+    const tabEls = Array.from(
+      tabsEl.querySelectorAll(`div[${TAB_ID_ATTR_NAME}]`)
+    )
     const el =
-      Array.from(tabEls).find(tabEl => {
-        const tabId = tabEl.getAttribute(TAB_ID_ATTR_NAME)!
+      tabEls.find(tabEl => {
+        const tabId = getContextIdFromElement(tabEl, TAB_ID_ATTR_NAME)
         const tabContext = getTabContext(tabId)
         return tabContext && tabContext.tabValue.value === value
       }) ?? null
-    return el as HTMLElement
+    return el as HTMLElement | null
   }
 
   const getSliderNextStyle = (

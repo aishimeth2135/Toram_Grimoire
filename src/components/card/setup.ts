@@ -1,6 +1,10 @@
 import { Ref, onUnmounted } from 'vue'
 
-import { defineState, useContext } from '@/shared/setup/State'
+import {
+  getContextIdFromElement,
+  useContext,
+} from '@/shared/setup/ContextState'
+import { defineState } from '@/shared/setup/State'
 
 interface CardRowContext {
   item: Ref<any>
@@ -48,7 +52,7 @@ export function setupCardRowsDelegation() {
     if (!el.hasAttribute(CARD_ROW_ID_ATTR_NAME)) {
       el = el.closest(`div[${CARD_ROW_ID_ATTR_NAME}]`)!
     }
-    const rowId = el.getAttribute(CARD_ROW_ID_ATTR_NAME)!
+    const rowId = getContextIdFromElement(el, CARD_ROW_ID_ATTR_NAME)
     return getCardRowContext(rowId)!.item.value as any
   }
 

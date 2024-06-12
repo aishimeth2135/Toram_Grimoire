@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 
+import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
 import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
@@ -23,11 +24,11 @@ type SkillBranchItemOverwriteRecords = {
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>
 }
 abstract class SkillBranchItemBase<
-  Parent extends SkillEffectItemBase = SkillEffectItemBase
+  Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > {
-  private static _incrementId = 0
+  private static _idGenerator = new InstanceIdGenerator()
 
-  readonly instanceId: number
+  readonly instanceId: InstanceId
 
   private _props: Map<string, string>
 
@@ -68,9 +69,7 @@ abstract class SkillBranchItemBase<
    * @param branch - branch from default effect of skill, branch should be overwrite later
    */
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
-    this.instanceId = SkillBranchItemBase._incrementId
-    SkillBranchItemBase._incrementId += 1
-
+    this.instanceId = SkillBranchItemBase._idGenerator.generate()
     this.parent = parent
     this.id = branch.id
 
@@ -195,7 +194,7 @@ abstract class SkillBranchItemBase<
  * @vue-reactive raw
  */
 class SkillBranchItem<
-  Parent extends SkillEffectItemBase = SkillEffectItemBase
+  Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
@@ -286,7 +285,7 @@ class SkillBranchItem<
  * @vue-reactive raw
  */
 class SkillBranchItemSuffix<
-  Parent extends SkillEffectItemBase = SkillEffectItemBase
+  Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 

@@ -1,19 +1,22 @@
 import type { SkillDisplayData } from '.'
 
+import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+
 import {
   SkillBranchResultBase,
   SkillBranchStatResult,
 } from '@/lib/Skill/SkillComputing'
 import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
-let _autoIncreasement = 0
 export default class DisplayDataContainer<
-  Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds
+  Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds,
 > {
+  private static _idGenerator = new InstanceIdGenerator()
+
   private _titles: SkillDisplayData
   private _customDatas!: Record<string, any>
 
-  readonly instanceId: number
+  readonly instanceId: InstanceId
 
   readonly branchItem: Branch
   readonly containers: Map<string, SkillBranchResultBase>
@@ -30,8 +33,7 @@ export default class DisplayDataContainer<
     statContainers?: SkillBranchStatResult[]
     titles?: SkillDisplayData
   }) {
-    this.instanceId = _autoIncreasement
-    _autoIncreasement += 1
+    this.instanceId = DisplayDataContainer._idGenerator.generate()
 
     this.branchItem = branchItem
     this.containers = containers

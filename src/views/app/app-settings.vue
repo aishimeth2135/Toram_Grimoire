@@ -235,12 +235,6 @@
   </cy-modal>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AppSetting',
-}
-</script>
-
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, ref } from 'vue'
@@ -250,11 +244,14 @@ import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
+import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
-import Notify from '@/shared/setup/Notify'
-
 import AppSettingsRow from './app-settings/app-settings-row.vue'
+
+defineOptions({
+  name: 'AppSetting',
+})
 
 const { t } = useI18n()
 const mainStore = useMainStore()
@@ -401,28 +398,3 @@ const appFontOptions = [
   },
 ]
 </script>
-
-<style lang="postcss" scoped>
-.app--settings-column {
-  @apply relative px-0.5;
-
-  &::before {
-    content: '';
-    @apply absolute right-0 top-1.5 h-3.5 w-3.5 bg-primary-30;
-  }
-
-  & > fieldset {
-    @apply border-0 border-t-1 border-solid border-primary-30 px-2 py-2;
-
-    & > .caption {
-      @apply mb-2;
-    }
-    & > .buttons {
-      @apply mt-1 p-1;
-    }
-    & > legend {
-      @apply ml-2 px-2;
-    }
-  }
-}
-</style>

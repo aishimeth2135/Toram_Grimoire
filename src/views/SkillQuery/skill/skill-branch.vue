@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -94,21 +94,12 @@ import skillBranchTable from './skill-branch-table.vue'
 import SkillBranchText from './skill-branch-text.vue'
 import SkillEquipmentButton from './skill-equipment-button.vue'
 
-import { setupOtherEffectBranches } from './setup'
+import { NORMAL_LAYOUT_BRANCH_NAMES, setupOtherEffectBranches } from './setup'
 
-const NORMAL_LAYOUT_BRANCH_NAMES = [
-  SkillBranchNames.Damage,
-  SkillBranchNames.Effect,
-  SkillBranchNames.Heal,
-  SkillBranchNames.Passive,
-]
-
-export default {
+defineOptions({
   name: 'SkillBranch',
-}
-</script>
+})
 
-<script lang="ts" setup>
 interface Props {
   computing: SkillComputingContainer
   skillBranchItem: SkillBranchItem
@@ -156,7 +147,7 @@ const currentComponent = computed(() => {
 
 const paddingBottomClass = computed(() => {
   const curBch = branchItem.value
-  const branchItems = curBch.parent.branchItems
+  const branchItems = curBch.parent.visibleBranchItems
   const idx = branchItems.indexOf(curBch)
   if (idx === branchItems.length - 1 || sub.value) {
     return 'pb-0'
@@ -171,21 +162,16 @@ const paddingBottomClass = computed(() => {
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
-  // if (cur === SkillBranchNames.Proration && next === SkillBranchNames.Damage) {
-  //   return 'pb-0'
-  // }
   if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
-  if (
-    [
-      SkillBranchNames.Tips,
-      SkillBranchNames.Text,
-      SkillBranchNames.List,
-    ].includes(cur) &&
-    next === SkillBranchNames.Tips
-  ) {
-    return 'pb-2.5'
+  if (next === SkillBranchNames.Tips) {
+    if (cur === SkillBranchNames.Text || cur === SkillBranchNames.List) {
+      return 'pb-2.5'
+    }
+    if (cur === SkillBranchNames.Tips) {
+      return 'pb-0'
+    }
   }
   if (
     cur === SkillBranchNames.Reference &&

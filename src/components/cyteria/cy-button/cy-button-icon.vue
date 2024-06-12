@@ -1,3 +1,34 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
+
+import { ButtonBaseProps, useButtonBaseBinds } from './setup'
+
+interface Props extends ButtonBaseProps {
+  icon: string
+  iconColor?: string
+  iconColorHover?: string
+}
+
+const props = defineProps<Props>()
+
+const buttonBaseBinds = useButtonBaseBinds(props)
+
+const rootStyle = computed(() => {
+  const styles = {} as Record<string, string>
+  if (props.iconColor) {
+    styles['--button-color-icon'] = `var(--app-${props.iconColor})`
+    styles['--button-color-icon-hover'] = `var(--app-${props.iconColor})`
+  }
+  if (props.iconColorHover) {
+    styles['--button-color-icon-hover'] = `var(--app-${props.iconColorHover})`
+  }
+  return styles
+})
+</script>
+
 <template>
   <CyButtonBase
     v-slot="{ iconClass }"
@@ -8,55 +39,6 @@
     <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-import ButtonIcon from './button-icon.vue'
-import CyButtonBase from './cy-button-base.vue'
-
-import { ButtonBasePropList, getButtonBaseBinds } from './setup'
-
-export default defineComponent({
-  props: {
-    ...ButtonBasePropList,
-    icon: {
-      type: String,
-      required: true,
-    },
-    iconColor: {
-      type: String,
-      default: null,
-    },
-    iconColorHover: {
-      type: String,
-      default: null,
-    },
-  },
-  components: {
-    CyButtonBase,
-    ButtonIcon,
-  },
-  computed: {
-    buttonBaseBinds() {
-      return getButtonBaseBinds(this)
-    },
-    rootStyle() {
-      const styles = {} as Record<string, string>
-      if (this.iconColor) {
-        styles['--button-color-icon'] = `var(--app-${this.iconColor})`
-        styles['--button-color-icon-hover'] = `var(--app-${this.iconColor})`
-      }
-      if (this.iconColorHover) {
-        styles[
-          '--button-color-icon-hover'
-        ] = `var(--app-${this.iconColorHover})`
-      }
-      return styles
-    },
-  },
-})
-</script>
 
 <style lang="postcss" scoped>
 .cy-button-icon {

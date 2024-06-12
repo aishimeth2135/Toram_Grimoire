@@ -229,7 +229,7 @@ const selectStatOption = (option: StatOption) => {
               <cy-icon icon="ic:round-close" class="mr-3.5" />
               <cy-icon
                 v-if="!equip.origin!.unknowCategory"
-                :path="equip.getCategoryImagePath()"
+                :icon="equip.getCategoryImagePath()"
               />
               <cy-icon v-else icon="eva-star-outline" />
               <div class="ml-2 w-40">

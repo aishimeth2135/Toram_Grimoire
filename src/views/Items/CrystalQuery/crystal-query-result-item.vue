@@ -9,7 +9,6 @@
         <div class="flex w-40 flex-shrink-0 py-0.5">
           <cy-icon-text
             :icon="crystal.crystalIconPath"
-            icon-src="image"
             :text-color="detailVisible ? 'orange-60' : 'primary-90'"
           >
             {{ crystal.name }}
@@ -25,7 +24,7 @@
             </cy-icon-text>
             <cy-icon
               v-if="crystal.origin.enhancer"
-              :path="crystal.origin.crystalBaseIconPath"
+              :icon="crystal.origin.crystalBaseIconPath"
               small
             />
           </template>

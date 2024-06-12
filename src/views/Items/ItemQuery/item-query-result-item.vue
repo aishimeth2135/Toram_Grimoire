@@ -7,27 +7,21 @@
         @click="toggle('contents/detail')"
       >
         <div class="flex w-full items-start">
-          <cy-icon-text
-            class="w-48 flex-shrink-0"
-            :icon="
-              !equipment.is(EquipmentKinds.Avatar)
-                ? equipment.getCategoryImagePath()
-                : equipment.categoryIcon
-            "
-            :icon-src="
-              !equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'
-            "
-            :text-color="contents.detail ? 'primary-70' : 'primary-90'"
-          >
-            <span class="inline-flex flex-wrap items-center">
-              <span>{{ equipment.name }}</span>
-              <cy-icon
-                v-if="firstObtain && firstObtain.isDrop"
-                icon="jam-box"
-                class="ml-2 text-orange-60"
-              />
-            </span>
-          </cy-icon-text>
+          <div class="flex w-48 flex-shrink-0 items-center">
+            <cy-icon
+              :icon="
+                !equipment.is(EquipmentKinds.Avatar)
+                  ? equipment.getCategoryImagePath()
+                  : equipment.categoryIcon
+              "
+            />
+            <div class="ml-2">{{ equipment.name }}</div>
+            <cy-icon
+              v-if="firstObtain && firstObtain.isDrop"
+              icon="jam-box"
+              class="ml-2 text-orange-60"
+            />
+          </div>
           <div
             v-if="
               state.currentMode === SearchModes.Normal ||
@@ -121,13 +115,11 @@
               </span>
               <span class="ml-2 flex items-center">
                 <cy-icon
-                  v-if="originEquipment.unknowCategory"
-                  icon="mdi-ghost"
-                  small
-                />
-                <cy-icon
-                  v-else
-                  :path="equipment.getCategoryImagePath()"
+                  :icon="
+                    !originEquipment.unknowCategory
+                      ? equipment.getCategoryImagePath()
+                      : 'mdi-ghost'
+                  "
                   small
                 />
                 <span class="ml-1 text-primary-50">

@@ -48,7 +48,7 @@ const equipment = computed(() => props.equipmentField.equipment)
           :key="crystal.id"
           class="mr-3 flex items-center"
         >
-          <cy-icon :path="crystal.crystalIconPath" />
+          <cy-icon :icon="crystal.crystalIconPath" />
           <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
         </div>
       </div>

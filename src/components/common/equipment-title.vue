@@ -1,15 +1,13 @@
 <template>
-  <cy-icon-text
-    :icon="
-      !equipment.is(EquipmentKinds.Avatar)
-        ? equipment.getCategoryImagePath()
-        : equipment.categoryIcon
-    "
-    :icon-src="!equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
-    :small="small"
-    :text-color="textColor"
-  >
-    <div class="inline-block text-ellipsis" style="max-width: 12rem">
+  <div class="flex items-center">
+    <cy-icon
+      :icon="
+        !equipment.is(EquipmentKinds.Avatar)
+          ? equipment.getCategoryImagePath()
+          : equipment.categoryIcon
+      "
+    />
+    <div class="ml-2 inline-block text-ellipsis" style="max-width: 12rem">
       {{ equipment.name }}
     </div>
     <span
@@ -18,7 +16,7 @@
     >
       +{{ equipment.refining }}
     </span>
-  </cy-icon-text>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -34,7 +32,6 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
   selected: false,
-  small: false,
   textColor: 'default',
 })
 </script>

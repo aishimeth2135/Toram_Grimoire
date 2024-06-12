@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="store.confirmItems.length !== 0"
-    class="fixed top-0 left-0 z-100 h-full w-full"
+    class="fixed left-0 top-0 z-100 h-full w-full"
   >
     <div class="absolute -z-1 h-full w-full bg-black opacity-30" />
     <div class="flex h-full w-full items-center justify-center">
@@ -10,11 +10,8 @@
       >
         <div class="mb-6 flex">
           <div>
-            <cy-icon-text
-              :icon="typeof item.icon === 'string' ? item.icon : item.icon.name"
-              :icon-src="
-                typeof item.icon === 'string' ? 'iconify' : item.icon.src
-              "
+            <cy-icon
+              :icon="item.icon"
               icon-width="2rem"
               class="mr-4 flex-shrink-0"
             />
@@ -40,17 +37,15 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AppConfirm',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm'
+
+defineOptions({
+  name: 'AppConfirm',
+})
 
 const store = useConfirmStore()
 

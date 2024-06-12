@@ -24,20 +24,20 @@ export function defineViewState<State extends Record<string, any>>(
   id: string,
   init: () => State
 ): () => State {
-  const fun = function () {
-    if (!statesMap.has(fun)) {
-      statesMap.set(fun, init())
+  const stateGetter = function () {
+    if (!statesMap.has(stateGetter)) {
+      statesMap.set(stateGetter, init())
     }
-    return statesMap.get(fun)! as State
+    return statesMap.get(stateGetter)! as State
   }
 
   if (!viewStatesMap.has(id)) {
-    viewStatesMap.set(id, [fun])
+    viewStatesMap.set(id, [stateGetter])
   } else {
-    viewStatesMap.get(id)!.push(fun)
+    viewStatesMap.get(id)!.push(stateGetter)
   }
 
-  return fun
+  return stateGetter
 }
 
 export function registViewStatesCleaning(id: string) {
@@ -66,34 +66,19 @@ export function useToggleList<Item extends any>(list: Ref<Item[]>) {
   return { itemSelected, toggleItem }
 }
 
-type ComponentContext = Record<string, any>
+interface ToggleHelper {
+  (value?: boolean | any): void
+}
 
-export const useContext = <Context extends ComponentContext>() => {
-  const contexts = new Map<string, Context>()
+export function useToggle(target: Ref<boolean>): ToggleHelper {
+  return <ToggleHelper>((value) => {
+    // ignore `undefined`, `null`, `Event` or others
+    target.value = typeof value === 'boolean' ? value : !target.value
+  })
+}
 
-  let currentId = 0
-  const getNextId = () => {
-    currentId += 1
-    return currentId.toString()
-  }
-
-  const allocContext = (context: Context): { id: string; context: Context } => {
-    const id = getNextId()
-    contexts.set(id, context)
-    return { id, context }
-  }
-
-  const getContext = (id: string) => {
-    return contexts.get(id) ?? null
-  }
-
-  const deallocContext = (id: string) => {
-    return contexts.delete(id)
-  }
-
-  return {
-    allocContext,
-    deallocContext,
-    getContext,
+export function useToggleGroup(helpers: ToggleHelper[]) {
+  return (value: boolean) => {
+    helpers.forEach(helper => helper(value))
   }
 }

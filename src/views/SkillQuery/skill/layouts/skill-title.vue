@@ -2,7 +2,6 @@
   <div class="flex flex-wrap items-center">
     <cy-icon-text
       :icon="getSkillIconPath(skill)"
-      icon-src="image"
       text-color="fuchsia-60"
       class="mr-3"
     >

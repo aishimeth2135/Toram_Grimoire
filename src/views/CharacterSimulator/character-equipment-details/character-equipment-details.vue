@@ -182,7 +182,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             :key="crystal.id"
             class="flex w-full items-center pl-2"
           >
-            <cy-icon :path="crystal.crystalIconPath" />
+            <cy-icon :icon="crystal.crystalIconPath" />
             <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
           </div>
         </template>

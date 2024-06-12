@@ -31,7 +31,9 @@
               <div
                 class="bg-no-repeat h-28 bg-cover bg-center"
                 :style="{
-                  backgroundImage: `url('${discordGroupData.splashUrl}')`,
+                  backgroundImage: discordGroupData.splashUrl
+                    ? `url('${discordGroupData.splashUrl}')`
+                    : '',
                 }"
               />
               <cy-icon
@@ -63,14 +65,15 @@
                     </cy-icon-text>
                   </div>
                 </div>
-                <cy-button-action
-                  link
+                <a
                   href="https://discord.com/invite/FKG6RVT975"
                   target="_blank"
                   class="ml-auto"
                 >
-                  {{ t('app.about.partnership.join') }}
-                </cy-button-action>
+                  <cy-button-action>
+                    {{ t('app.about.partnership.join') }}
+                  </cy-button-action>
+                </a>
               </div>
             </div>
           </template>
@@ -179,18 +182,16 @@
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AppAbout',
-}
-</script>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import { AppRouteNames } from '@/router/enums'
+
+defineOptions({
+  name: 'AppAbout',
+})
 
 const { t } = useI18n()
 
@@ -348,7 +349,9 @@ const fetchDiscordData = async () => {
       name: guild.name,
       memberNumbers: data.approximate_member_count + '',
       iconUrl: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=64`,
-      splashUrl: `https://cdn.discordapp.com/splashes/${guild.id}/${guild.splash}.jpg?size=512`,
+      splashUrl: guild.splas
+        ? `https://cdn.discordapp.com/splashes/${guild.id}/${guild.splash}.jpg?size=512`
+        : '',
       loaded: true,
     }
   } catch (err) {

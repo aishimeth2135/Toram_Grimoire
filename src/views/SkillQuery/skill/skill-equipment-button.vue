@@ -1,6 +1,5 @@
 <template>
   <cy-button-action
-    :icon="null"
     :selected="selected"
     :class="{
       'py-1': iconDatas.every(iconData =>
@@ -16,24 +15,12 @@
             icon="mdi-slash-forward"
             class="text-primary-50"
           />
-          <div class="flex items-center space-x-1">
-            <template v-for="icon in iconData.icons" :key="icon.iid">
-              <cy-icon-text
-                v-if="!icon.text"
-                :icon="icon.icon"
-                :icon-src="icon.src"
-              />
-              <cy-icon-text
-                v-else
-                :icon="icon.icon"
-                :icon-src="icon.src"
-                block
-                text-minimize
-              >
-                {{ icon.text || '' }}
-              </cy-icon-text>
-            </template>
-          </div>
+          <template v-for="(icon, idx2) in iconData.icons" :key="icon.iid">
+            <cy-icon :icon="icon.icon" :class="{ 'ml-1': idx2 !== 0 }" />
+            <div v-if="icon.text" class="ml-0.5 text-sm leading-none">
+              {{ icon.text }}
+            </div>
+          </template>
         </template>
       </div>
     </template>
@@ -47,8 +34,6 @@ import { useI18n } from 'vue-i18n'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
-import { IconSrc } from '@/components/cyteria/icon/setup'
-
 interface Props {
   equipments: EquipmentRestrictions[]
   selected?: boolean
@@ -61,8 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n()
 
 interface IconItem {
-  icon: string
-  src: IconSrc
+  icon?: string
   text?: string
 }
 
@@ -75,22 +59,21 @@ const iconDatas = computed(() => {
     if (fields.length === 0) {
       icons.push({
         icon: 'mdi:checkbox-multiple-blank-circle-outline',
-        src: 'iconify',
         text: t('skill-query.equipment.none'),
       })
     }
     const operatorIcon = 'ic-round-add'
     fields.forEach((key, fieldIdx) => {
       if (fieldIdx !== 0) {
-        icons.push({ icon: operatorIcon, src: 'iconify' })
+        icons.push({ icon: operatorIcon })
       } else {
         if (fields.length === 1 && key === 'sub') {
-          icons.push({ icon: 'mdi:radiobox-marked', src: 'iconify' })
-          icons.push({ icon: 'ic-round-add', src: 'iconify' })
+          icons.push({ icon: 'mdi:radiobox-marked' })
+          icons.push({ icon: 'ic-round-add' })
         }
       }
-      const icon = CharacterEquipment.getImagePath(equip[key]!)
-      icons.push({ icon, src: 'image' })
+      const iconPath = CharacterEquipment.getImagePath(equip[key]!)
+      icons.push({ icon: iconPath })
     })
     return {
       icons: icons.map((icon, iid) => ({ ...icon, iid })),

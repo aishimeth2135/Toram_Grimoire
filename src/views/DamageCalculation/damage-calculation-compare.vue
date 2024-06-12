@@ -16,7 +16,7 @@
       />
     </div>
     <div v-else class="px-2">
-      <cy-default-tips icon="potum" icon-src="custom">
+      <cy-default-tips icon="@potum">
         {{ t('damage-calculation.compare.introduction') }}
       </cy-default-tips>
     </div>
@@ -44,7 +44,7 @@
       </cy-list-item>
     </cy-modal>
   </div>
-  <cy-default-tips v-else icon="potum" icon-src="custom">
+  <cy-default-tips v-else icon="@potum">
     {{ t('damage-calculation.compare.at-least-two-builds-tips') }}
   </cy-default-tips>
 </template>

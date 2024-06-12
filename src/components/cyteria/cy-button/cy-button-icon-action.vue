@@ -2,22 +2,22 @@
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, ButtonIconProps, useButtonBaseBinding } from './setup'
+import { ButtonBaseProps, ButtonIconProps, useButtonBaseBinds } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {}
 
 const props = defineProps<Props>()
 
-const { buttonBaseBinding } = useButtonBaseBinding(props)
+const buttonBaseBinds = useButtonBaseBinds(props)
 </script>
 
 <template>
   <CyButtonBase
     v-slot="{ iconClass }"
-    v-bind="buttonBaseBinding"
+    v-bind="buttonBaseBinds"
     class="cy-button-icon-action"
   >
-    <ButtonIcon :icon="icon" :src="iconSrc" :class="iconClass" />
+    <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>
 </template>
 

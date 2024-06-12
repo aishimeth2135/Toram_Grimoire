@@ -4,11 +4,9 @@ import { useCssModule } from 'vue'
 
 import IconBase from './icon/icon-base.vue'
 
-import { IconSrc } from './icon/setup'
+import { IconBaseProps } from './icon/setup'
 
-interface Props {
-  icon?: string
-  path?: string
+interface Props extends IconBaseProps {
   width?: string
   small?: boolean
 }
@@ -37,32 +35,11 @@ const iconClass = computed(() => {
 
   return baseClass
 })
-
-const iconData = computed(() => {
-  const data: { src: IconSrc; icon: string | undefined } = {
-    src: 'iconify',
-    icon: props.icon,
-  }
-
-  if (props.path) {
-    data.src = 'image'
-    data.icon = props.path
-    return data
-  }
-
-  if (data.icon?.startsWith('@')) {
-    data.src = 'custom'
-    data.icon = data.icon.slice(1)
-  }
-
-  return data
-})
 </script>
 
 <template>
   <IconBase
-    :icon="iconData.icon"
-    :src="iconData.src"
+    :icon="icon"
     :style="iconStyle"
     :class="iconClass"
     class="inline-block max-w-none flex-shrink-0"

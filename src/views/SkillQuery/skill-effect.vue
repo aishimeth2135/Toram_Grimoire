@@ -1,28 +1,17 @@
 <template>
   <div v-if="effectItem">
-    <div v-if="tabVisible" class="mb-3 space-x-2 px-2">
-      <cy-button-plain
-        icon="bx:bxs-book-bookmark"
-        class="skill-effect-tab-button"
-        :selected="tabs.skillInfo"
-        @click="setTab('skillInfo')"
-      >
+    <cy-tabs v-if="tabVisible" v-model="currentTab" class="mb-4">
+      <cy-tab :value="ContentTabs.Info">
         {{ t('skill-query.skill-info') }}
-      </cy-button-plain>
-      <cy-button-plain
-        icon="ic:round-history"
-        class="skill-effect-tab-button"
-        :selected="tabs.skillHistory"
-        :disabled="effectItem.historys.length === 0"
-        @click="setTab('skillHistory')"
-      >
+      </cy-tab>
+      <cy-tab :value="ContentTabs.History">
         {{ t('skill-query.historical-record') }}
-      </cy-button-plain>
-    </div>
+      </cy-tab>
+    </cy-tabs>
     <div ref="skillBranchesElement" class="skill-effect-main">
-      <div v-if="tabs.skillInfo">
+      <div v-if="currentTab === ContentTabs.Info">
         <SkillBranch
-          v-for="branchItem in effectItem.branchItems"
+          v-for="branchItem in effectItem.visibleBranchItems"
           :key="branchItem.instanceId"
           :skill-branch-item="branchItem"
           :computing="rootComputingContainer"
@@ -52,7 +41,7 @@
           </div>
         </div>
       </div>
-      <div v-if="tabs.skillHistory">
+      <div v-else-if="currentTab === ContentTabs.History">
         <SkillEffectHistory :skill-effect-item="effectItem" />
       </div>
     </div>
@@ -71,21 +60,13 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'SkillEffect',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, inject, provide, ref, watch } from 'vue'
 import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { Skill } from '@/lib/Skill/Skill'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
-
-import ToggleService from '@/shared/setup/ToggleService'
+import { Skill } from '@/lib/Skill/Skill'
 
 import GlossaryTagPopover from '../GlossaryQuery/glossary-tag-popover.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
@@ -97,6 +78,10 @@ import {
   ComputingContainerInjectionKey,
   SkillEffectInjectionKey,
 } from './injection-keys'
+
+defineOptions({
+  name: 'SkillEffect',
+})
 
 interface Props {
   selectedEquipment: EquipmentRestrictions
@@ -131,12 +116,16 @@ const registletItemStates = computed(() => {
 })
 
 const { t } = useI18n()
-const { tabs, toggle } = ToggleService({
-  tabs: [{ name: 'skillInfo', default: true }, 'skillHistory'] as const,
-})
 
-const setTab = (target: 'skillInfo' | 'skillHistory') => {
-  toggle(`tabs/${target}`, true, false)
+const enum ContentTabs {
+  Info,
+  History,
+}
+
+const currentTab = ref<ContentTabs>(ContentTabs.Info)
+
+const setTab = (tab: ContentTabs) => {
+  currentTab.value = tab
 }
 
 const tabVisible = computed(() => {
@@ -149,19 +138,9 @@ const tabVisible = computed(() => {
 
 const skillBranchesElement: Ref<HTMLElement | null> = ref(null)
 
-watch(effectItem, () => setTab('skillInfo'), { immediate: true })
+watch(effectItem, () => setTab(ContentTabs.Info), { immediate: true })
 
 provide(SkillEffectInjectionKey, {
   currentEffectItem: effectItem,
 })
 </script>
-
-<style lang="postcss" scoped>
-.skill-effect-tab-button {
-  @apply inline-flex cursor-pointer items-center border-b-1 border-transparent px-3 py-0.5 hover:border-primary-30;
-
-  &.selected {
-    @apply border-primary-60 hover:border-primary-60;
-  }
-}
-</style>
