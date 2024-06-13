@@ -191,7 +191,7 @@ abstract class SkillBranchItemBase<
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillBranchItem<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
@@ -282,7 +282,7 @@ class SkillBranchItem<
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillBranchItemSuffix<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,

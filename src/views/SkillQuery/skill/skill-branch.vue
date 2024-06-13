@@ -6,11 +6,11 @@
   >
     <div
       class="skill-branch-content"
-      :class="{ 'sub-content-active': contents.sub }"
+      :class="{ 'sub-content-active': subContentVisible }"
     >
       <div class="relative">
         <div
-          v-if="currentEffectEquipments && contents.sub"
+          v-if="currentEffectEquipments && subContentVisible"
           class="flex items-center pb-1.5 pl-3 pt-2"
         >
           <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
@@ -31,11 +31,11 @@
           icon="mdi:select-compare"
           class="toggle-sub-button"
           small
-          @click="toggle('contents/sub')"
+          @click="toggleSubContent"
         />
       </div>
       <cy-transition>
-        <div v-if="!sub && contents.sub">
+        <div v-if="!sub && subContentVisible">
           <div class="flex items-center pb-1.5 pl-3 pt-3">
             <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
               {{ t('skill-query.branch.compared-effect-equipments-prefix') }}
@@ -70,9 +70,10 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -114,9 +115,9 @@ const props = withDefaults(defineProps<Props>(), {
 const { skillBranchItem: branchItem, sub, contentAuto } = toRefs(props)
 
 const { t } = useI18n()
-const { contents, toggle } = ToggleService({
-  contents: ['sub'] as const,
-})
+
+const subContentVisible = ref(false)
+const toggleSubContent = useToggle(subContentVisible)
 
 const currentComponent = computed(() => {
   switch (branchItem.value.name) {
@@ -149,6 +150,7 @@ const paddingBottomClass = computed(() => {
   const curBch = branchItem.value
   const branchItems = curBch.parent.visibleBranchItems
   const idx = branchItems.indexOf(curBch)
+
   if (idx === branchItems.length - 1 || sub.value) {
     return 'pb-0'
   }

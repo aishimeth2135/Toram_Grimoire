@@ -68,7 +68,7 @@ abstract class SkillEffectItemBase {
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillEffectItem extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItem>[]
@@ -231,7 +231,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillEffectItemHistory extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItemHistory>[]
