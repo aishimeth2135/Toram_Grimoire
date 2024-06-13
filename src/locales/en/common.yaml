@@ -42,21 +42,21 @@ Equipment:
       arrow: Arrow
       shield: Shield
       dagger: Dagger
-      katana: Katana(Sub)
-      magic-device: Magic Device(Sub)
-      knuckle: Knuckle(Sub)
-      one-hand-sword: One-Hand Sword(Dual Sword Sub)
+      katana: Katana (Sub)
+      magic-device: Magic Device (Sub)
+      knuckle: Knuckle (Sub)
+      one-hand-sword: One-Hand Sword (Dual Sword Sub)
       ninjutsu-scroll: Ninjutsu Scroll
     body:
       body-normal: Normal Armor
       body-dodge: Light Armor
       body-defense: Heavy Armor
   obtain:
-    mobs: Mobs Drop
+    mobs: Mob Drop
     boss: Boss Drop
     mini_boss: Mini Boss Drop
     quest: Quest Reward
-    smith: Smith craft
+    smith: Craftable (NPC)
     unknown: Unknown
     other: Other
     box: Loot Box content
@@ -65,8 +65,8 @@ Equipment:
 Stat:
   type-total: Total {text}
 auto-save:
-  save-unknown-error-tips: 自動存檔時發生未知的錯誤。
-  load-unknown-error-tips: 自動讀取時發生未知的錯誤。
+  save-unknown-error-tips: An unknown error occurred while autosaving.
+  load-unknown-error-tips: An unknown error occurred while autoloading.
 export-build:
   save-unknown-error-tips: 產生檔案時發生未知的錯誤。
   load-success-tips: 產生檔案時發生未知的錯誤。
