@@ -2,7 +2,12 @@ import Grimoire from '@/shared/Grimoire'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-import { Skill, SkillTree } from '@/lib/Skill/Skill'
+import {
+  Skill,
+  SkillBranch,
+  SkillBranchNames,
+  SkillTree,
+} from '@/lib/Skill/Skill'
 import {
   DrawSkillTreeData,
   DrawSkillTreeDataTypes,
@@ -473,4 +478,28 @@ export function getSkillBuildText(skillBuild: SkillBuild) {
   res += Grimoire.i18n.t('skill-simulator.export-image.watermark')
 
   return res
+}
+
+export function checkSkillBranchForParty(branch: SkillBranch): boolean {
+  if (branch.name !== SkillBranchNames.Effect) {
+    return false
+  }
+  if (branch.stats.length === 0) {
+    return false
+  }
+  const branchType = branch.props.get('type')
+  if (branchType !== 'party' && branchType !== 'aura') {
+    return false
+  }
+  return true
+}
+
+export function getPartySkillBranchId(branch: SkillBranch) {
+  if (branch.props.get('effect_id')) {
+    return parseInt(branch.props.get('effect_id')!, 10)
+  }
+  if (branch.hasId()) {
+    return branch.id
+  }
+  return 0
 }

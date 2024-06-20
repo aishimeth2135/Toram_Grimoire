@@ -1,5 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
-import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 
 import type { Skill, SkillBranch } from '@/lib/Skill/Skill'
 
@@ -27,7 +31,7 @@ interface CharacterComboGetStatesParams {
   checkSkillValid: (skill: Skill) => boolean
 }
 
-class CharacterCombo {
+class CharacterCombo implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
   readonly instanceId: InstanceId
   comboSkills: CharacterComboSkill[]

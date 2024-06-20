@@ -1,6 +1,10 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
-import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 import { normalizeInteger } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
@@ -39,7 +43,7 @@ interface EquipmentSaveData {
   labels?: number[]
 }
 
-abstract class CharacterEquipment {
+abstract class CharacterEquipment implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
   abstract type: EquipmentTypes
