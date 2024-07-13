@@ -6,7 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { VitePWA } from 'vite-plugin-pwa'
+import { ManifestOptions, VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -83,7 +83,7 @@ export default defineConfig(({ mode }) => {
   }
 })
 
-function getPWAManifestConfig() {
+function getPWAManifestConfig(): Partial<ManifestOptions> {
   return {
     short_name: 'Grimoire',
     name: 'Toram Grimoire',

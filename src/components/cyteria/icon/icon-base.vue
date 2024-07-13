@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const iconPath = computed(() => {
-  if (props.icon.includes('.')) {
+  if (props.icon.includes('.') || props.icon.startsWith('data:image')) {
     return props.icon
   }
   return ''
