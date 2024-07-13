@@ -5,12 +5,12 @@
         <cy-button-circle
           icon="akar-icons:sidebar-left"
           color="bright"
-          @click="toggle('contents/menu')"
+          @click="toggleMainMenu"
         />
       </div>
       <cy-transition>
-        <div v-if="contents.menu" class="app--side-menu--menu">
-          <AppSideMenuContent @click="toggle('contents/menu')" />
+        <div v-if="mainMenuVisible" class="app--side-menu--menu">
+          <AppSideMenuContent @click="toggleMainMenu" />
         </div>
       </cy-transition>
     </div>
@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
 import AppSideMenuContent from './app-side-menu-content.vue'
 
@@ -28,17 +28,17 @@ interface Props {
   visible: boolean
 }
 
-const { toggle, contents } = ToggleService({
-  contents: ['menu', 'menuLinks'] as const,
-})
-
 const props = defineProps<Props>()
+
+const mainMenuVisible = ref(false)
+
+const toggleMainMenu = useToggle(mainMenuVisible)
 
 watch(
   () => props.visible,
   value => {
     if (!value) {
-      toggle('contents/menu', false)
+      toggleMainMenu(false)
     }
   }
 )

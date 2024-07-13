@@ -3,7 +3,7 @@
     <cy-icon
       v-if="branchItem.is(SkillBranchNames.Tips)"
       icon="ic:outline-tips-and-updates"
-      class="mr-2 mt-0.5"
+      class="ml-1 mr-2 mt-0.5"
     />
     <SkillBranchPropValue :result="container.result('text')" />
   </div>

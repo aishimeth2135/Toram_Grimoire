@@ -5,7 +5,7 @@
       :key="skill.skillId"
       @click="emit('submit', skill)"
     >
-      <cy-icon-text :icon="getSkillIconPath(skill)" icon-src="image">
+      <cy-icon-text :icon="getSkillIconPath(skill)">
         {{ skill.name }}
       </cy-icon-text>
     </cy-list-item>

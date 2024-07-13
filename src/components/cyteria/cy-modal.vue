@@ -57,7 +57,7 @@
             </div>
             <div class="absolute -bottom-16 right-4">
               <cy-button-circle
-                v-show="extraContent.main"
+                v-show="extraContentVisible"
                 color="blue"
                 icon="ep:arrow-right-bold"
                 @click="hideExtraContent"
@@ -70,20 +70,17 @@
   </teleport>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { CSSProperties, Ref, computed, ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ToggleService from '@/shared/setup/ToggleService'
 import { remToPixels } from '@/shared/utils/dom'
 
-export default {
+defineOptions({
   name: 'CyModal',
   inheritAttrs: false,
-}
-</script>
+})
 
-<script lang="ts" setup>
 interface Props {
   visible: boolean
   verticalPosition?: 'start' | 'center'
@@ -106,6 +103,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits<Emits>()
 
+const extraContentVisible = ref(false)
+
 const attrs = useAttrs()
 const slots = useSlots()
 
@@ -122,20 +121,16 @@ const closeModal = () => {
   emit('close')
 }
 
-const { extraContent, toggle } = ToggleService({
-  extraContent: ['main'] as const,
-})
-
 const extraContentElement: Ref<HTMLElement | null> = ref(null)
 const extraContentStyle = ref<CSSProperties>({})
 const showExtraContent = () => {
-  if (extraContentElement.value && !extraContent.main) {
+  if (extraContentElement.value && !extraContentVisible.value) {
     const pd = remToPixels(1)
     const ww = window.innerWidth
     const rect = extraContentElement.value.getBoundingClientRect()
     if (rect.width + 2 * pd > ww) {
       extraContentStyle.value = { left: '0' }
-      toggle('extraContent/main', true)
+      extraContentVisible.value = true
       return
     }
     if (rect.right > ww - pd) {
@@ -143,14 +138,14 @@ const showExtraContent = () => {
       extraContentStyle.value = {
         left: `calc(${base} - ${rect.right - ww + pd}px)`,
       }
-      toggle('extraContent/main', true)
+      extraContentVisible.value = true
       return
     }
   }
 }
 const hideExtraContent = () => {
-  if (extraContent.main) {
-    toggle('extraContent/main', false)
+  if (extraContentVisible.value) {
+    extraContentVisible.value = false
     extraContentStyle.value = {}
   }
 }

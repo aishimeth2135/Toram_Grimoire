@@ -162,6 +162,7 @@ branch:
       'false': 距離威力
       long: 恆受遠距離威力影響
       short: 恆受近距離威力影響
+      both: 距離威力取近/遠距離威力中數值較高者
       none: 未確認是否受距離威力影響
     is_place:
       'true': 設置型技能

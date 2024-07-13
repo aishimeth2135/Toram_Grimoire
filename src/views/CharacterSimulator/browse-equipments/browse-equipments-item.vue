@@ -63,14 +63,11 @@ const secondCrystalClass = computed(() =>
       class="absolute -right-2.5 -top-2.5 bg-white text-red-60"
     />
     <cy-icon
-      v-if="!equipment.is(EquipmentKinds.Avatar)"
-      :path="equipment.getCategoryImagePath()"
-      width="2.25rem"
-      class="flex-shrink-0"
-    />
-    <cy-icon
-      v-else
-      :icon="equipment.categoryIcon"
+      :icon="
+        !equipment.is(EquipmentKinds.Avatar)
+          ? equipment.getCategoryImagePath()
+          : equipment.categoryIcon
+      "
       width="2.25rem"
       class="flex-shrink-0"
     />

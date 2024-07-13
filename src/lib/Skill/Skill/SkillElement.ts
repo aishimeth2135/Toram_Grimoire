@@ -317,8 +317,6 @@ class SkillBranch extends SkillNode {
   props: Map<string, string>
   stats: StatComputed[]
 
-  protected _propsEmpty: boolean
-
   constructor(sef: SkillEffectBase, id: number, name: SkillBranchNames) {
     super()
     this.parent = sef
@@ -326,12 +324,10 @@ class SkillBranch extends SkillNode {
     this.name = name
     this.props = markRaw(new Map())
     this.stats = markRaw([])
-
-    this._propsEmpty = true
   }
 
   get isEmpty() {
-    return this._propsEmpty && this.stats.length === 0
+    return this.props.size === 0 && this.stats.length === 0
   }
 
   appendProp(name: string, value: string, valueSub?: string) {
@@ -339,7 +335,6 @@ class SkillBranch extends SkillNode {
       const [prop, subProp] = name.split('.')
       name = prop + valueSub + (subProp ? `.${subProp}` : '')
     }
-    this._propsEmpty = false
     this.props.set(name, value)
     return this
   }
@@ -367,7 +362,6 @@ class SkillBranch extends SkillNode {
     const newBranch = new SkillBranch(this.parent, this.id, this.name)
     newBranch.props = markRaw(new Map(this.props))
     newBranch.stats = markRaw(this.stats.map(stat => stat.clone()))
-    newBranch._propsEmpty = this._propsEmpty
     return newBranch
   }
 }

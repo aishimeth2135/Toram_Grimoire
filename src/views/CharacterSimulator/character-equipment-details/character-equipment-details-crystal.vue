@@ -18,7 +18,7 @@ const emit = defineEmits<Emits>()
   <div>
     <div class="flex w-full items-center border-b border-stone-20 py-1">
       <div class="flex flex-shrink-0 items-center">
-        <cy-icon :path="crystal.crystalIconPath" />
+        <cy-icon :icon="crystal.crystalIconPath" />
         <span class="ml-1.5 text-sm text-cyan-60">{{ crystal.name }}</span>
       </div>
       <!-- <div class="mx-2 flex-grow border-b border-stone-30"></div> -->

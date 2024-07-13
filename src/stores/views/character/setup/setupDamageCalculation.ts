@@ -511,6 +511,12 @@ export function setupDamageCalculation(
       } else if (container.value.getOrigin('range_damage') === 'long') {
         rangeDamage = CalculationItemIds.LongRangeDamage
       }
+      if (container.value.getOrigin('range_damage') === 'both') {
+        rangeDamage =
+          resultValue('short_range_damage') >= resultValue('long_range_damage')
+            ? CalculationItemIds.ShortRangeDamage
+            : CalculationItemIds.LongRangeDamage
+      }
 
       const resultMap = new Map([
         [CalculationContainerIds.DamageType, damageType],

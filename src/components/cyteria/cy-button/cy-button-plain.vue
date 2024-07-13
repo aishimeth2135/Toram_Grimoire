@@ -1,3 +1,30 @@
+<script lang="ts" setup>
+import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
+
+import { ButtonBaseProps, ButtonIconProps, useButtonBaseBinds } from './setup'
+
+interface Props extends ButtonBaseProps, ButtonIconProps {
+  widthFull?: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  widthFull: false,
+})
+
+interface Emits {
+  (evt: 'click', event: MouseEvent): void
+  (evt: 'update:selected', value: boolean): void
+}
+const emit = defineEmits<Emits>()
+
+const buttonBaseBinds = useButtonBaseBinds(props)
+
+const buttonClick = (evt: MouseEvent) => {
+  emit('click', evt)
+  emit('update:selected', !props.selected)
+}
+</script>
+
 <template>
   <CyButtonBase
     v-slot="{ iconClass }"
@@ -6,52 +33,12 @@
     :class="{ 'button-width-full': widthFull }"
     @click="buttonClick"
   >
-    <ButtonIcon :icon="icon" :src="iconSrc" :class="iconClass" />
+    <ButtonIcon :icon="icon" :class="iconClass" />
     <span class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
       <slot />
     </span>
   </CyButtonBase>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-import ButtonIcon from './button-icon.vue'
-import CyButtonBase from './cy-button-base.vue'
-
-import {
-  ButtonBasePropList,
-  ButtonIconPropList,
-  getButtonBaseBinds,
-} from './setup'
-
-export default defineComponent({
-  emits: ['click', 'update:selected'],
-  props: {
-    ...ButtonBasePropList,
-    ...ButtonIconPropList,
-    widthFull: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    CyButtonBase,
-    ButtonIcon,
-  },
-  computed: {
-    buttonBaseBinds() {
-      return getButtonBaseBinds(this)
-    },
-  },
-  methods: {
-    buttonClick(evt: MouseEvent) {
-      this.$emit('click', evt)
-      this.$emit('update:selected', !this.selected)
-    },
-  },
-})
-</script>
 
 <style lang="postcss" scoped>
 .cy-button-plain {

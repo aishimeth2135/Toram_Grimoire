@@ -12,8 +12,11 @@
           <cy-button-plain
             v-for="{ key } in equipmentOptions"
             :key="key"
-            :icon="getEquipmentImagePath(selectedEquipment[key])"
-            :icon-src="selectedEquipment[key] === null ? 'iconify' : 'image'"
+            :icon="
+              selectedEquipment[key] !== null
+                ? getEquipmentImagePath(selectedEquipment[key])
+                : 'mdi:radiobox-marked'
+            "
             @click="toggleCurrentEquipment(key)"
           >
             {{ getEquipmentText(selectedEquipment[key]) }}
@@ -22,11 +25,11 @@
         <cy-button-icon
           class="ml-auto"
           :icon="
-            contents.advancedMenu
+            advancedMenuVisible
               ? 'akar-icons:circle-chevron-down'
               : 'akar-icons:circle-chevron-up'
           "
-          @click="toggle('contents/advancedMenu', null, false)"
+          @click="toggleAdvancedMenu(), toggleContentGroup(false)"
         />
       </div>
     </template>
@@ -37,8 +40,8 @@
         color="blue"
         toggle
         float
-        :selected="contents.switchEffect"
-        @click="toggle('contents/switchEffect')"
+        :selected="switchEffectVisible"
+        @click="toggleSwitchEffect"
       />
       <cy-button-circle
         icon="icon-park-outline:to-top-one"
@@ -48,7 +51,7 @@
       />
     </template>
     <template #main-content>
-      <AppLayoutBottomContent v-if="contents.advancedMenu" class="p-4">
+      <AppLayoutBottomContent v-if="advancedMenuVisible" class="p-4">
         <div class="space-y-3">
           <div v-for="{ key, value } in equipmentOptions" :key="key">
             <div>
@@ -109,7 +112,7 @@
       </AppLayoutBottomContent>
     </template>
     <template #side-contents>
-      <AppLayoutBottomContent v-if="contents.switchEffect" class="p-3">
+      <AppLayoutBottomContent v-if="switchEffectVisible" class="p-3">
         <SkillSwitchEffectButtons
           :skill-item="skillItem!"
           @select-equipment="emit('update:selected-equipment', $event)"
@@ -119,31 +122,29 @@
   </AppLayoutBottom>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'SkillQueryMenu',
-}
-</script>
-
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useToggle, useToggleGroup } from '@/shared/setup/State'
+
+import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
 import { SkillComputingContainer, SkillItem } from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
-import { EquipmentRestrictions } from '@/lib/Character/Stat'
-
-import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 
 import SkillSwitchEffectButtons from '../skill-switch-effect-buttons.vue'
 
-import { setupEquipmentSelect, setupSkillLevel } from './setup'
 import { useSkillQueryState } from '../setup'
-import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
+import { setupEquipmentSelect, setupSkillLevel } from './setup'
+
+defineOptions({
+  name: 'SkillQueryMenu',
+})
 
 interface Props {
   skillItem: SkillItem | null
@@ -172,9 +173,12 @@ const formulaDisplayMode = computed<FormulaDisplayModes>({
   },
 })
 
-const { contents, toggle } = ToggleService({
-  contents: ['advancedMenu', 'switchEffect'] as const,
-})
+const advancedMenuVisible = ref(false)
+const switchEffectVisible = ref(false)
+
+const toggleAdvancedMenu = useToggle(advancedMenuVisible)
+const toggleSwitchEffect = useToggle(switchEffectVisible)
+const toggleContentGroup = useToggleGroup([toggleSwitchEffect])
 
 const {
   equipmentOptions,

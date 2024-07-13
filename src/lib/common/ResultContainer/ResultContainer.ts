@@ -1,3 +1,5 @@
+import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+
 import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
 interface ResultHandler {
@@ -14,9 +16,9 @@ interface ResultContainerDisplayOptions {
 }
 
 abstract class ResultContainerBase {
-  private static _incrementId = 0
+  private static _idGenerator = new InstanceIdGenerator()
 
-  instanceId: number
+  instanceId: InstanceId
 
   /** The original data of prop */
   abstract readonly origin: string
@@ -31,8 +33,7 @@ abstract class ResultContainerBase {
   abstract handle(handler: ResultHandler): void
 
   constructor() {
-    this.instanceId = ResultContainerBase._incrementId
-    ResultContainerBase._incrementId += 1
+    this.instanceId = ResultContainerBase._idGenerator.generate()
   }
 }
 

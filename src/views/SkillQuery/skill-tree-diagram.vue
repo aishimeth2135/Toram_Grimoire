@@ -65,7 +65,7 @@
         {{ data.innerText }}
       </text>
     </template>
-    <template v-for="(data, idx) in drawCircleDatas" :key="data.skill.id">
+    <template v-for="(data, idx) in drawCircleDatas" :key="data.skill!.id">
       <circle
         :cx="data.cx"
         :cy="data.cy"

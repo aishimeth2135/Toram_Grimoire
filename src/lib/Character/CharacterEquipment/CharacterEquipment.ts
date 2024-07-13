@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
+import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
 import { normalizeInteger } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
@@ -39,14 +40,14 @@ interface EquipmentSaveData {
 }
 
 abstract class CharacterEquipment {
-  private static _autoIncreasement = 0
+  private static _idGenerator = new InstanceIdGenerator()
 
   abstract type: EquipmentTypes
 
   private _name: string
 
   loadedId: string | null
-  readonly instanceId: number
+  readonly instanceId: InstanceId
   readonly origin: EquipmentOrigin
   stats: StatRestriction[]
 
@@ -65,8 +66,7 @@ abstract class CharacterEquipment {
     stats: StatRestriction[] = []
   ) {
     this.loadedId = null
-    this.instanceId = CharacterEquipment._autoIncreasement
-    CharacterEquipment._autoIncreasement += 1
+    this.instanceId = CharacterEquipment._idGenerator.generate()
 
     this.origin = origin
     this.stats = stats.map(stat => stat.clone())

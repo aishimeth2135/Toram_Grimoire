@@ -57,7 +57,7 @@ const activeSkills = computed(() => {
         :key="item.skill.skillId"
         class="flex items-center"
       >
-        <cy-icon :path="getSkillIconPath(item.skill)" class="mr-2" />
+        <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
         <div class="ml-2 text-primary-60">
           {{ `Lv.${item.skillLevel}` }}
@@ -70,7 +70,7 @@ const activeSkills = computed(() => {
         :key="item.skill.skillId"
         class="flex items-center"
       >
-        <cy-icon :path="getSkillIconPath(item.skill)" class="mr-2" />
+        <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
         <div class="ml-2 text-primary-60">
           {{ `Lv.${item.skillLevel}` }}

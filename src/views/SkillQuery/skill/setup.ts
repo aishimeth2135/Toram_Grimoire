@@ -11,6 +11,13 @@ import {
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 
+export const NORMAL_LAYOUT_BRANCH_NAMES = [
+  SkillBranchNames.Damage,
+  SkillBranchNames.Effect,
+  SkillBranchNames.Heal,
+  SkillBranchNames.Passive,
+]
+
 export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
   const otherEffectBranches = computed(() => {
     const current = branchItem.value

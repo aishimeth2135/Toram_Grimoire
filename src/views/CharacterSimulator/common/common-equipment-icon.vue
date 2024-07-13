@@ -9,5 +9,5 @@ defineProps<Props>()
 </script>
 
 <template>
-  <cy-icon :path="equipment.getCategoryImagePath()" />
+  <cy-icon :icon="equipment.getCategoryImagePath()" />
 </template>

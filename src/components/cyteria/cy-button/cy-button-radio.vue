@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
+
+import { ButtonBaseProps, useButtonBaseBinds } from './setup'
+
+interface Props extends ButtonBaseProps {}
+
+const props = defineProps<Props>()
+
+const buttonBaseBinds = useButtonBaseBinds(props)
+</script>
+
 <template>
   <CyButtonBase
     v-slot="{ iconClass }"
@@ -17,30 +30,6 @@
     </div>
   </CyButtonBase>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-import ButtonIcon from './button-icon.vue'
-import CyButtonBase from './cy-button-base.vue'
-
-import { ButtonBasePropList, getButtonBaseBinds } from './setup'
-
-export default defineComponent({
-  props: {
-    ...ButtonBasePropList,
-  },
-  components: {
-    CyButtonBase,
-    ButtonIcon,
-  },
-  computed: {
-    buttonBaseBinds() {
-      return getButtonBaseBinds(this)
-    },
-  },
-})
-</script>
 
 <style lang="postcss" scoped>
 .cy-button-radio {

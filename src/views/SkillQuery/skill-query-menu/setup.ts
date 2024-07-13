@@ -132,9 +132,7 @@ function setupEquipmentSelect(
   }
 
   const getEquipmentImagePath = (value: EquipmentTypes | null) => {
-    return value !== null
-      ? CharacterEquipment.getImagePath(value)
-      : 'mdi:radiobox-marked'
+    return value !== null ? CharacterEquipment.getImagePath(value) : ''
   }
 
   const resetCurrentEquipment = () => {

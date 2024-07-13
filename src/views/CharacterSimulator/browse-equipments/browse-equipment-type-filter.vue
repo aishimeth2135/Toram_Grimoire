@@ -117,7 +117,7 @@ watch(
             >
               <div class="flex items-center">
                 <cy-icon
-                  :path="CharacterEquipment.getImagePath(equipmentType)"
+                  :icon="CharacterEquipment.getImagePath(equipmentType)"
                   class="mr-1"
                 />
                 {{ CharacterEquipment.getTypeText(equipmentType) }}

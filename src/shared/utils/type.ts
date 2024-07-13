@@ -3,3 +3,5 @@ export type UnionToIntersection<T> = (
 ) extends (k: infer I) => void
   ? I
   : never
+
+export type Opaque<K, T> = T & { __TYPE__: K }

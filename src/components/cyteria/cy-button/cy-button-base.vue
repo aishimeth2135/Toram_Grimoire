@@ -1,3 +1,22 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+import { ButtonBaseProps } from './setup'
+
+interface Props extends ButtonBaseProps {}
+
+const props = withDefaults(defineProps<Props>(), {
+  color: 'primary',
+})
+
+const classList = computed(() => {
+  return {
+    [`theme-${props.color}`]: true,
+    'button-selected': props.selected,
+  }
+})
+</script>
+
 <template>
   <component
     :is="link ? 'a' : 'button'"
@@ -8,26 +27,6 @@
     <slot icon-class="cy-button-base-icon" />
   </component>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-import { ButtonBasePropList } from './setup'
-
-export default defineComponent({
-  props: {
-    ...ButtonBasePropList,
-  },
-  computed: {
-    classList() {
-      return {
-        [`theme-${this.color}`]: true,
-        'button-selected': this.selected,
-      }
-    },
-  },
-})
-</script>
 
 <style lang="postcss" scoped>
 .cy-button-base {
@@ -77,7 +76,7 @@ export default defineComponent({
   }
 
   &.theme-primary {
-    --button-color-text: var(--app-primary-80);
+    --button-color-text: var(--app-primary-70);
   }
 
   &.theme-bright {

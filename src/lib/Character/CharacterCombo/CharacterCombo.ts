@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
 
 import type { Skill, SkillBranch } from '@/lib/Skill/Skill'
 
@@ -26,10 +27,9 @@ interface CharacterComboGetStatesParams {
   checkSkillValid: (skill: Skill) => boolean
 }
 
-let _CharacterComboAutoIncreasement = 0
-
 class CharacterCombo {
-  instanceId: number
+  private static _idGenerator = new InstanceIdGenerator()
+  readonly instanceId: InstanceId
   comboSkills: CharacterComboSkill[]
   config: {
     damageCalc: boolean
@@ -37,8 +37,7 @@ class CharacterCombo {
   }
 
   constructor() {
-    this.instanceId = _CharacterComboAutoIncreasement
-    _CharacterComboAutoIncreasement += 1
+    this.instanceId = CharacterCombo._idGenerator.generate()
     this.comboSkills = []
     this.config = {
       damageCalc: false,
@@ -67,7 +66,7 @@ class CharacterCombo {
             ? params.getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null)
             : 0,
           valid: skill.skill ? params.checkSkillValid(skill.skill) : false,
-        } as ComboSkillState)
+        }) as ComboSkillState
     )
 
     const addRate = (idx: number, value: number) => {

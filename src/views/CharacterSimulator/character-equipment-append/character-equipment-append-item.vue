@@ -40,7 +40,7 @@ const { t } = useI18n()
           @click="emit('submit', equipment)"
         >
           <cy-icon icon="ic:round-add" class="mr-3.5" />
-          <cy-icon v-if="!equipment.unknowCategory" :path="equimentImage" />
+          <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" />
           <cy-icon v-else icon="eva-star-outline" />
           <div
             class="ml-2 mr-2.5 w-32 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -78,7 +78,7 @@ const { t } = useI18n()
       class="overscroll-none relative mt-2.5 max-w-max rounded-sm bg-orange-20/5 py-3 pl-6 pr-4"
     >
       <div class="mb-1 flex items-center text-sm">
-        <cy-icon v-if="!equipment.unknowCategory" :path="equimentImage" small />
+        <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" small />
         <cy-icon v-else icon="eva-star-outline" small />
         <div class="ml-1.5">
           {{ equipment.name }}

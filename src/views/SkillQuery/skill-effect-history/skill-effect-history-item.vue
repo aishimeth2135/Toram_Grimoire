@@ -1,19 +1,19 @@
 <template>
   <div
     class="skill-effect-history-item-wrapper px-2"
-    :class="{ 'detail-active': contents.detail }"
+    :class="{ 'detail-active': detailVisible }"
   >
-    <cy-list-item @click="toggle('contents/detail')">
+    <cy-list-item @click="detailVisible = !detailVisible">
       <div class="flex w-full items-center">
         <cy-icon-text
           icon="ic:round-history"
-          :text-color="contents.detail ? 'primary-50' : 'primary-90'"
+          :text-color="detailVisible ? 'primary-50' : 'primary-90'"
         >
           {{ historyItem.date }}
         </cy-icon-text>
         <cy-icon
           :icon="
-            contents.detail
+            detailVisible
               ? 'ic:round-keyboard-arrow-up'
               : 'ic:round-keyboard-arrow-down'
           "
@@ -21,7 +21,7 @@
         />
       </div>
       <div
-        v-if="introductionBranchItemDatas.length > 0 && !contents.detail"
+        v-if="introductionBranchItemDatas.length > 0 && !detailVisible"
         class="flex w-full items-start"
       >
         <cy-icon icon="ic:round-label" class="ml-2 mt-1.5" />
@@ -34,7 +34,7 @@
         </div>
       </div>
     </cy-list-item>
-    <div v-if="contents.detail" class="pt-2">
+    <div v-if="detailVisible" class="pt-2">
       <div v-if="introductionBranchItemDatas.length > 0" class="space-y-3 pb-4">
         <div
           v-for="{ branchItem, iid } in introductionBranchItemDatas"
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div
-        v-for="{ branchItem, next } in modifiedBranchItemDatas"
+        v-for="{ branchItem, next } in displayedBranchItemDatas"
         :key="branchItem.id"
         class="history-item-compare"
       >
@@ -137,10 +137,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRaw, toRefs } from 'vue'
+import { computed, ref, toRaw, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-import ToggleService from '@/shared/setup/ToggleService'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -161,12 +159,14 @@ const { skillEffectHistoryItem: historyItem } = toRefs(props)
 
 const { t } = useI18n()
 
-const modifiedBranchItems = computed(
-  () => historyItem.value.modifiedBranchItems
+const displayedBranchItems = computed(() =>
+  historyItem.value.modifiedBranchItems.filter(
+    branch => !branch.propBoolean('invisible')
+  )
 )
-const modifiedBranchItemDatas = computed(() => {
-  return historyItem.value.modifiedBranchItems.map(branchItem => {
-    const next = historyItem.value.nexts.get(toRaw(branchItem)) ?? null
+const displayedBranchItemDatas = computed(() => {
+  return displayedBranchItems.value.map(branchItem => {
+    const next = historyItem.value.nexts.get(branchItem.instanceId) ?? null
     return {
       branchItem,
       next,
@@ -176,7 +176,7 @@ const modifiedBranchItemDatas = computed(() => {
 
 const usedStackIds = computed(() => {
   const stackIds = new Set<number>()
-  modifiedBranchItems.value.forEach(bch =>
+  displayedBranchItems.value.forEach(bch =>
     bch.linkedStackIds.forEach(id => stackIds.add(id))
   )
   return [...stackIds]
@@ -213,11 +213,7 @@ const removedBranchItemDatas = computed(() => {
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })
 
-const { contents, toggle } = ToggleService({
-  contents: [
-    { name: 'detail', default: introductionBranchItemDatas.value.length === 0 },
-  ],
-})
+const detailVisible = ref(introductionBranchItemDatas.value.length === 0)
 </script>
 
 <style lang="postcss" scoped>

@@ -1,24 +1,34 @@
 <template>
-  <IconifyIcon v-if="src === 'iconify'" :icon="icon" />
-  <SvgIcon v-else-if="src === 'custom'" :icon-id="icon" />
-  <img v-else-if="src === 'image'" :src="icon" />
-  <IconifyIcon v-else icon="gg-shape-rhombus" />
+  <SvgIcon v-if="customIconId" :icon-id="customIconId" />
+  <img v-else-if="iconPath" :src="iconPath" />
+  <IconifyIcon v-else :icon="icon || 'gg-shape-rhombus'" />
 </template>
 
 <script lang="ts" setup>
 import { Icon as IconifyIcon } from '@iconify/vue'
+import { computed } from 'vue'
 
 import SvgIcon from './svg-icon.vue'
 
-import { IconSrc } from './setup'
+import { IconBaseProps } from './setup'
 
-interface Props {
-  icon?: string
-  src?: IconSrc
-}
+interface Props extends IconBaseProps {}
 
-withDefaults(defineProps<Props>(), {
-  icon: 'gg-shape-rhombus',
-  src: 'iconify',
+const props = withDefaults(defineProps<Props>(), {
+  icon: '',
+})
+
+const iconPath = computed(() => {
+  if (props.icon.includes('.')) {
+    return props.icon
+  }
+  return ''
+})
+
+const customIconId = computed(() => {
+  if (props.icon.startsWith('@')) {
+    return props.icon.slice(1)
+  }
+  return ''
 })
 </script>

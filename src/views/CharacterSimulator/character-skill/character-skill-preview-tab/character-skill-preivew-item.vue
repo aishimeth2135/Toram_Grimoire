@@ -5,7 +5,7 @@
         <div
           class="flex rounded-full border-1 border-primary-30 bg-white p-1.5"
         >
-          <cy-icon :path="getSkillIconPath(skill)" width="1.5rem" />
+          <cy-icon :icon="getSkillIconPath(skill)" width="1.5rem" />
         </div>
       </div>
       <div class="w-full pr-3">
@@ -83,7 +83,7 @@
                   <div
                     class="flex rounded-full border-1 border-primary-20 bg-white p-1.5"
                   >
-                    <cy-icon :path="effected.icon" width="1.5rem" />
+                    <cy-icon :icon="effected.icon" width="1.5rem" />
                   </div>
                 </div>
                 <div class="w-full pr-3">

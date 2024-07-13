@@ -22,11 +22,11 @@
       />
       <div
         class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
-        @click.stop="toggle('contents/menuLinks')"
+        @click.stop="toggleLinksMenu"
       >
         <cy-icon
           :icon="
-            contents.menuLinks
+            linksMenuVisible
               ? 'ic:round-keyboard-double-arrow-up'
               : 'ic:round-keyboard-double-arrow-down'
           "
@@ -38,18 +38,19 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { RouteRecordName, useRouter } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
 import { ROUTE_LINK_DATAS } from '@/shared/consts/route'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
-import { IconSrc } from '@/components/cyteria/icon/setup'
 import { AppRouteNames } from '@/router/enums'
 
 import AppRouterLink from './app-router-link.vue'
+
+import { HomeRouteData } from './setup'
 
 interface Props {
   isMain?: boolean
@@ -59,21 +60,13 @@ withDefaults(defineProps<Props>(), {
   isMain: false,
 })
 
-const { toggle, contents } = ToggleService({
-  contents: ['menuLinks'] as const,
-})
+const linksMenuVisible = ref(false)
+const toggleLinksMenu = useToggle(linksMenuVisible)
 
 const { currentRoute } = useRouter()
 const leftMenuStore = useLeftMenuStore()
 
 const { viewButtons } = storeToRefs(leftMenuStore)
-
-interface HomeRouteData {
-  title: string
-  icon: string
-  iconSrc?: IconSrc
-  pathName: AppRouteNames
-}
 
 const homeRouteData: HomeRouteData = {
   title: 'app.page-title.home',
@@ -82,7 +75,7 @@ const homeRouteData: HomeRouteData = {
 }
 
 const routeLinks = computed(() => {
-  const items = contents.menuLinks ? ROUTE_LINK_DATAS : []
+  const items = linksMenuVisible.value ? ROUTE_LINK_DATAS : []
   return items
     .filter(item => {
       if (item.pathName === currentRoute.value.name) {
@@ -102,7 +95,7 @@ const routeLinks = computed(() => {
           title: 'app.page-title.' + item.name,
           icon: item.icon,
           pathName: item.pathName,
-        } as HomeRouteData)
+        }) as HomeRouteData
     )
 })
 

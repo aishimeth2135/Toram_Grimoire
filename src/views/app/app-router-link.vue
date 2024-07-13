@@ -23,26 +23,19 @@
   </router-link>
 </template>
 
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-}
-</script>
-
 <script lang="ts" setup>
-import { useAttrs } from 'vue'
+import { useAttrs, useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { AppRouteNames } from '@/router/enums'
-import { useCssModule } from 'vue'
+import { HomeRouteData } from './setup'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 interface Props {
-  data: {
-    title: string
-    icon: string
-    pathName: AppRouteNames
-  }
+  data: HomeRouteData
   isMain?: boolean
 }
 
