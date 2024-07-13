@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
           envBaseUrl: base,
           externalScripts: !useExternal
             ? ''
-            : '<script defer src="https://polyfill.io/v3/polyfill.min.js"></script>',
+            : '<script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0"></script>',
         },
       },
     }),
