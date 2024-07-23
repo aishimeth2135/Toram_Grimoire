@@ -1,4 +1,5 @@
 import { Ref, onUnmounted } from 'vue'
+import { ViewNames } from '../consts/view'
 
 /**
  * The lite state management API that is like `pinia`.
@@ -18,10 +19,10 @@ export function defineState<State extends Record<string, any>>(
 }
 
 const statesMap = new Map<() => void, Record<string, any>>()
-const viewStatesMap = new Map<string, (() => void)[]>()
+const viewStatesMap = new Map<ViewNames, (() => void)[]>()
 
 export function defineViewState<State extends Record<string, any>>(
-  id: string,
+  id: ViewNames,
   init: () => State
 ): () => State {
   const stateGetter = function () {
@@ -40,7 +41,7 @@ export function defineViewState<State extends Record<string, any>>(
   return stateGetter
 }
 
-export function registViewStatesCleaning(id: string) {
+export function registViewStatesCleaning(id: ViewNames) {
   onUnmounted(() => {
     if (viewStatesMap.has(id)) {
       viewStatesMap.get(id)!.forEach(item => statesMap.delete(item))

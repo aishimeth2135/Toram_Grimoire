@@ -1,4 +1,6 @@
-import { Ref, computed, ref, toRaw } from 'vue'
+import { Ref, computed, ref } from 'vue'
+
+import { instanceEquals } from '@/shared/services/InstanceId'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -26,7 +28,7 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
     }
     const branches: SkillBranchItem<SkillEffectItem>[] = []
     current.parent.parent.effectItems.forEach(effectItem => {
-      if (toRaw(effectItem) === toRaw(current.parent)) {
+      if (instanceEquals(effectItem, current.parent)) {
         return
       }
       const bch = effectItem.branchItems.find(item => {
@@ -34,7 +36,7 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
           return true
         }
         return item.suffixBranches
-          .filter(suf => suf.id !== -1)
+          .filter(suf => suf.hasId())
           .some(suf => current.suffixBranches.some(_suf => suf.id === _suf.id))
       })
       if (bch) {

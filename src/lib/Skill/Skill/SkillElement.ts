@@ -330,6 +330,10 @@ class SkillBranch extends SkillNode {
     return this.props.size === 0 && this.stats.length === 0
   }
 
+  hasId(): boolean {
+    return this.id !== -1
+  }
+
   appendProp(name: string, value: string, valueSub?: string) {
     if (valueSub) {
       const [prop, subProp] = name.split('.')

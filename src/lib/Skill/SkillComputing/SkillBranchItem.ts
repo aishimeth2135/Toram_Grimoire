@@ -1,6 +1,10 @@
 import { reactive } from 'vue'
 
-import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
@@ -23,9 +27,11 @@ type SkillBranchItemOverwriteRecords = {
   props: SkillBranchItemOverwriteRecord<string>
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>
 }
+
 abstract class SkillBranchItemBase<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
-> {
+> implements InstanceWithId
+{
   private static _idGenerator = new InstanceIdGenerator()
 
   readonly instanceId: InstanceId
@@ -128,6 +134,10 @@ abstract class SkillBranchItemBase<
     return this._props
   }
 
+  hasId(): boolean {
+    return this.id !== -1
+  }
+
   propKey(...keys: string[]) {
     return keys.join('.')
   }
@@ -191,7 +201,7 @@ abstract class SkillBranchItemBase<
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillBranchItem<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
@@ -282,7 +292,7 @@ class SkillBranchItem<
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillBranchItemSuffix<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,

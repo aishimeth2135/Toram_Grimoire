@@ -101,7 +101,7 @@ const selectStatOption = (option: StatOption) => {
     @update:visible="emit('update:visible', $event)"
   >
     <FloatPageSide>
-      <div class="flex h-full flex-col">
+      <div class="flex h-full flex-col px-2">
         <div class="flex w-full max-w-sm items-center self-end">
           <div class="flex flex-grow items-center">
             <div
@@ -208,7 +208,7 @@ const selectStatOption = (option: StatOption) => {
       </div>
     </FloatPageSide>
     <FloatPageContent>
-      <div class="w-full max-w-sm">
+      <div class="w-full max-w-sm px-2">
         <div class="flex justify-end pb-3">
           <cy-button-action
             icon="ic:round-done-outline"

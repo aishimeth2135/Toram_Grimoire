@@ -58,6 +58,7 @@ equipment-info:
   crystal-empty: 此裝備沒有緞晶
 equipment-basic-editor:
   title: 裝備設定
+  select-equipment-to-edit-tips: 選擇要編輯的裝備
   edit-stats:
     title: 管理裝備能力
     search-placeholder: 搜尋能力

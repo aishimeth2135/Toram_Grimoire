@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import { useDevice } from '@/shared/setup/Device'
+
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import CardRow from '@/components/card/card-row.vue'
+import ShowStat from '@/components/common/show-stat.vue'
 
 import CharacterEquipmentLabels from '../character-equipment-details/character-equipment-labels.vue'
 import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
@@ -28,6 +31,8 @@ withDefaults(defineProps<Props>(), {
   allowEquip: false,
 })
 const emit = defineEmits<Emits>()
+
+const { device } = useDevice()
 </script>
 
 <template>
@@ -53,23 +58,8 @@ const emit = defineEmits<Emits>()
           />
         </div>
         <div class="flex-grow pt-0.5">
-          <div class="mr-5 flex flex-wrap items-center">
-            <EquipmentBrowseTitle class="mt-1" :equipment="equipment" />
-            <div
-              v-if="equipment.crystals.length > 0"
-              class="ml-2.5 mt-1 flex flex-wrap items-center"
-            >
-              <div
-                v-for="crystal in equipment.crystals"
-                :key="crystal.id"
-                class="mr-3 flex items-center"
-              >
-                <cy-icon :icon="crystal.crystalIconPath" />
-                <span class="ml-1 text-sm text-cyan-60">
-                  {{ crystal.name }}
-                </span>
-              </div>
-            </div>
+          <div class="mr-5 flex flex-wrap items-center pt-1">
+            <EquipmentBrowseTitle :equipment="equipment" />
           </div>
           <CharacterEquipmentLabels
             :equipment="equipment"
@@ -77,7 +67,31 @@ const emit = defineEmits<Emits>()
           />
         </div>
       </div>
-      <div v-if="selected" class="mt-3 border-t border-primary-10 px-4 py-2.5">
+      <div v-if="selected && device.isMobile" class="pb-2.5 pl-6 pr-4 pt-2.5">
+        <div>
+          <ShowStat
+            v-for="stat in equipment.stats"
+            :key="stat.statId"
+            :stat="stat"
+          />
+        </div>
+        <div
+          v-if="equipment.crystals.length > 0"
+          class="mt-3 flex flex-wrap items-center"
+        >
+          <div
+            v-for="crystal in equipment.crystals"
+            :key="crystal.id"
+            class="mr-3 flex items-center"
+          >
+            <cy-icon :icon="crystal.crystalIconPath" />
+            <span class="ml-1 text-sm text-cyan-60">
+              {{ crystal.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div v-if="selected" class="mt-1 border-t border-primary-10 px-4 py-2.5">
         <EquipmentBrowseActions
           :equipment="equipment"
           :equipped="equipped"

@@ -1,6 +1,10 @@
 import type { SkillDisplayData } from '.'
 
-import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 
 import {
   SkillBranchResultBase,
@@ -10,7 +14,8 @@ import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
 export default class DisplayDataContainer<
   Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds,
-> {
+> implements InstanceWithId
+{
   private static _idGenerator = new InstanceIdGenerator()
 
   private _titles: SkillDisplayData

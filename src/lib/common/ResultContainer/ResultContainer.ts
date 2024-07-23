@@ -1,4 +1,8 @@
-import { InstanceId, InstanceIdGenerator } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 
 import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
@@ -15,7 +19,7 @@ interface ResultContainerDisplayOptions {
   }
 }
 
-abstract class ResultContainerBase {
+abstract class ResultContainerBase implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
   instanceId: InstanceId

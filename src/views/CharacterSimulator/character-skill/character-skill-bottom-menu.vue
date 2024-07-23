@@ -23,13 +23,13 @@ const tabsClass =
         :value="SkillLevelMode.Level"
         class="flex px-2.5 py-2 hover:bg-primary-10"
       >
-        <cy-icon icon="mdi:circle-double" width="1.25rem" />
+        <cy-icon icon="mdi:star-four-points-outline" width="1.25rem" />
       </cy-tab>
       <cy-tab
         :value="SkillLevelMode.StarGem"
         class="flex px-2.5 py-2 hover:bg-primary-10"
       >
-        <cy-icon icon="mdi:star-four-points-outline" width="1.25rem" />
+        <cy-icon icon="mdi:star-four-points-circle-outline" width="1.25rem" />
       </cy-tab>
     </cy-tabs>
     <div class="flex items-center space-x-3">
