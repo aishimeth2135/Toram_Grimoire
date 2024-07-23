@@ -91,6 +91,13 @@ const browseMode = ref(BrowseMode.Equipped)
       <div
         class="flex max-h-full max-w-[45.25rem] flex-col rounded border border-primary-10 bg-white pb-2 wd:flex-grow wd-lg:h-full"
       >
+        <div class="px-3 pt-2 text-sm text-gray-40">
+          {{
+            t(
+              'character-simulator.equipment-basic-editor.select-equipment-to-edit-tips'
+            )
+          }}
+        </div>
         <cy-tabs v-model="browseMode" class="mb-4 px-2">
           <cy-tab :value="BrowseMode.Equipped">
             <cy-icon icon="mdi:done-outline" />

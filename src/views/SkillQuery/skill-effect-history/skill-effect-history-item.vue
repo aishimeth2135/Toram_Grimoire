@@ -137,8 +137,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, toRaw, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { instanceEquals } from '@/shared/services/InstanceId'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -194,7 +196,7 @@ const stackBranchItemDatas = computed(() => {
 
 const addedBranchItemDatas = computed(() => {
   const branchIds = historyItem.value.origin.branches
-    .filter(bch => bch.isEmpty && bch.id !== -1)
+    .filter(bch => bch.isEmpty && bch.hasId())
     .map(bch => bch.id)
   return historyItem.value.branchItems
     .filter(bch => branchIds.includes(bch.id))
@@ -203,7 +205,11 @@ const addedBranchItemDatas = computed(() => {
 
 const introductionBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
-    .filter(bch => historyItem.value.introductionBranches.includes(toRaw(bch)))
+    .filter(bch =>
+      historyItem.value.introductionBranches.some(_bch =>
+        instanceEquals(_bch, bch)
+      )
+    )
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })
 

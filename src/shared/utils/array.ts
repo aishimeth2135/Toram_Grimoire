@@ -28,12 +28,13 @@ export function lastElement<E extends any>(ary: E[]): E {
  * @param element - target element
  * @returns `true` if the source array contains target element, else `false`
  */
-export function removeElement<E extends any>(ary: E[], element: E): number {
+export function removeElement<E extends any>(ary: E[], element: E): boolean {
   const idx = ary.indexOf(element)
   if (idx > -1) {
     ary.splice(idx, 1)
+    return true
   }
-  return idx
+  return false
 }
 
 export function toggleElement<E extends any>(ary: E[], element: E): boolean {
@@ -47,10 +48,6 @@ export function toggleElement<E extends any>(ary: E[], element: E): boolean {
   }
 }
 
-/**
- * Get the last element of array.
- * @param ary - target array
- */
 export function inplaceAssign<E extends any>(ary: E[], items: E[]) {
   return ary.splice(0, ary.length, ...items)
 }

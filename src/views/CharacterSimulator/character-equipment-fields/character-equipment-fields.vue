@@ -44,7 +44,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
 
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="flex min-h-full flex-wrap px-2 wd-lg:flex-nowrap">
+  <div class="flex flex-wrap px-2 wd:min-h-full wd-lg:flex-nowrap">
     <div class="flex flex-wrap items-start wd:flex-nowrap">
       <cy-tabs
         v-model="currentField"
@@ -52,7 +52,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
         :class="
           device.isWide
             ? 'mr-6 rounded-full bg-primary-5/50 py-4'
-            : 'mb-6 border-b border-primary-10'
+            : 'mb-4 border-b border-primary-10'
         "
         plain
       >
@@ -76,7 +76,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
           equipped
         />
       </div>
-      <div class="px-2 py-4 wd:px-8 wd-lg:pb-0">
+      <div v-if="!device.isMobile" class="px-2 py-4 wd:px-8 wd-lg:pb-0">
         <CharacterEquipmentDetails
           :equipment="selectedEquipment"
           :equipped="selectedEquipment === currentField.equipment"
@@ -87,7 +87,10 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
       :equipment-field="currentField"
       @submit="currentField.setEquipment($event)"
     /> -->
-    <div class="mt-8 flex w-full flex-col wd-lg:mt-0 wd-lg:pl-4">
+    <div
+      :class="device.isMobile ? 'mt-5 border-t border-primary-10' : 'pl-4'"
+      class="flex w-full flex-col pt-4"
+    >
       <BrowseEquipmentsMain
         :selected-equipment="selectedEquipment"
         :current-field="currentField"

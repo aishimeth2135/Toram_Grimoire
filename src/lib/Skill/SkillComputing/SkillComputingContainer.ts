@@ -70,7 +70,7 @@ class SkillComputingContainer {
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillItem {
   readonly skill: Skill

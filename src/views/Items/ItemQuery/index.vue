@@ -460,7 +460,7 @@ const idComparation = (
 ) => {
   const id1 = parseInt(item1.origin!.id, 10)
   const id2 = parseInt(item2.origin!.id, 10)
-  return id2 - id1
+  return id1 - id2
 }
 
 const sortOptions: {

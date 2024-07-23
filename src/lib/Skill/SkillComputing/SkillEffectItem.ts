@@ -1,4 +1,8 @@
-import { InstanceId } from '@/shared/services/InstanceId'
+import {
+  InstanceId,
+  InstanceIdGenerator,
+  InstanceWithId,
+} from '@/shared/services/InstanceId'
 import { computeFormula } from '@/shared/utils/data'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -41,7 +45,11 @@ interface BranchStackState {
   value: number
 }
 
-abstract class SkillEffectItemBase {
+abstract class SkillEffectItemBase implements InstanceWithId {
+  private static _idGenerator = new InstanceIdGenerator()
+
+  readonly instanceId: InstanceId
+
   abstract readonly branchItems: SkillBranchItem<SkillEffectItemBase>[]
 
   readonly parent: SkillItem
@@ -53,6 +61,7 @@ abstract class SkillEffectItemBase {
   readonly stackStates: BranchStackState[]
 
   constructor(parent: SkillItem) {
+    this.instanceId = SkillEffectItemBase._idGenerator.generate()
     this.parent = parent
     this.stackStates = []
     this.auxiliaryBranchItems = []
@@ -68,7 +77,7 @@ abstract class SkillEffectItemBase {
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillEffectItem extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItem>[]
@@ -231,7 +240,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 }
 
 /**
- * @vue-reactive raw
+ * @vue-reactive-raw
  */
 class SkillEffectItemHistory extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItemHistory>[]
@@ -270,14 +279,14 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   get modifiedBranchItems() {
     return this.branchItems.filter(branchItem => {
       if (
-        branchItem.id !== -1 &&
+        branchItem.hasId() &&
         this.origin.branches.find(bch => bch.id === branchItem.id)
       ) {
         return true
       }
       return branchItem.suffixBranches.some(
         suffix =>
-          suffix.id !== -1 &&
+          suffix.hasId() &&
           this.origin.branches.find(bch => suffix.id === bch.id)
       )
     })

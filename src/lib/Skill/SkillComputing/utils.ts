@@ -455,16 +455,15 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
 
 function initHistoryNexts(history: SkillEffectItemHistory) {
   history.modifiedBranchItems.forEach(branchItem => {
-    const next =
-      branchItem.id !== -1
-        ? history.nextEffect.branchItems.find(bch => branchItem.id === bch.id)
-        : history.nextEffect.branchItems.find(bch =>
-            [...bch.suffixBranches, ...bch.emptySuffixBranches].some(
-              suf =>
-                suf.id !== -1 &&
-                branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
-            )
+    const next = branchItem.hasId()
+      ? history.nextEffect.branchItems.find(bch => branchItem.id === bch.id)
+      : history.nextEffect.branchItems.find(bch =>
+          [...bch.suffixBranches, ...bch.emptySuffixBranches].some(
+            suf =>
+              suf.hasId() &&
+              branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
           )
+        )
     if (next) {
       const nextClone = next.clone(history)
       nextClone.setHistoryRecord(branchItem.record)
