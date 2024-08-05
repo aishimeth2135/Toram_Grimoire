@@ -1,6 +1,6 @@
-skill-info: 技能資訊
-historical-record: 歷史紀錄
-select-skill: 選擇技能
+skill-info: Skill info
+historical-record: Change history
+select-skill: Choose skills
 close-select-skill: 關閉
 skill-level: 技能等級
 character-level: 角色等級
@@ -54,49 +54,49 @@ branch:
     extra:
       condition-default-value: 額外效果
   basic:
-    'mp_cost: title': MP消耗
-    'range: title': 射程
-    'skill_type: title': 技能類型
-    'in_combo: title': 連擊
-    'action_time: title': 動作時間
+    'mp_cost: title': MP cost
+    'range: title': Cast range
+    'skill_type: title': Skill cast type
+    'in_combo: title': Combo
+    'action_time: title': Motion
     'casting_time: title': 詠唱時間
     mp_cost:
       0: 無消耗
     skill_type:
-      instant: 瞬發
-      casting: 須詠唱
-      charging: 須蓄力
-      passive: 被動
+      instant: Instant
+      casting: Cast
+      charging: Charge
+      passive: Passive
       extra: EX技能
     in_combo:
-      '1': 可以放入連擊
-      '0': 無法放入連擊
-      not_lead: 無法放在連擊的第一招
+      '1': Yes
+      '0': No
+      not_lead: Cannot be used as combo opener
     action_time:
-      very_slow: 極慢
-      slow: 慢
-      little_slow: 稍慢
-      normal: 一般
-      little_fast: 稍快
-      fast: 快
-      very_fast: 極快
+      very_slow: Very slow
+      slow: Slow
+      little_slow: Slightly slow
+      normal: Normal
+      little_fast: Slightly fast
+      fast: Fast
+      very_fast: Very fast
     range:
-      no_limit: 無限制
+      no_limit: No limit
       main: '同#施放武器 '
   damage:
-    base-name: 傷害
+    base-name: Damage
     base:
-      atk: 有效ATK
-      matk: 有效MATK
+      atk: ATK
+      matk: MATK
       '@custom':
         default: 有效攻擊力
-        both: 有效ATK/有效MATK
-        dual_sword: 雙劍有效ATK
+        both: ATK/MATK
+        dual_sword: Combined dual sword ATK
     damage_type:
-      physical: 物理傷害
-      magic: 魔法傷害
+      physical: Physical
+      magic: Magic
     type:
-      AOE: 範圍
+      AOE: AOE 
     title:
       normal_attack: 一般攻擊的傷害提升
     frequency:
