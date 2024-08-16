@@ -145,7 +145,7 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
         icon={selected ? 'ic:round-check-circle' : 'mdi:circle-outline'}
         class={[{ 'opacity-50': !selected }, 'mr-3']}
       />
-      <cy-icon path={crystal.crystalIconPath} class="mr-1.5" />
+      <cy-icon icon={crystal.crystalIconPath} class="mr-1.5" />
       {crystal.name}
     </CardRow>
   )

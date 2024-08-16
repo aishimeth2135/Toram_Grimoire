@@ -66,7 +66,7 @@
         <span class="my-1 mr-2 flex-shrink-0">{{ item.parts[0] }}</span>
         <div class="flex flex-wrap items-center">
           <span
-            v-for="part in (item.parts.slice(1) as EnchantResultPart[])"
+            v-for="part in item.parts.slice(1) as EnchantResultPart[]"
             :key="part.text"
             class="stat-scope"
             :class="
@@ -319,6 +319,9 @@ const copyEnchantResultText = () => {
   const resultStatsText = enchantResultStats.value
     .map(item => item.text)
     .join('｜')
+  const materialsSkillText = config.value.materialSkillLevels
+    .map((item, idx) => `${enchantResultMaterials.value[idx].title} Lv.${item}`)
+    .join('｜')
   const materialsText = enchantResultMaterials.value
     .map(item => `${item.title} ${item.value}`)
     .join('｜')
@@ -343,6 +346,8 @@ const copyEnchantResultText = () => {
       basePotential +
       `✩ ${t('enchant-simulator.result.stats')}\n` +
       `${resultStatsText}\n` +
+      `✩ ${t('enchant-simulator.result.materials-skill-levels')}\n` +
+      `${materialsSkillText}\n` +
       `✩ ${t('enchant-simulator.result.materials')}\n` +
       `${materialsText}\n\n` +
       `${t('enchant-simulator.result.operation-steps-quantity')}｜${

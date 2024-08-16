@@ -296,9 +296,10 @@ function computeDrawSkillTreeData(
   }
 }
 
-function getSkillIconPath(skill: Skill): string {
+function getSkillIconPath(skill: Skill | string): string {
+  const skillId = typeof skill === 'string' ? skill : skill.skillId
   // return `/imgs/skill_icons/stc_${skill.parent.parent.id}/st_${skill.parent.id}/si_${skill.id}.png`;
-  return Images.skillIcons.get(skill.skillId)
+  return Images.skillIcons.get(skillId)
 }
 
 interface SkillIconPatternDataItem {

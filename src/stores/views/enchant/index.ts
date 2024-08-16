@@ -40,6 +40,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   const resetConfig = (configToSet: EnchantStoreConfig) => {
     config.characterLevel = configToSet.characterLevel
     config.smithLevel = configToSet.smithLevel
+    config.materialSkillLevels = configToSet.materialSkillLevels.slice()
   }
 
   const appendBuild = (build: EnchantBuild) => {

@@ -193,7 +193,7 @@ class EnchantEquipment {
   }
 
   /**
-   * @returns {number} - Percentage of success rate, if value > 160, it will return -1
+   * @returns Percentage of success rate, if value > 160, it will return -1
    */
   get successRate(): number {
     if (!this.lastStep) {
@@ -751,6 +751,11 @@ class EnchantStat {
 
     const smithlv = enchantStates.Character.smithLevel
     const rate = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
+    const skillRate =
+      100 -
+      enchantStates.Character.getMaterialSkillLevel(
+        this.itemBase.materialPointType
+      )
     const bv = this.itemBase.getMaterialPointValue(this.type)
 
     const calc = (_from: number, _to: number) => {
@@ -764,7 +769,7 @@ class EnchantStat {
         .map((_item, idx) => idx + _from + 1)
         .reduce(
           (item1, item2) =>
-            item1 + Math.floor((item2 * item2 * bv * rate) / 100),
+            item1 + Math.floor((item2 * item2 * bv * rate * skillRate) / 10000),
           0
         )
     }

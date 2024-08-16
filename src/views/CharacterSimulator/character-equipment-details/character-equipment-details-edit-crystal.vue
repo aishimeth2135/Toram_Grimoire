@@ -11,9 +11,9 @@ interface Props {
   equipment: CharacterEquipment
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
-const isEditing = ref(false)
+const isEditing = ref(props.equipment.crystals.length === 0)
 </script>
 
 <template>

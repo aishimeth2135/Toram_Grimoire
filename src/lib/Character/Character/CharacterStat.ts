@@ -39,7 +39,7 @@ class CharacterStatCategory {
 
 interface CharacterStatFormulaResult {
   value: number
-  readonly defaultFormula: boolean
+  readonly isDefaultFormula: boolean
   readonly statValueParts: {
     base: number
     constant: number
@@ -254,7 +254,7 @@ class CharacterStat {
         value,
         resultValue,
         displayValue,
-        defaultFormula: res.defaultFormula,
+        isDefaultFormula: res.isDefaultFormula,
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
         conditionalBase: res.conditionalBase,
@@ -273,7 +273,7 @@ class CharacterStat {
         value: 0,
         resultValue: 0,
         displayValue: '0',
-        defaultFormula: true,
+        isDefaultFormula: true,
         statValueParts: {
           base: 0,
           constant: 0,
@@ -435,7 +435,7 @@ class CharacterStatFormula {
       mvalue = mstat ? mstat.value : 0,
       tvalue = tstat ? tstat.value : 0
 
-    let defaultFormula = true
+    let isDefaultFormula = true
 
     const statPartsDetail: StatPartsDetail = {
       additionalValues: {
@@ -503,7 +503,7 @@ class CharacterStatFormula {
 
     ;(['cvalue', 'mvalue', 'tvalue'] as const).forEach(key => {
       appendGetter('#' + key, () => {
-        defaultFormula = false
+        isDefaultFormula = false
         return statValueVars[key]
       })
     })
@@ -655,7 +655,7 @@ class CharacterStatFormula {
       } else {
         initBasev = formula ? formulaHandler(formula) : 0
         basev = sum([initBasev, ...addValues]) * mul(mulValues)
-        res = defaultFormula
+        res = isDefaultFormula
           ? (((basev * (100 + mvalue)) / 100 + cvalue) * (100 + tvalue)) / 100
           : basev
       }
@@ -670,7 +670,7 @@ class CharacterStatFormula {
         multiplier: mvalue,
         total: tvalue,
       },
-      defaultFormula,
+      isDefaultFormula,
       statPartsDetail,
       conditionalBase,
     }

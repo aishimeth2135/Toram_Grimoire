@@ -7,6 +7,7 @@ import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 export interface EnchantStoreConfig {
   characterLevel: number
   smithLevel: number
+  materialSkillLevels: number[]
 }
 
 let characterMaxLevel = CHARACTER_MAX_LEVEL
@@ -35,5 +36,6 @@ export const enchantConfig: EnchantStoreConfig = (() => {
         _smithLevel.value = Math.max(0, Math.min(300, value))
       },
     }),
+    materialSkillLevels: [0, 0, 0, 0, 0, 0],
   })
 })()

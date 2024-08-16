@@ -2,6 +2,7 @@ build: 配置
 base-options: 基本設定
 advanced-options: 進階設定
 common-options: 共通設定
+skill-level-options: 角色技能等級設定
 equipment-type: 裝備類型
 append-build: 新增配置
 equipment-types:
@@ -43,6 +44,7 @@ result:
   enchant-step-each: 分次附、每次附{stat}、直到{target}
   stats: 最終結果
   materials: 素材耗量
+  materials-skill-levels: 素材掌握技能等級
   operation-steps-quantity: 步驟數
   success-rate-detail:
     title: 成功率說明

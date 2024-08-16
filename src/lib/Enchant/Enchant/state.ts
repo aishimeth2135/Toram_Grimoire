@@ -1,5 +1,7 @@
 import { enchantConfig } from '@/stores/views/enchant/config'
 
+import { MaterialPointTypeRange } from './EnchantBase'
+
 export const enchantStates = {
   PotentialCapacity: 100,
   EquipmentBasePotentialMinimum: 15,
@@ -13,5 +15,8 @@ export const enchantStates = {
       return enchantConfig.smithLevel
     },
     tec: 255,
+    getMaterialSkillLevel(type: MaterialPointTypeRange) {
+      return enchantConfig.materialSkillLevels[type]
+    },
   },
 }

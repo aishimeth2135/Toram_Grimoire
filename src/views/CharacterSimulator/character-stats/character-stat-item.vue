@@ -20,7 +20,7 @@
         class="ml-6 flex items-center space-x-2 text-primary-30"
       >
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
-          {{ data.title.value ?? data.title.displayedValue }}
+          {{ data.title.value }}
         </div>
       </div>
     </div>
@@ -81,31 +81,40 @@
             <div
               v-for="line in data.lines"
               :key="'line-' + line.iid"
-              class="flex w-max flex-wrap items-center text-sm"
+              class="flex text-sm"
             >
-              <cy-icon icon="ic-round-add" small class="mr-2" />
-              <span v-if="typeof line.title === 'string'">
-                {{ line.title }}
-              </span>
-              <template v-else>
-                <CharacterStatDetailEquipments
-                  v-if="line.title.equipments.length !== 0"
-                  :equipment-texts="line.title.equipments"
-                  class="mr-2"
-                />
-                <span
-                  v-if="line.title.captions.length > 0"
-                  class="mr-2 space-x-1"
-                >
-                  <span
-                    v-for="caption in line.title.captions"
-                    :key="caption.id"
-                  >
-                    {{ caption.text }}
+              <div class="h-text-sm flex items-center">
+                <cy-icon icon="ic-round-add" small class="mr-2" />
+              </div>
+              <div class="flex flex-wrap items-center">
+                <template v-if="typeof line.title === 'string'">
+                  <span class="mr-2">
+                    {{ line.title }}
                   </span>
-                </span>
-              </template>
-              <span class="text-primary-50">{{ line.value }}</span>
+                  <span class="text-primary-50">{{ line.value }}</span>
+                </template>
+                <template v-else>
+                  <CharacterStatDetailEquipments
+                    v-if="line.title.equipments.length !== 0"
+                    :equipment-texts="line.title.equipments"
+                    class="mr-2"
+                  />
+                  <div class="flex items-center">
+                    <span
+                      v-if="line.title.captions.length > 0"
+                      class="mr-2 space-x-1"
+                    >
+                      <span
+                        v-for="caption in line.title.captions"
+                        :key="caption.id"
+                      >
+                        {{ caption.text }}
+                      </span>
+                    </span>
+                    <span class="text-primary-50">{{ line.value }}</span>
+                  </div>
+                </template>
+              </div>
             </div>
           </div>
           <CharacterStatRecordedDetails
@@ -152,7 +161,7 @@ interface DetailLineTitle {
 interface DetailLine {
   iid: number
   title: string | DetailLineTitle
-  value: string
+  value: string | null
 }
 
 const handleConditional = (conditionBase: CharacterStatResultConditionBase) => {
@@ -206,143 +215,150 @@ const handleConditional = (conditionBase: CharacterStatResultConditionBase) => {
 }
 
 const showStatDetailDatas = computed(() => {
+  type SubDisplayedPartKeys = 'multiplier' | 'constant' | 'total'
+  type DisplayedPartKeys = 'base' | SubDisplayedPartKeys
+
   const valueFix = (value: number) => numberToFixed(value, 3).toString()
+  const getStatTypeByPartKey = (partKey: DisplayedPartKeys) => {
+    switch (partKey) {
+      case 'multiplier':
+        return StatTypes.Multiplier
+      case 'constant':
+        return StatTypes.Constant
+      case 'total':
+        return StatTypes.Total
+    }
+  }
 
   const stat = props.characterStatResult
-  const base = stat.origin.linkedStatBase
-  const types = [
-    null,
-    StatTypes.Multiplier,
-    StatTypes.Constant,
-    StatTypes.Total,
-  ]
-
-  const list = (
-    base ? ['base', 'multiplier', 'constant', 'total'] : ['base']
-  ).map((id, idx) => ({
-    type: types[idx],
-    id,
-  })) as (
-    | {
-        id: 'base'
-        type: null
-      }
-    | {
-        id: 'constant' | 'multiplier' | 'total'
-        type: StatTypes
-      }
-  )[]
+  const linkedBaseStat = stat.origin.linkedStatBase
 
   const conditionalBase = stat.conditionalBase
     ? {
         title: handleConditional(stat.conditionalBase),
       }
     : null
-  const datas = list
-    .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
-    .map(item => {
-      const id = item.id,
-        type = item.type
-      const value = stat.statValueParts[id]
-      const title =
-        id !== 'base'
-          ? {
-              text: base!.show(type!, value),
-              value: null,
-              displayedValue: base!.showValue(type!, value, false),
-            }
-          : {
-              text: t('character-simulator.character-stat-detail.base-value'),
-              value: valueFix(stat.statValueParts['base']),
-              displayedValue: null,
-            }
-      if (id === 'multiplier') {
-        title.text +=
-          '｜' +
-          Math.floor((value * stat.statValueParts['base']) / 100).toString()
+
+  const getDisplayedData = (key: DisplayedPartKeys) => {
+    const value = stat.statValueParts[key]
+    const isBase = key === 'base'
+
+    let title: {
+      text: string
+      value: string | null
+    }
+
+    if (isBase) {
+      title = {
+        text: t('character-simulator.character-stat-detail.base-value'),
+        value: valueFix(stat.statValueParts.base),
       }
-
-      const isBase = id === 'base'
-
-      const lines: DetailLine[] = []
-      const adds = stat.statPartsDetail.additionalValues[id].filter(
-        add => add.value !== 0
-      )
-
-      const extraUnit = id === 'multiplier' || id === 'total'
-
-      if (adds.length !== 0) {
-        const initValue = stat.statPartsDetail.initValue[id]
-        let hasInit = false
-        if (initValue !== 0) {
-          lines.push({
-            title: t('character-simulator.character-stat-detail.init-value'),
-            value: valueFix(initValue) + (extraUnit ? '%' : ''),
-            iid: 0,
-          })
-          hasInit = true
+    } else {
+      const statType = getStatTypeByPartKey(key)
+      title = {
+        text: linkedBaseStat!.show(statType!, value),
+        value: null,
+      }
+      if (stat.isDefaultFormula) {
+        if (key === 'multiplier') {
+          const originalValue = Math.floor(
+            (value * stat.statValueParts.base) / 100
+          )
+          title.value =
+            (originalValue > 0 ? '+' : '') + originalValue.toString()
+        } else {
+          title.value = linkedBaseStat!.showValue(statType!, value, false)
         }
-        const _lines = adds
-          .sort(addItem => (addItem.isMul ? 1 : -1))
-          .map((addItem, idx) => {
-            let resValue = '0'
-            if (addItem.isMul) {
-              resValue =
-                addItem.value > 0
-                  ? `×${valueFix(addItem.value)}`
-                  : `×(${valueFix(addItem.value)})`
-            } else {
-              resValue =
-                (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') +
-                valueFix(addItem.value)
-              if (!hasInit) {
-                hasInit = true
-              }
-            }
-
-            if (extraUnit) {
-              resValue += '%'
-            }
-
-            return {
-              iid: idx + 1,
-              title: handleConditional(addItem),
-              value: resValue,
-            } as DetailLine
-          })
-        lines.push(..._lines)
       }
+    }
 
-      if (conditionalBase) {
-        const conditionalEqs = conditionalBase.title.equipments
-        lines.forEach(line => {
-          if (typeof line.title === 'string') {
+    const displayedLines: DetailLine[] = []
+    const adds = stat.statPartsDetail.additionalValues[key].filter(
+      add => add.value !== 0
+    )
+
+    const hasExtraUnit = key === 'multiplier' || key === 'total'
+
+    if (adds.length !== 0) {
+      const initValue = stat.statPartsDetail.initValue[key]
+      let hasInit = false
+      if (initValue !== 0) {
+        displayedLines.push({
+          title: t('character-simulator.character-stat-detail.init-value'),
+          value: valueFix(initValue) + (hasExtraUnit ? '%' : ''),
+          iid: 0,
+        })
+        hasInit = true
+      }
+      const addsLines = adds
+        .sort(addItem => (addItem.isMul ? 1 : -1))
+        .map((addItem, idx) => {
+          let resValue = '0'
+          if (addItem.isMul) {
+            resValue =
+              addItem.value > 0
+                ? `×${valueFix(addItem.value)}`
+                : `×(${valueFix(addItem.value)})`
+          } else {
+            resValue =
+              (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') +
+              valueFix(addItem.value)
+            if (!hasInit) {
+              hasInit = true
+            }
+          }
+
+          if (hasExtraUnit) {
+            resValue += '%'
+          }
+
+          return {
+            iid: idx + 1,
+            title: handleConditional(addItem),
+            value: resValue,
+          } as DetailLine
+        })
+      displayedLines.push(...addsLines)
+    }
+
+    if (conditionalBase) {
+      const conditionalEqs = conditionalBase.title.equipments
+      displayedLines.forEach(line => {
+        if (typeof line.title === 'string') {
+          return
+        }
+        const eqs = line.title.equipments
+        eqs.forEach((_text, idx) => {
+          if (eqs.length - idx < conditionalEqs.length) {
             return
           }
-          const eqs = line.title.equipments
-          eqs.forEach((_text, idx) => {
-            if (eqs.length - idx < conditionalEqs.length) {
-              return
-            }
-            if (
-              conditionalEqs.every(
-                (eq, idx2) => eq.text === eqs[idx + idx2].text
-              )
-            ) {
-              eqs.splice(idx, conditionalEqs.length)
-            }
-          })
+          if (
+            conditionalEqs.every((eq, idx2) => eq.text === eqs[idx + idx2].text)
+          ) {
+            eqs.splice(idx, conditionalEqs.length)
+          }
         })
-      }
+      })
+    }
 
-      return {
-        id,
-        title,
-        statRecorded:
-          id !== 'base' ? stat.statPartsDetail.statRecordeds[id] : null,
-        lines,
-      }
-    })
+    return {
+      id: key,
+      title,
+      statRecorded: !isBase ? stat.statPartsDetail.statRecordeds[key] : null,
+      lines: displayedLines,
+    }
+  }
+
+  const datas = [getDisplayedData('base')]
+  if (stat.statValueParts.multiplier) {
+    datas.push(getDisplayedData('multiplier'))
+  }
+  if (stat.statValueParts.constant) {
+    datas.push(getDisplayedData('constant'))
+  }
+  if (stat.statValueParts.total) {
+    datas.push(getDisplayedData('total'))
+  }
 
   return {
     datas,
@@ -367,6 +383,6 @@ const showPreviewValues = computed(() => {
   if (showStatDetailDatas.value.datas.length <= 1) {
     return false
   }
-  return props.characterStatResult.defaultFormula
+  return props.characterStatResult.isDefaultFormula
 })
 </script>

@@ -56,16 +56,14 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CyInputCounter',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
 import Color from '@/shared/services/Color'
+
+defineOptions({
+  name: 'CyInputCounter',
+})
 
 interface Props {
   value: number

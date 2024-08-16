@@ -120,83 +120,37 @@
                 </cy-button-action>
               </div>
             </div>
-            <cy-icon-text small text-color="fuchsia-60" class="mt-4">
-              {{ t('enchant-simulator.base-options') }}
-            </cy-icon-text>
-            <div class="mr-2 flex flex-wrap items-center p-2">
-              <cy-input-counter
-                v-model:value="currentEquipment.originalPotential"
-              >
-                <template #title>
-                  <cy-icon-text>{{
-                    t('enchant-simulator.equipment-original-potential')
-                  }}</cy-icon-text>
-                </template>
-              </cy-input-counter>
-              <cy-button-icon
-                icon="jam-hammer"
-                class="my-2 ml-2"
-                icon-color="blue-30"
-                icon-color-hover="blue"
-                :selected="contents.extraOptions"
-                @click="toggle('contents/extraOptions')"
-              />
+            <div class="mt-4 px-2">
+              <div class="text-sm text-gray-50">
+                {{ t('enchant-simulator.base-options') }}
+              </div>
+              <div class="mr-2 flex flex-wrap items-center py-2">
+                <cy-input-counter
+                  v-model:value="currentEquipment.originalPotential"
+                  :title="t('enchant-simulator.equipment-original-potential')"
+                />
+                <cy-button-icon
+                  icon="jam-hammer"
+                  class="my-2 ml-2"
+                  icon-color="blue-30"
+                  icon-color-hover="blue"
+                  :selected="contents.extraOptions"
+                  @click="toggle('contents/extraOptions')"
+                />
+              </div>
             </div>
             <cy-transition>
-              <div v-if="contents.extraOptions">
-                <cy-icon-text
-                  small
-                  text-color="blue-60"
-                  icon-color="blue-60"
-                  class="mt-4"
-                >
+              <div v-if="contents.extraOptions" class="mt-2 pl-2">
+                <div class="text-sm text-gray-50">
                   {{ t('enchant-simulator.advanced-options') }}
-                </cy-icon-text>
-                <div class="p-2">
+                </div>
+                <div class="py-2">
                   <cy-input-counter
                     v-model:value="currentEquipment.basePotential"
-                    main-color="blue-30"
-                  >
-                    <template #title>
-                      <cy-icon-text>{{
-                        t('enchant-simulator.equipment-base-potential')
-                      }}</cy-icon-text>
-                    </template>
-                  </cy-input-counter>
+                    :title="t('enchant-simulator.equipment-base-potential')"
+                  />
                 </div>
-                <cy-icon-text
-                  small
-                  text-color="blue-60"
-                  icon-color="blue-60"
-                  class="mt-4"
-                >
-                  {{ t('enchant-simulator.common-options') }}
-                </cy-icon-text>
-                <div class="p-2">
-                  <cy-input-counter
-                    v-model:value="config.characterLevel"
-                    :step="10"
-                    main-color="blue-30"
-                  >
-                    <template #title>
-                      <cy-icon-text>{{
-                        t('enchant-simulator.character-level')
-                      }}</cy-icon-text>
-                    </template>
-                  </cy-input-counter>
-                  <cy-input-counter
-                    v-model:value="config.smithLevel"
-                    :step="10"
-                    class="mt-3"
-                    main-color="blue-30"
-                  >
-                    <template #title>
-                      <cy-icon-text>{{
-                        t('enchant-simulator.smith-level')
-                      }}</cy-icon-text>
-                    </template>
-                  </cy-input-counter>
-                </div>
+                <EnchantCommonSetting class="mt-2" />
               </div>
             </cy-transition>
             <cy-icon-text small text-color="fuchsia-60" class="mt-3">
@@ -285,6 +239,7 @@ import EnchantStepView from './enchant-step/index.vue'
 
 import { EnchantSimulatorInjectionKey } from './injection-keys'
 import { EnchantStatOptionBase } from './setup'
+import EnchantCommonSetting from './enchant-common-setting.vue'
 
 const { windows, contents, toggle } = ToggleService({
   windows: ['selectItem'] as const,
@@ -295,16 +250,12 @@ const { t } = useI18n()
 const { notify } = Notify()
 const { confirm } = Confirm()
 
-const { enchantBuilds, currentBuild, config } = (() => {
-  const {
-    enchantBuilds: _enchantBuilds,
-    currentBuild: _currentBuild,
-    config: _config,
-  } = storeToRefs(store)
+const { enchantBuilds, currentBuild } = (() => {
+  const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild } =
+    storeToRefs(store)
   return {
     enchantBuilds: _enchantBuilds as Ref<EnchantBuild[]>,
     currentBuild: _currentBuild as Ref<EnchantBuild | null>,
-    config: _config,
   }
 })()
 

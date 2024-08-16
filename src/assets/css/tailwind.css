@@ -24,4 +24,25 @@
   .content-auto {
     content-visibility: auto;
   }
+
+  /**
+   * The height utilities that map the height to the line-heigth for align.
+   * example:
+   * ```
+   * <div class="flex">
+   *   <div class="h-text-sm">
+   *     <some-icon />
+   *   </div>
+   *   <div class="flex items-center flex-wrap text-sm">
+   *     some multiple lines content...
+   *   </div>
+   * </div>
+   * ```
+   */
+  .h-text-sm {
+    height: 1.25rem; /* line-height of text-sm */
+  }
+  .h-text-base {
+    height: 1.5rem; /* line-height of text-base */
+  }
 }

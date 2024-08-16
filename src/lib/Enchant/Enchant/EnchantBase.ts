@@ -26,6 +26,16 @@ interface EnchantItemConditionalPropertiesParams {
 }
 
 type EnchantItemOptionCommonValue = [number | null, number | null]
+
+/**
+ * Using the index to mapping material types.
+ * 0: 金屬
+ * 1: 獸品
+ * 2: 木材
+ * 3: 布料
+ * 4: 藥品
+ * 5: 魔素
+ */
 type MaterialPointTypeRange = 0 | 1 | 2 | 3 | 4 | 5
 
 interface EnchantItemPropertyValue<T> {

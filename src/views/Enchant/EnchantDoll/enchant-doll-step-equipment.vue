@@ -63,38 +63,18 @@
         {{ t('enchant-doll.equipment.set-config.title') }}
       </cy-button-plain>
     </div>
-    <template v-if="setConfig">
-      <div class="flex justify-center pt-2">
-        <cy-input-counter
-          v-model:value="config.characterLevel"
-          :step="10"
-          main-color="blue-30"
-        >
-          <template #title>
-            <cy-icon-text>
-              {{ t('enchant-simulator.character-level') }}
-            </cy-icon-text>
-          </template>
-        </cy-input-counter>
+    <div v-if="setConfig" class="flex justify-center">
+      <div class="flex border border-primary-30 px-5 py-4">
+        <EnchantCommonSetting />
       </div>
-      <div class="flex justify-center pt-2">
-        <cy-input-counter
-          v-model:value="config.smithLevel"
-          :step="10"
-          main-color="blue-30"
-        >
-          <template #title>
-            <cy-icon-text>
-              {{ t('enchant-simulator.smith-level') }}
-            </cy-icon-text>
-          </template>
-        </cy-input-counter>
-      </div>
-    </template>
-    <div v-if="config.characterLevel < 250" class="mt-4 flex justify-center">
-      <cy-icon-text color="primary-50" align-v="start" small>
+    </div>
+    <div
+      v-if="config.characterLevel < CHARACTER_MAX_LEVEL"
+      class="mt-4 flex justify-center"
+    >
+      <div class="text-sm text-gray-50">
         {{ t('enchant-doll.equipment.set-config.character-level-tips') }}
-      </cy-icon-text>
+      </div>
     </div>
   </EnchantDollStepWrapper>
 </template>
@@ -106,8 +86,10 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
+import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant'
 
+import EnchantCommonSetting from '../EnchantSimulator/enchant-common-setting.vue'
 import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 
 import { EnchantDollInjectionKey } from './injection-keys'
