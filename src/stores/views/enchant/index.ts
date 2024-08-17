@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import type { Ref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 
 import { useMainStore } from '@/stores/app/main'
 
+import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
 import { EnchantBuild, EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
@@ -27,6 +28,8 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   const currentBuildIndex = ref(-1)
   const hasInit = ref(false)
   const config = enchantConfig
+  let hasFirstLoaded = false
+  let saveDisabled = false
 
   const mainStore = useMainStore()
   if (mainStore.devMode) {
@@ -40,7 +43,11 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   const resetConfig = (configToSet: EnchantStoreConfig) => {
     config.characterLevel = configToSet.characterLevel
     config.smithLevel = configToSet.smithLevel
-    config.materialSkillLevels = configToSet.materialSkillLevels.slice()
+
+    // need migrate
+    if (configToSet.materialSkillLevels) {
+      config.materialSkillLevels = configToSet.materialSkillLevels.slice()
+    }
   }
 
   const appendBuild = (build: EnchantBuild) => {
@@ -107,12 +114,19 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       currentBuildIndex.value = data.index
 
       resetConfig(data.config)
+
+      hasFirstLoaded = true
     } catch (err) {
-      console.warn('[enchant-simulator] load data fail: ' + target)
+      console.warn('[enchant-simulator] load failed: ' + target)
       console.log(err)
       enchantBuilds.value = origin.builds
       currentBuildIndex.value = origin.index
       resetConfig(origin.config)
+      if (!hasFirstLoaded) {
+        saveDisabled = true
+        const { notify } = Notify()
+        notify(Grimoire.i18n.t('enchant-simulator.tips.first-load-failed-tips'))
+      }
     }
   }
 

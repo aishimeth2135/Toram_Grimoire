@@ -44,7 +44,7 @@ result:
   enchant-step-each: 分次附、每次附{stat}、直到{target}
   stats: 最終結果
   materials: 素材耗量
-  materials-skill-levels: 素材掌握技能等級
+  materials-skill-levels: 了解素材技能等級
   operation-steps-quantity: 步驟數
   success-rate-detail:
     title: 成功率說明
@@ -66,3 +66,4 @@ tips:
   remove-build-confirm: 確定要移除這個配置嗎0.0？
   copy-build-success: 複製配置成功。
   copy-result-text-success: 複製結果成功。
+  first-load-failed-tips: 讀檔時發生未知的錯誤。為了避免附魔模擬的存檔遺失，系統已暫時關閉的附魔模擬的存檔功能。
