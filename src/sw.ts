@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import { RouteHandler, setCacheNameDetails } from 'workbox-core'
+import { type RouteHandler, setCacheNameDetails } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
 import { precacheAndRoute } from 'workbox-precaching'
@@ -9,7 +9,7 @@ import {
   CacheFirst,
   Strategy,
   StrategyHandler,
-  StrategyOptions,
+  type StrategyOptions,
 } from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope

@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T extends any">
-import { Ref, StyleValue, computed, shallowRef } from 'vue'
+import { type Ref, type StyleValue, computed, shallowRef } from 'vue'
 
 import { useResizeObserver } from '@/shared/setup/ElementObserver'
 import { nextFrame } from '@/shared/utils/dom'

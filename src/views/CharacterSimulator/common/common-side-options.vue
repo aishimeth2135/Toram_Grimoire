@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Draggable from 'vuedraggable'
 
-import { CommonItem } from '@/lib/common/Items'
+import { type CommonItem } from '@/lib/common/Items'
 
 interface Props {
   currentValue: Item | null

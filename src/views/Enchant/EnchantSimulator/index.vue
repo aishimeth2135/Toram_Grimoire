@@ -211,7 +211,7 @@ export default {
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { Ref, computed, onMounted, provide, reactive, ref } from 'vue'
+import { type Ref, computed, onMounted, provide, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
@@ -219,7 +219,7 @@ import { useEnchantStore } from '@/stores/views/enchant'
 import {
   EnchantBuild,
   EnchantStep,
-  EnchantBuildSaveData,
+  type EnchantBuildSaveData,
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 
@@ -238,7 +238,7 @@ import EnchantSelectItem from './enchant-select-item.vue'
 import EnchantStepView from './enchant-step/index.vue'
 
 import { EnchantSimulatorInjectionKey } from './injection-keys'
-import { EnchantStatOptionBase } from './setup'
+import { type EnchantStatOptionBase } from './setup'
 import EnchantCommonSetting from './enchant-common-setting.vue'
 
 const { windows, contents, toggle } = ToggleService({

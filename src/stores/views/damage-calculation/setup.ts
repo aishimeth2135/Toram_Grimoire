@@ -1,7 +1,7 @@
-import { Ref, computed } from 'vue'
+import { type Ref, computed } from 'vue'
 
 import {
-  CalcResultOptions,
+  type CalcResultOptions,
   Calculation,
   CalculationContainerIds,
   CalculationItemIds,

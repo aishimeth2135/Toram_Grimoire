@@ -1,4 +1,4 @@
-import { InjectionKey } from 'vue'
+import type { InjectionKey } from 'vue'
 
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'

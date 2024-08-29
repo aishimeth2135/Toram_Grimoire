@@ -1,5 +1,5 @@
 import ItemsSystem from '@/lib/Items'
-import { BagCrystal, BagItemObtain } from '@/lib/Items/BagItem'
+import { BagCrystal, type BagItemObtain } from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
 

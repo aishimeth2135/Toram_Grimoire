@@ -1,6 +1,6 @@
-import { Ref, WritableComputedRef, computed, ref } from 'vue'
+import { type Ref, type WritableComputedRef, computed, ref } from 'vue'
 
-import { CharacterBindingBuild } from '@/lib/Character/Character'
+import { type CharacterBindingBuild } from '@/lib/Character/Character'
 
 export function useCharacterBindingBuild<
   Build extends CharacterBindingBuild,

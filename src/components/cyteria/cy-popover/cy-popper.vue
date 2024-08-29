@@ -18,17 +18,11 @@
   </teleport>
 </template>
 
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-}
-</script>
-
 <script lang="ts" setup>
-import { Middleware } from '@floating-ui/core'
+import { type Middleware } from '@floating-ui/core'
 import {
-  ComputePositionConfig,
-  DetectOverflowOptions,
+  type ComputePositionConfig,
+  type DetectOverflowOptions,
   autoUpdate,
   computePosition,
   flip,
@@ -38,8 +32,8 @@ import {
   size,
 } from '@floating-ui/dom'
 import {
-  CSSProperties,
-  Ref,
+  type CSSProperties,
+  type Ref,
   computed,
   nextTick,
   ref,
@@ -49,10 +43,14 @@ import {
 } from 'vue'
 
 import {
-  PopperHideEventDetail,
-  PopperOptions,
+  type PopperHideEventDetail,
+  type PopperOptions,
   setupPopperOptions,
 } from './setup'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 interface Props {
   element: HTMLElement | null

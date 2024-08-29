@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { ComputedRef } from 'vue'
+import { type ComputedRef, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'

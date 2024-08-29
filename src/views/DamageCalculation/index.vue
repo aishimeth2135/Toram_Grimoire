@@ -257,24 +257,18 @@
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'DamageCalculation',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useDatasStore } from '@/stores/app/datas'
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
-import { CalculationSaveData } from '@/lib/Damage/DamageCalculation'
-
+import Grimoire from '@/shared/Grimoire'
 import AutoSave from '@/shared/setup/AutoSave'
 import ExportBuild from '@/shared/setup/ExportBuild'
 import ToggleService from '@/shared/setup/ToggleService'
+
+import { type CalculationSaveData } from '@/lib/Damage/DamageCalculation'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -292,8 +286,11 @@ import {
   setupResultMode,
 } from './setup'
 
+defineOptions({
+  name: 'DamageCalculation',
+})
+
 const store = useDamageCalculationStore()
-const datasStore = useDatasStore()
 
 AutoSave({
   save: () => store.save(),
@@ -325,7 +322,7 @@ const { exportBuild, importBuild } = ExportBuild({
   },
   loaded: res => {
     const saveData = JSON.parse(res) as CalculationSaveData
-    const calculationBase = datasStore.DamageCalculation!.calculationBase
+    const calculationBase = Grimoire.DamageCalculation.calculationBase
     const calculation = calculationBase.createCalculation()
     calculation.load(saveData)
     store.appendCalculation(calculation)

@@ -1,7 +1,7 @@
-import { Ref, computed } from 'vue'
+import { type Ref, computed } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResult } from '@/stores/views/character/setup'
+import { type SkillResult } from '@/stores/views/character/setup'
 
 import { isNumberString } from '@/shared/utils/string'
 

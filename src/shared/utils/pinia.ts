@@ -1,4 +1,4 @@
-import { Ref, ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 
 /**
  * Prevent the type of the class instance be unwrap in the pinia store definition.

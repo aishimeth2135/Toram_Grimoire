@@ -10,7 +10,7 @@ import Draggable from 'vuedraggable'
 import CommonBuildDropdowns from './common-build-dropdowns.vue'
 import CommonSelectBuildContent from './common-select-build-content.vue'
 import CommonSideOptions from './common-side-options.vue'
-import { CommonItem } from '@/lib/common/Items'
+import { type CommonItem } from '@/lib/common/Items'
 import { useI18n } from 'vue-i18n'
 
 interface Props {

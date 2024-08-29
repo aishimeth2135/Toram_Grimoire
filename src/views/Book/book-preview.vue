@@ -14,12 +14,6 @@
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'BookPreview',
-}
-</script>
-
 <script lang="ts" setup>
 import Papa from 'papaparse'
 import { ref, shallowRef, watch } from 'vue'

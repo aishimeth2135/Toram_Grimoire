@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResultsState } from '@/stores/views/character/setup'
+import { type SkillResultsState } from '@/stores/views/character/setup'
 
-import { ComboSkillState } from '@/lib/Character/CharacterCombo'
+import { type ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'

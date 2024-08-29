@@ -37,8 +37,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, computed, inject, toRefs } from 'vue'
-import type { WritableComputedRef } from 'vue'
+import { computed, inject, toRefs } from 'vue'
+import type { ComputedRef, WritableComputedRef } from 'vue'
 
 import { isNumberString } from '@/shared/utils/string'
 

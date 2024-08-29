@@ -10,7 +10,7 @@ import { computed } from 'vue'
 
 import SvgIcon from './svg-icon.vue'
 
-import { IconBaseProps } from './setup'
+import { type IconBaseProps } from './setup'
 
 interface Props extends IconBaseProps {}
 

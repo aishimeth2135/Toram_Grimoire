@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 
 import {
   CharacterComboTags,
-  ComboSkillState,
+  type ComboSkillState,
 } from '@/lib/Character/CharacterCombo'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
@@ -119,11 +119,7 @@ const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
 
 <style lang="postcss" scoped>
 .combo-skill-circle {
-  @apply flex h-12
-    w-12
-    cursor-pointer items-center justify-center rounded-full
-    border-1 border-primary-30 bg-white
-    duration-200 hover:border-primary-50;
+  @apply flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-1 border-primary-30 bg-white duration-200 hover:border-primary-50;
 
   &.has-skill:not(.combo-skill-invalid) {
     background: linear-gradient(to bottom, #fff, #ffd1ea, #ff9ed3);

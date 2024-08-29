@@ -1,6 +1,6 @@
 <script lang="tsx" setup>
 import { storeToRefs } from 'pinia'
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'

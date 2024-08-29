@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { ButtonBaseProps } from './setup'
+import { type ButtonBaseProps } from './setup'
 
 interface Props extends ButtonBaseProps {}
 

@@ -1,4 +1,4 @@
-import { CommonId, CommonIdGenerator } from './CommonId'
+import { type CommonId, CommonIdGenerator } from './CommonId'
 
 export type InstanceId = CommonId<'InstanceId'>
 

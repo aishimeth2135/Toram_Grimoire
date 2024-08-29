@@ -1,16 +1,16 @@
 import type { SkillDisplayData } from '.'
 
 import {
-  InstanceId,
+  type InstanceId,
   InstanceIdGenerator,
-  InstanceWithId,
+  type InstanceWithId,
 } from '@/shared/services/InstanceId'
 
 import {
-  SkillBranchResultBase,
+  type SkillBranchItemBaseChilds,
+  type SkillBranchResultBase,
   SkillBranchStatResult,
 } from '@/lib/Skill/SkillComputing'
-import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
 export default class DisplayDataContainer<
   Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds,

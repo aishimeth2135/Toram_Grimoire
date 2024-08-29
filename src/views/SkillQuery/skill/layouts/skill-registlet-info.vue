@@ -78,7 +78,7 @@ import { getRegistletCaptionRender } from '@/views/Registlet/RegistletQuery/setu
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 
-import { SkillRegistletItemState } from '../../setup'
+import type { SkillRegistletItemState } from '../../setup'
 
 interface Props {
   registletItemState: SkillRegistletItemState

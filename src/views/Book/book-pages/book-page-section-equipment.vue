@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, shallowRef, watch } from 'vue'
+import { type Ref, ref, shallowRef, watch } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas'

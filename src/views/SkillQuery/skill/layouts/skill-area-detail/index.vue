@@ -49,10 +49,6 @@ const ALL_DISPLAY_ATTR_KEYS = [
   'start_position_offsets',
   'end_position_offsets',
 ]
-
-export default {
-  name: 'SkillAreaDetail',
-}
 </script>
 
 <script lang="ts" setup>
@@ -69,6 +65,10 @@ import SkillAreaAnimation from './skill-area-animation.vue'
 
 import AreaHandler from '../../branch-handlers/AreaHandler'
 import SkillBranchPropValue from '../skill-branch-prop-value.vue'
+
+defineOptions({
+  name: 'SkillAreaDetail',
+})
 
 interface Props {
   computing: SkillComputingContainer

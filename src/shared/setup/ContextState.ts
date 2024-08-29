@@ -1,4 +1,4 @@
-import { CommonId, CommonIdGenerator } from '../services/CommonId'
+import { type CommonId, CommonIdGenerator } from '../services/CommonId'
 
 type ComponentContext = Record<string, any>
 export type ContextId = CommonId<'ContextId'>

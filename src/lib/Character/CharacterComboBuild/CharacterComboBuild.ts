@@ -1,4 +1,4 @@
-import { CharacterCombo, CharacterComboSaveData } from '../CharacterCombo'
+import { CharacterCombo, type CharacterComboSaveData } from '../CharacterCombo'
 
 interface CharacterComboBuildSaveData {
   combos: CharacterComboSaveData[]

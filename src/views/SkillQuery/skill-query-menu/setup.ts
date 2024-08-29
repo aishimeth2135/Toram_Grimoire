@@ -1,4 +1,4 @@
-import { Ref, computed, ref, watch } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -6,7 +6,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import {
   EquipmentRestrictions,
-  EquipmentRestrictionsBaseKeys,
+  type EquipmentRestrictionsBaseKeys,
 } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputing/utils'

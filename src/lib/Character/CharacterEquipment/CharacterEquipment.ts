@@ -1,9 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import {
-  InstanceId,
+  type InstanceId,
   InstanceIdGenerator,
-  InstanceWithId,
+  type InstanceWithId,
 } from '@/shared/services/InstanceId'
 import { normalizeInteger } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
@@ -14,7 +14,7 @@ import { CharacterBuildLabel } from '../Character/CharacterBuildLabel'
 import { StatRecorded } from '../Stat/StatRecorded'
 import {
   StatRestriction,
-  StatRestrictionSaveData,
+  type StatRestrictionSaveData,
 } from '../Stat/StatRestriction'
 import { StatValueSourceTypes } from '../Stat/enums'
 import {

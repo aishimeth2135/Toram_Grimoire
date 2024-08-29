@@ -16,7 +16,7 @@ import {
   TextResultContainerPart,
 } from '@/lib/common/ResultContainer/index'
 import {
-  TextParseItem,
+  type TextParseItem,
   getCommonTextParseItems,
   handleParseText,
 } from '@/lib/common/ResultContainer/parseText'

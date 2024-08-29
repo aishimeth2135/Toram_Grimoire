@@ -9,6 +9,7 @@ export const enum DataPathIds {
   Enchant = 7,
   Registlet = 8,
   Potion = 9,
+  Quest = 10,
 }
 
 function DataPath(id: DataPathIds): string {
@@ -33,6 +34,8 @@ function DataPath(id: DataPathIds): string {
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1113738876&single=true&output=csv&range=A:I'
     case DataPathIds.Potion:
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=1555730463&single=true&output=csv&range=A:E'
+    case DataPathIds.Quest:
+      return 'https://docs.google.com/spreadsheets/d/1hh66cAWlDk2uJlAbv2ivdrRNQYuK4RPuWF4iB48T31g/pub?gid=1111992028&single=true&output=csv&range=A:I'
   }
 }
 

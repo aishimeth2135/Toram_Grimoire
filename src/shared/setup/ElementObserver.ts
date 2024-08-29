@@ -1,4 +1,4 @@
-import { Ref, onUnmounted, watch } from 'vue'
+import { type Ref, onUnmounted, watch } from 'vue'
 
 export function useResizeObserver(
   target: Ref<HTMLElement | null>,

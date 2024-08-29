@@ -1,5 +1,5 @@
-import { Ref, ref, shallowReactive } from 'vue'
-import { ComputedRef } from 'vue'
+import { ref, shallowReactive } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { lastElement } from '@/shared/utils/array'

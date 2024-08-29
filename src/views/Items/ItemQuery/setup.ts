@@ -6,7 +6,7 @@ import { isIntegerString } from '@/shared/utils/string'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
-import { BagItemObtain } from '@/lib/Items/BagItem'
+import type { BagItemObtain } from '@/lib/Items/BagItem'
 
 export interface StatOption {
   origin: StatBase
@@ -118,7 +118,33 @@ const modes = reactive({
     icon: 'ic-outline-palette',
     searchText: '',
   },
-})
+}) as {
+  [SearchModes.Normal]: {
+    id: SearchModes
+    icon: string
+    targets: CommonOption[]
+    optionsVisible: boolean
+    searchText: string
+  }
+  [SearchModes.Stat]: {
+    id: SearchModes
+    icon: string
+    stats: StatOption[]
+    statSearchText: string
+    currentStats: StatOption[]
+  }
+  [SearchModes.ItemLevel]: {
+    id: SearchModes.ItemLevel
+    icon: string
+    min: number
+    max: number
+  }
+  [SearchModes.Dye]: {
+    id: SearchModes
+    icon: string
+    searchText: string
+  }
+}
 
 export function useItemQueryModes() {
   if (modes[SearchModes.Stat].stats.length === 0) {

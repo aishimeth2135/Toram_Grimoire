@@ -170,7 +170,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResultsState } from '@/stores/views/character/setup'
+import type { SkillResultsState } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'

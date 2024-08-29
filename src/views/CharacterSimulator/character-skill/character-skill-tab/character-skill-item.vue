@@ -74,7 +74,7 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillResultsState } from '@/stores/views/character/setup'
+import type { SkillResultsState } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'

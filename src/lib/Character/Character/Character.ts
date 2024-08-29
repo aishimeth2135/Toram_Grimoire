@@ -7,10 +7,10 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import {
   CharacterComboBuild,
-  CharacterComboBuildSaveData,
+  type CharacterComboBuildSaveData,
 } from '../CharacterComboBuild'
 import {
-  CharacterBindingBuild,
+  type CharacterBindingBuild,
   checkLoadedId,
   getLoadedId,
 } from './CharacterBuild'

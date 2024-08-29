@@ -1,7 +1,7 @@
-import { Ref, StyleValue, computed, onUnmounted, watch } from 'vue'
+import { type Ref, type StyleValue, computed, onUnmounted, watch } from 'vue'
 
 import {
-  ContextId,
+  type ContextId,
   getContextIdFromElement,
   useContext,
 } from '@/shared/setup/ContextState'
@@ -143,6 +143,11 @@ export function useTabContext(componentContext: TabComponentContext) {
   }
 }
 
+interface WatchTabsValueContext extends TabsComponentContext {
+  tabsEl: Ref<HTMLElement | null>
+  sliderStyle: Ref<StyleValue | undefined>
+}
+
 export const useTabsSlider = defineState(() => {
   const { TAB_ID_ATTR_NAME, getTabContext } = useTabContextState()
 
@@ -203,11 +208,6 @@ export const useTabsSlider = defineState(() => {
       prevStyle,
       nextStyle,
     }
-  }
-
-  interface WatchTabsValueContext extends TabsComponentContext {
-    tabsEl: Ref<HTMLElement | null>
-    sliderStyle: Ref<StyleValue | undefined>
   }
 
   const autoUpdateSliderStyle = (watchContext: WatchTabsValueContext) => {

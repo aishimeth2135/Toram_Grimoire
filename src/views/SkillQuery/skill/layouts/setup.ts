@@ -1,19 +1,17 @@
-import { VNode, h } from 'vue'
+import { type VNode, h } from 'vue'
 import { Translation } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
 import {
   SkillBranchResult,
-  SkillBranchTextResultPartValue,
+  type SkillBranchTextResultPartValue,
 } from '@/lib/Skill/SkillComputing'
 import {
-  TextResultContainerPart,
-  TextResultContainerPartValue,
-} from '@/lib/common/ResultContainer'
-import {
   ResultContainerTypes,
+  TextResultContainerPart,
   TextResultContainerPartTypes,
+  type TextResultContainerPartValue,
 } from '@/lib/common/ResultContainer'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
@@ -156,4 +154,4 @@ function RenderPlainTextParts(parts: TextResultContainerPartValue[]) {
   })
 }
 
-export { RenderContainerResult, RenderTextParts, RenderPlainTextParts }
+export { RenderContainerResult, RenderPlainTextParts, RenderTextParts }

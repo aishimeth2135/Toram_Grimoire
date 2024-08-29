@@ -1,9 +1,9 @@
 <script lang="ts">
 import {
-  Component,
-  FunctionalComponent,
+  type Component,
+  type FunctionalComponent,
   Transition,
-  TransitionProps,
+  type TransitionProps,
 } from 'vue'
 import { h, mergeProps } from 'vue'
 

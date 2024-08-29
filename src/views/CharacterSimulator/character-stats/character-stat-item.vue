@@ -131,13 +131,13 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { CharacterStatResultWithId } from '@/stores/views/character/setup'
+import type { CharacterStatResultWithId } from '@/stores/views/character/setup'
 
 import { lastElement } from '@/shared/utils/array'
-import { TextWithId, getTextsWithId } from '@/shared/utils/data/text'
+import { type TextWithId, getTextsWithId } from '@/shared/utils/data/text'
 import { numberToFixed } from '@/shared/utils/number'
 
-import { CharacterStatResultConditionBase } from '@/lib/Character/Character'
+import type { CharacterStatResultConditionBase } from '@/lib/Character/Character'
 import { StatTypes } from '@/lib/Character/Stat'
 
 import CharacterStatDetailEquipments from './character-stat-detail-equipments.vue'

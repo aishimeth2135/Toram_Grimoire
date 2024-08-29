@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 
 // import { AppColors } from '@/shared/services/Color'
-import { IconBaseProps } from '../icon/setup'
+import { type IconBaseProps } from '../icon/setup'
 
 export interface ButtonIconProps extends IconBaseProps {}
 

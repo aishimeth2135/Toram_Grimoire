@@ -22,7 +22,7 @@ export async function ViewInitSlient(...inits: DataStoreIds[]) {
     const loaded = datasStore.checkLoaded(id)
     const promise = loaded
       ? Promise.resolve(() => Promise.resolve())
-      : datasStore[`init${id}`]()
+      : datasStore.prepareDataStore(id)
     return { id, promise, loaded }
   })
 
@@ -74,7 +74,7 @@ export async function ViewInit(...inits: DataStoreIds[]) {
     const loaded = datasStore.checkLoaded(id)
     const promise = loaded
       ? Promise.resolve(() => Promise.resolve())
-      : datasStore[`init${id}`]()
+      : datasStore.prepareDataStore(id)
     if (!loaded) {
       logger.addTitle(id).info('Loading...')
     }

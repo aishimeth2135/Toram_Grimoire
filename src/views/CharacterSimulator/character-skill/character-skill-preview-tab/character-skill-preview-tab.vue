@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ComponentPublicInstance, computed, reactive, ref } from 'vue'
+import { type ComponentPublicInstance, computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'

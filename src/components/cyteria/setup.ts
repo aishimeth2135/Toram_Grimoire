@@ -1,5 +1,4 @@
-import { Ref } from 'vue'
-import { computed } from 'vue'
+import { type Ref, computed } from 'vue'
 
 import Color from '@/shared/services/Color'
 

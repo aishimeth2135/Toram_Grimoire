@@ -1,7 +1,7 @@
 import {
-  InstanceId,
+  type InstanceId,
   InstanceIdGenerator,
-  InstanceWithId,
+  type InstanceWithId,
 } from '@/shared/services/InstanceId'
 
 import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'

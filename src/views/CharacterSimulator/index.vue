@@ -88,7 +88,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import {
-  Ref,
+  type Ref,
   computed,
   provide,
   reactive,
@@ -96,8 +96,7 @@ import {
   shallowRef,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
@@ -112,8 +111,8 @@ import { registViewStatesCleaning } from '@/shared/setup/State'
 import ToggleService from '@/shared/setup/ToggleService'
 
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { Skill } from '@/lib/Skill/Skill'
+import { type CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { type Skill } from '@/lib/Skill/Skill'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'

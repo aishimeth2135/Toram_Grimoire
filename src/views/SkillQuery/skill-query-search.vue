@@ -2,7 +2,7 @@
   <teleport to="body">
     <cy-transition appear>
       <div
-        class="fixed top-0 left-0 z-100 h-full w-full bg-black bg-opacity-50"
+        class="fixed left-0 top-0 z-100 h-full w-full bg-black bg-opacity-50"
         @click="emit('close')"
       >
         <div
@@ -45,9 +45,9 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ComputedRef, Ref, WritableComputedRef } from 'vue'
 
-import { useDatasStore } from '@/stores/app/datas'
+import Grimoire from '@/shared/Grimoire'
 
-import { Skill, SkillRoot } from '@/lib/Skill/Skill'
+import { Skill } from '@/lib/Skill/Skill'
 
 import SkillTitle from './skill/layouts/skill-title.vue'
 
@@ -58,8 +58,7 @@ interface Emits {
 
 const emit = defineEmits<Emits>()
 
-const datasStore = useDatasStore()
-const skillRoot = computed(() => datasStore.Skill!.skillRoot as SkillRoot)
+const skillRoot = computed(() => Grimoire.Skill.skillRoot)
 
 const searchText = ref('')
 

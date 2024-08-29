@@ -1,7 +1,7 @@
 import {
   ResultContainer,
   TextResultContainerPart,
-  TextResultContainerPartValue,
+  type TextResultContainerPartValue,
 } from '.'
 
 import { CommonLogger } from '@/shared/services/Logger'

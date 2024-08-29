@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue'
+import { type CSSProperties } from 'vue'
 
 import { Images } from '@/shared/services/Images'
 import CY from '@/shared/utils/Cyteria'

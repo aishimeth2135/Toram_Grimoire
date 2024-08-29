@@ -42,7 +42,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResultsState } from '@/stores/views/character/setup'
+import type { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 

@@ -1,4 +1,4 @@
-import { Ref, onUnmounted } from 'vue'
+import { type Ref, onUnmounted } from 'vue'
 
 import {
   getContextIdFromElement,

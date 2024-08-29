@@ -1,7 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { Stat } from '@/lib/Character/Stat'
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 
 import type { EnchantCategory, EnchantItem } from './EnchantBase'
 import type { MaterialPointTypeRange } from './EnchantBase'

@@ -1,4 +1,4 @@
-import { Ref, computed, ref, watch } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
 
 export default function PageControl<Item = unknown>({
   items,

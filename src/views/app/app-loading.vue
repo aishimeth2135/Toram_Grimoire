@@ -15,15 +15,9 @@
   </teleport>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { useLoadingStore } from '@/stores/app/loading'
 
-export default {
-  name: 'AppLoading',
-}
-</script>
-
-<script lang="ts" setup>
 const store = useLoadingStore()
 </script>
 

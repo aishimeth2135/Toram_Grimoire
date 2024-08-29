@@ -41,11 +41,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm'
-
-defineOptions({
-  name: 'AppConfirm',
-})
+import { type ConfirmItem, useConfirmStore } from '@/stores/app/confirm'
 
 const store = useConfirmStore()
 

@@ -106,18 +106,13 @@ rules:
       classes: false
       typedefs: false
   '@typescript-eslint/no-unused-vars': off
-  '@typescript-eslint/no-shadow':
-    - error
+  '@typescript-eslint/no-shadow': error
   # '@typescript-eslint/prefer-enum-initializers':
   #   - error
-  '@typescript-eslint/no-duplicate-enum-values':
-    - error
-  '@typescript-eslint/prefer-literal-enum-member':
-    - error
-  '@typescript-eslint/array-type':
-    - error
-  '@typescript-eslint/no-dupe-class-members':
-    - error
+  '@typescript-eslint/no-duplicate-enum-values': error
+  '@typescript-eslint/prefer-literal-enum-member': error
+  '@typescript-eslint/array-type': error
+  '@typescript-eslint/no-dupe-class-members': error
   # "@typescript-eslint/space-before-function-paren":
   #   - warn
   #   - anonymous: always

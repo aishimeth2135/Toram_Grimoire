@@ -34,12 +34,6 @@
   </CardRow>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'GlossaryTagItem',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 

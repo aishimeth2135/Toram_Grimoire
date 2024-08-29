@@ -1,8 +1,8 @@
-import { BagItemObtain } from '@/lib/Items/BagItem'
+import { type BagItemObtain } from '@/lib/Items/BagItem'
 import {
   BagPotion,
-  BagPotionsCategory,
-  BagPotionsObtainCategory,
+  type BagPotionsCategory,
+  type BagPotionsObtainCategory,
   BagPotionsRoot,
 } from '@/lib/Items/BagItem'
 

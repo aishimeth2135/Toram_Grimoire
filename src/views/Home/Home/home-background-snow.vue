@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 
 import { useViewport } from '@/shared/setup/Device'
 import { debounce } from '@/shared/utils/function'

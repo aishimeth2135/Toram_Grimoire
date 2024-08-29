@@ -71,20 +71,20 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, reactive, ref, toRefs, watch } from 'vue'
+import { type Ref, computed, reactive, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
-  CharacterSimulatorSaveData,
-  EquipmentSaveDataWithIndex,
+  type CharacterSimulatorSaveData,
+  type EquipmentSaveDataWithIndex,
   useCharacterStore,
 } from '@/stores/views/character'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
-import { CharacterSaveData } from '@/lib/Character/Character'
-import { FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
-import { SkillBuildSaveData } from '@/lib/Character/SkillBuild'
+import { type CharacterSaveData } from '@/lib/Character/Character'
+import { type FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
+import { type SkillBuildSaveData } from '@/lib/Character/SkillBuild'
 
 interface Props {
   visible: boolean

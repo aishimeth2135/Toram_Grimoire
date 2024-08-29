@@ -1,9 +1,9 @@
 import { reactive } from 'vue'
 
 import {
-  InstanceId,
+  type InstanceId,
   InstanceIdGenerator,
-  InstanceWithId,
+  type InstanceWithId,
 } from '@/shared/services/InstanceId'
 import { splitComma } from '@/shared/utils/string'
 

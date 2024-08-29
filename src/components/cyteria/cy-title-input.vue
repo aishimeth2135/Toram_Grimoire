@@ -36,9 +36,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, nextTick, ref } from 'vue'
+import { type Ref, computed, nextTick, ref } from 'vue'
 
-import { IconBaseProps } from './icon/setup'
+import { type IconBaseProps } from './icon/setup'
 
 interface Props extends IconBaseProps {
   placeholder?: string

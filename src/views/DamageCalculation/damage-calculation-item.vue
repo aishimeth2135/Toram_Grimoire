@@ -166,12 +166,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'DamageCalculationItem',
-}
-</script>
-
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { computed, inject, ref, toRefs } from 'vue'
@@ -186,11 +180,11 @@ import {
   CalcItem,
   CalcItemContainer,
   CalcItemCustom,
-  CalcStructAction,
-  CalcStructItem,
-  CalcStructMultiple,
-  isCalcStructItem,
+  type CalcStructAction,
+  type CalcStructItem,
+  type CalcStructMultiple,
   ContainerTypes,
+  isCalcStructItem,
 } from '@/lib/Damage/DamageCalculation'
 
 import { DamageCalculationRootInjectionKey } from './injection-keys'

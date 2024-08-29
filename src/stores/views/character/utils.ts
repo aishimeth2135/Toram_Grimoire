@@ -1,4 +1,4 @@
-import { CharacterSimulatorSaveData } from '.'
+import type { CharacterSimulatorSaveData } from '.'
 
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'

@@ -20,12 +20,12 @@
 
 <script lang="ts" setup>
 import { computed, h } from 'vue'
-import { VNode } from 'vue'
+import { type VNode } from 'vue'
 
 import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
 import {
   TextResultContainerPartTypes,
-  TextResultContainerPartValue,
+  type TextResultContainerPartValue,
 } from '@/lib/common/ResultContainer'
 import { handleParseText } from '@/lib/common/ResultContainer/parseText'
 

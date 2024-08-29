@@ -2,7 +2,7 @@
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, useButtonBaseBinds } from './setup'
+import { type ButtonBaseProps, useButtonBaseBinds } from './setup'
 
 interface Props extends ButtonBaseProps {}
 

@@ -39,7 +39,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
-import { RouteRecordName, useRouter } from 'vue-router'
+import { type RouteRecordName, useRouter } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
@@ -50,7 +50,7 @@ import { AppRouteNames } from '@/router/enums'
 
 import AppRouterLink from './app-router-link.vue'
 
-import { HomeRouteData } from './setup'
+import { type HomeRouteData } from './setup'
 
 interface Props {
   isMain?: boolean

@@ -82,7 +82,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Ref, computed, nextTick, reactive, ref, watch } from 'vue'
+import { type Ref, computed, nextTick, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
@@ -93,7 +93,7 @@ import {
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 import {
-  AutoFindNegaitveStatsResult,
+  type AutoFindNegaitveStatsResult,
   EnchantDoll,
   EnchantDollBaseTypes,
 } from '@/lib/Enchant/EnchantDoll'
@@ -106,7 +106,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
 
-import { EnchantStatOptionBase } from '../EnchantSimulator/setup'
+import { type EnchantStatOptionBase } from '../EnchantSimulator/setup'
 import { SelectItemModes, StepIds } from './setup'
 import EnchantDollStepEquipment from './enchant-doll-step-equipment.vue'
 import EnchantDollStepPositiveStats from './enchant-doll-step-positive-stats.vue'

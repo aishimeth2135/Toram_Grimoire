@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Ref, readonly, ref } from 'vue'
+import { type Ref, readonly, ref } from 'vue'
 
 import type {
   MessageNotifyButtonItem,

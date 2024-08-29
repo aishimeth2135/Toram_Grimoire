@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ComputedRef, Ref, computed, nextTick, ref } from 'vue'
+import { type ComputedRef, type Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 

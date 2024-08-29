@@ -1,5 +1,5 @@
 import {
-  CharacterBindingBuild,
+  type CharacterBindingBuild,
   checkLoadedId,
   getLoadedId,
 } from '../Character/CharacterBuild'

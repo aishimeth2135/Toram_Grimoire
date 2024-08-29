@@ -5,7 +5,7 @@ import RegistletSystem from '@/lib/Registlet'
 import {
   RegistletCategory,
   RegistletCategoryIds,
-  RegistletInfos,
+  type RegistletInfos,
   RegistletItemBase,
   RegistletItemBaseSkill,
   RegistletItemBaseSpecial,

@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, ref, useSlots, watch } from 'vue'
+import { type Ref, computed, ref, useSlots, watch } from 'vue'
 
 import CyPopper from './cy-popper.vue'
 

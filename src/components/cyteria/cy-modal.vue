@@ -71,7 +71,14 @@
 </template>
 
 <script lang="ts" setup>
-import { CSSProperties, Ref, computed, ref, useAttrs, useSlots } from 'vue'
+import {
+  type CSSProperties,
+  type Ref,
+  computed,
+  ref,
+  useAttrs,
+  useSlots,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/dom'

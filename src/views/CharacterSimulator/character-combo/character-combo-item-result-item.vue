@@ -61,7 +61,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResult } from '@/stores/views/character/setup'
+import type { SkillResult } from '@/stores/views/character/setup'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 

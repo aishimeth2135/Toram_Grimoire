@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide, ref, watch } from 'vue'
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentRestrictions } from '@/lib/Character/Stat'

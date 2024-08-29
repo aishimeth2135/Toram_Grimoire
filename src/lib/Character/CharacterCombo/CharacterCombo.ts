@@ -1,8 +1,8 @@
 import Grimoire from '@/shared/Grimoire'
 import {
-  InstanceId,
+  type InstanceId,
   InstanceIdGenerator,
-  InstanceWithId,
+  type InstanceWithId,
 } from '@/shared/services/InstanceId'
 
 import type { Skill, SkillBranch } from '@/lib/Skill/Skill'

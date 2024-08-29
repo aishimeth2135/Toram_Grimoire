@@ -1,4 +1,4 @@
-import { Comment, Slot } from 'vue'
+import { Comment, type Slot } from 'vue'
 
 export function slotNotEmpty(slot: Slot | undefined, slotProps = {}) {
   if (!slot) {

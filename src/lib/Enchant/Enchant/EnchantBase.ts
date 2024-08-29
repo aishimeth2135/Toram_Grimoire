@@ -4,7 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
 
 import { StatBase } from '@/lib/Character/Stat'
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 
 import type { EnchantEquipment } from './EnchantBuild'
 import { EnchantEquipmentTypes, EnchantItemConditions } from './enums'

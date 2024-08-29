@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'

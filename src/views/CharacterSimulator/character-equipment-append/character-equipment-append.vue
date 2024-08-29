@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Ref, computed, nextTick, ref } from 'vue'
+import { type Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -25,7 +25,11 @@ import CommonSearchInput from '../common/common-search-input.vue'
 import CommonSearchableItems from '../common/common-searchable-items.vue'
 import CharacterEquipmentAppendItem from './character-equipment-append-item.vue'
 
-import { EquipmentSearchMode, StatOption, useEquipmentsSearch } from './setup'
+import {
+  EquipmentSearchMode,
+  type StatOption,
+  useEquipmentsSearch,
+} from './setup'
 
 interface Props {
   visible: boolean

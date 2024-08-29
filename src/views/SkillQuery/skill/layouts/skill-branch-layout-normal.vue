@@ -165,8 +165,8 @@ import IconCircle from './skill-branch-layout-icon-circle.vue'
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
-import { ExtraSuffixBranchData } from '../setup'
-import { NormalLayoutSubContent } from './setup'
+import type { ExtraSuffixBranchData } from '../setup'
+import type { NormalLayoutSubContent } from './setup'
 
 interface Props {
   computing: SkillComputingContainer
