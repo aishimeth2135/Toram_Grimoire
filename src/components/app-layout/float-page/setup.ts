@@ -1,4 +1,4 @@
-import { Ref, watch } from 'vue'
+import { type Ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
 import { defineState } from '@/shared/setup/State'

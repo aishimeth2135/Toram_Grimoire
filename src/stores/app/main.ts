@@ -8,11 +8,13 @@ import { useLanguageStore } from './language'
 const version = '5.0.6'
 
 export const useMainStore = defineStore('app-main', () => {
-  const settingVisible = ref(false)
-  const serviceWorker = shallowReactive<{
+  type ServiceWorkerData = {
     update: Function | null
     hasUpdate: boolean
-  }>({
+  }
+
+  const settingVisible = ref(false)
+  const serviceWorker = shallowReactive<ServiceWorkerData>({
     update: null,
     hasUpdate: false,
   })
@@ -66,7 +68,7 @@ export const useMainStore = defineStore('app-main', () => {
   return {
     settingVisible: settingVisible,
     version,
-    serviceWorker: readonly(serviceWorker),
+    serviceWorker: readonly(serviceWorker) as ServiceWorkerData,
     devMode,
     previewMode,
 

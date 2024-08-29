@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import {
-  SkillBranchResultBase,
+  type SkillBranchResultBase,
   SkillBranchStatResult,
 } from '@/lib/Skill/SkillComputing'
 

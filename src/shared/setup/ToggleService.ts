@@ -1,4 +1,4 @@
-import { Ref, UnwrapNestedRefs, reactive, ref } from 'vue'
+import { type Ref, type UnwrapNestedRefs, reactive, ref } from 'vue'
 
 import type { UnionToIntersection } from '@/shared/utils/type'
 

@@ -1,22 +1,22 @@
 import {
   SkillBranchItem,
-  SkillBranchItemBaseChilds,
+  type SkillBranchItemBaseChilds,
   SkillBranchItemSuffix,
   SkillComputingContainer,
 } from '.'
 
 import Grimoire from '@/shared/Grimoire'
 import {
-  HandleFormulaMethods,
-  HandleFormulaTexts,
-  HandleFormulaVars,
+  type HandleFormulaMethods,
+  type HandleFormulaTexts,
+  type HandleFormulaVars,
   computeFormula,
   handleFormula,
 } from '@/shared/utils/data'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
-import { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
+import type { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import { SkillBranchNames } from '../Skill'
@@ -24,7 +24,7 @@ import {
   SkillBranchResult,
   SkillBranchStatResult,
   SkillBranchTextResult,
-  SkillBranchTextResultParseResult,
+  type SkillBranchTextResultParseResult,
 } from './SkillBranchResult'
 import { FormulaDisplayModes } from './enums'
 

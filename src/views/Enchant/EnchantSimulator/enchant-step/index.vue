@@ -174,12 +174,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'EnchantStep',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, inject, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -189,6 +183,10 @@ import { EnchantStep, EnchantStepTypes } from '@/lib/Enchant/Enchant'
 import EnchantStepStatView from './enchant-step-stat.vue'
 
 import { EnchantSimulatorInjectionKey } from '../injection-keys'
+
+defineOptions({
+  name: 'EnchantStep',
+})
 
 interface Props {
   step: EnchantStep

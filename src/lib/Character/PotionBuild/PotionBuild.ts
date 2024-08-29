@@ -1,8 +1,8 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { BagPotion, BagPotionsCategory } from '@/lib/Items/BagItem'
+import { BagPotion, type BagPotionsCategory } from '@/lib/Items/BagItem'
 
-import { CharacterBindingBuild } from '../Character'
+import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface PotionBuildSaveData {

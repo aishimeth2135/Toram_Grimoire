@@ -1,9 +1,8 @@
-import { Ref, computed } from 'vue'
+import { type Ref, computed } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { StatBase } from '@/lib/Character/Stat'
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import { StatBase, type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
 
 export const enum StepIds {

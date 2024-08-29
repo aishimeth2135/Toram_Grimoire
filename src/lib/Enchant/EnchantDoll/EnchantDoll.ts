@@ -1,7 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 import { lastElement } from '@/shared/utils/array'
 
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 
 import {
   EnchantBuild,

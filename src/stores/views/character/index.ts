@@ -1,24 +1,27 @@
 import { defineStore } from 'pinia'
-import { Ref, computed, readonly, ref } from 'vue'
+import { type Ref, computed, readonly, ref } from 'vue'
 
 import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
 import { protectType } from '@/shared/utils/pinia'
 
-import { Character, CharacterSaveData } from '@/lib/Character/Character'
-import { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
+import { Character, type CharacterSaveData } from '@/lib/Character/Character'
+import { type CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
 import {
   CharacterEquipment,
-  EquipmentSaveData,
+  type EquipmentSaveData,
 } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
-import { FoodsBuild, FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
-import { PotionBuild, PotionBuildSaveData } from '@/lib/Character/PotionBuild'
+import { FoodsBuild, type FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
+import {
+  PotionBuild,
+  type PotionBuildSaveData,
+} from '@/lib/Character/PotionBuild'
 import {
   RegistletBuild,
-  RegistletBuildSaveData,
+  type RegistletBuildSaveData,
 } from '@/lib/Character/RegistletBuild'
-import { SkillBuild, SkillBuildSaveData } from '@/lib/Character/SkillBuild'
+import { SkillBuild, type SkillBuildSaveData } from '@/lib/Character/SkillBuild'
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { Skill } from '@/lib/Skill/Skill'
 
@@ -36,8 +39,8 @@ import {
 } from './setup/setupCharacterBuilds'
 import { setupCharacters, setupEquipments } from './setup/setupCharacterStates'
 import {
-  CalculationOptions,
-  TargetProperties,
+  type CalculationOptions,
+  type TargetProperties,
   setupDamageCalculation,
 } from './setup/setupDamageCalculation'
 import { useCharacterSkillStore } from './skill'

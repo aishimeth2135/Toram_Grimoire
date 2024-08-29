@@ -14,6 +14,7 @@ export const enum LocaleViewNamespaces {
   CrystalQuery = 'crystal-query',
   ItemQuery = 'item-query',
   RegistletQuery = 'registlet-query',
+  MainQuestCalc = 'main-quest-calc',
   BookTemplate = 'book-template',
 }
 

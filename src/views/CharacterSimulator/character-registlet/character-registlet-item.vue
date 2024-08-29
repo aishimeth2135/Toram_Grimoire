@@ -60,7 +60,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import { RegistletItem } from '@/lib/Character/RegistletBuild'
+import type { RegistletItem } from '@/lib/Character/RegistletBuild'
 import { StatBase } from '@/lib/Character/Stat'
 
 import CardRow from '@/components/card/card-row.vue'

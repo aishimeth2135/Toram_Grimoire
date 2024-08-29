@@ -6,14 +6,14 @@ import {
   SkillComputingContainer,
 } from '@/lib/Skill/SkillComputing'
 import {
-  HandleBranchValuePropsMap,
+  type HandleBranchValuePropsMap,
   computeBranchValue,
   computedBranchHelper,
 } from '@/lib/Skill/SkillComputing/compute'
 
 import {
-  HandleBranchLangPropsMap,
-  HandleDisplayDataOptionFilters,
+  type HandleBranchLangPropsMap,
+  type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'

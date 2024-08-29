@@ -1,4 +1,4 @@
-import { InjectionKey, Ref } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 import { EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant'
 import { EnchantDoll } from '@/lib/Enchant/EnchantDoll'

@@ -350,8 +350,8 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
 import { getEquipmentFieldTypeText } from '@/lib/Character/Character/utils'
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import {
+  CharacterEquipment,
   EquipmentKinds,
   EquipmentTypes,
   MainWeaponTypeList,
@@ -366,9 +366,9 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import ItemQueryResult from './item-query-result.vue'
 
 import {
-  CommonOption,
+  type CommonOption,
   SearchModes,
-  StatOption,
+  type StatOption,
   findObtainByDye,
   findStat,
   handleOptions,

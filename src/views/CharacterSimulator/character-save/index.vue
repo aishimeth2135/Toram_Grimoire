@@ -122,29 +122,26 @@
   </cy-default-tips>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CharacterSave',
-}
-</script>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import CharacterSaveRow from './character-save-row.vue'
 
 import {
-  CharacterSimulatorSaveData,
+  type CharacterSimulatorSaveData,
   useCharacterStore,
 } from '@/stores/views/character'
 
+import Notify from '@/shared/setup/Notify'
+import ToggleService from '@/shared/setup/ToggleService'
 import CY from '@/shared/utils/Cyteria'
 import Cyteria from '@/shared/utils/Cyteria'
 
-import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
-
 import CharacterSaveExport from './character-save-export.vue'
+import CharacterSaveRow from './character-save-row.vue'
+
+defineOptions({
+  name: 'CharacterSave',
+})
 
 const deleteCounter = ref(0)
 

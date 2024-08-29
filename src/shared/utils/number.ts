@@ -23,3 +23,11 @@ export function normalizeInteger(value: string | number): number {
   }
   return value
 }
+
+/**
+ * Get the number with the commas.
+ * example: 1234567 -> 1,234,567
+ */
+export function numberWithCommas(num: number) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}

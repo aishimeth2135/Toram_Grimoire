@@ -1,5 +1,12 @@
 <script lang="ts" setup>
-import { Ref, StyleValue, computed, ref, useAttrs, useSlots } from 'vue'
+import {
+  type Ref,
+  type StyleValue,
+  computed,
+  ref,
+  useAttrs,
+  useSlots,
+} from 'vue'
 
 import { slotNotEmpty } from '@/shared/utils/vue'
 

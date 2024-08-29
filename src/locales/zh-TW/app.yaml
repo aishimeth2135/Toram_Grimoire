@@ -9,6 +9,7 @@ loading-message:
   Food: 載入料理資料
   Registlet: 載入雷吉斯托環資料
   ItemsPotion: 載入消耗品資料
+  Quest: 載入任務資料
   init: 初始化
   bottom-tips:
     0: 初次載入需要較長的時間，請稍候...
@@ -26,6 +27,7 @@ page-title:
   enchant-simulator: 附魔模擬
   enchant-doll: 附魔布偶
   glossary-query: 名詞清單
+  main-quest-calc: 主線任務計算
   book-main: 文章模板
   book-preview: 文章模板預覽
   home: 主頁

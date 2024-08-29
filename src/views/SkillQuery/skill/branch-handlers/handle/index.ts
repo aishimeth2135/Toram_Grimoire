@@ -5,18 +5,18 @@ import { StatComputed } from '@/lib/Character/Stat'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   FormulaDisplayModes,
-  SkillBranchItemBaseChilds,
-  SkillBranchItemOverwriteRecords,
+  type SkillBranchItemBaseChilds,
+  type SkillBranchItemOverwriteRecords,
   SkillBranchItemSuffix,
   SkillBranchResult,
-  SkillBranchResultBase,
+  type SkillBranchResultBase,
   SkillComputingContainer,
   SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputing'
 import {
-  ComputedBranchHelperResult,
-  HandleBranchTextPropsMap,
-  HandleBranchValuePropsMap,
+  type ComputedBranchHelperResult,
+  type HandleBranchTextPropsMap,
+  type HandleBranchValuePropsMap,
   computeBranchValue,
   computedBranchHelper,
   handleBranchStats,

@@ -4,11 +4,11 @@ import {
   SkillComputingContainer,
 } from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
-import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
+import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
-  HandleBranchLangPropsMap,
-  HandleDisplayDataOptionFilters,
+  type HandleBranchLangPropsMap,
+  type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'

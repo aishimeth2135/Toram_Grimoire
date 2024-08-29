@@ -7,7 +7,7 @@ import { isNumberString } from '@/shared/utils/string'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions, StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranch, SkillEffect, SkillEffectBasicProps } from '../Skill'
+import { SkillBranch, SkillEffect, type SkillEffectBasicProps } from '../Skill'
 import { SkillBranchNames } from '../Skill'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
 import { SkillBranchItem } from './SkillBranchItem'

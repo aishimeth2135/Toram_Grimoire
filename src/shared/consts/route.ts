@@ -66,4 +66,9 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
     icon: 'mdi:tag-outline',
     pathName: AppRouteNames.GlossaryQuery,
   },
+  {
+    name: 'main-quest-calc',
+    icon: 'mdi:book-outline',
+    pathName: AppRouteNames.MainQuestCalc,
+  },
 ]

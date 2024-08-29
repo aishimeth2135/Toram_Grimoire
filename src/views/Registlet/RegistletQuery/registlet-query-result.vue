@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, nextTick, ref } from 'vue'
+import { type Ref, computed, nextTick, ref } from 'vue'
 
 import PageControl from '@/shared/setup/PageControl'
 

@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import { Ref, computed, ref } from 'vue'
-
-import { useDatasStore } from '@/stores/app/datas'
+import { type Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
 import {
   Calculation,
-  CalculationSaveData,
+  type CalculationSaveData,
 } from '@/lib/Damage/DamageCalculation'
 
 interface DamageCalculationSaveData {
@@ -57,14 +55,12 @@ export const useDamageCalculationStore = defineStore(
       }
     }
 
-    const datas = useDatasStore()
-
     const createCalculation = () => {
       const name =
         Grimoire.i18n.t('damage-calculation.build') +
         ' ' +
         (calculations.value.length + 1).toString()
-      const calculationBase = datas.DamageCalculation!.calculationBase
+      const calculationBase = Grimoire.DamageCalculation.calculationBase
       const calculation = calculationBase.createCalculation(name)
       appendCalculation(calculation)
     }
@@ -87,7 +83,7 @@ export const useDamageCalculationStore = defineStore(
       const data = JSON.parse(dataString) as DamageCalculationSaveData
 
       try {
-        const calculationBase = datas.DamageCalculation!.calculationBase
+        const calculationBase = Grimoire.DamageCalculation.calculationBase
         const newCalculations: Calculation[] = []
         data.calculations.forEach(calculationData => {
           const calculation = calculationBase.createCalculation()

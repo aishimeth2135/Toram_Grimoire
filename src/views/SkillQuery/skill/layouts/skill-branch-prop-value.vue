@@ -20,7 +20,7 @@ import { h } from 'vue'
 
 import {
   SkillBranchResult,
-  SkillBranchResultBase,
+  type SkillBranchResultBase,
   SkillBranchStatResult,
   SkillBranchTextResult,
 } from '@/lib/Skill/SkillComputing'

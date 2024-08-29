@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Ref, computed, ref, watch } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { prepareFuzzySearch, simpleSearch } from '@/shared/utils/data'

@@ -1,8 +1,8 @@
-import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
-import { NavItem, useNavStore } from '@/stores/app/nav'
+import { type NavItem, useNavStore } from '@/stores/app/nav'
 
 import Book from './Book'
 import Bubble from './Bubble'
@@ -14,6 +14,7 @@ import Glossary from './Glossary'
 import Home from './Home'
 import Items from './Items'
 import Page404 from './Page404'
+import Quest from './Quest'
 import Registlet from './Registlet'
 import Skill from './Skill'
 
@@ -31,6 +32,7 @@ export default function createAppRouter() {
     Bubble,
     DamageCalculation,
     Registlet,
+    Quest,
   ]
 
   const router = createRouter({

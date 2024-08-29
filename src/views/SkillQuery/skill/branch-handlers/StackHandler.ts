@@ -7,7 +7,7 @@ import {
 } from '@/lib/Skill/SkillComputing'
 
 import {
-  HandleDisplayDataOptionFilters,
+  type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'

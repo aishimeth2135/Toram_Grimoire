@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PotionItem } from '@/lib/Character/PotionBuild'
+import type { PotionItem } from '@/lib/Character/PotionBuild'
 
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'

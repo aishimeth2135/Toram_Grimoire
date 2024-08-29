@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 
 import { useMainStore } from '@/stores/app/main'
 
@@ -7,10 +7,10 @@ import Grimoire from '@/shared/Grimoire'
 import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
-import { EnchantBuild, EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
+import { EnchantBuild, type EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
 
 import {
-  EnchantStoreConfig,
+  type EnchantStoreConfig,
   enchantConfig,
   updateCharacterMaxLevel,
 } from './config'
@@ -81,6 +81,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
 
   const save = (target = 'auto') => {
     if (!CY.storageAvailable('localStorage')) {
+      return
+    }
+    if (saveDisabled) {
       return
     }
     const builds = enchantBuilds.value.map(build => build.save())

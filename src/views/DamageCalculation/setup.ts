@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia'
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
@@ -9,7 +9,7 @@ import Notify from '@/shared/setup/Notify'
 
 import {
   CalcItemContainer,
-  CalcStructExpression,
+  type CalcStructExpression,
   Calculation,
   CalculationContainerIds,
   CalculationItemIds,

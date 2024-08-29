@@ -1,7 +1,7 @@
-import { ShallowReactive, shallowReactive } from 'vue'
+import { type ShallowReactive, shallowReactive } from 'vue'
 
 import {
-  CharacterBindingBuild,
+  type CharacterBindingBuild,
   checkLoadedId,
   initLoadedId,
 } from './CharacterBuild'

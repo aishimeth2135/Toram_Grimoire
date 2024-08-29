@@ -9,7 +9,7 @@ import {
   SkillTree,
 } from '@/lib/Skill/Skill'
 import {
-  DrawSkillTreeData,
+  type DrawSkillTreeData,
   DrawSkillTreeDataTypes,
   GetDrawSetting,
   computeDrawSkillTreeData,

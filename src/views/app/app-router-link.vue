@@ -28,7 +28,7 @@ import { useAttrs, useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { HomeRouteData } from './setup'
+import { type HomeRouteData } from './setup'
 
 defineOptions({
   inheritAttrs: false,

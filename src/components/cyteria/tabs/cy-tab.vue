@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 
 import { useTabContext } from './setup'
 

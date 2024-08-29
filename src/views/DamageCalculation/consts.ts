@@ -1,5 +1,5 @@
 import {
-  CalcStructExpression,
+  type CalcStructExpression,
   CalculationContainerIds,
 } from '@/lib/Damage/DamageCalculation'
 

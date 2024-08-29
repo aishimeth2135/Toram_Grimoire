@@ -1,4 +1,4 @@
-import Iconify, { IconifyIcon } from '@iconify/iconify'
+import Iconify, { type IconifyIcon } from '@iconify/iconify'
 
 /**
  * Get custom icon by icon ID.

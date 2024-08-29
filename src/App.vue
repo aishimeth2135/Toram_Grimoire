@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, onMounted, ref, watch } from 'vue'
+import { type Ref, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useLanguageStore } from '@/stores/app/language'

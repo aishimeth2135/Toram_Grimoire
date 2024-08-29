@@ -31,7 +31,7 @@
 import { computed } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
-import {
+import type {
   SkillFormulaExtraVarState,
   SkillResultsState,
 } from '@/stores/views/character/setup'

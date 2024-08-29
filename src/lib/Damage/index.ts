@@ -7,7 +7,7 @@ import {
   CalculationContainerIds,
   CalculationItemIds,
   ContainerTypes,
-  CurrentItemIdGetter,
+  type CurrentItemIdGetter,
 } from './DamageCalculation'
 
 export default class DamageCalculationSystem {

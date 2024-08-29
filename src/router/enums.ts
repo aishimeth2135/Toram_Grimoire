@@ -28,6 +28,9 @@ export const enum AppRouteNames {
   Registlet = 'Registlet',
   RegistletQuery = 'RegistletQuery',
 
+  Quest = 'Quest',
+  MainQuestCalc = 'MainQuestCalc',
+
   Book = 'Book',
   BookView = 'BookView',
   BookPreview = 'BookPreview',

@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TextWithId } from '@/shared/utils/data/text'
+import type { TextWithId } from '@/shared/utils/data/text'
 
 interface Props {
   equipmentTexts: TextWithId[]

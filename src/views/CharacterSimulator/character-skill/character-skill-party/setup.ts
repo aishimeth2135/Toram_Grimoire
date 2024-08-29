@@ -4,14 +4,14 @@ import { defineViewState } from '@/shared/setup/State'
 
 import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 
+interface PartySkillData {
+  skill: Skill
+  partyBranchs: SkillBranch[]
+}
+
 export const usePartySkillsState = defineViewState(
   ViewNames.CharacterSimulator,
   () => {
-    interface PartySkillData {
-      skill: Skill
-      partyBranchs: SkillBranch[]
-    }
-
     const allPartySkillDatas: PartySkillData[] = []
 
     Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => {

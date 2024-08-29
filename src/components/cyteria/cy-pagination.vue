@@ -41,14 +41,12 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CyPagination',
-}
-</script>
-
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+
+defineOptions({
+  name: 'CyPagination',
+})
 
 interface Props {
   value: number

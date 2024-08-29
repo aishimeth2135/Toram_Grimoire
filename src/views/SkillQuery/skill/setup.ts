@@ -1,11 +1,11 @@
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 
 import { instanceEquals } from '@/shared/services/InstanceId'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
-  SkillBranchResultBase,
+  type SkillBranchResultBase,
   SkillBranchStatResult,
   SkillComputingContainer,
   SkillEffectItem,

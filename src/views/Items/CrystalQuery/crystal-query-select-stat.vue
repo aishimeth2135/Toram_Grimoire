@@ -38,7 +38,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { StatTypes } from '@/lib/Character/Stat'
 
-import { StatOptionItem } from './setup'
+import type { StatOptionItem } from './setup'
 
 interface Props {
   visible: boolean

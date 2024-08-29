@@ -38,7 +38,7 @@ import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
 import EffectHandler from './branch-handlers/EffectHandler'
-import { NormalLayoutSubContent } from './layouts/setup'
+import { type NormalLayoutSubContent } from './layouts/setup'
 import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {

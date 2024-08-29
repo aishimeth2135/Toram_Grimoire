@@ -1,4 +1,4 @@
-import { Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
@@ -17,8 +17,8 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { createElementMap, getCharacterElement } from '../utils'
-import { SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
-import { SkillResult } from './setupCharacterSkills'
+import { type SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
+import { type SkillResult } from './setupCharacterSkills'
 
 export interface TargetProperties {
   physicalResistance: number

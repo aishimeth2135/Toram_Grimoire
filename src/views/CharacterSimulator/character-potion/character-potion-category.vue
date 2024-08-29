@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PotionItemsCategory } from '@/lib/Character/PotionBuild'
+import type { PotionItemsCategory } from '@/lib/Character/PotionBuild'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'

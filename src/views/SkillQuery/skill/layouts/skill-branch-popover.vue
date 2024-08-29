@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts" setup>
-import { InjectionKey, computed, inject } from 'vue'
+import { type InjectionKey, computed, inject } from 'vue'
 
 import SkillBranch from '../skill-branch.vue'
 
 import {
-  ComputingContainerInjection,
+  type ComputingContainerInjection,
   ComputingContainerInjectionKey,
-  SkillEffectInjection,
+  type SkillEffectInjection,
   SkillEffectInjectionKey,
 } from '../../injection-keys'
 

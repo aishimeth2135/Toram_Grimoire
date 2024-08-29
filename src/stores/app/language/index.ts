@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, readonly, ref } from 'vue'
-import { Composer } from 'vue-i18n'
+import { type Composer } from 'vue-i18n'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
 import Notify from '@/shared/setup/Notify'
@@ -9,7 +9,7 @@ import CY from '@/shared/utils/Cyteria'
 import { I18nStore } from './I18nStore'
 import {
   LocaleGlobalNamespaces,
-  LocaleNamespaces,
+  type LocaleNamespaces,
   LocaleViewNamespaces,
 } from './enums'
 
@@ -85,7 +85,7 @@ export const useLanguageStore = defineStore('app-language', () => {
   }
 
   type LoadLocaleMessages<
-    Namespace extends LocaleNamespaces = LocaleNamespaces
+    Namespace extends LocaleNamespaces = LocaleNamespaces,
   > = (namespaces: Namespace | Namespace[]) => Promise<void>
   const loadLocaleMessages: LoadLocaleMessages = async namespaces => {
     const namespaceList =

@@ -1,6 +1,6 @@
 import { shallowReactive } from 'vue'
 
-import {
+import type {
   HandleFormulaMethods,
   HandleFormulaTexts,
   HandleFormulaVars,

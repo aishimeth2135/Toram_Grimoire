@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
@@ -18,6 +18,7 @@ import DamageCalculationSystem from '@/lib/Damage'
 import EnchantSystem from '@/lib/Enchant'
 import GlossarySystem from '@/lib/Glossary'
 import ItemsSystem from '@/lib/Items'
+import QuestSystem from '@/lib/Quest'
 import RegistletSystem from '@/lib/Registlet'
 import SkillSystem from '@/lib/Skill'
 
@@ -30,25 +31,14 @@ import loadEnchant from './utils/LoadEnchant'
 import loadEquipments from './utils/LoadEquipments'
 import loadGlossaryTagData from './utils/LoadGlossary'
 import LoadPotions from './utils/LoadPotions'
+import LoadQuests from './utils/LoadQuests'
 import loadRegistlet from './utils/LoadRegistlet'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
 
-export * from './enums'
-
-interface DataStoreInitHandler {
-  (): Promise<() => Promise<void>>
-}
+export { DataStoreIds } from './enums'
 
 export const useDatasStore = defineStore('app-datas', () => {
-  const Items = computed(() => DatasStoreBase.Items)
-  const Character = computed(() => DatasStoreBase.Character)
-  const Glossary = computed(() => DatasStoreBase.Glossary)
-  const Skill = computed(() => DatasStoreBase.Skill)
-  const Enchant = computed(() => DatasStoreBase.Enchant)
-  const DamageCalculation = computed(() => DatasStoreBase.DamageCalculation)
-  const Registlet = computed(() => DatasStoreBase.Registlet)
-
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
   const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(
     new Map()
@@ -73,169 +63,173 @@ export const useDatasStore = defineStore('app-datas', () => {
   }
 
   const initItemsInstance = () => {
-    if (Items.value === null) {
+    if (DatasStoreBase.Items === null) {
       DatasStoreBase.Items = new ItemsSystem()
     }
+    return DatasStoreBase.Items
   }
 
   const initCharacterInstance = () => {
-    if (Character.value === null) {
+    if (DatasStoreBase.Character === null) {
       DatasStoreBase.Character = new CharacterSystem()
     }
+    return DatasStoreBase.Character
   }
 
   const initGlossaryInstance = () => {
-    if (Glossary.value === null) {
+    if (DatasStoreBase.Glossary === null) {
       DatasStoreBase.Glossary = new GlossarySystem()
     }
+    return DatasStoreBase.Glossary
   }
 
   const initSkillInstance = () => {
-    if (Skill.value === null) {
+    if (DatasStoreBase.Skill === null) {
       DatasStoreBase.Skill = new SkillSystem()
     }
+    return DatasStoreBase.Skill
   }
 
   const initEnchantInstance = () => {
-    if (Enchant.value === null) {
+    if (DatasStoreBase.Enchant === null) {
       DatasStoreBase.Enchant = new EnchantSystem()
     }
+    return DatasStoreBase.Enchant
   }
 
   const initDamageCalculationInstance = () => {
-    if (DamageCalculation.value === null) {
+    if (DatasStoreBase.DamageCalculation === null) {
       DatasStoreBase.DamageCalculation = new DamageCalculationSystem()
     }
+    return DatasStoreBase.DamageCalculation
   }
 
   const initRegistletInstance = () => {
-    if (Registlet.value === null) {
+    if (DatasStoreBase.Registlet === null) {
       DatasStoreBase.Registlet = new RegistletSystem()
     }
+    return DatasStoreBase.Registlet
   }
 
-  const initItems: DataStoreInitHandler = async function () {
-    initItemsInstance()
-    const datas = await DownloadDatas(
-      DataPathIds.Equipment,
-      DataPathIds.Crystal
-    )
-    return async () => {
-      loadEquipments(Items.value!, datas[0][0])
-      loadCrystals(Items.value!, datas[1][0])
-
-      await InitCrystalIcons()
+  const initQuestInstance = () => {
+    if (DatasStoreBase.Quest === null) {
+      DatasStoreBase.Quest = new QuestSystem()
     }
+    return DatasStoreBase.Quest
   }
 
-  const initStats: DataStoreInitHandler = async function () {
-    initCharacterInstance()
-    const datas = await DownloadDatas({ path: DataPathIds.Stats, lang: true })
-    return async () => {
-      loadStats(Character.value!, datas[0])
-      await InitEquipmentIcons()
-    }
-  }
+  const prepareDataStore = async (
+    dataId: DataStoreIds
+  ): Promise<() => Promise<void>> => {
+    switch (dataId) {
+      case DataStoreIds.Items: {
+        const itemSystem = initItemsInstance()
+        const datas = await DownloadDatas(
+          DataPathIds.Equipment,
+          DataPathIds.Crystal
+        )
+        return async () => {
+          loadEquipments(itemSystem, datas[0][0])
+          loadCrystals(itemSystem, datas[1][0])
 
-  const initCharacterStats: DataStoreInitHandler = async function () {
-    initCharacterInstance()
-    const datas = await DownloadDatas({
-      path: DataPathIds.CharacterStats,
-      lang: true,
-    })
-    return async () => {
-      loadCharacterStats(Character.value!, datas[0])
-    }
-  }
+          await InitCrystalIcons()
+        }
+      }
+      case DataStoreIds.Stats: {
+        const characterSystem = initCharacterInstance()
+        const datas = await DownloadDatas({
+          path: DataPathIds.Stats,
+          lang: true,
+        })
+        return async () => {
+          loadStats(characterSystem, datas[0])
+          await InitEquipmentIcons()
+        }
+      }
+      case DataStoreIds.CharacterStats: {
+        const characterSystem = initCharacterInstance()
+        const datas = await DownloadDatas({
+          path: DataPathIds.CharacterStats,
+          lang: true,
+        })
+        return async () => {
+          loadCharacterStats(characterSystem, datas[0])
+        }
+      }
+      case DataStoreIds.Glossary: {
+        const glossarySystem = initGlossaryInstance()
+        const datas = await DownloadDatas({
+          path: DataPathIds.Glossary,
+          lang: true,
+        })
+        return async () => {
+          loadGlossaryTagData(glossarySystem, datas[0])
+        }
+      }
+      case DataStoreIds.Skill: {
+        const skillSystem = initSkillInstance()
+        const datas = await DownloadDatas(
+          { path: DataPathIds.Skill, lang: true },
+          { path: DataPathIds.SkillMain, lang: true }
+        )
+        return async () => {
+          loadSkill(skillSystem, datas[0])
+          loadSkillMain(skillSystem, datas[1])
+          const skillStore = useCharacterSkillStore()
+          skillStore.initSkillRoot(skillSystem.skillRoot)
 
-  const initGlossary: DataStoreInitHandler = async function () {
-    initGlossaryInstance()
-    const datas = await DownloadDatas({
-      path: DataPathIds.Glossary,
-      lang: true,
-    })
-    return async () => {
-      loadGlossaryTagData(Glossary.value!, datas[0])
-    }
-  }
-
-  const initSkill: DataStoreInitHandler = async function () {
-    initSkillInstance()
-    const datas = await DownloadDatas(
-      { path: DataPathIds.Skill, lang: true },
-      { path: DataPathIds.SkillMain, lang: true }
-    )
-    return async () => {
-      loadSkill(Skill.value!, datas[0])
-      loadSkillMain(Skill.value!, datas[1])
-      const skillStore = useCharacterSkillStore()
-      skillStore.initSkillRoot(Skill.value!.skillRoot)
-
-      await InitSkillIcons()
-    }
-  }
-
-  const initFood: DataStoreInitHandler = async function () {
-    const foodStore = useCharacterFoodStore()
-    return async () => {
-      foodStore.initFoodsBase()
-    }
-  }
-
-  const initEnchant: DataStoreInitHandler = async function () {
-    initEnchantInstance()
-    const datas = await DownloadDatas(DataPathIds.Enchant)
-    if (!datas[0][0][0][4].startsWith('額外上限')) {
-      const { notify } = Notify()
-      notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
-      throw Error('[cy] init error')
-    }
-    return async () => {
-      loadEnchant(Enchant.value!, datas[0][0])
-    }
-  }
-
-  const initDamageCalculation: DataStoreInitHandler = async function () {
-    initDamageCalculationInstance()
-    return () => Promise.resolve()
-  }
-
-  const initRegistlet: DataStoreInitHandler = async function () {
-    initRegistletInstance()
-    const datas = await DownloadDatas(DataPathIds.Registlet)
-    return async () => {
-      loadRegistlet(Registlet.value!, datas[0][0])
-    }
-  }
-
-  const initItemsPotion: DataStoreInitHandler = async function () {
-    initItemsInstance()
-    const datas = await DownloadDatas(DataPathIds.Potion)
-    return async () => {
-      LoadPotions(Items.value!.potionsRoot, datas[0][0])
+          await InitSkillIcons()
+        }
+      }
+      case DataStoreIds.Food: {
+        const foodStore = useCharacterFoodStore()
+        return async () => {
+          foodStore.initFoodsBase()
+        }
+      }
+      case DataStoreIds.Enchant: {
+        const enchantSystem = initEnchantInstance()
+        const datas = await DownloadDatas(DataPathIds.Enchant)
+        if (!datas[0][0][0][4].startsWith('額外上限')) {
+          const { notify } = Notify()
+          notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
+        }
+        return async () => {
+          loadEnchant(enchantSystem, datas[0][0])
+        }
+      }
+      case DataStoreIds.DamageCalculation: {
+        initDamageCalculationInstance()
+        return () => Promise.resolve()
+      }
+      case DataStoreIds.Registlet: {
+        const registSystem = initRegistletInstance()
+        const datas = await DownloadDatas(DataPathIds.Registlet)
+        return async () => {
+          loadRegistlet(registSystem, datas[0][0])
+        }
+      }
+      case DataStoreIds.ItemsPotion: {
+        const itemsSystem = initItemsInstance()
+        const datas = await DownloadDatas(DataPathIds.Potion)
+        return async () => {
+          LoadPotions(itemsSystem.potionsRoot, datas[0][0])
+        }
+      }
+      case DataStoreIds.Quest: {
+        const questSystem = initQuestInstance()
+        const mainQuestDatas = await DownloadDatas(DataPathIds.Quest)
+        return async () => {
+          LoadQuests(questSystem, mainQuestDatas[0][0])
+        }
+      }
     }
   }
 
   return {
-    Items,
-    Character,
-    Skill,
-    Glossary,
-    Enchant,
-    DamageCalculation,
-
     checkLoaded,
     waitLoaded,
     loadFinished,
-    initItems,
-    initStats,
-    initCharacterStats,
-    initGlossary,
-    initSkill,
-    initFood,
-    initEnchant,
-    initDamageCalculation,
-    initRegistlet,
-    initItemsPotion,
+    prepareDataStore,
   }
 })

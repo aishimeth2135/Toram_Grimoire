@@ -93,7 +93,7 @@ import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import { StatOptionItem } from './setup'
+import type { StatOptionItem } from './setup'
 
 interface Props {
   crystal: EquipmentCrystal

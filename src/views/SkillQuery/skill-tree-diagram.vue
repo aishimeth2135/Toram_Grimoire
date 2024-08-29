@@ -92,10 +92,10 @@ import CY from '@/shared/utils/Cyteria'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import {
-  DrawSkillTreeData,
+  type DrawSkillTreeData,
   DrawSkillTreeDataTypes,
-  GetSkillLevelHandler,
-  SetSkillButtonExtraDataHandle,
+  type GetSkillLevelHandler,
+  type SetSkillButtonExtraDataHandle,
   computeDrawSkillTreeData,
   createDrawSkillTreeDefs,
   getSkillIconPatternData,

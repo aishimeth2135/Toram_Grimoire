@@ -73,14 +73,14 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
+import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 import {
   EnchantCategory,
   EnchantEquipment,
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 
-import { EnchantStatOptionBase } from './setup'
+import type { EnchantStatOptionBase } from './setup'
 
 interface Props {
   visible: boolean

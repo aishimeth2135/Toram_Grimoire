@@ -1,6 +1,6 @@
-import { App } from 'vue'
-import VueGtag, { PageView } from 'vue-gtag'
-import { RouteLocationNormalized, Router } from 'vue-router'
+import type { App } from 'vue'
+import VueGtag, { type PageView } from 'vue-gtag'
+import type { RouteLocationNormalized, Router } from 'vue-router'
 
 import { AppRouteNames } from '@/router/enums'
 

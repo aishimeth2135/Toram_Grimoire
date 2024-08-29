@@ -2,7 +2,11 @@
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { ButtonBaseProps, ButtonIconProps, useButtonBaseBinds } from './setup'
+import {
+  type ButtonBaseProps,
+  type ButtonIconProps,
+  useButtonBaseBinds,
+} from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {
   widthFull?: boolean

@@ -1,7 +1,7 @@
 import {
-  ComputedRef,
-  Ref,
-  ShallowReactive,
+  type ComputedRef,
+  type Ref,
+  type ShallowReactive,
   computed,
   shallowReadonly,
 } from 'vue'
@@ -12,7 +12,7 @@ import { computeFormula } from '@/shared/utils/data'
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
-import { PotionBuild, PotionItem } from '@/lib/Character/PotionBuild'
+import { PotionBuild, type PotionItem } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import {

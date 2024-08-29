@@ -2,7 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
-import { CharacterBindingBuild } from '../Character'
+import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface RegistletBuildSaveData {

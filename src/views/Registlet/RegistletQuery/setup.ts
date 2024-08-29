@@ -3,7 +3,7 @@ import { h, reactive } from 'vue'
 import { ResultContainer } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import {
-  TextParseItem,
+  type TextParseItem,
   getCommonTextParseItems,
   handleParseText,
 } from '@/lib/common/ResultContainer/parseText'

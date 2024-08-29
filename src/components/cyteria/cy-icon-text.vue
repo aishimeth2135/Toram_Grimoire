@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import IconBase from './icon/icon-base.vue'
 
-import { IconBaseProps } from './icon/setup'
+import { type IconBaseProps } from './icon/setup'
 import { useColorString } from './setup'
 
 interface Props extends IconBaseProps {

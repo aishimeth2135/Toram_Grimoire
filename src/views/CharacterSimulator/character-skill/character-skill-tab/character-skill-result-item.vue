@@ -36,7 +36,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResult } from '@/stores/views/character/setup'
+import type { SkillResult } from '@/stores/views/character/setup'
 
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 

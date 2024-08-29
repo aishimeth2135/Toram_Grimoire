@@ -5,6 +5,7 @@ import type DamageCalculationSystem from '@/lib/Damage'
 import type EnchantSystem from '@/lib/Enchant'
 import type GlossarySystem from '@/lib/Glossary'
 import type ItemsSystem from '@/lib/Items'
+import QuestSystem from '@/lib/Quest'
 import type RegistletSystem from '@/lib/Registlet'
 import type SkillSystem from '@/lib/Skill'
 
@@ -16,6 +17,7 @@ export const DatasStoreBase: {
   Enchant: EnchantSystem | null
   DamageCalculation: DamageCalculationSystem | null
   Registlet: RegistletSystem | null
+  Quest: QuestSystem | null
 } = shallowReactive({
   Items: null,
   Character: null,
@@ -24,4 +26,5 @@ export const DatasStoreBase: {
   Enchant: null,
   DamageCalculation: null,
   Registlet: null,
+  Quest: null,
 })

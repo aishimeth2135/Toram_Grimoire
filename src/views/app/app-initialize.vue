@@ -73,10 +73,6 @@ import HomeBackgroud from '@/views/Home/Home/home-backgroud.vue'
 
 import LoadingAnimation from './initialization/loading-animation.vue'
 
-defineOptions({
-  name: 'AppInitialzie',
-})
-
 const initializeStore = useInitializeStore()
 
 const { initItems, status } = storeToRefs(initializeStore)

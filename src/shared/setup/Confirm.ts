@@ -1,4 +1,4 @@
-import { ConfirmItemParam, useConfirmStore } from '@/stores/app/confirm'
+import { type ConfirmItemParam, useConfirmStore } from '@/stores/app/confirm'
 
 const _confirm = (item: string | ConfirmItemParam) => {
   const confirmStore = useConfirmStore()

@@ -152,7 +152,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Ref, computed, reactive, ref } from 'vue'
+import { type Ref, computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
@@ -171,7 +171,7 @@ import CardRows from '@/components/card/card-rows.vue'
 
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
-import { StatOptionItem } from './setup'
+import { type StatOptionItem } from './setup'
 
 const { t } = useI18n()
 const { modals, contents, toggle } = ToggleService({

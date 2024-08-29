@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from 'vue'
 
-import { CalcModeItem } from './setup'
+import { type CalcModeItem } from './setup'
 
 interface DamageCalculationRootInjection {
   currentExpectedResult: Ref<number>

@@ -11,8 +11,8 @@ import type {
 } from '@/lib/Skill/SkillComputing/compute'
 
 import {
-  HandleBranchLangPropsMap,
-  HandleDisplayDataOptionFilters,
+  type HandleBranchLangPropsMap,
+  type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'

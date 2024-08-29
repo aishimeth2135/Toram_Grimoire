@@ -3,7 +3,7 @@ import { HandleLanguageData } from '@/shared/services/Language'
 import GlossarySystem from '@/lib/Glossary'
 import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
 
-import { LangCsvData } from './DownloadDatas'
+import { type LangCsvData } from './DownloadDatas'
 
 export default function loadGlossaryTagData(
   root: GlossarySystem,

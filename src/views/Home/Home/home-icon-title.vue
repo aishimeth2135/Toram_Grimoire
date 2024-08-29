@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import {
-  Ref,
+  type Ref,
   nextTick,
   onUnmounted,
   ref,

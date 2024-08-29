@@ -7,7 +7,7 @@ import {
 import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
-  HandleDisplayDataOptionFilters,
+  type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'

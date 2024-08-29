@@ -1,4 +1,4 @@
-import { CommonItem } from '@/lib/common/Items'
+import { type CommonItem } from '@/lib/common/Items'
 
 export interface CharacterBindingBuild extends CommonItem {
   loadedId: string | null

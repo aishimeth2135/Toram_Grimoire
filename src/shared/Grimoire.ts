@@ -30,6 +30,10 @@ const Grimoire = {
     return DatasStoreBase.Registlet!
   },
 
+  get Quest() {
+    return DatasStoreBase.Quest!
+  },
+
   get i18n() {
     return I18nStore.i18n!
   },

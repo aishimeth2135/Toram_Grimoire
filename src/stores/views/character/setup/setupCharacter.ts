@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, computed, ref, watch } from 'vue'
+import { type ComputedRef, type Ref, computed, ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -6,7 +6,7 @@ import {
   Character,
   CharacterBaseStatTypes,
   CharacterStat,
-  CharacterStatResult,
+  type CharacterStatResult,
   EquipmentFieldTypes,
 } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -17,7 +17,7 @@ import { Skill } from '@/lib/Skill/Skill'
 
 import { checkStatRestriction, getCharacterElement } from '../utils'
 import type { SkillItemState } from './setupCharacterBuilds'
-import { SkillResult, setupCharacterSkills } from './setupCharacterSkills'
+import { type SkillResult, setupCharacterSkills } from './setupCharacterSkills'
 import { getSkillStatContainerValid, mergeStats } from './utils'
 
 interface CharacterSetupOptions {
@@ -30,7 +30,10 @@ interface CharacterSetupOptions {
 }
 
 export interface SetupCharacterStatCategoryResultsExtended {
-  (otherStats: Ref<StatRecorded[]>, skillResult: Ref<SkillResult>): {
+  (
+    otherStats: Ref<StatRecorded[]>,
+    skillResult: Ref<SkillResult>
+  ): {
     categoryResults: ComputedRef<CharacterStatCategoryResult[]>
     characterPureStats: ComputedRef<StatRecorded[]>
   }
@@ -341,7 +344,7 @@ export function prepareSetupCharacter() {
                     ...res,
                   } as CharacterStatResultWithId
                 }),
-              } as CharacterStatCategoryResult)
+              }) as CharacterStatCategoryResult
           )
           .filter(item => item.stats.length !== 0)
       })

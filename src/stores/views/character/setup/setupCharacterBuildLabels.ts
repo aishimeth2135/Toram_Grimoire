@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { ShallowReactive, ref } from 'vue'
+import { type ShallowReactive, ref } from 'vue'
 
 import {
   CharacterBuildLabel,
-  CharacterBuildLabelSaveData,
+  type CharacterBuildLabelSaveData,
 } from '@/lib/Character/Character/CharacterBuildLabel'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Items } from '@/lib/common/Items'

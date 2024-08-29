@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import { CharacterBaseStat } from '@/lib/Character/Character'
+import type { CharacterBaseStat } from '@/lib/Character/Character'
 
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 

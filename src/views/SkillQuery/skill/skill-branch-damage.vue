@@ -128,8 +128,8 @@ import SkillDamageFormula from './layouts/skill-damage-formula.vue'
 
 import DamageHandler from './branch-handlers/DamageHandler'
 import ExtraHandler from './branch-handlers/ExtraHandler'
-import { NormalLayoutSubContent } from './layouts/setup'
-import { ExtraSuffixBranchData } from './setup'
+import { type NormalLayoutSubContent } from './layouts/setup'
+import { type ExtraSuffixBranchData } from './setup'
 
 const ELEMENT_ICON_MAPPING: Record<string, string> = {
   neutral: 'bx-bx-circle',

@@ -1,6 +1,6 @@
 import { enchantConfig } from '@/stores/views/enchant/config'
 
-import { MaterialPointTypeRange } from './EnchantBase'
+import { type MaterialPointTypeRange } from './EnchantBase'
 
 export const enchantStates = {
   PotentialCapacity: 100,

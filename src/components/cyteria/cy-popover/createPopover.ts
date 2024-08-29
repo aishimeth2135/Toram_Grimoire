@@ -1,6 +1,6 @@
 import {
-  ComputePositionConfig,
-  DetectOverflowOptions,
+  type ComputePositionConfig,
+  type DetectOverflowOptions,
   autoUpdate,
   computePosition,
   flip,
@@ -9,7 +9,15 @@ import {
   shift,
   size,
 } from '@floating-ui/dom'
-import { CSSProperties, Ref, computed, isRef, nextTick, ref, watch } from 'vue'
+import {
+  type CSSProperties,
+  type Ref,
+  computed,
+  isRef,
+  nextTick,
+  ref,
+  watch,
+} from 'vue'
 
 interface CreatePopperOptions {
   placement?: string
@@ -67,7 +75,7 @@ export function createPopover(
         placement: 'bottom-start',
         autoSelect: false,
         ...options,
-      } as Required<CreatePopperOptions>)
+      }) as Required<CreatePopperOptions>
   )
 
   const computePositionOptions = computed(() => {

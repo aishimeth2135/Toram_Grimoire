@@ -1,10 +1,11 @@
+import { type SkillBuildState } from '@/stores/views/character/skill'
+
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
 
-import { SkillBuildState } from '../../../stores/views/character/skill'
-import { CharacterBindingBuild } from '../Character'
+import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 
 interface SkillState {

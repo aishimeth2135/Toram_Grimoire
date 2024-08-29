@@ -27,7 +27,7 @@ import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'
 
 import HealHandler from './branch-handlers/HealHandler'
-import { NormalLayoutSubContent } from './layouts/setup'
+import { type NormalLayoutSubContent } from './layouts/setup'
 import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {

@@ -36,12 +36,6 @@
   </teleport>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AppNotify',
-}
-</script>
-
 <script lang="ts" setup>
 import { useNotifyStore } from '@/stores/app/notify'
 import type {

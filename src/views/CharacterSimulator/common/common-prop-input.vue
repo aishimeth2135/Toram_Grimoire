@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="V extends string | number">
-import { Ref, ref } from 'vue'
-import { WritableComputedRef, computed } from 'vue'
+import { type Ref, ref } from 'vue'
+import { type WritableComputedRef, computed } from 'vue'
 
 import { getPropInputAutoId } from '../character-equipment-details/setup'
 
@@ -9,7 +9,7 @@ interface Props {
   value: V
   type?: 'text' | 'number'
   unit?: string
-  range?: string | number[]
+  range?: string | (number | null)[]
 }
 interface Emits {
   (evt: 'update:value', value: V): void
@@ -122,3 +122,4 @@ const incValue = (value: number) => {
     </label>
   </div>
 </template>
+type Reftype WritableComputedRef

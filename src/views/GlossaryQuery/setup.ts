@@ -1,7 +1,7 @@
 import { TextResultContainerPart } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import {
-  TextParseItem,
+  type TextParseItem,
   getCommonTextParseItems,
   getMarkTextParseItems,
 } from '@/lib/common/ResultContainer/parseText'

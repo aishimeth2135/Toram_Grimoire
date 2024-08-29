@@ -66,16 +66,19 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, inject, ref } from 'vue'
+import { type Ref, computed, inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { SkillResultsState } from '@/stores/views/character/setup'
+import { type SkillResultsState } from '@/stores/views/character/setup'
 
 import { numberToFixed } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
-import { CharacterCombo, ComboSkillState } from '@/lib/Character/CharacterCombo'
+import {
+  CharacterCombo,
+  type ComboSkillState,
+} from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
 import { SkillBuffs } from '@/lib/Skill/SkillComputing'
 

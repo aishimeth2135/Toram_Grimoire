@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, computed, reactive } from 'vue'
+import { type ComputedRef, type Ref, computed, reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'

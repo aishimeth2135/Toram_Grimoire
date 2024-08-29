@@ -4,7 +4,7 @@ import { useCssModule } from 'vue'
 
 import IconBase from './icon/icon-base.vue'
 
-import { IconBaseProps } from './icon/setup'
+import { type IconBaseProps } from './icon/setup'
 
 interface Props extends IconBaseProps {
   width?: string

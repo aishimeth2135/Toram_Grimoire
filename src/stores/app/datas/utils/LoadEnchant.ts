@@ -3,7 +3,7 @@ import {
   EnchantCategory,
   EnchantItem,
   EnchantItemConditions,
-  MaterialPointTypeRange,
+  type MaterialPointTypeRange,
 } from '@/lib/Enchant/Enchant'
 
 import type { CsvData } from './DownloadDatas'

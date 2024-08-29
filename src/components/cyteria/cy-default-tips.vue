@@ -10,9 +10,9 @@
 </template>
 
 <script lang="ts" setup>
-import { StyleValue, computed } from 'vue'
+import { type StyleValue, computed } from 'vue'
 
-import { IconBaseProps } from './icon/setup'
+import { type IconBaseProps } from './icon/setup'
 
 interface Props extends IconBaseProps {
   textAlign?: string

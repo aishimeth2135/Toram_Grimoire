@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { defineState } from '@/shared/setup/State'
 
 import { SkillBranch } from '@/lib/Skill/Skill'
-import { SkillFormulaExtraProps } from '@/lib/Skill/SkillComputing'
+import { type SkillFormulaExtraProps } from '@/lib/Skill/SkillComputing'
 
 export interface SkillFormulaExtraVarState extends SkillFormulaExtraProps {
   id: string

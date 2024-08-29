@@ -4,13 +4,11 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CyListItem',
-}
-</script>
-
 <script lang="ts" setup>
+defineOptions({
+  name: 'CyListItem',
+})
+
 interface Props {
   selected?: boolean
   pure?: boolean
@@ -24,7 +22,7 @@ withDefaults(defineProps<Props>(), {
 
 <style lang="postcss" scoped>
 .cy--list-item {
-  @apply flex cursor-pointer flex-wrap items-center py-1.5 px-3 duration-200;
+  @apply flex cursor-pointer flex-wrap items-center px-3 py-1.5 duration-200;
   border: 1px solid transparent;
 
   &:hover {

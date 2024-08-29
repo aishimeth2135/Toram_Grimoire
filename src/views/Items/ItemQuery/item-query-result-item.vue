@@ -353,10 +353,12 @@ import { useI18n } from 'vue-i18n'
 
 import ToggleService from '@/shared/setup/ToggleService'
 
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds } from '@/lib/Character/CharacterEquipment'
+import {
+  CharacterEquipment,
+  EquipmentKinds,
+} from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
-import { BagItemObtain } from '@/lib/Items/BagItem'
+import { type BagItemObtain } from '@/lib/Items/BagItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
