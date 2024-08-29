@@ -20,7 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ROUTE_LINK_DATAS, RouteLinkData } from '@/shared/consts/route'
+import { useMainStore } from '@/stores/app/main'
+
+import { ROUTE_LINK_DATAS, type RouteLinkData } from '@/shared/consts/route'
 import { useDevice } from '@/shared/setup/Device'
 
 import { CharacterSimulatorRouteNames } from '@/router/Character'
@@ -32,6 +34,8 @@ import HomeLinkGroup from './home-link-group.vue'
 const { device } = useDevice()
 
 const columns = ROUTE_LINK_DATAS
+
+const mainStore = useMainStore()
 
 const groups = (() => {
   const linkMap = new Map<string, RouteLinkData>()
@@ -50,11 +54,20 @@ const groups = (() => {
     },
     {
       id: 'character',
-      links: _handle([
-        AppRouteNames.CharacterSimulator,
-        AppRouteNames.DamageCalculation,
-        CharacterSimulatorRouteNames.Skill,
-      ]),
+      links: _handle(
+        mainStore.devMode
+          ? [
+              AppRouteNames.CharacterSimulator,
+              AppRouteNames.DamageCalculation,
+              CharacterSimulatorRouteNames.Skill,
+              AppRouteNames.MainQuestCalc,
+            ]
+          : [
+              AppRouteNames.CharacterSimulator,
+              AppRouteNames.DamageCalculation,
+              CharacterSimulatorRouteNames.Skill,
+            ]
+      ),
     },
     {
       id: 'enchant',
