@@ -33,6 +33,8 @@
 import type { ComputedRef, WritableComputedRef } from 'vue'
 import { computed, toRefs } from 'vue'
 
+import { toInt } from '@/shared/utils/number'
+
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
@@ -67,12 +69,8 @@ const stackValueRangeOrigin: ComputedRef<[string, string]> = computed(() => {
 })
 
 const stackValueRange = computed(() => {
-  let max: number | null = parseInt(stackValueRangeOrigin.value[1], 10)
-  let min: number | null = parseInt(stackValueRangeOrigin.value[0], 10)
-
-  max = !Number.isNaN(max) ? max : null
-  min = !Number.isNaN(min) ? min : null
-
+  const max = toInt(stackValueRangeOrigin.value[1])
+  const min = toInt(stackValueRangeOrigin.value[0])
   return [min, max]
 })
 </script>

@@ -1,6 +1,7 @@
 import { type Ref, computed } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 
 import { StatBase, type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
@@ -74,11 +75,8 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
           let value = 0
           const limit = origin.getLimit(type)
           if (m1) {
-            value = parseInt(m1, 10)
-            value = Number.isNaN(value) ? 0 : value
-            if (typeof value === 'number') {
-              value = Math.max(limit.min, Math.min(limit.max, value))
-            }
+            value = toInt(m1) ?? 0
+            value = Math.max(limit.min, Math.min(limit.max, value))
           } else {
             value = limit.max
           }
@@ -98,15 +96,12 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
           let value = null
           let limit = origin.getLimit(type)
           if (m1) {
-            value = parseInt(m1, 10)
-            value = Number.isNaN(value) ? 0 : value
-            if (typeof value === 'number') {
-              if (type === StatTypes.Multiplier && value > limit.max) {
-                type = StatTypes.Constant
-                limit = origin.getLimit(type)
-              }
-              value = Math.max(limit.min, Math.min(limit.max, value))
+            value = toInt(value) ?? 0
+            if (type === StatTypes.Multiplier && value > limit.max) {
+              type = StatTypes.Constant
+              limit = origin.getLimit(type)
             }
+            value = Math.max(limit.min, Math.min(limit.max, value))
           } else {
             value = limit.max
           }

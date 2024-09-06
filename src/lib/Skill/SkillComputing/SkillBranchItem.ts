@@ -5,6 +5,7 @@ import {
   InstanceIdGenerator,
   type InstanceWithId,
 } from '@/shared/services/InstanceId'
+import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
@@ -147,8 +148,7 @@ abstract class SkillBranchItemBase<
   }
 
   propNumber(...keys: string[]): number {
-    const attr = parseInt(this._props.get(this.propKey(...keys)) ?? '', 10)
-    return Number.isNaN(attr) ? 0 : attr
+    return toInt(this._props.get(this.propKey(...keys))) ?? 0
   }
 
   propBoolean(...keys: string[]): boolean {
@@ -225,7 +225,7 @@ class SkillBranchItem<
     this.linkedStackIds =
       this.stackId !== null
         ? []
-        : splitComma(this.prop('stack_id')).map(id => parseInt(id, 10))
+        : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
 
     this.groupState = reactive({
       size: 0,

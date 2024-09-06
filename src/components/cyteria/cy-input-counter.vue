@@ -60,6 +60,7 @@
 import { computed, ref } from 'vue'
 
 import Color from '@/shared/services/Color'
+import { normalizeInteger } from '@/shared/utils/number'
 
 defineOptions({
   name: 'CyInputCounter',
@@ -126,7 +127,7 @@ const inputValue = computed<number>({
     if (props.disabled) {
       return
     }
-    value = value || 0
+    value = normalizeInteger(value)
 
     const min = props.range[0],
       max = props.range[1]

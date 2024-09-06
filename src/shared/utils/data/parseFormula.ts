@@ -2,6 +2,7 @@ import jsep from 'jsep'
 
 import { isNumberString, lastChar } from '@/shared/utils/string'
 
+import { toFloat } from '../number'
 import {
   getGettersMap,
   getVarsMap,
@@ -431,7 +432,7 @@ function computeFormula(
   defaultValue: any = 0
 ): unknown {
   if (isNumberString(formula)) {
-    return parseInt(formula, 10)
+    return toFloat(formula) ?? 0
   }
 
   // auto inject Math

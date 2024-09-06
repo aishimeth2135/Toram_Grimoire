@@ -1,4 +1,5 @@
 import { HandleLanguageData } from '@/shared/services/Language'
+import { toInt } from '@/shared/utils/number'
 
 import CharacterSystem from '@/lib/Character'
 
@@ -35,7 +36,7 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
         row[BASE_NAME],
         row[CAPTION],
         row[HAS_MULTIPLIER] !== '無',
-        row[ORDER] ? parseInt(row[ORDER], 10) : 999
+        toInt(row[ORDER]) ?? 999
       )
       if (row[CONSTANT_FORMULA]) {
         stat.constantDisplayFormat = row[CONSTANT_FORMULA]

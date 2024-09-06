@@ -1,6 +1,7 @@
 import { type SkillBuildState } from '@/stores/views/character/skill'
 
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
@@ -31,7 +32,7 @@ interface EffectedSkillResult {
 }
 
 function skillTreeIdToInteger(skillTreeId: string): number {
-  const [n1, n2] = skillTreeId.split('-').map(part => parseInt(part, 10))
+  const [n1, n2] = skillTreeId.split('-').map(part => toInt(part) ?? 0)
   return n1 * 100 + n2
 }
 

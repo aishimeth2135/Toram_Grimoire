@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import Cyteria from '@/shared/utils/Cyteria'
+import { toInt } from '@/shared/utils/number'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import {
@@ -496,7 +497,7 @@ export function checkSkillBranchForParty(branch: SkillBranch): boolean {
 
 export function getPartySkillBranchId(branch: SkillBranch) {
   if (branch.props.get('effect_id')) {
-    return parseInt(branch.props.get('effect_id')!, 10)
+    return toInt(branch.props.get('effect_id')!) ?? 0
   }
   if (branch.hasId()) {
     return branch.id

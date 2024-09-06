@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { HandleLanguageData } from '@/shared/services/Language'
+import { toInt } from '@/shared/utils/number'
 
 import SkillSystem from '@/lib/Skill'
 import {
@@ -128,7 +129,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       }
       //console.log(row);
 
-      const id = row[ID] !== '' ? parseInt(row[ID], 10) : null
+      const id = toInt(row[ID])
       if (id !== null) {
         const confirmName = row[CONFIRM]
         if (confirmName === CONFIRM_SKILL_TREE_CATEGORY) {
@@ -164,9 +165,8 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
               bodyArmor
             )
           } else {
-            const targetEffectId = row[HISTORY_EFFECT.TARGET_EFFECT_ID]
-              ? parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10)
-              : -1
+            const targetEffectId =
+              toInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID]) ?? -1
             curSkillEffect = curSkill.appendSkillEffectHistory(
               targetEffectId,
               row[HISTORY_EFFECT.DATE]
@@ -221,8 +221,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       }
       const bid = row[EFFECT_BRANCH_ID] || null
       if (bid !== null) {
-        const bidNum: number =
-          bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_ID], 10)
+        const bidNum = bid === '-' ? -1 : toInt(row[EFFECT_BRANCH_ID]) ?? -1
         const bname = row[EFFECT_BRANCH_NAME]
         curSkillBranch = curSkillEffect.appendSkillBranch(
           bidNum,
@@ -311,16 +310,16 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
     }
     try {
       const cat = row[CATEGORY],
-        id = parseInt(row[ID], 10)
+        idToSearch = toInt(row[ID])
       if (cat === CONFIRM_SKILL_TREE_CATEGORY) {
-        const find = sr.skillTreeCategorys.find(item => item.id === id)
+        const find = sr.skillTreeCategorys.find(item => item.id === idToSearch)
         if (find) {
           curSkillTreeCategory = find
           loadLangData(cat, curSkillTreeCategory, idx)
         }
       } else if (cat === CONFIRM_SKILL_TREE) {
         const find = curSkillTreeCategory.skillTrees.find(
-          item => item.id === id
+          item => item.id === idToSearch
         )
         if (find) {
           curSkillTree = find
@@ -328,13 +327,11 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
           loadLangData(cat, curSkillTree, idx)
         }
       } else if (cat === '') {
-        const find = curSkillTree.skills.find(item => item.id === id)
+        const find = curSkillTree.skills.find(item => item.id === idToSearch)
         if (find) {
           find.init(
-            row[PREVIOUS_SKILL] === '-'
-              ? -1
-              : parseInt(row[PREVIOUS_SKILL], 10),
-            parseInt(row[DRAW_SKILL_TREE_ORDER], 10)
+            row[PREVIOUS_SKILL] === '-' ? -1 : toInt(row[PREVIOUS_SKILL]) ?? -1,
+            toInt(row[DRAW_SKILL_TREE_ORDER]) ?? -1
           )
           loadLangData(cat, find, idx)
         }

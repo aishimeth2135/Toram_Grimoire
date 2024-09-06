@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 import { isNumberString, lastChar } from '@/shared/utils/string'
 
 import { StatTypes } from './enums'
@@ -80,7 +81,7 @@ class StatBase {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
           .replace(/\$(\d+)d/, (_match, p1) =>
-            (value as number).toFixed(parseInt(p1, 10))
+            (value as number).toFixed(toInt(p1) ?? 0)
           )
       }
       return res

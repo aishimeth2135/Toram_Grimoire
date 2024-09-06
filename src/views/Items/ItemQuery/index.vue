@@ -346,7 +346,7 @@ import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
 
 import Grimoire from '@/shared/Grimoire'
 import ToggleService from '@/shared/setup/ToggleService'
-import { isNumberString } from '@/shared/utils/string'
+import { toFloat, toInt } from '@/shared/utils/number'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
 import { getEquipmentFieldTypeText } from '@/lib/Character/Character/utils'
@@ -383,8 +383,7 @@ const equipments = Grimoire.Items.equipments.map(equip =>
   CharacterEquipment.fromOriginEquipment(equip)
 )
 
-const handleCompareValue = (value: string) =>
-  isNumberString(value) ? parseFloat(value) : -99999
+const handleCompareValue = (value: string) => toFloat(value) ?? -99999
 
 const { state, modes } = useItemQueryModes()
 
@@ -458,8 +457,8 @@ const idComparation = (
   item1: CharacterEquipment,
   item2: CharacterEquipment
 ) => {
-  const id1 = parseInt(item1.origin!.id, 10)
-  const id2 = parseInt(item2.origin!.id, 10)
+  const id1 = toInt(item1.origin!.id) ?? -1
+  const id2 = toInt(item2.origin!.id) ?? -1
   return id1 - id2
 }
 

@@ -94,6 +94,7 @@ import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
 import ToggleService from '@/shared/setup/ToggleService'
+import { toInt } from '@/shared/utils/number'
 
 import {
   Skill,
@@ -195,7 +196,7 @@ if (route.name === AppRouteNames.SkillQuery && currentSkill.value) {
 if (route.params.skillId) {
   const skillId = route.params.skillId as string
   skillId.split('-').every((idStr, idx) => {
-    const id = parseInt(idStr, 10)
+    const id = toInt(idStr)
     if (idx === 0) {
       const stc = skillRoot.value.skillTreeCategorys.find(
         item => item.id === id

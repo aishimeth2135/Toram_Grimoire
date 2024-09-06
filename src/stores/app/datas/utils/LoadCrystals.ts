@@ -1,3 +1,5 @@
+import { toInt } from '@/shared/utils/number'
+
 import ItemsSystem from '@/lib/Items'
 import { BagCrystal, type BagItemObtain } from '@/lib/Items/BagItem'
 
@@ -25,11 +27,11 @@ export default function (root: ItemsSystem, csvData: CsvData) {
     }
     try {
       if (row[NAME] === '0') {
-        currentType = parseInt(row[TYPE_ID], 10)
+        currentType = toInt(row[TYPE_ID]) ?? -1
         return
       }
       if (row[NAME] === '1') {
-        currentBossType = parseInt(row[BOSS_TYPE_ID], 10)
+        currentBossType = toInt(row[BOSS_TYPE_ID]) ?? -1
         return
       }
 

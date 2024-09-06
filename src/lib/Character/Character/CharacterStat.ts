@@ -2,6 +2,7 @@ import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
+import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
 import { SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
@@ -202,7 +203,7 @@ class CharacterStat {
         return value.toString()
       }
       return p1 !== undefined
-        ? value.toFixed(parseInt(p1, 10))
+        ? value.toFixed(toInt(p1) ?? 0)
         : Math.floor(value).toString()
     })
   }

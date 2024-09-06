@@ -1,4 +1,4 @@
-import { isNumberString } from '@/shared/utils/string'
+import { toInt } from '@/shared/utils/number'
 
 import QuestSystem from '@/lib/Quest'
 import { MainQuestChapter, MainQuestSection } from '@/lib/Quest/Quest'
@@ -17,8 +17,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
     ROW_REWARD = 7,
     ROW_CAPTION = 8
 
-  const toInt = (value: string) =>
-    isNumberString(value) ? parseInt(value, 10) : 0
+  const handleIntData = (value: string) => toInt(value) ?? 0
 
   const questChapters: MainQuestChapter[] = []
   const questSections: MainQuestSection[] = []
@@ -40,7 +39,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
         return
       }
 
-      currentChapter = toInt(row[ROW_CHAPTER])
+      currentChapter = handleIntData(row[ROW_CHAPTER])
       if (currentChapter === INVALID_CHAPTER) {
         return
       }
@@ -56,14 +55,14 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
       return
     }
 
-    const currentSection = toInt(row[ROW_SECTION])
+    const currentSection = handleIntData(row[ROW_SECTION])
 
     if (currentSection !== INVALID_SECTION) {
       const newQuest = new MainQuestSection(
         currentChapter,
-        toInt(row[ROW_SECTION]),
+        handleIntData(row[ROW_SECTION]),
         row[ROW_SECTION_NAME],
-        toInt(row[ROW_EXP])
+        handleIntData(row[ROW_EXP])
       )
       parseSubmit(newQuest, row[ROW_SUBMIT])
       parseReward(newQuest, row[ROW_REWARD])
@@ -71,7 +70,10 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
       questSections.push(newQuest)
       currentQuest = newQuest
     } else if (row[ROW_EXP] && currentQuest) {
-      currentQuest.setSkippableExp(row[ROW_SECTION_NAME], toInt(row[ROW_EXP]))
+      currentQuest.setSkippableExp(
+        row[ROW_SECTION_NAME],
+        handleIntData(row[ROW_EXP])
+      )
     }
   })
 
@@ -105,11 +107,7 @@ function handleQuestItem(data: string, cb: HandleQuestItemCallback) {
     }
     const [name, quantity] = currentLine.split('#')
     if (name) {
-      if (isNumberString(quantity)) {
-        cb(currentType, name, parseInt(quantity, 10))
-      } else {
-        cb(currentType, name, 0)
-      }
+      cb(currentType, name, toInt(quantity) ?? 0)
     }
   })
 }

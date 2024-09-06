@@ -1,6 +1,8 @@
 <script lang="ts" setup generic="V extends string | number">
-import { type Ref, ref } from 'vue'
-import { type WritableComputedRef, computed } from 'vue'
+import { computed, ref } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
+
+import { normalizeInteger, toInt } from '@/shared/utils/number'
 
 import { getPropInputAutoId } from '../character-equipment-details/setup'
 
@@ -43,7 +45,7 @@ const parsedRange = computed(() => {
     if (typeof item === 'number') {
       return item
     }
-    return item ? parseInt(item, 10) : null
+    return item ? toInt(item) : null
   })
   return {
     min,
@@ -57,9 +59,10 @@ const innerValue = computed<V>({
   get() {
     return props.value
   },
-  set(value: V) {
+  set(newValue: V) {
+    let value = newValue
     if (isNumberValue.value) {
-      let num = value as number
+      let num = normalizeInteger(value)
       const { min, max } = parsedRange.value
       if (min !== null) {
         num = Math.max(min, num)
@@ -70,7 +73,7 @@ const innerValue = computed<V>({
       value = num as V
     }
 
-    emit('update:value', value)
+    emit('update:value', value as V)
   },
 })
 

@@ -113,6 +113,8 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { toInt } from '@/shared/utils/number'
+
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -249,7 +251,7 @@ const subContents = computed(() => {
   )
   if (
     container.value.has('frequency') &&
-    parseInt(container.value.getValue('frequency'), 10) > 1
+    (toInt(container.value.getValue('frequency')) ?? 0) > 1
   ) {
     result.push(
       {

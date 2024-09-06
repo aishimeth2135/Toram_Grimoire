@@ -5,6 +5,7 @@ import { type Composer } from 'vue-i18n'
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
 import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
+import { toInt } from '@/shared/utils/number'
 
 import { I18nStore } from './I18nStore'
 import {
@@ -72,13 +73,11 @@ export const useLanguageStore = defineStore('app-language', () => {
       if (curLangSet === 'auto') {
         autoSetLang()
       } else {
-        primaryLang.value = parseInt(curLangSet, 10)
+        primaryLang.value = toInt(curLangSet) ?? 0
       }
 
-      secondaryLang.value = parseInt(
-        localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!,
-        10
-      )
+      secondaryLang.value =
+        toInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!) ?? 0
     } else {
       autoSetLang()
     }

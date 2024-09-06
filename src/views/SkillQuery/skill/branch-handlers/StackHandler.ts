@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -44,11 +45,8 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(
     pureDatas,
   })
 
-  const tmpv = parseInt(
-    displayData.get('max') || displayData.get('default'),
-    10
-  )
-  if (!Number.isNaN(tmpv) && tmpv > 999) {
+  const tmpv = toInt(displayData.get('max') || displayData.get('default'))
+  if (tmpv !== null && tmpv > 999) {
     displayData.setCustomData('stackInputWidth', '3rem')
   }
 

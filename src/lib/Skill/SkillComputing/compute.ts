@@ -13,6 +13,7 @@ import {
   computeFormula,
   handleFormula,
 } from '@/shared/utils/data'
+import { toIndex, toInt } from '@/shared/utils/number'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
@@ -166,7 +167,7 @@ function computedBranchHelper(
     }
     const match = str.match(RLV_ACCESS_PATTERN)
     if (match) {
-      return RLv[parseInt(match[1], 10)] > 0
+      return RLv[toIndex(match[1])] > 0
     }
     return true
   }
@@ -193,7 +194,7 @@ function computedBranchHelper(
     values.forEach(value => {
       const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
       stackMatches.forEach(match => {
-        const idxValue = parseInt(match[1], 10)
+        const idxValue = toIndex(match[1])
         if (stack[idxValue] === undefined) {
           stack[idxValue] = `${t('skill-query.branch.stack.base-name')}${
             idxValue + 1
@@ -203,7 +204,7 @@ function computedBranchHelper(
       if (!hasRLv) {
         const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
         rlvMatches.forEach(match => {
-          const idxValue = parseInt(match[1], 10)
+          const idxValue = toIndex(match[1])
           if (RLvLength < idxValue) {
             RLvLength = idxValue
           }
@@ -243,7 +244,7 @@ function computedBranchHelper(
     values.forEach(value => {
       const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
       stackMatches.forEach(match => {
-        const idxValue = parseInt(match[1], 10)
+        const idxValue = toIndex(match[1])
         if (stack[idxValue] === undefined) {
           stack[idxValue] = 0
         }
@@ -251,7 +252,7 @@ function computedBranchHelper(
       if (!hasRLv) {
         const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
         rlvMatches.forEach(match => {
-          const idxValue = parseInt(match[1], 10)
+          const idxValue = toIndex(match[1])
           if (RLv[idxValue] === undefined) {
             RLv[idxValue] = 0
           }
@@ -316,8 +317,8 @@ function computedBranchHelper(
         )?.toString() ?? null
       )
     }
-    const idx = parseInt(index, 10)
-    if (Number.isNaN(idx)) {
+    const idx = toInt(index)
+    if (idx === null) {
       return null
     }
     const props = {

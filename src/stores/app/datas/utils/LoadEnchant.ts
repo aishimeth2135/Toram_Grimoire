@@ -1,3 +1,5 @@
+import { toInt } from '@/shared/utils/number'
+
 import EnchantSystem from '@/lib/Enchant'
 import {
   EnchantCategory,
@@ -59,8 +61,8 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
 
   const handleUnitValue = (str: string): [number, number] => {
     const [str1, str2] = str.split('|')
-    const v1 = str1 ? parseInt(str1, 10) : 1
-    const v2 = str2 ? parseInt(str2, 10) : v1
+    const v1 = toInt(str1) ?? 1
+    const v2 = toInt(str2) ?? v1
     return [v1, v2]
   }
 

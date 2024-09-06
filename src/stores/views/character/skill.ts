@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import { computed, readonly, ref } from 'vue'
 import type { Ref } from 'vue'
 
+import { toInt } from '@/shared/utils/number'
+
 import {
   LevelSkillTree,
   SkillRoot,
@@ -187,7 +189,7 @@ export const useCharacterSkillStore = defineStore(
         let currentType: CsvSkillElementTypes | '' = ''
 
         ;(Object.keys(type) as CsvSkillElementTypes[]).find(key => {
-          if (type[key] === parseInt(row[index['type']], 10)) {
+          if (type[key] === toInt(row[index['type']])) {
             currentType = key
             return true
           }
@@ -207,23 +209,23 @@ export const useCharacterSkillStore = defineStore(
           }
           cur.name = row[index[currentType]['name']]
         } else if (currentType === CsvSkillElementTypes.SkillTreeCategory) {
-          const id = parseInt(row[index[currentType]['id']], 10)
+          const id = toInt(row[index[currentType]['id']])
           cur_stc = cur.skillTreeCategoryStates.find(
             item => item.origin.id === id
           )!
           cur_stc.visible = true
         } else if (currentType === CsvSkillElementTypes.SkillTree) {
-          const id = parseInt(row[index[currentType]['id']], 10)
+          const id = toInt(row[index[currentType]['id']])
           cur_st = cur_stc.skillTreeStates.find(item => item.origin.id === id)!
           cur_st.visible = true
         } else if (currentType === CsvSkillElementTypes.LevelSkill) {
-          const id = parseInt(row[index[currentType]['id']], 10)
+          const id = toInt(row[index[currentType]['id']])
           const skill = cur_st.levelSkillTree.levelSkills.find(
             item => item.base.id === id
           )!
-          skill.level(parseInt(row[index[currentType]['level']], 10))
+          skill.level(toInt(row[index[currentType]['level']]) ?? 0)
           skill.starGemLevel(
-            parseInt(row[index[currentType]['starGemLevel']], 10)
+            toInt(row[index[currentType]['starGemLevel']]) ?? 0
           )
         }
       })

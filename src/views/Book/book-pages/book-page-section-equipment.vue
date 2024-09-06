@@ -17,6 +17,7 @@ import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas'
 
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
@@ -40,8 +41,8 @@ const updateEquipments = async () => {
     return
   }
   if (query.startsWith('-')) {
-    const num = parseInt(query, 10)
-    if (!Number.isNaN(num)) {
+    const num = toInt(query)
+    if (num !== null) {
       loading.value = true
       await datasStore.waitLoaded(DataStoreIds.Items)
       equipments.value = Grimoire.Items.equipments

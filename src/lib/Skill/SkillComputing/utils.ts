@@ -2,7 +2,7 @@ import { shallowReactive } from 'vue'
 
 import { inplaceAssign, lastElement } from '@/shared/utils/array'
 import { handleFormula } from '@/shared/utils/data'
-import { isNumberString } from '@/shared/utils/string'
+import { toIndex, toInt } from '@/shared/utils/number'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions, StatComputed } from '@/lib/Character/Stat'
@@ -63,9 +63,9 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   const CONVERT_LIST: Record<string, (value: string) => string> = {
     mp_cost: value => value,
     range: value => (value === '-' ? 'no_limit' : value),
-    skill_type: value => skillTypeList[parseInt(value, 10)],
-    in_combo: value => inComboList[parseInt(value, 10)],
-    action_time: value => actionTimeList[parseInt(value, 10)],
+    skill_type: value => skillTypeList[toIndex(value)],
+    in_combo: value => inComboList[toIndex(value)],
+    action_time: value => actionTimeList[toIndex(value)],
     casting_time: value => value,
   }
   const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
@@ -335,7 +335,7 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
     const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.is(SkillBranchNames.Group)) {
         const groupState: BranchGroupState = {
-          size: parseInt(suffix.prop('size'), 10),
+          size: toInt(suffix.prop('size')) ?? 0,
           expandable: suffix.prop('expandable') === '1',
           expanded: suffix.prop('expansion_default') === '1',
           parentExpanded: true,
@@ -495,11 +495,10 @@ function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
   return branches
     .map(bch => {
       if (bch.name === SkillBranchNames.Extend) {
-        const extendedId = bch.props.get('extend')
-        if (!extendedId || !isNumberString(extendedId)) {
+        const targetId = toInt(bch.props.get('extend'))
+        if (targetId === null) {
           return null
         }
-        const targetId = parseInt(extendedId, 10)
         const newBch = branches.find(item => item.id === targetId)?.clone()
         if (!newBch) {
           return null

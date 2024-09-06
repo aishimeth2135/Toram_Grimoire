@@ -7,6 +7,7 @@ import {
 } from '@/shared/setup/ContextState'
 import { defineState } from '@/shared/setup/State'
 import { nextFrame } from '@/shared/utils/dom'
+import { toInt } from '@/shared/utils/number'
 
 interface TabsComponentContext {
   isHorizontal: Ref<boolean>
@@ -85,16 +86,16 @@ export function useTabContext(componentContext: TabComponentContext) {
   const { getTabsContext: _getTabsContext, TABS_ID_ATTR_NAME } =
     useTabsContextState()
 
-  const getTabsContext = () => {
+  const getTabsContext = (): TabsComponentContext | null => {
     const tabsEl = sourceEl.value?.closest('.cy-tabs')
     if (!tabsEl) {
-      return
+      return null
     }
-    const tid = parseInt(
-      tabsEl.getAttribute(TABS_ID_ATTR_NAME)!,
-      10
-    ) as ContextId
-    return _getTabsContext(tid)
+    const tid = toInt(tabsEl.getAttribute(TABS_ID_ATTR_NAME)!)
+    if (tid === null) {
+      return null
+    }
+    return _getTabsContext(tid as ContextId)
   }
 
   const updateTabValue = () => {

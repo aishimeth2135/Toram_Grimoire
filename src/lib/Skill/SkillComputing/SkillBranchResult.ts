@@ -1,3 +1,4 @@
+import { toFloat, toInt } from '@/shared/utils/number'
 import { escapeRegExp, isNumberString, splitComma } from '@/shared/utils/string'
 
 import {
@@ -88,14 +89,14 @@ class SkillBranchResult
   }
 
   get valueSum() {
-    const value = this.value
-    const registletValue = this.subContainers.registlet?.value
+    const value = toInt(this.value)
+    const registletValue = toInt(this.subContainers.registlet?.value)
     let result = 0
-    if (isNumberString(value)) {
-      result += parseInt(value, 10)
+    if (value !== null) {
+      result += value
     }
-    if (registletValue && isNumberString(registletValue)) {
-      result += parseInt(value, 10)
+    if (registletValue !== null) {
+      result += registletValue
     }
     return result
   }
@@ -160,15 +161,15 @@ class SkillBranchStatResult extends SkillBranchResult {
   }
 
   override get valueSum() {
-    // `parseFloat` instead of `parseInt`
-    const value = this.value
-    const registletValue = this.subContainers.registlet?.value
+    // float instead of integer
+    const value = toFloat(this.value)
+    const registletValue = toFloat(this.subContainers.registlet?.value)
     let result = 0
-    if (isNumberString(value)) {
-      result += parseFloat(value)
+    if (value !== null) {
+      result += value
     }
-    if (registletValue && isNumberString(registletValue)) {
-      result += parseFloat(value)
+    if (registletValue !== null) {
+      result += registletValue
     }
     return result
   }

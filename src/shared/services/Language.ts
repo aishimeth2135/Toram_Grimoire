@@ -1,5 +1,7 @@
 import type { LangCsvData } from '@/stores/app/datas/utils/DownloadDatas'
 
+import { toIndex } from '../utils/number'
+
 function HandleLanguageData(
   datas: LangCsvData,
   mapping: Record<number, number>
@@ -9,7 +11,7 @@ function HandleLanguageData(
   }
   const langDatas = [datas[1], datas[2]]
   Object.entries(mapping).forEach(([key, value]) => {
-    const dataIdx = parseInt(key, 10),
+    const dataIdx = toIndex(key),
       langDataIdx = value
     datas[0].forEach((data, idx) => {
       const res = langDatas

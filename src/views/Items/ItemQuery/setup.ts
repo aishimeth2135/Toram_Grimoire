@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 import { isIntegerString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
@@ -28,12 +29,11 @@ function dyeConvert(value: string): (number | null)[] {
   value = value.toLowerCase()
   const categoryMapping = ['a', 'b', 'c']
   const result: (number | null)[] = [null, null, null]
-  const datas = value.matchAll(/(a|b|c)(\d+)/g)
-  ;[...datas].forEach(item => {
+  ;[...value.matchAll(/(a|b|c)(\d+)/g)].forEach(item => {
     const category = item[1]
-    const num = item[2]
-    if (isIntegerString(num)) {
-      result[categoryMapping.indexOf(category)] = parseInt(num, 10)
+    const num = toInt(item[2])
+    if (num !== null) {
+      result[categoryMapping.indexOf(category)] = num
     }
   })
   return result
@@ -48,8 +48,8 @@ export function findObtainByDye(
   }
   const obtains = eq.origin!.obtains.filter(obtain => obtain['dye'])
 
-  if (isIntegerString(text)) {
-    const resultValue = parseInt(text, 10)
+  const resultValue = toInt(text)
+  if (resultValue !== null) {
     return obtains.filter(obtain => {
       const dye = obtain['dye']!
       const data = dyeConvert(dye)

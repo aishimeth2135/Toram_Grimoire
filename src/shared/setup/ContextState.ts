@@ -1,4 +1,5 @@
 import { type CommonId, CommonIdGenerator } from '../services/CommonId'
+import { toInt } from '../utils/number'
 
 type ComponentContext = Record<string, any>
 export type ContextId = CommonId<'ContextId'>
@@ -39,5 +40,5 @@ export function getContextIdFromElement(
   el: Element,
   attrName: string
 ): ContextId {
-  return parseInt(el.getAttribute(attrName)!, 10) as ContextId
+  return (toInt(el.getAttribute(attrName)!) ?? -1) as ContextId
 }

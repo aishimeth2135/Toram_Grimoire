@@ -2,20 +2,16 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
+import { toInt } from '@/shared/utils/number'
 
 export const useSettingStore = defineStore('app-setting', () => {
   const appFont = ref(
-    parseInt(
-      window.localStorage.getItem(APP_STORAGE_KEYS.FONT_FAMILY) ?? '1',
-      10
-    )
+    toInt(window.localStorage.getItem(APP_STORAGE_KEYS.FONT_FAMILY)) ?? 1
   )
   const appRem = ref(
-    parseInt(
-      window.localStorage.getItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE) ??
-        '160',
-      10
-    )
+    toInt(
+      window.localStorage.getItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE)
+    ) ?? 160
   )
   const appNightMode = ref(
     window.localStorage.getItem(APP_STORAGE_KEYS.NIGHT_MODE) === '1'

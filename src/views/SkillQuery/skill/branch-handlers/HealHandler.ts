@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { toInt } from '@/shared/utils/number'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import {
@@ -33,7 +34,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     constant: value => value !== '0',
     frequency: {
-      validation: value => parseInt(value, 10) > 1,
+      validation: value => (toInt(value) ?? 0) > 1,
       calc: true,
     },
   })

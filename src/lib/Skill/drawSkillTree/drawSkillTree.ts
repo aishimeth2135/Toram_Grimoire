@@ -2,6 +2,7 @@ import { type CSSProperties } from 'vue'
 
 import { Images } from '@/shared/services/Images'
 import CY from '@/shared/utils/Cyteria'
+import { toInt } from '@/shared/utils/number'
 
 import { Skill, SkillTree } from '../Skill'
 import { DrawSkillTreeDataTypes } from './enums'
@@ -122,7 +123,9 @@ function computeDrawSkillTreeData(
   const codes = drawTreeCode
     .toUpperCase()
     .replace(/([A-Z])(\d+)/g, (_match, word, count) =>
-      Array(parseInt(count, 10)).fill(word).join(' ')
+      Array(toInt(count) ?? 1)
+        .fill(word)
+        .join(' ')
     )
     .split(/[\s\n]+/)
   const drawData = GetDrawSetting()

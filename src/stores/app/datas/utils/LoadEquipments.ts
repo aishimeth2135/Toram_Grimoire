@@ -1,4 +1,5 @@
-import { isNumberString, splitComma } from '@/shared/utils/string'
+import { toInt } from '@/shared/utils/number'
+import { splitComma } from '@/shared/utils/string'
 
 import ItemsSystem from '@/lib/Items'
 import { BagEquipment, BagItemRecipeMaterial } from '@/lib/Items/BagItem'
@@ -48,7 +49,7 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
       const name = parts[0],
         value = parts[1]
       if (name && value) {
-        materials.push(new BagItemRecipeMaterial(name, parseInt(value, 10)))
+        materials.push(new BagItemRecipeMaterial(name, toInt(value) ?? 0))
       }
     })
     return materials
@@ -70,10 +71,8 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
         currentEquipment = root.appendEquipment(
           row[NAME],
           type,
-          isNumberString(row[BASE_VALUE]) ? parseInt(row[BASE_VALUE], 10) : 0,
-          isNumberString(row[BASE_STABILITY])
-            ? parseInt(row[BASE_STABILITY], 10)
-            : 0,
+          toInt(row[BASE_VALUE]) ?? 0,
+          toInt(row[BASE_STABILITY]) ?? 0,
           row[CAPTION]
         )
         if (type === -1) {
@@ -125,11 +124,9 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
           'cost',
           'potential',
         ] as const
-        if (keys.includes(propName as typeof keys[number])) {
-          currentRecipe[propName as typeof keys[number]] = parseInt(
-            propValue,
-            10
-          )
+        if (keys.includes(propName as (typeof keys)[number])) {
+          currentRecipe[propName as (typeof keys)[number]] =
+            toInt(propValue) ?? 0
         } else if (propName === 'materials') {
           currentRecipe.materials = processMaterails(propValue)
         }

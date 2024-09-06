@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
-import { isIntegerString, splitComma } from '@/shared/utils/string'
+import { toInt } from '@/shared/utils/number'
+import { splitComma } from '@/shared/utils/string'
 
 import RegistletSystem from '@/lib/Registlet'
 import {
@@ -58,8 +59,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
       return
     }
 
-    const handleIntegerData = (data: string) =>
-      isIntegerString(data) ? parseInt(data, 10) : 0
+    const handleIntegerData = (data: string) => toInt(data) ?? 0
 
     if (row[ID] && row[NAME]) {
       const powderCost = handleIntegerData(row[POWDER_COST])
@@ -67,8 +67,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
         id: row[ID],
         name: row[NAME],
         obtainLevels: row[OBTAIN_LEVELS].split(/\s*,\s*/)
-          .filter(item => isIntegerString(item))
-          .map(item => parseInt(item, 10)),
+          .map(item => toInt(item))
+          .filter(item => item !== null) as number[],
         maxLevel: handleIntegerData(row[MAX_LEVEL]),
         powderCost,
         powderCostAdditional: row[POWDER_COST_ADDITIONAL]

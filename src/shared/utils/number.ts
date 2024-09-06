@@ -14,14 +14,32 @@ export function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min
 }
 
+export function toInt(value: string | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null
+  }
+  const res = parseInt(value, 10)
+  return Number.isNaN(res) ? null : res
+}
+
+export function toFloat(value: string | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null
+  }
+  const res = parseFloat(value)
+  return Number.isNaN(res) ? null : res
+}
+
+export function toIndex(value: string): number {
+  const res = parseInt(value, 10)
+  return Number.isNaN(res) ? -1 : res
+}
+
 export function normalizeInteger(value: string | number): number {
   if (typeof value !== 'number') {
     value = parseInt(value, 10)
   }
-  if (Number.isNaN(value)) {
-    value = 0
-  }
-  return value
+  return Number.isNaN(value) ? 0 : value
 }
 
 /**

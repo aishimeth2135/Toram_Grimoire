@@ -72,7 +72,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { type SkillResultsState } from '@/stores/views/character/setup'
 
-import { numberToFixed } from '@/shared/utils/number'
+import { numberToFixed, toInt } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
 import {
@@ -130,9 +130,9 @@ const getMpCost = (skill: Skill, previous: Skill | null) => {
         state => state.skill.skillId === previous.skillId
       )
     : null
-  const mpCost = resultState.basicContainer.getValue('mp_cost')
-  if (isNumberString(mpCost)) {
-    let value = parseInt(mpCost, 10)
+  const mpCost = toInt(resultState.basicContainer.getValue('mp_cost'))
+  if (mpCost !== null) {
+    let value = mpCost
     if (
       previousResultState?.results.some(result =>
         result.container.branchItem.buffs?.has(SkillBuffs.MpCostHalf)
