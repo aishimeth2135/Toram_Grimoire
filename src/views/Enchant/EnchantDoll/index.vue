@@ -63,62 +63,71 @@
       <div>{{ t('enchant-doll.top-caption.1') }}</div>
     </div>
     <EnchantSelectItem
-      :visible="windows.selectItem"
+      :visible="selectItemVisible"
       :is-weapon="equipmentIsWeapon"
       :for-positive="currentStep === StepIds.SelectPositiveStat"
       :default-negative="currentStep === StepIds.SelectNegativeStat"
       :selected-items="selectedItems"
       :disabled-items="disabledItems"
       @select-item="selectItem"
-      @close="toggle('windows/selectItem', false)"
+      @close="toggleSelectItemVisible"
     />
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'EnchantDollView',
-}
-</script>
-
 <script lang="ts" setup>
-import { type Ref, computed, nextTick, reactive, ref, watch } from 'vue'
+import {
+  type Ref,
+  computed,
+  nextTick,
+  provide,
+  reactive,
+  readonly,
+  ref,
+  watch,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
+import AutoSave from '@/shared/setup/AutoSave'
+import Confirm from '@/shared/setup/Confirm'
+import Notify from '@/shared/setup/Notify'
+import { useToggle } from '@/shared/setup/State'
+
 import {
   EnchantEquipment,
-  EnchantStat,
   EnchantEquipmentTypes,
+  EnchantStat,
 } from '@/lib/Enchant/Enchant'
 import {
   type AutoFindNegaitveStatsResult,
   EnchantDoll,
   EnchantDollBaseTypes,
 } from '@/lib/Enchant/EnchantDoll'
-import AutoSave from '@/shared/setup/AutoSave'
-import Confirm from '@/shared/setup/Confirm'
-import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
+import EnchantDollStepEquipment from './enchant-doll-step-equipment.vue'
+import EnchantDollStepNegativeStats from './enchant-doll-step-negative-stats.vue'
+import EnchantDollStepPositiveStats from './enchant-doll-step-positive-stats.vue'
+import EnchantDollStepResult from './enchant-doll-step-result.vue'
 
 import { type EnchantStatOptionBase } from '../EnchantSimulator/setup'
-import { SelectItemModes, StepIds } from './setup'
-import EnchantDollStepEquipment from './enchant-doll-step-equipment.vue'
-import EnchantDollStepPositiveStats from './enchant-doll-step-positive-stats.vue'
-import EnchantDollStepNegativeStats from './enchant-doll-step-negative-stats.vue'
-import EnchantDollStepResult from './enchant-doll-step-result.vue'
-import { provide } from 'vue'
 import { EnchantDollInjectionKey } from './injection-keys'
-import { readonly } from 'vue'
+import {
+  AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT,
+  SelectItemModes,
+  StepIds,
+} from './setup'
 
-const { windows, toggle } = ToggleService({
-  windows: ['selectItem'] as const,
+defineOptions({
+  name: 'EnchantDollView',
 })
+
+const selectItemVisible = ref(false)
+const toggleSelectItemVisible = useToggle(selectItemVisible)
 const store = useEnchantStore()
 const { t } = useI18n()
 const { notify, loading } = Notify()
@@ -135,10 +144,6 @@ const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
 const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> =
   ref(null)
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
-
-const consts = {
-  autoFindPotentialMinimumLimit: 130,
-}
 
 const equipmentState = reactive({
   autoFindPotentialMinimum: false,
@@ -259,7 +264,7 @@ const autoFindPotentialMinimumEquipment = () => {
   // }
 
   let left = 1,
-    right = consts.autoFindPotentialMinimumLimit,
+    right = AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT,
     mid = Math.floor((left + right) / 2)
   let cur = doll.value.calc(negativeStats.value, mid)!
   while (right - left > 1) {
@@ -348,7 +353,7 @@ const stepAfterEnter = (el: Element) => {
 
 const openSelectItem = (mode: SelectItemModes) => {
   selectItemMode.value = mode
-  toggle('windows/selectItem', true)
+  toggleSelectItemVisible(true)
 }
 
 const selectItem = (item: EnchantStatOptionBase) => {

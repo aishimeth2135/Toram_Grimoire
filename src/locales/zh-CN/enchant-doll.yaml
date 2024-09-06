@@ -64,6 +64,6 @@ tips:
     auto-find-negatives: 根据选择的能力，布偶在自动选取退潜时可能需要一些计算量，而导致页面卡住数秒钟，为正常的现象。
     auto-find-original-potential-minimum: 根据选择的能力，寻找最低需求潜力可能需要庞大的计算量，而导致页面卡住数秒钟，为正常的现象。
     auto-find-original-potential-minimum-and-auto-find-negatives: 在进行「寻找最低需求潜力」时，基于效能问题，布偶将简化寻找最高成功率之退潜项目的计算过程，因此精确度可能会降低0.0
-  cannot-auto-find-original-potential-minimum: 即使潜力超过99这个装备的成功率还是无法100%，因此无法找到最低需求潜。可以换个能力试试0.0
+  cannot-auto-find-original-potential-minimum: 即使潜力超过{limit}这个装备的成功率还是无法100%，因此无法找到最低需求潜。可以换个能力试试0.0
   cannot-directly-modify-previous-step: 不行直接对前面的步骤进行修改唷0.0
   unknown-error-when-calc: 附魔布偶不知道为什么迷路了...请联络作者。

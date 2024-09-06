@@ -22,7 +22,8 @@
     <div
       v-if="
         equipmentState.autoFindPotentialMinimum &&
-        resultEquipment.originalPotential === 99 &&
+        resultEquipment.originalPotential ===
+          AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT &&
         resultEquipment.realSuccessRate < 100
       "
       class="mt-2 flex justify-center"
@@ -33,7 +34,11 @@
         text-color="blue-60"
         icon-color="blue-30"
       >
-        {{ t('enchant-doll.tips.cannot-auto-find-original-potential-minimum') }}
+        {{
+          t('enchant-doll.tips.cannot-auto-find-original-potential-minimum', {
+            limit: AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT,
+          })
+        }}
       </cy-icon-text>
     </div>
     <div class="mb-4 mt-6 flex justify-center">
@@ -124,7 +129,7 @@ import EnchantDollResultItem from './enchant-doll-result-item.vue'
 import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 
 import { EnchantDollInjectionKey } from './injection-keys'
-import { StepIds } from './setup'
+import { AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT, StepIds } from './setup'
 
 const store = useEnchantStore()
 const selectOtherResults = ref(false)

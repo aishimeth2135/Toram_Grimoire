@@ -19,6 +19,8 @@ export const enum SelectItemModes {
   None = 'none',
 }
 
+export const AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT = 150
+
 export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
   const displayOrder = [
     'atk',

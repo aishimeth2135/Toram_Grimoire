@@ -1,4 +1,11 @@
-exp-sum-title: 總經驗量
-character-level-diff-title: 角色等級變化
-character-start-level-title: 角色起始等級
-diary-rounds: 日記輪次
+exp-sum-title: 总经验量
+character-level-diff-title: 角色等级变化
+character-start-level-title: 角色起始等级
+character-start-level-percentage-title: 角色经验值百分比
+diary-rounds: 日记轮次
+select-start-section-title: 选择日记开始的章节
+common-settings-title: 基本设定
+select-skipped-sub-section-title: 选择要跳过的子章节
+calc-result-title: 计算结果
+submit-items-title: 需要提交的道具
+skippable-sub-section-annotation: 可跳过
