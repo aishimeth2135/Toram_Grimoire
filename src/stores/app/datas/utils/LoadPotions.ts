@@ -1,4 +1,6 @@
-import { type BagItemObtain } from '@/lib/Items/BagItem'
+import { normalizeInteger } from '@/shared/utils/number'
+
+import { BagItem, type BagItemObtain } from '@/lib/Items/BagItem'
 import {
   BagPotion,
   type BagPotionsCategory,
@@ -7,6 +9,7 @@ import {
 } from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
+import { parseItemStatData } from './utils'
 
 export default function (root: BagPotionsRoot, csvData: CsvData) {
   const NAME = 0,
@@ -57,17 +60,11 @@ export default function (root: BagPotionsRoot, csvData: CsvData) {
       const propName = row[ATTRIBUTE_NAME]
       const propValue = row[ATTRIBUTE_VALUES[0]]
       if (currentAttrCategory === 'stats') {
-        let tail = propValue.slice(-1),
-          value = propValue
-        if (tail !== '%' && tail !== '~') {
-          tail = ''
-        } else {
-          value = propValue.slice(0, -1)
-        }
+        const { type, value } = parseItemStatData(propValue)
         currentPotion.appendStat(
           propName,
           value,
-          tail,
+          type,
           row[ATTRIBUTE_VALUES[1]]
         )
       } else if (currentAttrCategory === 'obtain') {

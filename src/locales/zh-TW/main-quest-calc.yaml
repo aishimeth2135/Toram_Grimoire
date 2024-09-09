@@ -1,5 +1,3 @@
-exp-sum-title: 總經驗量
-character-level-diff-title: 角色等級變化
 character-start-level-title: 角色起始等級
 character-start-level-percentage-title: 角色經驗值百分比
 diary-rounds: 日記輪次
@@ -9,3 +7,7 @@ select-skipped-sub-section-title: 選擇要跳過的子章節
 calc-result-title: 計算結果
 submit-items-title: 需要提交的道具
 skippable-sub-section-annotation: 可跳過
+exp-sum-title: 總經驗量
+character-level-diff-title: 角色等級變化
+selected-section-range-title: 選擇的章節
+exp-rate-overview-button-title: 查看章節經驗分布

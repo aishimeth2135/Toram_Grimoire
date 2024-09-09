@@ -1,1 +1,1 @@
-export { MainQuestChapter, MainQuestSection } from './MainQuest'
+export * from './MainQuest'
