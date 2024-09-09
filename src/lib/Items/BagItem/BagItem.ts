@@ -37,11 +37,8 @@ abstract class BagItem {
   constructor(id: string, name: string) {
     this.id = id
     this.name = name
-
     this.stats = []
-
     this.obtains = []
-
     this.recipe = null
     this.extra = null
   }
@@ -56,22 +53,10 @@ abstract class BagItem {
 
   appendStat(
     baseId: string,
-    value: number | string,
-    tail: string,
+    value: number,
+    type: StatTypes,
     restriction: string
   ) {
-    if (typeof value === 'string') {
-      value = isNumberString(value) ? parseFloat(value) : 0
-    }
-    const type = (() => {
-      if (tail === '%') {
-        return StatTypes.Multiplier
-      }
-      if (tail === '~') {
-        return StatTypes.Total
-      }
-      return StatTypes.Constant
-    })()
     const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
       CommonLogger.warn('Character', "Can't find stat-base with id: " + baseId)

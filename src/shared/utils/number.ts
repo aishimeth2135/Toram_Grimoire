@@ -35,6 +35,9 @@ export function toIndex(value: string): number {
   return Number.isNaN(res) ? -1 : res
 }
 
+/**
+ * Convert the string to the integer. If the integer string is invalid, return 0.
+ */
 export function normalizeInteger(value: string | number): number {
   if (typeof value !== 'number') {
     value = parseInt(value, 10)

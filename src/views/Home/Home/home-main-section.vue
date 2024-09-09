@@ -54,20 +54,12 @@ const groups = (() => {
     },
     {
       id: 'character',
-      links: _handle(
-        mainStore.devMode
-          ? [
-              AppRouteNames.CharacterSimulator,
-              AppRouteNames.DamageCalculation,
-              CharacterSimulatorRouteNames.Skill,
-              AppRouteNames.MainQuestCalc,
-            ]
-          : [
-              AppRouteNames.CharacterSimulator,
-              AppRouteNames.DamageCalculation,
-              CharacterSimulatorRouteNames.Skill,
-            ]
-      ),
+      links: _handle([
+        AppRouteNames.CharacterSimulator,
+        AppRouteNames.DamageCalculation,
+        CharacterSimulatorRouteNames.Skill,
+        AppRouteNames.MainQuestCalc,
+      ]),
     },
     {
       id: 'enchant',

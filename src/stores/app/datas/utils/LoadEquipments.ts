@@ -10,6 +10,7 @@ import type {
 } from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
+import { parseItemStatData } from './utils'
 
 export default function (root: ItemsSystem, csvData: CsvData): void {
   const NAME = 0,
@@ -95,18 +96,11 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
       const propName = row[ATTRIBUTE_NAME]
       const propValue = row[ATTRIBUTE_VALUES[0]]
       if (currentCategory === 'stats') {
-        const valueStr = row[ATTRIBUTE_VALUES[0]]
-        let tail = valueStr.slice(-1),
-          value = valueStr
-        if (tail !== '%' && tail !== '~') {
-          tail = ''
-        } else {
-          value = valueStr.slice(0, -1)
-        }
+        const { value, type } = parseItemStatData(row[ATTRIBUTE_VALUES[0]])
         currentEquipment.appendStat(
           propName,
           value,
-          tail,
+          type,
           row[ATTRIBUTE_VALUES[1]]
         )
       } else if (currentCategory === 'obtain') {

@@ -125,8 +125,8 @@ const selectStartSection = (section: MainQuestSection) => {
         v-for="{ id, name, sections } in displayedChapterItems.unselecteds"
         :key="id"
       >
-        <div v-if="name" class="mb-1 px-2 pt-2 text-sm text-gray-50">
-          {{ name }}
+        <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
+          {{ `${id.toString().padStart(2, '0')}. ${name}` }}
         </div>
         <CardRowsDelegation @row-clicked="selectStartSection">
           <MainQuestSectionItem

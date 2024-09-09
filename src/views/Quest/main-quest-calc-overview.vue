@@ -6,11 +6,11 @@ import { numberWithCommas } from '@/shared/utils/number'
 
 import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { MainQuestSection } from '@/lib/Quest/Quest'
-import type { MainQuestSectionId } from '@/lib/Quest/Quest/MainQuest'
-import type { QuestItem } from '@/lib/Quest/Quest/QuestBase'
+import type { MainQuestSectionId } from '@/lib/Quest/Quest'
 import { QuestItemType } from '@/lib/Quest/Quest/enums'
 
 import CommonPropInput from '../CharacterSimulator/common/common-prop-input.vue'
+import MainQuestChaptersExpRate from './main-quest-chapters-exp-rate.vue'
 
 interface Props {
   selectedQuestSections: MainQuestSection[]
@@ -22,6 +22,11 @@ const { t } = useI18n()
 const characterStartLevel = ref(1)
 const characterStartPercentage = ref(0)
 const diaryRounds = ref(1)
+
+const firstSection = computed(
+  () => props.selectedQuestSections[props.selectedQuestSections.length - 1]
+)
+const lastSection = computed(() => props.selectedQuestSections[0])
 
 const skippedSubSectionIds = reactive(new Set<MainQuestSectionId>())
 
@@ -158,10 +163,22 @@ const submitItemDatas = computed(() => {
     </div>
     <div class="mt-4 px-2">
       <div class="text-sm text-gray-50">
+        {{ t('main-quest-calc.selected-section-range-title') }}
+      </div>
+      <div class="mt-0.5 text-primary-80">
+        <span>{{ `${firstSection.chapterId}.${firstSection.sectionId}` }}</span>
+        <cy-icon
+          icon="mdi:arrow-right"
+          width="1rem"
+          class="mx-3 text-primary-30"
+        />
+        <span>{{ `${lastSection.chapterId}.${lastSection.sectionId}` }}</span>
+      </div>
+      <div class="mt-3 text-sm text-gray-50">
         {{ t('main-quest-calc.exp-sum-title') }}
       </div>
       <div class="mt-0.5 flex items-center space-x-1 text-primary-80">
-        <span>{{ expSum }}</span>
+        <span>{{ numberWithCommas(expSum) }}</span>
         <template v-if="diaryRounds > 1">
           <cy-icon icon="mdi-close" width="1rem" class="text-primary-30" />
           <span class="text-primary-50">{{ diaryRounds }}</span>
@@ -189,6 +206,11 @@ const submitItemDatas = computed(() => {
           {{ `${levelDiff.percentage}%` }}
         </span>
       </div>
+      <MainQuestChaptersExpRate
+        class="mt-4"
+        :selected-quest-sections="selectedQuestSections"
+        :skipped-sub-section-ids="skippedSubSectionIds"
+      />
     </div>
     <div
       class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30"
