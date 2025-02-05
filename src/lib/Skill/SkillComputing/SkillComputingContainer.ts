@@ -25,20 +25,22 @@ interface SkillFormulaExtraProps {
 }
 
 /**
- * @vue-reactive controller
+ * @vue-reactive raw controller
  */
 class SkillComputingContainer {
-  varGetters: {
+  readonly varGetters: {
     characterLevel: (() => number) | null
     skillLevel: ((skill: Skill) => number) | null
     registletLevel: ((skill: Skill) => number[]) | null
   }
 
-  handleFormulaExtends: HandleFormulaExtends
+  // The constant variables
+  readonly handleFormulaConstants: HandleFormulaExtends
 
-  handleFormulaDynamicExtends: (() => HandleFormulaExtends)[]
+  // The extended callback may be affected by the reactive state
+  readonly handleFormulaExtends: (() => HandleFormulaExtends)[]
 
-  config: {
+  readonly config: {
     formulaDisplayMode: FormulaDisplayModes
     getFormulaExtraValue:
       | ((
@@ -56,11 +58,11 @@ class SkillComputingContainer {
       skillLevel: null,
       registletLevel: null,
     }
-    this.handleFormulaExtends = {
+    this.handleFormulaConstants = {
       vars: {},
       texts: {},
     }
-    this.handleFormulaDynamicExtends = []
+    this.handleFormulaExtends = []
     this.config = shallowReactive({
       formulaDisplayMode: FormulaDisplayModes.Normal,
       getFormulaExtraValue: null,

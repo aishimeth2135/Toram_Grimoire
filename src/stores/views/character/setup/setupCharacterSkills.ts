@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed, reactive } from 'vue'
+import { type ComputedRef, type Ref, computed, markRaw, reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -270,7 +270,7 @@ export function setupCharacterSkills(
 
   const extendVars = useSkillExtendedVariables(character, postponeOptions)
 
-  computing.handleFormulaDynamicExtends.push(() => {
+  computing.handleFormulaExtends.push(() => {
     if (!character.value) {
       return { vars: {}, texts: {} }
     }
@@ -320,6 +320,7 @@ export function setupCharacterSkills(
   )
 
   const {
+    computingContainer,
     activeSkillResults,
     passiveSkillResults,
     nextSkillResults,
@@ -560,6 +561,7 @@ export function setupCharacterSkills(
       }
     })
     return {
+      computingContainer: computing,
       activeSkillResults: computingResultsActive,
       passiveSkillResults: computingResultsPassive,
       nextSkillResults: computingResultsNext,
@@ -729,6 +731,8 @@ export function setupCharacterSkills(
   })
 
   return {
+    skillComputingContainer: markRaw(computingContainer),
+
     activeSkillResultStates,
     passiveSkillResultStates,
     allActiveSkillResultStatesMap,

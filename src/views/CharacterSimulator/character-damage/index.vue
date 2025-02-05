@@ -2,7 +2,7 @@
   <SideFloat
     :visible="visible"
     content-class="pt-2 pb-4 px-2"
-    @update:visible="emit('close')"
+    @close="emit('close')"
   >
     <cy-tabs v-model="tabIndex" class="mx-2 mb-4">
       <cy-tab :value="0">

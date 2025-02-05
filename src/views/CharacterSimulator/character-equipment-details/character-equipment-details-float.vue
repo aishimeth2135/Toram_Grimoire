@@ -6,7 +6,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import FloatPage from '@/components/app-layout/float-page/float-page.vue'
 
-import browseEquipmentEquippedItems from '../browse-equipments/browse-equipment-equipped-items.vue'
+import BrowseEquipmentEquippedItems from '../browse-equipments/browse-equipment-equipped-items.vue'
 import BrowseEquipmentsMain from '../browse-equipments/browse-equipments-main.vue'
 import CharacterEquipmentDetailsEditBasic from './character-equipment-details-edit-basic.vue'
 import CharacterEquipmentDetailsEditCrystal from './character-equipment-details-edit-crystal.vue'
@@ -68,7 +68,7 @@ const browseMode = ref(BrowseMode.Equipped)
         <CharacterEquipmentDetails
           :current-edit-mode="currentMode"
           :equipment="equipment"
-          @update:current-edit-mode="updateCurrentMode($event)"
+          @update:current-edit-mode="updateCurrentMode"
         />
         <div
           v-if="equipment"
@@ -110,7 +110,7 @@ const browseMode = ref(BrowseMode.Equipped)
           v-if="browseMode === BrowseMode.Equipped"
           class="mx-2 flex-grow overflow-y-auto rounded border border-primary-10"
         >
-          <browseEquipmentEquippedItems
+          <BrowseEquipmentEquippedItems
             v-model:selected-equipment="equipment"
           />
         </div>

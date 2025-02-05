@@ -112,7 +112,7 @@ import SkillQuerySearch from './skill-query-search.vue'
 import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
-import { setupComputingContainer, useSkillQueryState } from './setup'
+import { setupSkillQueryComputingContainer, useSkillQueryState } from './setup'
 
 defineOptions({
   name: 'SkillQuery',
@@ -225,5 +225,5 @@ if (route.params.skillId) {
 }
 
 const { computingContainer, currentSkillItem } =
-  setupComputingContainer(currentSkill)
+  setupSkillQueryComputingContainer(currentSkill)
 </script>
