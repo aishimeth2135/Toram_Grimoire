@@ -18,7 +18,7 @@ const { characters, currentCharacter } = storeToRefs(characterStore)
 const { t } = useI18n()
 const { notify } = Notify()
 
-const baseStatRange = [1, 500]
+const baseStatRange = [1, 900]
 const optionalBaseStatRange = [0, 255]
 
 const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
