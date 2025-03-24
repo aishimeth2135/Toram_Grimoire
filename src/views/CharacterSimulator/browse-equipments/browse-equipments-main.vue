@@ -43,9 +43,7 @@ const selectedEquipment = defineModel<CharacterEquipment | null>(
 const { t } = useI18n()
 
 const characterStore = useCharacterStore()
-const allEquipments = computed(
-  () => characterStore.equipments as CharacterEquipment[]
-)
+const allEquipments = computed(() => characterStore.equipments)
 
 const currentFieldTypes: Ref<EquipmentTypes[]> = ref([])
 const filteredEquipments: Ref<CharacterEquipment[]> = ref([])

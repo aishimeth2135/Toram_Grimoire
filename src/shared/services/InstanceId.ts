@@ -8,9 +8,13 @@ export interface InstanceWithId {
   readonly instanceId: InstanceId
 }
 
-export function instanceEquals<Element extends InstanceWithId>(
+export function instanceEquals<Element extends InstanceWithId | null>(
   item1: Element,
   item2: Element
 ) {
+  if (item1 === null || item2 === null) {
+    return item1 === item2
+  }
+
   return item1.instanceId === item2.instanceId
 }
