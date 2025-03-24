@@ -42,13 +42,21 @@ export default class GlossarySystem {
       if (set.size === 0) {
         return
       }
-      const tags = [...set]
-        .map(item => this.tags.find(_tag => _tag.name === item))
-        .filter(item => item) as GlossaryTag[]
+
+      const tagNames = [...set];
+      const tags: GlossaryTag[] = [];
+      this.tags.some(_tag => {
+        const idx = tagNames.indexOf(_tag.name);
+        if (idx > -1) {
+          tagNames.splice(idx, 1);
+          tags.push(_tag);
+        }
+        return tagNames.length === 0
+      })
 
       tags.forEach(_tag => {
-        search(_tag)
         resMap.set(_tag.name, _tag)
+        search(_tag)
       })
     }
     search(rootTag)
