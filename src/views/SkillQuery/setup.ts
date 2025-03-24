@@ -39,13 +39,12 @@ export const useSkillQueryState = defineState(() => {
 })
 
 export interface SkillRegistletItemState {
-  index: number
   item: RegistletItemBaseSkill
   level: number
   enabled: boolean
 }
 
-export function setupComputingContainer(skillRef: Ref<Skill | null>) {
+export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   const skillRegistletItemsStates = new Map<Skill, SkillRegistletItemState[]>()
   const getSkillRegistletItemsState = (
     skill: Skill
@@ -57,7 +56,6 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
         registletItems.map((registletItem, index) => {
           const maxLevel = registletItem.maxLevel
           return reactive({
-            index,
             item: registletItem,
             level: ref(maxLevel),
             enabled: false,
@@ -93,7 +91,7 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     'guard_power',
   ]
   FORMULA_REPLACED_VARS.forEach(varName => {
-    computingContainer.handleFormulaExtends.texts['$' + varName] =
+    computingContainer.handleFormulaConstants.texts['$' + varName] =
       Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
   computingContainer.varGetters.skillLevel = () => skillLevel.value

@@ -387,6 +387,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
 
   const {
+    skillComputingContainer,
     activeSkillResultStates,
     allActiveSkillResultStatesMap,
     allPassiveSkillResultStatesMap,
@@ -523,6 +524,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     skillItemStates: skillItemStates,
 
+    skillComputingContainer,
     activeSkillResultStates,
     passiveSkillResultStates,
     allActiveSkillResultStatesMap,

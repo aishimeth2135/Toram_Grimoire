@@ -136,15 +136,15 @@ function computedBranchHelper(
       : branchItem
   const stackIds = branchItemStack.linkedStackIds
 
-  const handleFormulaExtends = computing.handleFormulaExtends
+  const handleFormulaConstants = computing.handleFormulaConstants
   const extendsDatas = {
-    vars: { ...handleFormulaExtends.vars },
-    texts: { ...handleFormulaExtends.texts },
+    vars: { ...handleFormulaConstants.vars },
+    texts: { ...handleFormulaConstants.texts },
     methods: {
       getSkillLevel: () => 0,
     },
   }
-  computing.handleFormulaDynamicExtends.forEach(getter => {
+  computing.handleFormulaExtends.forEach(getter => {
     const data = getter()
     Object.assign(extendsDatas.vars, data.vars)
     Object.assign(extendsDatas.texts, data.texts)

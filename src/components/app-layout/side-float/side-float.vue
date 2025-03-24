@@ -6,7 +6,7 @@ interface Props {
   contentClass?: any
 }
 interface Emits {
-  (evt: 'update:visible', value: boolean): void
+  (evt: 'close'): void
 }
 
 defineProps<Props>()
@@ -21,13 +21,13 @@ const { t } = useI18n()
       <div
         v-if="visible"
         class="app-layout--side-float-wrapper"
-        @click="emit('update:visible', false)"
+        @click="emit('close')"
       >
         <div class="app-layout--side-float" @click.stop>
           <div class="flex justify-end pb-1.5 pt-2.5">
             <span
               class="flex cursor-pointer items-center px-3 text-sm text-primary-40"
-              @click="emit('update:visible', false)"
+              @click="emit('close')"
             >
               <cy-icon icon="ic:round-close" class="mr-1" small />
               {{ t('global.close') }}
