@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '5.0.6'
+const version = '5.1.0'
 
 export const useMainStore = defineStore('app-main', () => {
   type ServiceWorkerData = {
