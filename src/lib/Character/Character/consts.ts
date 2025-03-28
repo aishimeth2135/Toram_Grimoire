@@ -1,1 +1,1 @@
-export const CHARACTER_MAX_LEVEL = 290
+export const CHARACTER_MAX_LEVEL = 300
