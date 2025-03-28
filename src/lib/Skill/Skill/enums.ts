@@ -33,6 +33,7 @@ export const enum SkillBranchNames {
 
   // main branch: @damage
   Base = 'base',
+  DamageStat = 'damage_stat',
 
   // main branch: all
   Group = 'group',

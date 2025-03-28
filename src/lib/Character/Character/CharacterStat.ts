@@ -215,6 +215,7 @@ class CharacterStat {
     if (this.id in vars.getterOriginalResults) {
       return vars.getterOriginalResults[this.id]
     }
+
     const formula = this._formula
     try {
       const res = formula.calc(currentStats, vars)

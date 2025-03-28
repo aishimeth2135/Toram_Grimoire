@@ -202,8 +202,26 @@ export function setupDamageCalculation(
 
     const statValue = (baseId: string) =>
       characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
-    const resultValue = (id: string) =>
-      statResults.value.find(result => result.id === id)?.resultValue ?? 0
+    const resultValue = (id: string) => {
+      let idToSearch = id
+      if (container.value.branchItem) {
+        const damageStatSuf = container.value.branchItem.suffixBranches.find(
+          suf => {
+            if (!suf.is(SkillBranchNames.DamageStat)) {
+              return false
+            }
+            return suf.hasProp('id') && suf.prop('id') === id
+          }
+        )
+        if (damageStatSuf?.hasProp('override_id')) {
+          idToSearch = damageStatSuf.prop('override_id')
+        }
+      }
+      return (
+        statResults.value.find(result => result.id === idToSearch)
+          ?.resultValue ?? 0
+      )
+    }
 
     const checkMagicWeapon = () => {
       if (!character.value) {

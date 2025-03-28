@@ -250,6 +250,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
       SkillBranchNames.Extra,
       SkillBranchNames.Proration,
       SkillBranchNames.Base,
+      SkillBranchNames.DamageStat,
     ],
     [SkillBranchNames.Effect]: [SkillBranchNames.Extra],
     [SkillBranchNames.Passive]: [SkillBranchNames.Extra],

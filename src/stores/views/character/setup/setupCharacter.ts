@@ -332,20 +332,19 @@ export function prepareSetupCharacter() {
         const vars = CharacterStat.prepareCalcResultVars(computedVarsBase.value)
 
         return categoryList
-          .map(
-            category =>
-              ({
-                name: category.name,
-                stats: category.stats.map(stat => {
-                  const res = stat.result(pureStats, vars)
-                  return {
-                    id: stat.id,
-                    name: stat.name,
-                    ...res,
-                  } as CharacterStatResultWithId
-                }),
-              }) as CharacterStatCategoryResult
-          )
+          .map(category => {
+            return {
+              name: category.name,
+              stats: category.stats.map(stat => {
+                const res = stat.result(pureStats, vars)
+                return {
+                  id: stat.id,
+                  name: stat.name,
+                  ...res,
+                } as CharacterStatResultWithId
+              }),
+            } as CharacterStatCategoryResult
+          })
           .filter(item => item.stats.length !== 0)
       })
 
