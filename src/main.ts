@@ -1,11 +1,10 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
-import '@/assets/css/app.css'
+import '@/assets/css/component.css'
 import '@/assets/css/font/font.css'
 import '@/assets/css/global.css'
 import '@/assets/css/main.css'
-import '@/assets/css/tailwind.css'
 import Confirm from '@/plugin/Confirm'
 import Notify from '@/plugin/Notify'
 
@@ -18,6 +17,7 @@ import registGlobalComponents from './app/registGlobalComponents'
 import registerServiceWorker from './app/registerServiceWorker'
 import createAppRouter from './router'
 import { useSettingStore } from './stores/app/setting'
+import './tailwind.css'
 
 const app = createApp(AppView)
 

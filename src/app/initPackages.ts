@@ -1,4 +1,3 @@
-import Iconify from '@iconify/iconify'
 import jsep from 'jsep'
 import { marked } from 'marked'
 
@@ -48,7 +47,6 @@ export default function () {
 
   // iconify
   if (import.meta.env.PROD) {
-    Iconify.disableCache('all')
     if (Cyteria.storageAvailable('localStorage')) {
       const storage = window.localStorage
       Array(localStorage.length)

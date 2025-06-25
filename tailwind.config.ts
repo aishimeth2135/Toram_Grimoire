@@ -1,4 +1,7 @@
-const plugin = require('tailwindcss/plugin')
+import plugin from 'tailwindcss/plugin'
+import __designTokens from './src/assets/css/config/color.json'
+
+const _designTokens = __designTokens as Record<string, Record<string, { value: string }>>
 
 const colorOrders = ['5', '10', '20', '30', '40', '50', '60', '70', '80', '90']
 const colorGroups = [
@@ -15,28 +18,28 @@ const colorGroups = [
 ]
 
 const colorsConfig = (() => {
-  const colors = {}
+  const colors: Record<string, Record<string, string>> = {}
   colorGroups.forEach(group => {
     colors[group] = {}
     colorOrders.forEach(order => {
       colors[group][order] =
-        `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
+        `var(--app-${group}-${order})`
     })
   })
   return {
     ...colors,
-    black: 'rgba(var(--app-rgb-black), <alpha-value>)',
-    white: 'rgba(var(--app-rgb-white), <alpha-value>)',
+    black: 'var(--app-black)',
+    white: 'var(--app-white)',
     transparent: 'transparent',
     current: 'currentcolor',
     inherit: 'inherit',
   }
 })()
 
-const getColorList = prefix => {
+const getColorList = (prefix: string) => {
   prefix = prefix + '-'
   const config = colorsConfig
-  const keys = []
+  const keys: string[] = []
   Object.entries(config).forEach(([key, value]) => {
     if (typeof value === 'string') {
       keys.push(prefix + key)
@@ -62,14 +65,14 @@ const borderWidth = {
   8: '1rem',
 }
 
-const _designTokens = require('./src/assets/css/config/color.json')
-function designToken(query) {
+
+function designToken(query: string) {
   const keys = query.split('.')
-  let current = _designTokens
+  let current: Record<string, unknown> | { value: string } = _designTokens
   keys.forEach(key => {
     current = current[key]
   })
-  return current.value
+  return current.value as string
 }
 
 const colorCssPlugin = plugin(function ({ addBase }) {
@@ -80,15 +83,8 @@ const colorCssPlugin = plugin(function ({ addBase }) {
       rootVars[`--app-${group}-${order}`] = designToken(
         `color.${group}-${order}`
       )
-      rootVars[`--app-rgb-${group}-${order}`] = designToken(
-        `color-rgb.${group}-${order}`
-      )
-
       darkVars[`--app-${group}-${order}`] = designToken(
         `color-dark.${group}-${order}`
-      )
-      darkVars[`--app-rgb-${group}-${order}`] = designToken(
-        `color-dark-rgb.${group}-${order}`
       )
     })
   })
@@ -98,21 +94,16 @@ const colorCssPlugin = plugin(function ({ addBase }) {
       ...rootVars,
       '--app-black': designToken('color.black'),
       '--app-white': designToken('color.white'),
-      '--app-rgb-black': designToken('color-rgb.black'),
-      '--app-rgb-white': designToken('color-rgb.white'),
     },
     'html.theme--night-mode': {
       ...darkVars,
       '--app-black': designToken('color-dark.black'),
       '--app-white': designToken('color-dark.white'),
-      '--app-rgb-black': designToken('color-dark-rgb.black'),
-      '--app-rgb-white': designToken('color-dark-rgb.white'),
     },
   })
 })
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = <import('tailwindcss').Config>{
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   safelist: [
     ...getColorList('bg'),

@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+@config "../tailwind.config.ts";
+
+code,
+kbd,
+samp,
+pre {
+  font-family:
+    'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', var(--app-main-font), monospace;
+  font-size: 1em;
+}
+
+@utility cy-icon-base {
+  @apply text-primary-30;
+}
+
+@utility content-auto {
+  content-visibility: auto;
+}
+
+/**
+  * The height utilities that map the height to the line-heigth for align.
+  * example:
+  * ```
+  * <div class="flex">
+  *   <div class="h-text-sm">
+  *     <some-icon />
+  *   </div>
+  *   <div class="flex items-center flex-wrap text-sm">
+  *     some multiple lines content...
+  *   </div>
+  * </div>
+  * ```
+  */
+@utility h-text-sm {
+  height: 1.25rem;
+}
+@utility h-text-base {
+  height: 1.5rem;
+}

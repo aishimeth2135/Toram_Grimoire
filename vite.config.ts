@@ -1,9 +1,10 @@
-import content from '@originjs/vite-plugin-content'
+import ViteYaml from '@modyfi/vite-plugin-yaml'
+import tailwindcss from '@tailwindcss/vite'
 import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import fs from 'fs'
-import path from 'path'
+import { URL, fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa'
@@ -19,13 +20,9 @@ export default defineConfig(({ mode }) => {
     vue(),
     vueJsx(),
     vueDevTools(),
+    tailwindcss(),
     VitePWA({
-      includeAssets: [
-        'favicon.svg',
-        'favicon.ico',
-        'robots.txt',
-        'apple-touch-icon.png',
-      ],
+      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: getPWAManifestConfig(),
       strategies: 'injectManifest',
       injectManifest: {
@@ -48,7 +45,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     }),
-    content(),
+    ViteYaml(),
   ]
 
   if (useLagacy) {
@@ -67,7 +64,7 @@ export default defineConfig(({ mode }) => {
     base,
     resolve: {
       alias: {
-        '@': path.join(__dirname, 'src'),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', 'yaml'],
     },
@@ -78,8 +75,6 @@ export default defineConfig(({ mode }) => {
       assetsInlineLimit: 8192,
       chunkSizeWarningLimit: 900,
       target: 'ios11',
-      minify: 'terser',
-      // cssCodeSplit: false,
     },
     plugins,
   }
