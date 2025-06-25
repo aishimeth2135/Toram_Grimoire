@@ -18,7 +18,7 @@ const equipment = computed(() => props.equipmentField.equipment)
 
 <template>
   <div v-if="equipment" class="flex-start flex px-5 py-4">
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <CommonEquipmentIcon :equipment="equipment" width="1.375rem" />
     </div>
     <div class="ml-3 mt-0.5">
@@ -33,21 +33,10 @@ const equipment = computed(() => props.equipmentField.equipment)
         </span>
       </div>
       <div v-if="equipment.stats.length > 0" class="mt-2">
-        <ShowStat
-          v-for="stat in equipment.stats"
-          :key="stat.statId"
-          :stat="stat"
-        />
+        <ShowStat v-for="stat in equipment.stats" :key="stat.statId" :stat="stat" />
       </div>
-      <div
-        v-if="equipment.crystals.length > 0"
-        class="mt-3 flex flex-wrap items-center"
-      >
-        <div
-          v-for="crystal in equipment.crystals"
-          :key="crystal.id"
-          class="mr-3 flex items-center"
-        >
+      <div v-if="equipment.crystals.length > 0" class="mt-3 flex flex-wrap items-center">
+        <div v-for="crystal in equipment.crystals" :key="crystal.id" class="mr-3 flex items-center">
           <cy-icon :icon="crystal.crystalIconPath" />
           <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
         </div>

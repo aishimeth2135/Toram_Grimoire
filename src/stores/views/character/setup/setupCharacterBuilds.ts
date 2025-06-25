@@ -1,10 +1,4 @@
-import {
-  type ComputedRef,
-  type Ref,
-  type ShallowReactive,
-  computed,
-  shallowReadonly,
-} from 'vue'
+import { type ComputedRef, type Ref, type ShallowReactive, computed, shallowReadonly } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -52,19 +46,10 @@ export function setupCharacterSkillItems(
       return new EquipmentRestrictions()
     }
 
-    const main = character.value.equipmentField(
-      EquipmentFieldTypes.MainWeapon
-    ).equipmentType
-    const sub = character.value.equipmentField(
-      EquipmentFieldTypes.SubWeapon
-    ).equipmentType
-    const body = character.value.equipmentField(
-      EquipmentFieldTypes.BodyArmor
-    ).equipmentType
-    if (
-      main === EquipmentTypes.OneHandSword &&
-      sub === EquipmentTypes.OneHandSword
-    ) {
+    const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
+    const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
+    if (main === EquipmentTypes.OneHandSword && sub === EquipmentTypes.OneHandSword) {
       return new EquipmentRestrictions({
         main: EquipmentTypes.DualSword,
         body,
@@ -106,9 +91,7 @@ export function setupFoodStats(foodBuild: Ref<FoodsBuild | null>) {
     }
     return foodBuild.value.selectedFoods
       .filter(food => food.level !== 0)
-      .map(food =>
-        StatRecorded.from(food.stat(), food, StatValueSourceTypes.Food)
-      )
+      .map(food => StatRecorded.from(food.stat(), food, StatValueSourceTypes.Food))
   })
 
   return {
@@ -116,9 +99,7 @@ export function setupFoodStats(foodBuild: Ref<FoodsBuild | null>) {
   }
 }
 
-export function setupRegistletStats(
-  registletBuild: Ref<RegistletBuild | null>
-) {
+export function setupRegistletStats(registletBuild: Ref<RegistletBuild | null>) {
   const _items = computed(() => {
     if (!registletBuild.value) {
       return []
@@ -158,11 +139,7 @@ export function setupPotionStats(potionBuild: Ref<PotionBuild | null>) {
     potionBuild.value.items.forEach(item => {
       item.base.stats.forEach(potionStat => {
         statItems.push({
-          stat: StatRecorded.from(
-            potionStat,
-            item.base,
-            StatValueSourceTypes.Potion
-          ),
+          stat: StatRecorded.from(potionStat, item.base, StatValueSourceTypes.Potion),
           item,
         })
       })

@@ -2,25 +2,16 @@
   <div v-if="storageAvailable" class="space-y-3">
     <CharacterSaveRow icon="mdi:export">
       <div>
-        {{
-          t('character-simulator.save-load-control.export-save-data-caption')
-        }}
+        {{ t('character-simulator.save-load-control.export-save-data-caption') }}
       </div>
       <div class="py-2">
         <cy-icon-text small icon="ic:outline-info" text-color="primary-50">
-          {{
-            t('character-simulator.save-load-control.export-save-data-tips[0]')
-          }}
+          {{ t('character-simulator.save-load-control.export-save-data-tips[0]') }}
         </cy-icon-text>
       </div>
       <div class="flex items-center py-2">
-        <cy-button-action
-          icon="mdi:export"
-          @click="toggle('modals/exportSaveData', true)"
-        >
-          {{
-            t('character-simulator.save-load-control.export-save-data-title')
-          }}
+        <cy-button-action icon="mdi:export" @click="toggle('modals/exportSaveData', true)">
+          {{ t('character-simulator.save-load-control.export-save-data-title') }}
         </cy-button-action>
         <cy-button-action icon="mdi:import" @click="importSaveData">
           {{ t('global.import') }}
@@ -29,66 +20,34 @@
     </CharacterSaveRow>
     <CharacterSaveRow icon="bx-bx-message-square-dots">
       <div>
-        {{
-          t('character-simulator.save-load-control.manual-save-load-caption')
-        }}
+        {{ t('character-simulator.save-load-control.manual-save-load-caption') }}
       </div>
       <div class="pb-2 pt-4">
-        <cy-button-action
-          icon="ic-round-save"
-          @click="store.saveCharacterSimulator()"
-        >
-          {{
-            t('character-simulator.save-load-control.manual-save-button-title')
-          }}
+        <cy-button-action icon="ic-round-save" @click="store.saveCharacterSimulator()">
+          {{ t('character-simulator.save-load-control.manual-save-button-title') }}
         </cy-button-action>
-        <cy-button-action
-          icon="bx-bx-loader-circle"
-          @click="store.loadCharacterSimulator()"
-        >
-          {{
-            t('character-simulator.save-load-control.manual-load-button-title')
-          }}
+        <cy-button-action icon="bx-bx-loader-circle" @click="store.loadCharacterSimulator()">
+          {{ t('character-simulator.save-load-control.manual-load-button-title') }}
         </cy-button-action>
       </div>
     </CharacterSaveRow>
     <CharacterSaveRow icon="mdi-food-apple-outline">
       <div>
-        {{
-          t('character-simulator.save-load-control.deleta-all-data-caption.0')
-        }}
+        {{ t('character-simulator.save-load-control.deleta-all-data-caption.0') }}
       </div>
       <div class="py-2">
-        <cy-icon-text
-          icon="ic-outline-info"
-          text-color="primary-50"
-          small
-          class="mt-2"
-        >
-          {{
-            t('character-simulator.save-load-control.deleta-all-data-caption.1')
-          }}
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
+          {{ t('character-simulator.save-load-control.deleta-all-data-caption.1') }}
         </cy-icon-text>
-        <cy-icon-text
-          icon="ic-outline-info"
-          text-color="primary-50"
-          small
-          class="mt-2"
-        >
-          {{
-            t('character-simulator.save-load-control.deleta-all-data-caption.2')
-          }}
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
+          {{ t('character-simulator.save-load-control.deleta-all-data-caption.2') }}
         </cy-icon-text>
       </div>
       <div class="py-2">
         <cy-input-counter v-model:value="deleteCounter">
           <template #title>
             <cy-icon-text icon="ic-round-delete">
-              {{
-                t(
-                  'character-simulator.save-load-control.deleta-all-data-counter-title'
-                )
-              }}
+              {{ t('character-simulator.save-load-control.deleta-all-data-counter-title') }}
             </cy-icon-text>
           </template>
         </cy-input-counter>
@@ -97,17 +56,11 @@
             v-if="deleteCounter === 10"
             icon="ic-round-delete"
             @click="
-              store.deleteAllSavedData(),
-                notify(
-                  t(
-                    'character-simulator.save-load-control.deleta-all-data-success-tips'
-                  )
-                )
+              (store.deleteAllSavedData(),
+              notify(t('character-simulator.save-load-control.deleta-all-data-success-tips')))
             "
           >
-            {{
-              t('character-simulator.save-load-control.deleta-all-data-title')
-            }}
+            {{ t('character-simulator.save-load-control.deleta-all-data-title') }}
           </cy-button-action>
         </div>
       </div>
@@ -126,10 +79,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  type CharacterSimulatorSaveData,
-  useCharacterStore,
-} from '@/stores/views/character'
+import { type CharacterSimulatorSaveData, useCharacterStore } from '@/stores/views/character'
 
 import Notify from '@/shared/setup/Notify'
 import ToggleService from '@/shared/setup/ToggleService'

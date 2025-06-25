@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -13,7 +13,7 @@ import CharacterEquipmentDetailsSelection from './character-equipment-details-se
 import CharacterEquipmentDetailsStat from './character-equipment-details-stat.vue'
 import CharacterEquipmentLabels from './character-equipment-labels.vue'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 import { CharacterEquipmentEditModes } from './setup'
 
 interface Props {
@@ -23,10 +23,7 @@ interface Props {
   currentEditMode?: CharacterEquipmentEditModes | null
 }
 interface Emits {
-  (
-    evt: 'update:current-edit-mode',
-    value: CharacterEquipmentEditModes | null
-  ): void
+  (evt: 'update:current-edit-mode', value: CharacterEquipmentEditModes | null): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -53,17 +50,12 @@ const refiningAdditionAmount = computed(() => {
     return 0
   }
   if (isSub.value && eq.type === EquipmentTypes.OneHandSword) {
-    return (
-      Math.floor((eq.basicValue * eq.refining * eq.refining) / 200) +
-      eq.refining
-    )
+    return Math.floor((eq.basicValue * eq.refining * eq.refining) / 200) + eq.refining
   }
-  return (
-    Math.floor((eq.basicValue * eq.refining * eq.refining) / 100) + eq.refining
-  )
+  return Math.floor((eq.basicValue * eq.refining * eq.refining) / 100) + eq.refining
 })
 
-const { editEquipment } = inject(CharacterSimulatorInjectionKey)!
+const { editEquipment } = useCharacterSimulatorState()
 
 const goEdit = (mode: CharacterEquipmentEditModes) => {
   if (props.equipment && props.currentEditMode === undefined) {
@@ -73,10 +65,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
 </script>
 
 <template>
-  <div
-    v-if="equipment"
-    class="relative flex w-[16.5rem] flex-shrink-0 flex-col"
-  >
+  <div v-if="equipment" class="relative flex w-[16.5rem] shrink-0 flex-col">
     <cy-tabs
       v-model="innerEditMode"
       direction="vertical"
@@ -110,22 +99,16 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             </div>
           </div>
           <div
-            class="ml-auto flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
+            class="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
           >
             <CommonEquipmentIcon :equipment="equipment" width="1.5rem" />
           </div>
         </div>
         <div
-          v-if="
-            equipment.is(EquipmentKinds.Weapon) ||
-            equipment.is(EquipmentKinds.Armor)
-          "
+          v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)"
           class="pb-1.5 pt-1"
         >
-          <div
-            v-if="equipment.is(EquipmentKinds.Weapon)"
-            class="border-b border-stone-30 px-2.5"
-          >
+          <div v-if="equipment.is(EquipmentKinds.Weapon)" class="border-b border-stone-30 px-2.5">
             <!-- <cy-icon icon="mdi:sword" color="stone-40" /> -->
             <div class="text-xs text-primary-30">ATK</div>
             <div class="flex w-full items-center text-primary-70">
@@ -196,10 +179,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
       />
     </cy-tabs>
   </div>
-  <div
-    v-else
-    class="flex w-[16.5rem] justify-center border border-primary-10 py-8"
-  >
+  <div v-else class="flex w-[16.5rem] justify-center border border-primary-10 py-8">
     <cy-icon icon="mdi:more-horiz" width="2rem" />
   </div>
 </template>

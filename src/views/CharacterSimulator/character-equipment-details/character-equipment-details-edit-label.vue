@@ -87,11 +87,11 @@ const closeEditingLabel = () => {
               <div class="flex items-center px-4 py-2">
                 <CommonSelectionIcon
                   :selected="currentEquipmentLabelIds.has(label.id)"
-                  class="flex-shrink-0 cursor-pointer"
+                  class="shrink-0 cursor-pointer"
                   @click="Items.toggle(equipment.labels, label)"
                 />
                 <div
-                  class="mr-2 h-3.5 w-3.5 flex-shrink-0 cursor-pointer rounded"
+                  class="mr-2 h-3.5 w-3.5 shrink-0 cursor-pointer rounded-sm"
                   :class="`bg-${label.color}-50`"
                   @click="toggleCurrentEditedLabel(label)"
                 />
@@ -104,12 +104,12 @@ const closeEditingLabel = () => {
                 </div>
                 <cy-icon
                   icon="ic:baseline-drag-indicator"
-                  class="drag-handle flex-shrink-0 cursor-pointer"
+                  class="drag-handle shrink-0 cursor-pointer"
                 />
               </div>
               <div
                 v-if="currentEditedLabel === label"
-                class="mx-1 rounded-md bg-orange-5/50 py-2 pl-9 pr-2"
+                class="bg-orange-5/50 mx-1 rounded-md py-2 pl-9 pr-2"
               >
                 <cy-tabs v-model="label.color" plain>
                   <cy-tab
@@ -119,10 +119,7 @@ const closeEditingLabel = () => {
                     class="flex justify-center p-2"
                     @click="closeEditingLabel"
                   >
-                    <div
-                      class="h-3.5 w-3.5 flex-shrink-0 rounded"
-                      :class="`bg-${color}-50`"
-                    />
+                    <div class="h-3.5 w-3.5 shrink-0 rounded-sm" :class="`bg-${color}-50`" />
                   </cy-tab>
                 </cy-tabs>
                 <div class="mt-3 text-right">
@@ -130,11 +127,7 @@ const closeEditingLabel = () => {
                     class="cursor-pointer text-sm text-primary-50 underline"
                     @click="removeLabel(label)"
                   >
-                    {{
-                      t(
-                        'character-simulator.equipment-basic-editor.label-delete'
-                      )
-                    }}
+                    {{ t('character-simulator.equipment-basic-editor.label-delete') }}
                   </span>
                 </div>
               </div>
@@ -143,9 +136,7 @@ const closeEditingLabel = () => {
         </Draggable>
       </CardRows>
       <div v-else class="px-4 py-4 text-sm text-primary-50">
-        {{
-          t('character-simulator.equipment-basic-editor.label-empty-caption')
-        }}
+        {{ t('character-simulator.equipment-basic-editor.label-empty-caption') }}
       </div>
     </CardRowsWrapper>
   </div>

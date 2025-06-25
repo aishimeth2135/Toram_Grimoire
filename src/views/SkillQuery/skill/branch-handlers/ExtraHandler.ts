@@ -1,10 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItemSuffix,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItemSuffix, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import type {
   HandleBranchTextPropsMap,
   HandleBranchValuePropsMap,
@@ -26,17 +23,14 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
   const { t } = Grimoire.i18n
 
   const defaultCondition =
-    branchItem.mainBranch.is(SkillBranchNames.Damage) &&
-    branchItem.stats.length > 0
+    branchItem.mainBranch.is(SkillBranchNames.Damage) && branchItem.stats.length > 0
       ? t('skill-query.branch.damage: extra.condition-default-value')
       : t('skill-query.branch.global-suffix.extra.condition-default-value')
   const props = cloneBranchProps(branchItem, {
     condition:
       branchItem.prop('type') === 'normal'
         ? defaultCondition
-        : t(
-            'skill-query.branch.global-suffix.extra.condition-next-default-value'
-          ),
+        : t('skill-query.branch.global-suffix.extra.condition-next-default-value'),
   })
 
   const mainBranch = branchItem.mainBranch

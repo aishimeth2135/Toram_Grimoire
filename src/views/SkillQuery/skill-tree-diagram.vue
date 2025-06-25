@@ -74,11 +74,7 @@
         :style="data.style"
         @click="emit('skill-click', data.skill!)"
       />
-      <text
-        :x="drawNameDatas[idx].x"
-        :y="drawNameDatas[idx].y"
-        :class="drawNameDatas[idx].class"
-      >
+      <text :x="drawNameDatas[idx].x" :y="drawNameDatas[idx].y" :class="drawNameDatas[idx].class">
         {{ drawNameDatas[idx].innerText }}
       </text>
     </template>
@@ -126,8 +122,7 @@ if (!document.getElementById('app--draw-skill-tree-defs')) {
   document.body.append(svg)
 }
 
-const { skillTree, setSkillButtonExtraData, currentSkill, getSkillLevel } =
-  toRefs(props)
+const { skillTree, setSkillButtonExtraData, currentSkill, getSkillLevel } = toRefs(props)
 
 const drawTreeData = computed(() => {
   return computeDrawSkillTreeData(skillTree.value, {
@@ -136,20 +131,14 @@ const drawTreeData = computed(() => {
   })
 })
 
-const skillIconPatternData = computed(() =>
-  getSkillIconPatternData(skillTree.value)
-)
+const skillIconPatternData = computed(() => getSkillIconPatternData(skillTree.value))
 
 const drawCircleDatas = computed(() =>
-  drawTreeData.value.data.filter(
-    item => item.type === DrawSkillTreeDataTypes.SkillCircle
-  )
+  drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillCircle)
 )
 
 const drawNameDatas = computed(() =>
-  drawTreeData.value.data.filter(
-    item => item.type === DrawSkillTreeDataTypes.SkillName
-  )
+  drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillName)
 )
 
 const drawOtherDatas = computed(() =>
@@ -169,7 +158,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .app--draw-skill-tree {
   stroke: var(--app-primary-30);
   stroke-width: 2px;

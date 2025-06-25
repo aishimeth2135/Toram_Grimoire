@@ -36,9 +36,7 @@ const getTextParseItems = (() => {
   }
 })()
 
-export function getRegistletCaptionRender(
-  handleValue: (value: string) => string
-) {
+export function getRegistletCaptionRender(handleValue: (value: string) => string) {
   return ({ text }: { text: string }) => {
     const { parts } = handleParseText(text, getTextParseItems())
     const childs = parts.map(part => {
@@ -52,10 +50,7 @@ export function getRegistletCaptionRender(
           handleValue(part.value)
         )
         if (part.displayOptions.unit) {
-          return h('span', { class: 'text-primary-50' }, [
-            mainNode,
-            part.displayOptions.unit,
-          ])
+          return h('span', { class: 'text-primary-50' }, [mainNode, part.displayOptions.unit])
         }
         return mainNode
       }

@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { inject } from 'vue'
-
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 
 interface Props {
   title: string
@@ -13,7 +11,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
+const { setCurrentTab } = useCharacterSimulatorState()
 
 const goTab = () => {
   if (props.tabPathName) {
@@ -24,13 +22,9 @@ const goTab = () => {
 
 <template>
   <div class="relative flex w-full items-start p-4 pb-6 pr-8">
-    <cy-button-icon
-      icon="mdi:square-edit-outline"
-      class="absolute right-2 top-2"
-      @click="goTab"
-    />
+    <cy-button-icon icon="mdi:square-edit-outline" class="absolute right-2 top-2" @click="goTab" />
     <div
-      class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
+      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
     >
       <cy-icon :icon="icon" width="1.375rem" />
     </div>

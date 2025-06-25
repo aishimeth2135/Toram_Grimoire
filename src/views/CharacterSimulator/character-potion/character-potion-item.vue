@@ -1,8 +1,5 @@
 <template>
-  <CardRow
-    class="relative py-2 pl-2 pr-4"
-    :class="item.enabled ? 'opacity-100' : 'opacity-60'"
-  >
+  <CardRow class="relative py-2 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
@@ -21,11 +18,7 @@
       </div>
     </div>
     <div v-if="detailVisible" class="px-2 py-1 pl-10">
-      <ShowStat
-        v-for="stat in item.base.stats"
-        :key="stat.statId"
-        :stat="stat"
-      />
+      <ShowStat v-for="stat in item.base.stats" :key="stat.statId" :stat="stat" />
     </div>
   </CardRow>
 </template>

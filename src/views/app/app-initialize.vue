@@ -5,17 +5,12 @@
   >
     <HomeBackgroud />
     <div class="relative flex w-full flex-col items-center">
-      <div
-        class="flex h-32 w-32 items-center justify-center rounded-full bg-white/50"
-      >
-        <LoadingAnimation
-          :status="status"
-          @done="initializeStore.initFinished()"
-        />
+      <div class="bg-white/50 flex h-32 w-32 items-center justify-center rounded-full">
+        <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
       </div>
       <div
         v-if="status < InitializeStatus.BeforeFinished"
-        class="mt-8 flex min-h-[12rem] w-full justify-center bg-white/40 px-4 py-6"
+        class="bg-white/40 mt-8 flex min-h-[12rem] w-full justify-center px-4 py-6"
       >
         <div class="mt-2 inline-block">
           <template v-if="status <= InitializeStatus.ViewSuccess">
@@ -86,7 +81,7 @@ const statusIcon = (value: number) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .loading-circle {
   animation: loading-circle 0.8s ease infinite;
 }

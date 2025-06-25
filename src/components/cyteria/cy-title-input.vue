@@ -23,7 +23,7 @@
           class="w-full border-0 p-0.5 duration-200"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
-          @keyup="$emit('keyup', $event)"
+          @keyup="emit('keyup', $event)"
         />
       </div>
       <cy-button-icon

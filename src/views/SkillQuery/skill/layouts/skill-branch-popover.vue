@@ -43,9 +43,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { rootComputingContainer } = inject(
-  ComputingContainerInjectionKey as InjectionKey<
-    Partial<ComputingContainerInjection>
-  >,
+  ComputingContainerInjectionKey as InjectionKey<Partial<ComputingContainerInjection>>,
   {}
 )
 

@@ -43,13 +43,13 @@ export default class GlossarySystem {
         return
       }
 
-      const tagNames = [...set];
-      const tags: GlossaryTag[] = [];
+      const tagNames = [...set]
+      const tags: GlossaryTag[] = []
       this.tags.some(_tag => {
-        const idx = tagNames.indexOf(_tag.name);
+        const idx = tagNames.indexOf(_tag.name)
         if (idx > -1) {
-          tagNames.splice(idx, 1);
-          tags.push(_tag);
+          tagNames.splice(idx, 1)
+          tags.push(_tag)
         }
         return tagNames.length === 0
       })

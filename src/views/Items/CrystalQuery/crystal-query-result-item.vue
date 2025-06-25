@@ -6,7 +6,7 @@
       @click="detailVisible = !detailVisible"
     >
       <cy-list-item>
-        <div class="flex w-40 flex-shrink-0 py-0.5">
+        <div class="flex w-40 shrink-0 py-0.5">
           <cy-icon-text
             :icon="crystal.crystalIconPath"
             :text-color="detailVisible ? 'orange-60' : 'primary-90'"
@@ -14,28 +14,16 @@
             {{ crystal.name }}
           </cy-icon-text>
         </div>
-        <div
-          v-if="previewMode === 'default'"
-          class="flex items-center space-x-2"
-        >
+        <div v-if="previewMode === 'default'" class="flex items-center text-sm text-cyan-60">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="cyan">
-              {{ crystal.origin.enhancer }}
-            </cy-icon-text>
-            <cy-icon
-              v-if="crystal.origin.enhancer"
-              :icon="crystal.origin.crystalBaseIconPath"
-              small
-            />
+            <cy-icon icon="mdi:arrow-up-bold-outline" small class="mr-2 text-cyan-60" />
+            <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
+            {{ crystal.origin.enhancer }}
           </template>
         </div>
         <div v-if="previewMode === 'mode' && previewStats.length > 0">
           <div v-for="stat in previewStats" :key="stat.statId">
-            <ShowStat
-              :stat="stat"
-              :negative-value="stat.value < 0"
-              type="preview"
-            />
+            <ShowStat :stat="stat" :negative-value="stat.value < 0" type="preview" />
           </div>
         </div>
       </cy-list-item>
@@ -50,10 +38,7 @@
             :negative-value="stat.value < 0"
           />
         </div>
-        <div
-          v-if="crystal.origin.obtains.length > 0"
-          class="mt-3 flex items-center"
-        >
+        <div v-if="crystal.origin.obtains.length > 0" class="mt-3 flex items-center">
           <cy-icon-text
             icon="mdi:treasure-chest-outline"
             small
@@ -75,7 +60,8 @@
           >
             {{ t('crystal-query.enhancer-prefix') }}
           </cy-icon-text>
-          <span class="ml-0.5 text-sm text-cyan-60">
+          <span class="ml-2 flex items-center text-sm text-cyan-60">
+            <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </span>
         </div>

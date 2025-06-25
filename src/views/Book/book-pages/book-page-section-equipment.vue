@@ -1,11 +1,7 @@
 <template>
   <cy-loading-content :loading="loading" class="px-1 py-3">
     <div>
-      <EquipmentItem
-        v-for="equip in equipments"
-        :key="equip.id"
-        :equipment="equip"
-      />
+      <EquipmentItem v-for="equip in equipments" :key="equip.id" :equipment="equip" />
     </div>
   </cy-loading-content>
 </template>

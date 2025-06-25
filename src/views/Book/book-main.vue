@@ -1,20 +1,17 @@
 <template>
   <AppLayoutMain class="py-6">
     <div v-if="!hasQuery">
-      <div class="rounded-sm border-1 border-primary-30 bg-white py-3 px-4">
+      <div class="shadow-xs border-1 border-primary-30 bg-white px-4 py-3">
         <textarea
           v-model="urlText"
-          class="w-full resize-none border-0 bg-transparent outline-none"
+          class="outline-hidden w-full resize-none border-0 bg-transparent"
           placeholder="https://"
         />
       </div>
-      <div
-        class="relative mt-6 rounded-r-md bg-primary-5 py-3 px-4"
-        style="min-height: 5rem"
-      >
+      <div class="relative mt-6 rounded-r-md bg-primary-5 px-4 py-3" style="min-height: 5rem">
         <cy-button-icon
           icon="mdi:content-copy"
-          class="absolute top-2 right-2"
+          class="absolute right-2 top-2"
           @click="copyToClipboard(convertedUrl)"
         />
         {{ convertedUrl }}
@@ -74,10 +71,7 @@ const checkQuery = async () => {
   if (typeof currentRoute.query.csv === 'string') {
     loading.value = true
     let url = decodeURIComponent(currentRoute.query.csv)
-    if (
-      typeof currentRoute.query.latest === 'string' &&
-      currentRoute.query.latest === '1'
-    ) {
+    if (typeof currentRoute.query.latest === 'string' && currentRoute.query.latest === '1') {
       url += '&cytime=' + Date.now()
     }
     const datas = await downloadCsv(url)

@@ -7,10 +7,7 @@ import Notify from '@/shared/setup/Notify'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-import {
-  getSkillBuildImageDataURL,
-  getSkillBuildText,
-} from '@/lib/Character/SkillBuild/utils'
+import { getSkillBuildImageDataURL, getSkillBuildText } from '@/lib/Character/SkillBuild/utils'
 
 import FloatPage from '@/components/app-layout/float-page/float-page.vue'
 
@@ -89,13 +86,11 @@ const downloadImage = () => {
         </cy-tabs>
         <div
           v-if="currentExportMode === ExportMode.Text"
-          :class="device.isWide ? 'flex-grow overflow-y-auto' : 'pb-6'"
+          :class="device.isWide ? 'grow overflow-y-auto' : 'pb-6'"
         >
           <div class="mb-4 flex">
             <cy-button-circle icon="mdi:content-copy" small @click="copyText" />
-            <div
-              class="flex min-h-full items-center px-4 text-sm text-primary-50"
-            >
+            <div class="flex min-h-full items-center px-4 text-sm text-primary-50">
               {{ t('character-simulator.skill-build.export-text-caption') }}
             </div>
           </div>
@@ -103,29 +98,19 @@ const downloadImage = () => {
         </div>
         <div
           v-if="currentExportMode === ExportMode.Image"
-          :class="device.isWide ? 'flex-grow overflow-y-auto' : 'pb-6'"
+          :class="device.isWide ? 'grow overflow-y-auto' : 'pb-6'"
         >
           <div class="mb-4 flex">
-            <cy-button-circle
-              icon="mdi:download"
-              small
-              @click="downloadImage"
-            />
+            <cy-button-circle icon="mdi:download" small @click="downloadImage" />
             <div class="space-y-2 px-4 text-sm text-primary-50">
               <div>
-                {{
-                  t('character-simulator.skill-build.export-image-caption.0')
-                }}
+                {{ t('character-simulator.skill-build.export-image-caption.0') }}
               </div>
               <div>
-                {{
-                  t('character-simulator.skill-build.export-image-caption.1')
-                }}
+                {{ t('character-simulator.skill-build.export-image-caption.1') }}
               </div>
               <div>
-                {{
-                  t('character-simulator.skill-build.export-image-caption.2')
-                }}
+                {{ t('character-simulator.skill-build.export-image-caption.2') }}
               </div>
             </div>
           </div>

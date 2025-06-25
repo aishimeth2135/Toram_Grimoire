@@ -9,9 +9,7 @@ export const useContext = <Context extends ComponentContext>() => {
 
   const idGenerator = new CommonIdGenerator<ContextId>()
 
-  const allocContext = (
-    context: Context
-  ): { id: ContextId; context: Context } => {
+  const allocContext = (context: Context): { id: ContextId; context: Context } => {
     const id = idGenerator.generate()
     contexts.set(id, context)
     return { id, context }
@@ -36,9 +34,6 @@ export const useContext = <Context extends ComponentContext>() => {
  * @param el - The element that has the attribute of the given attribute name
  * @param attrName - The element attribute name of the context ID
  */
-export function getContextIdFromElement(
-  el: Element,
-  attrName: string
-): ContextId {
+export function getContextIdFromElement(el: Element, attrName: string): ContextId {
   return (toInt(el.getAttribute(attrName)!) ?? -1) as ContextId
 }

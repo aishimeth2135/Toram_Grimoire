@@ -1,8 +1,5 @@
 <template>
-  <aside
-    class="app-left-menu--wrapper"
-    :class="{ 'wrapper-minimize': minimize }"
-  >
+  <aside class="app-left-menu--wrapper" :class="{ 'wrapper-minimize': minimize }">
     <div class="content-container" @click.stop>
       <div class="flex h-full flex-col overflow-y-auto">
         <div class="mx-1 mt-6">
@@ -12,9 +9,7 @@
           <cy-button-icon
             v-if="storageAvailable"
             icon="ic-baseline-settings"
-            @click="
-              mainStore.toggleSetting(true), leftMenuStore.toggleVisible()
-            "
+            @click="(mainStore.toggleSetting(true), leftMenuStore.toggleVisible())"
           />
         </div>
       </div>
@@ -43,16 +38,16 @@ const { layout } = usePageLayout()
 const minimize = computed(() => layout.twoColumns || layout.wide)
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .app-left-menu--wrapper {
   --app-left-menu-padding-right: 32px;
 
   @apply fixed left-0 top-0 z-50 h-full overflow-x-hidden opacity-100;
   background-color: var(--app-body-bg-color);
   padding-left: calc((100% - var(--app-screen-max-width)) / 2);
-  width: calc(
-    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width)
-  );
+  width: calc((100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width));
 
   & > .content-container {
     @apply h-full border-r border-primary-10;

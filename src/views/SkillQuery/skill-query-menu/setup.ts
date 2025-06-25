@@ -4,19 +4,13 @@ import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
-import {
-  EquipmentRestrictions,
-  type EquipmentRestrictionsBaseKeys,
-} from '@/lib/Character/Stat'
+import { EquipmentRestrictions, type EquipmentRestrictionsBaseKeys } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputing/utils'
 
 function setupEquipmentSelect(
   skillTree: Ref<SkillTree>,
-  emit: (
-    event: 'update:selected-equipment',
-    data: EquipmentRestrictions
-  ) => void
+  emit: (event: 'update:selected-equipment', data: EquipmentRestrictions) => void
 ) {
   const { t } = Grimoire.i18n
 
@@ -46,9 +40,7 @@ function setupEquipmentSelect(
     }
   })
 
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(
-    new EquipmentRestrictions()
-  )
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
 
   const submitCurrentEquipment = () => {
     emit('update:selected-equipment', currentEquipment.value)
@@ -61,10 +53,7 @@ function setupEquipmentSelect(
   ) {
     const list = equipmentOptionsMapping.value[key]
     const idx = list.indexOf(currentEquipment.value[key])
-    force =
-      force === undefined
-        ? list[idx > -1 && idx !== list.length - 1 ? idx + 1 : 0]
-        : force
+    force = force === undefined ? list[idx > -1 && idx !== list.length - 1 ? idx + 1 : 0] : force
     currentEquipment.value[key] = force
     if (key !== 'body' && confirmConflict) {
       confirmWeaponConflict(key)
@@ -104,9 +93,7 @@ function setupEquipmentSelect(
             .add(EquipmentTypes.MagicDevice)
           break
         case EquipmentTypes.Katana:
-          validSubs
-            .add(EquipmentTypes.Dagger)
-            .add(EquipmentTypes.NinjutsuScroll)
+          validSubs.add(EquipmentTypes.Dagger).add(EquipmentTypes.NinjutsuScroll)
           break
         case EquipmentTypes.Halberd:
           validSubs.add(EquipmentTypes.Arrow).add(EquipmentTypes.Dagger)
@@ -137,12 +124,9 @@ function setupEquipmentSelect(
 
   const resetCurrentEquipment = () => {
     const options = equipmentOptionsMapping.value
-    currentEquipment.value.main =
-      options.main.length === 0 ? null : options.main[0]
-    currentEquipment.value.sub =
-      options.sub.length === 0 ? null : options.sub[0]
-    currentEquipment.value.body =
-      options.body.length === 0 ? null : options.body[0]
+    currentEquipment.value.main = options.main.length === 0 ? null : options.main[0]
+    currentEquipment.value.sub = options.sub.length === 0 ? null : options.sub[0]
+    currentEquipment.value.body = options.body.length === 0 ? null : options.body[0]
     confirmWeaponConflict('main')
     submitCurrentEquipment()
   }
@@ -175,8 +159,7 @@ function setupSkillLevel(skillLevel: Ref<number>) {
   const levels = [1, 5, 10]
   const toggleSkillLevel = () => {
     const idx = levels.indexOf(skillLevel.value)
-    const newValue =
-      levels[idx !== -1 && idx !== levels.length - 1 ? idx + 1 : 0]
+    const newValue = levels[idx !== -1 && idx !== levels.length - 1 ? idx + 1 : 0]
     skillLevel.value = newValue
   }
 

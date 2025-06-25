@@ -9,32 +9,17 @@
       {{ t('enchant-doll.select-negatives.caption') }}
     </div>
     <div class="ml-4 mr-2 mt-1">
-      <cy-icon-text
-        icon="ic-outline-info"
-        small
-        text-color="blue-60"
-        icon-color="blue-30"
-      >
+      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
         {{ t('enchant-doll.tips.performance.auto-find-negatives') }}
       </cy-icon-text>
     </div>
     <div v-if="currentEquipmentType !== 1" class="ml-4 mr-2 mt-1">
-      <cy-icon-text
-        icon="ic-outline-info"
-        small
-        text-color="blue-60"
-        icon-color="blue-30"
-      >
+      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
         {{ t('enchant-doll.select-negatives.tips-1') }}
       </cy-icon-text>
     </div>
     <div v-if="equipmentState.autoFindPotentialMinimum" class="ml-4 mr-2 mt-1">
-      <cy-icon-text
-        icon="ic-outline-info"
-        small
-        text-color="blue-60"
-        icon-color="blue-30"
-      >
+      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
         <!-- prettier-ignore -->
         {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum-and-auto-find-negatives') }}
       </cy-icon-text>
@@ -104,10 +89,7 @@
       </div>
     </template>
     <div
-      v-if="
-        negativeStatsState.auto &&
-        autoNegativeStats.length < doll.numNegativeStats
-      "
+      v-if="negativeStatsState.auto && autoNegativeStats.length < doll.numNegativeStats"
       class="mt-4 flex justify-center"
     >
       <div>
@@ -125,9 +107,7 @@
           <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
             <cy-icon-text
               :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
-              :icon-color="
-                autoNegativeStats.includes(stat) ? 'blue-60' : 'primary-30'
-              "
+              :icon-color="autoNegativeStats.includes(stat) ? 'blue-60' : 'primary-30'"
               class="w-full"
             >
               {{ stat.showAmount() }}
@@ -151,19 +131,13 @@
             </div>
           </cy-list-item>
         </template>
-        <cy-default-tips
-          v-else
-          icon="fluent-leaf-two-16-regular"
-          class="mx-6 my-4"
-        >
+        <cy-default-tips v-else icon="fluent-leaf-two-16-regular" class="mx-6 my-4">
           {{ t('enchant-doll.tips.no-stat-selected') }}
         </cy-default-tips>
       </div>
     </div>
     <div
-      v-if="
-        !negativeStatsState.auto || negativeStats.length < doll.numNegativeStats
-      "
+      v-if="!negativeStatsState.auto || negativeStats.length < doll.numNegativeStats"
       class="text-center"
     >
       <cy-button-action
@@ -173,19 +147,11 @@
         {{ t('enchant-doll.select-item') }}
       </cy-button-action>
       <div
-        v-if="
-          negativeStatsState.auto &&
-          autoNegativeStats.length < doll.numNegativeStats
-        "
+        v-if="negativeStatsState.auto && autoNegativeStats.length < doll.numNegativeStats"
         class="mt-2"
       >
         <div>
-          <cy-icon-text
-            icon="ic-outline-info"
-            small
-            text-color="blue-60"
-            icon-color="blue-30"
-          >
+          <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
             <!-- prettier-ignore -->
             {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.0') }}
           </cy-icon-text>
@@ -204,10 +170,7 @@ import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant'
-import {
-  AutoFindNegaitveStatsTypes,
-  EnchantDollBaseTypes,
-} from '@/lib/Enchant/EnchantDoll'
+import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/EnchantDoll'
 
 import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 
@@ -226,11 +189,7 @@ const {
 const { t } = useI18n()
 
 const dollConfigOptions = {
-  baseType: [
-    EnchantDollBaseTypes.Physical,
-    EnchantDollBaseTypes.Magic,
-    EnchantDollBaseTypes.None,
-  ],
+  baseType: [EnchantDollBaseTypes.Physical, EnchantDollBaseTypes.Magic, EnchantDollBaseTypes.None],
   autoFindNegaitveStatsType: [
     AutoFindNegaitveStatsTypes.SuccessRate,
     AutoFindNegaitveStatsTypes.Material,

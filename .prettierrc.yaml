@@ -3,13 +3,12 @@ tabWidth: 2
 semi: false
 singleQuote: true
 quoteProps: consistent
-printWidth: 80
+printWidth: 100
 arrowParens: 'avoid'
+bracketSameLine: false
 plugins:
   - '@trivago/prettier-plugin-sort-imports'
   - prettier-plugin-tailwindcss
-pluginSearchDirs: false
-tailwindConfig: ./tailwind.config.js
 importOrder:
   - <THIRD_PARTY_MODULES>
   - ^@/stores/.+$

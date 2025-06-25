@@ -28,10 +28,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
@@ -49,9 +46,7 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  EffectHandler(props.computing, branchItem.value)
-)
+const container = computed(() => EffectHandler(props.computing, branchItem.value))
 
 const nameProps = computed(() => {
   const res = []
@@ -79,15 +74,11 @@ const subContents = computed(() => {
   ] as NormalLayoutSubContent[]
 })
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(
-  props.computing,
-  branchItem
-)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
 
 const hasArea = computed(() => {
   return (
-    container.value.getOrigin('type') === 'aura' ||
-    container.value.getOrigin('type') === 'circle'
+    container.value.getOrigin('type') === 'aura' || container.value.getOrigin('type') === 'circle'
   )
 })
 </script>

@@ -6,7 +6,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 
 import CommonEditModeButton from '../common/common-edit-mode-button.vue'
-import CommonPropInput from '../common/common-prop-input.vue'
+import CommonPropNumberInput from '../common/common-prop-number-input.vue'
 import CharacterEquipmentDetailsSelectStat from './character-equipment-details-select-stat.vue'
 import EquipmentPropInputContainer from './equipment-prop-input-container.vue'
 
@@ -54,11 +54,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
       >
         <template #item="{ element: stat }">
           <EquipmentPropInputContainer>
-            <CommonPropInput
-              v-model:value="stat.value"
-              type="number"
-              :title="stat.title"
-            />
+            <CommonPropNumberInput v-model:value="stat.value" :title="stat.title" />
             <template #append>
               <cy-button-icon
                 icon="mdi:close-circle-outline"
@@ -71,7 +67,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
             <template #end>
               <cy-icon
                 icon="ic:baseline-drag-indicator"
-                class="drag-handle flex-shrink-0 cursor-pointer"
+                class="drag-handle shrink-0 cursor-pointer"
               />
             </template>
           </EquipmentPropInputContainer>

@@ -57,9 +57,7 @@ class CharacterCombo implements InstanceWithId {
     return newSkill
   }
 
-  getComboSkillStates(
-    params: CharacterComboGetStatesParams
-  ): ComboSkillState[] {
+  getComboSkillStates(params: CharacterComboGetStatesParams): ComboSkillState[] {
     const ratesItems = this.comboSkills.map(
       (skill, idx, ary) =>
         ({
@@ -99,10 +97,7 @@ class CharacterCombo implements InstanceWithId {
         addRate(idx + 4, -20)
         savedMp += item.mpCost
         item.mpCost = 0
-      } else if (
-        skill.tag === CharacterComboTags.Bloodsucker &&
-        skill.condition === 'buff'
-      ) {
+      } else if (skill.tag === CharacterComboTags.Bloodsucker && skill.condition === 'buff') {
         addRate(idx, 110 + comboIdx)
       }
       if (savedMp > 0 && item.mpCost > 0) {
@@ -126,9 +121,7 @@ class CharacterCombo implements InstanceWithId {
 
   static load(data: CharacterComboSaveData): CharacterCombo {
     const newCombo = new CharacterCombo()
-    newCombo.comboSkills = data.skills.map(_data =>
-      CharacterComboSkill.load(newCombo, _data)
-    )
+    newCombo.comboSkills = data.skills.map(_data => CharacterComboSkill.load(newCombo, _data))
     return newCombo
   }
 }
@@ -160,9 +153,7 @@ class CharacterComboSkill {
 
   setSkill(skill: Skill | null) {
     if (skill !== null) {
-      const used = this.parent.comboSkills.find(
-        comboSkill => comboSkill.skill === skill
-      )
+      const used = this.parent.comboSkills.find(comboSkill => comboSkill.skill === skill)
       if (used) {
         used.skill = null
       }
@@ -183,14 +174,9 @@ class CharacterComboSkill {
     }
   }
 
-  static load(
-    parent: CharacterCombo,
-    data: CharacterComboSkillSaveData
-  ): CharacterComboSkill {
+  static load(parent: CharacterCombo, data: CharacterComboSkillSaveData): CharacterComboSkill {
     const newSkill = new CharacterComboSkill(parent)
-    newSkill.skill = data.skill
-      ? Grimoire.Skill.skillRoot.findSkillById(data.skill)
-      : null
+    newSkill.skill = data.skill ? Grimoire.Skill.skillRoot.findSkillById(data.skill) : null
     newSkill.tag = data.tag
     newSkill.condition = data.condition
     return newSkill

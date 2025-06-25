@@ -35,10 +35,7 @@
         :key="item.index"
         @click="toggleComparedCalculation(item.origin)"
       >
-        <cy-button-check
-          :selected="comparedCalculationItems.includes(item)"
-          inline
-        >
+        <cy-button-check :selected="comparedCalculationItems.includes(item)" inline>
           {{ item.origin.name }}
         </cy-button-check>
       </cy-list-item>
@@ -61,8 +58,7 @@ import DamageCalculationCompareItem from './damage-calculation-compare-item.vue'
 
 import { setupCalculationStoreState } from './setup'
 
-const { currentCalculation: mainCalculation, calculations } =
-  setupCalculationStoreState()
+const { currentCalculation: mainCalculation, calculations } = setupCalculationStoreState()
 
 const calculationItems = computed(() => {
   return calculations.value
@@ -78,13 +74,15 @@ const comparedCalculations: Ref<Calculation[]> = ref([])
 const toggleComparedCalculation = (calc: Calculation) => {
   const calcs = comparedCalculations.value
   const idx = calcs.indexOf(calc)
-  idx >= 0 ? calcs.splice(idx, 1) : calcs.push(calc)
+  if (idx >= 0) {
+    calcs.splice(idx, 1)
+  } else {
+    calcs.push(calc)
+  }
 }
 
 watch(calculations, newValue => {
-  comparedCalculations.value = comparedCalculations.value.filter(calc =>
-    newValue.includes(calc)
-  )
+  comparedCalculations.value = comparedCalculations.value.filter(calc => newValue.includes(calc))
 })
 
 const comparedCalculationItems = computed(() => {

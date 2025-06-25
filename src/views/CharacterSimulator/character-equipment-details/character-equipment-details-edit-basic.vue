@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import {
-  CharacterEquipment,
-  EquipmentKinds,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 
 import CommonPropInput from '../common/common-prop-input.vue'
+import CommonPropNumberInput from '../common/common-prop-number-input.vue'
 import CharacterEquipmentDetailsEditLabel from './character-equipment-details-edit-label.vue'
 
 interface Props {
@@ -42,37 +40,23 @@ const { t } = useI18n()
         class="-mb-0.5 mt-1.5"
       />
     </div>
-    <div
-      v-if="equipment.is(EquipmentKinds.Weapon)"
-      class="flex flex-wrap items-center"
-    >
-      <CommonPropInput
-        v-model:value="equipment.basicValue"
-        title="ATK"
-        type="number"
-        class="mr-8"
-      />
-      <CommonPropInput
+    <div v-if="equipment.is(EquipmentKinds.Weapon)" class="flex flex-wrap items-center">
+      <CommonPropNumberInput v-model:value="equipment.basicValue" title="ATK" class="mr-8" />
+      <CommonPropNumberInput
         v-if="equipment.hasStability"
         v-model:value="equipment.stability"
         :title="$t('character-simulator.equipment-info.stability')"
-        type="number"
         unit="%"
         range="0~100"
       />
     </div>
     <div v-else-if="equipment.is(EquipmentKinds.Armor)">
-      <CommonPropInput
-        v-model:value="equipment.basicValue"
-        title="DEF"
-        type="number"
-      />
+      <CommonPropNumberInput v-model:value="equipment.basicValue" title="DEF" range="0~9999" />
     </div>
     <div v-if="equipment.hasRefining">
-      <CommonPropInput
+      <CommonPropNumberInput
         v-model:value="equipment.refining"
         :title="t('character-simulator.equipment-info.refining')"
-        type="number"
         range="0~15"
       />
     </div>

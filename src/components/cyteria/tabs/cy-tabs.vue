@@ -39,20 +39,16 @@ useResizeObserver(tabsEl, () => {
     ref="tabsEl"
     v-bind:[idBind.name]="idBind.value"
     class="cy-tabs"
-    :class="[
-      direction === 'horizontal' ? 'cy-tabs-h' : 'cy-tabs-v',
-      { 'not-plain': !plain },
-    ]"
+    :class="[direction === 'horizontal' ? 'cy-tabs-h' : 'cy-tabs-v', { 'not-plain': !plain }]"
   >
     <slot />
-    <div
-      class="absolute rounded-full bg-primary-40 ease-linear"
-      :style="sliderStyle"
-    />
+    <div class="absolute rounded-full bg-primary-40 ease-linear" :style="sliderStyle" />
   </div>
 </template>
 
-<style lang="postcss">
+<style>
+@reference "@/tailwind.css";
+
 .cy-tabs {
   @apply relative flex flex-wrap items-start;
 
@@ -78,7 +74,7 @@ useResizeObserver(tabsEl, () => {
   }
 
   &.not-plain > .cy-tab {
-    @apply mt-1 rounded px-6 py-2 hover:bg-primary-10/50;
+    @apply hover:bg-primary-10/50 mt-1 rounded-sm px-6 py-2;
   }
 }
 </style>

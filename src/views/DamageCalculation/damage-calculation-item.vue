@@ -6,7 +6,7 @@
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="w-20 rounded-md bg-primary-10 bg-opacity-50 p-2 text-center text-primary-80"
+      class="bg-primary-10/50 w-20 rounded-md p-2 text-center text-primary-80"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -23,10 +23,7 @@
             :disabled="!container.base.controls.toggle"
           />
         </div>
-        <div
-          class="space-y-2"
-          :class="{ 'opacity-60': !container.enabled && !container.hidden }"
-        >
+        <div class="space-y-2" :class="{ 'opacity-60': !container.enabled && !container.hidden }">
           <div
             v-for="item in getContainerItems(container)"
             :key="item.base.id"
@@ -43,11 +40,7 @@
                 <cy-icon-text v-if="!container.selectable">
                   <span
                     v-if="!item.isCustom()"
-                    v-html="
-                      markText(
-                        t('damage-calculation.item-base-titles.' + item.base.id)
-                      )
-                    "
+                    v-html="markText(t('damage-calculation.item-base-titles.' + item.base.id))"
                   ></span>
                   <template v-else>
                     {{ (item as CalcItemCustom).name }}
@@ -91,10 +84,7 @@
             class="flex w-64 cursor-pointer items-center justify-center border border-primary-50 bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
             @click="createCustomItem"
           >
-            <cy-icon-text
-              icon="ic:round-add-circle-outline"
-              text-color="primary-50"
-            >
+            <cy-icon-text icon="ic:round-add-circle-outline" text-color="primary-50">
               {{ t('damage-calculation.create-custom-item') }}
             </cy-icon-text>
           </div>
@@ -104,62 +94,37 @@
   </div>
   <div
     v-else
-    class="relative border-primary-50 border-opacity-70 px-2 py-3"
+    class="border-primary-50/70 relative px-2 py-3"
     :class="{ 'border-l-2': !root }"
     style="margin-left: -0.2rem"
   >
     <div v-if="!!(typeof calcStructItem !== 'string')">
-      <template
-        v-if="
-          calcStructItem.operator === '+' || calcStructItem.operator === '*'
-        "
-      >
-        <DamageCalculationItem
-          :calc-struct-item="calcStructItem.left"
-          :layer="layer + 1"
-        />
+      <template v-if="calcStructItem.operator === '+' || calcStructItem.operator === '*'">
+        <DamageCalculationItem :calc-struct-item="calcStructItem.left" :layer="layer + 1" />
         <div>
           <cy-icon
-            :icon="
-              calcStructItem.operator === '+'
-                ? 'mono-icons:add'
-                : 'eva:close-fill'
-            "
+            :icon="calcStructItem.operator === '+' ? 'mono-icons:add' : 'eva:close-fill'"
             width="2rem"
             class="mt-1"
             :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
           />
         </div>
-        <DamageCalculationItem
-          :calc-struct-item="calcStructItem.right"
-          :layer="layer + 1"
-        />
+        <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
       </template>
-      <template
-        v-else-if="
-          calcStructItem.operator === '+++' || calcStructItem.operator === '***'
-        "
-      >
+      <template v-else-if="calcStructItem.operator === '+++' || calcStructItem.operator === '***'">
         <template
           v-for="(structItem, idx) in handleCalcStructList(calcStructItem)"
           :key="getCalcItemId(structItem)"
         >
           <div v-if="idx !== 0">
             <cy-icon
-              :icon="
-                calcStructItem.operator === '+++'
-                  ? 'mono-icons:add'
-                  : 'eva:close-fill'
-              "
+              :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
               width="2rem"
               class="mt-1"
               :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
             />
           </div>
-          <DamageCalculationItem
-            :calc-struct-item="structItem"
-            :layer="layer + 1"
-          />
+          <DamageCalculationItem :calc-struct-item="structItem" :layer="layer + 1" />
         </template>
       </template>
     </div>
@@ -224,8 +189,7 @@ const editableContainers = computed(() => {
   }
   if (currentContainer.value.base.isVirtual) {
     return currentContainer.value.base.references.map(
-      reference =>
-        currentContainer.value!.belongCalculation.containers.get(reference)!
+      reference => currentContainer.value!.belongCalculation.containers.get(reference)!
     )
   }
   return [currentContainer.value]
@@ -258,14 +222,10 @@ const handleCalcStructList = (structItem: CalcStructMultiple) => {
   if (structItem.operator === '+++') {
     return structItem.list
   }
-  return structItem.list.filter(item =>
-    isCalcStructItem(item)
-  ) as CalcStructItem[]
+  return structItem.list.filter(item => isCalcStructItem(item)) as CalcStructItem[]
 }
 
-const getCalcItemId = (
-  structItem: CalcStructItem | CalcStructAction
-): string => {
+const getCalcItemId = (structItem: CalcStructItem | CalcStructAction): string => {
   if (!isCalcStructItem(structItem)) {
     return structItem
   }
@@ -278,9 +238,7 @@ const getCalcItemId = (
     }(${getCalcItemId(structItem.right)})`
   }
   if (structItem.operator === '+++' || structItem.operator === '***') {
-    return structItem.list
-      .map(item => `(${getCalcItemId(item)})`)
-      .join(structItem.operator)
+    return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator)
   }
   return structItem.toString()
 }
@@ -292,8 +250,7 @@ const createCustomItem = () => {
   const newItem = currentContainer.value.createCustomItem()
   if (newItem) {
     newItem.name = t(
-      'damage-calculation.item-base-titles.' +
-        currentContainer.value.currentItem.base.id
+      'damage-calculation.item-base-titles.' + currentContainer.value.currentItem.base.id
     )
   }
 }

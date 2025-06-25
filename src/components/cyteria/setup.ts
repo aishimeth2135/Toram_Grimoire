@@ -16,10 +16,7 @@ function normalizeIconColorString(color: string) {
   return color
 }
 
-export function useIconColor(
-  color: Ref<string | null | undefined>,
-  defaultValue: string
-) {
+export function useIconColor(color: Ref<string | null | undefined>, defaultValue: string) {
   const iconColor = computed(() => {
     if (!color.value) {
       return defaultValue

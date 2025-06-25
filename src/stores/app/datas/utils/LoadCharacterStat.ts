@@ -42,9 +42,7 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
 
     const id = row[ID]
     if (id === CONFIRM_CATEGORY) {
-      curCategory = characterSystem.appendCharacterStatCategory(
-        row[CATEGORY_NAME]
-      )
+      curCategory = characterSystem.appendCharacterStatCategory(row[CATEGORY_NAME])
     } else if (id === '') {
       curFormula.appendConditionValue(
         row[CONDITIONAL],

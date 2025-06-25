@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -15,7 +15,7 @@ import CharacterDashboardPotionBuild from './character-dashboard-potion-build.vu
 import CharacterDashboardRegistletBuild from './character-dashboard-registlet-build.vue'
 import CharacterDashboardSkillBuild from './character-dashboard-skill-build.vue'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 
 const { t } = useI18n()
 const characterStore = useCharacterStore()
@@ -28,21 +28,17 @@ const validBaseStats = computed(() => {
 })
 
 const primaryBaseStat = computed(() => validBaseStats.value[0])
-const secondaryBaseStat = computed<CharacterBaseStat | null>(
-  () => validBaseStats.value[1] ?? null
-)
+const secondaryBaseStat = computed<CharacterBaseStat | null>(() => validBaseStats.value[1] ?? null)
 
-const characterState = computed(() =>
-  characterStore.getCharacterState(character.value)
-)
+const characterState = computed(() => characterStore.getCharacterState(character.value))
 
-const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
+const { setCurrentTab } = useCharacterSimulatorState()
 </script>
 
 <template>
   <div class="px-3 py-3">
-    <div class="rounded-sm border border-primary-20 wd:flex wd:items-stretch">
-      <div class="w-full flex-shrink-0 px-8 py-5 wd:max-w-xs">
+    <div class="shadow-xs border border-primary-20 wd:flex wd:items-stretch">
+      <div class="w-full shrink-0 px-8 py-5 wd:max-w-xs">
         <div class="-mx-1 border-b border-primary-10 px-1 text-primary-80">
           {{ character.name }}
         </div>
@@ -73,18 +69,14 @@ const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
         </div>
       </div>
     </div>
-    <div
-      class="mt-7 rounded-sm border border-primary-20 wd:flex wd:items-stretch"
-    >
+    <div class="shadow-xs mt-7 border border-primary-20 wd:flex wd:items-stretch">
       <div class="relative w-full py-2 wd:border-r wd:border-primary-10">
         <cy-button-icon
           icon="mdi:square-edit-outline"
           class="absolute right-2 top-2"
           @click="setCurrentTab(CharacterSimulatorRouteNames.Equipment)"
         />
-        <template
-          v-if="character.equipmentFields.some(field => !field.isEmpty)"
-        >
+        <template v-if="character.equipmentFields.some(field => !field.isEmpty)">
           <CharacterDashboardEquipmentField
             v-for="(equipmentField, idx) in character.equipmentFields.filter(
               field => field.equipment
@@ -95,12 +87,10 @@ const { setCurrentTab } = inject(CharacterSimulatorInjectionKey)!
           />
         </template>
         <div v-else class="px-4 py-2 text-sm text-primary-40">
-          {{
-            t('character-simulator.character-dashboard.no--any-equipment-tips')
-          }}
+          {{ t('character-simulator.character-dashboard.no--any-equipment-tips') }}
         </div>
       </div>
-      <div class="flex w-full flex-shrink-0 flex-col items-start wd:max-w-sm">
+      <div class="flex w-full shrink-0 flex-col items-start wd:max-w-sm">
         <CharacterDashboardSkillBuild
           v-if="characterState.skillBuild"
           :skill-build="characterState.skillBuild"

@@ -1,8 +1,4 @@
-import {
-  type CharacterBindingBuild,
-  checkLoadedId,
-  getLoadedId,
-} from '../Character/CharacterBuild'
+import { type CharacterBindingBuild, checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 import type { FoodBase, FoodsBase } from '../Food'
 
 interface FoodsBuildSaveData {
@@ -89,10 +85,7 @@ class FoodsBuild implements CharacterBindingBuild {
 
     return data
   }
-  load(
-    loadCategory: string,
-    data: FoodsBuildSaveData
-  ): { success?: boolean; error?: boolean } {
+  load(loadCategory: string, data: FoodsBuildSaveData): { success?: boolean; error?: boolean } {
     try {
       let success = true
 
@@ -101,8 +94,7 @@ class FoodsBuild implements CharacterBindingBuild {
       foods.forEach(food => {
         const findIdx = this.foods.findIndex(
           _food =>
-            _food.foodBase.base.baseId === food.statId &&
-            _food.foodBase.negative === food.negative
+            _food.foodBase.base.baseId === food.statId && _food.foodBase.negative === food.negative
         )
         if (findIdx !== -1) {
           const find = this.foods[findIdx]

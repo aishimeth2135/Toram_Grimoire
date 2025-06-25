@@ -100,10 +100,7 @@ class ResultContainer extends ResultContainerBase {
   }
 }
 
-type TextResultContainerPartValue =
-  | TextResultContainerPart
-  | ResultContainer
-  | string
+type TextResultContainerPartValue = TextResultContainerPart | ResultContainer | string
 
 interface TextResultContainerParseResult {
   containers: ResultContainer[]
@@ -117,11 +114,7 @@ class TextResultContainer extends ResultContainerBase {
   containers: ResultContainer[]
   parts: TextResultContainerPartValue[]
 
-  constructor(
-    origin: string,
-    value: string,
-    parseResult: TextResultContainerParseResult
-  ) {
+  constructor(origin: string, value: string, parseResult: TextResultContainerParseResult) {
     super()
 
     const { parts, containers } = parseResult
@@ -133,9 +126,7 @@ class TextResultContainer extends ResultContainerBase {
   }
 
   override get result() {
-    return this.parts
-      .map(part => (typeof part === 'string' ? part : part.result))
-      .join('')
+    return this.parts.map(part => (typeof part === 'string' ? part : part.result)).join('')
   }
 
   override handle(handler: ResultHandler) {
@@ -199,12 +190,7 @@ class TextResultContainerPart {
   }
 }
 
-export {
-  ResultContainerBase,
-  ResultContainer,
-  TextResultContainer,
-  TextResultContainerPart,
-}
+export { ResultContainerBase, ResultContainer, TextResultContainer, TextResultContainerPart }
 
 export type {
   TextResultContainerPartValue,

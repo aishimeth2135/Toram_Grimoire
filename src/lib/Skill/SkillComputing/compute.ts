@@ -29,10 +29,7 @@ import {
 } from './SkillBranchResult'
 import { FormulaDisplayModes } from './enums'
 
-function computeBranchValue(
-  str: string,
-  helper: ComputedBranchHelperResult
-): string {
+function computeBranchValue(str: string, helper: ComputedBranchHelperResult): string {
   const { vars, texts, methods, handleFormulaExtra } = helper
   if (typeof str !== 'string') {
     console.warn('[computeBranchValue] unexpected value: ' + str, helper)
@@ -131,9 +128,7 @@ function computedBranchHelper(
   formulaDisplayMode = formulaDisplayMode ?? computing.config.formulaDisplayMode
 
   const branchItemStack: SkillBranchItem =
-    branchItem instanceof SkillBranchItemSuffix
-      ? branchItem.mainBranch
-      : branchItem
+    branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem
   const stackIds = branchItemStack.linkedStackIds
 
   const handleFormulaConstants = computing.handleFormulaConstants
@@ -154,8 +149,7 @@ function computedBranchHelper(
   })
 
   const RLv: number[] =
-    computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ??
-    []
+    computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ?? []
   const hasRLv = RLv.length > 0 && RLv.some(item => item > 0)
 
   const STACK_ACCESS_PATTERN = /stack\[(\d+)\]/g
@@ -196,9 +190,7 @@ function computedBranchHelper(
       stackMatches.forEach(match => {
         const idxValue = toIndex(match[1])
         if (stack[idxValue] === undefined) {
-          stack[idxValue] = `${t('skill-query.branch.stack.base-name')}${
-            idxValue + 1
-          }`
+          stack[idxValue] = `${t('skill-query.branch.stack.base-name')}${idxValue + 1}`
         }
       })
       if (!hasRLv) {
@@ -269,9 +261,7 @@ function computedBranchHelper(
 
     vars = {
       ...extendsDatas.vars,
-      SLv:
-        computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ??
-        0,
+      SLv: computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? 0,
       CLv: computing.varGetters.characterLevel?.() ?? 0,
       stack: stack,
       RLv,
@@ -291,9 +281,7 @@ function computedBranchHelper(
   }
 
   const formulaExtra =
-    mainBranchItem.suffixBranches.find(suf =>
-      suf.is(SkillBranchNames.FormulaExtra)
-    ) ?? null
+    mainBranchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
 
   let extraTexts: string[] = []
   if (formulaExtra) {
@@ -311,11 +299,7 @@ function computedBranchHelper(
       return null
     }
     if (formulaExtra.hasProp('values', index)) {
-      return (
-        computeFormulaExtraValue?.(
-          formulaExtra.prop('values', index)
-        )?.toString() ?? null
-      )
+      return computeFormulaExtraValue?.(formulaExtra.prop('values', index))?.toString() ?? null
     }
     const idx = toInt(index)
     if (idx === null) {
@@ -323,49 +307,25 @@ function computedBranchHelper(
     }
     const props = {
       max: formulaExtra.hasProp('values', index, 'max')
-        ? (computeFormula(
-            formulaExtra.prop('values', index, 'max'),
-            vars,
-            0
-          ) as number)
+        ? (computeFormula(formulaExtra.prop('values', index, 'max'), vars, 0) as number)
         : null,
       min: formulaExtra.hasProp('values', index, 'min')
-        ? (computeFormula(
-            formulaExtra.prop('values', index, 'min'),
-            vars,
-            0
-          ) as number)
+        ? (computeFormula(formulaExtra.prop('values', index, 'min'), vars, 0) as number)
         : null,
     }
-    return (
-      getFormulaExtraValue?.(
-        mainBranchItem,
-        extraTexts[idx],
-        props
-      )?.toString() ?? null
-    )
+    return getFormulaExtraValue?.(mainBranchItem, extraTexts[idx], props)?.toString() ?? null
   }
 
   const handleFormulaExtra = !formulaExtra
     ? (str: string) => {
         return str
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) =>
-            getTextKey(p1)
-          )
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) =>
-            getTextKey(p1)
-          )
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) => getTextKey(p1))
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) => getTextKey(p1))
       }
     : (str: string) => {
         return str
-          .replace(
-            HANDLE_FORMULA_EXTRA_PATTERN_1,
-            (_match, p1) => getValue(p1) ?? getTextKey(p1)
-          )
-          .replace(
-            HANDLE_FORMULA_EXTRA_PATTERN_2,
-            (_match, p1) => getValue(p1) ?? getTextKey(p1)
-          )
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) => getValue(p1) ?? getTextKey(p1))
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) => getValue(p1) ?? getTextKey(p1))
       }
 
   return {
@@ -418,11 +378,10 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   propMap: PropMap
 ): HandleBranchValuePropsResult<PropMap> {
   const propKeys = Object.keys(propMap) as (keyof PropMap)[]
-  const propValues = computeBranchValueProps(
-    helper,
-    props,
-    propKeys as string[]
-  ) as Map<keyof PropMap, string>
+  const propValues = computeBranchValueProps(helper, props, propKeys as string[]) as Map<
+    keyof PropMap,
+    string
+  >
   const propResult = {} as HandleBranchValuePropsResult<PropMap>
   propKeys.forEach(propKey => {
     const originalFormula = props.get(propKey as string)
@@ -443,9 +402,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       originalFormula,
       propValues.get(propKey)!
     )
-    container.mergeDisplayOptions(
-      propMap[propKey] as ResultContainerDisplayOptions | string
-    )
+    container.mergeDisplayOptions(propMap[propKey] as ResultContainerDisplayOptions | string)
 
     handleDisplayValue(container, helper)
     handleRegistletValue(container, helper)
@@ -474,19 +431,10 @@ function computedBranchText(
       containers: [],
       parts: ['0'],
     } as SkillBranchTextResultParseResult
-    return new SkillBranchTextResult(
-      helper.branchItem,
-      propKey as string,
-      '0',
-      '0',
-      _parseResult
-    )
+    return new SkillBranchTextResult(helper.branchItem, propKey as string, '0', '0', _parseResult)
   }
-  const parseResult = SkillBranchTextResult.parse(
-    helper.branchItem,
-    propKey,
-    textStr,
-    value => computeBranchValue(value, helper)
+  const parseResult = SkillBranchTextResult.parse(helper.branchItem, propKey, textStr, value =>
+    computeBranchValue(value, helper)
   )
   return new SkillBranchTextResult(
     helper.branchItem,
@@ -504,11 +452,7 @@ function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   const propKeys = Object.keys(propMap) as (keyof PropMap)[]
   const propResult = {} as HandleBranchTextPropsResult<PropMap>
   propKeys.forEach(propKey => {
-    const container = computedBranchText(
-      helper,
-      propKey as string,
-      props.get(propKey as string)
-    )
+    const container = computedBranchText(helper, propKey as string, props.get(propKey as string))
     container.containers.forEach(ctner => handleHighlight(ctner))
     propResult[propKey] = container
   })
@@ -535,18 +479,11 @@ function handleBranchStats(
   const newStats = computedBranchStats(helper, stats)
   return newStats.map(stat => {
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
-    const container = new SkillBranchStatResult(
-      helper.branchItem,
-      originalStat,
-      stat
-    )
+    const container = new SkillBranchStatResult(helper.branchItem, originalStat, stat)
     handleDisplayValue(container, helper)
     handleRegistletValue(container, helper)
 
-    const displayTitleKey = helper.branchItem.propKey(
-      container.key,
-      'displayTitle'
-    )
+    const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
     if (helper.branchItem.hasProp(displayTitleKey)) {
       const displayTitleContainer = computedBranchText(
         helper,
@@ -556,10 +493,7 @@ function handleBranchStats(
       displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
       container.setDisplayTitle(displayTitleContainer)
     }
-    const conditionValueKey = helper.branchItem.propKey(
-      container.key,
-      'conditionValue'
-    )
+    const conditionValueKey = helper.branchItem.propKey(container.key, 'conditionValue')
     if (helper.branchItem.hasProp(conditionValueKey)) {
       container.setConditionValue(helper.branchItem.prop(conditionValueKey))
     }
@@ -582,8 +516,4 @@ export {
   computedBranchStats,
   handleBranchStats,
 }
-export type {
-  HandleBranchValuePropsMap,
-  HandleBranchTextPropsMap,
-  ComputedBranchHelperResult,
-}
+export type { HandleBranchValuePropsMap, HandleBranchTextPropsMap, ComputedBranchHelperResult }

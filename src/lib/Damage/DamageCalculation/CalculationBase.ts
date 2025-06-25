@@ -1,9 +1,5 @@
 import { CalcItemContainer, Calculation } from './Calculation'
-import {
-  CalculationContainerIds,
-  CalculationItemIds,
-  ContainerTypes,
-} from './enums'
+import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple
 type CalcStructItem = CalcStructExpression | CalculationContainerIds
@@ -29,9 +25,7 @@ interface CalcStructMultipleMul {
 }
 interface CalcResultOptions {
   containerResults?: {
-    [key in CalculationContainerIds]?:
-      | number
-      | ((itemContainer: CalcItemContainer) => number)
+    [key in CalculationContainerIds]?: number | ((itemContainer: CalcItemContainer) => number)
   }
 }
 interface CurrentItemIdGetter {
@@ -44,9 +38,7 @@ interface CalcResult {
   (itemContainer: CalcItemContainer): number
 }
 
-function isCalcStructItem(
-  payload: CalcStructItem | CalcStructAction
-): payload is CalcStructItem {
+function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
   return typeof payload !== 'string' || !payload.startsWith('@')
 }
 
@@ -64,10 +56,7 @@ class CalculationBase {
     this.items = new Map()
   }
 
-  appendContainer(
-    id: CalculationContainerIds,
-    type: ContainerTypes
-  ): CalcItemContainerBase {
+  appendContainer(id: CalculationContainerIds, type: ContainerTypes): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type)
     this.containers.set(id, container)
     return container
@@ -167,11 +156,7 @@ class CalcItemContainerBase {
 
   readonly references: CalculationContainerIds[]
 
-  constructor(
-    parent: CalculationBase,
-    id: CalculationContainerIds,
-    type: ContainerTypes
-  ) {
+  constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
     this.id = id
     this._parent = parent
     this.type = type ?? ContainerTypes.Normal
@@ -218,9 +203,7 @@ class CalcItemContainerBase {
       item.setRange(0, null).setDefaultValue(100).setUnit('%')
     }
     if (this.isVirtual) {
-      console.warn(
-        '[CalcItemContainerBase.appendItem] Unable to append item to virtual container'
-      )
+      console.warn('[CalcItemContainerBase.appendItem] Unable to append item to virtual container')
       return item
     }
     this.items.set(id, item)
@@ -309,11 +292,7 @@ class CalcItemBase {
     return this._parent
   }
 
-  setRange(
-    min: number | null,
-    max: number | null = null,
-    step: number = 1
-  ): this {
+  setRange(min: number | null, max: number | null = null, step: number = 1): this {
     this._min = min
     this._max = max
     this.step = step
@@ -331,12 +310,7 @@ class CalcItemBase {
   }
 }
 
-export {
-  CalcItemBase,
-  CalculationBase,
-  CalcItemContainerBase,
-  isCalcStructItem,
-}
+export { CalcItemBase, CalculationBase, CalcItemContainerBase, isCalcStructItem }
 export type {
   CalcStructItem,
   CalcStructSingle,

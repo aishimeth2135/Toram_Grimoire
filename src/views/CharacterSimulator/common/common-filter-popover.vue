@@ -24,8 +24,7 @@ const innerValue = computed<Item[]>({
   },
 })
 
-const { itemSelected: filterSelected, toggleItem: toggleFilterSelected } =
-  useToggleList(innerValue)
+const { itemSelected: filterSelected, toggleItem: toggleFilterSelected } = useToggleList(innerValue)
 
 const selectAllFilters = () => {
   innerValue.value = props.items.slice()
@@ -48,7 +47,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <cy-popover class="flex-shrink-0">
+  <cy-popover class="shrink-0">
     <cy-button-circle icon="mdi:filter" small />
     <template #popper>
       <div class="p-3">
@@ -60,10 +59,7 @@ const { t } = useI18n()
           </cy-button-check>
         </div>
         <div v-for="item in items" :key="item">
-          <cy-button-check
-            :selected="filterSelected(item)"
-            @click="toggleFilterSelected(item)"
-          >
+          <cy-button-check :selected="filterSelected(item)" @click="toggleFilterSelected(item)">
             <slot name="item" :item="item" />
           </cy-button-check>
         </div>

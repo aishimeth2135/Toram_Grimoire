@@ -16,19 +16,10 @@ const { device } = useDevice()
 </script>
 
 <template>
-  <cy-popover
-    placement="right-start"
-    triggers="hover"
-    custom
-    :disabled="!device.isWideLarge"
-  >
+  <cy-popover placement="right-start" triggers="hover" custom :disabled="!device.isWideLarge">
     <slot />
     <template #popper>
-      <CharacterEquipmentDetails
-        :equipment="equipment"
-        :equipped="equipped"
-        class="m-3"
-      />
+      <CharacterEquipmentDetails :equipment="equipment" :equipped="equipped" class="m-3" />
     </template>
   </cy-popover>
 </template>

@@ -4,20 +4,12 @@
     <CardRowsWrapper class="mx-1">
       <div class="overflow-x-auto">
         <CardRows class="min-w-min">
-          <ItemQueryResultItem
-            v-for="eq in currentItems"
-            :key="eq.origin!.id"
-            :equipment="eq"
-          />
+          <ItemQueryResultItem v-for="eq in currentItems" :key="eq.origin!.id" :equipment="eq" />
         </CardRows>
       </div>
     </CardRowsWrapper>
     <div class="mt-3">
-      <cy-pagination
-        v-model:value="page"
-        :max-page="maxPage"
-        @changed="pageChanged"
-      />
+      <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
   </div>
 </template>

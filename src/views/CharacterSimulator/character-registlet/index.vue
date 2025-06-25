@@ -24,8 +24,7 @@ defineOptions({
 
 const characterStore = useCharacterStore()
 const registletStore = useCharacterRegistletBuildStore()
-const { currentRegistletBuild: selectedBuild, registletBuilds } =
-  storeToRefs(registletStore)
+const { currentRegistletBuild: selectedBuild, registletBuilds } = storeToRefs(registletStore)
 
 const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({
@@ -33,9 +32,7 @@ const { toggle, modals, controls } = ToggleService({
   controls: ['itemDetail'] as const,
 })
 
-const currentRegistletBuild = computed(
-  () => characterStore.currentCharacterState.registletBuild
-)
+const currentRegistletBuild = computed(() => characterStore.currentCharacterState.registletBuild)
 
 const disableAll = computed<boolean>({
   get() {
@@ -72,9 +69,7 @@ const addRegistletBuild = () => {
     :current-build="currentRegistletBuild"
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
-    @copy-build="
-      registletStore.appendRegistletBuild(selectedBuild!.clone(), false)
-    "
+    @copy-build="registletStore.appendRegistletBuild(selectedBuild!.clone(), false)"
     @remove-build="removeSelectedBuild"
   >
     <template #header>
@@ -94,10 +89,7 @@ const addRegistletBuild = () => {
         </cy-button-check>
       </div>
       <CardRowsWrapper v-if="selectedBuild" class="mt-4 max-w-xl">
-        <CardRows
-          v-if="selectedBuild.items.length > 0"
-          :class="{ 'opacity-50': disableAll }"
-        >
+        <CardRows v-if="selectedBuild.items.length > 0" :class="{ 'opacity-50': disableAll }">
           <CharacterRegistletItem
             v-for="item in selectedBuild.items"
             :key="item.base.id"
@@ -111,22 +103,12 @@ const addRegistletBuild = () => {
       </CardRowsWrapper>
       <div class="space-y-1 pb-2 pt-6">
         <div>
-          <cy-icon-text
-            icon="ic-outline-info"
-            text-color="primary-50"
-            align-v="start"
-            small
-          >
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.registlet-build.main-tips-1') }}
           </cy-icon-text>
         </div>
         <div>
-          <cy-icon-text
-            icon="ic-outline-info"
-            text-color="primary-50"
-            align-v="start"
-            small
-          >
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.registlet-build.main-tips-2') }}
           </cy-icon-text>
         </div>

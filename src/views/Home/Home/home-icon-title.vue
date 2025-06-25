@@ -1,13 +1,9 @@
 <template>
-  <div
-    @click="iconWrapperTouchedCount += 1"
-    @mouseenter="iconWrapperTouchedCount += 1"
-  >
+  <div @click="iconWrapperTouchedCount += 1" @mouseenter="iconWrapperTouchedCount += 1">
     <div
       ref="appIcon"
-      class="flex"
+      class="title-icon flex"
       :class="{
-        [classes['title-icon']]: true,
         invisible: iconWrapperTouched,
       }"
     >
@@ -16,8 +12,7 @@
     <teleport v-if="iconWrapperTouched" :to="rootEl">
       <div
         ref="appIconTouched"
-        class="flex"
-        :class="[classes['title-icon'], classes['title-icon-touched']]"
+        class="title-icon title-icon-touched flex"
         :style="appIconPositionStyle"
       >
         <cy-icon icon="@grimoire-cat" width="2.5rem" />
@@ -27,15 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  type Ref,
-  nextTick,
-  onUnmounted,
-  ref,
-  toRefs,
-  useCssModule,
-  watch,
-} from 'vue'
+import { type Ref, nextTick, onUnmounted, ref, toRefs, watch } from 'vue'
 
 import { debounce } from '@/shared/utils/function'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
@@ -47,8 +34,6 @@ interface Props {
 const props = defineProps<Props>()
 const { rootEl } = toRefs(props)
 
-const classes = useCssModule()
-
 const iconWrapperTouched = ref(false)
 
 const appIcon: Ref<HTMLElement | null> = ref(null)
@@ -56,8 +41,7 @@ const appIconTouched: Ref<HTMLElement | null> = ref(null)
 
 const iconWrapperTouchedCount = ref(0)
 const appIconPosition: Ref<{ x: number; y: number } | null> = ref(null)
-const appIconPositionStyle: Ref<Record<string, string> | undefined> =
-  ref(undefined)
+const appIconPositionStyle: Ref<Record<string, string> | undefined> = ref(undefined)
 let appIconAnimating = false
 let mouseTrackIconListener: ((evt: MouseEvent) => void) | null = null
 
@@ -118,9 +102,7 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
       return () => {
         clearTimeout(removeTextTimer)
         removeTextTimer = setTimeout(() => {
-          rootEl.value
-            ?.querySelectorAll(classes['icon-touched-text'])
-            .forEach(el => el.remove())
+          rootEl.value?.querySelectorAll('.icon-touched-text').forEach(el => el.remove())
         }, 3000)
       }
     })()
@@ -199,7 +181,7 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
         }
         const textEl = document.createElement('div')
         textEl.innerHTML = 'MISS'
-        textEl.classList.add(classes['icon-touched-text'])
+        textEl.classList.add('icon-touched-text')
         textEl.style.left = `${appIconPosition.value!.x + iconRadiusXP}%`
         textEl.style.top = `${appIconPosition.value!.y - iconRadiusXP * 3}%`
         rootEl.value!.append(textEl)
@@ -222,7 +204,9 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="postcss" module>
+<style scoped>
+@reference "@/tailwind.css";
+
 .title-icon {
   @apply pointer-events-none;
 

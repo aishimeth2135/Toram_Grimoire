@@ -78,7 +78,9 @@ const selectInput = (evt: MouseEvent) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .cy--pagination-wrapper {
   --input-width: 2.125rem;
 

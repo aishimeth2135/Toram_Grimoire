@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useCssModule } from 'vue'
 
 import {
   CharacterEquipment,
@@ -25,36 +24,30 @@ const props = withDefaults(defineProps<Props>(), {
   invalid: false,
 })
 
-const classes = useCssModule()
-
 const handleCrystalClass = (crystal: EquipmentCrystal | undefined) => {
   if (!crystal) {
     return null
   }
   const res = [`bg-${getCrystalPureColor(crystal.origin)}-40`]
   if (crystal.origin.enhancer) {
-    res.push(classes.enhancer)
+    res.push('item-enhancer')
   }
   return res
 }
 
-const firstCrystalClass = computed(() =>
-  handleCrystalClass(props.equipment.crystals[0])
-)
-const secondCrystalClass = computed(() =>
-  handleCrystalClass(props.equipment.crystals[1])
-)
+const firstCrystalClass = computed(() => handleCrystalClass(props.equipment.crystals[0]))
+const secondCrystalClass = computed(() => handleCrystalClass(props.equipment.crystals[1]))
 </script>
 
 <template>
   <BrowseEquipmentsItemWrapper
     :equipment="equipment"
     :equipped="equipped"
+    class="items-root"
     :class="{
-      [classes.root]: true,
-      [classes.selected]: selected,
-      [classes.invalid]: invalid,
-      [classes.equipped]: equipped,
+      selected: selected,
+      invalid: invalid,
+      equipped: equipped,
     }"
   >
     <cy-icon
@@ -69,14 +62,11 @@ const secondCrystalClass = computed(() =>
           : equipment.categoryIcon
       "
       width="2.25rem"
-      class="flex-shrink-0"
+      class="shrink-0"
     />
     <div class="mt-auto flex w-full items-center text-sm">
       <span class="text-primary-70">{{ equipment.basicValue }}</span>
-      <span
-        v-if="equipment.hasRefining && equipment.refining !== 0"
-        class="ml-0.5 text-blue-60"
-      >
+      <span v-if="equipment.hasRefining && equipment.refining !== 0" class="ml-0.5 text-blue-60">
         {{ `+${equipment.refiningText}` }}
       </span>
     </div>
@@ -93,9 +83,11 @@ const secondCrystalClass = computed(() =>
   </BrowseEquipmentsItemWrapper>
 </template>
 
-<style lang="postcss" module>
-.root {
-  @apply relative inline-flex cursor-pointer flex-col rounded border-1 border-primary-10 p-2 pb-0.5 duration-150 hover:border-primary-40;
+<style scoped>
+@reference "@/tailwind.css";
+
+.items-root {
+  @apply relative inline-flex cursor-pointer flex-col rounded-sm border-1 border-primary-10 p-2 pb-0.5 duration-150 hover:border-primary-40;
   height: 4.5rem;
   width: 4.5rem;
 
@@ -112,7 +104,7 @@ const secondCrystalClass = computed(() =>
   }
 }
 
-.enhancer::before {
+.item-enhancer::before {
   @apply absolute right-0 top-0 block h-3 w-1.5 bg-gray-50;
   content: '';
   border-radius: 0 0.75rem 0.75rem 0;

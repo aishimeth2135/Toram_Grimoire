@@ -3,10 +3,7 @@ import { Translation } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import {
-  SkillBranchResult,
-  type SkillBranchTextResultPartValue,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchResult, type SkillBranchTextResultPartValue } from '@/lib/Skill/SkillComputing'
 import {
   ResultContainerTypes,
   TextResultContainerPart,
@@ -28,17 +25,10 @@ export interface NormalLayoutSubContent {
   type?: 'primary' | 'normal' | 'cyan' | 'gray'
 }
 
-function _RenderContainerResult(
-  container: SkillBranchResult,
-  displayResult?: string
-) {
+function _RenderContainerResult(container: SkillBranchResult, displayResult?: string) {
   const res = displayResult ?? container.result
 
-  const {
-    classNames: _classNames = [],
-    unit: _unit = '',
-    message,
-  } = container.displayOptions ?? {}
+  const { classNames: _classNames = [], unit: _unit = '', message } = container.displayOptions ?? {}
 
   const classNames = _classNames.slice() ?? []
 
@@ -50,19 +40,14 @@ function _RenderContainerResult(
     registletResult && registletResult !== '0'
       ? h('span', {
           class: 'text-emerald-50 ml-0.5',
-          innerHTML: registletResult.startsWith('-')
-            ? registletResult
-            : `+${registletResult}`,
+          innerHTML: registletResult.startsWith('-') ? registletResult : `+${registletResult}`,
         })
       : null
 
   if (container.type === ResultContainerTypes.Number) {
     if (!isNumberString(res) || registletNode) {
       const mainNode = registletNode
-        ? h('span', { class: 'cy--text-separate' }, [
-            h('span', { innerHTML: res }),
-            registletNode,
-          ])
+        ? h('span', { class: 'cy--text-separate' }, [h('span', { innerHTML: res }), registletNode])
         : h('span', {
             innerHTML: res,
             class: 'cy--text-separate',
@@ -76,10 +61,7 @@ function _RenderContainerResult(
   })
 }
 
-function RenderContainerResult(
-  container: SkillBranchResult,
-  displayResult?: string
-) {
+function RenderContainerResult(container: SkillBranchResult, displayResult?: string) {
   const message = container.displayOptions?.message
   if (message) {
     const { id, param } = message

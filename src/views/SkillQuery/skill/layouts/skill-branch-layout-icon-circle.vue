@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-shrink-0 justify-center rounded-full border bg-white p-1.5"
+    class="flex shrink-0 justify-center rounded-full border bg-white p-1.5"
     :class="`border-${iconColor}`"
   >
     <cy-icon :icon="icon" :class="`text-${iconColor}`" />

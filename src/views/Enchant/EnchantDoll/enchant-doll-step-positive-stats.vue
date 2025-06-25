@@ -12,10 +12,7 @@
       <div class="mt-2 max-w-xs border border-fuchsia-60">
         <template v-if="doll.positiveStats.length !== 0">
           <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
-            <cy-icon-text
-              :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
-              class="w-full"
-            >
+            <cy-icon-text :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'" class="w-full">
               {{ stat.showAmount() }}
             </cy-icon-text>
             <div class="mt-1 flex w-full items-center">
@@ -35,11 +32,7 @@
             </div>
           </cy-list-item>
         </template>
-        <cy-default-tips
-          v-else
-          icon="fluent-leaf-two-16-regular"
-          class="mx-6 my-4"
-        >
+        <cy-default-tips v-else icon="fluent-leaf-two-16-regular" class="mx-6 my-4">
           {{ t('enchant-doll.tips.no-stat-selected') }}
         </cy-default-tips>
       </div>
@@ -60,11 +53,7 @@
     <div class="flex justify-center pt-4">
       <cy-button-plain
         v-model:selected="useShorthand"
-        :icon="
-          useShorthand
-            ? 'akar-icons:circle-chevron-up'
-            : 'akar-icons:circle-chevron-down'
-        "
+        :icon="useShorthand ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
         color="secondary"
       >
         {{ t('enchant-doll.select-positives.use-shorthand') }}
@@ -87,10 +76,7 @@
             @click="appendShortHandStats"
           />
         </div>
-        <div
-          v-if="shortHandStatItems.length > 0"
-          class="px-1 pt-1 text-primary-50"
-        >
+        <div v-if="shortHandStatItems.length > 0" class="px-1 pt-1 text-primary-50">
           <div
             v-for="{ origin, type, value } in shortHandStatItems"
             :key="origin.statBase.statId(type)"
@@ -119,8 +105,7 @@ const { t } = useI18n()
 const useShorthand = ref(false)
 const statsShorthand = ref('')
 
-const { enchantShortHandStatItems: shortHandStatItems } =
-  setupParseEnchantShorthand(statsShorthand)
+const { enchantShortHandStatItems: shortHandStatItems } = setupParseEnchantShorthand(statsShorthand)
 
 const appendShortHandStats = () => {
   shortHandStatItems.value.forEach(({ origin, type, value }) => {

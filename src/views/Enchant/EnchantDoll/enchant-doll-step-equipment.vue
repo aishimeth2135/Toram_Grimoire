@@ -27,16 +27,11 @@
       {{ t('enchant-doll.equipment.original-potential.caption') }}
     </div>
     <div class="mt-4 flex flex-wrap justify-center">
-      <cy-button-check
-        v-model:selected="equipmentState.autoFindPotentialMinimum"
-      >
+      <cy-button-check v-model:selected="equipmentState.autoFindPotentialMinimum">
         {{ t('enchant-doll.equipment.original-potential.auto-find-minimum') }}
       </cy-button-check>
     </div>
-    <div
-      v-if="!equipmentState.autoFindPotentialMinimum"
-      class="flex justify-center py-4 pl-4"
-    >
+    <div v-if="!equipmentState.autoFindPotentialMinimum" class="flex justify-center py-4 pl-4">
       <cy-input-counter
         v-model:value="currentEquipment.originalPotential"
         class="mt-2"
@@ -51,11 +46,7 @@
     </div>
     <div class="flex justify-center pt-2">
       <cy-button-plain
-        :icon="
-          setConfig
-            ? 'akar-icons:circle-chevron-up'
-            : 'akar-icons:circle-chevron-down'
-        "
+        :icon="setConfig ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
         :selected="setConfig"
         color="secondary"
         @click="setConfig = !setConfig"
@@ -68,10 +59,7 @@
         <EnchantCommonSetting />
       </div>
     </div>
-    <div
-      v-if="config.characterLevel < CHARACTER_MAX_LEVEL"
-      class="mt-4 flex justify-center"
-    >
+    <div v-if="config.characterLevel < CHARACTER_MAX_LEVEL" class="mt-4 flex justify-center">
       <div class="text-sm text-gray-50">
         {{ t('enchant-doll.equipment.set-config.character-level-tips') }}
       </div>

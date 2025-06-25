@@ -9,7 +9,7 @@ defineProps<Props>()
 <template>
   <div class="p-4 wd:flex wd:items-start">
     <div
-      class="mb-4 mr-2 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-primary-5"
+      class="mb-4 mr-2 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary-5"
     >
       <cy-icon :icon="icon" width="1.5rem" />
     </div>

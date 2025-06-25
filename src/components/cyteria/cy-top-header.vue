@@ -6,13 +6,7 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CyTopHeader',
-}
-</script>
-
-<style lang="postcss" scoped>
+<style>
 .cy--top-header {
   --shadow-height: 0.5rem;
   --container-height: 3.5rem;
@@ -52,7 +46,8 @@ export default {
     align-items: center;
     white-space: nowrap;
     overflow-y: visible;
-    @apply px-3;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 </style>

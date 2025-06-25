@@ -35,20 +35,14 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(
-              extraContainer.branchItem.default
-            ).enabled
+            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem.default)
+              .enabled
           "
         />
-        <CharacterSkillItemStats
-          :stat-containers="extraContainer.statContainers"
-        />
+        <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
-    <div
-      v-if="contents.detail"
-      class="mt-2 border-1 border-primary-30 bg-white px-3 py-2 text-sm"
-    >
+    <div v-if="contents.detail" class="mt-2 border-1 border-primary-30 bg-white px-3 py-2 text-sm">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"
@@ -57,11 +51,7 @@
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="
-            markText(
-              t('damage-calculation.item-base-titles.' + item.item.base.id)
-            )
-          "
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
         ></div>
         <div v-if="item.valueValid" class="text-primary-50">
           {{ item.item.value + item.item.base.unit }}
@@ -105,9 +95,7 @@ const emit = defineEmits<Emits>()
 
 const enabled = computed({
   get() {
-    return !props.unselectedBranches.includes(
-      props.result.container.branchItem.default
-    )
+    return !props.unselectedBranches.includes(props.result.container.branchItem.default)
   },
   set(value) {
     const unselectedBranches = props.unselectedBranches?.slice()
@@ -133,26 +121,20 @@ const { contents, toggle } = ToggleService({
 const result = computed(() => props.result)
 
 const { extraStats: baseExtraStats } = setupSkilResultExtraStats(result)
-const extraStats = computed(() => [
-  ...baseExtraStats.value,
-  ...props.extraStats,
-])
+const extraStats = computed(() => [...baseExtraStats.value, ...props.extraStats])
 
-const { valid, calculation, expectedResult } =
-  characterStore.setupDamageCalculationExpectedResult(
-    result,
-    extraStats,
-    computed(() => characterStore.targetProperties),
-    computed(() => ({
-      ...characterStore.calculationOptions,
-      comboRate: props.comboRate,
-    }))
-  )
+const { valid, calculation, expectedResult } = characterStore.setupDamageCalculationExpectedResult(
+  result,
+  extraStats,
+  computed(() => characterStore.targetProperties),
+  computed(() => ({
+    ...characterStore.calculationOptions,
+    comboRate: props.comboRate,
+  }))
+)
 
 const frequencyVisible = computed(() => {
-  return (
-    valid.value && props.result.container.branchItem.prop('title') === 'each'
-  )
+  return valid.value && props.result.container.branchItem.prop('title') === 'each'
 })
 
 const calculationItems = computed(() => {
@@ -186,8 +168,7 @@ const calculationItems = computed(() => {
 
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers.filter(
-    suf =>
-      suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0
+    suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0
   )
 })
 

@@ -2,11 +2,7 @@
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import {
-  type ButtonBaseProps,
-  type ButtonIconProps,
-  useButtonBaseBinds,
-} from './setup'
+import { type ButtonBaseProps, type ButtonIconProps, useButtonBaseBinds } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {}
 const props = defineProps<Props>()
@@ -42,19 +38,3 @@ const buttonClick = (evt: MouseEvent) => {
     </div>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-toggle {
-  @apply rounded-full duration-200;
-
-  --button-icon-width: 2rem;
-
-  &:focus:not(:active) {
-    @apply bg-primary-30 bg-opacity-20;
-  }
-
-  & > .cy-button-toggle-icon {
-    @apply -my-3;
-  }
-}
-</style>

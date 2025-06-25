@@ -9,7 +9,8 @@ import { MainQuestSection } from '@/lib/Quest/Quest'
 import type { MainQuestSectionId } from '@/lib/Quest/Quest'
 import { QuestItemType } from '@/lib/Quest/Quest/enums'
 
-import CommonPropInput from '../CharacterSimulator/common/common-prop-input.vue'
+import CommonPropNumberInput from '@/views/CharacterSimulator/common/common-prop-number-input.vue'
+
 import MainQuestChaptersExpRate from './main-quest-chapters-exp-rate.vue'
 
 interface Props {
@@ -23,8 +24,8 @@ const characterStartLevel = ref(1)
 const characterStartPercentage = ref(0)
 const diaryRounds = ref(1)
 
-const firstSection = computed(
-  () => props.selectedQuestSections[props.selectedQuestSections.length - 1]
+const firstSection = computed<MainQuestSection | null>(
+  () => props.selectedQuestSections[props.selectedQuestSections.length - 1] ?? null
 )
 const lastSection = computed(() => props.selectedQuestSections[0])
 
@@ -49,10 +50,7 @@ const toggleSkippedSubSection = (id: MainQuestSectionId) => {
 }
 
 const expSum = computed(() => {
-  let resultRxp = props.selectedQuestSections.reduce(
-    (cur, section) => cur + section.exp,
-    0
-  )
+  let resultRxp = props.selectedQuestSections.reduce((cur, section) => cur + section.exp, 0)
   resultRxp += skippableSubSectionItems.value
     .filter(({ section }) => !skippedSubSectionIds.has(section.id))
     .reduce((cur, { exp }) => cur + exp, 0)
@@ -64,7 +62,6 @@ const levelDiff = computed(() => {
   let requiredExp = 0
   let currentLevel = characterStartLevel.value
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     requiredExp = Math.floor(currentLevel ** 4 / 40) + currentLevel * 2
     if (requiredExp > remainingExp) {
@@ -90,53 +87,41 @@ const submitItemDatas = computed(() => {
     .reverse()
     .map(section => ({
       section,
-      items: section.submitItems!.filter(
-        item => item.type === QuestItemType.Item
-      ),
+      items: section.submitItems!.filter(item => item.type === QuestItemType.Item),
     }))
 })
 </script>
 
 <template>
-  <div>
-    <div
-      class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30"
-    >
+  <div v-if="firstSection">
+    <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.common-settings-title') }}
     </div>
     <div class="mt-3 flex flex-wrap items-center space-x-4">
-      <CommonPropInput
+      <CommonPropNumberInput
         v-model:value="characterStartLevel"
         :title="t('main-quest-calc.character-start-level-title')"
-        type="number"
         :range="[1, CHARACTER_MAX_LEVEL]"
       />
-      <CommonPropInput
+      <CommonPropNumberInput
         v-model:value="characterStartPercentage"
         :title="t('main-quest-calc.character-start-level-percentage-title')"
-        type="number"
         :range="[0, 100]"
         unit="%"
       />
     </div>
     <div class="mt-3">
-      <CommonPropInput
+      <CommonPropNumberInput
         v-model:value="diaryRounds"
         :title="t('main-quest-calc.diary-rounds')"
-        type="number"
         :range="[1, null]"
       />
     </div>
-    <div
-      class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30"
-    >
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.select-skipped-sub-section-title') }}
     </div>
     <div v-if="skippableSubSectionItems.length > 0" class="mt-4 space-y-2">
-      <div
-        v-for="{ section, name, exp } in skippableSubSectionItems"
-        :key="section.id"
-      >
+      <div v-for="{ section, name, exp } in skippableSubSectionItems" :key="section.id">
         <div class="px-1.5 text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>
@@ -156,9 +141,7 @@ const submitItemDatas = computed(() => {
         </div>
       </div>
     </div>
-    <div
-      class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30"
-    >
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.calc-result-title') }}
     </div>
     <div class="mt-4 px-2">
@@ -167,11 +150,7 @@ const submitItemDatas = computed(() => {
       </div>
       <div class="mt-0.5 text-primary-80">
         <span>{{ `${firstSection.chapterId}.${firstSection.sectionId}` }}</span>
-        <cy-icon
-          icon="mdi:arrow-right"
-          width="1rem"
-          class="mx-3 text-primary-30"
-        />
+        <cy-icon icon="mdi:arrow-right" width="1rem" class="mx-3 text-primary-30" />
         <span>{{ `${lastSection.chapterId}.${lastSection.sectionId}` }}</span>
       </div>
       <div class="mt-3 text-sm text-gray-50">
@@ -194,11 +173,7 @@ const submitItemDatas = computed(() => {
         <span v-if="characterStartPercentage > 0" class="ml-2 text-primary-50">
           {{ `${characterStartPercentage}%` }}
         </span>
-        <cy-icon
-          icon="mdi:arrow-right"
-          width="1rem"
-          class="ml-3 text-primary-30"
-        />
+        <cy-icon icon="mdi:arrow-right" width="1rem" class="ml-3 text-primary-30" />
         <span class="ml-3">
           {{ `Lv.${levelDiff.level}` }}
         </span>
@@ -212,17 +187,11 @@ const submitItemDatas = computed(() => {
         :skipped-sub-section-ids="skippedSubSectionIds"
       />
     </div>
-    <div
-      class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30"
-    >
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.submit-items-title') }}
     </div>
     <div class="mt-4 space-y-3 px-1.5">
-      <div
-        v-for="{ section, items } in submitItemDatas"
-        :key="section.id"
-        class="text-sm"
-      >
+      <div v-for="{ section, items } in submitItemDatas" :key="section.id" class="text-sm">
         <div class="text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>

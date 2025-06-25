@@ -13,10 +13,7 @@
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
@@ -34,10 +31,7 @@ const container = computed(() => TextHandler(props.computing, branchItem.value))
 
 if (branchItem.value.isGroup) {
   // not toggle, init only
-  branchItem.value.toggleGroupExpanded(
-    true,
-    branchItem.value.groupState.expanded
-  )
+  branchItem.value.toggleGroupExpanded(true, branchItem.value.groupState.expanded)
 }
 
 const rootClicked = () => {
@@ -56,7 +50,9 @@ const rootClassList = computed(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .text-content {
   @apply flex w-full items-start px-3 py-1;
 

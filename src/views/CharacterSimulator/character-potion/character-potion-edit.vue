@@ -1,11 +1,7 @@
 <template>
   <cy-modal :visible="visible" footer @close="emit('close')">
     <div class="sticky top-0 mb-3">
-      <cy-title-input
-        v-model:value="searchText"
-        icon="ic:baseline-search"
-        clearable
-      />
+      <cy-title-input v-model:value="searchText" icon="ic:baseline-search" clearable />
     </div>
     <div v-for="category in categoryResults" :key="category.id" class="pb-3">
       <div class="pb-1.5 text-sm text-primary-30">{{ category.name }}</div>
@@ -22,11 +18,7 @@
           />
           <span
             class="ml-3"
-            :class="
-              potionBuild.itemSelected(item)
-                ? 'text-primary-70'
-                : 'text-gray-50'
-            "
+            :class="potionBuild.itemSelected(item) ? 'text-primary-70' : 'text-gray-50'"
           >
             {{ item.name }}
           </span>
@@ -63,9 +55,7 @@ const searchText = ref('')
 const categorys = Grimoire.Items!.potionsRoot.categorys.map(category => {
   const items: BagPotion[] = []
   category.obtainCategorys.forEach(obtainCategory => {
-    const potions = obtainCategory.potions.filter(
-      potion => potion.stats.length > 0
-    )
+    const potions = obtainCategory.potions.filter(potion => potion.stats.length > 0)
     items.push(...potions)
   })
   return {
@@ -82,9 +72,7 @@ const categoryResults = computed(() => {
   return categorys
     .map(category => ({
       id: category.id,
-      items: category.items.filter(item =>
-        item.name.includes(searchText.value)
-      ),
+      items: category.items.filter(item => item.name.includes(searchText.value)),
       name: category.name,
     }))
     .filter(item => item.items.length > 0)

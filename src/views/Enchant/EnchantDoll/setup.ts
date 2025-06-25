@@ -45,17 +45,10 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
     I: 'int',
     C: 'critical_rate',
   })
-    .map(
-      ([key, id]) =>
-        [key, Grimoire.Character.findStatBase(id)] as [string, StatBase]
-    )
+    .map(([key, id]) => [key, Grimoire.Character.findStatBase(id)] as [string, StatBase])
     .filter(([, value]) => value !== null)
     .map(
-      ([key, value]) =>
-        [key, Grimoire.Enchant.findEnchantItem(value!)!] as [
-          string,
-          EnchantItem,
-        ]
+      ([key, value]) => [key, Grimoire.Enchant.findEnchantItem(value!)!] as [string, EnchantItem]
     )
 
   const parseEnchantShortHand = (str: string) => {
@@ -122,9 +115,7 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
     )
   }
 
-  const enchantShortHandStatItems = computed(() =>
-    parseEnchantShortHand(shorthandStr.value)
-  )
+  const enchantShortHandStatItems = computed(() => parseEnchantShortHand(shorthandStr.value))
 
   return { enchantShortHandStatItems }
 }

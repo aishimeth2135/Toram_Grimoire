@@ -1,9 +1,6 @@
 import { type Ref, onUnmounted, watch } from 'vue'
 
-export function useResizeObserver(
-  target: Ref<HTMLElement | null>,
-  cb: () => void
-) {
+export function useResizeObserver(target: Ref<HTMLElement | null>, cb: () => void) {
   if (window.ResizeObserver) {
     const observer = new ResizeObserver(cb)
 

@@ -4,7 +4,7 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex w-full items-center">
-          <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
+          <cy-icon icon="ic-outline-search" class="shrink-0" />
           <input
             v-model="searchText"
             type="text"
@@ -15,7 +15,7 @@
             :class="{
               invisible: searchText === '',
             }"
-            class="flex-shrink-0"
+            class="shrink-0"
             icon="mdi:close-circle"
             @click="searchText = ''"
           />

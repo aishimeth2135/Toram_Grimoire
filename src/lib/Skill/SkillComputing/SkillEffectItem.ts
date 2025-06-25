@@ -8,12 +8,7 @@ import { computeFormula } from '@/shared/utils/data'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 
-import {
-  Skill,
-  SkillBranchNames,
-  SkillEffect,
-  SkillEffectHistory,
-} from '../Skill'
+import { Skill, SkillBranchNames, SkillEffect, SkillEffectHistory } from '../Skill'
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
 import {
@@ -98,9 +93,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     initBasicBranchItem(this, defaultSef)
 
     const current = from ? from : defaultSef
-    const dualSwordRegress = defaultSef.parent.effects.every(
-      eft => eft.mainWeapon !== 10
-    )
+    const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
     this.equipments = convertEffectEquipment(current, dualSwordRegress)
 
     this.historys = current.historys.map(
@@ -148,14 +141,11 @@ class SkillEffectItem extends SkillEffectItemBase {
     // 雙手合持 (0-6-11)
     if (getSkillLevel && this.parent.skill.skillId === '0-6-11') {
       // 忍道 (4-5-1)
-      const skillNinjaSpirit =
-        this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
+      const skillNinjaSpirit = this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
       if (skillNinjaSpirit) {
         const skillNinjaSpiritLevel = getSkillLevel(skillNinjaSpirit)
         if (skillNinjaSpiritLevel === 10) {
-          const mainRest = equipments.find(
-            rest => rest.main !== null && rest.sub === null
-          )
+          const mainRest = equipments.find(rest => rest.main !== null && rest.sub === null)
           if (mainRest) {
             equipments.push(
               new EquipmentRestrictions({
@@ -182,25 +172,15 @@ class SkillEffectItem extends SkillEffectItemBase {
           if (!getSkillLevel) {
             return 0
           }
-          const skill =
-            this.parent.skill.parent.parent.parent.findSkillById(skillId)
+          const skill = this.parent.skill.parent.parent.parent.findSkillById(skillId)
           return skill ? getSkillLevel(skill) : 0
         },
       }
 
       return {
-        main: this.computedEquipmentBranchValue(
-          equipmentBranch.prop('main'),
-          scope
-        ),
-        sub: this.computedEquipmentBranchValue(
-          equipmentBranch.prop('sub'),
-          scope
-        ),
-        body: this.computedEquipmentBranchValue(
-          equipmentBranch.prop('body'),
-          scope
-        ),
+        main: this.computedEquipmentBranchValue(equipmentBranch.prop('main'), scope),
+        sub: this.computedEquipmentBranchValue(equipmentBranch.prop('sub'), scope),
+        body: this.computedEquipmentBranchValue(equipmentBranch.prop('body'), scope),
       }
     })()
 
@@ -226,9 +206,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 
   equipmentId() {
     const keys = ['main', 'sub', 'body'] as const
-    return this.equipments
-      .map(equip => keys.map(key => equip[key] || 'none').join('+'))
-      .join('/')
+    return this.equipments.map(equip => keys.map(key => equip[key] || 'none').join('+')).join('/')
   }
 
   resetStackStates(vars: { slv: number; clv: number }) {
@@ -258,11 +236,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   // Map<SkillBranchItem.instanceId, SkillBranchItem | null>
   nexts: Map<InstanceId, SkillBranchItem | null>
 
-  constructor(
-    parent: SkillItem,
-    parentEffect: SkillEffectItem,
-    historyEffect: SkillEffectHistory
-  ) {
+  constructor(parent: SkillItem, parentEffect: SkillEffectItem, historyEffect: SkillEffectHistory) {
     super(parent)
     this.branchItems = normalizeBaseBranches(historyEffect.branches).map(
       bch => new SkillBranchItem(this, bch)
@@ -278,16 +252,11 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
 
   get modifiedBranchItems() {
     return this.branchItems.filter(branchItem => {
-      if (
-        branchItem.hasId() &&
-        this.origin.branches.find(bch => bch.id === branchItem.id)
-      ) {
+      if (branchItem.hasId() && this.origin.branches.find(bch => bch.id === branchItem.id)) {
         return true
       }
       return branchItem.suffixBranches.some(
-        suffix =>
-          suffix.hasId() &&
-          this.origin.branches.find(bch => suffix.id === bch.id)
+        suffix => suffix.hasId() && this.origin.branches.find(bch => suffix.id === bch.id)
       )
     })
   }

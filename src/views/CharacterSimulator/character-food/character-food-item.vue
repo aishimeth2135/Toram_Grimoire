@@ -1,11 +1,7 @@
 <template>
   <CardRow class="flex flex-wrap items-center px-1.5 py-2.5">
     <div class="flex pl-0.5">
-      <cy-button-check
-        v-model:selected="selected"
-        inline
-        style="min-width: 15rem"
-      >
+      <cy-button-check v-model:selected="selected" inline style="min-width: 15rem">
         {{ food.stat().show() }}
       </cy-button-check>
     </div>

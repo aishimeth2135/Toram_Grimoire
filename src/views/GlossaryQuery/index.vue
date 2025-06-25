@@ -3,19 +3,11 @@
     <div ref="topElement"></div>
     <CardRowsWrapper>
       <CardRows>
-        <GlossaryTagItem
-          v-for="tag in currentItems"
-          :key="tag.name"
-          :tag="tag"
-        />
+        <GlossaryTagItem v-for="tag in currentItems" :key="tag.name" :tag="tag" />
       </CardRows>
     </CardRowsWrapper>
     <div class="mt-3">
-      <cy-pagination
-        v-model:value="page"
-        :max-page="maxPage"
-        @changed="pageChanged"
-      />
+      <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
     <AppLayoutBottom>
       <template #default>
@@ -66,9 +58,7 @@ const currentTags = computed(() => {
   return allTags.filter(tag => {
     return (
       tag.name.toLowerCase().includes(text) ||
-      tag.rows.some(row =>
-        row.value.some(item => item.toLowerCase().includes(text))
-      )
+      tag.rows.some(row => row.value.some(item => item.toLowerCase().includes(text)))
     )
   })
 })

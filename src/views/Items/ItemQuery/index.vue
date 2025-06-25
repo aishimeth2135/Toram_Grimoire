@@ -5,8 +5,8 @@
         <cy-button-icon
           :icon="
             hasBookmark
-              ? 'material-symbols:bookmark-added-rounded'
-              : 'material-symbols:bookmark-add-outline-rounded'
+              ? 'material-symbols:bookmark-added-rounded-sm'
+              : 'material-symbols:bookmark-add-outline-rounded-sm'
           "
           :selected="hasBookmark"
           @click="toggleBookmark"
@@ -23,7 +23,7 @@
           <template v-if="state.currentMode === SearchModes.Normal">
             <div class="ml-2 flex w-full items-center">
               <div class="relative flex w-full items-center">
-                <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
+                <cy-icon icon="ic-outline-search" class="shrink-0" />
                 <input
                   v-model="modes[SearchModes.Normal].searchText"
                   type="text"
@@ -35,7 +35,7 @@
                 :class="{
                   invisible: modes[SearchModes.Normal].searchText === '',
                 }"
-                class="flex-shrink-0"
+                class="shrink-0"
                 icon="mdi:close-circle"
                 @click="modes[SearchModes.Normal].searchText = ''"
               />
@@ -50,14 +50,10 @@
           </template>
           <template v-else-if="state.currentMode === SearchModes.Stat">
             <cy-button-plain width-full @click="toggle('modals/selecteStat')">
-              <template
-                v-if="modes[SearchModes.Stat].currentStats.length === 0"
-              >
+              <template v-if="modes[SearchModes.Stat].currentStats.length === 0">
                 {{ t('item-query.options-stat.select-stat.title') }}
               </template>
-              <template
-                v-else-if="modes[SearchModes.Stat].currentStats.length === 1"
-              >
+              <template v-else-if="modes[SearchModes.Stat].currentStats.length === 1">
                 {{ modes[SearchModes.Stat].currentStats[0].text }}
               </template>
               <template v-else>
@@ -90,7 +86,7 @@
           <template v-else-if="state.currentMode === SearchModes.Dye">
             <div class="flex w-full items-center">
               <div class="relative flex w-full items-center">
-                <cy-icon icon="ic-outline-palette" class="ml-2 flex-shrink-0" />
+                <cy-icon icon="ic-outline-palette" class="ml-2 shrink-0" />
                 <input
                   v-model="modes[SearchModes.Dye].searchText"
                   type="text"
@@ -101,7 +97,7 @@
                   :class="{
                     invisible: modes[SearchModes.Dye].searchText === '',
                   }"
-                  class="flex-shrink-0"
+                  class="shrink-0"
                   icon="mdi:close-circle"
                   @click="modes[SearchModes.Dye].searchText = ''"
                 />
@@ -113,8 +109,7 @@
       <template #main-content>
         <AppLayoutBottomContent
           v-if="
-            state.currentMode === SearchModes.Normal &&
-            modes[SearchModes.Normal].optionsVisible
+            state.currentMode === SearchModes.Normal && modes[SearchModes.Normal].optionsVisible
           "
           class="p-3"
         >
@@ -135,9 +130,7 @@
       <template #main-start>
         <cy-options
           :value="modes[state.currentMode]"
-          :options="
-            Object.entries(modes).map(([id, item]) => ({ id, value: item }))
-          "
+          :options="Object.entries(modes).map(([id, item]) => ({ id, value: item }))"
           placement="top-start"
           @update:value="selectMode($event.id)"
         >
@@ -154,8 +147,7 @@
       <template #side-buttons>
         <cy-button-circle
           v-if="
-            state.currentMode === SearchModes.Stat ||
-            state.currentMode === SearchModes.ItemLevel
+            state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel
           "
           icon="heroicons-solid:switch-vertical"
           color="orange"
@@ -180,10 +172,7 @@
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent
-            v-if="menus.conditionOptions"
-            class="space-y-3 p-3"
-          >
+          <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="typeItem in conditions.type" :key="typeItem.id">
               <div class="flex items-center space-x-1.5">
                 <cy-button-check
@@ -206,10 +195,7 @@
                   />
                 </template>
               </div>
-              <div
-                v-if="typeItem.types.length > 1"
-                class="space-x-0.5 px-2 py-0.5 pt-1.5"
-              >
+              <div v-if="typeItem.types.length > 1" class="space-x-0.5 px-2 py-0.5 pt-1.5">
                 <cy-button-check
                   v-for="item in typeItem.types"
                   :key="item.value"
@@ -263,11 +249,7 @@
             </div>
             <div>
               <div>
-                <cy-icon-text
-                  icon="fluent-arrow-sort-24-filled"
-                  text-color="fuchsia-60"
-                  small
-                >
+                <cy-icon-text icon="fluent-arrow-sort-24-filled" text-color="fuchsia-60" small>
                   {{ t('item-query.sort-options.order.title') }}
                 </cy-icon-text>
               </div>
@@ -281,11 +263,7 @@
         </cy-transition>
       </template>
     </AppLayoutBottom>
-    <cy-modal
-      v-model:visible="modals.selecteStat"
-      vertical-position="start"
-      footer
-    >
+    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start" footer>
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ t('item-query.options-stat.select-stat.title') }}
@@ -296,20 +274,15 @@
           <cy-title-input
             v-model:value="modes.stat.statSearchText"
             icon="ic-outline-category"
-            :placeholder="
-              t('item-query.options-stat.select-stat.search-placeholder')
-            "
+            :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
             clearable
           />
         </div>
-        <div
-          v-if="statsSearchResult.length !== 0"
-          class="divide-y divide-primary-20"
-        >
+        <div v-if="statsSearchResult.length !== 0" class="divide-y divide-primary-20">
           <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            class="px-2 py-1 duration-200 hover:bg-primary-30 hover:bg-opacity-10"
+            class="hover:bg-primary-30/10 px-2 py-1 duration-200"
             @click="selectStat(stat)"
           >
             <cy-button-check
@@ -402,9 +375,7 @@ const currentBookmarkItem = computed(() => {
   }
   switch (state.currentMode) {
     case SearchModes.Normal:
-      item.payload = `${SearchModes.Normal}:${
-        modes[SearchModes.Normal].searchText
-      }`
+      item.payload = `${SearchModes.Normal}:${modes[SearchModes.Normal].searchText}`
       break
     case SearchModes.Stat:
       item.payload = `${SearchModes.Stat}:${modes[SearchModes.Stat].currentStats
@@ -432,9 +403,7 @@ const hasBookmark = computed(() => {
 interface EquipmentTypeOption extends CommonOption {
   imagePath: string
 }
-const handleEquipmentTypes = (
-  opts: EquipmentTypes[]
-): EquipmentTypeOption[] => {
+const handleEquipmentTypes = (opts: EquipmentTypes[]): EquipmentTypeOption[] => {
   const newOpts = handleOptions(opts)
   const finalOpts = newOpts.map(opt => ({
     ...opt,
@@ -448,15 +417,9 @@ const sortState = reactive({
   currentOrder: 'down',
 })
 
-type SortHandler = (
-  item1: CharacterEquipment,
-  item2: CharacterEquipment
-) => number
+type SortHandler = (item1: CharacterEquipment, item2: CharacterEquipment) => number
 
-const idComparation = (
-  item1: CharacterEquipment,
-  item2: CharacterEquipment
-) => {
+const idComparation = (item1: CharacterEquipment, item2: CharacterEquipment) => {
   const id1 = toInt(item1.origin!.id) ?? -1
   const id2 = toInt(item2.origin!.id) ?? -1
   return id1 - id2
@@ -471,14 +434,12 @@ const sortOptions: {
 } = {
   global: {
     atk: (item1, item2) => {
-      const value1 =
-          item1.basicValue + (item1.is(EquipmentKinds.Weapon) ? 9999 : 0),
+      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Weapon) ? 9999 : 0),
         value2 = item2.basicValue + (item2.is(EquipmentKinds.Weapon) ? 9999 : 0)
       return value1 - value2
     },
     def: (item1, item2) => {
-      const value1 =
-          item1.basicValue + (item1.is(EquipmentKinds.Armor) ? 9999 : 0),
+      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Armor) ? 9999 : 0),
         value2 = item2.basicValue + (item2.is(EquipmentKinds.Armor) ? 9999 : 0)
       return value1 - value2
     },
@@ -521,12 +482,8 @@ const sortOptions: {
   },
   [SearchModes.ItemLevel]: {
     default: (item1, item2) => {
-      const value1 = handleCompareValue(
-          item1.origin!.recipe?.['item_level']?.toString() ?? ''
-        ),
-        value2 = handleCompareValue(
-          item2.origin!.recipe?.['item_level']?.toString() ?? ''
-        )
+      const value1 = handleCompareValue(item1.origin!.recipe?.['item_level']?.toString() ?? ''),
+        value2 = handleCompareValue(item2.origin!.recipe?.['item_level']?.toString() ?? '')
       return value1 - value2
     },
   },
@@ -617,9 +574,7 @@ const itemLevelMinimum = computed<number>({
 
 const statsSearchResult = computed(() => {
   const searchText = modes[SearchModes.Stat].statSearchText.toLowerCase()
-  return modes[SearchModes.Stat].stats.filter(stat =>
-    stat.text.toLowerCase().includes(searchText)
-  )
+  return modes[SearchModes.Stat].stats.filter(stat => stat.text.toLowerCase().includes(searchText))
 })
 
 const validEquipments = computed(() => {
@@ -644,9 +599,7 @@ const validEquipments = computed(() => {
     const checkObtain =
       (unknowObtain && equip.origin!.obtains.length === 0) ||
       validObtains.find(obtain =>
-        equip.origin!.obtains.find(
-          eqObtain => eqObtain['type'] === obtain.value
-        )
+        equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value)
       )
     return checkType && checkObtain
   })
@@ -670,14 +623,11 @@ const allSearchResult = computed(() => {
           return (
             origin.recipe &&
             origin.recipe['materials'] &&
-            origin.recipe['materials'].find(item =>
-              item.name.toLowerCase().includes(searchText)
-            )
+            origin.recipe['materials'].find(item => item.name.toLowerCase().includes(searchText))
           )
         } else if (target === 'obtain-name') {
           return origin.obtains.find(
-            obtain =>
-              obtain['name']?.toLowerCase().includes(searchText) ?? false
+            obtain => obtain['name']?.toLowerCase().includes(searchText) ?? false
           )
         } else if (target === 'map') {
           return origin.obtains.find(
@@ -702,7 +652,7 @@ const allSearchResult = computed(() => {
       if (!equip.origin!.recipe?.['item_level']) {
         return false
       }
-      let value = equip.origin!.recipe?.['item_level']
+      const value = equip.origin!.recipe?.['item_level']
       return value >= min && value <= max
     })
   } else if (state.currentMode === SearchModes.Dye) {
@@ -710,22 +660,16 @@ const allSearchResult = computed(() => {
     if (searchText === '') {
       return []
     }
-    return validEquipments.value.filter(
-      equip => findObtainByDye(searchText, equip).length > 0
-    )
+    return validEquipments.value.filter(equip => findObtainByDye(searchText, equip).length > 0)
   }
   return []
 })
 
 const searchResult = computed(() => {
-  let sr = allSearchResult.value.slice()
+  const sr = allSearchResult.value.slice()
   const mode = state.currentMode,
     target = sortState.currentSelected
-  sr.sort(
-    target === 'default'
-      ? sortOptions[mode].default
-      : sortOptions.global[target]
-  )
+  sr.sort(target === 'default' ? sortOptions[mode].default : sortOptions.global[target])
   return sortState.currentOrder === 'down' ? sr.reverse() : sr.slice()
 })
 

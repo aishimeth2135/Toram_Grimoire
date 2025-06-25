@@ -21,9 +21,9 @@ import { useLoadingStore } from '@/stores/app/loading'
 const store = useLoadingStore()
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .app--loading {
-  background-color: rgba(var(--app-rgb-white), 0.6);
+  background-color: --alpha(var(--app-white) / 60%);
 }
 .custom-icon {
   width: 6rem;

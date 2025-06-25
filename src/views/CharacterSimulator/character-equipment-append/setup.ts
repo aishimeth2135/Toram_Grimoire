@@ -3,10 +3,7 @@ import { type Ref, computed, markRaw, ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 import { fuzzySearch, prepareFuzzySearch } from '@/shared/utils/data'
 
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 import { BagEquipment } from '@/lib/Items/BagItem'
@@ -24,14 +21,10 @@ export interface StatOption {
 }
 
 export function findStat(target: StatOption, stats: StatRestriction[]) {
-  return stats.find(
-    stat => stat.baseId === target.origin.baseId && stat.type === target.type
-  )
+  return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
 }
 
-export const useEquipmentsSearch = (
-  filterEquipmentTypes: Ref<EquipmentTypes[]>
-) => {
+export const useEquipmentsSearch = (filterEquipmentTypes: Ref<EquipmentTypes[]>) => {
   const currentMode: Ref<EquipmentSearchMode> = ref(EquipmentSearchMode.Normal)
   const normalSearchText = ref('')
   const statSearchText = ref('')
@@ -73,10 +66,7 @@ export const useEquipmentsSearch = (
     const text = prepareFuzzySearch(statSearchText.value)
 
     const results = statOptions.filter(item => fuzzySearch(text, item.text))
-    if (
-      selectedStatOption.value &&
-      !results.includes(selectedStatOption.value)
-    ) {
+    if (selectedStatOption.value && !results.includes(selectedStatOption.value)) {
       results.unshift(selectedStatOption.value)
     }
     return results
@@ -106,9 +96,7 @@ export const useEquipmentsSearch = (
       if (fuzzySearch(text, equip.name)) {
         return true
       }
-      return equip.obtains.some(
-        obtain => obtain.name && fuzzySearch(text, obtain.name)
-      )
+      return equip.obtains.some(obtain => obtain.name && fuzzySearch(text, obtain.name))
     })
     return results
   })
@@ -145,9 +133,7 @@ export const useEquipmentsSearch = (
         results = results
           .slice()
           .sort(
-            (item1, item2) =>
-              previewStatMap.get(item2)!.value -
-              previewStatMap.get(item1)!.value
+            (item1, item2) => previewStatMap.get(item2)!.value - previewStatMap.get(item1)!.value
           )
       }
       return results
@@ -155,16 +141,12 @@ export const useEquipmentsSearch = (
 
     let results = normalModeSearchResults.value
     if (sortByValue.value) {
-      results = results
-        .slice()
-        .sort((item1, item2) => item2.baseValue - item1.baseValue)
+      results = results.slice().sort((item1, item2) => item2.baseValue - item1.baseValue)
     }
     return results
   })
 
-  const statModePreviewStatMap = computed(
-    () => statModeSearchResultData.value.previewStatMap
-  )
+  const statModePreviewStatMap = computed(() => statModeSearchResultData.value.previewStatMap)
 
   return {
     currentMode,

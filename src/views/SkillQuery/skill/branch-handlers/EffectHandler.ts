@@ -1,10 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import type {
   HandleBranchTextPropsMap,
   HandleBranchValuePropsMap,
@@ -52,15 +49,9 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(
     target: value => !!value,
   })
 
-  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>([
-    'is_place',
-    'type',
-  ])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['is_place', 'type'])
   if (['auto', 'hit'].includes(props.get('condition')!)) {
-    if (
-      props.get('condition') === 'auto' &&
-      branchItem.realName === SkillBranchNames.Next
-    ) {
+    if (props.get('condition') === 'auto' && branchItem.realName === SkillBranchNames.Next) {
       props.set('condition', '@next')
     }
     langAttrsMap.append('condition')

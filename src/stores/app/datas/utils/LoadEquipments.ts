@@ -3,11 +3,7 @@ import { splitComma } from '@/shared/utils/string'
 
 import ItemsSystem from '@/lib/Items'
 import { BagEquipment, BagItemRecipeMaterial } from '@/lib/Items/BagItem'
-import type {
-  BagItemExtra,
-  BagItemObtain,
-  BagItemRecipe,
-} from '@/lib/Items/BagItem'
+import type { BagItemExtra, BagItemObtain, BagItemRecipe } from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
 import { parseItemStatData } from './utils'
@@ -97,12 +93,7 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
       const propValue = row[ATTRIBUTE_VALUES[0]]
       if (currentCategory === 'stats') {
         const { value, type } = parseItemStatData(row[ATTRIBUTE_VALUES[0]])
-        currentEquipment.appendStat(
-          propName,
-          value,
-          type,
-          row[ATTRIBUTE_VALUES[1]]
-        )
+        currentEquipment.appendStat(propName, value, type, row[ATTRIBUTE_VALUES[1]])
       } else if (currentCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof BagItemObtain] = propValue
@@ -112,15 +103,9 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
           currentExtra[propName] = propValue
         }
       } else if (currentCategory === 'recipe') {
-        const keys = [
-          'item_level',
-          'item_difficulty',
-          'cost',
-          'potential',
-        ] as const
+        const keys = ['item_level', 'item_difficulty', 'cost', 'potential'] as const
         if (keys.includes(propName as (typeof keys)[number])) {
-          currentRecipe[propName as (typeof keys)[number]] =
-            toInt(propValue) ?? 0
+          currentRecipe[propName as (typeof keys)[number]] = toInt(propValue) ?? 0
         } else if (propName === 'materials') {
           currentRecipe.materials = processMaterails(propValue)
         }

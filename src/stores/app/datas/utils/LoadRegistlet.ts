@@ -35,8 +35,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
     RegistletCategoryIds.Special,
     RegistletCategoryIds.Stat,
   ]
-  const isCategoryId = (str: string): str is RegistletCategoryIds =>
-    categoryIdList.includes(str)
+  const isCategoryId = (str: string): str is RegistletCategoryIds => categoryIdList.includes(str)
 
   let currentCategory: RegistletCategory | null = null
   let currentItem: RegistletItemBase | null = null

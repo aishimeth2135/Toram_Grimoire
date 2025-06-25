@@ -64,7 +64,7 @@ const browseMode = ref(BrowseMode.Equipped)
     @update:visible="emit('close')"
   >
     <div class="h-full w-full overflow-y-auto px-4 py-4 wd-lg:flex">
-      <div class="flex-shrink-0 py-2 wd:flex wd-lg:h-full">
+      <div class="shrink-0 py-2 wd:flex wd-lg:h-full">
         <CharacterEquipmentDetails
           :current-edit-mode="currentMode"
           :equipment="equipment"
@@ -89,14 +89,10 @@ const browseMode = ref(BrowseMode.Equipped)
         </div>
       </div>
       <div
-        class="flex max-h-full max-w-[45.25rem] flex-col rounded border border-primary-10 bg-white pb-2 wd:flex-grow wd-lg:h-full"
+        class="flex max-h-full max-w-[45.25rem] flex-col rounded-sm border border-primary-10 bg-white pb-2 wd:grow wd-lg:h-full"
       >
         <div class="px-3 pt-2 text-sm text-gray-40">
-          {{
-            t(
-              'character-simulator.equipment-basic-editor.select-equipment-to-edit-tips'
-            )
-          }}
+          {{ t('character-simulator.equipment-basic-editor.select-equipment-to-edit-tips') }}
         </div>
         <cy-tabs v-model="browseMode" class="mb-4 px-2">
           <cy-tab :value="BrowseMode.Equipped">
@@ -108,16 +104,14 @@ const browseMode = ref(BrowseMode.Equipped)
         </cy-tabs>
         <div
           v-if="browseMode === BrowseMode.Equipped"
-          class="mx-2 flex-grow overflow-y-auto rounded border border-primary-10"
+          class="mx-2 grow overflow-y-auto rounded-sm border border-primary-10"
         >
-          <BrowseEquipmentEquippedItems
-            v-model:selected-equipment="equipment"
-          />
+          <BrowseEquipmentEquippedItems v-model:selected-equipment="equipment" />
         </div>
         <BrowseEquipmentsMain
           v-else-if="browseMode === BrowseMode.All"
           v-model:selected-equipment="equipment"
-          class="min-h-0 min-w-0 flex-grow"
+          class="min-h-0 min-w-0 grow"
         />
       </div>
     </div>

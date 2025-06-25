@@ -6,11 +6,7 @@ import { useToggle } from '@/shared/setup/State'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import {
-  type ButtonBaseProps,
-  type ButtonIconProps,
-  useButtonBaseBinds,
-} from './setup'
+import { type ButtonBaseProps, type ButtonIconProps, useButtonBaseBinds } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {
   contentDefaultVisible?: boolean
@@ -34,10 +30,7 @@ const buttonBaseBinds = computed(() => {
 </script>
 
 <template>
-  <div
-    class="cy-button-dropdown-wrapper"
-    :class="{ 'content-visble': contentVisible }"
-  >
+  <div class="cy-button-dropdown-wrapper" :class="{ 'content-visble': contentVisible }">
     <CyButtonBase
       v-slot="{ iconClass }"
       v-bind="buttonBaseBinds"
@@ -54,21 +47,3 @@ const buttonBaseBinds = computed(() => {
     </div>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-dropdown-wrapper {
-  @apply border-l-2 border-primary-30 duration-200;
-
-  &.content-visble {
-    @apply border-primary-30;
-  }
-}
-
-.cy-button-dropdown-main {
-  @apply px-3 py-2;
-
-  &:hover {
-    background-color: rgba(var(--app-rgb-light), 0.25);
-  }
-}
-</style>

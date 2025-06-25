@@ -4,28 +4,18 @@
     :class="rootClass"
     class="skill-branch-wrapper"
   >
-    <div
-      class="skill-branch-content"
-      :class="{ 'sub-content-active': subContentVisible }"
-    >
+    <div class="skill-branch-content" :class="{ 'sub-content-active': subContentVisible }">
       <div class="relative">
         <div
           v-if="currentEffectEquipments && subContentVisible"
           class="flex items-center pb-1.5 pl-3 pt-2"
         >
-          <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
+          <div class="shrink-0 pr-3 text-sm text-stone-40">
             {{ t('skill-query.branch.current-effect-equipments-prefix') }}
           </div>
-          <SkillEquipmentButton
-            :equipments="currentEffectEquipments"
-            selected
-          />
+          <SkillEquipmentButton :equipments="currentEffectEquipments" selected />
         </div>
-        <component
-          :is="currentComponent"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
+        <component :is="currentComponent" :branch-item="skillBranchItem" :computing="computing" />
         <cy-button-circle
           v-if="subButtonAvailable"
           icon="mdi:select-compare"
@@ -37,7 +27,7 @@
       <cy-transition>
         <div v-if="!sub && subContentVisible">
           <div class="flex items-center pb-1.5 pl-3 pt-3">
-            <div class="flex-shrink-0 pr-3 text-sm text-stone-40">
+            <div class="shrink-0 pr-3 text-sm text-stone-40">
               {{ t('skill-query.branch.compared-effect-equipments-prefix') }}
             </div>
             <div class="flex flex-wrap items-center">
@@ -53,11 +43,7 @@
             </div>
           </div>
           <div v-if="currentOtherEffectBranch">
-            <SkillBranch
-              :skill-branch-item="currentOtherEffectBranch"
-              :computing="computing"
-              sub
-            />
+            <SkillBranch :skill-branch-item="currentOtherEffectBranch" :computing="computing" sub />
           </div>
         </div>
       </cy-transition>
@@ -175,10 +161,7 @@ const paddingBottomClass = computed(() => {
       return 'pb-0'
     }
   }
-  if (
-    cur === SkillBranchNames.Reference &&
-    next === SkillBranchNames.Reference
-  ) {
+  if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
     return 'pb-2'
   }
   if (next === SkillBranchNames.Reference) {
@@ -201,11 +184,8 @@ const rootClass = computed(() => {
   }
 })
 
-const {
-  otherEffectBranches,
-  currentOtherEffectBranch,
-  setCurrentOtherEffectBranch,
-} = setupOtherEffectBranches(branchItem)
+const { otherEffectBranches, currentOtherEffectBranch, setCurrentOtherEffectBranch } =
+  setupOtherEffectBranches(branchItem)
 
 const currentEffectEquipments = computed(() => {
   const current = branchItem.value
@@ -226,10 +206,12 @@ const subButtonAvailable = computed(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .skill-branch-wrapper {
   & :deep(.history-compare--mark) {
-    @apply bg-violet-60 bg-opacity-10;
+    @apply bg-violet-60/10;
   }
 
   & :deep(.skill-formula-function-wrapper) {
@@ -245,7 +227,7 @@ const subButtonAvailable = computed(() => {
       }
     }
     &.key--min {
-      @apply bg-blue-30 bg-opacity-50;
+      @apply bg-blue-30/50;
       & > .name {
         @apply text-blue-60;
       }
@@ -254,7 +236,7 @@ const subButtonAvailable = computed(() => {
       }
     }
     &.key--max {
-      @apply bg-cyan-30 bg-opacity-50;
+      @apply bg-cyan-30/50;
       & > .name {
         @apply text-cyan-60;
       }
@@ -267,10 +249,10 @@ const subButtonAvailable = computed(() => {
       @apply text-sm;
     }
     & > .value {
-      @apply ml-1.5 mr-1 inline-flex items-center bg-white bg-opacity-75 px-2 text-sm;
+      @apply bg-white/75 ml-1.5 mr-1 inline-flex items-center px-2 text-sm;
 
       & > .param-separate {
-        @apply mx-2 mt-0.5 inline-block h-4 bg-opacity-0;
+        @apply mx-2 mt-0.5 inline-block h-4 bg-transparent;
 
         border-left-width: 0.1875rem;
       }
@@ -299,8 +281,8 @@ const subButtonAvailable = computed(() => {
 }
 </style>
 
-<style lang="postcss">
+<style>
 html.theme--night-mode .app--skill-query--wrapper .history-compare--mark {
-  @apply bg-opacity-30 !important;
+  background-color: --alpha(var(--app-violet-60) / 30%);
 }
 </style>

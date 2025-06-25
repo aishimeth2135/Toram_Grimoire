@@ -95,31 +95,19 @@ const displayDatas = computed(() => {
     >
       {{ t('main-quest-calc.exp-rate-overview-button-title') }}
       <cy-icon
-        :icon="
-          expRateVisible
-            ? 'ic:round-keyboard-arrow-down'
-            : 'ic:round-keyboard-arrow-up'
-        "
+        :icon="expRateVisible ? 'ic:round-keyboard-arrow-down' : 'ic:round-keyboard-arrow-up'"
         :class="expRateVisible ? 'text-primary-70' : 'text-primary-40'"
         class="ml-1"
       />
     </div>
     <div v-if="expRateVisible" class="mt-2 w-full space-y-0.5">
-      <div
-        v-for="data in displayDatas"
-        :key="data.id"
-        class="flex w-full items-center"
-      >
-        <div class="mr-2 w-6 flex-shrink-0" :class="data.titleClass">
+      <div v-for="data in displayDatas" :key="data.id" class="flex w-full items-center">
+        <div class="mr-2 w-6 shrink-0" :class="data.titleClass">
           {{ data.title }}
         </div>
-        <div class="flex flex-grow items-center">
-          <div
-            class="h-3"
-            :class="data.barClass"
-            :style="{ width: `${data.expRate}%` }"
-          />
-          <div class="ml-2 flex-shrink-0 text-primary-50">
+        <div class="flex grow items-center">
+          <div class="h-3" :class="data.barClass" :style="{ width: `${data.expRate}%` }" />
+          <div class="ml-2 shrink-0 text-primary-50">
             {{ `${data.expRate}%` }}
           </div>
         </div>

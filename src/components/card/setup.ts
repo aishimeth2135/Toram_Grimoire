@@ -1,9 +1,6 @@
 import { type Ref, onUnmounted } from 'vue'
 
-import {
-  getContextIdFromElement,
-  useContext,
-} from '@/shared/setup/ContextState'
+import { getContextIdFromElement, useContext } from '@/shared/setup/ContextState'
 import { defineState } from '@/shared/setup/State'
 
 interface CardRowContext {
@@ -28,8 +25,7 @@ const useCardRowState = defineState(() => {
 })
 
 export function useCardRowContext(context: CardRowContext) {
-  const { allocCardRowContext, deallocCardRowContext, CARD_ROW_ID_ATTR_NAME } =
-    useCardRowState()
+  const { allocCardRowContext, deallocCardRowContext, CARD_ROW_ID_ATTR_NAME } = useCardRowState()
 
   const { id } = allocCardRowContext(context)
 

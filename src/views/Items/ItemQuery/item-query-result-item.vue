@@ -7,7 +7,7 @@
         @click="toggle('contents/detail')"
       >
         <div class="flex w-full items-start">
-          <div class="flex w-48 flex-shrink-0 items-center">
+          <div class="flex w-48 shrink-0 items-center">
             <cy-icon
               :icon="
                 !equipment.is(EquipmentKinds.Avatar)
@@ -31,18 +31,14 @@
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon-text icon="mdi-sword" text-color="primary-30">
-                ATK
-              </cy-icon-text>
+              <cy-icon-text icon="mdi-sword" text-color="primary-30"> ATK </cy-icon-text>
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
               <span class="border-l border-blue-50 pl-2 text-blue-50">
                 {{ equipment.stability }}%
               </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon-text icon="mdi:shield-outline" text-color="primary-30">
-                DEF
-              </cy-icon-text>
+              <cy-icon-text icon="mdi:shield-outline" text-color="primary-30"> DEF </cy-icon-text>
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
@@ -51,10 +47,7 @@
               </cy-icon-text>
             </template>
           </div>
-          <div
-            v-else-if="state.currentMode === SearchModes.Stat"
-            class="mt-0.5"
-          >
+          <div v-else-if="state.currentMode === SearchModes.Stat" class="mt-0.5">
             <template v-if="previewStats !== null">
               <ShowStat
                 v-for="previewStat in previewStats"
@@ -66,10 +59,7 @@
             </template>
           </div>
           <div
-            v-else-if="
-              state.currentMode === SearchModes.ItemLevel &&
-              originEquipment.recipe
-            "
+            v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe"
             class="flex items-center"
           >
             <cy-icon-text icon="jam-hammer" text-color="primary-30">
@@ -116,9 +106,7 @@
               <span class="ml-2 flex items-center">
                 <cy-icon
                   :icon="
-                    !originEquipment.unknowCategory
-                      ? equipment.getCategoryImagePath()
-                      : 'mdi-ghost'
+                    !originEquipment.unknowCategory ? equipment.getCategoryImagePath() : 'mdi-ghost'
                   "
                   small
                 />
@@ -138,9 +126,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.stability') }}
                 </span>
-                <span class="ml-2 text-blue-50">
-                  {{ equipment.stability }}%
-                </span>
+                <span class="ml-2 text-blue-50"> {{ equipment.stability }}% </span>
               </div>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
@@ -168,20 +154,14 @@
         </div>
         <div v-if="originEquipment.recipe">
           <div class="flex">
-            <cy-icon-text
-              icon="ion-hammer"
-              small
-              color="primary-40"
-              single-color
-            >
+            <cy-icon-text icon="ion-hammer" small color="primary-40" single-color>
               {{ t('item-query.equipment-detail.content-titles.recipe') }}
             </cy-icon-text>
           </div>
           <div class="py-3 pl-5">
             <div
               v-if="
-                originEquipment.recipe['item_level'] ||
-                originEquipment.recipe['item_difficulty']
+                originEquipment.recipe['item_level'] || originEquipment.recipe['item_difficulty']
               "
               class="pb-3"
             >
@@ -211,10 +191,7 @@
               </div>
             </div>
             <div class="pb-3 pl-3">
-              <div
-                v-if="originEquipment.recipe['cost']"
-                class="flex items-center"
-              >
+              <div v-if="originEquipment.recipe['cost']" class="flex items-center">
                 <div class="flex w-40">
                   <cy-icon-text icon="la-coins">
                     {{ t('item-query.equipment-detail.recipe.spina') }}
@@ -243,32 +220,15 @@
         </div>
         <div>
           <div class="flex">
-            <cy-icon-text
-              icon="bx-bx-search-alt"
-              small
-              color="primary-40"
-              single-color
-            >
+            <cy-icon-text icon="bx-bx-search-alt" small color="primary-40" single-color>
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </cy-icon-text>
           </div>
           <div class="py-1.5 pl-5">
-            <div
-              v-if="obtainsDatas.length !== 0"
-              class="-my-1 divide-y divide-primary-20"
-            >
-              <div
-                v-for="data in obtainsDatas"
-                :key="data.iid"
-                class="px-1 pb-2 pt-1.5"
-              >
+            <div v-if="obtainsDatas.length !== 0" class="-my-1 divide-y divide-primary-20">
+              <div v-for="data in obtainsDatas" :key="data.iid" class="px-1 pb-2 pt-1.5">
                 <div class="flex items-center">
-                  <cy-icon-text
-                    :icon="data.icon"
-                    class="mr-2"
-                    small
-                    text-color="primary-60"
-                  >
+                  <cy-icon-text :icon="data.icon" class="mr-2" small text-color="primary-60">
                     {{ data.type }}
                   </cy-icon-text>
                   <span class="text-fuchsia-60">{{ data.name }}</span>
@@ -277,7 +237,7 @@
                   <cy-icon-text
                     v-if="data.dye"
                     icon="ic-outline-palette"
-                    class="ml-3 flex-shrink-0"
+                    class="ml-3 shrink-0"
                     small
                   >
                     {{ data.dye }}
@@ -285,7 +245,7 @@
                   <cy-icon-text
                     v-if="data.map"
                     icon="ic-outline-map"
-                    class="ml-3 flex-shrink-0"
+                    class="ml-3 shrink-0"
                     color="gray-50"
                     small
                   >
@@ -305,35 +265,21 @@
         class="mb-3 ml-4 border-l-2 border-solid border-primary-30 pl-2"
       >
         <div class="divide-y divide-primary-20">
-          <div
-            v-for="item in dyeObtains"
-            :key="item.iid"
-            class="px-1 pb-2 pt-1.5"
-          >
+          <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
             <div class="flex items-center">
-              <cy-icon-text
-                :icon="item.icon"
-                class="mr-2"
-                small
-                text-color="primary-60"
-              >
+              <cy-icon-text :icon="item.icon" class="mr-2" small text-color="primary-60">
                 {{ item.type }}
               </cy-icon-text>
               <span class="text-fuchsia-60">{{ item.name }}</span>
             </div>
             <div class="mt-1 flex items-center">
-              <cy-icon-text
-                v-if="item.dye"
-                icon="ic-outline-palette"
-                class="ml-3 flex-shrink-0"
-                small
-              >
+              <cy-icon-text v-if="item.dye" icon="ic-outline-palette" class="ml-3 shrink-0" small>
                 {{ item.dye }}
               </cy-icon-text>
               <cy-icon-text
                 v-if="item.map"
                 icon="ic-outline-map"
-                class="ml-3 flex-shrink-0"
+                class="ml-3 shrink-0"
                 color="gray-50"
                 small
               >
@@ -353,22 +299,14 @@ import { useI18n } from 'vue-i18n'
 
 import ToggleService from '@/shared/setup/ToggleService'
 
-import {
-  CharacterEquipment,
-  EquipmentKinds,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { type BagItemObtain } from '@/lib/Items/BagItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import {
-  SearchModes,
-  findObtainByDye,
-  findStat,
-  useItemQueryModes,
-} from './setup'
+import { SearchModes, findObtainByDye, findStat, useItemQueryModes } from './setup'
 
 interface Props {
   equipment: CharacterEquipment
@@ -404,9 +342,7 @@ const obtainsDataConvert = (obtains: BagItemObtain[]) => {
     const type = t('common.Equipment.obtain.' + item.type)
     const icon = icons[item.type!] ?? ''
     const name =
-      item.type !== 'smith'
-        ? item.name
-        : t('item-query.equipment-detail.production-equipment')
+      item.type !== 'smith' ? item.name : t('item-query.equipment-detail.production-equipment')
     const { map = null, dye = null } = item
     return {
       iid: idx,
@@ -420,9 +356,7 @@ const obtainsDataConvert = (obtains: BagItemObtain[]) => {
   })
 }
 
-const obtainsDatas = computed(() =>
-  obtainsDataConvert(originEquipment.value.obtains)
-)
+const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obtains))
 
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
@@ -437,15 +371,14 @@ const previewStats = computed(() => {
 })
 
 const dyeObtains = computed(() => {
-  const obtain = findObtainByDye(
-    modes[SearchModes.Dye].searchText,
-    props.equipment
-  )
+  const obtain = findObtainByDye(modes[SearchModes.Dye].searchText, props.equipment)
   return obtainsDataConvert(obtain)
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .result-item {
   max-height: 70vh;
   overflow-y: auto;

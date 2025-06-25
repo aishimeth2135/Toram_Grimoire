@@ -21,9 +21,7 @@ function create(width = 0, height = 0, attr: Attrs = {}) {
 
 function drawImage(
   path: string,
-  // eslint-disable-next-line id-length
   x: number,
-  // eslint-disable-next-line id-length
   y: number,
   width: number,
   height: number,
@@ -59,10 +57,7 @@ function createLinearGradient(
   stops: Attrs[],
   attr: Attrs = {}
 ) {
-  const lg = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'linearGradient'
-  )
+  const lg = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient')
   attr = Object.assign(
     {
       id,

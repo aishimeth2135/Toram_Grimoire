@@ -31,10 +31,7 @@
 import { computed } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
-import type {
-  SkillFormulaExtraVarState,
-  SkillResultsState,
-} from '@/stores/views/character/setup'
+import type { SkillFormulaExtraVarState, SkillResultsState } from '@/stores/views/character/setup'
 
 import CharacterSkillItemOptionsStack from './character-skill-item-options-stack.vue'
 
@@ -49,14 +46,8 @@ const characterStore = useCharacterStore()
 const formulaExtraStates = computed(() => {
   const states: SkillFormulaExtraVarState[] = []
   props.skillResultsState.results.forEach(result => {
-    const branchState = characterStore.getSkillBranchState(
-      result.container.branchItem.default
-    )
-    states.push(
-      ...branchState.formulaExtraIds.map(id =>
-        branchState.getFormulaExtraState(id)
-      )
-    )
+    const branchState = characterStore.getSkillBranchState(result.container.branchItem.default)
+    states.push(...branchState.formulaExtraIds.map(id => branchState.getFormulaExtraState(id)))
   })
   return states
 })

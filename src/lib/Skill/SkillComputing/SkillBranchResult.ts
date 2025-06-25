@@ -1,15 +1,8 @@
 import { toFloat, toInt } from '@/shared/utils/number'
-import { escapeRegExp, isNumberString, splitComma } from '@/shared/utils/string'
+import { escapeRegExp, splitComma } from '@/shared/utils/string'
 
-import {
-  StatComputed,
-  StatRecorded,
-  StatValueSourceTypes,
-} from '@/lib/Character/Stat'
-import {
-  ResultContainerTypes,
-  TextResultContainerPartTypes,
-} from '@/lib/common/ResultContainer'
+import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
+import { ResultContainerTypes, TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import {
   ResultContainer,
   ResultContainerBase,
@@ -35,10 +28,7 @@ interface SkillBranchResultBase extends ResultContainerBase {
   get valueSum(): number
 }
 
-class SkillBranchResult
-  extends ResultContainer
-  implements SkillBranchResultBase
-{
+class SkillBranchResult extends ResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
 
@@ -48,11 +38,7 @@ class SkillBranchResult
     registlet: SkillBranchResult | null
   }
 
-  static from(
-    container: ResultContainer,
-    branch: SkillBranchItemBaseChilds,
-    key: string
-  ) {
+  static from(container: ResultContainer, branch: SkillBranchItemBaseChilds, key: string) {
     const result = new SkillBranchResult(
       container.type,
       branch,
@@ -143,18 +129,8 @@ class SkillBranchStatResult extends SkillBranchResult {
   // The condition value that will be calc and result is `boolean`.
   conditionValue: string | null
 
-  constructor(
-    branch: SkillBranchItemBaseChilds,
-    origin: StatComputed,
-    stat: StatComputed
-  ) {
-    super(
-      ResultContainerTypes.Number,
-      branch,
-      stat.statId,
-      origin.value,
-      stat.value
-    )
+  constructor(branch: SkillBranchItemBaseChilds, origin: StatComputed, stat: StatComputed) {
+    super(ResultContainerTypes.Number, branch, stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
     this.conditionValue = null
@@ -182,10 +158,7 @@ class SkillBranchStatResult extends SkillBranchResult {
     this.conditionValue = title
   }
 
-  storeStatResultData(data: {
-    title: string | SkillBranchTextResult
-    sign: string
-  }) {
+  storeStatResultData(data: { title: string | SkillBranchTextResult; sign: string }) {
     this.statResultData = {
       title: data.title,
       sign: data.sign,
@@ -202,19 +175,13 @@ class SkillBranchStatResult extends SkillBranchResult {
   }
 }
 
-type SkillBranchTextResultPartValue =
-  | SkillBranchTextResultPart
-  | SkillBranchResult
-  | string
+type SkillBranchTextResultPartValue = SkillBranchTextResultPart | SkillBranchResult | string
 
 interface SkillBranchTextResultParseResult {
   containers: SkillBranchResult[]
   parts: SkillBranchTextResultPartValue[]
 }
-class SkillBranchTextResult
-  extends TextResultContainer
-  implements SkillBranchResultBase
-{
+class SkillBranchTextResult extends TextResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
 
@@ -235,26 +202,16 @@ class SkillBranchTextResult
       glossaryTag: commonParseItems.glossaryTag.handler,
     }
     commonParseItems.value.handler = context => {
-      return SkillBranchResult.from(
-        originalHandlers.value(context),
-        branch,
-        key
-      )
+      return SkillBranchResult.from(originalHandlers.value(context), branch, key)
     }
     commonParseItems.separate.handler = context => {
       return SkillBranchTextResultPart.from(originalHandlers.separate(context))
     }
     commonParseItems.glossaryTag.handler = context => {
-      return SkillBranchTextResultPart.from(
-        originalHandlers.glossaryTag(context)
-      )
+      return SkillBranchTextResultPart.from(originalHandlers.glossaryTag(context))
     }
 
-    const items = [
-      commonParseItems.glossaryTag,
-      commonParseItems.value,
-      commonParseItems.separate,
-    ]
+    const items = [commonParseItems.glossaryTag, commonParseItems.value, commonParseItems.separate]
 
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
@@ -264,9 +221,7 @@ class SkillBranchTextResult
         }
         const item: TextParseItem<SkillBranchTextResultPart> = {
           id: propKey,
-          pattern: new RegExp(
-            `(${values.map(value => escapeRegExp(value)).join('|')})`
-          ),
+          pattern: new RegExp(`(${values.map(value => escapeRegExp(value)).join('|')})`),
           handler(context) {
             const newPart = new SkillBranchTextResultPart(
               TextResultContainerPartTypes.Other,
@@ -318,11 +273,7 @@ class SkillBranchTextResultPart extends TextResultContainerPart {
       }
       return part
     })
-    const newPart = new SkillBranchTextResultPart(
-      resultPart.type,
-      parts,
-      resultPart.unit
-    )
+    const newPart = new SkillBranchTextResultPart(resultPart.type, parts, resultPart.unit)
     for (const [key, value] of resultPart.metadata.entries()) {
       newPart.metadata.set(key, value)
     }

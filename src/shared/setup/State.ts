@@ -1,13 +1,12 @@
 import { type Ref, onUnmounted } from 'vue'
+
 import { ViewNames } from '../consts/view'
 
 /**
  * The lite state management API that is like `pinia`.
  * intention: prevent the unnecessary memory consumption if this state is never be used.
  */
-export function defineState<State extends Record<string, any>>(
-  init: () => State
-): () => State {
+export function defineState<State extends Record<string, any>>(init: () => State): () => State {
   let state: State
 
   return function () {
@@ -50,7 +49,7 @@ export function registViewStatesCleaning(id: ViewNames) {
   })
 }
 
-export function useToggleList<Item extends any>(list: Ref<Item[]>) {
+export function useToggleList<Item>(list: Ref<Item[]>) {
   const toggleItem = (item: Item) => {
     const idx = list.value.indexOf(item)
     if (idx > -1) {
@@ -72,14 +71,21 @@ interface ToggleHelper {
 }
 
 export function useToggle(target: Ref<boolean>): ToggleHelper {
-  return <ToggleHelper>((value) => {
+  return (value => {
     // ignore `undefined`, `null`, `Event` or others
     target.value = typeof value === 'boolean' ? value : !target.value
-  })
+  }) satisfies ToggleHelper
 }
 
 export function useToggleGroup(helpers: ToggleHelper[]) {
-  return (value: boolean) => {
-    helpers.forEach(helper => helper(value))
+  return (value: boolean, targetHandler?: ToggleHelper) => {
+    if (targetHandler) {
+      targetHandler()
+    }
+    helpers.forEach(helper => {
+      if (helper !== targetHandler) {
+        helper(value)
+      }
+    })
   }
 }

@@ -4,10 +4,7 @@ import type { FoodsBase } from './index'
 import type { FoodAmount } from './index'
 
 function initFoodsBase(foodsBase: FoodsBase) {
-  const foodList: Record<
-    string,
-    FoodAmount | { positive: FoodAmount; negative: FoodAmount }
-  > = {
+  const foodList: Record<string, FoodAmount | { positive: FoodAmount; negative: FoodAmount }> = {
     max_hp: [400, 600],
     max_mp: [60, 140],
     str: [2, 4],

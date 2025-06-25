@@ -12,14 +12,14 @@
           :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }"
           custom
         >
-          <div class="mb-4 mr-3 flex-shrink-0 rounded-full" @click="navigate">
+          <div class="mb-4 mr-3 shrink-0 rounded-full" @click="navigate">
             <div class="px-4 text-primary-70">
               {{ t(`app.about.${column.title}.title`) }}
             </div>
             <div class="mt-0.5 h-1 rounded-full bg-primary-30" />
           </div>
         </router-link>
-        <div v-else class="mb-4 mr-3 flex-shrink-0 rounded-full">
+        <div v-else class="mb-4 mr-3 shrink-0 rounded-full">
           <div class="px-4 text-primary-70">
             {{ t(`app.about.${column.title}.title`) }}
           </div>
@@ -36,21 +36,10 @@
                     : '',
                 }"
               />
-              <cy-icon
-                icon="mdi:discord"
-                class="absolute right-2 top-2"
-                width="2rem"
-              />
-              <div
-                class="flex w-full items-center rounded-b-lg bg-primary-20 px-4 py-2.5"
-              >
-                <div class="overflow-hidden rounded">
-                  <img
-                    :src="discordGroupData.iconUrl"
-                    alt="#"
-                    width="50"
-                    height="50"
-                  />
+              <cy-icon icon="mdi:discord" class="absolute right-2 top-2" width="2rem" />
+              <div class="flex w-full items-center rounded-b-lg bg-primary-20 px-4 py-2.5">
+                <div class="overflow-hidden rounded-sm">
+                  <img :src="discordGroupData.iconUrl" alt="#" width="50" height="50" />
                 </div>
                 <div class="pl-4">
                   <div class="text-xl text-primary-90">Toram's Pelulu</div>
@@ -65,11 +54,7 @@
                     </cy-icon-text>
                   </div>
                 </div>
-                <a
-                  href="https://discord.com/invite/FKG6RVT975"
-                  target="_blank"
-                  class="ml-auto"
-                >
+                <a href="https://discord.com/invite/FKG6RVT975" target="_blank" class="ml-auto">
                   <cy-button-action>
                     {{ t('app.about.partnership.join') }}
                   </cy-button-action>
@@ -83,24 +68,15 @@
             </div>
             <div class="space-y-2 pb-2">
               <div v-for="item in column.list" :key="item.title">
-                <div
-                  v-if="!item.title.startsWith('@')"
-                  class="text-sm text-primary-50"
-                >
+                <div v-if="!item.title.startsWith('@')" class="text-sm text-primary-50">
                   {{ t(`app.about.${column.title}.${item.title}`) }}
                 </div>
                 <div class="py-2 pl-4">
                   <template
                     v-for="value in item.list"
-                    :key="
-                      typeof value === 'object'
-                        ? `${value.main}|${value.sub}`
-                        : value
-                    "
+                    :key="typeof value === 'object' ? `${value.main}|${value.sub}` : value"
                   >
-                    <template
-                      v-if="typeof value === 'string' && value.startsWith('@')"
-                    >
+                    <template v-if="typeof value === 'string' && value.startsWith('@')">
                       <div v-if="value === '@line'" class="my-2.5" />
                     </template>
                     <span
@@ -112,13 +88,9 @@
                           : ''
                       "
                     >
-                      <div
-                        class="absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30"
-                      />
+                      <div class="absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30" />
                       <span v-if="typeof value === 'string'">
-                        {{
-                          value.endsWith('@hide') ? value.slice(0, -5) : value
-                        }}
+                        {{ value.endsWith('@hide') ? value.slice(0, -5) : value }}
                       </span>
                       <span v-else class="inline-flex flex-wrap items-center">
                         <span>{{ value.main }}</span>
@@ -140,20 +112,12 @@
               target="_blank"
               class="inline-flex items-center text-cyan-60 opacity-75 duration-150 hover:opacity-100"
             >
-              <cy-icon
-                icon="mdi:github"
-                width="2rem"
-                class="mr-2.5 text-cyan-60"
-              />
+              <cy-icon icon="mdi:github" width="2rem" class="mr-2.5 text-cyan-60" />
               {{ t('app.about.author.github-message') }}
               <span
-                class="ml-3 inline-flex items-center rounded-lg border-1 border-cyan-60/50 py-0.5 pl-2 pr-4"
+                class="border-cyan-60/50 ml-3 inline-flex items-center rounded-lg border-1 py-0.5 pl-2 pr-4"
               >
-                <cy-icon
-                  icon="ic:round-star-border"
-                  width="1.375rem"
-                  class="mr-2 text-cyan-60"
-                />
+                <cy-icon icon="ic:round-star-border" width="1.375rem" class="mr-2 text-cyan-60" />
                 Star
               </span>
             </a>
@@ -162,18 +126,9 @@
       </div>
     </section>
     <section class="px-5 pb-12 pt-5">
-      <i18n-t
-        keypath="app.about.disclaimer"
-        tag="div"
-        class="content"
-        scope="global"
-      >
+      <i18n-t keypath="app.about.disclaimer" tag="div" class="content" scope="global">
         <template #link>
-          <a
-            class="text-primary-50 underline"
-            href="https://asobimo.com/"
-            target="_blank"
-          >
+          <a class="text-primary-50 underline" href="https://asobimo.com/" target="_blank">
             アソビモ株式会社（ASOBIMO,Inc.）
           </a>
         </template>
@@ -340,9 +295,7 @@ const discordGroupData = ref({
 
 const fetchDiscordData = async () => {
   try {
-    const res = await fetch(
-      'https://discord.com/api/v9/invites/FKG6RVT975?with_counts=true'
-    )
+    const res = await fetch('https://discord.com/api/v9/invites/FKG6RVT975?with_counts=true')
     const data = await res.json()
     const guild = data.guild
     discordGroupData.value = {
@@ -358,11 +311,10 @@ const fetchDiscordData = async () => {
     //
   }
 }
-
 fetchDiscordData()
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .cy--about-column {
   @media screen and (max-width: 50rem) {
     flex-wrap: wrap;

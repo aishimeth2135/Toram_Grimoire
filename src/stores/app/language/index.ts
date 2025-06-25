@@ -8,11 +8,7 @@ import CY from '@/shared/utils/Cyteria'
 import { toInt } from '@/shared/utils/number'
 
 import { I18nStore } from './I18nStore'
-import {
-  LocaleGlobalNamespaces,
-  type LocaleNamespaces,
-  LocaleViewNamespaces,
-} from './enums'
+import { LocaleGlobalNamespaces, type LocaleNamespaces, LocaleViewNamespaces } from './enums'
 
 interface LangData {
   [key: string]: LangData | string
@@ -48,8 +44,7 @@ export const useLanguageStore = defineStore('app-language', () => {
   }
 
   const autoSetLang = () => {
-    const lang = // @ts-ignore
-      (window.navigator.language || window.navigator.userLanguage).toLowerCase()
+    const lang = window.navigator.language.toLowerCase()
     const list: Record<string, number> = {
       'zh-tw': 1,
       'zh-hk': 1,
@@ -76,19 +71,17 @@ export const useLanguageStore = defineStore('app-language', () => {
         primaryLang.value = toInt(curLangSet) ?? 0
       }
 
-      secondaryLang.value =
-        toInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!) ?? 0
+      secondaryLang.value = toInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!) ?? 0
     } else {
       autoSetLang()
     }
   }
 
-  type LoadLocaleMessages<
-    Namespace extends LocaleNamespaces = LocaleNamespaces,
-  > = (namespaces: Namespace | Namespace[]) => Promise<void>
+  type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (
+    namespaces: Namespace | Namespace[]
+  ) => Promise<void>
   const loadLocaleMessages: LoadLocaleMessages = async namespaces => {
-    const namespaceList =
-      typeof namespaces === 'string' ? [namespaces] : namespaces
+    const namespaceList = typeof namespaces === 'string' ? [namespaces] : namespaces
     if (!i18n.value) {
       console.warn('[Init language data] instance is no found')
       return
@@ -103,9 +96,7 @@ export const useLanguageStore = defineStore('app-language', () => {
         let resultData!: object
         const retry = async () => {
           try {
-            const dataModule = await import(
-              `../../../locales/${locale}/${namespace}.yaml`
-            )
+            const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
             resultData = dataModule.default ?? {}
           } catch (err) {
             count += 1
@@ -128,17 +119,12 @@ export const useLanguageStore = defineStore('app-language', () => {
     i18n.value.mergeLocaleMessage(primaryLocale.value, messages)
     i18n.value.mergeLocaleMessage(fallbackLocale.value, fallbackMessages)
 
-    if (
-      primaryLocale.value !== DEFAULT_LOCALE &&
-      fallbackLocale.value !== DEFAULT_LOCALE
-    ) {
+    if (primaryLocale.value !== DEFAULT_LOCALE && fallbackLocale.value !== DEFAULT_LOCALE) {
       const defaultMessages = await loadData(DEFAULT_LOCALE)
       i18n.value.mergeLocaleMessage(DEFAULT_LOCALE, defaultMessages)
     }
 
-    namespaceList.forEach(namespace =>
-      i18nLoadedLocaleNamespaces.add(namespace)
-    )
+    namespaceList.forEach(namespace => i18nLoadedLocaleNamespaces.add(namespace))
 
     if (unknownError) {
       const { notify } = Notify()
@@ -169,8 +155,7 @@ export const useLanguageStore = defineStore('app-language', () => {
 
     setI18nInstance,
     initLocale,
-    loadLocaleMessages:
-      loadLocaleMessages as LoadLocaleMessages<LocaleViewNamespaces>,
+    loadLocaleMessages: loadLocaleMessages as LoadLocaleMessages<LocaleViewNamespaces>,
     updateLocaleGlobalMessages,
   }
 })

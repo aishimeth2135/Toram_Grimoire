@@ -6,11 +6,7 @@ import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
 import Grimoire from '@/shared/Grimoire'
 import { DataPathIds } from '@/shared/services/DataPath'
-import {
-  InitCrystalIcons,
-  InitEquipmentIcons,
-  InitSkillIcons,
-} from '@/shared/services/Images'
+import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
 import Notify from '@/shared/setup/Notify'
 
 import CharacterSystem from '@/lib/Character'
@@ -40,9 +36,7 @@ export { DataStoreIds } from './enums'
 
 export const useDatasStore = defineStore('app-datas', () => {
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
-  const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(
-    new Map()
-  )
+  const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(new Map())
 
   const checkLoaded = (id: DataStoreIds) => loaded.value.has(id)
 
@@ -118,16 +112,11 @@ export const useDatasStore = defineStore('app-datas', () => {
     return DatasStoreBase.Quest
   }
 
-  const prepareDataStore = async (
-    dataId: DataStoreIds
-  ): Promise<() => Promise<void>> => {
+  const prepareDataStore = async (dataId: DataStoreIds): Promise<() => Promise<void>> => {
     switch (dataId) {
       case DataStoreIds.Items: {
         const itemSystem = initItemsInstance()
-        const datas = await DownloadDatas(
-          DataPathIds.Equipment,
-          DataPathIds.Crystal
-        )
+        const datas = await DownloadDatas(DataPathIds.Equipment, DataPathIds.Crystal)
         return async () => {
           loadEquipments(itemSystem, datas[0][0])
           loadCrystals(itemSystem, datas[1][0])

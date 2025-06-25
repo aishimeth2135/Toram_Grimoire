@@ -37,9 +37,7 @@ const allEquipments = computed(() => {
     .map(effect => effect.equipments)
     .flat()
     .forEach(item => {
-      const id = (['main', 'sub', 'body'] as const)
-        .map(key => item[key] ?? 'none')
-        .join('|')
+      const id = (['main', 'sub', 'body'] as const).map(key => item[key] ?? 'none').join('|')
       if (!result.has(id)) {
         result.set(id, item)
       }

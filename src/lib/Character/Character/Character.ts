@@ -1,19 +1,8 @@
-import {
-  CharacterEquipment,
-  SubArmor,
-  SubWeapon,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
-import {
-  CharacterComboBuild,
-  type CharacterComboBuildSaveData,
-} from '../CharacterComboBuild'
-import {
-  type CharacterBindingBuild,
-  checkLoadedId,
-  getLoadedId,
-} from './CharacterBuild'
+import { CharacterComboBuild, type CharacterComboBuildSaveData } from '../CharacterComboBuild'
+import { type CharacterBindingBuild, checkLoadedId, getLoadedId } from './CharacterBuild'
 import { CharacterBaseStatTypes, EquipmentFieldTypes } from './enums'
 
 class Character implements CharacterBindingBuild {
@@ -88,9 +77,7 @@ class Character implements CharacterBindingBuild {
   }
 
   equipmentField(type: EquipmentFieldTypes, index: number = 0): EquipmentField {
-    return this.equipmentFields.find(
-      item => item.type === type && item.index === index
-    )!
+    return this.equipmentFields.find(item => item.type === type && item.index === index)!
   }
   fieldEquipment(type: EquipmentFieldTypes) {
     return this.equipmentField(type)?.equipment ?? null
@@ -114,19 +101,12 @@ class Character implements CharacterBindingBuild {
     const stat = this.baseStat(name)
     return stat ? stat.value : 0
   }
-  checkFieldEquipmentType(
-    fieldType: EquipmentFieldTypes,
-    eqType: EquipmentTypes | null
-  ) {
-    return (
-      eqType === null || this.equipmentField(fieldType).equipmentType === eqType
-    )
+  checkFieldEquipmentType(fieldType: EquipmentFieldTypes, eqType: EquipmentTypes | null) {
+    return eqType === null || this.equipmentField(fieldType).equipmentType === eqType
   }
   subWeaponValid(subType: EquipmentTypes, mainType?: EquipmentTypes) {
     const validSubs: EquipmentTypes[] = []
-    mainType =
-      mainType ??
-      this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    mainType = mainType ?? this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     switch (mainType) {
       case EquipmentTypes.OneHandSword:
         validSubs.push(EquipmentTypes.OneHandSword)
@@ -160,9 +140,7 @@ class Character implements CharacterBindingBuild {
     const chara = new Character(this.name + '*')
     chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
-      const find = chara.normalBaseStats.find(
-        _bstat => _bstat.name === bstat.name
-      )!
+      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name)!
       find.value = bstat.value
     })
     if (this.optionalBaseStat !== null) {
@@ -174,8 +152,7 @@ class Character implements CharacterBindingBuild {
       .filter(field => !field.isEmpty)
       .forEach(field => {
         const find = chara.equipmentFields.find(
-          targetField =>
-            field.type === targetField.type && field.index === targetField.index
+          targetField => field.type === targetField.type && field.index === targetField.index
         )!
         find.setEquipment(field.equipment)
       })
@@ -246,21 +223,15 @@ class Character implements CharacterBindingBuild {
     equipments: (CharacterEquipment | null)[]
   ): boolean {
     try {
-      const { id, name, level, normalBaseStats, optionalBaseStat, fields } =
-        data
+      const { id, name, level, normalBaseStats, optionalBaseStat, fields } = data
       this.name = name
       this.level = level
       normalBaseStats.forEach(bstat => {
-        const find = this.normalBaseStats.find(
-          _bstat => _bstat.name === bstat.name
-        )
+        const find = this.normalBaseStats.find(_bstat => _bstat.name === bstat.name)
         if (find) {
           find.value = bstat.value
         } else {
-          console.warn(
-            '[Character.save] Can not find CharacterBaseStat which name: ' +
-              bstat.name
-          )
+          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
         }
       })
       if (optionalBaseStat) {
@@ -285,9 +256,7 @@ class Character implements CharacterBindingBuild {
       fields.forEach(fieldData => {
         if (fieldData.equipmentIndex !== -1) {
           const find = this.equipmentFields.find(
-            field =>
-              field.type === fieldTypes[fieldData.type] &&
-              field.index === fieldData.index
+            field => field.type === fieldTypes[fieldData.type] && field.index === fieldData.index
           )
           if (find) {
             const eq = equipments[fieldData.equipmentIndex]
@@ -338,13 +307,7 @@ interface CharacterSaveData {
   combo?: CharacterComboBuildSaveData
 }
 interface CharacterSaveDataField {
-  type:
-    | 'main_weapon'
-    | 'sub_weapon'
-    | 'body_armor'
-    | 'additional'
-    | 'special'
-    | 'avatar'
+  type: 'main_weapon' | 'sub_weapon' | 'body_armor' | 'additional' | 'special' | 'avatar'
   index: number
   equipmentIndex: number
 }

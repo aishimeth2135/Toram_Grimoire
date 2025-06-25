@@ -1,8 +1,5 @@
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import TextHandler from './TextHandler'
 

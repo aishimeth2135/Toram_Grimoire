@@ -13,8 +13,7 @@
           color="cyan"
           :selected="damageCalcEnabled"
           @click="
-            damageCalcEnabled =
-              !damageCalcEnabled /* eslint-disable-line vue/no-mutating-props */
+            damageCalcEnabled = !damageCalcEnabled /* eslint-disable-line vue/no-mutating-props */
           "
         />
       </div>
@@ -38,15 +37,8 @@
       </div>
     </div>
     <div v-if="damageCalcEnabled" class="mt-3">
-      <div
-        class="relative flex items-center border-b border-violet-30 px-1 py-0.5"
-      >
-        <cy-icon-text
-          icon="mdi-sword"
-          icon-color="violet-30"
-          text-color="violet-30"
-          small
-        >
+      <div class="relative flex items-center border-b border-violet-30 px-1 py-0.5">
+        <cy-icon-text icon="mdi-sword" icon-color="violet-30" text-color="violet-30" small>
           {{ t('character-simulator.combo.damage-calc.damage-sum-title') }}
         </cy-icon-text>
         <span class="ml-3 text-violet-60">{{ expectedDamageSum }}</span>
@@ -66,26 +58,22 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, computed, inject, ref } from 'vue'
+import { type Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { type SkillResultsState } from '@/stores/views/character/setup'
 
 import { numberToFixed, toInt } from '@/shared/utils/number'
-import { isNumberString } from '@/shared/utils/string'
 
-import {
-  CharacterCombo,
-  type ComboSkillState,
-} from '@/lib/Character/CharacterCombo'
+import { CharacterCombo, type ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
 import { SkillBuffs } from '@/lib/Skill/SkillComputing'
 
 import CharacterComboItemDamageItem from './character-combo-item-damage-item.vue'
 import CharacterComboItemSkill from './character-combo-item-skill.vue'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 
 interface Props {
   index: number
@@ -104,31 +92,22 @@ const damageCalcEnabled = computed({
   },
 })
 
-const comboDamageItemRefs: Ref<
-  InstanceType<typeof CharacterComboItemDamageItem>[]
-> = ref([])
+const comboDamageItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageItem>[]> = ref([])
 
 const expectedDamageSum = computed(() =>
-  comboDamageItemRefs.value.reduce(
-    (sum, item) => sum + item.expectedResultSum,
-    0
-  )
+  comboDamageItemRefs.value.reduce((sum, item) => sum + item.expectedResultSum, 0)
 )
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 
 const getMpCost = (skill: Skill, previous: Skill | null) => {
   const states = characterStore.damageSkillResultStates as SkillResultsState[]
-  const resultState = states.find(
-    state => state.skill.skillId === skill.skillId
-  )
+  const resultState = states.find(state => state.skill.skillId === skill.skillId)
   if (!resultState || !resultState.basicContainer) {
     return 0
   }
   const previousResultState = previous
-    ? characterStore.nextSkillResultStates.find(
-        state => state.skill.skillId === previous.skillId
-      )
+    ? characterStore.nextSkillResultStates.find(state => state.skill.skillId === previous.skillId)
     : null
   const mpCost = toInt(resultState.basicContainer.getValue('mp_cost'))
   if (mpCost !== null) {
@@ -157,8 +136,7 @@ const comboSkillStates = computed(() =>
 )
 
 const comboSkillStateItems = computed(() => {
-  const allResultsStates =
-    characterStore.damageSkillResultStates as SkillResultsState[]
+  const allResultsStates = characterStore.damageSkillResultStates as SkillResultsState[]
   return comboSkillStates.value
     .map(comboSkillState => {
       const skill = comboSkillState.comboSkill.skill
@@ -169,8 +147,7 @@ const comboSkillStateItems = computed(() => {
         }
       }
       const resultsState =
-        allResultsStates.find(state => state.skill.skillId === skill.skillId) ??
-        null
+        allResultsStates.find(state => state.skill.skillId === skill.skillId) ?? null
       return {
         comboSkillState,
         resultsState,
@@ -188,12 +165,9 @@ const getDamageRatio = (skill: Skill) => {
   }
   const component = comboDamageItemRefs.value.find(item => item.skill === skill)
   return component
-    ? numberToFixed(
-        (component.expectedResultSum * 100) / expectedDamageSum.value,
-        2
-      )
+    ? numberToFixed((component.expectedResultSum * 100) / expectedDamageSum.value, 2)
     : 0
 }
 
-const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
+const { selectComboSkill } = useCharacterSimulatorState()
 </script>

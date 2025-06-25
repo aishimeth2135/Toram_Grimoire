@@ -96,7 +96,7 @@ branch:
       physical: Physical
       magic: Magic
     type:
-      AOE: AOE 
+      AOE: AOE
     title:
       normal_attack: 一般攻擊的傷害提升
     frequency:

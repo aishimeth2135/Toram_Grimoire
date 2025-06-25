@@ -9,8 +9,7 @@ import ViewWrapper from './view-wrapper.vue'
 
 import { AppRouteNames } from '../enums'
 
-const EnchantSimulatorView = () =>
-  import('@/views/Enchant/EnchantSimulator/index.vue')
+const EnchantSimulatorView = () => import('@/views/Enchant/EnchantSimulator/index.vue')
 const EnchantDollView = () => import('@/views/Enchant/EnchantDoll/index.vue')
 
 export default {
@@ -18,10 +17,7 @@ export default {
   path: '/enchant',
   component: ViewWrapper,
   beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(
-      LocaleViewNamespaces.EnchantSimulator,
-      LocaleViewNamespaces.EnchantDoll
-    )
+    PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator, LocaleViewNamespaces.EnchantDoll)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next)
   },
   meta: {

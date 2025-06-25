@@ -1,10 +1,6 @@
 import { type ShallowReactive, shallowReactive } from 'vue'
 
-import {
-  type CharacterBindingBuild,
-  checkLoadedId,
-  initLoadedId,
-} from './CharacterBuild'
+import { type CharacterBindingBuild, checkLoadedId, initLoadedId } from './CharacterBuild'
 
 interface CharacterBuildLabelSaveData {
   id: number
@@ -44,10 +40,7 @@ class CharacterBuildLabel implements CharacterBindingBuild {
     return shallowReactive(this)
   }
 
-  static fromLoad(
-    loadedCategory: string,
-    data: CharacterBuildLabelSaveData
-  ): CharacterBuildLabel {
+  static fromLoad(loadedCategory: string, data: CharacterBuildLabelSaveData): CharacterBuildLabel {
     const newLabel = new CharacterBuildLabel(data.text)
     newLabel.color = data.color
     initLoadedId(newLabel, loadedCategory, data.id)

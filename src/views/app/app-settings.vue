@@ -1,10 +1,5 @@
 <template>
-  <cy-modal
-    v-model:visible="mainStore.settingVisible"
-    class="main--window"
-    width="wide"
-    footer
-  >
+  <cy-modal v-model:visible="mainStore.settingVisible" class="main--window" width="wide" footer>
     <template #title>
       <div class="flex items-center">
         <cy-icon-text icon="ic-baseline-settings">
@@ -13,10 +8,7 @@
         <span class="ml-auto text-fuchsia-60"> v{{ mainStore.version }} </span>
       </div>
     </template>
-    <div
-      v-if="mainStore.serviceWorker.hasUpdate"
-      class="flex items-center justify-center p-4"
-    >
+    <div v-if="mainStore.serviceWorker.hasUpdate" class="flex items-center justify-center p-4">
       <cy-icon-text icon="mdi-creation" text-color="fuchsia-60">
         {{ t('app.settings.update.new-version-detected') }}
       </cy-icon-text>
@@ -35,16 +27,10 @@
           {{ t('app.settings.switch-font.caption') }}
         </template>
         <template #actions>
-          <cy-button-radio-group
-            v-model:value="appFont"
-            :options="appFontOptions"
-          />
+          <cy-button-radio-group v-model:value="appFont" :options="appFontOptions" />
         </template>
       </AppSettingsRow>
-      <AppSettingsRow
-        :title="t('app.settings.night-mode.title')"
-        title-icon="mdi-weather-night"
-      >
+      <AppSettingsRow :title="t('app.settings.night-mode.title')" title-icon="mdi-weather-night">
         <template #caption>
           {{ t('app.settings.night-mode.caption') }}
         </template>
@@ -54,10 +40,7 @@
           </cy-button-toggle>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow
-        :title="t('app.settings.set-rem.title')"
-        title-icon="bx-bx-ruler"
-      >
+      <AppSettingsRow :title="t('app.settings.set-rem.title')" title-icon="bx-bx-ruler">
         <template #caption>
           {{ t('app.settings.set-rem.caption') }}
         </template>
@@ -82,10 +65,7 @@
           </cy-input-counter>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow
-        :title="t('app.settings.primary-language.title')"
-        title-icon="ion-language"
-      >
+      <AppSettingsRow :title="t('app.settings.primary-language.title')" title-icon="ion-language">
         <template #caption>
           {{ t('app.settings.primary-language.caption') }}
         </template>
@@ -99,12 +79,7 @@
           >
             {{ t('app.settings.primary-language.tips-1') }}
           </cy-icon-text>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            align-v="start"
-          >
+          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
             {{ t('app.settings.primary-language.tips-2') }}
           </cy-icon-text>
         </template>
@@ -133,12 +108,7 @@
               >
                 {{ t('app.settings.secondary-language.tips-1') }}
               </cy-icon-text>
-              <cy-icon-text
-                icon="bx-bx-error-circle"
-                small
-                text-color="primary-50"
-                align-v="start"
-              >
+              <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
                 {{ t('app.settings.secondary-language.tips-2') }}
               </cy-icon-text>
             </template>
@@ -163,69 +133,40 @@
           {{ t('app.settings.clear-spreadsheets-caches.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            align-v="start"
-          >
+          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
             {{ t('app.settings.clear-spreadsheets-caches.tips-1') }}
           </cy-icon-text>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            align-v="start"
-          >
+          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
             {{ t('app.settings.clear-spreadsheets-caches.tips-2') }}
           </cy-icon-text>
         </template>
         <template #actions>
-          <cy-button-action
-            icon="ic-round-delete"
-            @click="clearSpreadsheetsCaches"
-          >
+          <cy-button-action icon="ic-round-delete" @click="clearSpreadsheetsCaches">
             {{ t('app.settings.clear-spreadsheets-caches.button-text') }}
           </cy-button-action>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow
-        :title="t('app.settings.storage-backup.title')"
-        title-icon="ic-round-save"
-      >
+      <AppSettingsRow :title="t('app.settings.storage-backup.title')" title-icon="ic-round-save">
         <template #caption>
           {{ t('app.settings.storage-backup.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            align-v="start"
-          >
+          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
             {{ t('app.settings.storage-backup.tips-1') }}
           </cy-icon-text>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            align-v="start"
-          >
+          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
             {{ t('app.settings.storage-backup.tips-2') }}
           </cy-icon-text>
         </template>
         <template #actions>
-          <cy-default-tips v-if="$route.path !== '/'" icon="mdi-ghost">
+          <cy-default-tips v-if="currentRoute.name !== AppRouteNames.Home" icon="mdi-ghost">
             {{ t('app.settings.storage-backup.restriction-homepage') }}
           </cy-default-tips>
           <template v-else>
             <cy-button-action icon="ic-round-save" @click="saveLocalStorage">
               {{ t('app.settings.storage-backup.save') }}
             </cy-button-action>
-            <cy-button-action
-              icon="bx-bx-loader-circle"
-              @click="loadLocalStorage"
-            >
+            <cy-button-action icon="bx-bx-loader-circle" @click="loadLocalStorage">
               {{ t('app.settings.storage-backup.load') }}
             </cy-button-action>
           </template>
@@ -239,6 +180,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
@@ -247,6 +189,8 @@ import { APP_STORAGE_KEYS } from '@/shared/consts/route'
 import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
+import { AppRouteNames } from '@/router/enums'
+
 import AppSettingsRow from './app-settings/app-settings-row.vue'
 
 defineOptions({
@@ -254,15 +198,14 @@ defineOptions({
 })
 
 const { t } = useI18n()
+const { currentRoute } = useRouter()
 const mainStore = useMainStore()
 
 const primaryLanguageList = ['auto', '0', '1', '2', '3']
 const fallbackLanguageList = ['0', '1', '2', '3']
 
 const _primaryLanguage = ref(
-  primaryLanguageList.indexOf(
-    localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto'
-  )
+  primaryLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto')
 )
 const primaryLanguage = computed<number>({
   get() {
@@ -270,17 +213,12 @@ const primaryLanguage = computed<number>({
   },
   set(value) {
     _primaryLanguage.value = value
-    localStorage.setItem(
-      APP_STORAGE_KEYS.PRIMARY_LOCALE,
-      primaryLanguageList[value]
-    )
+    localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value])
   },
 })
 
 const _fallbackLanguage = ref(
-  fallbackLanguageList.indexOf(
-    localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto'
-  )
+  fallbackLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto')
 )
 const fallbackLanguage = computed<number>({
   get() {
@@ -288,10 +226,7 @@ const fallbackLanguage = computed<number>({
   },
   set(value) {
     _fallbackLanguage.value = value
-    localStorage.setItem(
-      APP_STORAGE_KEYS.FALLBACK_LOCALE,
-      fallbackLanguageList[value]
-    )
+    localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value])
   },
 })
 
@@ -306,10 +241,7 @@ const swUpdate = async () => {
 const clearSpreadsheetsCaches = () => {
   caches
     .delete('google-spreadsheets-csv-files')
-    .then(
-      res =>
-        res && notify(t('app.settings.clear-spreadsheets-caches.success-tips'))
-    )
+    .then(res => res && notify(t('app.settings.clear-spreadsheets-caches.success-tips')))
 }
 
 const saveLocalStorage = () => {
@@ -372,10 +304,7 @@ const loadLocalStorage = () => {
 const setLanguage = (target: 0 | 1, index: number) => {
   const state = target === 0 ? primaryLanguage : fallbackLanguage
   const list = target === 0 ? primaryLanguageList : fallbackLanguageList
-  const key =
-    target === 0
-      ? APP_STORAGE_KEYS.PRIMARY_LOCALE
-      : APP_STORAGE_KEYS.FALLBACK_LOCALE
+  const key = target === 0 ? APP_STORAGE_KEYS.PRIMARY_LOCALE : APP_STORAGE_KEYS.FALLBACK_LOCALE
   state.value = index
   localStorage[key] = list[index]
 }

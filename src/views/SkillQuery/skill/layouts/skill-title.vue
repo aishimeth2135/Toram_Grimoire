@@ -1,10 +1,6 @@
 <template>
   <div class="flex flex-wrap items-center">
-    <cy-icon-text
-      :icon="getSkillIconPath(skill)"
-      text-color="fuchsia-60"
-      class="mr-3"
-    >
+    <cy-icon-text :icon="getSkillIconPath(skill)" text-color="fuchsia-60" class="mr-3">
       {{ skill.name }}
     </cy-icon-text>
     <div class="my-0.5 flex items-center space-x-1 pl-1">

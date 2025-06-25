@@ -1,15 +1,8 @@
 <template>
   <cy-list-item :selected="selected">
     <div class="flex w-full items-center" :class="{ 'opacity-50': disabled }">
-      <EquipmentTitle
-        :equipment="equipment"
-        :text-color="current ? 'primary-70' : 'primary-90'"
-      />
-      <cy-icon
-        v-if="current"
-        icon="carbon-location-current"
-        class="ml-auto text-red-50"
-      />
+      <EquipmentTitle :equipment="equipment" :text-color="current ? 'primary-70' : 'primary-90'" />
+      <cy-icon v-if="current" icon="carbon-location-current" class="ml-auto text-red-50" />
       <slot name="title-end" />
     </div>
     <div class="w-full">

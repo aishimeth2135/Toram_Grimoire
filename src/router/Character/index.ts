@@ -69,8 +69,7 @@ export default {
         {
           name: CharacterSimulatorRouteNames.Basic,
           path: 'basic',
-          component: () =>
-            import('@/views/CharacterSimulator/character-basic.vue'),
+          component: () => import('@/views/CharacterSimulator/character-basic.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Equipment,
@@ -83,40 +82,33 @@ export default {
         {
           name: CharacterSimulatorRouteNames.Skill,
           path: 'skill',
-          component: () =>
-            import('@/views/CharacterSimulator/character-skill/index.vue'),
+          component: () => import('@/views/CharacterSimulator/character-skill/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Food,
           path: 'food',
-          component: () =>
-            import('@/views/CharacterSimulator/character-food/index.vue'),
+          component: () => import('@/views/CharacterSimulator/character-food/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Potion,
           path: 'potion',
-          component: () =>
-            import('@/views/CharacterSimulator/character-potion/index.vue'),
+          component: () => import('@/views/CharacterSimulator/character-potion/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Registlet,
           path: 'registlet',
-          component: () =>
-            import('@/views/CharacterSimulator/character-registlet/index.vue'),
+          component: () => import('@/views/CharacterSimulator/character-registlet/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Save,
           path: 'save',
-          component: () =>
-            import('@/views/CharacterSimulator/character-save/index.vue'),
+          component: () => import('@/views/CharacterSimulator/character-save/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Dashboard,
           path: 'dashboard',
           component: () =>
-            import(
-              '@/views/CharacterSimulator/character-dashboard/character-dashboard.vue'
-            ),
+            import('@/views/CharacterSimulator/character-dashboard/character-dashboard.vue'),
         },
       ],
     },

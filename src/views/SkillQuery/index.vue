@@ -41,12 +41,7 @@
         />
       </div>
     </div>
-    <div
-      v-if="currentSkillItem"
-      ref="skillEffectElement"
-      class="pt-10"
-      style="min-height: 50vh"
-    >
+    <div v-if="currentSkillItem" ref="skillEffectElement" class="pt-10" style="min-height: 50vh">
       <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
@@ -63,11 +58,7 @@
           @click="toggle('contents/skillDev')"
         />
       </div>
-      <SkillDevDetail
-        v-if="contents.skillDev"
-        :skill="currentSkillItem.skill"
-        class="mt-2"
-      />
+      <SkillDevDetail v-if="contents.skillDev" :skill="currentSkillItem.skill" class="mt-2" />
     </div>
     <SkillQueryMenu
       v-if="currentSkillTree"
@@ -96,12 +87,7 @@ import Grimoire from '@/shared/Grimoire'
 import ToggleService from '@/shared/setup/ToggleService'
 import { toInt } from '@/shared/utils/number'
 
-import {
-  Skill,
-  SkillRoot,
-  SkillTree,
-  SkillTreeCategory,
-} from '@/lib/Skill/Skill'
+import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import { AppRouteNames } from '@/router/enums'
@@ -142,16 +128,10 @@ const goToSkillTop = async () => {
   }
 }
 
-const skillRoot: ComputedRef<SkillRoot> = computed(
-  () => Grimoire.Skill.skillRoot
-)
+const skillRoot: ComputedRef<SkillRoot> = computed(() => Grimoire.Skill.skillRoot)
 
-const {
-  currentSkill,
-  currentSkillTree,
-  currentSkillTreeCategory,
-  currentEquipment,
-} = useSkillQueryState()
+const { currentSkill, currentSkillTree, currentSkillTreeCategory, currentEquipment } =
+  useSkillQueryState()
 
 const updateRouteParam = (skillId: string) => {
   router.replace({ name: 'SkillQuery', params: { skillId } })
@@ -198,17 +178,13 @@ if (route.params.skillId) {
   skillId.split('-').every((idStr, idx) => {
     const id = toInt(idStr)
     if (idx === 0) {
-      const stc = skillRoot.value.skillTreeCategorys.find(
-        item => item.id === id
-      )
+      const stc = skillRoot.value.skillTreeCategorys.find(item => item.id === id)
       if (stc) {
         selectCurrentSkillTreeCategory(stc)
         return true
       }
     } else if (idx === 1) {
-      const st = currentSkillTreeCategory.value!.skillTrees.find(
-        item => item.id === id
-      )
+      const st = currentSkillTreeCategory.value!.skillTrees.find(item => item.id === id)
       if (st) {
         selectCurrentSkillTree(st)
         return true
@@ -224,6 +200,5 @@ if (route.params.skillId) {
   })
 }
 
-const { computingContainer, currentSkillItem } =
-  setupSkillQueryComputingContainer(currentSkill)
+const { computingContainer, currentSkillItem } = setupSkillQueryComputingContainer(currentSkill)
 </script>

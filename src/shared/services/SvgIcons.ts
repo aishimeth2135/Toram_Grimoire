@@ -1,4 +1,4 @@
-import Iconify, { type IconifyIcon } from '@iconify/iconify'
+import { type IconifyIcon, getIcon, iconLoaded, loadIcon } from '@iconify/vue'
 
 /**
  * Get custom icon by icon ID.
@@ -52,14 +52,14 @@ export default function Icons(name: string): string {
   return ''
 }
 
-function loadIconifyData(name: string): Promise<IconifyIcon | null> {
+function loadIconifyData(name: string): Promise<IconifyIcon | null | undefined> {
   return new Promise(resolve => {
-    if (Iconify.iconExists(name)) {
-      resolve(Iconify.getIcon(name))
+    if (iconLoaded(name)) {
+      resolve(getIcon(name))
       return
     }
-    Iconify.loadIcons([name], () => {
-      resolve(Iconify.getIcon(name))
+    loadIcon(name).then(data => {
+      resolve(data)
     })
   })
 }

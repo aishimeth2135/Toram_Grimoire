@@ -70,7 +70,5 @@ const validSkills = computed(() => {
     .map(state => state.skillItem.skill)
 })
 
-const currentSkills = computed(() =>
-  showAllSkill.value ? allSkills : validSkills.value
-)
+const currentSkills = computed(() => (showAllSkill.value ? allSkills : validSkills.value))
 </script>

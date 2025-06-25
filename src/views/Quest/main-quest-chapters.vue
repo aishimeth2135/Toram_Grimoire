@@ -27,9 +27,7 @@ const allSections = [...mainQuestSections.values()]
 const startSection: Ref<MainQuestSection> = ref(allSections[0])
 
 for (const chapter of mainQuestChapters.values()) {
-  const sections = allSections
-    .filter(section => section.chapterId === chapter.chapterId)
-    .reverse()
+  const sections = allSections.filter(section => section.chapterId === chapter.chapterId).reverse()
   chapterItems.unshift({ chapter, sections })
 }
 
@@ -104,10 +102,7 @@ const selectStartSection = (section: MainQuestSection) => {
 <template>
   <div>
     <div class="border border-primary-40">
-      <div
-        v-for="{ id, name, sections } in displayedChapterItems.selecteds"
-        :key="id"
-      >
+      <div v-for="{ id, name, sections } in displayedChapterItems.selecteds" :key="id">
         <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
           {{ `${id.toString().padStart(2, '0')}. ${name}` }}
         </div>
@@ -121,10 +116,7 @@ const selectStartSection = (section: MainQuestSection) => {
       </div>
     </div>
     <div class="border border-t-0 border-primary-10">
-      <div
-        v-for="{ id, name, sections } in displayedChapterItems.unselecteds"
-        :key="id"
-      >
+      <div v-for="{ id, name, sections } in displayedChapterItems.unselecteds" :key="id">
         <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
           {{ `${id.toString().padStart(2, '0')}. ${name}` }}
         </div>

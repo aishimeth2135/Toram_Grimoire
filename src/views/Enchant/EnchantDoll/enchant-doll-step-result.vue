@@ -22,18 +22,12 @@
     <div
       v-if="
         equipmentState.autoFindPotentialMinimum &&
-        resultEquipment.originalPotential ===
-          AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT &&
+        resultEquipment.originalPotential === AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT &&
         resultEquipment.realSuccessRate < 100
       "
       class="mt-2 flex justify-center"
     >
-      <cy-icon-text
-        icon="ic-outline-info"
-        small
-        text-color="blue-60"
-        icon-color="blue-30"
-      >
+      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
         {{
           t('enchant-doll.tips.cannot-auto-find-original-potential-minimum', {
             limit: AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT,
@@ -42,9 +36,7 @@
       </cy-icon-text>
     </div>
     <div class="mb-4 mt-6 flex justify-center">
-      <div
-        class="rounded-lg border-1 border-fuchsia-60 bg-white pb-5 pl-4 pr-6 pt-3"
-      >
+      <div class="rounded-lg border-1 border-fuchsia-60 bg-white pb-5 pl-4 pr-6 pt-3">
         <EnchantResult :equipment="resultEquipment" />
       </div>
     </div>
@@ -86,19 +78,14 @@
         <cy-button-plain
           v-model:selected="selectOtherResults"
           :icon="
-            selectOtherResults
-              ? 'akar-icons:circle-chevron-up'
-              : 'akar-icons:circle-chevron-down'
+            selectOtherResults ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'
           "
           color="secondary"
         >
           {{ t('enchant-doll.result.select-other-result') }}
         </cy-button-plain>
       </div>
-      <CardRowsWrapper
-        v-if="selectOtherResults"
-        class="mt-3 divide-y divide-primary-20 px-0.5"
-      >
+      <CardRowsWrapper v-if="selectOtherResults" class="mt-3 divide-y divide-primary-20 px-0.5">
         <CardRows v-for="(result, idx) in doll.lastResults" :key="idx">
           <EnchantDollResultItem
             :result="result"
@@ -134,9 +121,7 @@ import { AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT, StepIds } from './setup'
 const store = useEnchantStore()
 const selectOtherResults = ref(false)
 
-const { doll, equipmentState, resultEquipment } = inject(
-  EnchantDollInjectionKey
-)!
+const { doll, equipmentState, resultEquipment } = inject(EnchantDollInjectionKey)!
 const { t } = useI18n()
 
 const exportState = reactive({

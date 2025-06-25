@@ -80,6 +80,7 @@ equipment-basic-editor:
   only-one-element-stat-tips: 一件裝備只能擁有一個屬性，請確認編輯中的能力清單。
 select-crystals:
   title: 選擇鍛晶
+  show-crystal-stats: 顯示鍛晶能力
   search-placeholder: 搜尋緞晶
   selected-crystals: 已選擇的鍛晶
   category-title:

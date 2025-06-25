@@ -156,11 +156,7 @@ class PotionItem {
   private readonly _category: PotionItemsCategory
   base: BagPotion
 
-  constructor(
-    build: PotionBuild,
-    category: PotionItemsCategory,
-    base: BagPotion
-  ) {
+  constructor(build: PotionBuild, category: PotionItemsCategory, base: BagPotion) {
     this._build = build
     this._category = category
     this.base = base

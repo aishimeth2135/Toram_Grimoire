@@ -15,10 +15,7 @@ export function handleFunctionHighlight(result: string): string {
   result.split('').forEach((char, idx) => {
     if (char === '(') {
       if (idx === 0 || !varCharPattern.test(result[idx - 1 + offset])) {
-        result =
-          result.slice(0, idx + offset) +
-          '<#--' +
-          result.slice(idx + offset + 1)
+        result = result.slice(0, idx + offset) + '<#--' + result.slice(idx + offset + 1)
         offset += 4
         handleStack.push('normal')
       } else {
@@ -26,10 +23,7 @@ export function handleFunctionHighlight(result: string): string {
       }
     } else if (char === ')') {
       if (lastElement(handleStack) === 'normal') {
-        result =
-          result.slice(0, idx + offset) +
-          '--#>' +
-          result.slice(idx + offset + 1)
+        result = result.slice(0, idx + offset) + '--#>' + result.slice(idx + offset + 1)
         offset += 4
       }
       handleStack.pop()

@@ -1,9 +1,5 @@
 <template>
-  <SideFloat
-    :visible="visible"
-    content-class="pt-2 pb-4 px-2"
-    @close="emit('close')"
-  >
+  <SideFloat :visible="visible" content-class="pt-2 pb-4 px-2" @close="emit('close')">
     <cy-tabs v-model="tabIndex" class="mx-2 mb-4">
       <cy-tab :value="0">
         {{ t('character-simulator.character-damage.title') }}
@@ -14,16 +10,11 @@
     </cy-tabs>
     <div v-if="tabIndex === 0" class="px-3">
       <div class="mt-4">
-        <cy-button-check
-          v-model:selected="characterStore.calculationOptions.forceCritical"
-        >
+        <cy-button-check v-model:selected="characterStore.calculationOptions.forceCritical">
           {{ t('character-simulator.character-damage.force-critical') }}
         </cy-button-check>
       </div>
-      <div
-        v-if="validResultStates.length > 0"
-        class="w-full overflow-x-auto py-4"
-      >
+      <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto py-4">
         <CardRowsWrapper>
           <CardRows>
             <CharacterDamageSkillItem
@@ -39,31 +30,19 @@
       </cy-default-tips>
       <div class="mt-4 space-y-1">
         <div>
-          <cy-icon-text
-            icon="ic-outline-info"
-            text-color="primary-50"
-            align-v="start"
-            small
-          >
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.character-damage.basic-tips.0') }}
           </cy-icon-text>
         </div>
         <div>
-          <cy-icon-text
-            icon="ic-outline-info"
-            text-color="primary-50"
-            align-v="start"
-            small
-          >
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.character-damage.test-version-tips') }}
           </cy-icon-text>
         </div>
       </div>
     </div>
     <div v-if="tabIndex === 1" class="px-3">
-      <RenderSectionHeader
-        :title="t('character-simulator.character-damage.options-base-title')"
-      />
+      <RenderSectionHeader :title="t('character-simulator.character-damage.options-base-title')" />
       <div class="mt-3 space-y-2">
         <cy-input-counter
           v-model:value="characterStore.calculationOptions.proration"
@@ -76,13 +55,9 @@
           :title="t('damage-calculation.item-base-titles.combo_multiplier')"
         />
       </div>
-      <RenderSectionHeader
-        :title="t('character-simulator.character-damage.options-other-title')"
-      />
+      <RenderSectionHeader :title="t('character-simulator.character-damage.options-other-title')" />
       <div class="mt-3">
-        <cy-button-check
-          v-model:selected="characterStore.calculationOptions.armorBreakDisplay"
-        >
+        <cy-button-check v-model:selected="characterStore.calculationOptions.armorBreakDisplay">
           {{ t('character-simulator.character-damage.armor-break-display') }}
         </cy-button-check>
       </div>
@@ -104,16 +79,12 @@
         />
         <cy-input-counter
           v-model:value="characterStore.targetProperties.physicalResistance"
-          :title="
-            t('damage-calculation.item-base-titles.target_physical_resistance')
-          "
+          :title="t('damage-calculation.item-base-titles.target_physical_resistance')"
           unit="%"
         />
         <cy-input-counter
           v-model:value="characterStore.targetProperties.magicResistance"
-          :title="
-            t('damage-calculation.item-base-titles.target_magic_resistance')
-          "
+          :title="t('damage-calculation.item-base-titles.target_magic_resistance')"
           unit="%"
         />
         <cy-input-counter
@@ -122,38 +93,24 @@
         />
         <cy-input-counter
           v-model:value="characterStore.targetProperties.criticalRateResistance"
-          :title="
-            t(
-              'damage-calculation.item-base-titles.target_critical_rate_resistance'
-            )
-          "
+          :title="t('damage-calculation.item-base-titles.target_critical_rate_resistance')"
           unit="%"
         />
 
         <cy-input-counter
-          v-model:value="
-            characterStore.targetProperties.criticalRateResistanceTotal
-          "
-          :title="
-            t(
-              'damage-calculation.item-base-titles.target_critical_rate_resistance_total'
-            )
-          "
+          v-model:value="characterStore.targetProperties.criticalRateResistanceTotal"
+          :title="t('damage-calculation.item-base-titles.target_critical_rate_resistance_total')"
           unit="%"
         />
       </div>
-      <RenderSectionHeader
-        :title="t('character-simulator.character-damage.range-damage-title')"
-      />
+      <RenderSectionHeader :title="t('character-simulator.character-damage.range-damage-title')" />
       <div class="mt-2">
         <cy-button-radio-group
           v-model:value="characterStore.targetProperties.rangeDamage"
           :options="rangeDamageOptions"
         />
       </div>
-      <RenderSectionHeader
-        :title="t('character-simulator.enemy-elements.title')"
-      />
+      <RenderSectionHeader :title="t('character-simulator.enemy-elements.title')" />
       <div class="mt-2">
         <cy-button-radio-group
           v-model:value="characterStore.targetProperties.element"
@@ -165,7 +122,6 @@
 </template>
 
 <script lang="tsx" setup>
-import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -206,10 +162,10 @@ const skillResultsStates = computed(
   () => characterStore.damageSkillResultStates as SkillResultsState[]
 )
 
-const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
+const skillBuildStore = useCharacterSkillBuildStore()
 const validResultStates = computed(() => {
   return skillResultsStates.value.filter(
-    state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
+    state => skillBuildStore.currentSkillBuild!.getSkillLevel(state.skill) > 0
   )
 })
 
@@ -268,12 +224,7 @@ const rangeDamageOptions: {
 const RenderSectionHeader = ({ title }: { title: string }) => {
   return (
     <div class="mt-6 flex items-center text-sm text-stone-40">
-      <cy-icon
-        icon="ic:round-format-list-bulleted"
-        color="stone"
-        small
-        class="mr-3"
-      />
+      <cy-icon icon="ic:round-format-list-bulleted" color="stone" small class="mr-3" />
       {title}
     </div>
   )

@@ -12,10 +12,7 @@ import type { BagCrystal, BagEquipment } from '@/lib/Items/BagItem'
 
 import { CharacterBuildLabel } from '../Character/CharacterBuildLabel'
 import { StatRecorded } from '../Stat/StatRecorded'
-import {
-  StatRestriction,
-  type StatRestrictionSaveData,
-} from '../Stat/StatRestriction'
+import { StatRestriction, type StatRestrictionSaveData } from '../Stat/StatRestriction'
 import { StatValueSourceTypes } from '../Stat/enums'
 import {
   BodyArmorTypeList,
@@ -64,11 +61,7 @@ abstract class CharacterEquipment implements InstanceWithId {
 
   readonly customTypeList?: EquipmentTypes[]
 
-  constructor(
-    origin: EquipmentOrigin = null,
-    name: string = '',
-    stats: StatRestriction[] = []
-  ) {
+  constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
     this.loadedId = null
     this.instanceId = CharacterEquipment._idGenerator.generate()
 
@@ -125,9 +118,7 @@ abstract class CharacterEquipment implements InstanceWithId {
     return false
   }
   get elementStat() {
-    return this.stats.find(stat =>
-      CharacterEquipment.elementStatIds.includes(stat.baseId)
-    )
+    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
   }
 
   get typeText() {
@@ -171,9 +162,7 @@ abstract class CharacterEquipment implements InstanceWithId {
     return Grimoire.i18n.t('common.Equipment.category.' + type)
   }
 
-  getAllStats(
-    checkRestriction: (stat: StatRestriction) => boolean = () => true
-  ): StatRecorded[] {
+  getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRecorded[] {
     const allStats = this.stats.map(stat => {
       const newStat = stat.clone()
       if (!checkRestriction(newStat)) {
@@ -196,9 +185,7 @@ abstract class CharacterEquipment implements InstanceWithId {
             if (!checkRestriction(newStat)) {
               newStat.value = 0
             }
-            allStats.push(
-              StatRecorded.from(newStat, crystal, StatValueSourceTypes.Crystal)
-            )
+            allStats.push(StatRecorded.from(newStat, crystal, StatValueSourceTypes.Crystal))
           }
         })
       })
@@ -340,9 +327,7 @@ abstract class CharacterEquipment implements InstanceWithId {
       data.refining = this.refining
     }
     if (this.hasCrystal) {
-      data.crystals = (this.crystals as EquipmentCrystal[]).map(
-        crystal => crystal.name
-      )
+      data.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.name)
     }
 
     // [id]
@@ -397,9 +382,7 @@ abstract class CharacterEquipment implements InstanceWithId {
         const originalType = (data.type || EquipmentTypes.Avatar) as string
         if (
           instance === 3 &&
-          (originalType === 'normal' ||
-            originalType === 'dodge' ||
-            originalType === 'defense')
+          (originalType === 'normal' || originalType === 'dodge' || originalType === 'defense')
         ) {
           return 'body-' + originalType
         }
@@ -432,15 +415,11 @@ abstract class CharacterEquipment implements InstanceWithId {
       if (eq.hasCrystal && crystals) {
         eq.crystals = crystals
           .map(crystalName => {
-            const crystal = Grimoire.Items.crystals.find(
-              _crystal => _crystal.name === crystalName
-            )
+            const crystal = Grimoire.Items.crystals.find(_crystal => _crystal.name === crystalName)
             if (crystal) {
               return new EquipmentCrystal(crystal)
             }
-            console.warn(
-              '[CharacterEquipment.load] Can not find crystal: ' + crystalName
-            )
+            console.warn('[CharacterEquipment.load] Can not find crystal: ' + crystalName)
             return null
           })
           .filter(crystal => crystal) as EquipmentCrystal[]
@@ -451,9 +430,7 @@ abstract class CharacterEquipment implements InstanceWithId {
       if (labels) {
         eq.labels = labels
           .map(labelId =>
-            buildLabels.find(buildLabel =>
-              buildLabel.matchLoadedId(loadCategory, labelId)
-            )
+            buildLabels.find(buildLabel => buildLabel.matchLoadedId(loadCategory, labelId))
           )
           .filter(item => item) as CharacterBuildLabel[]
       }
@@ -502,11 +479,9 @@ abstract class CharacterEquipment implements InstanceWithId {
       ][category]
     }
     if (category < 200) {
-      return [
-        EquipmentTypes.Arrow,
-        EquipmentTypes.Dagger,
-        EquipmentTypes.NinjutsuScroll,
-      ][category - 100]
+      return [EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll][
+        category - 100
+      ]
     }
     if (category < 300) {
       return EquipmentTypes.Shield

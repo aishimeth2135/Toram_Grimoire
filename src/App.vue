@@ -32,9 +32,7 @@
     >
       <div class="flex flex-wrap justify-center">
         <LoadingAnimation :status="0" />
-        <div class="mt-2 w-full text-center text-xl text-primary-30">
-          Initializing...
-        </div>
+        <div class="mt-2 w-full text-center text-xl text-primary-30">Initializing...</div>
       </div>
     </div>
   </div>
@@ -80,8 +78,7 @@ const startDetectScroll = (el: HTMLElement) => {
   const handler = () => {
     const top = el.scrollTop
     const height = el.scrollHeight
-    const lastTopFix =
-      lastTop + (top < height / 2 ? lastHeight - height : height - lastHeight)
+    const lastTopFix = lastTop + (top < height / 2 ? lastHeight - height : height - lastHeight)
     if (top <= 0) {
       sideMenuButtonVisible.value = true
     } else if (top < lastTopFix) {

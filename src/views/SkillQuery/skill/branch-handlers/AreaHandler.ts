@@ -1,8 +1,5 @@
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
@@ -21,9 +18,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
 ) {
   const props = cloneBranchProps(branchItem)
 
-  const basicBranch = branchItem.parent.branchItems.find(bch =>
-    bch.is(SkillBranchNames.Basic)
-  )
+  const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
   props.set('@range', basicBranch?.prop('range') ?? '')
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
@@ -50,16 +45,10 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
     valuePropsMap.set('radius', 'm')
   }
 
-  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>([
-    'effective_area',
-  ])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['effective_area'])
 
   const pureValues = []
-  if (
-    props.has('@range') &&
-    props.get('@range') !== 'no_limit' &&
-    props.get('@range') !== 'main'
-  ) {
+  if (props.has('@range') && props.get('@range') !== 'no_limit' && props.get('@range') !== 'main') {
     pureValues.push('@range')
   }
 

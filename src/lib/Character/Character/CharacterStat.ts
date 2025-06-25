@@ -8,13 +8,7 @@ import { splitComma } from '@/shared/utils/string'
 import { SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 
 import type CharacterSystem from '..'
-import {
-  StatBase,
-  StatRecorded,
-  StatTypes,
-  StatValueSource,
-  StatValueSourceTypes,
-} from '../Stat'
+import { StatBase, StatRecorded, StatTypes, StatValueSource, StatValueSourceTypes } from '../Stat'
 
 class CharacterStatCategory {
   private _parent: CharacterSystem
@@ -62,14 +56,12 @@ interface CharacterStatResultConditionBase {
   options: string[]
 }
 
-interface StatPartsDetailAdditionalValueItem
-  extends CharacterStatResultConditionBase {
+interface StatPartsDetailAdditionalValueItem extends CharacterStatResultConditionBase {
   value: number
   isMul?: boolean
 }
 
-interface CharacterStatFormulaResultConditionalBase
-  extends CharacterStatResultConditionBase {
+interface CharacterStatFormulaResultConditionalBase extends CharacterStatResultConditionBase {
   formula: string
   result: boolean
   statBasePart: string | null
@@ -150,16 +142,7 @@ class CharacterStat {
 
   constructor(
     category: CharacterStatCategory,
-    {
-      id,
-      name,
-      displayFormula,
-      link,
-      max,
-      min,
-      caption,
-      hiddenOption,
-    }: CharacterStatOptions
+    { id, name, displayFormula, link, max, min, caption, hiddenOption }: CharacterStatOptions
   ) {
     this.category = category
 
@@ -202,16 +185,11 @@ class CharacterStat {
       if (ignoreDecimal) {
         return value.toString()
       }
-      return p1 !== undefined
-        ? value.toFixed(toInt(p1) ?? 0)
-        : Math.floor(value).toString()
+      return p1 !== undefined ? value.toFixed(toInt(p1) ?? 0) : Math.floor(value).toString()
     })
   }
 
-  result(
-    currentStats: StatRecorded[],
-    vars: CharacterStatResultVars
-  ): CharacterStatResult {
+  result(currentStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatResult {
     if (this.id in vars.getterOriginalResults) {
       return vars.getterOriginalResults[this.id]
     }
@@ -315,9 +293,7 @@ class CharacterStat {
     }
   }
 
-  static prepareCalcResultVars(
-    input: CharacterStatResultInputVars
-  ): CharacterStatResultVars {
+  static prepareCalcResultVars(input: CharacterStatResultInputVars): CharacterStatResultVars {
     return {
       ...input,
       getterResults: {},
@@ -344,39 +320,29 @@ class CharacterStatFormula {
 
   appendConditionValue(conditional: string, formula: string, options: string) {
     const optionList = splitComma(options)
-    const item = markRaw(
-      new CharacterStatFormulaConditionalItem(conditional, formula, optionList)
-    )
+    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
     this.conditionValues.push(item)
   }
 
   /**
    * @param pureStats - pure stats. All stat ID of stat must be unique
    */
-  calc(
-    pureStats: StatRecorded[],
-    vars: CharacterStatResultVars
-  ): CharacterStatFormulaResult {
+  calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: Record<string, CharacterStat> = {}
     this.belongCharacterStat.category.belongCategorys
       .map(cat => cat.stats)
       .flat()
       .forEach(stat => (allCharacterStatMap[stat.id] = stat))
 
-    const checkBaseId = (stat: StatRecorded) =>
-      stat.baseId === this.belongCharacterStat.link
+    const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
     let cstat =
-        pureStats
-          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)
-          ?.clone() ?? null,
+        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)?.clone() ??
+        null,
       mstat =
-        pureStats
-          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)
-          ?.clone() ?? null,
+        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)?.clone() ??
+        null,
       tstat =
-        pureStats
-          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)
-          ?.clone() ?? null
+        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)?.clone() ?? null
 
     // `sub-weapon-atk` will ignore `weapon_atk` provided by active skill
     if (this.belongCharacterStat.id === 'sub_weapon_atk') {
@@ -394,11 +360,7 @@ class CharacterStatFormula {
         query = query.slice(0, -1)
         statType = StatTypes.Multiplier
       }
-      return (
-        pureStats.find(
-          stat => stat.baseId === query && stat.type === statType
-        ) ?? null
-      )
+      return pureStats.find(stat => stat.baseId === query && stat.type === statType) ?? null
     }
 
     const getOriginalResult = (id: string) => {
@@ -471,11 +433,7 @@ class CharacterStatFormula {
       ...vars.methods,
 
       reduceValue: (value: number) => {
-        if (
-          typeof value !== 'number' ||
-          Number.isNaN(value) ||
-          !Number.isFinite(value)
-        ) {
+        if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
           console.warn('[CharacterStatFormula.calc] unexpected value: ' + value)
           return 0
         }
@@ -529,10 +487,7 @@ class CharacterStatFormula {
         return res
       })
     })
-    const formulaHandler = (
-      formulaStr: string,
-      { ignoreStatValue = false } = {}
-    ) => {
+    const formulaHandler = (formulaStr: string, { ignoreStatValue = false } = {}) => {
       if (ignoreStatValue) {
         statValueVars.cvalue = 0
         statValueVars.mvalue = 0
@@ -549,44 +504,39 @@ class CharacterStatFormula {
       ...vars.conditional,
     }
 
-    const conditions: CharacterStatFormulaResultConditionalBase[] =
-      this.conditionValues
-        .map(item => {
-          let statBasePart: string | null = null,
-            result = true,
-            isMul = false,
-            isBase = false
+    const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
+      .map(item => {
+        let statBasePart: string | null = null,
+          result = true,
+          isMul = false,
+          isBase = false
 
-          if (item.conditional !== '#') {
-            result = computeFormula(
-              item.conditional,
-              conditionalHandlerVars,
-              true
-            ) as boolean
-          }
-          item.options.forEach(option => {
-            const match = option.match(/#([cmt]value)/)
-            if (match) {
-              if (statBasePart === null) {
-                statBasePart = match[1]
-              }
-            } else if (option === '#base') {
-              isBase = true
-            } else if (option === '#mul') {
-              isMul = true
+        if (item.conditional !== '#') {
+          result = computeFormula(item.conditional, conditionalHandlerVars, true) as boolean
+        }
+        item.options.forEach(option => {
+          const match = option.match(/#([cmt]value)/)
+          if (match) {
+            if (statBasePart === null) {
+              statBasePart = match[1]
             }
-          })
-          return {
-            conditional: item.conditional,
-            formula: item.formula,
-            options: item.options,
-            result,
-            statBasePart,
-            isMul,
-            isBase,
+          } else if (option === '#base') {
+            isBase = true
+          } else if (option === '#mul') {
+            isMul = true
           }
         })
-        .filter(item => item.result)
+        return {
+          conditional: item.conditional,
+          formula: item.formula,
+          options: item.options,
+          result,
+          statBasePart,
+          isMul,
+          isBase,
+        }
+      })
+      .filter(item => item.result)
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
@@ -636,9 +586,7 @@ class CharacterStatFormula {
 
     const addValues: number[] = []
     const mulValues: number[] = []
-    extraValues.forEach(item =>
-      (item.isMul ? mulValues : addValues).push(item.value)
-    )
+    extraValues.forEach(item => (item.isMul ? mulValues : addValues).push(item.value))
 
     let res = 0,
       basev = 0,

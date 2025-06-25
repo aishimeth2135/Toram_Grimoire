@@ -13,20 +13,10 @@
       <cy-icon icon="ic-round-add-circle-outline" width="2.5rem" />
     </div>
     <div class="border-t border-primary-50 pt-3">
-      <cy-icon-text
-        icon="ic:outline-info"
-        align-v="start"
-        small
-        text-color="primary-50"
-      >
+      <cy-icon-text icon="ic:outline-info" align-v="start" small text-color="primary-50">
         {{ t('character-simulator.combo.tips.0') }}
       </cy-icon-text>
-      <cy-icon-text
-        icon="ic:outline-info"
-        align-v="start"
-        small
-        text-color="primary-50"
-      >
+      <cy-icon-text icon="ic:outline-info" align-v="start" small text-color="primary-50">
         {{ t('character-simulator.combo.tips.1') }}
       </cy-icon-text>
     </div>

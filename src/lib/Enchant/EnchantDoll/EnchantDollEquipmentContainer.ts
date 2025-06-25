@@ -22,9 +22,7 @@ interface MostUsePotentialStatItemStep {
   value: number
   existedAndNoRate: boolean
 }
-type MostUsePotentialStatItem =
-  | MostUsePotentialStatItemUnused
-  | MostUsePotentialStatItemStep
+type MostUsePotentialStatItem = MostUsePotentialStatItemUnused | MostUsePotentialStatItemStep
 
 interface EnchantDollEquipmentContainerParams {
   itemCategorys: EnchantCategory[]
@@ -74,11 +72,7 @@ export default class EnchantDollEquipmentContainer {
     if (!this.copyFrom) {
       return '@'
     }
-    return (
-      this.copyFrom.cloneId +
-      '-' +
-      this.copyFrom.clones.indexOf(this).toString()
-    )
+    return this.copyFrom.cloneId + '-' + this.copyFrom.clones.indexOf(this).toString()
   }
 
   findPositiveStat(stat: EnchantStat) {
@@ -118,9 +112,7 @@ export default class EnchantDollEquipmentContainer {
     const negatives = EnchantDollCategory.classifyStats(this.negativeStats)
 
     // 耗潛高的能力擺前面
-    positives.forEach(category =>
-      category.sortStats('max-cost', { equipment: this.equipment })
-    )
+    positives.forEach(category => category.sortStats('max-cost', { equipment: this.equipment }))
     // 最大退潛越高的擺越前面
     negatives.forEach(category => category.sortStats('max-effect'))
 
@@ -145,9 +137,7 @@ export default class EnchantDollEquipmentContainer {
         : positives.filter(
             category =>
               category.stats.length > 1 ||
-              negatives.some(
-                ncategory => ncategory.category === category.category
-              )
+              negatives.some(ncategory => ncategory.category === category.category)
           )
 
     if (positivesHasRate.length === 0) {
@@ -155,8 +145,7 @@ export default class EnchantDollEquipmentContainer {
     }
 
     // 所有能力都有倍率，正常附法可能行不通
-    const allPositivesHasRate =
-      positivesHasRate.length === positives.length || rateBetweenBoth
+    const allPositivesHasRate = positivesHasRate.length === positives.length || rateBetweenBoth
 
     this.refreshCategorys(positives)
     this.refreshCategorys(negatives)
@@ -168,13 +157,11 @@ export default class EnchantDollEquipmentContainer {
       if (av === bv) {
         // 倍率一樣的話，耗潛高的擺前面
         const _av = item1.stats.reduce(
-          (cur, stat) =>
-            cur + stat.itemBase.getPotential(stat.type, this.equipment),
+          (cur, stat) => cur + stat.itemBase.getPotential(stat.type, this.equipment),
           0
         )
         const _bv = item2.stats.reduce(
-          (cur, stat) =>
-            cur + stat.itemBase.getPotential(stat.type, this.equipment),
+          (cur, stat) => cur + stat.itemBase.getPotential(stat.type, this.equipment),
           0
         )
         return _bv - _av
@@ -189,18 +176,17 @@ export default class EnchantDollEquipmentContainer {
       pstat.value -= 1
 
       {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         let newDollEq: EnchantDollEquipmentContainer = this
         const newDollEqs = []
-        // eslint-disable-next-line no-constant-condition
+
         while (true) {
           newDollEq = newDollEq.clone()
           const cstep = newDollEq.equipment.firstStep!
           const cstat = cstep.firstStat!
           cstat.value += 1
 
-          const newDollEqPstat = newDollEq.positiveStats.find(_pstat =>
-            _pstat.equals(cstat)
-          )!
+          const newDollEqPstat = newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat))!
           newDollEqPstat.value -= 1
 
           if (cstep.remainingPotential <= 0 || newDollEqPstat.value === 0) {
@@ -209,9 +195,7 @@ export default class EnchantDollEquipmentContainer {
           newDollEq.flags.hasHandleFirstStep = true
           newDollEqs.push(newDollEq)
         }
-        newDollEqs.forEach(dollEq =>
-          resultEqs.push(dollEq, ...dollEq.beforeFillNegative())
-        )
+        newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()))
       }
 
       this.checkMakeUpPotential()
@@ -226,9 +210,7 @@ export default class EnchantDollEquipmentContainer {
       // 倍率為1.2且耗潛為3且在第二順位
       const special = positivesHasRate.find(
         (category, idx) =>
-          idx !== 0 &&
-          category.stats.length > 2 &&
-          category.stats[1].originalPotential === 3
+          idx !== 0 && category.stats.length > 2 && category.stats[1].originalPotential === 3
       )
       /**
        * 忽略其他能力，優先把耗潛3的能力往前附在第二個的附法
@@ -238,9 +220,7 @@ export default class EnchantDollEquipmentContainer {
         // 建立副本，去做正常的附法
         const newDollEq = this.clone()
 
-        const originalPositiveStats = this.positiveStats.map(stat =>
-          stat.clone()
-        )
+        const originalPositiveStats = this.positiveStats.map(stat => stat.clone())
 
         special.stats.slice(0, 2).forEach(_pstat => {
           const step = eq.appendStep()
@@ -273,10 +253,7 @@ export default class EnchantDollEquipmentContainer {
           appendFlag = true
           resultEqs.push(this.clone())
         }
-        if (
-          eq.hasStat(pstat) ||
-          this.virtualStats.some(_stat => _stat.equals(pstat))
-        ) {
+        if (eq.hasStat(pstat) || this.virtualStats.some(_stat => _stat.equals(pstat))) {
           // 表示這件裝備這能力已經做過了
           return
         }
@@ -302,10 +279,7 @@ export default class EnchantDollEquipmentContainer {
 
           const newStep = eq.appendStep()
           newStep.type = EnchantStepTypes.Each
-          const value = Math.min(
-            pstat.value,
-            pstat.potentialConvertThreshold - 1
-          )
+          const value = Math.min(pstat.value, pstat.potentialConvertThreshold - 1)
           newStep.appendStat(pstat.itemBase, pstat.type, value)
           pstat.value -= value
         }
@@ -361,9 +335,7 @@ export default class EnchantDollEquipmentContainer {
         const bstep = eq.insertStepBefore(step)
 
         // 留著還原
-        const originalNegativeStats = this.negativeStats.map(stat =>
-          stat.clone()
-        )
+        const originalNegativeStats = this.negativeStats.map(stat => stat.clone())
         const restoreNegative = () => {
           this.negativeStats = originalNegativeStats
           bstep.remove()
@@ -428,9 +400,7 @@ export default class EnchantDollEquipmentContainer {
     ]
   }
 
-  handleMostUseRemainingPotential(
-    checkSpecial: boolean
-  ): EnchantDollEquipmentContainer[] {
+  handleMostUseRemainingPotential(checkSpecial: boolean): EnchantDollEquipmentContainer[] {
     const resultEqs = []
 
     const newDollEq = this.clone()
@@ -456,8 +426,7 @@ export default class EnchantDollEquipmentContainer {
       let cur = lastElement(originalPotentialList)
       const allSteps = ceq.steps()
       const firstStep = allSteps[0]
-      const checkStepsRemainingPotential = () =>
-        allSteps.every(step => step.remainingPotential > 0)
+      const checkStepsRemainingPotential = () => allSteps.every(step => step.remainingPotential > 0)
 
       while (originalPotentialList.length !== 0) {
         const pstat = positiveStats.find(stat => stat.equals(cur.stat))!
@@ -492,25 +461,15 @@ export default class EnchantDollEquipmentContainer {
           const currentSpecial = special as MostUsePotentialStatItemStep
           while (cur.stat.value !== 0) {
             const lastRemainingPotential = ceq.lastStep!.remainingPotential
-            if (
-              lastRemainingPotential !== 1 &&
-              (lastRemainingPotential - 1) % POTENTIAL === 0
-            ) {
-              const _pstat = positiveStats.find(stat =>
-                stat.equals(currentSpecial.stat)
-              )!
+            if (lastRemainingPotential !== 1 && (lastRemainingPotential - 1) % POTENTIAL === 0) {
+              const _pstat = positiveStats.find(stat => stat.equals(currentSpecial.stat))!
               const maxv = (lastRemainingPotential - 1) / POTENTIAL
               if (
-                maxv + special.stat.value <=
-                  special.stat.potentialConvertThreshold &&
+                maxv + special.stat.value <= special.stat.potentialConvertThreshold &&
                 maxv <= _pstat.value &&
-                maxv * POTENTIAL <
-                  currentSpecial.stat.belongStep.remainingPotential
+                maxv * POTENTIAL < currentSpecial.stat.belongStep.remainingPotential
               ) {
-                originalPotentialList.splice(
-                  originalPotentialList.indexOf(special),
-                  1
-                )
+                originalPotentialList.splice(originalPotentialList.indexOf(special), 1)
                 pstat.value += statOriginalValue - cur.stat.value
                 _pstat.value -= maxv
                 special.stat.value += maxv
@@ -547,9 +506,7 @@ export default class EnchantDollEquipmentContainer {
     const eq = this.equipment
     const steps = eq.steps()
     const stepPotentials = (
-      steps
-        .map(step => step.firstStat)
-        .filter(stat => stat && stat.value > 0) as EnchantStepStat[]
+      steps.map(step => step.firstStat).filter(stat => stat && stat.value > 0) as EnchantStepStat[]
     )
       .map(stat => stat.potential)
       .filter(potential => potential > 1)
@@ -559,9 +516,7 @@ export default class EnchantDollEquipmentContainer {
     const minPotential = Math.min(...stepPotentials)
     const lastStep = eq.lastStep!
     if (lastStep.remainingPotential > minPotential) {
-      const firstNegativeStep = steps.find(
-        step => (step.firstStat as EnchantStepStat).value < -1
-      )
+      const firstNegativeStep = steps.find(step => (step.firstStat as EnchantStepStat).value < -1)
       if (firstNegativeStep && firstNegativeStep !== lastStep) {
         const nextStep = firstNegativeStep.nextStep!
         const nstat = firstNegativeStep.firstStat!
@@ -572,10 +527,7 @@ export default class EnchantDollEquipmentContainer {
           nstat.value += 1
           lastStepStat.value = 1
           let pv = 0
-          while (
-            nextStep.remainingPotential < 1 ||
-            lastStep.remainingPotential < 1
-          ) {
+          while (nextStep.remainingPotential < 1 || lastStep.remainingPotential < 1) {
             if (pstat.value === 1) {
               pstat.value += pv
               nstat.value -= 1
@@ -620,10 +572,7 @@ export default class EnchantDollEquipmentContainer {
           lastPstat.value += lastStatValueOffset
           prePstat.value -= 1
 
-          if (
-            previousStep.remainingPotential > 0 &&
-            lastStep.remainingPotential === 0
-          ) {
+          if (previousStep.remainingPotential > 0 && lastStep.remainingPotential === 0) {
             // 複製一份
             // flag = true
             resultEqs.push(this.clone())
@@ -702,29 +651,19 @@ export default class EnchantDollEquipmentContainer {
         const newDollEq = this.clone()
         const ceq = newDollEq.equipment
         const noChange = finds.every(find => {
-          if (
-            this.equipment.stats().length === 7 &&
-            !this.equipment.hasStat(find)
-          ) {
+          if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
             return true
           }
-          const pstat = newDollEq.positiveStats.find(stat =>
-            stat.equals(find)
-          ) as EnchantStat
+          const pstat = newDollEq.positiveStats.find(stat => stat.equals(find)) as EnchantStat
           if (pstat.value > 0) {
             const tstep = ceq.appendStep()
             tstep.type = EnchantStepTypes.Each
-            const tstat = tstep.appendStat(
-              pstat.itemBase,
-              pstat.type,
-              0
-            ) as EnchantStepStat
+            const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0) as EnchantStepStat
             const potentialConvertThreshold = tstat.potentialConvertThreshold
             const preStat = ceq.stat(tstat.itemBase, tstat.type)
             const prev = preStat ? preStat.value : 0
             while (
-              (!checkPotentialConvertThreshold ||
-                prev + tstat.value < potentialConvertThreshold) &&
+              (!checkPotentialConvertThreshold || prev + tstat.value < potentialConvertThreshold) &&
               ceq.stepRemainingPotential() > 0 &&
               pstat.value > 0
             ) {
@@ -797,10 +736,7 @@ export default class EnchantDollEquipmentContainer {
     if (this.checkFillNegativeStats()) {
       const positives = EnchantDollCategory.classifyStats(positiveStats)
       const noRatePositiveStats = positives
-        .filter(
-          category =>
-            category.stats.length === 1 && category.stats[0].value !== 0
-        )
+        .filter(category => category.stats.length === 1 && category.stats[0].value !== 0)
         .map(category => category.stats[0])
       if (noRatePositiveStats.length !== 0) {
         noRatePositiveStats.sort((item1, item2) => {
@@ -844,10 +780,7 @@ export default class EnchantDollEquipmentContainer {
           // stat as EnchantStepStat if existedAndNoRate is true
           const cstat = target.stat as EnchantStepStat
           const pstat = positiveStats.find(_pstat => _pstat.equals(cstat))!
-          if (
-            target.value * pstat.value >=
-            cstat.belongStep.remainingPotential
-          ) {
+          if (target.value * pstat.value >= cstat.belongStep.remainingPotential) {
             return item1.existedAndNoRate ? 1 : -1
           }
         } else {
@@ -868,20 +801,12 @@ export default class EnchantDollEquipmentContainer {
     } else {
       step = eq.appendStep()
     }
-    const boths = EnchantDollCategory.classifyStats([
-      ...this.negativeStats,
-      ...this.positiveStats,
-    ])
+    const boths = EnchantDollCategory.classifyStats([...this.negativeStats, ...this.positiveStats])
     boths.sort((item1, item2) => item2.stats.length - item1.stats.length)
     const nstats: EnchantStat[] = []
-    boths.forEach(category =>
-      nstats.push(...category.stats.filter(stat => stat.value < 0))
-    )
+    boths.forEach(category => nstats.push(...category.stats.filter(stat => stat.value < 0)))
     nstats.forEach(stat => {
-      if (
-        this.equipment.stats().length === 7 &&
-        !this.equipment.hasStat(stat)
-      ) {
+      if (this.equipment.stats().length === 7 && !this.equipment.hasStat(stat)) {
         return
       }
       step.appendStat(stat.itemBase, stat.type, stat.value)
@@ -936,12 +861,8 @@ export default class EnchantDollEquipmentContainer {
       }
     }
     steps.forEach(step => console.log(step.toString()))
-    console.log(
-      '  [pos] ' + this.positiveStats.map(stat => stat.show()).join('|')
-    )
-    console.log(
-      '  [neg] ' + this.negativeStats.map(stat => stat.show()).join('|')
-    )
+    console.log('  [pos] ' + this.positiveStats.map(stat => stat.show()).join('|'))
+    console.log('  [neg] ' + this.negativeStats.map(stat => stat.show()).join('|'))
     console.groupEnd()
   }
 }

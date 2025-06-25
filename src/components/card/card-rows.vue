@@ -4,12 +4,12 @@
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style>
 div.cy-card-rows-content {
-  @apply bg-white;
+  background-color: var(--app-white);
 
   & > :deep(.cy-card-row):nth-child(even) {
-    background-color: rgba(var(--app-rgb-primary-5), 0.5);
+    background-color: --alpha(var(--app-primary-5) / 50%);
   }
 }
 </style>

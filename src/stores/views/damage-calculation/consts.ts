@@ -1,7 +1,4 @@
-import {
-  type CalcStructExpression,
-  CalculationContainerIds,
-} from '@/lib/Damage/DamageCalculation'
+import { type CalcStructExpression, CalculationContainerIds } from '@/lib/Damage/DamageCalculation'
 
 export const calcStructCritical: CalcStructExpression = {
   id: 'expected_with_critical',

@@ -14,9 +14,7 @@ interface RegistletInfos {
   powderCostAdditional: number | null
 }
 
-class RegistletCategory<
-  ItemBase extends RegistletItemBase = RegistletItemBase
-> {
+class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> {
   id: RegistletCategoryIds
   items: ItemBase[]
 
@@ -86,10 +84,7 @@ class RegistletItemBaseSpecial extends RegistletItemBase {
   override link: string
   declare category: RegistletCategory<RegistletItemBaseSpecial>
 
-  constructor(
-    category: RegistletCategory<RegistletItemBaseSpecial>,
-    infos: RegistletInfos
-  ) {
+  constructor(category: RegistletCategory<RegistletItemBaseSpecial>, infos: RegistletInfos) {
     super(category, infos)
     this.link = ''
   }

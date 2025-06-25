@@ -38,10 +38,4 @@ async function InitCrystalIcons() {
 }
 
 export type { ImageStore }
-export {
-  Images,
-  UnknowSkillIcon,
-  InitSkillIcons,
-  InitEquipmentIcons,
-  InitCrystalIcons,
-}
+export { Images, UnknowSkillIcon, InitSkillIcons, InitEquipmentIcons, InitCrystalIcons }

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="skill-effect-history-item-wrapper px-2"
-    :class="{ 'detail-active': detailVisible }"
-  >
+  <div class="skill-effect-history-item-wrapper px-2" :class="{ 'detail-active': detailVisible }">
     <cy-list-item @click="detailVisible = !detailVisible">
       <div class="flex w-full items-center">
         <cy-icon-text
@@ -12,11 +9,7 @@
           {{ historyItem.date }}
         </cy-icon-text>
         <cy-icon
-          :icon="
-            detailVisible
-              ? 'ic:round-keyboard-arrow-up'
-              : 'ic:round-keyboard-arrow-down'
-          "
+          :icon="detailVisible ? 'ic:round-keyboard-arrow-up' : 'ic:round-keyboard-arrow-down'"
           class="ml-auto"
         />
       </div>
@@ -36,25 +29,13 @@
     </cy-list-item>
     <div v-if="detailVisible" class="pt-2">
       <div v-if="introductionBranchItemDatas.length > 0" class="space-y-3 pb-4">
-        <div
-          v-for="{ branchItem, iid } in introductionBranchItemDatas"
-          :key="iid"
-          class="px-2"
-        >
-          <SkillBranch
-            :skill-branch-item="branchItem"
-            :computing="computing"
-            sub
-          />
+        <div v-for="{ branchItem, iid } in introductionBranchItemDatas" :key="iid" class="px-2">
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div v-if="stackBranchItemDatas.length > 0" class="space-y-3 pb-4">
         <div v-for="{ branchItem, iid } in stackBranchItemDatas" :key="iid">
-          <SkillBranch
-            :skill-branch-item="branchItem"
-            :computing="computing"
-            sub
-          />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div
@@ -63,17 +44,10 @@
         class="history-item-compare"
       >
         <div>
-          <SkillBranch
-            :skill-branch-item="branchItem"
-            :computing="computing"
-            sub
-          />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon
-            icon="ic:round-keyboard-double-arrow-down"
-            class="text-primary-60"
-          />
+          <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
         </div>
         <div v-if="next && !next.isEmpty">
           <SkillBranch :skill-branch-item="next" :computing="computing" sub />
@@ -95,17 +69,10 @@
           }}</cy-icon-text>
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon
-            icon="ic:round-keyboard-double-arrow-down"
-            class="text-primary-60"
-          />
+          <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
         </div>
         <div>
-          <SkillBranch
-            :skill-branch-item="branchItem"
-            :computing="computing"
-            sub
-          />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div
@@ -114,17 +81,10 @@
         class="history-item-compare"
       >
         <div>
-          <SkillBranch
-            :skill-branch-item="branchItem"
-            :computing="computing"
-            sub
-          />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon
-            icon="ic:round-keyboard-double-arrow-down"
-            class="text-primary-60"
-          />
+          <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
         </div>
         <div class="history-item-compare-empty">
           <cy-icon-text icon="mdi:book-remove-outline">
@@ -143,10 +103,7 @@ import { useI18n } from 'vue-i18n'
 import { instanceEquals } from '@/shared/services/InstanceId'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillComputingContainer,
-  SkillEffectItemHistory,
-} from '@/lib/Skill/SkillComputing'
+import { SkillComputingContainer, SkillEffectItemHistory } from '@/lib/Skill/SkillComputing'
 
 import SkillBranch from '../skill/skill-branch.vue'
 
@@ -162,9 +119,7 @@ const { skillEffectHistoryItem: historyItem } = toRefs(props)
 const { t } = useI18n()
 
 const displayedBranchItems = computed(() =>
-  historyItem.value.modifiedBranchItems.filter(
-    branch => !branch.propBoolean('invisible')
-  )
+  historyItem.value.modifiedBranchItems.filter(branch => !branch.propBoolean('invisible'))
 )
 const displayedBranchItemDatas = computed(() => {
   return displayedBranchItems.value.map(branchItem => {
@@ -178,18 +133,14 @@ const displayedBranchItemDatas = computed(() => {
 
 const usedStackIds = computed(() => {
   const stackIds = new Set<number>()
-  displayedBranchItems.value.forEach(bch =>
-    bch.linkedStackIds.forEach(id => stackIds.add(id))
-  )
+  displayedBranchItems.value.forEach(bch => bch.linkedStackIds.forEach(id => stackIds.add(id)))
   return [...stackIds]
 })
 
 const stackBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(
-      bch =>
-        bch.is(SkillBranchNames.Stack) &&
-        usedStackIds.value.includes(bch.stackId as number)
+      bch => bch.is(SkillBranchNames.Stack) && usedStackIds.value.includes(bch.stackId as number)
     )
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })
@@ -205,11 +156,7 @@ const addedBranchItemDatas = computed(() => {
 
 const introductionBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
-    .filter(bch =>
-      historyItem.value.introductionBranches.some(_bch =>
-        instanceEquals(_bch, bch)
-      )
-    )
+    .filter(bch => historyItem.value.introductionBranches.some(_bch => instanceEquals(_bch, bch)))
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })
 
@@ -222,7 +169,9 @@ const removedBranchItemDatas = computed(() => {
 const detailVisible = ref(introductionBranchItemDatas.value.length === 0)
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .skill-effect-history-item-wrapper {
   border-top: 1px solid var(--app-primary-30);
   &.detail-active {

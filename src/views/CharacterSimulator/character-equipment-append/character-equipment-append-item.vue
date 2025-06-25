@@ -42,32 +42,21 @@ const { t } = useI18n()
           <cy-icon icon="ic:round-add" class="mr-3.5" />
           <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" />
           <cy-icon v-else icon="eva-star-outline" />
-          <div
-            class="ml-2 mr-2.5 w-32 overflow-hidden text-ellipsis whitespace-nowrap"
-          >
+          <div class="ml-2 mr-2.5 w-32 overflow-hidden text-ellipsis whitespace-nowrap">
             {{ equipment.name }}
           </div>
-          <div
-            v-if="previewStat"
-            :class="previewStat.value > 0 ? 'text-cyan-70' : 'text-red-40'"
-          >
+          <div v-if="previewStat" :class="previewStat.value > 0 ? 'text-cyan-70' : 'text-red-40'">
             {{ previewStat.showValue() }}
           </div>
           <div v-else-if="!equipment.unknowCategory" class="flex items-center">
-            <cy-icon
-              :icon="equipment.isWeapon() ? 'mdi:sword' : 'mdi:shield-outline'"
-            />
+            <cy-icon :icon="equipment.isWeapon() ? 'mdi:sword' : 'mdi:shield-outline'" />
             <span class="ml-1.5 text-primary-80">
               {{ equipment.baseValue }}
             </span>
           </div>
         </div>
         <cy-button-icon
-          :icon="
-            showDetail
-              ? 'mdi:chevron-up-circle-outline'
-              : 'mdi:chevron-down-circle-outline'
-          "
+          :icon="showDetail ? 'mdi:chevron-up-circle-outline' : 'mdi:chevron-down-circle-outline'"
           class="ml-auto"
           @click="showDetail = !showDetail"
         />
@@ -75,7 +64,7 @@ const { t } = useI18n()
     </div>
     <div
       v-if="showDetail"
-      class="overscroll-none relative mt-2.5 max-w-max rounded-sm bg-orange-20/5 py-3 pl-6 pr-4"
+      class="overscroll-none shadow-xs bg-orange-20/5 relative mt-2.5 max-w-max py-3 pl-6 pr-4"
     >
       <div class="mb-1 flex items-center text-sm">
         <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" small />

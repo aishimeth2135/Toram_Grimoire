@@ -3,10 +3,7 @@ import { computed, provide, reactive } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import {
-  RegistletCategoryIds,
-  RegistletItemBaseSkill,
-} from '@/lib/Registlet/RegistletItem'
+import { RegistletCategoryIds, RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import type { Skill } from '@/lib/Skill/Skill'
 import type { SkillItem } from '@/lib/Skill/SkillComputing'
 
@@ -28,9 +25,7 @@ const emit = defineEmits<Emits>()
 
 const { skillComputingContainer, currentCharacterState } = useCharacterStore()
 
-const currentRegistletBuild = computed(
-  () => currentCharacterState.registletBuild
-)
+const currentRegistletBuild = computed(() => currentCharacterState.registletBuild)
 
 interface SkillRegistletItemState {
   item: RegistletItemBaseSkill
@@ -38,9 +33,7 @@ interface SkillRegistletItemState {
   enabled: boolean
 }
 
-const getSkillRegistletItemsState = (
-  skill: Skill
-): SkillRegistletItemState[] => {
+const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] => {
   if (!currentRegistletBuild.value) {
     return []
   }

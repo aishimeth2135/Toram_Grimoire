@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useCssModule } from 'vue'
 
 import IconBase from './icon/icon-base.vue'
 
@@ -23,15 +22,13 @@ const iconStyle = computed(() => {
   }
 })
 
-const classes = useCssModule()
-
 const iconClass = computed(() => {
-  const baseClass = ['cy-icon--base']
+  const baseClass = ['cy-icon-base']
 
   if (props.small) {
-    baseClass.push(classes.sm)
+    baseClass.push('cy-icon-sm')
   }
-  baseClass.push(classes.md)
+  baseClass.push('cy-icon-md')
 
   return baseClass
 })
@@ -42,17 +39,17 @@ const iconClass = computed(() => {
     :icon="icon"
     :style="iconStyle"
     :class="iconClass"
-    class="inline-block max-w-none flex-shrink-0"
+    class="inline-block max-w-none shrink-0"
   />
 </template>
 
-<style lang="postcss" module>
-.md {
+<style>
+.cy-icon-md {
   width: 1.125rem;
   height: 1.125rem;
 }
 
-.sm {
+.cy-icon-sm {
   width: 0.875rem;
   height: 0.875rem;
 }

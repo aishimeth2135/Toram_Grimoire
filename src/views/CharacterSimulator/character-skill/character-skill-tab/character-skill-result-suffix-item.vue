@@ -1,6 +1,6 @@
 <template>
   <div v-if="container" class="flex items-center">
-    <div v-if="toggleable" class="mr-3 flex flex-shrink-0">
+    <div v-if="toggleable" class="mr-3 flex shrink-0">
       <cy-button-check
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
@@ -13,10 +13,7 @@
         v-if="container.statContainers.length === 0"
         :result="container.result('caption')"
       />
-      <CharacterSkillItemStats
-        v-else
-        :stat-containers="container.statContainers"
-      />
+      <CharacterSkillItemStats v-else :stat-containers="container.statContainers" />
     </div>
   </div>
 </template>
@@ -45,7 +42,5 @@ const branchItemState = computed(() =>
   characterStore.getSkillBranchState(props.container.branchItem.default)
 )
 
-const toggleable = computed(
-  () => props.container.branchItem.prop('condition') !== 'auto'
-)
+const toggleable = computed(() => props.container.branchItem.prop('condition') !== 'auto')
 </script>

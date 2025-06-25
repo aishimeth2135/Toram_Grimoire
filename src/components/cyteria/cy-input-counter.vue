@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter rounded-sm border bg-white outline-none duration-300"
+      class="cy--input-counter shadow-xs outline-hidden border bg-white duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
@@ -131,8 +131,12 @@ const inputValue = computed<number>({
 
     const min = props.range[0],
       max = props.range[1]
-    max !== null && (value = Math.min(max, value))
-    min !== null && (value = Math.max(min, value))
+    if (max !== null) {
+      value = Math.min(max, value)
+    }
+    if (min !== null) {
+      value = Math.max(min, value)
+    }
 
     emit('update:value', value)
   },
@@ -149,7 +153,7 @@ const setValue = (value: number) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .cy--input-counter {
   display: flex;
   align-items: center;

@@ -37,11 +37,7 @@ const RenderItem = ({ item }: { item: Item }) => {
   const selected = props.selectedItemIds.includes(item.id)
 
   return (
-    <CardRow
-      class="flex cursor-pointer items-center px-4 py-2"
-      item={item}
-      hover
-    >
+    <CardRow class="flex cursor-pointer items-center px-4 py-2" item={item} hover>
       <CommonSelectionIcon selected={selected} />
       {slots.item({
         item: item,
@@ -53,9 +49,7 @@ const RenderItem = ({ item }: { item: Item }) => {
 </script>
 
 <template>
-  <CardRowsWrapper
-    class="flex h-full max-h-[24rem] max-w-[20rem] flex-col wd-lg:max-h-none"
-  >
+  <CardRowsWrapper class="flex h-full max-h-[24rem] max-w-[20rem] flex-col wd-lg:max-h-none">
     <div class="pb-1">
       <CommonSearchInput
         :model-value="searchText"
@@ -64,10 +58,7 @@ const RenderItem = ({ item }: { item: Item }) => {
         @update:model-value="emit('update:search-text', $event)"
       />
     </div>
-    <CardRowsDelegation
-      class="flex-grow overflow-y-auto py-2"
-      @row-clicked="itemClicked"
-    >
+    <CardRowsDelegation class="grow overflow-y-auto py-2" @row-clicked="itemClicked">
       <RenderItem v-for="item in items" :key="item.id" :item="item" />
     </CardRowsDelegation>
   </CardRowsWrapper>

@@ -1,0 +1,213 @@
+@reference "@/tailwind.css";
+
+.cy-button-base {
+  --button-color-main: var(--app-primary-60);
+  --button-color-main-light: var(--app-primary-30);
+
+  --button-color-text: var(--button-color-main);
+  --button-color-icon: var(--button-color-main-light);
+  --button-color-icon-hover: var(--button-color-main);
+  --button-color-border: var(--button-color-main-light);
+  --button-color-border-hover: var(--button-color-main);
+
+  --button-icon-width: 1.25rem;
+
+  color: var(--button-color-text);
+  border-color: var(--button-color-border);
+
+  @apply inline-flex shrink-0 cursor-pointer items-center border-0 text-base duration-200;
+
+  & .cy-button-base-icon {
+    @apply shrink-0 duration-200;
+    color: var(--button-color-icon);
+    width: var(--button-icon-width);
+    height: var(--button-icon-width);
+  }
+
+  &:hover,
+  &.button-selected {
+    border-color: var(--button-color-border-hover);
+
+    & .cy-button-base-icon {
+      color: var(--button-color-icon-hover);
+    }
+  }
+
+  &:active {
+    @apply opacity-75;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    @apply outline-primary-30;
+  }
+
+  &.theme-primary {
+    --button-color-text: var(--app-primary-70);
+  }
+
+  &.theme-bright {
+    --button-color-main: var(--app-primary-60);
+    --button-color-main-light: var(--app-primary-30);
+  }
+
+  &.theme-secondary {
+    --button-color-main: var(--app-primary-30);
+    --button-color-main-light: var(--app-primary-20);
+  }
+
+  &.theme-cyan {
+    --button-color-main: var(--app-cyan-60);
+    --button-color-main-light: var(--app-cyan-30);
+  }
+
+  &.theme-blue {
+    --button-color-main: var(--app-blue-60);
+    --button-color-main-light: var(--app-blue-30);
+  }
+
+  &.theme-fuchsia {
+    --button-color-main: var(--app-fuchsia-60);
+    --button-color-main-light: var(--app-fuchsia-30);
+  }
+
+  &.theme-violet {
+    --button-color-main: var(--app-violet-60);
+    --button-color-main-light: var(--app-violet-30);
+  }
+
+  &.theme-orange {
+    --button-color-main: var(--app-orange-60);
+    --button-color-main-light: var(--app-orange-30);
+  }
+
+  &.theme-emerald {
+    --button-color-main: var(--app-emerald-60);
+    --button-color-main-light: var(--app-emerald-30);
+  }
+
+  &.theme-gray {
+    --button-color-main: var(--app-gray-60);
+    --button-color-main-light: var(--app-gray-30);
+  }
+
+  &.theme-red {
+    --button-color-main: var(--app-red-60);
+    --button-color-main-light: var(--app-red-40);
+  }
+}
+
+/* button action */
+.cy-button-action {
+  @apply relative rounded-sm border bg-white px-4 py-1.5;
+  box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
+
+  &.button-selected {
+    box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main);
+  }
+}
+
+/* button check */
+.cy-button-check {
+  @apply rounded-full duration-200;
+
+  &:focus:not(:active) {
+    @apply bg-primary-30/20;
+  }
+}
+
+/* button circle */
+.cy-button-circle {
+  @apply h-11 w-11 justify-center rounded-full border bg-white;
+  --button-icon-width: 1.25rem;
+  box-shadow:
+    1px 3px 1px -2px rgba(0, 0, 0, 0.1),
+    1px 2px 2px 0 rgba(0, 0, 0, 0.07),
+    1px 1px 5px 0 rgba(0, 0, 0, 0.06);
+
+  &.button-small {
+    @apply h-9 w-9;
+
+    --button-icon-width: 1rem;
+  }
+
+  &.button-float {
+    @apply shadow-md;
+  }
+}
+
+/* button dropdown */
+.cy-button-dropdown-wrapper {
+  @apply border-l-2 border-primary-30 duration-200;
+
+  &.content-visble {
+    @apply border-primary-30;
+  }
+}
+
+.cy-button-dropdown-main {
+  @apply px-3 py-2;
+}
+
+/* button icon-action */
+.cy-button-icon-action {
+  @apply relative rounded-sm border bg-white p-2.5;
+  box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
+}
+
+/* button icon */
+.cy-button-icon {
+  @apply rounded-full duration-200;
+
+  &:focus:not(:active) {
+    @apply bg-primary-30/20;
+  }
+}
+
+/* button plain */
+.cy-button-plain {
+  --button-color-text: var(--button-color-main-light);
+  --button-color-text-hover: var(--button-color-main);
+
+  &:hover,
+  &.button-selected {
+    color: var(--button-color-text-hover);
+  }
+
+  &.button-width-full {
+    @apply w-full;
+  }
+
+  &.theme-secondary {
+    --button-color-main: var(--app-primary-50);
+    --button-color-main-light: var(--app-primary-30);
+  }
+}
+
+/* button radio */
+.cy-button-radio {
+  @apply rounded-full duration-200;
+
+  &:focus:not(:active) {
+    @apply bg-primary-30/20;
+  }
+}
+
+/* button toggle */
+.cy-button-toggle {
+  @apply rounded-full duration-200;
+
+  --button-icon-width: 2rem;
+
+  &:focus:not(:active) {
+    @apply bg-primary-30/20;
+  }
+
+  & > .cy-button-toggle-icon {
+    @apply -my-3;
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-start py-0.5">
-    <div v-if="!hideName" class="flex flex-shrink-0 pr-1.5">
+    <div v-if="!hideName" class="flex shrink-0 pr-1.5">
       <cy-button-check
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
@@ -15,10 +15,7 @@
           v-if="container.statContainers.length === 0"
           :result="container.result('caption')"
         />
-        <CharacterSkillItemStats
-          v-else
-          :stat-containers="container.statContainers"
-        />
+        <CharacterSkillItemStats v-else :stat-containers="container.statContainers" />
       </div>
       <div class="pt-1">
         <CharacterSkillResultSuffixItem

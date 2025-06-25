@@ -7,12 +7,7 @@ type FileSaveOptions = {
   dataUrl?: string
 }
 
-function save({
-  data,
-  fileType = 'text/txt',
-  fileName,
-  dataUrl,
-}: FileSaveOptions): void {
+function save({ data, fileType = 'text/txt', fileName, dataUrl }: FileSaveOptions): void {
   if (!dataUrl) {
     if (!data) {
       console.warn('[file.save] data and dataUrl must give at least one.')
@@ -53,7 +48,7 @@ function load({
     input.type = 'file'
     input.addEventListener('change', function () {
       if (this.files !== null) {
-        beforeLoad && beforeLoad()
+        beforeLoad?.()
 
         const file = this.files[0]
         const type = file.name.split('.').slice(-1)[0]
@@ -63,12 +58,12 @@ function load({
 
         const fr = new FileReader()
         fr.addEventListener('load', function () {
-          succeed && succeed(this.result as string)
+          succeed?.(this.result as string)
           document.body.removeChild(input)
         })
         fr.readAsText(file)
       } else {
-        error && error(new Error('[Load File] unknown error.'))
+        error?.(new Error('[Load File] unknown error.'))
       }
     })
 
@@ -76,7 +71,7 @@ function load({
     document.body.appendChild(input)
     input.click()
   } catch (err) {
-    error && error(err)
+    error?.(err)
   }
 }
 

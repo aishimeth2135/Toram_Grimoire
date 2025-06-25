@@ -7,11 +7,7 @@
       {{ container.get('text') }}
     </div>
     <div>
-      <a
-        target="_blank"
-        :href="container.get('url')"
-        class="text-primary-50 underline"
-      >
+      <a target="_blank" :href="container.get('url')" class="text-primary-50 underline">
         {{ container.get('url_text') }}
       </a>
     </div>
@@ -22,10 +18,7 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import ReferenceHandler from './branch-handlers/ReferenceHandler'
 
@@ -37,9 +30,7 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  ReferenceHandler(props.computing, branchItem.value)
-)
+const container = computed(() => ReferenceHandler(props.computing, branchItem.value))
 
 const { t } = useI18n()
 </script>

@@ -1,10 +1,7 @@
 <!-- this component is splitted to handle EnchantStepStat -->
 <template>
-  <div class="pt-1 pb-1">
-    <div
-      class="flex flex-wrap items-center py-0.5"
-      :class="{ 'opacity-50': !stat.valid }"
-    >
+  <div class="pb-1 pt-1">
+    <div class="flex flex-wrap items-center py-0.5" :class="{ 'opacity-50': !stat.valid }">
       <cy-icon-text
         :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
         :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'"
@@ -31,9 +28,7 @@
     </div>
     <div class="flex items-center overflow-y-auto pb-0.5">
       <cy-input-counter
-        v-model:value="
-          stat.value /* eslint-disable-line vue/no-mutating-props */
-        "
+        v-model:value="stat.value /* eslint-disable-line vue/no-mutating-props */"
         inline
         max-button
         min-button

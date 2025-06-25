@@ -28,8 +28,7 @@ interface EnchantDollInjection {
   }
 }
 
-const EnchantDollInjectionKey: InjectionKey<EnchantDollInjection> =
-  Symbol('enchant-doll')
+const EnchantDollInjectionKey: InjectionKey<EnchantDollInjection> = Symbol('enchant-doll')
 
 export { EnchantDollInjectionKey }
 

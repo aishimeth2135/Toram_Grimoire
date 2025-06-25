@@ -1,10 +1,5 @@
 <template>
-  <cy-popover
-    v-if="currentTag"
-    tag="span"
-    class="inline-block px-0.5"
-    triggers="click hover"
-  >
+  <cy-popover v-if="currentTag" tag="span" class="inline-block px-0.5" triggers="click hover">
     <span class="cursor-pointer text-orange-60 underline">
       {{ displayName ?? name }}
     </span>

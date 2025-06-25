@@ -7,10 +7,7 @@ import { useCharacterStore } from '@/stores/views/character'
 import PageControl from '@/shared/setup/PageControl'
 import { useToggleList } from '@/shared/setup/State'
 
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { BagEquipment } from '@/lib/Items/BagItem'
 
 import FloatPageContent from '@/components/app-layout/float-page/float-page-content.vue'
@@ -25,11 +22,7 @@ import CommonSearchInput from '../common/common-search-input.vue'
 import CommonSearchableItems from '../common/common-searchable-items.vue'
 import CharacterEquipmentAppendItem from './character-equipment-append-item.vue'
 
-import {
-  EquipmentSearchMode,
-  type StatOption,
-  useEquipmentsSearch,
-} from './setup'
+import { EquipmentSearchMode, type StatOption, useEquipmentsSearch } from './setup'
 
 interface Props {
   visible: boolean
@@ -76,8 +69,7 @@ const pageChanged = async () => {
 
 const appendedEquipments = ref([]) as Ref<CharacterEquipment[]>
 
-const { toggleItem: toggleAppendedEquipments } =
-  useToggleList(appendedEquipments)
+const { toggleItem: toggleAppendedEquipments } = useToggleList(appendedEquipments)
 
 const appendBagEquipment = (equip: BagEquipment) => {
   toggleAppendedEquipments(CharacterEquipment.fromOriginEquipment(equip))
@@ -107,9 +99,9 @@ const selectStatOption = (option: StatOption) => {
     <FloatPageSide>
       <div class="flex h-full flex-col px-2">
         <div class="flex w-full max-w-sm items-center self-end">
-          <div class="flex flex-grow items-center">
+          <div class="flex grow items-center">
             <div
-              class="flex flex-shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-10 pl-3 pr-2 duration-150 hover:bg-primary-10"
+              class="flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-10 pl-3 pr-2 duration-150 hover:bg-primary-10"
               @click="
                 currentMode =
                   currentMode === EquipmentSearchMode.Normal
@@ -119,36 +111,27 @@ const selectStatOption = (option: StatOption) => {
             >
               <cy-icon icon="mdi:exchange" />
             </div>
-            <div class="flex-grow rounded-r-full border border-primary-10">
+            <div class="grow rounded-r-full border border-primary-10">
               <div v-if="currentMode === EquipmentSearchMode.Normal">
                 <CommonSearchInput v-model="normalSearchText" behind />
               </div>
               <cy-popover
                 v-else-if="currentMode === EquipmentSearchMode.Stat"
-                class="mr-2 flex flex-grow cursor-pointer items-center text-ellipsis py-1.5 pl-3 pr-2 text-sm leading-6 text-primary-30"
+                class="mr-2 flex grow cursor-pointer items-center text-ellipsis py-1.5 pl-3 pr-2 text-sm leading-6 text-primary-30"
                 custom
               >
                 <template v-if="!selectedStatOption">
-                  {{
-                    t('character-simulator.append-equipments.search-stat-tips')
-                  }}
+                  {{ t('character-simulator.append-equipments.search-stat-tips') }}
                 </template>
                 <template v-else>
                   <div class="mr-2.5">
-                    {{
-                      t(
-                        'character-simulator.append-equipments.current-selected-stat'
-                      )
-                    }}
+                    {{ t('character-simulator.append-equipments.current-selected-stat') }}
                   </div>
                   <div class="text-base text-primary-80">
                     {{ selectedStatOption.text }}
                   </div>
                 </template>
-                <cy-icon
-                  class="ml-auto"
-                  icon="ic:round-keyboard-double-arrow-down"
-                />
+                <cy-icon class="ml-auto" icon="ic:round-keyboard-double-arrow-down" />
                 <template #popper="{ hide }">
                   <CommonSearchableItems
                     v-if="currentMode === EquipmentSearchMode.Stat"
@@ -156,7 +139,7 @@ const selectStatOption = (option: StatOption) => {
                     :items="statOptionsSearchResults"
                     :selected-item-ids="selectedStatIds"
                     class="h-full !max-h-none"
-                    @select-item="selectStatOption($event), hide()"
+                    @select-item="(selectStatOption($event), hide())"
                   >
                     <template #item="{ item }">
                       {{ item.text }}
@@ -166,7 +149,7 @@ const selectStatOption = (option: StatOption) => {
               </cy-popover>
             </div>
           </div>
-          <div class="ml-2 flex flex-shrink-0 items-center">
+          <div class="ml-2 flex shrink-0 items-center">
             <BrowseEquipmentTypeFilter v-model="selectedEquipmentTypes" />
             <cy-button-circle
               icon="mdi:sort-bool-ascending"
@@ -179,9 +162,7 @@ const selectStatOption = (option: StatOption) => {
             />
           </div>
         </div>
-        <CardRowsWrapper
-          class="mt-3 max-h-96 flex-grow overflow-x-auto wd:max-h-none"
-        >
+        <CardRowsWrapper class="mt-3 max-h-96 grow overflow-x-auto wd:max-h-none">
           <div class="h-full min-w-min overflow-y-auto">
             <div ref="topElement"></div>
             <CardRows v-if="currentItems.length > 0">
@@ -194,20 +175,12 @@ const selectStatOption = (option: StatOption) => {
               />
             </CardRows>
             <div v-else class="flex h-full items-center justify-center p-6">
-              <cy-icon
-                icon="material-symbols:search-off"
-                width="2.5rem"
-                class="text-gray-30"
-              />
+              <cy-icon icon="material-symbols:search-off" width="2.5rem" class="text-gray-30" />
             </div>
           </div>
         </CardRowsWrapper>
-        <div class="mt-3 flex-shrink-0">
-          <cy-pagination
-            v-model:value="page"
-            :max-page="maxPage"
-            @changed="pageChanged"
-          />
+        <div class="mt-3 shrink-0">
+          <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
         </div>
       </div>
     </FloatPageSide>
@@ -231,10 +204,7 @@ const selectStatOption = (option: StatOption) => {
               @click="toggleAppendedEquipments(equip)"
             >
               <cy-icon icon="ic:round-close" class="mr-3.5" />
-              <cy-icon
-                v-if="!equip.origin!.unknowCategory"
-                :icon="equip.getCategoryImagePath()"
-              />
+              <cy-icon v-if="!equip.origin!.unknowCategory" :icon="equip.getCategoryImagePath()" />
               <cy-icon v-else icon="eva-star-outline" />
               <div class="ml-2 w-40">
                 {{ equip.name }}
@@ -242,11 +212,7 @@ const selectStatOption = (option: StatOption) => {
             </CardRow>
           </CardRows>
           <div v-else class="px-6 py-4 text-sm text-primary-40">
-            {{
-              t(
-                'character-simulator.append-equipments.selected-equipments-default-tips'
-              )
-            }}
+            {{ t('character-simulator.append-equipments.selected-equipments-default-tips') }}
           </div>
         </CardRowsWrapper>
       </div>

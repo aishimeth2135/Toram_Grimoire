@@ -8,12 +8,9 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import BrowseEquipmentsListItem from './browse-equipments-list-item.vue'
 
-const selectedEquipment = defineModel<CharacterEquipment | null>(
-  'selectedEquipment',
-  {
-    required: true,
-  }
-)
+const selectedEquipment = defineModel<CharacterEquipment | null>('selectedEquipment', {
+  required: true,
+})
 
 const { currentCharacter } = storeToRefs(useCharacterStore())
 

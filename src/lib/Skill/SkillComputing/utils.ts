@@ -26,14 +26,9 @@ import {
 } from './consts'
 
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
-  let basicBranch = effectItem.branchItems.find(branchItem =>
-    branchItem.is(SkillBranchNames.Basic)
-  )
+  let basicBranch = effectItem.branchItems.find(branchItem => branchItem.is(SkillBranchNames.Basic))
   if (!basicBranch) {
-    basicBranch = new SkillBranchItem(
-      effectItem,
-      effectBasicPropsToBranch(origin)
-    )
+    basicBranch = new SkillBranchItem(effectItem, effectBasicPropsToBranch(origin))
     effectItem.branchItems.unshift(basicBranch)
   }
   effectItem.basicBranchItem = basicBranch
@@ -69,26 +64,20 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
     casting_time: value => value,
   }
   const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
-  ;(
-    Object.entries(origin.basicProps) as [
-      keyof SkillEffectBasicProps,
-      string | number,
-    ][]
-  ).forEach(([key, value]) => {
-    if (value !== null) {
-      const attrKey = key.replace(/[A-Z]/g, char => '_' + char.toLowerCase())
-      const handle = CONVERT_LIST[attrKey]
-      const res = handle ? handle(value.toString()) : value.toString()
-      branch.appendProp(attrKey, res)
+  ;(Object.entries(origin.basicProps) as [keyof SkillEffectBasicProps, string | number][]).forEach(
+    ([key, value]) => {
+      if (value !== null) {
+        const attrKey = key.replace(/[A-Z]/g, char => '_' + char.toLowerCase())
+        const handle = CONVERT_LIST[attrKey]
+        const res = handle ? handle(value.toString()) : value.toString()
+        branch.appendProp(attrKey, res)
+      }
     }
-  })
+  )
   return branch
 }
 
-function branchesOverwrite(
-  to: SkillBranchItem[],
-  from: SkillBranch[] | SkillBranchItem[]
-) {
+function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBranchItem[]) {
   from.forEach(fromBranch => {
     if (fromBranch.id === -1) {
       return
@@ -111,10 +100,7 @@ function branchesOverwrite(
   })
 }
 
-function branchOverwrite(
-  to: SkillBranchItem,
-  from: SkillBranch | SkillBranchItem
-) {
+function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchItem) {
   // 如果 branch.id 一樣但 branch.name 不一樣，先清空所有屬性。
   // branch.name 為空值時，默認兩者同名。
   if (from.name !== SkillBranchNames.None && to.name !== from.name) {
@@ -179,12 +165,7 @@ function convertEffectEquipment(
   effect: SkillEffect,
   dualSwordRegress: boolean = false
 ): EquipmentRestrictions[] {
-  const {
-    mainWeapon: main,
-    subWeapon: sub,
-    bodyArmor: body,
-    equipmentOperator: operator,
-  } = effect
+  const { mainWeapon: main, subWeapon: sub, bodyArmor: body, equipmentOperator: operator } = effect
 
   if (main === -1 && sub === -1 && body === -1) {
     return [new EquipmentRestrictions()]
@@ -197,7 +178,11 @@ function convertEffectEquipment(
       return
     }
     const key = list.map(value => (value === null ? '-' : value)).join('|')
-    isMain ? results.unshift([key, data]) : results.push([key, data])
+    if (isMain) {
+      results.unshift([key, data])
+    } else {
+      results.push([key, data])
+    }
   }
 
   const mainData = new EquipmentRestrictions({
@@ -282,12 +267,10 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
     SkillBranchNames.Basic,
     SkillBranchNames.Table,
   ]
-  const isMainBranch = (_bch: SkillBranchItem) =>
-    mainBranchNameList.includes(_bch.name)
+  const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.includes(_bch.name)
 
   const auxiliaryBranchNameList = [SkillBranchNames.Equipment]
-  const isAuxiliaryBranch = (_bch: SkillBranchItem) =>
-    auxiliaryBranchNameList.includes(_bch.name)
+  const isAuxiliaryBranch = (_bch: SkillBranchItem) => auxiliaryBranchNameList.includes(_bch.name)
 
   const resBranches: SkillBranchItem[] = []
   const resAuxiliaryBranches: SkillBranchItem[] = []
@@ -304,8 +287,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
       return
     }
 
-    const mainBranch =
-      resBranches.length !== 0 ? lastElement(resBranches) : null
+    const mainBranch = resBranches.length !== 0 ? lastElement(resBranches) : null
 
     if (!mainBranch && isMainBranch(branchItem)) {
       resBranches.push(branchItem)
@@ -354,21 +336,10 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
 }
 
 export function initBranchesPostpone(effectItem: SkillEffectItem) {
-  const allStackBranches = effectItem.branchItems.filter(_bch =>
-    _bch.is(SkillBranchNames.Stack)
-  )
-  const postponeVarList = [
-    '$STR',
-    '$INT',
-    '$AGI',
-    '$VIT',
-    '$DEX',
-    '$guard_power',
-  ]
+  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.is(SkillBranchNames.Stack))
+  const postponeVarList = ['$STR', '$INT', '$AGI', '$VIT', '$DEX', '$guard_power']
   const checkStatsContainsPostponeVar = (stats: StatComputed[]) =>
-    stats.some(_stat =>
-      postponeVarList.some(stat => _stat.value.includes(stat))
-    )
+    stats.some(_stat => postponeVarList.some(stat => _stat.value.includes(stat)))
   effectItem.branchItems.forEach(bch => {
     const stackBranches = allStackBranches.filter(_bch =>
       bch.linkedStackIds.includes(_bch.stackId!)
@@ -382,18 +353,13 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
       bch.postpone = true
     } else if (bch.is(SkillBranchNames.Damage)) {
       bch.postpone = true
-    } else if (
-      bch.stats.some(stat => bch.hasProp(stat.statId, 'conditionValue'))
-    ) {
+    } else if (bch.stats.some(stat => bch.hasProp(stat.statId, 'conditionValue'))) {
       bch.postpone = true
     }
   })
 }
 
-function initStackStates(
-  effectItem: SkillEffectItemBase,
-  vars?: { slv: number; clv: number }
-) {
+function initStackStates(effectItem: SkillEffectItemBase, vars?: { slv: number; clv: number }) {
   // const vars = {
   //   slv: effectItem.parent.parent.vars.skillLevel,
   //   clv: effectItem.parent.parent.vars.characterLevel,
@@ -418,11 +384,7 @@ function initStackStates(
         ) as number,
       })
     })
-  effectItem.stackStates.splice(
-    0,
-    effectItem.stackStates.length,
-    ...stackStates
-  )
+  effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates)
 }
 
 function regressHistoryBranches(effectItem: SkillEffectItem) {
@@ -460,9 +422,7 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
       ? history.nextEffect.branchItems.find(bch => branchItem.id === bch.id)
       : history.nextEffect.branchItems.find(bch =>
           [...bch.suffixBranches, ...bch.emptySuffixBranches].some(
-            suf =>
-              suf.hasId() &&
-              branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
+            suf => suf.hasId() && branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
           )
         )
     if (next) {

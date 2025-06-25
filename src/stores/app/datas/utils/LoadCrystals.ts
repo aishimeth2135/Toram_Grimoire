@@ -37,11 +37,7 @@ export default function (root: ItemsSystem, csvData: CsvData) {
       }
 
       if (row[NAME] !== '' && row[ATTRIBUTE_CATEGORY] !== '') {
-        currentCrystal = root.appendCrystal(
-          row[NAME],
-          currentType,
-          currentBossType
-        )
+        currentCrystal = root.appendCrystal(row[NAME], currentType, currentBossType)
       }
       if (row[ATTRIBUTE_CATEGORY] !== '') {
         currentCategory = row[ATTRIBUTE_CATEGORY]
@@ -53,12 +49,7 @@ export default function (root: ItemsSystem, csvData: CsvData) {
       const propValue = row[ATTRIBUTE_VALUES[0]]
       if (currentCategory === 'stats') {
         const { type, value } = parseItemStatData(propValue)
-        currentCrystal.appendStat(
-          propName,
-          value,
-          type,
-          row[ATTRIBUTE_VALUES[1]]
-        )
+        currentCrystal.appendStat(propName, value, type, row[ATTRIBUTE_VALUES[1]])
       } else if (currentCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof BagItemObtain] = propValue

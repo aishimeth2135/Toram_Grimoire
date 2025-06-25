@@ -18,9 +18,7 @@
           <div class="ml-auto">
             <cy-button-icon
               :icon="
-                datasItem.collapse
-                  ? 'ic:round-keyboard-arrow-up'
-                  : 'ic:round-keyboard-arrow-down'
+                datasItem.collapse ? 'ic:round-keyboard-arrow-up' : 'ic:round-keyboard-arrow-down'
               "
               @click="toggleItemCollapse(datasItem)"
             />
@@ -49,18 +47,10 @@
             {{ t('global.all') }}
           </cy-button-check>
           <div class="ml-auto flex items-center">
-            <cy-button-action
-              icon="ic-round-done"
-              :disabled="submitDisabled"
-              @click="submit"
-            >
+            <cy-button-action icon="ic-round-done" :disabled="submitDisabled" @click="submit">
               {{ t('global.export') }}
             </cy-button-action>
-            <cy-button-action
-              icon="ic-round-close"
-              color="secondary"
-              @click="closeModal"
-            >
+            <cy-button-action icon="ic-round-close" color="secondary" @click="closeModal">
               {{ t('global.cancel') }}
             </cy-button-action>
           </div>
@@ -131,14 +121,13 @@ const exportDataItemCharacters: ExportDataItem<CharacterSaveData> = reactive({
   items: new Set(),
   originalItems: [],
 })
-const exportDataItemEquipments: ExportDataItem<EquipmentSaveDataWithIndex> =
-  reactive({
-    id: ExportDataItemIds.Equipments,
-    title: t('character-simulator.equipment-info.equipment'),
-    collapse: false,
-    items: new Set(),
-    originalItems: [],
-  })
+const exportDataItemEquipments: ExportDataItem<EquipmentSaveDataWithIndex> = reactive({
+  id: ExportDataItemIds.Equipments,
+  title: t('character-simulator.equipment-info.equipment'),
+  collapse: false,
+  items: new Set(),
+  originalItems: [],
+})
 const exportDataItemSkillBuilds: ExportDataItem<SkillBuildSaveData> = reactive({
   id: ExportDataItemIds.SkillBuilds,
   title: t('skill-simulator.skill-build'),
@@ -166,25 +155,18 @@ const exportDatasDisplay = computed(() =>
 
 const allSelected = computed<boolean>({
   get() {
-    return exportDatas.every(
-      item => item.items.size === item.originalItems.length
-    )
+    return exportDatas.every(item => item.items.size === item.originalItems.length)
   },
   set(value) {
     if (value) {
-      exportDatas.forEach(
-        item =>
-          (item.items = new Set(item.originalItems.map(_item => _item.id)))
-      )
+      exportDatas.forEach(item => (item.items = new Set(item.originalItems.map(_item => _item.id))))
     } else {
       exportDatas.forEach(item => (item.items = new Set()))
     }
   },
 })
 
-const submitDisabled = computed(() =>
-  exportDatas.every(item => item.items.size === 0)
-)
+const submitDisabled = computed(() => exportDatas.every(item => item.items.size === 0))
 
 const toggleItemCollapse = (item: ExportDataItem) => {
   item.collapse = !item.collapse
@@ -199,15 +181,15 @@ const toggleItemAll = (item: ExportDataItem) => {
 }
 
 const toggleItem = (item: ExportDataItem, innerItemId: number) => {
-  item.items.has(innerItemId)
-    ? item.items.delete(innerItemId)
-    : item.items.add(innerItemId)
+  if (item.items.has(innerItemId)) {
+    item.items.delete(innerItemId)
+  } else {
+    item.items.add(innerItemId)
+  }
 }
 
 const submit = () => {
-  const getItems: <T extends DataAlly>(
-    target: ExportDataItem<T>
-  ) => T[] = target => {
+  const getItems: <T extends DataAlly>(target: ExportDataItem<T>) => T[] = target => {
     return target.originalItems
       .filter(_item => target.items.has(_item.id))
       .map(_item => _item.origin)
@@ -236,10 +218,10 @@ const submit = () => {
 watch(visible, newValue => {
   if (newValue) {
     // init
-    const handle: <T extends DataAlly>(
-      target: ExportDataItem<T>,
-      list: T[]
-    ) => void = (target, list) => {
+    const handle: <T extends DataAlly>(target: ExportDataItem<T>, list: T[]) => void = (
+      target,
+      list
+    ) => {
       const originalItems = list.map((origin, id) => ({ id, origin }))
       target.originalItems = originalItems
       target.items = new Set(originalItems.map(_item => _item.id))

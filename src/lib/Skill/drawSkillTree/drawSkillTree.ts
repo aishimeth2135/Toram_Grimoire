@@ -31,10 +31,7 @@ function createDrawSkillTreeDefs() {
 
   const gw = GetDrawSetting().gridWidth
   const drawCircle = (cx: number, cy: number, radius: number) => {
-    const circle = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'circle'
-    )
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     circle.setAttribute('cx', cx.toString())
     circle.setAttribute('cy', cy.toString())
     circle.setAttribute('r', radius.toString())
@@ -58,18 +55,11 @@ function createDrawSkillTreeDefs() {
   defs.appendChild(lockPattern)
 
   // background
-  const skillIconBg = CY.svg.createLinearGradient(
-    'skill-icon-bg',
-    '.5',
-    '0',
-    '.5',
-    '1',
-    [
-      { 'offset': '0%', 'stop-color': 'white' },
-      { 'offset': '50%', 'stop-color': '#ffd1ea' },
-      { 'offset': '100%', 'stop-color': '#ff9ed3' },
-    ]
-  )
+  const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg', '.5', '0', '.5', '1', [
+    { 'offset': '0%', 'stop-color': 'white' },
+    { 'offset': '50%', 'stop-color': '#ffd1ea' },
+    { 'offset': '100%', 'stop-color': '#ff9ed3' },
+  ])
 
   defs.appendChild(skillIconBg)
 
@@ -104,10 +94,7 @@ interface DrawSkillTreeDataExtraCallbackPayload extends DrawSettingData {
 
 function computeDrawSkillTreeData(
   skillTree: SkillTree,
-  {
-    setSkillButtonExtraData = () => [],
-    getSkillLevel,
-  }: ComputeDrawSkillTreeDataOptions = {}
+  { setSkillButtonExtraData = () => [], getSkillLevel }: ComputeDrawSkillTreeDataOptions = {}
 ) {
   const findSkillByDrawOrder = (order: number) => {
     return skillTree.skills.find(sk => sk.drawOrder === order)!
@@ -116,9 +103,7 @@ function computeDrawSkillTreeData(
   const skills = skillTree.skills
   let drawTreeCode = skillTree.drawTreeCode
 
-  drawTreeCode =
-    drawTreeCode ||
-    'S E S E S E S L S E S E S E S L S E S E S E S L S E S E S E S'
+  drawTreeCode = drawTreeCode || 'S E S E S E S L S E S E S E S L S E S E S E S L S E S E S E S'
 
   const codes = drawTreeCode
     .toUpperCase()
@@ -258,12 +243,16 @@ function computeDrawSkillTreeData(
           }
         }
         data.push(skillCircleData)
-        skillNameData && data.push(skillNameData)
+        if (skillNameData) {
+          data.push(skillNameData)
+        }
 
         if (!Array.isArray(extraDatas)) {
           throw Error('options: setSkillButon must return array.')
         }
-        extraDatas.length > 0 && data.push(...extraDatas)
+        if (extraDatas.length > 0) {
+          data.push(...extraDatas)
+        }
         cnt += 1
       }
       curx += 1
@@ -328,9 +317,7 @@ interface SkillIconPatternDataItem {
   ]
 }
 
-function getSkillIconPatternData(
-  skillTree: SkillTree
-): SkillIconPatternDataItem[] {
+function getSkillIconPatternData(skillTree: SkillTree): SkillIconPatternDataItem[] {
   const drawData = GetDrawSetting()
   const width = drawData.gridWidth,
     iconPad = drawData.iconPadding
@@ -374,8 +361,4 @@ export {
   GetDrawSetting,
   getSkillIconPath,
 }
-export type {
-  DrawSkillTreeData,
-  SetSkillButtonExtraDataHandle,
-  GetSkillLevelHandler,
-}
+export type { DrawSkillTreeData, SetSkillButtonExtraDataHandle, GetSkillLevelHandler }

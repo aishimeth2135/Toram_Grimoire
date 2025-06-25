@@ -1,7 +1,4 @@
-import {
-  type CalcStructExpression,
-  CalculationContainerIds,
-} from '@/lib/Damage/DamageCalculation'
+import { type CalcStructExpression, CalculationContainerIds } from '@/lib/Damage/DamageCalculation'
 
 export { calcStructCritical as calcStructDisplayCritical } from '@/stores/views/damage-calculation/consts'
 
