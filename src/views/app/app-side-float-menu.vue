@@ -2,11 +2,7 @@
   <transition name="slide" appear>
     <div v-if="visible" class="app--side-menu">
       <div>
-        <cy-button-circle
-          icon="akar-icons:sidebar-left"
-          color="bright"
-          @click="toggleMainMenu"
-        />
+        <cy-button-circle icon="akar-icons:sidebar-left" color="bright" @click="toggleMainMenu" />
       </div>
       <cy-transition>
         <div v-if="mainMenuVisible" class="app--side-menu--menu">
@@ -44,7 +40,9 @@ watch(
 )
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .app--side-menu {
   @apply fixed right-3 top-3 z-40 flex flex-col items-end;
 
@@ -69,7 +67,7 @@ watch(
 .app--side-menu--menu {
   min-width: 15rem;
 
-  @apply mt-2 rounded border-1 border-primary-30 bg-white shadow;
+  @apply mt-2 rounded-sm border-1 border-primary-30 bg-white shadow-sm;
 
   @media (max-width: 15rem) {
     width: 100%;
@@ -77,14 +75,14 @@ watch(
 }
 
 .app--side-menu--link-button {
-  @apply w-full cursor-pointer bg-opacity-25 px-4 py-1.5;
+  @apply w-full cursor-pointer px-4 py-1.5;
 
   &:hover {
-    @apply bg-primary-30 bg-opacity-10;
+    @apply bg-primary-30/10;
   }
 
   &.selected {
-    @apply bg-primary-30 bg-opacity-30;
+    @apply bg-primary-30/30;
   }
 }
 </style>

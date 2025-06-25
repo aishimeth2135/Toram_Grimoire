@@ -86,7 +86,7 @@ const statusIcon = (value: number) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .loading-circle {
   animation: loading-circle 0.8s ease infinite;
 }

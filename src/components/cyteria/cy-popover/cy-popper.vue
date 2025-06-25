@@ -31,22 +31,9 @@ import {
   shift,
   size,
 } from '@floating-ui/dom'
-import {
-  type CSSProperties,
-  type Ref,
-  computed,
-  nextTick,
-  ref,
-  toRef,
-  useAttrs,
-  watch,
-} from 'vue'
+import { type CSSProperties, type Ref, computed, nextTick, ref, toRef, useAttrs, watch } from 'vue'
 
-import {
-  type PopperHideEventDetail,
-  type PopperOptions,
-  setupPopperOptions,
-} from './setup'
+import { type PopperHideEventDetail, type PopperOptions, setupPopperOptions } from './setup'
 
 defineOptions({
   inheritAttrs: false,
@@ -146,9 +133,7 @@ const togglePopper = async (force?: boolean) => {
 const handlePopperHide = (evt: CustomEvent<PopperHideEventDetail>) => {
   if (
     evt.detail.eventTarget &&
-    [mainElement.value, popperElement.value].some(el =>
-      el?.contains(evt.detail.eventTarget)
-    )
+    [mainElement.value, popperElement.value].some(el => el?.contains(evt.detail.eventTarget))
   ) {
     return
   }
@@ -166,7 +151,9 @@ defineExpose({
 })
 </script>
 
-<style lang="postcss">
+<style>
+@reference "@/tailwind.css";
+
 .cy--popper {
   min-width: 15rem;
   @apply fixed z-100 overflow-y-auto;
@@ -174,7 +161,7 @@ defineExpose({
   &.theme-common {
     @apply shadow-md;
     & > .popper-content {
-      @apply rounded border border-primary-40 bg-white p-0.5;
+      @apply rounded-sm border border-primary-40 bg-white p-0.5;
     }
   }
 

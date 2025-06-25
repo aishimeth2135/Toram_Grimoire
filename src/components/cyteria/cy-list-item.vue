@@ -5,10 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-defineOptions({
-  name: 'CyListItem',
-})
-
 interface Props {
   selected?: boolean
   pure?: boolean
@@ -20,23 +16,31 @@ withDefaults(defineProps<Props>(), {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .cy--list-item {
-  @apply flex cursor-pointer flex-wrap items-center px-3 py-1.5 duration-200;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+  align-items: center;
+  padding-inline: --spacing(3);
+  padding-block: --spacing(1.5);
   border: 1px solid transparent;
+  transition-duration: 200ms;
 
   &:hover {
-    @apply bg-primary-5;
+    background-color: var(--app-primary-5);
   }
 
   &.is-pure {
-    @apply cursor-auto;
+    cursor: auto;
   }
 
   &.selected {
     color: var(--app-fuchsia-60);
     border: 1px solid var(--app-primary-30);
-    background-color: rgba(var(--app-rgb-primary-10), 0.1);
+    background-color: --alpha(var(--app-primary-10) / 10%);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {

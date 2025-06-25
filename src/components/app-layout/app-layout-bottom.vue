@@ -1,10 +1,7 @@
 <template>
   <div class="app-layout--bottom app-layout-horizontal-container">
     <cy-transition mode="out-in">
-      <div
-        v-if="slotNotEmpty(slots['main-content'])"
-        class="pointer-events-auto mb-2"
-      >
+      <div v-if="slotNotEmpty(slots['main-content'])" class="pointer-events-auto mb-2">
         <slot name="main-content"></slot>
       </div>
       <div
@@ -23,12 +20,7 @@
       </div>
     </cy-transition>
     <div
-      v-if="
-        slots['default'] ||
-        slots['main-start'] ||
-        slots['main-end'] ||
-        slots['main-custom']
-      "
+      v-if="slots['default'] || slots['main-start'] || slots['main-end'] || slots['main-custom']"
       class="flex items-end space-x-2"
     >
       <div v-if="slots['main-start']" class="pointer-events-auto">
@@ -37,7 +29,7 @@
       <slot name="main-custom">
         <div
           v-if="slots['default']"
-          class="pointer-events-auto flex-grow rounded-full border border-primary-30 bg-white px-3 py-1 shadow-lg"
+          class="pointer-events-auto grow rounded-full border border-primary-30 bg-white px-3 py-1 shadow-lg"
         >
           <slot></slot>
         </div>

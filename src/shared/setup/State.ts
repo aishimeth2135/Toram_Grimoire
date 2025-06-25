@@ -50,7 +50,7 @@ export function registViewStatesCleaning(id: ViewNames) {
   })
 }
 
-export function useToggleList<Item extends any>(list: Ref<Item[]>) {
+export function useToggleList<Item>(list: Ref<Item[]>) {
   const toggleItem = (item: Item) => {
     const idx = list.value.indexOf(item)
     if (idx > -1) {
@@ -79,7 +79,14 @@ export function useToggle(target: Ref<boolean>): ToggleHelper {
 }
 
 export function useToggleGroup(helpers: ToggleHelper[]) {
-  return (value: boolean) => {
-    helpers.forEach(helper => helper(value))
+  return (value: boolean, targetHandler?: ToggleHelper) => {
+    if (targetHandler) {
+      targetHandler()
+    }
+    helpers.forEach(helper => {
+      if (helper !== targetHandler) {
+        helper(value)
+      }
+    })
   }
 }

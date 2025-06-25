@@ -6,7 +6,7 @@
         :class="{ 'bg-white': detailVisible }"
         @click="detailVisible = !detailVisible"
       >
-        <div class="flex w-60 flex-shrink-0">
+        <div class="flex w-60 shrink-0">
           <cy-icon-text
             icon="mdi:book-outline"
             :text-color="detailVisible ? 'red-70' : 'primary-90'"
@@ -14,23 +14,15 @@
             {{ item.name }}
           </cy-icon-text>
         </div>
-        <div
-          v-if="registletQueryState.displayMode === 'category'"
-          class="text-primary-40"
-        >
+        <div v-if="registletQueryState.displayMode === 'category'" class="text-primary-40">
           {{ t(`registlet-query.category.${item.category.id}`) }}
         </div>
-        <template
-          v-else-if="registletQueryState.displayMode === 'obtain-levels'"
-        >
-          <div
-            v-if="item.obtainLevels.length > 0"
-            class="flex items-center space-x-2"
-          >
+        <template v-else-if="registletQueryState.displayMode === 'obtain-levels'">
+          <div v-if="item.obtainLevels.length > 0" class="flex items-center space-x-2">
             <div
               v-for="level in item.obtainLevels"
               :key="level"
-              class="rounded bg-emerald-5 px-2 text-emerald-60"
+              class="rounded-sm bg-emerald-5 px-2 text-emerald-60"
             >
               {{ level }}
             </div>
@@ -42,13 +34,8 @@
       </div>
     </div>
     <cy-transition>
-      <div
-        v-if="detailVisible"
-        class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5"
-      >
-        <div
-          class="mb-2 mt-1 rounded border border-l-2 border-red-10 px-4 py-3"
-        >
+      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5">
+        <div class="mb-2 mt-1 rounded-sm border border-l-2 border-red-10 px-4 py-3">
           <!-- prettier-ignore-attribute v-if -->
           <div v-if="(item.link instanceof StatBase)" class="flex items-center">
             <div>{{ item.link.text }}</div>
@@ -59,14 +46,8 @@
           </div>
           <div v-else class="space-y-2">
             <template v-for="row in item.rows" :key="row.type + row.value">
-              <RenderCaptionValue
-                v-if="row.type === 'caption'"
-                :text="row.value"
-              />
-              <div
-                v-else-if="row.type === 'remark'"
-                class="text-sm text-primary-40"
-              >
+              <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
+              <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
                 {{ row.value }}
               </div>
             </template>
@@ -79,14 +60,11 @@
                 {{ t('registlet-query.detail.obtain-levels') }}
               </td>
               <td class="text-primary-60">
-                <div
-                  v-if="item.obtainLevels.length > 0"
-                  class="flex items-center space-x-2"
-                >
+                <div v-if="item.obtainLevels.length > 0" class="flex items-center space-x-2">
                   <div
                     v-for="level in item.obtainLevels"
                     :key="level"
-                    class="rounded bg-emerald-5 px-2 text-emerald-60"
+                    class="rounded-sm bg-emerald-5 px-2 text-emerald-60"
                   >
                     {{ level }}
                   </div>
@@ -152,9 +130,7 @@ watch(
 )
 
 const handleValue = (str: string) =>
-  str
-    .replace(/Lv/g, t('registlet-query.detail.registlet-level'))
-    .replace(/\*/g, '×')
+  str.replace(/Lv/g, t('registlet-query.detail.registlet-level')).replace(/\*/g, '×')
 
 const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

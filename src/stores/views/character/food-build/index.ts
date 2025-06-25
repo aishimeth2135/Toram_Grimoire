@@ -3,7 +3,6 @@ import { markRaw, ref } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { protectType } from '@/shared/utils/pinia'
 
 import { FoodsBase } from '@/lib/Character/Food'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
@@ -31,18 +30,16 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     const newBuild = new FoodsBuild(
       foodsBase.value!,
 
-      Grimoire.i18n.t('character-simulator.food-build.food-build') +
-        ' ' +
-        (builds.value.length + 1)
+      Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (builds.value.length + 1)
     )
     return appendFoodBuild(newBuild, false)
   }
 
   return {
-    foodsBase: protectType(foodsBase),
-    foodBuilds: protectType(builds),
+    foodsBase: foodsBase,
+    foodBuilds: builds,
     currentFoodBuildIndex: currentBuildIndex,
-    currentFoodBuild: protectType(currentBuild),
+    currentFoodBuild: currentBuild,
 
     initFoodsBase,
     setCurrentFoodBuild: setCurrentBuild,

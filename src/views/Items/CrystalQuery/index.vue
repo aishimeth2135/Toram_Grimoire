@@ -21,11 +21,7 @@
           </cy-default-tips>
         </div>
       </CardRowsWrapper>
-      <cy-pagination
-        v-model:value="page"
-        :max-page="maxPage"
-        @changed="pageChanged"
-      />
+      <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
     <AppLayoutBottom>
       <template #main-start>
@@ -36,10 +32,7 @@
           @update:value="selectMode($event.id)"
         >
           <template #title>
-            <cy-button-circle
-              icon="heroicons-solid:switch-vertical"
-              color="blue"
-            />
+            <cy-button-circle icon="heroicons-solid:switch-vertical" color="blue" />
           </template>
           <template #item="{ value }">
             <cy-icon-text :icon="value.icon">
@@ -50,7 +43,7 @@
       </template>
       <template #default>
         <div v-if="mode === 'normal'" class="flex w-full items-center">
-          <cy-icon icon="ic-outline-search" class="flex-shrink-0" />
+          <cy-icon icon="ic-outline-search" class="shrink-0" />
           <input
             v-model="modeNormal.searchText"
             type="text"
@@ -62,7 +55,7 @@
               invisible: modeNormal.searchText === '',
             }"
             icon="mdi:close-circle"
-            class="flex-shrink-0"
+            class="shrink-0"
             @click="modeNormal.searchText = ''"
           />
         </div>
@@ -72,11 +65,7 @@
           :color="modeStat.statItem ? 'primary' : 'red'"
           @click="toggle('modals/selectStat')"
         >
-          {{
-            modeStat.statItem
-              ? modeStat.statItem.text
-              : t('crystal-query.select-stat.title')
-          }}
+          {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
         </cy-button-plain>
       </template>
       <template #side-buttons>
@@ -84,17 +73,12 @@
           v-if="mode === 'stat'"
           icon="ci:list-checklist-alt"
           color="cyan"
-          @click="
-            resultItemPreviewMode =
-              resultItemPreviewMode === 'default' ? 'mode' : 'default'
-          "
+          @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
         />
         <cy-button-circle
           icon="mdi:arrow-expand"
           color="blue"
-          @click="
-            resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault
-          "
+          @click="resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault"
         />
         <cy-button-circle
           icon="mdi:filter"
@@ -179,9 +163,7 @@ const { modals, contents, toggle } = ToggleService({
   contents: ['searchFilter'] as const,
 })
 
-const crystals = Grimoire.Items.crystals.map(
-  crystal => new EquipmentCrystal(crystal)
-)
+const crystals = Grimoire.Items.crystals.map(crystal => new EquipmentCrystal(crystal))
 const resultItemsDetailVisibleDefault = ref(false)
 const topElement: Ref<HTMLElement | null> = ref(null)
 
@@ -267,12 +249,10 @@ const resultCrystals = computed(() => {
       }
       const categoryCrystals = categoryCrystalsMap.get(crystal.origin.category)
       if (categoryCrystals) {
-        const relatedCrystals =
-          crystal.origin.getRelatedCrystals(categoryCrystals)
-        return [
-          ...relatedCrystals.enhancers,
-          ...relatedCrystals.prependeds,
-        ].some(item => item.name.toLowerCase().includes(text))
+        const relatedCrystals = crystal.origin.getRelatedCrystals(categoryCrystals)
+        return [...relatedCrystals.enhancers, ...relatedCrystals.prependeds].some(item =>
+          item.name.toLowerCase().includes(text)
+        )
       }
       return false
     })
@@ -283,20 +263,14 @@ const resultCrystals = computed(() => {
     }
     const statItem = modeStat.statItem
     const result = filteredCrystals.filter(crystal =>
-      crystal.stats.find(
-        stat => stat.base === statItem.origin && stat.type === statItem.type
-      )
+      crystal.stats.find(stat => stat.base === statItem.origin && stat.type === statItem.type)
     )
     result.sort((item1, item2) => {
       const value1 = item1.stats
-        .filter(
-          stat => stat.base === statItem.origin && stat.type === statItem.type
-        )
+        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
         .reduce((cur, stat) => cur + stat.value, 0)
       const value2 = item2.stats
-        .filter(
-          stat => stat.base === statItem.origin && stat.type === statItem.type
-        )
+        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
         .reduce((cur, stat) => cur + stat.value, 0)
       return value2 - value1
     })

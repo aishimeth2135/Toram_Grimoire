@@ -43,24 +43,3 @@ const buttonBaseBinds = useButtonBaseBinds(props)
     </template>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-circle {
-  @apply h-11 w-11 justify-center rounded-full border bg-white bg-opacity-100;
-  --button-icon-width: 1.25rem;
-  box-shadow:
-    1px 3px 1px -2px rgba(0, 0, 0, 0.1),
-    1px 2px 2px 0 rgba(0, 0, 0, 0.07),
-    1px 1px 5px 0 rgba(0, 0, 0, 0.06);
-
-  &.button-small {
-    @apply h-9 w-9;
-
-    --button-icon-width: 1rem;
-  }
-
-  &.button-float {
-    @apply shadow-md;
-  }
-}
-</style>

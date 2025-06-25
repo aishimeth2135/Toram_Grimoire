@@ -1,0 +1,246 @@
+@reference "@/tailwind.css";
+
+#app {
+  @apply relative h-full w-full;
+}
+
+.app-background {
+  @apply absolute left-0 top-0;
+  background: linear-gradient(
+    to bottom right,
+    transparent 0%,
+    transparent 10%,
+    var(--app-primary-20) 100%
+  );
+  width: 100%;
+  height: 100%;
+
+  &::before {
+    @apply absolute;
+    content: '';
+    background: radial-gradient(
+      circle at 0% 0%,
+      var(--app-blue-20) 0%,
+      var(--app-blue-20) 30%,
+      transparent 70%,
+      transparent 100%
+    );
+    top: -65vw;
+    left: 0;
+    width: 100vw;
+    height: 100vw;
+  }
+
+  &::after {
+    @apply absolute;
+    content: '';
+    background: radial-gradient(
+      circle at 100% 0%,
+      var(--app-blue-20) 0%,
+      var(--app-blue-20) 8%,
+      transparent 50%,
+      transparent 100%
+    );
+    top: -32vw;
+    right: 0vw;
+    width: 100vw;
+    height: 100vw;
+  }
+}
+
+#app-top-sticky {
+  @apply sticky z-10 w-full duration-150;
+}
+
+#app-root .app-layout-horizontal-container {
+  width: var(--app-main-content-width);
+}
+
+#app-root .app-layout-container-root {
+  @apply flex w-full justify-center;
+}
+
+#app-root.page-has-aside .app-layout-container-root {
+  padding-left: calc(
+    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
+      var(--app-main-content-padding-x)
+  );
+  padding-right: calc(
+    100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
+      var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
+  );
+}
+
+#app-root.page-wide .app-layout-horizontal-container {
+  @apply w-full;
+  padding-left: var(--app-side-menu-minimize-width);
+  padding-right: var(--app-side-menu-minimize-width);
+  max-width: var(--app-screen-max-width);
+}
+
+@media (max-width: 880px) {
+  #app-root.page-wide .app-layout-horizontal-container {
+    @apply pl-0 pr-0;
+  }
+}
+
+@media (max-width: 816px) {
+  #app-top-sticky {
+    @apply relative;
+  }
+
+  #app-root .app-layout-horizontal-container {
+    @apply w-full;
+  }
+}
+
+.app-layout-main--container {
+  @apply flex shrink-0 flex-col pb-16;
+}
+
+@media (min-width: 880px) {
+  .app-layout-main--container.page-two-columns {
+    @apply h-full w-full flex-row;
+    padding-left: var(--app-side-menu-minimize-width);
+    max-width: none;
+
+    & > .two-columns-column {
+      width: 50%;
+      @apply shadow-xs mr-1 h-full overflow-y-auto border-1 border-primary-30;
+    }
+  }
+}
+
+.app-layout-main--aside {
+  @apply fixed h-full overflow-x-hidden overflow-y-scroll;
+
+  width: calc(
+    100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
+      var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
+  );
+  top: 0;
+  right: calc(-1 * var(--app-layout-main--aside-scroll-width-extra));
+  padding-right: calc(1rem + var(--app-layout-main--aside-scroll-width-extra));
+
+  --app-layout-main--aside-scroll-width-extra: 0.5rem;
+}
+
+/* bottom */
+.app-layout--bottom {
+  @apply pointer-events-none sticky bottom-0 z-20 p-2 wd:fixed;
+}
+
+/* float layout */
+.app-layout-float-page-wrapper {
+  @apply pointer-events-none fixed left-0 top-0 h-full;
+  z-index: 49;
+  width: 100%;
+  background-color: var(--app-body-bg-color);
+}
+
+.app-layout-float-page {
+  @apply pointer-events-auto mx-auto flex h-full flex-col;
+  width: 100%;
+  max-width: var(--app-screen-max-width);
+}
+
+/* ==== container ==== */
+.app-layout-float-page--container {
+  @apply flex h-full min-h-0 w-full;
+}
+
+.app-layout-float-page--side {
+  @apply h-full w-full shrink-0 py-4;
+  max-width: var(--app-layout-float-page--side-width, auto);
+}
+
+/* ==== content ==== */
+.app-layout-float-page--content-tabs-wrapper {
+  @apply flex h-full w-full flex-col pl-8;
+
+  & > .app-layout-float-page--content {
+    @apply pl-0 pt-6;
+  }
+
+  &:first-child {
+    @apply shrink-0;
+  }
+}
+
+.app-layout-float-page--content {
+  @apply flex h-full w-full overflow-y-auto py-4 pl-8;
+}
+
+/* ==== content/inner ==== */
+.app-layout-float-page--main {
+  @apply h-full w-full shrink-0;
+  max-width: var(--app-layout-float-page--main-width, auto);
+}
+
+.app-layout-float-page--sub {
+  @apply h-full w-full;
+  max-width: var(--app-layout-float-page--sub-width, auto);
+}
+
+.app-layout-float-page--content-top {
+  @apply hidden;
+}
+
+@media (max-width: 93rem) {
+  .app-layout-float-page-wrapper {
+    z-index: 51;
+  }
+}
+
+@media (max-width: 55rem) {
+  .app-layout-float-page--container {
+    @apply block overflow-y-auto;
+  }
+
+  .app-layout-float-page--side,
+  .app-layout-float-page--content-tabs-wrapper,
+  .app-layout-float-page--content,
+  .app-layout-float-page--main {
+    @apply h-auto;
+  }
+
+  .app-layout-float-page--content-top {
+    @apply block h-4;
+  }
+
+  .app-layout-float-page--content-tabs-wrapper {
+    @apply pl-0 pt-8;
+  }
+
+  .app-layout-float-page--content {
+    @apply pl-0 pt-8;
+  }
+
+  .app-layout-float-page--sub {
+    height: calc(100vh - 8rem);
+  }
+}
+
+@media (max-width: 30rem) {
+  .app-layout-float-page--content {
+    @apply block overflow-y-visible pt-4;
+  }
+
+  .app-layout-float-page--main {
+    @apply pb-8;
+  }
+}
+
+/* side float */
+.app-layout--side-float-wrapper {
+  @apply bg-stone-30/25 fixed left-0 top-0 flex h-full w-full justify-end;
+  z-index: 49;
+}
+
+.app-layout--side-float {
+  @apply h-full overflow-y-auto;
+  background-color: var(--app-body-bg-color);
+  width: 80vw;
+
+  @apply wd:w-full wd:max-w-[40rem];
+}

@@ -2,7 +2,6 @@ import { EquipmentFieldTypes } from '.'
 
 export function getEquipmentFieldTypeText(
   type: EquipmentFieldTypes,
-  // eslint-disable-next-line id-length
   t: (id: string) => string
 ): string {
   switch (type) {

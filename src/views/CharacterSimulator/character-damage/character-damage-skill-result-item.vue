@@ -56,23 +56,16 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(
-              extraContainer.branchItem.default
-            ).enabled
+            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem.default)
+              .enabled
           "
         />
         <CharacterSkillItemStats
           v-if="extraContainer.statContainers.length > 0"
           :stat-containers="extraContainer.statContainers"
         />
-        <div
-          v-else-if="extraContainer.has('dual_element')"
-          class="5 flex items-center py-0 pl-1"
-        >
-          <div
-            v-if="extraContainer.has('condition')"
-            class="mr-3 text-sm text-primary-30"
-          >
+        <div v-else-if="extraContainer.has('dual_element')" class="5 flex items-center py-0 pl-1">
+          <div v-if="extraContainer.has('condition')" class="mr-3 text-sm text-primary-30">
             {{ extraContainer.get('condition') }}
           </div>
           <div class="mr-2 text-orange-60">
@@ -86,7 +79,7 @@
     </div>
     <div
       v-if="contents.detail"
-      class="mt-2 rounded border-1 border-primary-20 bg-white px-3 py-2 text-sm"
+      class="mt-2 rounded-sm border-1 border-primary-20 bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"
@@ -96,11 +89,7 @@
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="
-            markText(
-              t('damage-calculation.item-base-titles.' + item.item.base.id)
-            )
-          "
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
         ></div>
         <div v-if="item.valueValid" class="text-primary-50">
           {{ item.item.value + item.item.base.unit }}
@@ -127,10 +116,7 @@ import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
-import {
-  setupSkilResultExtraStats,
-  setupStoreDamageCalculationExpectedResult,
-} from './setup'
+import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } from './setup'
 
 interface Props {
   result: SkillResult
@@ -148,18 +134,21 @@ const result = computed(() => props.result)
 
 const { extraStats } = setupSkilResultExtraStats(result)
 
-const { valid, calculation, expectedResult } =
-  setupStoreDamageCalculationExpectedResult(result, extraStats)
+const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(
+  result,
+  extraStats
+)
 
-const { expectedResult: armorBreakExpectedResult } =
-  setupStoreDamageCalculationExpectedResult(result, extraStats, {
+const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(
+  result,
+  extraStats,
+  {
     armorBreak: true,
-  })
+  }
+)
 
 const frequencyVisible = computed(() => {
-  return (
-    valid.value && props.result.container.branchItem.prop('title') === 'each'
-  )
+  return valid.value && props.result.container.branchItem.prop('title') === 'each'
 })
 
 const calculationItems = computed(() => {

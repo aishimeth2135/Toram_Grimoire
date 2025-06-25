@@ -21,7 +21,9 @@ interface Props {
 defineProps<Props>()
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .cy-loading-wrapper {
   @apply flex h-full w-full items-center justify-center rounded-lg bg-primary-5;
   min-height: 15rem;
@@ -45,13 +47,13 @@ defineProps<Props>()
 
 @keyframes dot {
   5% {
-    @apply bg-primary-50;
+    background-color: var(--app-primary-50);
   }
   32% {
-    @apply bg-primary-30;
+    background-color: var(--app-primary-30);
   }
   100% {
-    @apply bg-primary-30;
+    background-color: var(--app-primary-30);
   }
 }
 </style>

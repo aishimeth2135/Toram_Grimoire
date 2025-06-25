@@ -1,6 +1,6 @@
-import { Raw, ShallowRef, markRaw, shallowReactive, shallowRef } from 'vue'
+import { type Raw, type ShallowRef, markRaw, shallowReactive, shallowRef } from 'vue'
 
-import { CommonItem, Items } from './Items'
+import { type CommonItem, Items } from './Items'
 
 // export interface ReactivityItem {
 //   reactivity: (...args: any) => unknown

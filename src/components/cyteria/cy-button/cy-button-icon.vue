@@ -39,13 +39,3 @@ const rootStyle = computed(() => {
     <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-icon {
-  @apply rounded-full duration-200;
-
-  &:focus:not(:active) {
-    @apply bg-primary-30 bg-opacity-20;
-  }
-}
-</style>

@@ -13,11 +13,8 @@ import {
 } from '@/lib/Skill/Skill'
 
 const enum CsvSkillElementTypes {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   SkillRoot = 'skillRoot',
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   SkillTreeCategory = 'skillTreeCategory',
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   SkillTree = 'skillTree',
   LevelSkill = 'levelSkill',
 }

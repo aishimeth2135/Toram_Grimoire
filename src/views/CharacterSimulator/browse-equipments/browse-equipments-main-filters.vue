@@ -5,10 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { prepareFuzzySearch, simpleSearch } from '@/shared/utils/data'
 
 import { EquipmentField } from '@/lib/Character/Character'
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { Items } from '@/lib/common/Items'
 
 import CardRow from '@/components/card/card-row.vue'
@@ -43,10 +40,7 @@ const serachText = ref('')
 const labelFilter = setupEquipmentLabelFilter()
 
 const baseFilteredEquipments = computed(() => {
-  if (
-    selectedEquipmentTypes.value.length === 0 &&
-    labelFilter.selectedLabels.value.length === 0
-  ) {
+  if (selectedEquipmentTypes.value.length === 0 && labelFilter.selectedLabels.value.length === 0) {
     return allEquipments.value
   }
   return allEquipments.value.filter(equipment => {
@@ -54,9 +48,7 @@ const baseFilteredEquipments = computed(() => {
     if (!typeMatched) {
       return false
     }
-    return labelFilter.selectedLabels.value.every(label =>
-      Items.includes(equipment.labels, label)
-    )
+    return labelFilter.selectedLabels.value.every(label => Items.includes(equipment.labels, label))
   })
 })
 
@@ -89,7 +81,7 @@ watch(
       :current-field-types="currentFieldTypes"
       @update:current-field-types="emit('update:current-field-types', $event)"
     />
-    <cy-popover class="ml-2 flex-shrink-0">
+    <cy-popover class="ml-2 shrink-0">
       <cy-button-circle icon="mdi:label" small />
       <template #popper>
         <CardRows class="px-1 py-2.5">
@@ -101,14 +93,8 @@ watch(
             hover
             @click="labelFilter.toggleLabel(label)"
           >
-            <CommonSelectionIcon
-              :selected="labelFilter.labelSelected(label)"
-              class="flex-shrink-0"
-            />
-            <div
-              class="mr-2 h-3.5 w-3.5 rounded"
-              :class="`bg-${label.color}-50`"
-            />
+            <CommonSelectionIcon :selected="labelFilter.labelSelected(label)" class="shrink-0" />
+            <div class="mr-2 h-3.5 w-3.5 rounded-sm" :class="`bg-${label.color}-50`" />
             {{ label.text }}
           </CardRow>
         </CardRows>

@@ -3,7 +3,7 @@ import { computed } from 'vue'
 // import { AppColors } from '@/shared/services/Color'
 import { type IconBaseProps } from '../icon/setup'
 
-export interface ButtonIconProps extends IconBaseProps {}
+export type ButtonIconProps = IconBaseProps
 
 // type ButtonColors =
 //   | AppColors.Primary

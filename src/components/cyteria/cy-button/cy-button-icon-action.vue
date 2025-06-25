@@ -24,10 +24,3 @@ const buttonBaseBinds = useButtonBaseBinds(props)
     <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-icon-action {
-  @apply relative rounded border bg-white bg-opacity-100 p-2.5;
-  box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
-}
-</style>

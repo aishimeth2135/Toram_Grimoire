@@ -8,8 +8,9 @@ import { useLanguageStore } from './language'
 const version = '5.1.0'
 
 export const useMainStore = defineStore('app-main', () => {
+  type ServiceWorkerUpdateHandler = () => void
   type ServiceWorkerData = {
-    update: Function | null
+    update: ServiceWorkerUpdateHandler | null
     hasUpdate: boolean
   }
 
@@ -21,7 +22,7 @@ export const useMainStore = defineStore('app-main', () => {
   const documentTitleId = ref('')
   const routerGuiding = ref(false)
 
-  const serviceWorkerHasUpdate = (update: Function) => {
+  const serviceWorkerHasUpdate = (update: ServiceWorkerUpdateHandler) => {
     serviceWorker.update = update
     serviceWorker.hasUpdate = true
   }

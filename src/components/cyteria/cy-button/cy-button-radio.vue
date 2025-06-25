@@ -4,7 +4,7 @@ import CyButtonBase from './cy-button-base.vue'
 
 import { type ButtonBaseProps, useButtonBaseBinds } from './setup'
 
-interface Props extends ButtonBaseProps {}
+type Props = ButtonBaseProps
 
 const props = defineProps<Props>()
 
@@ -30,13 +30,3 @@ const buttonBaseBinds = useButtonBaseBinds(props)
     </div>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-radio {
-  @apply rounded-full duration-200;
-
-  &:focus:not(:active) {
-    @apply bg-primary-30 bg-opacity-20;
-  }
-}
-</style>

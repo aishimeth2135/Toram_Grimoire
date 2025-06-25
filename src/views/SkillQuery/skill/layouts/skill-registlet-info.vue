@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative rounded border-1 border-l-2 border-emerald-30 bg-white pb-2 pt-2.5"
-  >
+  <div class="relative rounded-sm border-1 border-l-2 border-emerald-30 bg-white pb-2 pt-2.5">
     <div class="flex items-start pb-0.5 pl-2.5">
       <IconCircle icon="game-icons:beveled-star" icon-color="emerald-30" />
       <div class="pl-3 pr-2 pt-1">
@@ -11,19 +9,10 @@
             {{ t('common.Registlet.title') }}
           </div>
         </div>
-        <div
-          class="flex flex-wrap items-center space-y-2"
-          style="min-height: 2rem"
-        >
+        <div class="flex flex-wrap items-center space-y-2" style="min-height: 2rem">
           <template v-for="row in item.rows" :key="row.type + row.value">
-            <RenderCaptionValue
-              v-if="row.type === 'caption'"
-              :text="row.value"
-            />
-            <div
-              v-else-if="row.type === 'remark'"
-              class="text-sm text-primary-40"
-            >
+            <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
+            <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
               {{ row.value }}
             </div>
           </template>
@@ -37,19 +26,12 @@
       >
         <div>
           <cy-input-counter
-            v-model:value="
-              registletItemState.level /* eslint-disable-line vue/no-mutating-props */
-            "
+            v-model:value="registletItemState.level /* eslint-disable-line vue/no-mutating-props */"
             :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
           <div class="mt-3 inline-flex items-center pl-0.5">
-            <cy-icon-text
-              icon="mdi:arrow-up-bold-outline"
-              color="primary-30"
-              single-color
-              small
-            >
+            <cy-icon-text icon="mdi:arrow-up-bold-outline" color="primary-30" single-color small>
               {{ t('skill-query.registlet-max-level-title') }}
             </cy-icon-text>
             <div class="ml-2 text-sm text-primary-50">

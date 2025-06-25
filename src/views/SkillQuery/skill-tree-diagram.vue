@@ -169,7 +169,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .app--draw-skill-tree {
   stroke: var(--app-primary-30);
   stroke-width: 2px;

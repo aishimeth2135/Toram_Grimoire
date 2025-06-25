@@ -54,21 +54,3 @@ const buttonBaseBinds = computed(() => {
     </div>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-dropdown-wrapper {
-  @apply border-l-2 border-primary-30 duration-200;
-
-  &.content-visble {
-    @apply border-primary-30;
-  }
-}
-
-.cy-button-dropdown-main {
-  @apply px-3 py-2;
-
-  &:hover {
-    background-color: rgba(var(--app-rgb-light), 0.25);
-  }
-}
-</style>

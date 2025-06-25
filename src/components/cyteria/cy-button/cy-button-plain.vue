@@ -43,24 +43,3 @@ const buttonClick = (evt: MouseEvent) => {
     </span>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-plain {
-  --button-color-text: var(--button-color-main-light);
-  --button-color-text-hover: var(--button-color-main);
-
-  &:hover,
-  &.button-selected {
-    color: var(--button-color-text-hover);
-  }
-
-  &.button-width-full {
-    @apply w-full;
-  }
-
-  &.theme-secondary {
-    --button-color-main: var(--app-primary-50);
-    --button-color-main-light: var(--app-primary-30);
-  }
-}
-</style>

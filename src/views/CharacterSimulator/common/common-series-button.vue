@@ -12,9 +12,11 @@ defineProps<Props>()
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .common-series-button {
-  @apply inline-flex cursor-pointer rounded border-1 border-current bg-white px-2 py-1.5 text-primary-20 duration-150;
+  @apply inline-flex cursor-pointer rounded-sm border-1 border-current bg-white px-2 py-1.5 text-primary-20 duration-150;
 }
 
 .common-series-button.button-selected {

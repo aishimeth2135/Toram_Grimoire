@@ -1,10 +1,11 @@
 <template>
   <SvgIcon v-if="customIconId" :icon-id="customIconId" />
   <img v-else-if="iconPath" :src="iconPath" />
-  <iconify-icon v-else :icon="icon || 'gg-shape-rhombus'" />
+  <Icon v-else :icon="icon || 'gg-shape-rhombus'" />
 </template>
 
 <script lang="ts" setup>
+import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 
 import SvgIcon from './svg-icon.vue'

@@ -7,14 +7,14 @@ import { type ButtonBaseProps, useButtonBaseBinds } from './setup'
 interface Props extends ButtonBaseProps {
   inline?: boolean
 }
-const props = withDefaults(defineProps<Props>(), {
-  inline: false,
-})
-
 interface Emits {
   (evt: 'click', event: MouseEvent): void
   (evt: 'update:selected', value: boolean): void
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  inline: false,
+})
 const emit = defineEmits<Emits>()
 
 const buttonBaseBinds = useButtonBaseBinds(props)
@@ -46,13 +46,3 @@ const buttonClick = (evt: MouseEvent) => {
     </div>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-check {
-  @apply rounded-full duration-200;
-
-  &:focus:not(:active) {
-    @apply bg-primary-30 bg-opacity-20;
-  }
-}
-</style>

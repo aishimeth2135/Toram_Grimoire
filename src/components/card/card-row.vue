@@ -31,7 +31,9 @@ const context = {
 const { idBind } = useCardRowContext(context)
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 div.cy-card-row {
   @apply bg-white;
 

@@ -1,10 +1,7 @@
 <template>
   <AppLayoutMain class="relative h-full">
     <div style="position: absolute" v-html="currentIcon" />
-    <div
-      class="main--bubble pointer-events-none"
-      :class="{ 'display-bg': displayBg }"
-    >
+    <div class="main--bubble pointer-events-none" :class="{ 'display-bg': displayBg }">
       <svg
         v-for="data in icons"
         :key="data.id"
@@ -105,8 +102,7 @@ export default {
     if (iconNumber) {
       const [max, interval = this.generationInterval] = iconNumber.split('+')
       this.iconMaximum = parseInt(max, 10)
-      this.generationInterval =
-        typeof interval === 'string' ? parseInt(interval, 10) : interval
+      this.generationInterval = typeof interval === 'string' ? parseInt(interval, 10) : interval
     }
 
     const iconName = this.$route.params.iconName as string
@@ -164,9 +160,7 @@ export default {
       const start_x = xf(getRandomInt(-20, -5)),
         start_y = yf(105) - yStep()
       let cur = start_y - yStep(2)
-      let def = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${
-        start_y - yf(2)
-      } ${ox},${cur}`
+      let def = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`
       let flip = true
       while (cur > 0) {
         cur -= yStep()
@@ -195,10 +189,7 @@ export default {
       return Array(3)
         .fill(undefined)
         .map(() => getRandomInt(0, 255).toString(16))
-        .reduce(
-          (cur, item) => cur + (item.length === 1 ? '0' + item : item),
-          '#'
-        )
+        .reduce((cur, item) => cur + (item.length === 1 ? '0' + item : item), '#')
     },
     createIcon() {
       const color = this.generateColor()
@@ -220,7 +211,7 @@ export default {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .main--bubble {
   width: 95%;
   height: 100%;
@@ -259,7 +250,7 @@ export default {
   top: 0;
 
   &:hover {
-    background-color: rgba(var(--app-rgb-black), 0.3);
+    background-color: --alpha(var(--app-black) / 30%);
   }
 }
 </style>

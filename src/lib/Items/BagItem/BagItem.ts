@@ -1,7 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import { CommonLogger } from '@/shared/services/Logger'
-import { isNumberString } from '@/shared/utils/string'
 
 import { StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
@@ -51,12 +50,7 @@ abstract class BagItem {
     return obtain
   }
 
-  appendStat(
-    baseId: string,
-    value: number,
-    type: StatTypes,
-    restriction: string
-  ) {
+  appendStat(baseId: string, value: number, type: StatTypes, restriction: string) {
     const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
       CommonLogger.warn('Character', "Can't find stat-base with id: " + baseId)
@@ -115,12 +109,7 @@ class BagCrystal extends BagItem {
   bossCategory: number
   enhancer: null | string
 
-  constructor(
-    id: string,
-    name: string,
-    category: number,
-    bossCategory: number
-  ) {
+  constructor(id: string, name: string, category: number, bossCategory: number) {
     super(id, name)
 
     this.category = category
@@ -132,16 +121,12 @@ class BagCrystal extends BagItem {
   }
 
   get crystalBaseIconPath() {
-    const type = ['weapon', 'body', 'additional', 'special', 'normal'][
-      this.category
-    ]
+    const type = ['weapon', 'body', 'additional', 'special', 'normal'][this.category]
     return type ? Images.crystalIcons.get(type) : '#'
   }
 
   get crystalIconPath() {
-    return this.enhancer
-      ? Images.crystalIcons.get('enhance')
-      : this.crystalBaseIconPath
+    return this.enhancer ? Images.crystalIcons.get('enhance') : this.crystalBaseIconPath
   }
 
   getRelatedCrystals(crystals: BagCrystal[]) {
@@ -155,7 +140,7 @@ class BagCrystal extends BagItem {
     })
     const enhancers = (() => {
       const res: BagCrystal[] = []
-      let cur: BagCrystal = this
+      let cur: BagCrystal = this as BagCrystal
       while (cur.enhancer) {
         const _cur = nameMap.get(cur.enhancer)
         if (!_cur) {
@@ -171,7 +156,7 @@ class BagCrystal extends BagItem {
     })()
     const prependeds = (() => {
       const res: BagCrystal[] = []
-      let cur: BagCrystal = this
+      let cur: BagCrystal = this as BagCrystal
       do {
         const _cur = enhancerMap.get(cur.name)
         if (!_cur) {

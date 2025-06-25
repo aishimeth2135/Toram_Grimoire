@@ -3,24 +3,14 @@ import { type Ref, computed, readonly, ref } from 'vue'
 
 import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
-import { protectType } from '@/shared/utils/pinia'
 
 import { Character, type CharacterSaveData } from '@/lib/Character/Character'
 import { type CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
-import {
-  CharacterEquipment,
-  type EquipmentSaveData,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, type EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
 import { FoodsBuild, type FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
-import {
-  PotionBuild,
-  type PotionBuildSaveData,
-} from '@/lib/Character/PotionBuild'
-import {
-  RegistletBuild,
-  type RegistletBuildSaveData,
-} from '@/lib/Character/RegistletBuild'
+import { PotionBuild, type PotionBuildSaveData } from '@/lib/Character/PotionBuild'
+import { RegistletBuild, type RegistletBuildSaveData } from '@/lib/Character/RegistletBuild'
 import { SkillBuild, type SkillBuildSaveData } from '@/lib/Character/SkillBuild'
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { Skill } from '@/lib/Skill/Skill'
@@ -155,21 +145,15 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
-    const charactersData = characters.value.map(item =>
-      item.save(equipments.value)
-    )
+    const charactersData = characters.value.map(item => item.save(equipments.value))
     const equipmentsData = equipments.value.map((item, idx) => ({
       idx,
       ...item.save(),
     }))
     const skillBuildsData = skillBuildStore.saveSkillBuilds()
     const foodBuildsData = foodStore.foodBuilds.map(item => item.save())
-    const registletBuildsData = registletBuildStore.registletBuilds.map(item =>
-      item.save()
-    )
-    const potionBuildsData = potionBuildStore.potionBuilds.map(item =>
-      item.save()
-    )
+    const registletBuildsData = registletBuildStore.registletBuilds.map(item => item.save())
+    const potionBuildsData = potionBuildStore.potionBuilds.map(item => item.save())
 
     const characterStates = characters.value.map(chara => {
       const state = getCharacterState(chara)
@@ -182,9 +166,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       }
     })
 
-    const buildLabelsData = buildLabelStore.buildLabels.map(label =>
-      label.save()
-    )
+    const buildLabelsData = buildLabelStore.buildLabels.map(label => label.save())
 
     return {
       version: 'v2',
@@ -224,9 +206,9 @@ export const useCharacterStore = defineStore('view-character', () => {
       const allValidEquipmentsLength = saveData.equipments
         .map(data => data.idx)
         .reduce((cur, item2) => Math.max(cur, item2), 0)
-      const allValidEquipments = Array<CharacterEquipment | null>(
-        allValidEquipmentsLength
-      ).fill(null)
+      const allValidEquipments = Array<CharacterEquipment | null>(allValidEquipmentsLength).fill(
+        null
+      )
       saveData.equipments.forEach(data => {
         const equip = CharacterEquipment.loadEquipment(
           loadedCategory,
@@ -239,11 +221,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       // character
       saveData.characters.forEach(charaRow => {
         const chara = new Character()
-        const loadSuccess = chara.load(
-          loadedCategory,
-          charaRow,
-          allValidEquipments
-        )
+        const loadSuccess = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (loadSuccess) {
           appendCharacter(chara, false)
         }
@@ -294,8 +272,8 @@ export const useCharacterStore = defineStore('view-character', () => {
           characterState.foodBuild = foodBuild ?? null
 
           // registlet
-          const registletBuild = registletBuildStore.registletBuilds.find(
-            build => build.matchLoadedId(loadedCategory, item.registletBuildId)
+          const registletBuild = registletBuildStore.registletBuilds.find(build =>
+            build.matchLoadedId(loadedCategory, item.registletBuildId)
           )
           characterState.registletBuild = registletBuild ?? null
 
@@ -316,9 +294,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       const v2Data = window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY)
       if (v2Data !== null) {
         logger.info('Datas version: v2')
-        const { summary, datas } = JSON.parse(
-          v2Data
-        ) as CharacterSimulatorSaveDataRoot
+        const { summary, datas } = JSON.parse(v2Data) as CharacterSimulatorSaveDataRoot
 
         loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
@@ -327,11 +303,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       reset()
       createCharacter()
       closeAutoSave()
-      logger
-        .addTitle('loadCharacterSimulator')
-        .start('Unexpected error occurs.')
-        .log(error)
-        .end()
+      logger.addTitle('loadCharacterSimulator').start('Unexpected error occurs.').log(error).end()
       throw error
     }
   }
@@ -342,47 +314,26 @@ export const useCharacterStore = defineStore('view-character', () => {
       characterIndex: currentCharacterIndex.value,
     }
 
-    const originalData =
-      window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY) || '{}'
+    const originalData = window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY) || '{}'
     try {
       const payload = {
         summary,
         datas,
       } as CharacterSimulatorSaveDataRoot
-      window.localStorage.setItem(
-        V2_AUTO_SAVE_STORAGE_KEY,
-        JSON.stringify(payload)
-      )
+      window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, JSON.stringify(payload))
     } catch (err) {
-      logger
-        .addTitle('saveCharacterSimulator')
-        .start('Unexpected error occurs.')
-        .log(err)
-        .end()
+      logger.addTitle('saveCharacterSimulator').start('Unexpected error occurs.').log(err).end()
       window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, originalData)
     }
   }
 
-  const currentCharacterState = computed(() =>
-    getCharacterState(currentCharacter.value)
-  )
-  const currentCharacterSkillBuild = computed(
-    () => currentCharacterState.value.skillBuild
-  )
-  const currentCharacterRegistletBuild = computed(
-    () => currentCharacterState.value.registletBuild
-  )
-  const currentCharacterPotionBuild = computed(
-    () => currentCharacterState.value.potionBuild
-  )
-  const currentCharacterFoodBuild = computed(
-    () => currentCharacterState.value.foodBuild
-  )
+  const currentCharacterState = computed(() => getCharacterState(currentCharacter.value))
+  const currentCharacterSkillBuild = computed(() => currentCharacterState.value.skillBuild)
+  const currentCharacterRegistletBuild = computed(() => currentCharacterState.value.registletBuild)
+  const currentCharacterPotionBuild = computed(() => currentCharacterState.value.potionBuild)
+  const currentCharacterFoodBuild = computed(() => currentCharacterState.value.foodBuild)
 
-  const { skillItemStates } = setupCharacterSkillItems(
-    currentCharacter,
-    currentCharacterSkillBuild
-  )
+  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
   const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
 
@@ -404,9 +355,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const { allFoodBuildStats } = setupFoodStats(currentCharacterFoodBuild)
 
-  const { allRegistletBuildStats } = setupRegistletStats(
-    currentCharacterRegistletBuild
-  )
+  const { allRegistletBuildStats } = setupRegistletStats(currentCharacterRegistletBuild)
 
   const { allPotionBuildStats } = setupPotionStats(currentCharacterPotionBuild)
 
@@ -428,26 +377,23 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupOptions
   )
 
-  const setupCharacterComparedStatCategoryResults = (
-    comparedCharacter: Ref<Character | null>
-  ) => {
+  const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
     const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(
       comparedCharacter,
       currentCharacterSkillBuild
     )
-    const {
-      characterStatCategoryResults: comparedCharacterStatCategoryResults,
-    } = setupCharacterStats(
-      comparedCharacter,
-      currentCharacterSkillBuild,
-      skillPureStats,
-      allFoodBuildStats,
-      currentCharacterRegistletBuild,
-      allRegistletBuildStats,
-      allPotionBuildStats,
-      _skillItemStates,
-      setupOptions
-    )
+    const { characterStatCategoryResults: comparedCharacterStatCategoryResults } =
+      setupCharacterStats(
+        comparedCharacter,
+        currentCharacterSkillBuild,
+        skillPureStats,
+        allFoodBuildStats,
+        currentCharacterRegistletBuild,
+        allRegistletBuildStats,
+        allPotionBuildStats,
+        _skillItemStates,
+        setupOptions
+      )
     return {
       comparedCharacterStatCategoryResults,
     }
@@ -507,9 +453,9 @@ export const useCharacterStore = defineStore('view-character', () => {
   })()
 
   return {
-    characters: protectType(characters),
-    equipments: protectType(equipments),
-    currentCharacter: protectType(currentCharacter),
+    characters: characters,
+    equipments: equipments,
+    currentCharacter: currentCharacter,
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
     setupOptions,

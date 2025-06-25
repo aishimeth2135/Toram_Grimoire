@@ -1,7 +1,7 @@
 <template>
   <div class="px-0.5 py-2">
     <div class="flex items-center">
-      <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
+      <div class="mr-3 flex shrink-0" style="min-width: 10rem">
         <cy-icon-text :icon="skillIconPath" color="fuchsia">
           {{ skillResultsState.skill.name }}
         </cy-icon-text>
@@ -12,10 +12,7 @@
     </div>
     <div class="pb-1 pl-1">
       <div class="space-y-2 pl-2 pt-2">
-        <div
-          v-for="result in skillResultsState.results"
-          :key="result.container.instanceId"
-        >
+        <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
           <CharacterComboItemDamageResultItem
             ref="resultItemRefs"
             v-model:unselected-branches="
@@ -31,9 +28,7 @@
     </div>
     <div v-if="previousSkillNextResultsState" class="pt-1">
       <cy-icon-text text-color="primary-30" small>
-        {{
-          t('character-simulator.combo.damage-calc.previous-skill-next-title')
-        }}
+        {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
       </cy-icon-text>
       <div class="pl-5">
         <CharacterComboItemResultItem
@@ -73,20 +68,13 @@ const props = defineProps<Props>()
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 
-const resultItemRefs: Ref<
-  InstanceType<typeof CharacterComboItemDamageResultItem>[]
-> = ref([])
+const resultItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageResultItem>[]> = ref([])
 
 const expectedResultSum = computed(() => {
-  return resultItemRefs.value.reduce(
-    (cur, item) => cur + item.expectedResult,
-    0
-  )
+  return resultItemRefs.value.reduce((cur, item) => cur + item.expectedResult, 0)
 })
 
-const skillIconPath = computed(() =>
-  getSkillIconPath(props.skillResultsState.skill)
-)
+const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
 
 const previousSkillNextResultsState = computed(() => {
   const previousSkill = props.comboSkillState.comboSkill.previousSkill?.skill

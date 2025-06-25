@@ -1,7 +1,5 @@
-import { normalizeInteger } from '@/shared/utils/number'
-
-import { BagItem, type BagItemObtain } from '@/lib/Items/BagItem'
 import {
+  type BagItemObtain,
   BagPotion,
   type BagPotionsCategory,
   type BagPotionsObtainCategory,
@@ -34,10 +32,7 @@ export default function (root: BagPotionsRoot, csvData: CsvData) {
     try {
       const name = row[NAME]
       if (name === '0') {
-        currentCategory = root.appendCategory(
-          row[CATEGORY_ID],
-          row[CATEGIRY_NANE]
-        )
+        currentCategory = root.appendCategory(row[CATEGORY_ID], row[CATEGIRY_NANE])
         return
       }
       if (name === '1') {
@@ -61,12 +56,7 @@ export default function (root: BagPotionsRoot, csvData: CsvData) {
       const propValue = row[ATTRIBUTE_VALUES[0]]
       if (currentAttrCategory === 'stats') {
         const { type, value } = parseItemStatData(propValue)
-        currentPotion.appendStat(
-          propName,
-          value,
-          type,
-          row[ATTRIBUTE_VALUES[1]]
-        )
+        currentPotion.appendStat(propName, value, type, row[ATTRIBUTE_VALUES[1]])
       } else if (currentAttrCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof BagItemObtain] = propValue

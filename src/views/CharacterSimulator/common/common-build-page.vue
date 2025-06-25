@@ -44,7 +44,6 @@ const buildName = computed<string>({
   },
   set(value) {
     if (selectedBuild.value) {
-      // eslint-disable-next-line vue/no-mutating-props
       selectedBuild.value.name = value
     }
   },
@@ -61,7 +60,7 @@ const moveMode = ref(false)
           v-model="selectedBuild"
           :options="builds"
           :current-value="innerCurrentBuild"
-          class="flex-shrink-0"
+          class="shrink-0"
           addable
           @add-item="emit('add-build')"
         >
@@ -83,11 +82,7 @@ const moveMode = ref(false)
         <div class="px-1 py-1.5 text-right text-sm text-primary-30">
           {{ t('character-simulator.build-common.move-tips') }}
         </div>
-        <Draggable
-          v-model="builds"
-          item-key="id"
-          class="rounded border-1 border-primary-20"
-        >
+        <Draggable v-model="builds" item-key="id" class="rounded-sm border-1 border-primary-20">
           <template #item="{ element }">
             <div class="flex cursor-move items-center px-4 py-2.5">
               <cy-icon icon="ic:baseline-drag-indicator" class="mr-2" />
@@ -119,16 +114,9 @@ const moveMode = ref(false)
         <slot name="header" />
       </div>
       <div class="mb-2 flex items-center">
-        <cy-title-input
-          v-model:value="buildName"
-          icon="ic:baseline-drive-file-rename-outline"
-        />
+        <cy-title-input v-model:value="buildName" icon="ic:baseline-drive-file-rename-outline" />
         <div class="ml-4 flex items-center space-x-2">
-          <cy-button-circle
-            icon="bx:copy-alt"
-            small
-            @click="emit('copy-build')"
-          />
+          <cy-button-circle icon="bx:copy-alt" small @click="emit('copy-build')" />
           <cy-button-circle
             icon="ic-baseline-delete-outline"
             color="secondary"

@@ -109,7 +109,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 // const { contents1, contents2 } = ToggleService({
 //   contents1: ['aaa', 'bbb'] as const,
 //   contents2: ['ccc', 'ddd'],

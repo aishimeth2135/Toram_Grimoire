@@ -12,7 +12,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

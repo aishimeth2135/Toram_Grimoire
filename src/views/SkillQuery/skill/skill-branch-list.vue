@@ -15,10 +15,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
@@ -32,9 +29,7 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const containers = computed(() =>
-  ListHandler(props.computing, branchItem.value)
-)
+const containers = computed(() => ListHandler(props.computing, branchItem.value))
 
 const containerStates = computed(() =>
   containers.value.map((container, iid) => ({ iid, container }))
@@ -45,7 +40,9 @@ const isTips = computed(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .list-text-content {
   @apply flex w-full items-start px-3 py-0.5;
 

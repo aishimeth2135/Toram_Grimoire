@@ -5,15 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useToggleList } from '@/shared/setup/State'
 
 import { EquipmentField } from '@/lib/Character/Character'
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
-import {
-  getEquipmentFieldFilterOptions,
-  useEquipmentsDisplayedItems,
-} from './setup'
+import { getEquipmentFieldFilterOptions, useEquipmentsDisplayedItems } from './setup'
 
 interface Props {
   modelValue: EquipmentTypes[]
@@ -34,8 +28,7 @@ const equipmentFieldOptions = getEquipmentFieldFilterOptions()
 const selectedTypes = ref([] as EquipmentTypes[])
 const allTypes = [...equipmentFieldOptions.values()].flat()
 
-const { itemSelected: typeSelected, toggleItem: toggleType } =
-  useToggleList(selectedTypes)
+const { itemSelected: typeSelected, toggleItem: toggleType } = useToggleList(selectedTypes)
 
 const selectAllTypes = () => {
   selectedTypes.value = allTypes.slice()
@@ -93,7 +86,7 @@ watch(
 </script>
 
 <template>
-  <cy-popover class="flex-shrink-0">
+  <cy-popover class="shrink-0">
     <cy-button-circle icon="mdi:filter" small />
     <template #popper>
       <div class="p-3">
@@ -116,10 +109,7 @@ watch(
               @click="toggleType(equipmentType)"
             >
               <div class="flex items-center">
-                <cy-icon
-                  :icon="CharacterEquipment.getImagePath(equipmentType)"
-                  class="mr-1"
-                />
+                <cy-icon :icon="CharacterEquipment.getImagePath(equipmentType)" class="mr-1" />
                 {{ CharacterEquipment.getTypeText(equipmentType) }}
               </div>
             </cy-button-check>
@@ -127,10 +117,7 @@ watch(
         </div>
       </div>
       <div class="flex justify-end px-4 pb-2">
-        <span
-          class="cursor-pointer text-sm text-primary-50"
-          @click="resetFieldsFilter"
-        >
+        <span class="cursor-pointer text-sm text-primary-50" @click="resetFieldsFilter">
           {{ t('global.reset') }}
         </span>
       </div>

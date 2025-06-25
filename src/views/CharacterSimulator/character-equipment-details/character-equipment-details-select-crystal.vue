@@ -16,6 +16,7 @@ import { BagCrystal } from '@/lib/Items/BagItem'
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsDelegation from '@/components/card/card-rows-delegation.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import ShowStat from '@/components/common/show-stat.vue'
 
 import CommonSearchInput from '../common/common-search-input.vue'
 
@@ -28,6 +29,7 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 
 const searchText = ref('')
+const showCrytalStats = ref(false)
 
 const { crystalCategorys } = (() => {
   const crystals = Grimoire.Items.crystals
@@ -80,19 +82,16 @@ const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
         const categoryCrystals = category.crystals
         if (categoryCrystals) {
           const relatedCrystals = crystal.getRelatedCrystals(categoryCrystals)
-          return [
-            ...relatedCrystals.enhancers,
-            ...relatedCrystals.prependeds,
-          ].some(item => item.name.toLowerCase().includes(text))
+          return [...relatedCrystals.enhancers, ...relatedCrystals.prependeds].some(item =>
+            item.name.toLowerCase().includes(text)
+          )
         }
         return false
       })
 
       return {
         id: category.id,
-        title: t(
-          `character-simulator.select-crystals.category-title.${category.id}`
-        ),
+        title: t(`character-simulator.select-crystals.category-title.${category.id}`),
         crystals,
       }
     })
@@ -141,41 +140,56 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
       item={crystal}
       hover
     >
-      <cy-icon
-        icon={selected ? 'ic:round-check-circle' : 'mdi:circle-outline'}
-        class={[{ 'opacity-50': !selected }, 'mr-3']}
-      />
-      <cy-icon icon={crystal.crystalIconPath} class="mr-1.5" />
-      {crystal.name}
+      <div>
+        <div class="flex items-center">
+          <cy-icon
+            icon={selected ? 'ic:round-check-circle' : 'mdi:circle-outline'}
+            class={[{ 'opacity-50': !selected }, 'mr-3']}
+          />
+          <cy-icon icon={crystal.crystalIconPath} class="mr-1.5" />
+          {crystal.name}
+        </div>
+        {showCrytalStats.value ? (
+          <div class="mt-1 pl-8">
+            {crystal.stats.map(stat => (
+              <ShowStat
+                key={stat.statId}
+                stat={stat}
+                negative-value={stat.value < 0}
+                class="text-sm"
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
     </CardRow>
   )
 }
 </script>
 
 <template>
-  <CardRowsWrapper
-    class="flex h-full max-h-[24rem] max-w-[20rem] flex-col wd-lg:max-h-none"
-  >
-    <div class="pb-1">
-      <CommonSearchInput
-        v-model="searchText"
-        :placeholder="
-          t('character-simulator.select-crystals.search-placeholder')
-        "
-        is-header
-      />
+  <div class="flex max-h-[24rem] min-h-0 max-w-[20rem] grow flex-col wd-lg:max-h-none">
+    <div class="flex justify-end pb-1">
+      <cy-button-toggle v-model:selected="showCrytalStats">
+        {{ t('character-simulator.select-crystals.show-crystal-stats') }}
+      </cy-button-toggle>
     </div>
-    <div class="h-full space-y-3 overflow-y-auto py-2">
-      <div v-for="category in currentCrystalCategorys" :key="category.id">
-        <div class="pb-2 pl-3 text-sm text-stone-60">{{ category.title }}</div>
-        <CardRowsDelegation @row-clicked="toggleCrystal">
-          <RenderOption
-            v-for="option in category.crystals"
-            :key="option.id"
-            :option="option"
-          />
-        </CardRowsDelegation>
+    <CardRowsWrapper class="flex grow flex-col">
+      <div class="pb-1">
+        <CommonSearchInput
+          v-model="searchText"
+          :placeholder="t('character-simulator.select-crystals.search-placeholder')"
+          is-header
+        />
       </div>
-    </div>
-  </CardRowsWrapper>
+      <div class="grow space-y-3 overflow-y-auto py-2">
+        <div v-for="category in currentCrystalCategorys" :key="category.id">
+          <div class="pb-2 pl-3 text-sm text-stone-60">{{ category.title }}</div>
+          <CardRowsDelegation @row-clicked="toggleCrystal">
+            <RenderOption v-for="option in category.crystals" :key="option.id" :option="option" />
+          </CardRowsDelegation>
+        </div>
+      </div>
+    </CardRowsWrapper>
+  </div>
 </template>

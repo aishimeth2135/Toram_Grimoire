@@ -70,7 +70,7 @@ const submit = () => {
 
 <template>
   <div class="w-full wd-lg:flex">
-    <div class="flex-shrink-0 px-2 pb-6 pt-2 wd-lg:mr-6 wd-lg:w-[20rem]">
+    <div class="shrink-0 px-2 pb-6 pt-2 wd-lg:mr-6 wd-lg:w-[20rem]">
       <CardRowsWrapper>
         <CardRows v-if="current">
           <CardRow
@@ -94,18 +94,10 @@ const submit = () => {
         </CardRows>
         <div v-else class="px-6 py-4 text-sm text-primary-40">
           <div class="mb-2">
-            {{
-              t(
-                'character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-1'
-              )
-            }}
+            {{ t('character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-1') }}
           </div>
           <div>
-            {{
-              t(
-                'character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-2'
-              )
-            }}
+            {{ t('character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-2') }}
           </div>
         </div>
       </CardRowsWrapper>
@@ -119,9 +111,6 @@ const submit = () => {
         </cy-button-action>
       </div>
     </div>
-    <BrowseEquipmentsMain
-      v-model:selected-equipment="current"
-      class="flex-grow"
-    />
+    <BrowseEquipmentsMain v-model:selected-equipment="current" class="grow" />
   </div>
 </template>

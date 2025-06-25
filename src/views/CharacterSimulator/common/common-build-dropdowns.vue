@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 interface Props {
-  modelValue: Item | null
   options: Item[]
   currentValue: Item | null
   addable?: boolean
@@ -38,11 +37,7 @@ const innerOptions = computed(() => {
         <div class="flex items-center">
           <cy-icon icon="ant-design:build-outlined" class="mr-3" />
           <slot name="item" :item="value" />
-          <cy-icon
-            v-if="value === currentValue"
-            icon="carbon:location-current"
-            class="ml-1"
-          />
+          <cy-icon v-if="value === currentValue" icon="carbon:location-current" class="ml-1" />
         </div>
       </template>
     </cy-options>

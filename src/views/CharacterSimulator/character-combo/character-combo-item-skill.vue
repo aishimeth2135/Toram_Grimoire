@@ -23,10 +23,7 @@
         @click="comboSkillState.comboSkill.remove()"
       />
     </div>
-    <div
-      v-if="currentSkill && comboSkillState.valid"
-      class="mt-2 flex flex-col items-center"
-    >
+    <div v-if="currentSkill && comboSkillState.valid" class="mt-2 flex flex-col items-center">
       <div class="mb-2">
         <cy-options
           v-model:value="
@@ -51,24 +48,19 @@
       </div>
       <div class="text-red-60">{{ comboSkillState.rate }}%</div>
       <div class="text-blue-60">{{ comboSkillState.mpCost }}</div>
-      <div v-if="damageRatio !== null" class="text-violet-60">
-        {{ damageRatio }}%
-      </div>
+      <div v-if="damageRatio !== null" class="text-violet-60">{{ damageRatio }}%</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  CharacterComboTags,
-  type ComboSkillState,
-} from '@/lib/Character/CharacterCombo'
+import { CharacterComboTags, type ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 
 interface Props {
   comboSkillState: ComboSkillState
@@ -105,19 +97,19 @@ const getTagIcon = (tag: CharacterComboTags | null) => {
     return 'mdi:selection-ellipse'
   }
   const idx = ComboSkillTagOptions.findIndex(item => item.value === tag)
-  return idx > -1
-    ? `mdi:numeric-${idx + 1}-circle-outline`
-    : 'mdi:selection-ellipse'
+  return idx > -1 ? `mdi:numeric-${idx + 1}-circle-outline` : 'mdi:selection-ellipse'
 }
 
 const skillIconPath = computed(() =>
   currentSkill.value ? getSkillIconPath(currentSkill.value) : null
 )
 
-const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
+const { selectComboSkill } = useCharacterSimulatorState()
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .combo-skill-circle {
   @apply flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-1 border-primary-30 bg-white duration-200 hover:border-primary-50;
 

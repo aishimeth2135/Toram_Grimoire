@@ -80,17 +80,11 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
     if (type === 'value') {
       const resultValue = computeBranchValue(value, helper)
       const sign =
-        isNumberString(resultValue) && parseFloat(resultValue) < 0
-          ? 'negative'
-          : 'positive'
-      const displayValue =
-        sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
-      resultStr = t(
-        `skill-query.branch.${rootKey ?? branchItem.name}.${String(
-          attrKey
-        )}.${sign}`,
-        { value: displayValue.toString() }
-      )
+        isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive'
+      const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
+      resultStr = t(`skill-query.branch.${rootKey ?? branchItem.name}.${String(attrKey)}.${sign}`, {
+        value: displayValue.toString(),
+      })
     } else {
       let displayValue = value
       if (
@@ -109,9 +103,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
             ? branchItem.mainBranch.name + ': ' + preName
             : preName
       }
-      const result = t(
-        `skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`
-      )
+      const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }
     attrValues[attrKey] = new SkillBranchResult(
@@ -131,9 +123,7 @@ interface HandleDisplayDataOptionFilterItem {
   calc?: boolean
 }
 interface HandleDisplayDataOptionFilters {
-  [key: string]:
-    | HandleDisplayDataOptionFilterValidation
-    | HandleDisplayDataOptionFilterItem
+  [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem
 }
 interface HandleDisplayDataOptions {
   values?: HandleBranchValuePropsMap
@@ -148,8 +138,7 @@ interface HandleDisplayDataOptions {
 
 type SkillDisplayData = Map<string, string>
 
-const FORMULA_VALUE_TO_PERCENTAGE_PATTERN =
-  /([$_a-zA-Z][$_a-zA-Z0-9]*)\*(\d\.\d+)/g
+const FORMULA_VALUE_TO_PERCENTAGE_PATTERN = /([$_a-zA-Z][$_a-zA-Z0-9]*)\*(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
 const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 
@@ -189,9 +178,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     delete langs[key]
     delete texts[key]
     const idxTitle = titles.indexOf(key)
-    idxTitle > -1 && titles.splice(idxTitle, 1)
+    if (idxTitle > -1) {
+      titles.splice(idxTitle, 1)
+    }
     const idxPureValues = pureValues.indexOf(key)
-    idxPureValues > -1 && pureValues.splice(idxPureValues, 1)
+    if (idxPureValues > -1) {
+      pureValues.splice(idxPureValues, 1)
+    }
   }
 
   Object.entries(filters).forEach(([key, value]) => {
@@ -204,9 +197,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       value = { validation: value }
     }
     const { validation, calc = false } = value
-    const validatedValue = calc
-      ? computeBranchValue(propValue, helper)
-      : propValue
+    const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
     if (!validation(validatedValue)) {
       props.delete(key)
       ignoreProp(key)
@@ -230,10 +221,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
         .replace(MUL_PATTERN, '×')
     })
     container.handle(value =>
-      value.replace(
-        FORMULA_FLOAT_TO_FIXED,
-        (_match, m1, m2) => m1 + m2.slice(0, 4)
-      )
+      value.replace(FORMULA_FLOAT_TO_FIXED, (_match, m1, m2) => m1 + m2.slice(0, 4))
     )
     container.handle(trimFloatStringZero)
   }
@@ -299,10 +287,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
     container.handleDisplay(value => handleFunctionHighlight(value))
 
-    const sign =
-      isNumberString(container.value) && parseFloat(container.value) < 0
-        ? ''
-        : '+'
+    const sign = isNumberString(container.value) && parseFloat(container.value) < 0 ? '' : '+'
     const showData = container.stat.getShowData()
     const title = container.displayTitle ?? showData.title
     container.storeStatResultData({ title, sign })
@@ -310,10 +295,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   titles.forEach(key => {
-    titlesResult.set(
-      key,
-      t(`skill-query.branch.${branchItem.name}.${key}: title`)
-    )
+    titlesResult.set(key, t(`skill-query.branch.${branchItem.name}.${key}: title`))
   })
 
   const containers = new Map([
@@ -349,13 +331,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const value = props.get(key)!
     containers.set(
       key,
-      new SkillBranchResult(
-        ResultContainerTypes.String,
-        branchItem,
-        key,
-        value,
-        value
-      )
+      new SkillBranchResult(ResultContainerTypes.String, branchItem, key, value, value)
     )
   })
 
@@ -368,8 +344,4 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 }
 
 export { cloneBranchProps, handleDisplayData }
-export type {
-  HandleDisplayDataOptionFilters,
-  HandleBranchLangPropsMap,
-  SkillDisplayData,
-}
+export type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap, SkillDisplayData }

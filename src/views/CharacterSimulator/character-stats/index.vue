@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -9,7 +9,7 @@ import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 
 import CharacterStatItem from './character-stat-item.vue'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 
 interface Props {
   visible: boolean
@@ -38,7 +38,7 @@ const categoryResults = computed(() => {
     .filter(item => item.stats.length > 0)
 })
 
-const { characterSimulatorOptions } = inject(CharacterSimulatorInjectionKey)!
+const { characterSimulatorOptions } = useCharacterSimulatorState()
 </script>
 
 <template>
@@ -53,26 +53,18 @@ const { characterSimulatorOptions } = inject(CharacterSimulatorInjectionKey)!
             v-for="stat in data.stats"
             :key="data.name + stat.id"
             :character-stat-result="stat"
-            :preview-visible="
-              characterSimulatorOptions.characterStatsDetailPreviewVisible
-            "
+            :preview-visible="characterSimulatorOptions.characterStatsDetailPreviewVisible"
           />
         </div>
       </div>
     </div>
     <div class="flex items-center px-4 pb-4 text-sm text-gray-40">
       <cy-icon icon="ic:outline-info" class="mr-2 text-gray-40" />
-      {{
-        t(
-          'character-simulator.character-stat-detail.toggle-detail-visibility-caption'
-        )
-      }}
+      {{ t('character-simulator.character-stat-detail.toggle-detail-visibility-caption') }}
     </div>
     <div class="border-t border-primary-10 px-2.5 pb-5 pt-3">
       <cy-button-toggle
-        v-model:selected="
-          characterSimulatorOptions.characterStatsDetailPreviewVisible
-        "
+        v-model:selected="characterSimulatorOptions.characterStatsDetailPreviewVisible"
       >
         {{ t('character-simulator.character-stat-detail.show-detail-preview') }}
       </cy-button-toggle>

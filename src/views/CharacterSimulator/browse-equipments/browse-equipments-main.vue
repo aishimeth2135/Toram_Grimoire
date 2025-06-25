@@ -5,10 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 
 import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import CardRows from '@/components/card/card-rows.vue'
 
@@ -35,10 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits<Emits>()
 
-const selectedEquipment = defineModel<CharacterEquipment | null>(
-  'selectedEquipment',
-  { required: true }
-)
+const selectedEquipment = defineModel<CharacterEquipment | null>('selectedEquipment', {
+  required: true,
+})
 
 const { t } = useI18n()
 
@@ -48,9 +44,7 @@ const allEquipments = computed(() => characterStore.equipments)
 const currentFieldTypes: Ref<EquipmentTypes[]> = ref([])
 const filteredEquipments: Ref<CharacterEquipment[]> = ref([])
 
-const currentFieldEquipment = computed(
-  () => props.currentField?.equipment ?? null
-)
+const currentFieldEquipment = computed(() => props.currentField?.equipment ?? null)
 
 const checkEquipmentValid = (equipment: CharacterEquipment) => {
   if (!currentFieldTypes.value) {
@@ -73,10 +67,18 @@ const checkEquipmentValid = (equipment: CharacterEquipment) => {
 }
 
 const currentEquipmentValid = computed(() => {
-  return (
-    !!selectedEquipment.value && checkEquipmentValid(selectedEquipment.value)
-  )
+  return !!selectedEquipment.value && checkEquipmentValid(selectedEquipment.value)
 })
+
+const handleSelectItem = (equip: CharacterEquipment) => {
+  if (selectedEquipment.value === equip) {
+    if (props.allowEquip) {
+      emit('equip', equip)
+    }
+  } else {
+    selectedEquipment.value = equip
+  }
+}
 
 watch(currentEquipmentValid, value => {
   emit('state-changed', { selectedEquipmentValid: value })
@@ -91,15 +93,13 @@ const displayMode = ref(DisplayModes.List)
 
 const toggleDisplayMode = () => {
   displayMode.value =
-    displayMode.value === DisplayModes.Grid
-      ? DisplayModes.List
-      : DisplayModes.Grid
+    displayMode.value === DisplayModes.Grid ? DisplayModes.List : DisplayModes.Grid
 }
 </script>
 
 <template>
-  <div class="flex h-full max-w-[45rem] flex-col">
-    <div class="px-2">
+  <div class="flex max-w-[45rem] flex-col">
+    <div class="shrink-0 px-2">
       <div class="flex w-full flex-wrap items-center">
         <BrowseEquipmentsMainFilters
           v-model="filteredEquipments"
@@ -119,12 +119,9 @@ const toggleDisplayMode = () => {
         </div>
       </div>
     </div>
-    <div
-      v-if="displayMode === DisplayModes.Grid"
-      class="flex flex-grow flex-col px-1"
-    >
+    <div v-if="displayMode === DisplayModes.Grid" class="flex grow flex-col px-1">
       <div
-        class="mx-1.5 mb-2 flex flex-wrap items-center rounded-full border border-primary-50 py-1 pl-5 pr-3"
+        class="mx-1.5 mb-2 flex shrink-0 flex-wrap items-center rounded-full border border-primary-50 py-1 pl-5 pr-3"
       >
         <template v-if="selectedEquipment">
           <EquipmentBrowseTitle :equipment="selectedEquipment" class="mr-6" />
@@ -132,7 +129,7 @@ const toggleDisplayMode = () => {
             :equip-disabled="!allowEquip"
             :equipment="selectedEquipment"
             :equipped="currentFieldEquipment === selectedEquipment"
-            class="flex-grow"
+            class="grow"
             @equip="emit('equip', $event)"
             @equip-cancel="emit('equip-cancel')"
           />
@@ -141,7 +138,7 @@ const toggleDisplayMode = () => {
           {{ t('character-simulator.browse-equipments.select-equipment-tips') }}
         </span>
       </div>
-      <div class="flex-grow overflow-y-auto">
+      <div class="grow overflow-y-auto">
         <BrowseEquipmentsItem
           v-for="equip in filteredEquipments"
           :key="equip.id"
@@ -150,14 +147,11 @@ const toggleDisplayMode = () => {
           :equipped="currentFieldEquipment === equip"
           :invalid="!checkEquipmentValid(equip)"
           class="m-1.5"
-          @click="selectedEquipment = equip"
+          @click="handleSelectItem(equip)"
         />
       </div>
     </div>
-    <div
-      v-else
-      class="mx-2 mt-2 flex-grow overflow-y-auto rounded border border-primary-10 py-0.5"
-    >
+    <div v-else class="mx-2 mt-2 grow overflow-y-auto rounded-sm border border-primary-10 py-0.5">
       <CardRows v-if="filteredEquipments.length > 0">
         <BrowseEquipmentsListItem
           v-for="equip in filteredEquipments"
@@ -167,18 +161,13 @@ const toggleDisplayMode = () => {
           :equipped="currentFieldEquipment === equip"
           :invalid="!checkEquipmentValid(equip)"
           :allow-equip="allowEquip"
-          @click="selectedEquipment = equip"
+          @click="handleSelectItem(equip)"
           @equip="emit('equip', $event)"
           @equip-cancel="emit('equip-cancel')"
         />
       </CardRows>
-      <div
-        v-else-if="allEquipments.length !== 0"
-        class="px-8 py-12 text-primary-50"
-      >
-        {{
-          t('character-simulator.browse-equipments.serach-no-equipment-tips')
-        }}
+      <div v-else-if="allEquipments.length !== 0" class="px-8 py-12 text-primary-50">
+        {{ t('character-simulator.browse-equipments.serach-no-equipment-tips') }}
       </div>
       <div v-else class="px-4 py-3 text-sm text-primary-40">
         {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}

@@ -1,30 +1,21 @@
 <template>
-  <div class="skill-branch-layout-normal rounded bg-white">
-    <div class="rounded border-1 border-l-2 border-red-30 bg-white pb-2">
+  <div class="skill-branch-layout-normal rounded-sm bg-white">
+    <div class="rounded-sm border-1 border-l-2 border-red-30 bg-white pb-2">
       <div class="mb-3 flex items-center border-b border-red-20 py-1.5 pl-4">
         <cy-icon :icon="nameIcon" class="text-red-30" />
         <div class="ml-2 text-red-40">{{ container.get('name') }}</div>
       </div>
       <div class="flex items-start">
-        <div class="flex-shrink-0 pl-2.5">
-          <div
-            class="flex flex-shrink-0 rounded-full border border-red-30 bg-white p-1.5"
-          >
+        <div class="shrink-0 pl-2.5">
+          <div class="flex shrink-0 rounded-full border border-red-30 bg-white p-1.5">
             <cy-icon :icon="mainIcon" class="text-red-30" />
           </div>
         </div>
         <div class="pl-4 pr-2 pt-1">
           <div v-if="mainTitle" class="flex items-center">
             <div class="text-primary-80" v-html="mainTitle"></div>
-            <div
-              v-if="nameProps"
-              class="flex space-x-2 pl-4 text-sm text-emerald-60"
-            >
-              <span
-                v-for="nameProp in nameProps"
-                :key="nameProp"
-                class="inline-block"
-              >
+            <div v-if="nameProps" class="flex space-x-2 pl-4 text-sm text-emerald-60">
+              <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
                 {{ nameProp }}
               </span>
             </div>
@@ -45,12 +36,7 @@
             :key="contentData.key"
             class="my-0.5 mr-3 inline-flex items-center"
           >
-            <cy-icon-text
-              small
-              :icon="contentData.icon"
-              :color="contentData.color"
-              single-color
-            >
+            <cy-icon-text small :icon="contentData.icon" :color="contentData.color" single-color>
               <slot :name="`sub-content(${contentData.key})`">
                 <span
                   v-if="typeof contentData.title === 'string'"
@@ -71,10 +57,7 @@
               {{ contentData.value }}
             </span>
           </span>
-          <slot
-            name="sub-content-extra"
-            item-class="my-0.5 inline-flex items-center"
-          />
+          <slot name="sub-content-extra" item-class="my-0.5 inline-flex items-center" />
         </div>
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
@@ -82,10 +65,7 @@
         <div class="pl-4 pr-2 pt-1">
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
-            <cy-icon
-              class="ml-2 text-blue-30"
-              icon="material-symbols:60fps-select-rounded"
-            />
+            <cy-icon class="ml-2 text-blue-30" icon="material-symbols:60fps-select-rounded-sm" />
           </div>
           <div class="flex flex-wrap items-center">
             <div class="mr-5 flex flex-wrap items-center">
@@ -123,16 +103,13 @@
           </div>
         </div>
         <div v-if="contents.areaDetail" class="pl-6">
-          <SkillAreaDetail
-            :skill-branch-item="container.branchItem"
-            :computing="computing"
-          />
+          <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
     </div>
     <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
       <div class="ml-7 h-3 border-l-1 border-primary-20" />
-      <div class="rounded border-1 border-primary-20 bg-white pb-2 pt-2.5">
+      <div class="rounded-sm border-1 border-primary-20 bg-white pb-2 pt-2.5">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
@@ -154,10 +131,7 @@ import { useI18n } from 'vue-i18n'
 import ToggleService from '@/shared/setup/ToggleService'
 import { slotNotEmpty } from '@/shared/utils/vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
@@ -194,9 +168,7 @@ const { toggle, contents } = ToggleService({
   contents: ['areaDetail'] as const,
 })
 
-const extraColumnsEmpty = computed(() =>
-  slotNotEmpty(slots['extra-columns-start'])
-)
+const extraColumnsEmpty = computed(() => slotNotEmpty(slots['extra-columns-start']))
 
 const typeMainColorMapping = {
   normal: 'primary-50',
@@ -210,9 +182,7 @@ const subContentDatas = computed(() => {
     return []
   }
   return subContents.value
-    .filter(subContent =>
-      subContent.key.split('|').every(key => container.value.has(key))
-    )
+    .filter(subContent => subContent.key.split('|').every(key => container.value.has(key)))
     .map(subContent => {
       const type = subContent.type ?? 'normal'
       const color = typeMainColorMapping[type]
@@ -242,7 +212,9 @@ const actionFrameData = computed(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .prop-value-wrapper :deep(.text-primary-50) {
   @apply text-fuchsia-60;
 }

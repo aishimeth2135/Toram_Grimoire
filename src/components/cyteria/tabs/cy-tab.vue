@@ -105,10 +105,7 @@ const tabClicked = () => {
   <div
     ref="navEl"
     class="cy-tab"
-    :class="[
-      tabSelected ? 'text-primary-80' : 'text-stone-50',
-      { 'tab-disabled': disabled },
-    ]"
+    :class="[tabSelected ? 'text-primary-80' : 'text-stone-50', { 'tab-disabled': disabled }]"
     v-bind:[idBind.name]="idBind.value"
     @click="tabClicked"
   >
@@ -116,7 +113,9 @@ const tabClicked = () => {
   </div>
 </template>
 
-<style lang="postcss">
+<style>
+@reference "@/tailwind.css";
+
 .cy-tab {
   @apply cursor-pointer duration-150;
 

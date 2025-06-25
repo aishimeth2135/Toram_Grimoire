@@ -2,7 +2,6 @@ import { reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
-import { isIntegerString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
@@ -20,9 +19,7 @@ export interface CommonOption {
 }
 
 export function findStat(target: StatOption, stats: StatRestriction[]) {
-  return stats.find(
-    stat => stat.baseId === target.origin.baseId && stat.type === target.type
-  )
+  return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
 }
 
 function dyeConvert(value: string): (number | null)[] {
@@ -39,10 +36,7 @@ function dyeConvert(value: string): (number | null)[] {
   return result
 }
 
-export function findObtainByDye(
-  text: string,
-  eq: CharacterEquipment
-): BagItemObtain[] {
+export function findObtainByDye(text: string, eq: CharacterEquipment): BagItemObtain[] {
   if (text === '') {
     return []
   }
@@ -64,9 +58,7 @@ export function findObtainByDye(
   return obtains.filter(obtain => {
     const dye = obtain['dye']!
     const data = dyeConvert(dye)
-    return data.every(
-      (item, idx) => searchData[idx] === null || item === searchData[idx]
-    )
+    return data.every((item, idx) => searchData[idx] === null || item === searchData[idx])
   })
 }
 

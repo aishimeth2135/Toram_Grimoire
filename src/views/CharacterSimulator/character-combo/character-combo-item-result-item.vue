@@ -1,22 +1,16 @@
 <template>
   <div>
     <div class="flex items-center">
-      <div class="mr-3 flex flex-shrink-0">
+      <div class="mr-3 flex shrink-0">
         <cy-button-toggle
           v-model:selected="branchItemState.enabled"
           :disabled="container.statContainers.length === 0"
         >
-          {{
-            container.get('name') || t('skill-query.branch.effect.base-name')
-          }}
+          {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
         </cy-button-toggle>
       </div>
       <div v-if="container.branchItem.buffs" class="space-x-3">
-        <div
-          v-for="buff in container.branchItem.buffs.items"
-          :key="buff"
-          class="text-orange-60"
-        >
+        <div v-for="buff in container.branchItem.buffs.items" :key="buff" class="text-orange-60">
           {{ t(`skill-query.skill-buffs.${buff}.title`) }}
         </div>
       </div>
@@ -31,7 +25,7 @@
         :container="suffixContainer"
         class="flex items-center"
       >
-        <div class="mr-3 flex flex-shrink-0">
+        <div class="mr-3 flex shrink-0">
           <cy-button-toggle
             v-model:selected="
               characterStore.getDamageCalculationSkillBranchState(
@@ -40,16 +34,11 @@
             "
             :disabled="suffixContainer.statContainers.length === 0"
           >
-            {{
-              suffixContainer.get('name') ||
-              t('skill-query.branch.effect.base-name')
-            }}
+            {{ suffixContainer.get('name') || t('skill-query.branch.effect.base-name') }}
           </cy-button-toggle>
         </div>
         <div>
-          <CharacterSkillItemStats
-            :stat-containers="suffixContainer.statContainers"
-          />
+          <CharacterSkillItemStats :stat-containers="suffixContainer.statContainers" />
         </div>
       </div>
     </div>
@@ -77,8 +66,6 @@ const { t } = useI18n()
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  characterStore.getDamageCalculationSkillBranchState(
-    container.value.branchItem.default
-  )
+  characterStore.getDamageCalculationSkillBranchState(container.value.branchItem.default)
 )
 </script>

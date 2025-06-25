@@ -174,36 +174,23 @@ class Skill extends SkillBase {
   }
 
   initTypes() {
-    if (
-      this.effects.some(eft =>
-        eft.branches.some(bch => bch.name === SkillBranchNames.Passive)
-      )
-    ) {
+    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive))) {
       this.types.push(SkillTypes.Passive)
     } else {
       this.types.push(SkillTypes.Active)
     }
-    if (
-      this.effects.some(eft =>
-        eft.branches.some(bch => bch.name === SkillBranchNames.Damage)
-      )
-    ) {
+    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Damage))) {
       this.types.push(SkillTypes.Damage)
     }
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
-    const el = markRaw(
-      new SkillEffect(this, this.effects.length, main, sub, body)
-    )
+    const el = markRaw(new SkillEffect(this, this.effects.length, main, sub, body))
     this.effects.push(el)
     return el
   }
 
-  appendSkillEffectHistory(
-    effectId: number,
-    date: string
-  ): SkillEffectHistory | void {
+  appendSkillEffectHistory(effectId: number, date: string): SkillEffectHistory | void {
     const effect = this.effects.find(eft => eft.effectId === effectId)
     if (!effect) {
       console.warn(
@@ -263,13 +250,7 @@ class SkillEffect extends SkillEffectBase {
   // 0: or, 1: and
   equipmentOperator: 0 | 1
 
-  constructor(
-    skill: Skill,
-    effectId: number,
-    main: number,
-    sub: number,
-    body: number
-  ) {
+  constructor(skill: Skill, effectId: number, main: number, sub: number, body: number) {
     super(skill)
     this.effectId = effectId
     this.historys = []
@@ -425,16 +406,16 @@ class LevelSkill {
 
   updateTree(forward = false) {
     if (!forward) {
-      let current: LevelSkill = this
+      let current: LevelSkill = this as LevelSkill
       while (current.base.previous !== -1) {
-        const pre = current.parent.levelSkills.find(
-          sk => sk.base.id === current.base.previous
-        )
+        const pre = current.parent.levelSkills.find(sk => sk.base.id === current.base.previous)
         if (!pre) {
           break
         }
         current = pre
-        current.level() < 5 && current.level(5)
+        if (current.level() < 5) {
+          current.level(5)
+        }
       }
     } else if (forward && this.level() < 5) {
       const stk: LevelSkill[] = [this]
@@ -443,7 +424,9 @@ class LevelSkill {
         this.parent.levelSkills.forEach(skill => {
           if (skill.base.previous === current.base.id) {
             stk.push(skill)
-            skill.level() > 0 && skill.level(0)
+            if (skill.level() > 0) {
+              skill.level(0)
+            }
           }
         })
       }

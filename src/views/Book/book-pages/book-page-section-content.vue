@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="book-page-section-md-content"
-    v-html="getSectionContentMd(section)"
-  ></div>
+  <div class="book-page-section-md-content" v-html="getSectionContentMd(section)"></div>
 </template>
 
 <script lang="ts" setup>
@@ -16,8 +13,10 @@ interface Props {
 defineProps<Props>()
 </script>
 
-<style lang="postcss" scoped>
-:deep(.book-page-section-md-content) {
+<style>
+@reference "@/tailwind.css";
+
+.book-page-section-md-content {
   h1 {
     @apply border-b text-2xl;
   }
@@ -33,7 +32,7 @@ defineProps<Props>()
   h4,
   h5,
   h6 {
-    @apply mt-6 mb-4 border-primary-30 px-0.5 pb-0.5 text-primary-70;
+    @apply mb-4 mt-6 border-primary-30 px-0.5 pb-0.5 text-primary-70;
   }
 
   p,
@@ -41,7 +40,7 @@ defineProps<Props>()
   dl,
   table,
   pre {
-    @apply mt-0 mb-4;
+    @apply mb-4 mt-0;
   }
 
   p {
@@ -83,30 +82,32 @@ defineProps<Props>()
     @apply pl-2.5;
   }
   ul > li {
-    @apply relative pl-5 pb-1;
-  }
-  ul > li::before {
-    content: '';
-    @apply absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30;
+    @apply relative pb-1 pl-5;
+
+    &::before {
+      content: '';
+      @apply absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30;
+    }
   }
   ol {
     list-style-type: decimal;
     @apply pl-4;
   }
   ol > li {
-    @apply ml-2 pl-1.5 pb-1;
-  }
-  ol > li::marker {
-    @apply text-primary-30;
+    @apply ml-2 pb-1 pl-1.5;
+
+    &::marker {
+      @apply text-primary-30;
+    }
   }
 
   hr {
     height: 1px;
-    @apply my-4 mx-1 border-0 bg-primary-30;
+    @apply mx-1 my-4 border-0 bg-primary-30;
   }
 
   code {
-    @apply mx-0.5 rounded-sm bg-primary-5 text-sm;
+    @apply shadow-xs mx-0.5 bg-primary-5 text-sm;
     padding: 0.125em 0;
     color: inherit !important;
 
@@ -121,7 +122,7 @@ defineProps<Props>()
     @apply mx-0.5 overflow-x-auto rounded-md bg-primary-5 px-4 py-3;
 
     code {
-      @apply m-0 bg-opacity-0 p-0;
+      @apply m-0 bg-transparent p-0;
 
       &::before,
       &::after {

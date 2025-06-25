@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="flex flex-wrap items-center rounded border-1 border-primary-10 bg-white px-4 py-0.5"
+      class="flex flex-wrap items-center rounded-sm border-1 border-primary-10 bg-white px-4 py-0.5"
     >
       <div class="my-1 flex items-center">
         <cy-icon-text icon="mdi-sword" block>
@@ -17,10 +17,7 @@
         <cy-icon-text icon="mdi-sword" block>
           {{ container.title('damage') }}
         </cy-icon-text>
-        <SkillBranchPropValue
-          class="ml-1.5 text-primary-50"
-          :result="container.result('damage')"
-        />
+        <SkillBranchPropValue class="ml-1.5 text-primary-50" :result="container.result('damage')" />
       </div>
     </div>
   </div>
@@ -29,10 +26,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
@@ -46,7 +40,5 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  ProrationHandler(props.computing, branchItem.value)
-)
+const container = computed(() => ProrationHandler(props.computing, branchItem.value))
 </script>

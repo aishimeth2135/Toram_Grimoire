@@ -10,36 +10,18 @@
       <span v-if="container.has('base')" class="attr-item">
         {{ container.get('base') }}
       </span>
-      <cy-icon
-        v-if="container.has('base') && container.has('constant')"
-        icon="ic-round-add"
-      />
-      <SkillBranchPropValue
-        class="attr-item"
-        :result="container.result('constant')"
-      />
+      <cy-icon v-if="container.has('base') && container.has('constant')" icon="ic-round-add" />
+      <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
       <span v-if="container.has('constant')" class="divider" />
       <cy-icon icon="ic-round-close" />
-      <SkillBranchPropValue
-        class="attr-item"
-        :result="container.result('multiplier')"
-      />
-      <cy-icon
-        v-if="container.has('extra_constant')"
-        icon="ic-round-add"
-      />
-      <SkillBranchPropValue
-        class="attr-item"
-        :result="container.result('extra_constant')"
-      />
+      <SkillBranchPropValue class="attr-item" :result="container.result('multiplier')" />
+      <cy-icon v-if="container.has('extra_constant')" icon="ic-round-add" />
+      <SkillBranchPropValue class="attr-item" :result="container.result('extra_constant')" />
       <span
         v-if="container.has('extra_constant') && frequencyVisible"
         class="divider border-orange-60"
       />
-      <cy-icon
-        v-if="frequencyVisible && container.has('frequency')"
-        icon="ic-round-close"
-      />
+      <cy-icon v-if="frequencyVisible && container.has('frequency')" icon="ic-round-close" />
       <SkillBranchPropValue
         v-if="frequencyVisible"
         class="attr-item"
@@ -81,13 +63,15 @@ const frequencyVisible = computed(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .divider {
   @apply mx-2 h-6 border-l-1 border-primary-30;
 }
 
 .attr-item {
-  @apply my-1 inline-flex items-center py-0.5 px-1.5;
+  @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }
 
 .damage-formula-main > .damage-formula-main-first + .divider {

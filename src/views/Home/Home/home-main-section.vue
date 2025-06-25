@@ -1,14 +1,7 @@
 <template>
   <section class="flex flex-col">
-    <div
-      class="relative z-5 my-auto space-y-3 py-2"
-      :class="{ 'pt-8': device.isMobile }"
-    >
-      <HomeLinkGroup
-        v-for="(group, idx) in groups"
-        v-bind="groupDatas[idx]"
-        :key="group.id"
-      >
+    <div class="relative z-5 my-auto space-y-3 py-2" :class="{ 'pt-8': device.isMobile }">
+      <HomeLinkGroup v-for="(group, idx) in groups" v-bind="groupDatas[idx]" :key="group.id">
         <HomeLinkButton
           v-for="data in group.links"
           :key="data.name + '|' + data.pathName"
@@ -20,8 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useMainStore } from '@/stores/app/main'
-
 import { ROUTE_LINK_DATAS, type RouteLinkData } from '@/shared/consts/route'
 import { useDevice } from '@/shared/setup/Device'
 
@@ -34,8 +25,6 @@ import HomeLinkGroup from './home-link-group.vue'
 const { device } = useDevice()
 
 const columns = ROUTE_LINK_DATAS
-
-const mainStore = useMainStore()
 
 const groups = (() => {
   const linkMap = new Map<string, RouteLinkData>()
@@ -63,10 +52,7 @@ const groups = (() => {
     },
     {
       id: 'enchant',
-      links: _handle([
-        AppRouteNames.EnchantSimulator,
-        AppRouteNames.EnchantDoll,
-      ]),
+      links: _handle([AppRouteNames.EnchantSimulator, AppRouteNames.EnchantDoll]),
     },
     {
       id: 'other',

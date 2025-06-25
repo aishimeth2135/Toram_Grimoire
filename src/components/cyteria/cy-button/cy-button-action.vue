@@ -27,15 +27,3 @@ const buttonBaseBinds = useButtonBaseBinds(props)
     </span>
   </CyButtonBase>
 </template>
-
-<style lang="postcss" scoped>
-.cy-button-action {
-  @apply relative rounded border bg-white bg-opacity-100 px-4 py-1.5;
-
-  box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
-
-  &.button-selected {
-    box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main);
-  }
-}
-</style>

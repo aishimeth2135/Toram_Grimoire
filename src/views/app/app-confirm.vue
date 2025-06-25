@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="store.confirmItems.length !== 0"
-    class="fixed left-0 top-0 z-100 h-full w-full"
-  >
+  <div v-if="store.confirmItems.length !== 0" class="fixed left-0 top-0 z-100 h-full w-full">
     <div class="absolute -z-1 h-full w-full bg-black opacity-30" />
     <div class="flex h-full w-full items-center justify-center">
       <div
@@ -10,11 +7,7 @@
       >
         <div class="mb-6 flex">
           <div>
-            <cy-icon
-              :icon="item.icon"
-              icon-width="2rem"
-              class="mr-4 flex-shrink-0"
-            />
+            <cy-icon :icon="item.icon" icon-width="2rem" class="mr-4 shrink-0" />
           </div>
           <div>
             {{ item.message }}
@@ -24,11 +17,7 @@
           <cy-button-action icon="line-md:confirm-circle" @click="confirm">
             {{ t('global.confirm') }}
           </cy-button-action>
-          <cy-button-action
-            icon="ic-round-cancel"
-            color="secondary"
-            @click="cancel"
-          >
+          <cy-button-action icon="ic-round-cancel" color="secondary" @click="cancel">
             {{ t('global.cancel') }}
           </cy-button-action>
         </div>
@@ -57,7 +46,7 @@ const cancel = () => store.nextItem()
 const { t } = useI18n()
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .app-confirm-slide-up {
   animation: app-confirm-slide-up 0.3s ease;
 }

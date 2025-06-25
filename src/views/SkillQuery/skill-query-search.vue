@@ -1,15 +1,8 @@
 <template>
   <teleport to="body">
     <cy-transition appear>
-      <div
-        class="fixed left-0 top-0 z-100 h-full w-full bg-black bg-opacity-50"
-        @click="emit('close')"
-      >
-        <div
-          style="max-width: 40rem"
-          class="mx-auto bg-opacity-100 py-5"
-          @click.stop
-        >
+      <div class="bg-black/50 fixed left-0 top-0 z-100 h-full w-full" @click="emit('close')">
+        <div style="max-width: 40rem" class="mx-auto py-5" @click.stop>
           <div>
             <cy-title-input
               ref="searchInputComponent"
@@ -70,9 +63,7 @@ const searchResult: ComputedRef<Skill[]> = computed(() => {
   const result: Skill[] = []
   skillRoot.value.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      const matchedSkills = st.skills.filter(skill =>
-        skill.name.toLowerCase().includes(text)
-      )
+      const matchedSkills = st.skills.filter(skill => skill.name.toLowerCase().includes(text))
       result.push(...matchedSkills)
     })
   })
@@ -106,7 +97,7 @@ const selectSkillFromKeyup = () => {
   }
 }
 
-const searchInputComponent: Ref<{ focus: Function } | null> = ref(null)
+const searchInputComponent: Ref<{ focus: () => void } | null> = ref(null)
 
 onMounted(async () => {
   await nextTick()

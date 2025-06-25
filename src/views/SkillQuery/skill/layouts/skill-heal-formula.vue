@@ -5,19 +5,13 @@
       <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
         {{ t('skill-query.branch.heal.constant-prefix') }}
       </span>
-      <SkillBranchPropValue
-        class="attr-item"
-        :result="container.result('constant')"
-      />
+      <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
       <cy-icon
         v-if="container.has('constant') && extraValueList.length !== 0"
         icon="ic-round-add"
       />
 
-      <template
-        v-for="(item, idx) in extraValueList"
-        :key="item.text + item.value"
-      >
+      <template v-for="(item, idx) in extraValueList" :key="item.text + item.value">
         <span class="attr-item space-x-0.5">
           <span>{{ item.text }}</span>
           <cy-icon icon="ic-round-close" />
@@ -57,14 +51,13 @@ const extraValueList = computed(
 )
 
 const isSingleValue = computed(() => {
-  return (
-    extraValueList.value.length === 0 &&
-    isNumberString(container.value.getValue('constant'))
-  )
+  return extraValueList.value.length === 0 && isNumberString(container.value.getValue('constant'))
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 .attr-item {
   @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }

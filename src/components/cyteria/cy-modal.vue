@@ -1,13 +1,7 @@
 <template>
   <teleport to="#app-modals">
     <cy-transition>
-      <div
-        v-if="visible"
-        class="cy--modal"
-        :class="rootClass"
-        v-bind="attrs"
-        @click="closeModal"
-      >
+      <div v-if="visible" class="cy--modal" :class="rootClass" v-bind="attrs" @click="closeModal">
         <div class="modal-wrapper">
           <cy-button-icon
             icon="jam-close-circle-f"
@@ -15,11 +9,7 @@
             class="cy--modal--close-btn"
             @click.stop="closeModal"
           />
-          <div
-            class="modal-container"
-            :class="{ 'h-full': heightFull }"
-            @click.stop
-          >
+          <div class="modal-container" :class="{ 'h-full': heightFull }" @click.stop>
             <div v-if="slots['title'] || title" class="px-4 pb-2">
               <slot name="title">
                 <cy-icon-text :icon="titleIcon" text-color="primary-70">
@@ -27,15 +17,10 @@
                 </cy-icon-text>
               </slot>
             </div>
-            <div
-              class="overscroll-none relative h-full overflow-y-auto p-4 pt-0"
-            >
+            <div class="overscroll-none relative h-full overflow-y-auto p-4 pt-0">
               <slot />
             </div>
-            <div
-              v-if="footer"
-              class="mx-4 flex justify-end space-x-2 bg-white py-1.5"
-            >
+            <div v-if="footer" class="mx-4 flex justify-end space-x-2 bg-white py-1.5">
               <slot name="footer" :close-modal="closeModal">
                 <slot name="footer-actions" />
                 <cy-button-action icon="ic-round-close" @click="closeModal">
@@ -48,7 +33,7 @@
         <div
           v-if="$slots['extra-content']"
           ref="extraContentElement"
-          class="modal-extra-wrapper bg-opacity-100"
+          class="modal-extra-wrapper"
           :style="extraContentStyle"
         >
           <div class="modal-extra-container" @click.stop>
@@ -71,14 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  type CSSProperties,
-  type Ref,
-  computed,
-  ref,
-  useAttrs,
-  useSlots,
-} from 'vue'
+import { type CSSProperties, type Ref, computed, ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/dom'
@@ -160,12 +138,14 @@ const hideExtraContent = () => {
 const { t } = useI18n()
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .cy--modal {
-  @apply fixed left-0 top-0 z-100 flex h-full w-full justify-center bg-black bg-opacity-20;
+  @apply fixed left-0 top-0 z-100 flex h-full w-full justify-center bg-black/20;
 
   & > .modal-wrapper {
-    @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full bg-opacity-100;
+    @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full;
     height: calc(100% - 1.125rem);
 
     & > .modal-container {

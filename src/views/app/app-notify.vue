@@ -1,14 +1,11 @@
 <template>
   <teleport to="#app-notify">
-    <div
-      class="fixed bottom-14 right-5 z-100 w-80"
-      style="max-width: calc(100vw - 2rem)"
-    >
+    <div class="fixed bottom-14 right-5 z-100 w-80" style="max-width: calc(100vw - 2rem)">
       <transition-group name="fade-slide">
         <div
           v-for="msg in store.messages"
           :key="msg.iid"
-          class="relative mt-4 flex w-full flex-wrap items-center rounded bg-primary-90 p-3 text-white duration-300"
+          class="relative mt-4 flex w-full flex-wrap items-center rounded-sm bg-primary-90 p-3 text-white duration-300"
         >
           <span
             v-if="msg.counter > 1"
@@ -38,17 +35,11 @@
 
 <script lang="ts" setup>
 import { useNotifyStore } from '@/stores/app/notify'
-import type {
-  MessageNotifyButtonItemWithId,
-  NotifyMessageItem,
-} from '@/stores/app/notify'
+import type { MessageNotifyButtonItemWithId, NotifyMessageItem } from '@/stores/app/notify'
 
 const store = useNotifyStore()
 
-const messageButtonClick = (
-  msg: NotifyMessageItem,
-  btn: MessageNotifyButtonItemWithId
-) => {
+const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItemWithId) => {
   btn?.click()
   if (btn.removeMessageAfterClick) {
     store.removeMessage(msg)
@@ -56,7 +47,7 @@ const messageButtonClick = (
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .fade-slide-enter-from {
   opacity: 0;
   transform: translateX(-30%);

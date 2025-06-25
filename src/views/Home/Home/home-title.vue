@@ -1,15 +1,11 @@
 <template>
-  <div :class="classes.root">
-    <HomeIconTitle :class="classes.wrapper" :root-el="rootEl" />
-    <div :class="classes.title">
-      <div :class="classes.sub" class="text-4xl text-primary-70">
-        Cy's Grimoire
-      </div>
-      <div class="mt-2 text-xl text-primary-40" :class="classes.sub">
-        布偶的魔法書
-      </div>
+  <div class="home-title-root">
+    <HomeIconTitle class="home-title-wrapper" :root-el="rootEl" />
+    <div class="home-title-title">
+      <div class="home-title-sub text-4xl text-primary-70">Cy's Grimoire</div>
+      <div class="home-title-sub mt-2 text-xl text-primary-40">布偶的魔法書</div>
     </div>
-    <div :class="classes.author">
+    <div class="home-title-author">
       <cy-icon icon="@potum" width="1.5rem" class="text-blue-30" />
       <div class="ml-2.5 text-xl text-blue-50">Cyteria</div>
     </div>
@@ -17,8 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useCssModule } from 'vue'
-
 import HomeIconTitle from './home-icon-title.vue'
 
 interface Props {
@@ -26,26 +20,33 @@ interface Props {
 }
 
 defineProps<Props>()
-
-const classes = useCssModule()
 </script>
 
-<style lang="postcss" module>
-.root {
-  @apply absolute bottom-0 left-0 flex h-48 items-center duration-150;
+<style>
+@reference "@/tailwind.css";
+
+.home-title-root {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  height: --spacing(48);
   padding-left: calc((100% - 1024px) / 2 - 12rem);
   width: calc((100% - 1024px) / 2 - 1rem);
+  transition-duration: 150ms;
 
   &:hover {
     background: linear-gradient(
       to right,
-      rgba(var(--app-rgb-white), 0.75) 0%,
-      rgba(var(--app-rgb-white), 0.75) 75%,
-      rgba(var(--app-rgb-white), 0.25) 100%
+      --alpha(var(--app-white) / 75%) 0%,
+      --alpha(var(--app-white) / 75%) 75%,
+      --alpha(var(--app-white) / 25%) 100%
     );
-    @apply z-50 w-full;
+    z-index: 50;
+    width: 100%;
 
-    & > .wrapper {
+    & > .home-title-wrapper {
       background: linear-gradient(
         to bottom right,
         var(--app-blue-10) 0%,
@@ -53,34 +54,48 @@ const classes = useCssModule()
       );
     }
 
-    & > .title {
-      @apply w-full opacity-100;
+    & > .home-title-title {
+      width: 100%;
+      opacity: 1;
     }
 
-    & > .author {
-      @apply opacity-100 duration-150;
+    & > .home-title-author {
+      transition-duration: 150ms;
       transition-delay: 0.75s;
+      opacity: 1;
     }
   }
 }
 
-.wrapper {
-  @apply flex items-center rounded-full p-5 duration-150;
+.home-title-wrapper {
+  display: flex;
+  align-items: center;
+  border-radius: calc(infinity * 1px);
+  padding: --spacing(5);
+  transition-duration: 150ms;
   transform: translate(0, 8%);
-  background-color: rgba(var(--app-rgb-white), 0.5);
+  background-color: --alpha(var(--app-white) / 50%);
   animation: wrapper-floating ease 8s infinite;
 }
 
-.title {
-  @apply w-0 overflow-hidden pl-12 opacity-0 duration-150;
+.home-title-title {
+  width: 0;
+  overflow: hidden;
+  padding-left: --spacing(12);
+  opacity: 0;
+  transition-duration: 150ms;
 
-  & > .sub {
+  & > .home-title-sub {
     white-space: nowrap;
   }
 }
 
-.author {
-  @apply absolute bottom-6 flex items-center opacity-0;
+.home-title-author {
+  position: absolute;
+  bottom: --spacing(6);
+  display: flex;
+  align-items: center;
+  opacity: 0;
   right: calc((100% - 1024px) / 2 - 12rem);
 }
 

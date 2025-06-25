@@ -1,17 +1,13 @@
 <template>
   <div class="absolute left-0 top-0 h-full w-full overflow-hidden">
-    <div :class="classes.pink" />
+    <div class="app-home-background" />
   </div>
 </template>
 
-<script lang="ts" setup>
-import { useCssModule } from 'vue'
+<style>
+@reference "@/tailwind.css";
 
-const classes = useCssModule()
-</script>
-
-<style lang="postcss" module>
-.pink {
+.app-home-background {
   @apply absolute bottom-0 right-0;
   background: linear-gradient(
     to bottom right,

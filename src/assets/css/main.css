@@ -1,3 +1,5 @@
+@reference "@/tailwind.css";
+
 :root {
   --app-screen-max-width: 1376px;
   --app-side-menu-width: 240px;
@@ -27,15 +29,26 @@ html {
   height: 100%;
   width: 100%;
 
-  font-family: 'Itim', Microsoft JhengHei, sans-serif;
+  font-family:
+    'Itim',
+    Microsoft JhengHei,
+    sans-serif;
   --app-main-font: Microsoft JhengHei;
 
   &.font-1 {
-    font-family: 'Itim', 'naikaifont', Microsoft JhengHei, sans-serif;
+    font-family:
+      'Itim',
+      'naikaifont',
+      Microsoft JhengHei,
+      sans-serif;
     --app-main-font: 'naikaifont';
   }
   &.font-2 {
-    font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
+    font-family:
+      'Itim',
+      'Noto Sans TC',
+      Microsoft JhengHei,
+      sans-serif;
     --app-main-font: 'Noto Sans TC';
   }
 }

@@ -5,11 +5,7 @@
         <div
           class="cy--options-item cy--options-title flex items-center border border-primary-30 bg-white duration-200 hover:border-primary-50"
         >
-          <slot
-            v-if="value !== undefined && value !== null"
-            name="item"
-            :value="value"
-          />
+          <slot v-if="value !== undefined && value !== null" name="item" :value="value" />
           <div v-else class="flex w-full justify-center py-0.5">
             <cy-icon icon="ic:outline-help-outline" />
           </div>
@@ -25,7 +21,7 @@
               :key="item.id"
               class="cy--options-item"
               :class="{ 'cy--options-item-selected': item.value === value }"
-              @click="emit('update:value', item.value), hide()"
+              @click="(emit('update:value', item.value), hide())"
             >
               <slot :id="item.id" name="item" :value="item.value" />
             </div>
@@ -33,7 +29,7 @@
           <div
             v-if="addable"
             class="cy--options-item sticky bottom-0 justify-center border-t border-primary-30 bg-white"
-            @click="emit('add-item'), hide()"
+            @click="(emit('add-item'), hide())"
           >
             <div class="flex py-0.5">
               <cy-icon icon="ic-round-add-circle-outline" />
@@ -72,7 +68,9 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 </script>
 
-<style lang="postcss" scoped>
+<style>
+@reference "@/tailwind.css";
+
 .cy--options-title,
 .cy--options-items-wrapper {
   max-width: 20rem;

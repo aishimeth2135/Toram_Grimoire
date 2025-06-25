@@ -86,19 +86,14 @@ const textClass = computed(() => {
 
 <template>
   <div class="cy-icon-text" :class="rootClass">
-    <IconBase
-      :icon="icon"
-      :class="iconClass"
-      :style="iconStyle"
-      class="flex-shrink-0"
-    />
+    <IconBase :icon="icon" :class="iconClass" :style="iconStyle" class="shrink-0" />
     <span v-if="$slots.default" :class="textClass">
       <slot />
     </span>
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .cy-icon-text-icon {
   width: var(--icon-text-icon-width);
   height: var(--icon-text-icon-width);

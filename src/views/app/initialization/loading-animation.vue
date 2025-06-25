@@ -1,18 +1,8 @@
 <template>
   <div class="inline-block">
     <transition mode="out-in" :css="false" @leave="leave">
-      <cy-icon
-        v-if="!available"
-        key="1"
-        icon="@grimoire-cat"
-        class="custom-icon start-icon"
-      />
-      <cy-icon
-        v-else
-        key="2"
-        icon="@grimoire-cat"
-        class="custom-icon start-icon"
-      />
+      <cy-icon v-if="!available" key="1" icon="@grimoire-cat" class="custom-icon start-icon" />
+      <cy-icon v-else key="2" icon="@grimoire-cat" class="custom-icon start-icon" />
     </transition>
     <!-- <transition
       appear
@@ -25,6 +15,7 @@
 </template>
 
 <script lang="ts" setup>
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Velocity from 'velocity-animate'
 import { computed, onMounted, ref, toRefs, watch } from 'vue'
@@ -49,13 +40,10 @@ const innerStatus = ref(0)
 const end = ref(false)
 
 const available = computed(() => {
-  return (
-    innerStatus.value >= InitializeStatus.BeforeFinished &&
-    !mainStore.routerGuiding
-  )
+  return innerStatus.value >= InitializeStatus.BeforeFinished && !mainStore.routerGuiding
 })
 
-const leave = (el: Element, done: Function) => {
+const leave = (el: Element, done: () => void) => {
   Velocity(
     el,
     {
@@ -112,7 +100,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .custom-icon {
   width: 4.5rem;
   height: 4.5rem;

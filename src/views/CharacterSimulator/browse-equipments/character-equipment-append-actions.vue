@@ -1,34 +1,30 @@
 <script lang="ts" setup>
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import {
-  CharacterEquipment,
-  EquipmentTypes,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import CharacterEquipmentAppend from '../character-equipment-append/character-equipment-append.vue'
 
-import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { useCharacterSimulatorState } from '../setup'
 import { useEquipmentsDisplayedItems } from './setup'
 
 const characterStore = useCharacterStore()
 
 const { t } = useI18n()
 
-const { editEquipment } = inject(CharacterSimulatorInjectionKey)!
+const { editEquipment } = useCharacterSimulatorState()
 
 const equipmentAppendVisible = ref(false)
 
 const getEquipmentTypeImage = CharacterEquipment.getImagePath
 
 const createCustomEquipment = (type: EquipmentTypes) => {
-  const name = t(
-    'character-simulator.create-custom-equipment.equipment-default-name',
-    { type: CharacterEquipment.getTypeText(type) }
-  )
+  const name = t('character-simulator.create-custom-equipment.equipment-default-name', {
+    type: CharacterEquipment.getTypeText(type),
+  })
   const newEquip = CharacterEquipment.createEmpty(name, type)
   editEquipment(characterStore.appendEquipment(newEquip))
 }
@@ -58,18 +54,14 @@ const { displayedItems } = useEquipmentsDisplayedItems()
               :key="item"
               class="m-1.5 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-1 border-primary-10 duration-150 hover:border-primary-40"
               hover
-              @click="createCustomEquipment(item), hide()"
+              @click="(createCustomEquipment(item), hide())"
             >
               <cy-icon :icon="getEquipmentTypeImage(item)" width="1.5rem" />
             </div>
           </div>
         </div>
         <div class="px-4 py-3 text-sm text-gray-50">
-          {{
-            t(
-              'character-simulator.create-custom-equipment.select-equipment-type-message'
-            )
-          }}
+          {{ t('character-simulator.create-custom-equipment.select-equipment-type-message') }}
         </div>
       </template>
     </cy-popover>

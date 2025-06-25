@@ -21,9 +21,7 @@ export const useSkillQueryState = defineState(() => {
   const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
   const currentSkillTree: Ref<SkillTree | null> = ref(null)
   const currentSkill: Ref<Skill | null> = ref(null)
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(
-    new EquipmentRestrictions()
-  )
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
 
   const skillLevel = ref(10)
   const characterLevel = ref(300)
@@ -46,14 +44,12 @@ export interface SkillRegistletItemState {
 
 export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   const skillRegistletItemsStates = new Map<Skill, SkillRegistletItemState[]>()
-  const getSkillRegistletItemsState = (
-    skill: Skill
-  ): SkillRegistletItemState[] => {
+  const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] => {
     if (!skillRegistletItemsStates.has(skill)) {
       const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
       skillRegistletItemsStates.set(
         skill,
-        registletItems.map((registletItem, index) => {
+        registletItems.map(registletItem => {
           const maxLevel = registletItem.maxLevel
           return reactive({
             item: registletItem,
@@ -91,15 +87,14 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
     'guard_power',
   ]
   FORMULA_REPLACED_VARS.forEach(varName => {
-    computingContainer.handleFormulaConstants.texts['$' + varName] =
-      Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
+    computingContainer.handleFormulaConstants.texts['$' + varName] = Grimoire.i18n.t(
+      `skill-query.branch.formula-replaced-text.${varName}`
+    )
   })
   computingContainer.varGetters.skillLevel = () => skillLevel.value
   computingContainer.varGetters.characterLevel = () => characterLevel.value
   computingContainer.varGetters.registletLevel = skill => {
-    return getSkillRegistletItemsState(skill).map(state =>
-      state.enabled ? state.level : 0
-    )
+    return getSkillRegistletItemsState(skill).map(state => (state.enabled ? state.level : 0))
   }
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
@@ -111,9 +106,7 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
         slv: skillLevel.value,
         clv: characterLevel.value,
       }
-      currentSkillItem.value?.effectItems.forEach(effectItem =>
-        effectItem.resetStackStates(vars)
-      )
+      currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
     },
     { immediate: true }
   )

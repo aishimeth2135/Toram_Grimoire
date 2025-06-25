@@ -2,11 +2,7 @@
   <AppLayoutMain v-if="currentBuild">
     <div class="steps-content-container">
       <div class="steps-content">
-        <div
-          v-for="step in currentEquipment.allSteps"
-          :key="step.index"
-          class="step-container"
-        >
+        <div v-for="step in currentEquipment.allSteps" :key="step.index" class="step-container">
           <EnchantStepView :step="step" />
         </div>
         <div
@@ -97,18 +93,10 @@
                 <cy-button-action icon="bx-bx-copy" @click="copyBuild">
                   {{ t('global.copy') }}
                 </cy-button-action>
-                <cy-button-action
-                  icon="mdi-export"
-                  color="cyan"
-                  @click="exportBuild"
-                >
+                <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
                   {{ t('global.export') }}
                 </cy-button-action>
-                <cy-button-action
-                  icon="mdi-import"
-                  color="cyan"
-                  @click="importBuild"
-                >
+                <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
                   {{ t('global.import') }}
                 </cy-button-action>
                 <cy-button-action
@@ -251,8 +239,7 @@ const { notify } = Notify()
 const { confirm } = Confirm()
 
 const { enchantBuilds, currentBuild } = (() => {
-  const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild } =
-    storeToRefs(store)
+  const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild } = storeToRefs(store)
   return {
     enchantBuilds: _enchantBuilds as Ref<EnchantBuild[]>,
     currentBuild: _currentBuild as Ref<EnchantBuild | null>,
@@ -311,9 +298,7 @@ const currentEquipment = computed(() => currentBuild.value!.equipment)
 
 const successRate = computed(() => {
   const rate = currentEquipment.value.successRate
-  return rate === -1
-    ? t('enchant-simulator.success-rate-unlimited')
-    : Math.floor(rate) + '%'
+  return rate === -1 ? t('enchant-simulator.success-rate-unlimited') : Math.floor(rate) + '%'
 })
 
 const selectedItems = computed(() => {
@@ -344,8 +329,7 @@ const isWeapon = computed(() => {
 })
 
 const createBuild = () => {
-  const name =
-    t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
+  const name = t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
   const build = new EnchantBuild(name)
   store.appendBuild(build)
   buildCount.value += 1
@@ -408,11 +392,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
     const pot = stat.itemBase.getPotential(stat.type, eq)
     stat.value =
       pot > stat.originalPotential
-        ? min -
-          Math.min(
-            eq.stat(stat.itemBase, stat.type, eq.lastStep!.index).value,
-            0
-          )
+        ? min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep!.index).value, 0)
         : 0
   }
 }
@@ -436,7 +416,9 @@ provide(EnchantSimulatorInjectionKey, {
 // }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "@/tailwind.css";
+
 div.steps-content-container {
   display: flex;
   justify-content: center;

@@ -278,7 +278,7 @@ const areaDatas = computed(() => {
       maxRadius = moveDistance
 
     // character
-    let bx = padding
+    const bx = padding
     const by = padding + maxRadius * Math.sin((angle * deg) / 2)
 
     // target

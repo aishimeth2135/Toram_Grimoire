@@ -1,3 +1,5 @@
+@reference "@/tailwind.css";
+
 .cy--text-separate {
   @apply mx-1.5 inline-block border-x-1 border-primary-20 px-1.5;
 }
