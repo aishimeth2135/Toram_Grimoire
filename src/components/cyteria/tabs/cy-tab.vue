@@ -120,7 +120,7 @@ const tabClicked = () => {
   @apply cursor-pointer duration-150;
 
   &.tab-disabled {
-    @apply cursor-not-allowed text-stone-40 hover:bg-gray-10/50;
+    @apply hover:bg-gray-10/50 cursor-not-allowed text-stone-40;
   }
 }
 </style>

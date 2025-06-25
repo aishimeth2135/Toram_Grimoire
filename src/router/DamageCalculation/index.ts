@@ -9,8 +9,7 @@ import { AppRouteNames } from '@/router/enums'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const DamageCalculatiomView = () =>
-  import('@/views/DamageCalculation/index.vue')
+const DamageCalculatiomView = () => import('@/views/DamageCalculation/index.vue')
 
 export default {
   name: AppRouteNames.DamageCalculationBase,

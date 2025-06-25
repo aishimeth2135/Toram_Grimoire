@@ -49,9 +49,7 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
   const currentOtherEffectBranchesIdx = ref(0)
 
   const currentOtherEffectBranch = computed(() => {
-    return (
-      otherEffectBranches.value[currentOtherEffectBranchesIdx.value] || null
-    )
+    return otherEffectBranches.value[currentOtherEffectBranchesIdx.value] || null
   })
 
   const setCurrentOtherEffectBranch = (idx: number) => {
@@ -83,8 +81,7 @@ export function setupCommonExtraSuffixBranches(
     return branchItem.value.suffixBranches
       .filter(
         suffix =>
-          suffix.is(SkillBranchNames.Extra) &&
-          (suffix.prop('caption') || suffix.stats.length > 0)
+          suffix.is(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0)
       )
       .map((suffix, idx) => {
         const dataContainer = ExtraHandler(computing, suffix)

@@ -3,10 +3,7 @@
     <template #default>
       <div class="flex items-center">
         <div class="flex items-center space-x-2 px-2">
-          <cy-button-plain
-            icon="mdi:order-numeric-descending"
-            @click="toggleSkillLevel"
-          >
+          <cy-button-plain icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
             {{ `Lv.${skillLevel}` }}
           </cy-button-plain>
           <cy-button-plain
@@ -25,11 +22,9 @@
         <cy-button-icon
           class="ml-auto"
           :icon="
-            advancedMenuVisible
-              ? 'akar-icons:circle-chevron-down'
-              : 'akar-icons:circle-chevron-up'
+            advancedMenuVisible ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'
           "
-          @click="toggleAdvancedMenu(), toggleContentGroup(false)"
+          @click="(toggleAdvancedMenu(), toggleContentGroup(false))"
         />
       </div>
     </template>
@@ -100,9 +95,7 @@
               {{ t('skill-query.formula-display-mode.normal') }}
             </cy-button-radio>
             <cy-button-radio
-              :selected="
-                formulaDisplayMode === FormulaDisplayModes.OriginalFormula
-              "
+              :selected="formulaDisplayMode === FormulaDisplayModes.OriginalFormula"
               @click="formulaDisplayMode = FormulaDisplayModes.OriginalFormula"
             >
               {{ t('skill-query.formula-display-mode.original-formula') }}
@@ -180,12 +173,8 @@ const toggleAdvancedMenu = useToggle(advancedMenuVisible)
 const toggleSwitchEffect = useToggle(switchEffectVisible)
 const toggleContentGroup = useToggleGroup([toggleSwitchEffect])
 
-const {
-  equipmentOptions,
-  getEquipmentText,
-  getEquipmentImagePath,
-  toggleCurrentEquipment,
-} = setupEquipmentSelect(skillTree, emit)
+const { equipmentOptions, getEquipmentText, getEquipmentImagePath, toggleCurrentEquipment } =
+  setupEquipmentSelect(skillTree, emit)
 
 const { toggleSkillLevel } = setupSkillLevel(skillLevel)
 

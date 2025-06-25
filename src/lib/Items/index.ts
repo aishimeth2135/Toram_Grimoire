@@ -35,18 +35,9 @@ export default class ItemsSystem {
     return item
   }
 
-  appendCrystal(
-    name: string,
-    category: number,
-    bossCategory: number
-  ): BagCrystal {
+  appendCrystal(name: string, category: number, bossCategory: number): BagCrystal {
     const item = markRaw(
-      new BagCrystal(
-        this.crystals.length.toString(),
-        name,
-        category,
-        bossCategory
-      )
+      new BagCrystal(this.crystals.length.toString(), name, category, bossCategory)
     )
     this.crystals.push(item)
     return item

@@ -108,17 +108,9 @@ const jsepTypes = {
   isUnaryExpression(node: jsep.Expression): node is jsep.UnaryExpression {
     return node.type === 'UnaryExpression'
   },
-  isConditionalExpression(
-    node: jsep.Expression
-  ): node is jsep.ConditionalExpression {
+  isConditionalExpression(node: jsep.Expression): node is jsep.ConditionalExpression {
     return node.type === 'ConditionalExpression'
   },
 }
 
-export {
-  getVarsMap,
-  getGettersMap,
-  varMapToArray,
-  handleReplacedKey,
-  jsepTypes,
-}
+export { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes }

@@ -10,10 +10,7 @@
       :width="canvasViewport.width"
       :height="canvasViewport.height"
     />
-    <div
-      class="absolute left-0 top-0 h-full w-full"
-      style="backdrop-filter: blur(1px)"
-    />
+    <div class="absolute left-0 top-0 h-full w-full" style="backdrop-filter: blur(1px)" />
   </div>
 </template>
 

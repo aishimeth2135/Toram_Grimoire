@@ -6,7 +6,7 @@
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="w-20 rounded-md bg-primary-10/50 p-2 text-center text-primary-80"
+      class="bg-primary-10/50 w-20 rounded-md p-2 text-center text-primary-80"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -94,7 +94,7 @@
   </div>
   <div
     v-else
-    class="relative border-primary-50/70 px-2 py-3"
+    class="border-primary-50/70 relative px-2 py-3"
     :class="{ 'border-l-2': !root }"
     style="margin-left: -0.2rem"
   >

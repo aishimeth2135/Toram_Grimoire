@@ -2,9 +2,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import { SkillBranchNames } from '../Skill'
 
-const BRANCH_PROPS_DEFAULT_VALUE: Partial<
-  Record<SkillBranchNames, Record<string, string>>
-> = {
+const BRANCH_PROPS_DEFAULT_VALUE: Partial<Record<SkillBranchNames, Record<string, string>>> = {
   [SkillBranchNames.Damage]: {
     constant: '0',
     multiplier: '0',

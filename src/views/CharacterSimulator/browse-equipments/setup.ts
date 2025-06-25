@@ -20,33 +20,16 @@ import {
 } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
 
-export const useEquipmentsDisplayedItems = defineViewState(
-  ViewNames.CharacterSimulator,
-  () => {
-    const displayedItems = new Map([
-      ['main', MainWeaponTypeList],
-      ['sub', [...SubWeaponTypeList, ...SubArmorTypeList]],
-      [
-        'body',
-        [
-          EquipmentTypes.BodyNormal,
-          EquipmentTypes.BodyDodge,
-          EquipmentTypes.BodyDefense,
-        ],
-      ],
-      [
-        'other',
-        [
-          EquipmentTypes.Additional,
-          EquipmentTypes.Special,
-          EquipmentTypes.Avatar,
-        ],
-      ],
-    ])
+export const useEquipmentsDisplayedItems = defineViewState(ViewNames.CharacterSimulator, () => {
+  const displayedItems = new Map([
+    ['main', MainWeaponTypeList],
+    ['sub', [...SubWeaponTypeList, ...SubArmorTypeList]],
+    ['body', [EquipmentTypes.BodyNormal, EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense]],
+    ['other', [EquipmentTypes.Additional, EquipmentTypes.Special, EquipmentTypes.Avatar]],
+  ])
 
-    return { displayedItems }
-  }
-)
+  return { displayedItems }
+})
 
 export function getCrystalPureColor(crystal: BagCrystal) {
   switch (crystal.category) {
@@ -79,11 +62,7 @@ export function getEquipmentFieldFilterOptions() {
     ],
     [
       EquipmentFieldTypes.BodyArmor,
-      [
-        EquipmentTypes.BodyNormal,
-        EquipmentTypes.BodyDodge,
-        EquipmentTypes.BodyDefense,
-      ],
+      [EquipmentTypes.BodyNormal, EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense],
     ],
     [EquipmentFieldTypes.Additional, [EquipmentTypes.Additional]],
     [EquipmentFieldTypes.Special, [EquipmentTypes.Special]],
@@ -96,8 +75,7 @@ export function setupEquipmentLabelFilter() {
 
   const selectedLabels = ref([] as CharacterBuildLabel[])
 
-  const { itemSelected: labelSelected, toggleItem: toggleLabel } =
-    useToggleList(selectedLabels)
+  const { itemSelected: labelSelected, toggleItem: toggleLabel } = useToggleList(selectedLabels)
 
   return {
     labelOptions: buildLabels,
@@ -125,16 +103,12 @@ export function useEquipmentsForSearch() {
     return equipmentSearchListMap.value.get(equipment.id)!
   }
 
-  const allEquipments = computed(
-    () => characterStore.equipments as CharacterEquipment[]
-  )
+  const allEquipments = computed(() => characterStore.equipments as CharacterEquipment[])
 
   return { allEquipments, getEquipmentSearchList }
 }
 
-export const useEquipmentActions = (
-  equipment: Ref<CharacterEquipment | null>
-) => {
+export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) => {
   const characterStore = useCharacterStore()
   const { equipments } = storeToRefs(characterStore)
   const { notify } = Notify()
@@ -183,10 +157,9 @@ export const useEquipmentActions = (
             click: () => {
               equipment.value = characterStore.appendEquipment(eq)
               notify(
-                t(
-                  'character-simulator.browse-equipments.removed-equipment-restore-tips',
-                  { name: eq.name }
-                )
+                t('character-simulator.browse-equipments.removed-equipment-restore-tips', {
+                  name: eq.name,
+                })
               )
             },
             removeMessageAfterClick: true,

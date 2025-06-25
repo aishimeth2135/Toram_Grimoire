@@ -1,11 +1,7 @@
 <template>
   <cy-modal :visible="visible" footer @close="emit('close')">
     <div class="sticky top-0 mb-3">
-      <cy-title-input
-        v-model:value="searchText"
-        icon="ic:baseline-search"
-        clearable
-      />
+      <cy-title-input v-model:value="searchText" icon="ic:baseline-search" clearable />
     </div>
     <div>
       <div v-for="category in categoryResults" :key="category.id">
@@ -25,11 +21,7 @@
             />
             <span
               class="ml-3"
-              :class="
-                registletBuild.itemSelected(item)
-                  ? 'text-primary-70'
-                  : 'text-gray-50'
-              "
+              :class="registletBuild.itemSelected(item) ? 'text-primary-70' : 'text-gray-50'"
             >
               {{ item.name }}
             </span>
@@ -47,10 +39,7 @@ import { useI18n } from 'vue-i18n'
 import Grimoire from '@/shared/Grimoire'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
-import {
-  RegistletCategory,
-  RegistletItemBase,
-} from '@/lib/Registlet/RegistletItem'
+import { RegistletCategory, RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'
@@ -76,19 +65,15 @@ const categorys: RegistletCategory[] = [
 
 const searchText = ref('')
 
-const categoryResults = computed<{ id: string; items: RegistletItemBase[] }[]>(
-  () => {
-    if (!searchText.value) {
-      return categorys
-    }
+const categoryResults = computed<{ id: string; items: RegistletItemBase[] }[]>(() => {
+  if (!searchText.value) {
     return categorys
-      .map(category => ({
-        id: category.id,
-        items: category.items.filter(item =>
-          item.name.includes(searchText.value)
-        ),
-      }))
-      .filter(item => item.items.length > 0)
   }
-)
+  return categorys
+    .map(category => ({
+      id: category.id,
+      items: category.items.filter(item => item.name.includes(searchText.value)),
+    }))
+    .filter(item => item.items.length > 0)
+})
 </script>

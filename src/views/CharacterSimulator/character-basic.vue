@@ -77,9 +77,16 @@ const RenderContentTitie = (attrs: { title: string }) => {
 </script>
 
 <template>
-  <CommonBuildPage v-if="currentCharacter" v-model:selected-build="selectedCharacter" v-model:builds="characters"
-    :current-build="currentCharacter" @select-build="characterStore.setCurrentCharacter" @add-build="addCharacater"
-    @copy-build="copySelectedCharacter" @remove-build="removeSelectedCharacter">
+  <CommonBuildPage
+    v-if="currentCharacter"
+    v-model:selected-build="selectedCharacter"
+    v-model:builds="characters"
+    :current-build="currentCharacter"
+    @select-build="characterStore.setCurrentCharacter"
+    @add-build="addCharacater"
+    @copy-build="copySelectedCharacter"
+    @remove-build="removeSelectedCharacter"
+  >
     <template #header>
       <div class="pb-4">
         <cy-icon-text icon="ic-outline-info" text-color="primary-50" small align-v="start">
@@ -91,31 +98,52 @@ const RenderContentTitie = (attrs: { title: string }) => {
       <div class="px-2">
         <RenderContentTitie :title="t('character-simulator.character-basic.character-level')" />
         <div class="mt-2">
-          <CommonPropNumberInput v-model:value="selectedCharacter.level"
-            :title="t('character-simulator.character-basic.character-level')" :range="[0, 300]" />
+          <CommonPropNumberInput
+            v-model:value="selectedCharacter.level"
+            :title="t('character-simulator.character-basic.character-level')"
+            :range="[0, 300]"
+          />
         </div>
-        <RenderContentTitie :title="t('character-simulator.character-basic.character-stat-points')" />
+        <RenderContentTitie
+          :title="t('character-simulator.character-basic.character-stat-points')"
+        />
         <div class="mt-2 space-y-2">
           <div v-for="baseStat in selectedCharacter.normalBaseStats" :key="baseStat.name">
-            <CommonPropNumberInput v-model:value="baseStat.value" :range="baseStatRange" :title="baseStat.name" />
+            <CommonPropNumberInput
+              v-model:value="baseStat.value"
+              :range="baseStatRange"
+              :title="baseStat.name"
+            />
           </div>
           <cy-transition>
             <div>
-              <CommonPropNumberInput v-if="selectedCharacter.optionalBaseStat"
-                :key="selectedCharacter.optionalBaseStat.name" v-model:value="selectedCharacter.optionalBaseStat.value"
-                :range="optionalBaseStatRange" :title="selectedCharacter.optionalBaseStat.name" />
+              <CommonPropNumberInput
+                v-if="selectedCharacter.optionalBaseStat"
+                :key="selectedCharacter.optionalBaseStat.name"
+                v-model:value="selectedCharacter.optionalBaseStat.value"
+                :range="optionalBaseStatRange"
+                :title="selectedCharacter.optionalBaseStat.name"
+              />
             </div>
           </cy-transition>
         </div>
-        <RenderContentTitie :title="t('character-simulator.character-basic.character-optional-base-stat')" />
+        <RenderContentTitie
+          :title="t('character-simulator.character-basic.character-optional-base-stat')"
+        />
         <div class="mt-3">
           <div class="flex flex-wrap items-center">
-            <cy-button-radio :selected="!selectedCharacter.optionalBaseStat"
-              @click="selectedCharacter!.clearOptinalBaseStat()">
+            <cy-button-radio
+              :selected="!selectedCharacter.optionalBaseStat"
+              @click="selectedCharacter!.clearOptinalBaseStat()"
+            >
               {{ t('global.none') }}
             </cy-button-radio>
-            <cy-button-radio v-for="option in characterOptionalBaseStatOptions" :key="option"
-              :selected="!!selectedCharacter!.baseStat(option)" @click="selectedCharacter!.setOptionalBaseStat(option)">
+            <cy-button-radio
+              v-for="option in characterOptionalBaseStatOptions"
+              :key="option"
+              :selected="!!selectedCharacter!.baseStat(option)"
+              @click="selectedCharacter!.setOptionalBaseStat(option)"
+            >
               {{ option }}
             </cy-button-radio>
           </div>

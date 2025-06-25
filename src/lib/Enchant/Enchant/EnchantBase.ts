@@ -164,9 +164,7 @@ class EnchantItem {
     this.conditionalProps.push(newProp)
   }
 
-  checkConditionalProps(
-    equipment: EnchantEquipment
-  ): EnchantItemConditionalProperties | null {
+  checkConditionalProps(equipment: EnchantEquipment): EnchantItemConditionalProperties | null {
     return (
       this.conditionalProps.find(conditionProp => {
         switch (conditionProp.condition) {
@@ -200,12 +198,10 @@ class EnchantItem {
 
     const limit = Math.min(potentialCapacityLimit, lvLimit)
 
-    const min =
-      originalLimit.negative === null ? -1 * limit : originalLimit.negative
+    const min = originalLimit.negative === null ? -1 * limit : originalLimit.negative
     const max = originalLimit.base === null ? limit : originalLimit.base
 
-    const { base: extraLimitBase, negative: extraLimitNegative } =
-      this.extraLimit[type]
+    const { base: extraLimitBase, negative: extraLimitNegative } = this.extraLimit[type]
     const CLv = enchantStates.Character.level - 200
     const vars = { CLv }
     const extraLimitMax =
@@ -215,10 +211,7 @@ class EnchantItem {
     const extraLimitMin =
       extraLimitNegative === null
         ? extraLimitMax * -1
-        : -1 *
-          (CLv > 0
-            ? Math.floor(computeFormula(extraLimitNegative, vars) as number)
-            : 0)
+        : -1 * (CLv > 0 ? Math.floor(computeFormula(extraLimitNegative, vars) as number) : 0)
 
     return {
       min: Math.max(min + extraLimitMin, -1 * originallvLimit),

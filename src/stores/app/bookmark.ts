@@ -20,9 +20,7 @@ export const useBookmarkStore = defineStore('app-bookmark', () => {
     if (_items.value === null) {
       const datas = window.localStorage.getItem(SAVE_STORAGE_KEY)
       try {
-        _items.value = (
-          datas !== null ? JSON.parse(datas) : []
-        ) as BookmarkItem[]
+        _items.value = (datas !== null ? JSON.parse(datas) : []) as BookmarkItem[]
       } catch (err) {
         window.localStorage.setItem(SAVE_STORAGE_KEY + '-tmp', datas!)
         _items.value = []
@@ -36,9 +34,7 @@ export const useBookmarkStore = defineStore('app-bookmark', () => {
   }
 
   const hasBookmark = (item: BookmarkItem) => {
-    return items.value.some(
-      _item => _item.type === item.type && _item.payload === item.payload
-    )
+    return items.value.some(_item => _item.type === item.type && _item.payload === item.payload)
   }
 
   const toggleBookmark = (item: BookmarkItem) => {

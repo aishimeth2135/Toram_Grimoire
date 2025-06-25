@@ -1,10 +1,5 @@
 <script lang="ts">
-import {
-  type Component,
-  type FunctionalComponent,
-  Transition,
-  type TransitionProps,
-} from 'vue'
+import { type Component, type FunctionalComponent, Transition, type TransitionProps } from 'vue'
 import { h, mergeProps } from 'vue'
 
 import Fade from './transition/cy-transition-fade.vue'

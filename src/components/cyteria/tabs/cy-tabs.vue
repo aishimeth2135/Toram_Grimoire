@@ -74,7 +74,7 @@ useResizeObserver(tabsEl, () => {
   }
 
   &.not-plain > .cy-tab {
-    @apply mt-1 rounded-sm px-6 py-2 hover:bg-primary-10/50;
+    @apply hover:bg-primary-10/50 mt-1 rounded-sm px-6 py-2;
   }
 }
 </style>

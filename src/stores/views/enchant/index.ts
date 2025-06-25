@@ -9,11 +9,7 @@ import CY from '@/shared/utils/Cyteria'
 
 import { EnchantBuild, type EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
 
-import {
-  type EnchantStoreConfig,
-  enchantConfig,
-  updateCharacterMaxLevel,
-} from './config'
+import { type EnchantStoreConfig, enchantConfig, updateCharacterMaxLevel } from './config'
 
 interface EnchantStoreSaveData {
   builds: EnchantBuildSaveData[]
@@ -111,9 +107,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
         return
       }
       const data = JSON.parse(odata) as EnchantStoreSaveData
-      enchantBuilds.value = data.builds.map(buildData =>
-        EnchantBuild.load(buildData)
-      )
+      enchantBuilds.value = data.builds.map(buildData => EnchantBuild.load(buildData))
       currentBuildIndex.value = data.index
 
       resetConfig(data.config)

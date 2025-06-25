@@ -10,10 +10,7 @@ export default function LoadSkillIcons(target: ImageStore) {
   Object.entries(modules as Record<string, any>).forEach(([path, context]) => {
     const match = path.match(/stc_(\d+)\/st_(\d+)\/si_(\d+)\.png$/)
     if (match) {
-      target.append(
-        `${match[1]}-${match[2]}-${match[3]}`,
-        context.default as string
-      )
+      target.append(`${match[1]}-${match[2]}-${match[3]}`, context.default as string)
     }
   })
 }

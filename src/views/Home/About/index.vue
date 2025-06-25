@@ -115,7 +115,7 @@
               <cy-icon icon="mdi:github" width="2rem" class="mr-2.5 text-cyan-60" />
               {{ t('app.about.author.github-message') }}
               <span
-                class="ml-3 inline-flex items-center rounded-lg border-1 border-cyan-60/50 py-0.5 pl-2 pr-4"
+                class="border-cyan-60/50 ml-3 inline-flex items-center rounded-lg border-1 py-0.5 pl-2 pr-4"
               >
                 <cy-icon icon="ic:round-star-border" width="1.375rem" class="mr-2 text-cyan-60" />
                 Star

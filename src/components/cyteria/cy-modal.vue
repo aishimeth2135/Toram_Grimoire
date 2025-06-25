@@ -142,7 +142,7 @@ const { t } = useI18n()
 @reference "@/tailwind.css";
 
 .cy--modal {
-  @apply fixed left-0 top-0 z-100 flex h-full w-full justify-center bg-black/20;
+  @apply bg-black/20 fixed left-0 top-0 z-100 flex h-full w-full justify-center;
 
   & > .modal-wrapper {
     @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full;

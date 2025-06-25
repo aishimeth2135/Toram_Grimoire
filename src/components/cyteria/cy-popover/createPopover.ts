@@ -9,15 +9,7 @@ import {
   shift,
   size,
 } from '@floating-ui/dom'
-import {
-  type CSSProperties,
-  type Ref,
-  computed,
-  isRef,
-  nextTick,
-  ref,
-  watch,
-} from 'vue'
+import { type CSSProperties, type Ref, computed, isRef, nextTick, ref, watch } from 'vue'
 
 interface CreatePopperOptions {
   placement?: string
@@ -120,19 +112,14 @@ export function createPopover(
   const handlePopperHide = ((evt: CustomEvent<PopperHideEventDetail>) => {
     if (
       evt.detail.eventTarget &&
-      [mainElement.value, popperElement.value].some(el =>
-        el?.contains(evt.detail.eventTarget)
-      )
+      [mainElement.value, popperElement.value].some(el => el?.contains(evt.detail.eventTarget))
     ) {
       return
     }
     togglePopper(false)
   }) as EventListener
 
-  popperElement.value?.addEventListener(
-    HIDE_POPPER_EVENT_NAME,
-    handlePopperHide
-  )
+  popperElement.value?.addEventListener(HIDE_POPPER_EVENT_NAME, handlePopperHide)
 
   watch(_options, () => updatePosition())
 

@@ -73,9 +73,7 @@ export function setupCharacters() {
 
     if (current.skillBuild === null) {
       current.skillBuild =
-        previou.skillBuild ??
-        (skillBuildStore.skillBuilds[0] as SkillBuild) ??
-        null
+        previou.skillBuild ?? (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
     }
     skillBuildStore.setCurrentSkillBuild(current.skillBuild)
 
@@ -86,9 +84,7 @@ export function setupCharacters() {
 
     if (current.registletBuild === null) {
       current.registletBuild =
-        previou.registletBuild ??
-        (registletBuildStore.registletBuilds[0] as RegistletBuild) ??
-        null
+        previou.registletBuild ?? (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
     }
     registletBuildStore.setCurrentRegistletBuild(current.registletBuild)
   }
@@ -115,18 +111,14 @@ export function setupCharacters() {
 
   const createCharacter = (updateIndex: boolean = true) => {
     const newCharacter = new Character(
-      Grimoire.i18n.t('character-simulator.character') +
-        ' ' +
-        (characters.value.length + 1)
+      Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)
     )
     appendCharacter(newCharacter, updateIndex)
     const state = getCharacterState(newCharacter)
     state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
     state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
-    state.registletBuild =
-      (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
-    state.potionBuild =
-      (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
+    state.registletBuild = (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
+    state.potionBuild = (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
     return newCharacter
   }
 

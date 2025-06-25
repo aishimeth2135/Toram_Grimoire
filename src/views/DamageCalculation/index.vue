@@ -46,11 +46,7 @@
       <template #main-content>
         <AppLayoutBottomContent v-if="contents.resultDetail" class="px-4 py-3">
           <div>
-            <cy-icon-text
-              icon="ant-design:star-outlined"
-              small
-              text-color="fuchsia-60"
-            >
+            <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
               {{ t('damage-calculation.result.title') }}
             </cy-icon-text>
           </div>
@@ -70,9 +66,7 @@
                 class="ml-6"
                 align-v="start"
               >
-                {{
-                  t('damage-calculation.result.modes-caption.' + modeItem.id)
-                }}
+                {{ t('damage-calculation.result.modes-caption.' + modeItem.id) }}
               </cy-icon-text>
             </div>
           </template>
@@ -137,24 +131,13 @@
             </div>
             <div class="flex flex-wrap items-center">
               <div class="mx-2">
-                <cy-button-action
-                  icon="bx-bx-copy"
-                  @click="copyCurrentCalculation"
-                >
+                <cy-button-action icon="bx-bx-copy" @click="copyCurrentCalculation">
                   {{ t('global.copy') }}
                 </cy-button-action>
-                <cy-button-action
-                  icon="mdi-export"
-                  color="cyan"
-                  @click="exportBuild"
-                >
+                <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
                   {{ t('global.export') }}
                 </cy-button-action>
-                <cy-button-action
-                  icon="mdi-import"
-                  color="cyan"
-                  @click="importBuild"
-                >
+                <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
                   {{ t('global.import') }}
                 </cy-button-action>
                 <cy-button-action
@@ -167,16 +150,9 @@
               </div>
             </div>
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent
-            v-else-if="contents.compare"
-            class="px-4 py-3"
-          >
+          <AppLayoutBottomContent v-else-if="contents.compare" class="px-4 py-3">
             <div>
-              <cy-icon-text
-                icon="bx:bx-git-compare"
-                small
-                text-color="fuchsia-60"
-              >
+              <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
                 {{ t('damage-calculation.compare.title') }}
               </cy-icon-text>
             </div>
@@ -193,16 +169,9 @@
             </div>
             <DamageCalculationCompare />
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent
-            v-else-if="contents.calcModeDetail"
-            class="px-4 py-3"
-          >
+          <AppLayoutBottomContent v-else-if="contents.calcModeDetail" class="px-4 py-3">
             <div>
-              <cy-icon-text
-                icon="ant-design:star-outlined"
-                small
-                text-color="fuchsia-60"
-              >
+              <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
                 {{ t('damage-calculation.calc-mode.title') }}
               </cy-icon-text>
             </div>
@@ -234,12 +203,7 @@
                   class="ml-6"
                   align-v="start"
                 >
-                  {{
-                    t(
-                      'damage-calculation.calc-mode.modes-caption.' +
-                        modeItem.id
-                    )
-                  }}
+                  {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
                 </cy-icon-text>
               </div>
             </template>
@@ -308,11 +272,9 @@ const {
   copyCurrentCalculation,
 } = setupCalculationStore()
 
-const { resultMode, resultModeList, selectResultMode } =
-  setupResultMode(currentCalculation)
+const { resultMode, resultModeList, selectResultMode } = setupResultMode(currentCalculation)
 
-const { calculationContainerOptions } =
-  setupCalculationCalcOptions(currentCalculation)
+const { calculationContainerOptions } = setupCalculationCalcOptions(currentCalculation)
 
 const { exportBuild, importBuild } = ExportBuild({
   save: handleSave => {
@@ -337,9 +299,7 @@ const { t } = useI18n()
 
 provide(DamageCalculationRootInjectionKey, {
   currentExpectedResult: computed(() => {
-    const resultItem = resultModeList.value.find(
-      item => item.id === 'expected'
-    )!.value
+    const resultItem = resultModeList.value.find(item => item.id === 'expected')!.value
     return resultItem as number
   }),
   currentCalcMode: calcMode,

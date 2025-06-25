@@ -27,8 +27,7 @@ export default function ({ save, loadFirst }: AutoSaveOptions): void {
     }
   }
   const beforeunload = () => saveHandler()
-  const visibilitychange = () =>
-    document.visibilityState === 'hidden' && saveHandler()
+  const visibilitychange = () => document.visibilityState === 'hidden' && saveHandler()
   window.addEventListener('beforeunload', beforeunload)
   document.addEventListener('visibilitychange', visibilitychange)
   onUnmounted(() => {

@@ -21,25 +21,19 @@ const characterStore = useCharacterStore()
 const allSkillLevels = computed(() => props.skillBuild.allSkillLevels)
 
 const displayedSkills = computed(() => {
-  return allSkillLevels.value.filter(
-    item => item.enabled && item.skillLevel > 0
-  )
+  return allSkillLevels.value.filter(item => item.enabled && item.skillLevel > 0)
 })
 
 const passiveSkills = computed(() => {
   return displayedSkills.value.filter(item => {
-    const resultState = characterStore.allPassiveSkillResultStatesMap.get(
-      item.skill
-    )
+    const resultState = characterStore.allPassiveSkillResultStatesMap.get(item.skill)
     return resultState && resultState.results.length > 0
   })
 })
 
 const activeSkills = computed(() => {
   return displayedSkills.value.filter(item => {
-    const resultState = characterStore.allActiveSkillResultStatesMap.get(
-      item.skill
-    )
+    const resultState = characterStore.allActiveSkillResultStatesMap.get(item.skill)
     return resultState && resultState.results.length > 0
   })
 })
@@ -52,11 +46,7 @@ const activeSkills = computed(() => {
     :tab-path-name="CharacterSimulatorRouteNames.Skill"
   >
     <div class="space-y-1.5">
-      <div
-        v-for="item in activeSkills"
-        :key="item.skill.skillId"
-        class="flex items-center"
-      >
+      <div v-for="item in activeSkills" :key="item.skill.skillId" class="flex items-center">
         <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
         <div class="ml-2 text-primary-60">
@@ -65,11 +55,7 @@ const activeSkills = computed(() => {
       </div>
     </div>
     <div class="mt-3 space-y-1.5">
-      <div
-        v-for="item in passiveSkills"
-        :key="item.skill.skillId"
-        class="flex items-center"
-      >
+      <div v-for="item in passiveSkills" :key="item.skill.skillId" class="flex items-center">
         <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
         <div class="ml-2 text-primary-60">

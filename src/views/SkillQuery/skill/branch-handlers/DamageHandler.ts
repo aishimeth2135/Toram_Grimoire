@@ -2,10 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 import { markText } from '@/shared/utils/view'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import ProrationHandler from './ProrationHandler'
@@ -74,9 +71,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
   if (props.get('base') === 'auto') {
-    const baseSuffix = branchItem.suffixBranches.find(bch =>
-      bch.is(SkillBranchNames.Base)
-    )
+    const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
     if (baseSuffix) {
       if (baseSuffix.prop('type') !== 'custom') {
         props.set('@custom-base-caption', baseSuffix.prop('type'))
@@ -99,32 +94,21 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
         }
       }
     } else {
-      props.set(
-        'base',
-        props.get('damage_type') === 'physical' ? 'atk' : 'matk'
-      )
+      props.set('base', props.get('damage_type') === 'physical' ? 'atk' : 'matk')
       langAttrsMap.append('base')
     }
   } else {
     langAttrsMap.append('base')
   }
   if (props.get('detail_display') === 'auto') {
-    props.set(
-      'detail_display',
-      props.get('title') === 'normal_attack' ? '0' : '1'
-    )
+    props.set('detail_display', props.get('title') === 'normal_attack' ? '0' : '1')
   }
 
   if (props.get('frequency_judgment') === 'auto') {
-    props.set(
-      'frequency_judgment',
-      props.get('title') !== 'each' ? 'single' : 'multiple'
-    )
+    props.set('frequency_judgment', props.get('title') !== 'each' ? 'single' : 'multiple')
   }
 
-  const prorationBch = branchItem.suffixBranches.find(suf =>
-    suf.is(SkillBranchNames.Proration)
-  )
+  const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
   if (prorationBch) {
     const _data = ProrationHandler(computing, prorationBch)
     ;['damage', 'proration'].forEach(key => {

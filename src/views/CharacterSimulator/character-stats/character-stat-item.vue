@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      class="flex cursor-pointer items-center py-0.5"
-      @click="detailVisible = !detailVisible"
-    >
+    <div class="flex cursor-pointer items-center py-0.5" @click="detailVisible = !detailVisible">
       <template v-if="!characterStatResult.origin.isBoolStat">
         <div class="min-w-[2rem] text-stone-60">
           {{ characterStatResult.name }}
@@ -15,19 +12,13 @@
       <span v-else class="text-primary-60">
         {{ characterStatResult.name }}
       </span>
-      <div
-        v-if="showPreviewValues"
-        class="ml-6 flex items-center space-x-2 text-primary-30"
-      >
+      <div v-if="showPreviewValues" class="ml-6 flex items-center space-x-2 text-primary-30">
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
           {{ data.title.value }}
         </div>
       </div>
     </div>
-    <div
-      v-if="detailVisible"
-      class="mb-4 mt-2 border border-primary-10 px-4 py-3"
-    >
+    <div v-if="detailVisible" class="mb-4 mt-2 border border-primary-10 px-4 py-3">
       <div class="mb-2 mt-0.5 flex flex-wrap items-center">
         <div class="mr-4 flex">
           <cy-icon-text icon="gridicons:stats-alt" color="primary-80">
@@ -35,9 +26,7 @@
           </cy-icon-text>
         </div>
         <div
-          v-if="
-            characterStatResult.origin.max || characterStatResult.origin.min
-          "
+          v-if="characterStatResult.origin.max || characterStatResult.origin.min"
           class="ml-auto flex items-center space-x-0.5 text-sm text-primary-30"
         >
           <div v-if="characterStatResult.origin.min">
@@ -56,33 +45,20 @@
       />
       <cy-icon-text v-if="showStatDetailDatas.conditionalBase" icon="mdi-sword">
         <CharacterStatDetailEquipments
-          :equipment-texts="
-            showStatDetailDatas.conditionalBase.title.equipments
-          "
+          :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments"
         />
       </cy-icon-text>
       <div class="mb-0.5 max-w-full overflow-x-auto pb-0.5">
-        <div
-          v-for="data in showStatDetailDatas.datas"
-          :key="data.id"
-          class="mt-1.5"
-        >
+        <div v-for="data in showStatDetailDatas.datas" :key="data.id" class="mt-1.5">
           <div class="mb-1 flex items-center text-primary-70">
             <cy-icon icon="mdi:label-outline" class="mr-3 text-primary-20" />
             <span>{{ data.title.text }}</span>
-            <span
-              v-if="data.title.value !== null"
-              class="ml-2.5 text-primary-50"
-            >
+            <span v-if="data.title.value !== null" class="ml-2.5 text-primary-50">
               {{ data.title.value }}
             </span>
           </div>
           <div v-if="data.lines.length !== 0" class="space-y-0.5 pb-1 pl-2">
-            <div
-              v-for="line in data.lines"
-              :key="'line-' + line.iid"
-              class="flex text-sm"
-            >
+            <div v-for="line in data.lines" :key="'line-' + line.iid" class="flex text-sm">
               <div class="h-text-sm flex items-center">
                 <cy-icon icon="ic-round-add" small class="mr-2" />
               </div>
@@ -100,14 +76,8 @@
                     class="mr-2"
                   />
                   <div class="flex items-center">
-                    <span
-                      v-if="line.title.captions.length > 0"
-                      class="mr-2 space-x-1"
-                    >
-                      <span
-                        v-for="caption in line.title.captions"
-                        :key="caption.id"
-                      >
+                    <span v-if="line.title.captions.length > 0" class="mr-2 space-x-1">
+                      <span v-for="caption in line.title.captions" :key="caption.id">
                         {{ caption.text }}
                       </span>
                     </span>
@@ -117,10 +87,7 @@
               </div>
             </div>
           </div>
-          <CharacterStatRecordedDetails
-            v-if="data.statRecorded"
-            :stat="data.statRecorded"
-          />
+          <CharacterStatRecordedDetails v-if="data.statRecorded" :stat="data.statRecorded" />
         </div>
       </div>
     </div>
@@ -181,20 +148,14 @@ const handleConditional = (conditionBase: CharacterStatResultConditionBase) => {
   let strs: string[] = []
   if (str === '#') {
     strs =
-      captions.length === 0
-        ? [t('character-simulator.character-stat-detail.additional-value')]
-        : []
+      captions.length === 0 ? [t('character-simulator.character-stat-detail.additional-value')] : []
   } else {
     str = str
       .replace(/\s+/g, '')
       .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
       .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
       .replace(/@([a-zA-Z0-9._]+)/g, (_match, p1) => {
-        return (
-          t(
-            `character-simulator.character-stat-detail.equipment-restriction-text.${p1}`
-          ) + ','
-        )
+        return t(`character-simulator.character-stat-detail.equipment-restriction-text.${p1}`) + ','
       })
       .replace(/&&|\|\|/g, match => (match === '&&' ? '+,' : '/,'))
       .replace(/\(|\)/g, match => match + ',')
@@ -261,11 +222,8 @@ const showStatDetailDatas = computed(() => {
       }
       if (stat.isDefaultFormula) {
         if (key === 'multiplier') {
-          const originalValue = Math.floor(
-            (value * stat.statValueParts.base) / 100
-          )
-          title.value =
-            (originalValue > 0 ? '+' : '') + originalValue.toString()
+          const originalValue = Math.floor((value * stat.statValueParts.base) / 100)
+          title.value = (originalValue > 0 ? '+' : '') + originalValue.toString()
         } else {
           title.value = linkedBaseStat!.showValue(statType!, value, false)
         }
@@ -273,9 +231,7 @@ const showStatDetailDatas = computed(() => {
     }
 
     const displayedLines: DetailLine[] = []
-    const adds = stat.statPartsDetail.additionalValues[key].filter(
-      add => add.value !== 0
-    )
+    const adds = stat.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
 
     const hasExtraUnit = key === 'multiplier' || key === 'total'
 
@@ -296,13 +252,10 @@ const showStatDetailDatas = computed(() => {
           let resValue = '0'
           if (addItem.isMul) {
             resValue =
-              addItem.value > 0
-                ? `×${valueFix(addItem.value)}`
-                : `×(${valueFix(addItem.value)})`
+              addItem.value > 0 ? `×${valueFix(addItem.value)}` : `×(${valueFix(addItem.value)})`
           } else {
             resValue =
-              (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') +
-              valueFix(addItem.value)
+              (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') + valueFix(addItem.value)
             if (!hasInit) {
               hasInit = true
             }
@@ -332,9 +285,7 @@ const showStatDetailDatas = computed(() => {
           if (eqs.length - idx < conditionalEqs.length) {
             return
           }
-          if (
-            conditionalEqs.every((eq, idx2) => eq.text === eqs[idx + idx2].text)
-          ) {
+          if (conditionalEqs.every((eq, idx2) => eq.text === eqs[idx + idx2].text)) {
             eqs.splice(idx, conditionalEqs.length)
           }
         })

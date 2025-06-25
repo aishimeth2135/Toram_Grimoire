@@ -76,9 +76,7 @@ export class SkillBuild implements CharacterBindingBuild {
 
     // 忍術表中技能的等級跟隨「忍術」
     if (skill.skillId.startsWith('5-2-')) {
-      state.level = this.getSkillState(
-        skill.parent.parent.parent.findSkillById('4-5-0')!
-      ).level
+      state.level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
     }
 
     return state
@@ -94,18 +92,11 @@ export class SkillBuild implements CharacterBindingBuild {
     this.setSkillLevel(skill, state.level + level)
   }
 
-  setSkillLevel(
-    skill: Skill,
-    level: number,
-    effectedSkills: EffectedSkillResult[] | null = null
-  ) {
+  setSkillLevel(skill: Skill, level: number, effectedSkills: EffectedSkillResult[] | null = null) {
     const state = this.getSkillState(skill)
     const levelSet = Math.min(10, Math.max(level, 0))
-    effectedSkills =
-      effectedSkills ?? this.checkLevelEffectedSkills(skill, levelSet)
-    effectedSkills.forEach(
-      data => (this.getSkillState(data.skill).level = data.newLevel)
-    )
+    effectedSkills = effectedSkills ?? this.checkLevelEffectedSkills(skill, levelSet)
+    effectedSkills.forEach(data => (this.getSkillState(data.skill).level = data.newLevel))
     state.level = levelSet
   }
 
@@ -148,10 +139,7 @@ export class SkillBuild implements CharacterBindingBuild {
   //   }
   // }
 
-  checkLevelEffectedSkills(
-    target: Skill,
-    levelSet: number
-  ): EffectedSkillResult[] {
+  checkLevelEffectedSkills(target: Skill, levelSet: number): EffectedSkillResult[] {
     const frontSkills = new Set<Skill>()
     const behindSkills = new Set<Skill>()
 
@@ -173,9 +161,7 @@ export class SkillBuild implements CharacterBindingBuild {
     if (levelSet > 0) {
       let current = target
       while (current.previous !== -1) {
-        const pre = current.parent.skills.find(
-          _skill => _skill.id === current.previous
-        )
+        const pre = current.parent.skills.find(_skill => _skill.id === current.previous)
         if (!pre) {
           break
         }
@@ -233,8 +219,7 @@ export class SkillBuild implements CharacterBindingBuild {
   get selectedSkillTrees(): SkillTree[] {
     return [...this._skillTreesSet.keys()].sort(
       (item1, item2) =>
-        skillTreeIdToInteger(item1.skillTreeId) -
-        skillTreeIdToInteger(item2.skillTreeId)
+        skillTreeIdToInteger(item1.skillTreeId) - skillTreeIdToInteger(item2.skillTreeId)
     )
   }
 
@@ -312,10 +297,7 @@ export class SkillBuild implements CharacterBindingBuild {
     }
   }
 
-  static load(
-    loadCategory: string | null,
-    data: SkillBuildSaveData
-  ): SkillBuild {
+  static load(loadCategory: string | null, data: SkillBuildSaveData): SkillBuild {
     const newBuild = new SkillBuild(data.name)
     data.selectedSkillTrees.forEach(skillTreeId => {
       let skillTree: SkillTree | null = null
@@ -335,9 +317,7 @@ export class SkillBuild implements CharacterBindingBuild {
       let skill!: Skill
       Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
         return stc.skillTrees.some(st => {
-          const find = st.skills.find(
-            _skill => _skill.skillId === state.skillId
-          )
+          const find = st.skills.find(_skill => _skill.skillId === state.skillId)
           if (find) {
             skill = find
             return true
@@ -372,9 +352,7 @@ export class SkillBuild implements CharacterBindingBuild {
         }
         let skillTree: SkillTree | null = null
         Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
-          const find = stc.skillTrees.find(
-            st => st.skillTreeId === stState.origin.skillTreeId
-          )
+          const find = stc.skillTrees.find(st => st.skillTreeId === stState.origin.skillTreeId)
           if (find) {
             skillTree = find
             return true
@@ -392,9 +370,7 @@ export class SkillBuild implements CharacterBindingBuild {
           let skill: Skill | null = null
           Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
             return stc.skillTrees.some(st => {
-              const find = st.skills.find(
-                _skill => _skill.skillId === levelSkill.base.skillId
-              )
+              const find = st.skills.find(_skill => _skill.skillId === levelSkill.base.skillId)
               if (find) {
                 skill = find
                 return true

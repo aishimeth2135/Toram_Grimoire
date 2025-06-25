@@ -74,14 +74,10 @@ const skillTreesDefaultEditing = ref(false)
     <div class="flex flex-wrap px-2 pt-2">
       <div v-if="displayedSkillTrees.length > 0" class="pb-2 text-sm">
         <div class="text-primary-60">
-          {{
-            $t('character-simulator.skill-build.skill-trees-directory.title')
-          }}
+          {{ $t('character-simulator.skill-build.skill-trees-directory.title') }}
         </div>
         <div class="mt-1 text-gray-40">
-          {{
-            $t('character-simulator.skill-build.skill-trees-directory.caption')
-          }}
+          {{ $t('character-simulator.skill-build.skill-trees-directory.caption') }}
         </div>
       </div>
       <div v-else class="space-y-1 text-sm text-primary-60">
@@ -106,24 +102,14 @@ const skillTreesDefaultEditing = ref(false)
         :key="skillTree.skillTreeId"
         class="flex flex-wrap items-center px-3 py-2 text-primary-50 duration-150 hover:text-primary-80"
       >
-        <div
-          class="flex cursor-pointer items-center"
-          @click="goSkillTree(skillTree)"
-        >
-          <cy-icon
-            class="mr-3 text-primary-30"
-            icon="mdi:book-open-variant-outline"
-          />
+        <div class="flex cursor-pointer items-center" @click="goSkillTree(skillTree)">
+          <cy-icon class="mr-3 text-primary-30" icon="mdi:book-open-variant-outline" />
           <div class="w-[9rem] overflow-hidden text-ellipsis whitespace-nowrap">
             {{ skillTree.name }}
           </div>
         </div>
         <div class="ml-4 flex items-center">
-          <cy-icon
-            class="text-primary-30"
-            icon="mdi:star-four-points-outline"
-            width="0.875rem"
-          />
+          <cy-icon class="text-primary-30" icon="mdi:star-four-points-outline" width="0.875rem" />
           <span class="ml-1 w-8 text-red-60">
             {{ skillLevelSum.level }}
           </span>
@@ -140,11 +126,7 @@ const skillTreesDefaultEditing = ref(false)
       <div
         class="mt-2 flex w-[20rem] items-center border-t border-primary-10 pl-[12.675rem] pt-0.5"
       >
-        <cy-icon
-          class="text-primary-30"
-          icon="mdi:star-four-points-outline"
-          width="0.875rem"
-        />
+        <cy-icon class="text-primary-30" icon="mdi:star-four-points-outline" width="0.875rem" />
         <span class="ml-1 w-8 text-red-60">
           {{ skillPointSum.skillLevel }}
         </span>

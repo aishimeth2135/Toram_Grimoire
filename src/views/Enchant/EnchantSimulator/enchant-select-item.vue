@@ -18,11 +18,7 @@
         {{ t('enchant-simulator.step.select-multiple-stat-items') }}
       </cy-icon-text>
     </template>
-    <div
-      v-for="category in validCategorys"
-      :key="category.origin.title"
-      class="relative mb-2 p-1"
-    >
+    <div v-for="category in validCategorys" :key="category.origin.title" class="relative mb-2 p-1">
       <div
         v-if="category.origin.weaponOnly && !isWeapon"
         class="absolute left-0 top-0 z-1 h-full w-full cursor-not-allowed bg-white opacity-50"
@@ -35,14 +31,10 @@
           v-for="item in category.items"
           :key="item.id"
           :selected="
-            selectedItems.some(
-              _item => item.origin === _item.origin && item.type === _item.type
-            )
+            selectedItems.some(_item => item.origin === _item.origin && item.type === _item.type)
           "
           :disabled="
-            disabledItems.some(
-              _item => item.origin === _item.origin && item.type === _item.type
-            )
+            disabledItems.some(_item => item.origin === _item.origin && item.type === _item.type)
           "
           @click="itemClick(item)"
         >
@@ -74,11 +66,7 @@ import { useI18n } from 'vue-i18n'
 import Grimoire from '@/shared/Grimoire'
 
 import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
-import {
-  EnchantCategory,
-  EnchantEquipment,
-  EnchantEquipmentTypes,
-} from '@/lib/Enchant/Enchant'
+import { EnchantCategory, EnchantEquipment, EnchantEquipmentTypes } from '@/lib/Enchant/Enchant'
 
 import type { EnchantStatOptionBase } from './setup'
 

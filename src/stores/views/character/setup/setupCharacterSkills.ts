@@ -4,19 +4,11 @@ import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
-import {
-  Character,
-  CharacterBaseStatTypes,
-  EquipmentFieldTypes,
-} from '@/lib/Character/Character'
+import { Character, CharacterBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-import {
-  StatComputed,
-  StatRecorded,
-  StatValueSourceTypes,
-} from '@/lib/Character/Stat'
+import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -39,12 +31,8 @@ import { getSkillBranchState } from './getState'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { useGetSkillLevel } from './setupCharacterBuilds'
 
-type DisplayDataContainerAlly = DisplayDataContainer<
-  SkillBranchItem<SkillEffectItem>
->
-type DisplayDataContainerSuffixAlly = DisplayDataContainer<
-  SkillBranchItemSuffix<SkillEffectItem>
->
+type DisplayDataContainerAlly = DisplayDataContainer<SkillBranchItem<SkillEffectItem>>
+type DisplayDataContainerSuffixAlly = DisplayDataContainer<SkillBranchItemSuffix<SkillEffectItem>>
 
 interface SkillResultBase {
   container: DisplayDataContainerAlly
@@ -88,9 +76,7 @@ function useSkillExtendedVariables(
       return {} as Record<string, number>
     }
 
-    const subField = character.value.fieldEquipment(
-      EquipmentFieldTypes.SubWeapon
-    )
+    const subField = character.value.fieldEquipment(EquipmentFieldTypes.SubWeapon)
 
     return {
       $BSTR: character.value.baseStatValue(CharacterBaseStatTypes.STR),
@@ -106,13 +92,13 @@ function useSkillExtendedVariables(
         EquipmentFieldTypes.SubWeapon,
         EquipmentTypes.Shield
       )
-        ? subField?.refining ?? 0
+        ? (subField?.refining ?? 0)
         : 0,
       $dagger_atk: character.value.checkFieldEquipmentType(
         EquipmentFieldTypes.SubWeapon,
         EquipmentTypes.Dagger
       )
-        ? subField?.basicValue ?? 0
+        ? (subField?.basicValue ?? 0)
         : 0,
 
       // not used for handling stats of skills
@@ -126,9 +112,7 @@ function useSkillExtendedVariables(
       $VIT: isPostpone ? postponeOptions.getCharacterStatValue('vit') : 0,
       $DEX: isPostpone ? postponeOptions.getCharacterStatValue('dex') : 0,
 
-      $guard_power: isPostpone
-        ? postponeOptions.getCharacterStatValue('guard_power')
-        : 0,
+      $guard_power: isPostpone ? postponeOptions.getCharacterStatValue('guard_power') : 0,
     } as Record<string, number>
   })
 }
@@ -195,16 +179,10 @@ function useFormulaExtraValueVariables(
               refining: 0,
             },
         special: specialField ? { def: specialField.basicValue } : { def: 0 },
-        shield: chara.checkFieldEquipmentType(
-          EquipmentFieldTypes.SubWeapon,
-          EquipmentTypes.Shield
-        )
+        shield: chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield)
           ? { refining: subField!.refining, def: subField!.basicValue }
           : { refining: 0, def: 0 },
-        arrow: chara.checkFieldEquipmentType(
-          EquipmentFieldTypes.SubWeapon,
-          EquipmentTypes.Arrow
-        )
+        arrow: chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)
           ? { stability: subField!.stability, atk: subField!.basicValue }
           : { stability: 0, atk: 0 },
         ninjutsu_scroll: chara.checkFieldEquipmentType(
@@ -252,8 +230,7 @@ export function setupCharacterSkills(
         _computeds.set(
           skill,
           computed(() => {
-            const registletItems =
-              Grimoire.Registlet.getRegistletItemsBySkill(skill)
+            const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
             if (!registletBuild.value) {
               return registletItems.map(() => 0)
             }
@@ -310,8 +287,7 @@ export function setupCharacterSkills(
   }
 
   computing.config.getFormulaExtraValue = (branch, id, props) => {
-    return getSkillBranchState(branch.default).getFormulaExtraState(id, props)
-      .value
+    return getSkillBranchState(branch.default).getFormulaExtraState(id, props).value
   }
 
   const allSkills: Skill[] = []
@@ -334,25 +310,15 @@ export function setupCharacterSkills(
     const computingResultsDamage: ComputingResultsMap = new Map()
     const computingResultsNext: ComputingResultsMap = new Map()
 
-    const stackContainers: Map<
-      Skill,
-      ComputedRef<DisplayDataContainerAlly[]>
-    > = new Map()
-    const basicContainers: Map<
-      Skill,
-      ComputedRef<DisplayDataContainerAlly | null>
-    > = new Map()
+    const stackContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly[]>> = new Map()
+    const basicContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly | null>> = new Map()
 
-    const checkPostpone = (bch: SkillBranchItem) =>
-      isPostpone ? bch.postpone : !bch.postpone
+    const checkPostpone = (bch: SkillBranchItem) => (isPostpone ? bch.postpone : !bch.postpone)
     const suffixBranchFilter = (suf: SkillBranchItemSuffix) => {
       if (!checkPostpone(suf.mainBranch)) {
         return false
       }
-      if (
-        suf.prop('type') === 'next' &&
-        suf.mainBranch.realName === SkillBranchNames.Effect
-      ) {
+      if (suf.prop('type') === 'next' && suf.mainBranch.realName === SkillBranchNames.Effect) {
         return false
       }
       if (!suf.is(SkillBranchNames.Extra)) {
@@ -366,10 +332,7 @@ export function setupCharacterSkills(
 
     const handleComputingResults = (
       target: ComputedRef<SkillBranchItem[]>,
-      handler: (
-        _computing: SkillComputingContainer,
-        bch: SkillBranchItem
-      ) => DisplayDataContainer,
+      handler: (_computing: SkillComputingContainer, bch: SkillBranchItem) => DisplayDataContainer,
       validBranchNames: SkillBranchNames[]
     ) => {
       return computed(() => {
@@ -381,10 +344,7 @@ export function setupCharacterSkills(
           ) as DisplayDataContainerAlly // empty container
           const suffixContainers = bch.suffixBranches
             .filter(suffixBranchFilter)
-            .map(
-              suf =>
-                ExtraHandler(computing, suf) as DisplayDataContainerSuffixAlly
-            )
+            .map(suf => ExtraHandler(computing, suf) as DisplayDataContainerSuffixAlly)
           return {
             container,
             suffixContainers,
@@ -416,10 +376,7 @@ export function setupCharacterSkills(
           if (bch.propBoolean('display_only')) {
             return false
           }
-          return (
-            checkBranchStats(bch.stats) ||
-            bch.suffixBranches.some(suffixBranchFilter)
-          )
+          return checkBranchStats(bch.stats) || bch.suffixBranches.some(suffixBranchFilter)
         }
         return false
       }
@@ -429,9 +386,7 @@ export function setupCharacterSkills(
       const activeSkillBranchItems = !activeValid
         ? null
         : computed(() => {
-            return (
-              currentEffectItem.value?.branchItems.filter(checkActive) ?? []
-            )
+            return currentEffectItem.value?.branchItems.filter(checkActive) ?? []
           })
 
       // passive
@@ -440,10 +395,7 @@ export function setupCharacterSkills(
           return false
         }
         if (bch.is(SkillBranchNames.Passive)) {
-          return (
-            checkBranchStats(bch.stats) ||
-            bch.suffixBranches.some(suffixBranchFilter)
-          )
+          return checkBranchStats(bch.stats) || bch.suffixBranches.some(suffixBranchFilter)
         }
         return false
       }
@@ -453,9 +405,7 @@ export function setupCharacterSkills(
       const passiveSkillBranchItems = !passiveValid
         ? null
         : computed(() => {
-            return (
-              currentEffectItem.value?.branchItems.filter(checkPassive) ?? []
-            )
+            return currentEffectItem.value?.branchItems.filter(checkPassive) ?? []
           })
 
       // next
@@ -481,9 +431,7 @@ export function setupCharacterSkills(
             return currentEffectItem.value?.branchItems.filter(checkNext) ?? []
           })
 
-      let damageSkillBranchItems: ComputedRef<
-        SkillBranchItem<SkillEffectItem>[]
-      > | null = null
+      let damageSkillBranchItems: ComputedRef<SkillBranchItem<SkillEffectItem>[]> | null = null
       if (isPostpone) {
         // damage
         const checkDamage: BranchItemArrayFilter = bch =>
@@ -494,18 +442,14 @@ export function setupCharacterSkills(
         damageSkillBranchItems = !damageValid
           ? null
           : computed(() => {
-              return (
-                currentEffectItem.value?.branchItems.filter(checkDamage) ?? []
-              )
+              return currentEffectItem.value?.branchItems.filter(checkDamage) ?? []
             })
       }
 
       if (activeSkillBranchItems) {
         computingResultsActive.set(
           skill,
-          handleComputingResults(activeSkillBranchItems, EffectHandler, [
-            SkillBranchNames.Effect,
-          ])
+          handleComputingResults(activeSkillBranchItems, EffectHandler, [SkillBranchNames.Effect])
         )
       }
       if (passiveSkillBranchItems) {
@@ -519,17 +463,13 @@ export function setupCharacterSkills(
       if (nextSkillBranchItems) {
         computingResultsNext.set(
           skill,
-          handleComputingResults(nextSkillBranchItems, EffectHandler, [
-            SkillBranchNames.Next,
-          ])
+          handleComputingResults(nextSkillBranchItems, EffectHandler, [SkillBranchNames.Next])
         )
       }
       if (damageSkillBranchItems) {
         computingResultsDamage.set(
           skill,
-          handleComputingResults(damageSkillBranchItems, DamageHandler, [
-            SkillBranchNames.Damage,
-          ])
+          handleComputingResults(damageSkillBranchItems, DamageHandler, [SkillBranchNames.Damage])
         )
       }
       if (
@@ -543,10 +483,7 @@ export function setupCharacterSkills(
           computed(() => {
             return (
               currentEffectItem.value?.branchItems
-                .filter(
-                  _bch =>
-                    _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value')
-                )
+                .filter(_bch => _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value'))
                 .map(_bch => StackHandler(computing, _bch)) ?? []
             )
           })
@@ -573,26 +510,17 @@ export function setupCharacterSkills(
 
   const skillBuildAllSkills = computed(() => skillBuild.value?.allSkills ?? [])
 
-  const getUsedStackContainers = (
-    branchItems: SkillBranchItem[],
-    skill: Skill
-  ) => {
+  const getUsedStackContainers = (branchItems: SkillBranchItem[], skill: Skill) => {
     const stackIds = new Set<number>()
-    branchItems.forEach(bch =>
-      bch.linkedStackIds.forEach(id => stackIds.add(id))
-    )
+    branchItems.forEach(bch => bch.linkedStackIds.forEach(id => stackIds.add(id)))
     const stackIdList = [...stackIds]
     const res = skillStackContainers
       .get(skill)
-      ?.value.filter(container =>
-        stackIdList.includes(container.branchItem.stackId!)
-      )
+      ?.value.filter(container => stackIdList.includes(container.branchItem.stackId!))
     return res ?? []
   }
 
-  const getSkillResultStatesComputed = (
-    target: Map<Skill, ComputedRef<SkillResultBase[]>>
-  ) => {
+  const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResultBase[]>>) => {
     const _map = new Map<Skill, SkillResultsState>()
     for (const [skill, resultBases] of target.entries()) {
       const stackContainers = computed(() =>
@@ -608,8 +536,7 @@ export function setupCharacterSkills(
         }
         return resultBases.value.some(
           resultBase =>
-            getSkillBranchState(resultBase.container.branchItem.default)
-              .formulaExtraIds.length > 0
+            getSkillBranchState(resultBase.container.branchItem.default).formulaExtraIds.length > 0
         )
       })
       const resultStates = reactive({
@@ -657,10 +584,8 @@ export function setupCharacterSkills(
     allResultStatesMap: allPassiveSkillResultStatesMap,
     resultStates: passiveSkillResultStates,
   } = getSkillResultStatesComputed(passiveSkillResults)
-  const { resultStates: nextSkillResultStates } =
-    getSkillResultStatesComputed(nextSkillResults)
-  const { resultStates: damageSkillResultStates } =
-    getSkillResultStatesComputed(damageSkillResults)
+  const { resultStates: nextSkillResultStates } = getSkillResultStatesComputed(nextSkillResults)
+  const { resultStates: damageSkillResultStates } = getSkillResultStatesComputed(damageSkillResults)
 
   const skillStatResults = computed(() => {
     if (!skillBuild.value) {
@@ -697,11 +622,7 @@ export function setupCharacterSkills(
       if (stats.has(statId)) {
         stats
           .get(statId)!
-          .add(
-            statContainer.valueSum,
-            statContainer.branch.default,
-            StatValueSourceTypes.Skill
-          )
+          .add(statContainer.valueSum, statContainer.branch.default, StatValueSourceTypes.Skill)
       } else {
         stats.set(statId, statContainer.toStatRecorded(statContainer.valueSum))
       }
@@ -713,10 +634,7 @@ export function setupCharacterSkills(
       })
       .forEach(resultState => {
         resultState.results
-          .filter(
-            result =>
-              getSkillBranchState(result.container.branchItem.default).enabled
-          )
+          .filter(result => getSkillBranchState(result.container.branchItem.default).enabled)
           .forEach(result => {
             result.container.statContainers.forEach(handleStatContainer)
             result.suffixContainers.forEach(suffix =>

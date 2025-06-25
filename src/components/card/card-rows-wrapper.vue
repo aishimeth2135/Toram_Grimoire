@@ -1,5 +1,5 @@
 <template>
-  <div class="border-1 border-primary-20 rounded-md overflow-hidden">
+  <div class="overflow-hidden rounded-md border-1 border-primary-20">
     <slot />
   </div>
 </template>

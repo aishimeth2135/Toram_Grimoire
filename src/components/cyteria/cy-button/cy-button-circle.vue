@@ -2,11 +2,7 @@
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import {
-  type ButtonBaseProps,
-  type ButtonIconProps,
-  useButtonBaseBinds,
-} from './setup'
+import { type ButtonBaseProps, type ButtonIconProps, useButtonBaseBinds } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {
   small?: boolean
@@ -34,11 +30,7 @@ const buttonBaseBinds = useButtonBaseBinds(props)
     }"
   >
     <template v-if="icon">
-      <ButtonIcon
-        v-if="toggle && selected"
-        icon="ic-round-close"
-        :class="iconClass"
-      />
+      <ButtonIcon v-if="toggle && selected" icon="ic-round-close" :class="iconClass" />
       <ButtonIcon v-else :icon="icon" :class="iconClass" />
     </template>
   </CyButtonBase>

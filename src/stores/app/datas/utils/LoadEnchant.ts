@@ -32,8 +32,7 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     CATEGORY_TITLE = 2,
     CATEGORY_EXTRA = 3
 
-  const handleItemValue = (value: string) =>
-    value !== '' ? parseFloat(value) : null
+  const handleItemValue = (value: string) => (value !== '' ? parseFloat(value) : null)
 
   const handleLimit = (str: string): [number | null, number | null] => {
     if (str === '') {
@@ -42,11 +41,7 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     const limitStrs = str.split('::')
     const l1 = handleItemValue(limitStrs[0])
     const l2 =
-      limitStrs[1] === undefined
-        ? l1 !== null
-          ? -1 * l1
-          : l1
-        : handleItemValue(limitStrs[1])
+      limitStrs[1] === undefined ? (l1 !== null ? -1 * l1 : l1) : handleItemValue(limitStrs[1])
     return [l1, l2]
   }
   const handleExtraLimit = (str: string): [string | null, string | null] => {
@@ -104,10 +99,7 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     } else {
       currentItem = currentCategory.appendItem({
         baseId: row[STAT_ID],
-        limit: [
-          handleLimit(row[LIMIT_CONSTANT]),
-          handleLimit(row[LIMIT_MULTIPLIER]),
-        ],
+        limit: [handleLimit(row[LIMIT_CONSTANT]), handleLimit(row[LIMIT_MULTIPLIER])],
         extraLimit: [
           handleExtraLimit(row[EXTRA_LIMIT_CONSTANT]),
           handleExtraLimit(row[EXTRA_LIMIT_MULTIPLIER]),

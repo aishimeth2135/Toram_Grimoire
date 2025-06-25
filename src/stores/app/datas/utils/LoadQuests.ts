@@ -44,10 +44,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
         return
       }
 
-      const newChapter = new MainQuestChapter(
-        currentChapter,
-        row[ROW_CHAPTER_NAME]
-      )
+      const newChapter = new MainQuestChapter(currentChapter, row[ROW_CHAPTER_NAME])
       questChapters.push(newChapter)
     }
 
@@ -70,10 +67,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
       questSections.push(newQuest)
       currentQuest = newQuest
     } else if (row[ROW_EXP] && currentQuest) {
-      currentQuest.setSkippableExp(
-        row[ROW_SECTION_NAME],
-        handleIntData(row[ROW_EXP])
-      )
+      currentQuest.setSkippableExp(row[ROW_SECTION_NAME], handleIntData(row[ROW_EXP]))
     }
   })
 
@@ -81,11 +75,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
   questSections.forEach(section => questSystem.appendMainQuestSection(section))
 }
 
-type HandleQuestItemCallback = (
-  type: QuestItemType,
-  name: string,
-  quantity: number
-) => void
+type HandleQuestItemCallback = (type: QuestItemType, name: string, quantity: number) => void
 function handleQuestItem(data: string, cb: HandleQuestItemCallback) {
   const lines = data.split('\n')
   let currentType: QuestItemType = QuestItemType.Item
@@ -95,9 +85,7 @@ function handleQuestItem(data: string, cb: HandleQuestItemCallback) {
       return
     }
     let currentLine = line
-    const submitTypeCheck = submitTypes.find(type =>
-      currentLine.startsWith(`${type}:`)
-    )
+    const submitTypeCheck = submitTypes.find(type => currentLine.startsWith(`${type}:`))
     if (submitTypeCheck) {
       currentType = submitTypeCheck
       currentLine = currentLine.replace(`${submitTypeCheck}:`, '').trim()

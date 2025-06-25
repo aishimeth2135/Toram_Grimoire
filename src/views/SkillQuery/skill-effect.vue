@@ -23,10 +23,7 @@
             :registlet-item-state="registletItemState"
           />
           <div class="px-4 py-2 text-sm">
-            <cy-icon-text
-              icon="ic:outline-tips-and-updates"
-              class="mr-2 mt-0.5"
-            >
+            <cy-icon-text icon="ic:outline-tips-and-updates" class="mr-2 mt-0.5">
               <i18n-t
                 tag="span"
                 class="text-primary-50"
@@ -74,10 +71,7 @@ import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'
 import SkillBranch from './skill/skill-branch.vue'
 
-import {
-  ComputingContainerInjectionKey,
-  SkillEffectInjectionKey,
-} from './injection-keys'
+import { ComputingContainerInjectionKey, SkillEffectInjectionKey } from './injection-keys'
 
 defineOptions({
   name: 'SkillEffect',
@@ -95,11 +89,9 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const {
-  rootComputingContainer,
-  getSkillRegistletItemsState,
-  currentSkillItem,
-} = inject(ComputingContainerInjectionKey)!
+const { rootComputingContainer, getSkillRegistletItemsState, currentSkillItem } = inject(
+  ComputingContainerInjectionKey
+)!
 
 const effectItem = computed(() => {
   if (!currentSkillItem.value) {
@@ -129,11 +121,7 @@ const setTab = (tab: ContentTabs) => {
 }
 
 const tabVisible = computed(() => {
-  return (
-    effectItem.value?.parent.effectItems.some(
-      item => item.historys.length > 0
-    ) ?? false
-  )
+  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false
 })
 
 const skillBranchesElement: Ref<HTMLElement | null> = ref(null)

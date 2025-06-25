@@ -282,7 +282,7 @@
           <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            class="px-2 py-1 duration-200 hover:bg-primary-30/10"
+            class="hover:bg-primary-30/10 px-2 py-1 duration-200"
             @click="selectStat(stat)"
           >
             <cy-button-check

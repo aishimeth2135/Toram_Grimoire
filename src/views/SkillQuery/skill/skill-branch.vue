@@ -249,7 +249,7 @@ const subButtonAvailable = computed(() => {
       @apply text-sm;
     }
     & > .value {
-      @apply ml-1.5 mr-1 inline-flex items-center bg-white/75 px-2 text-sm;
+      @apply bg-white/75 ml-1.5 mr-1 inline-flex items-center px-2 text-sm;
 
       & > .param-separate {
         @apply mx-2 mt-0.5 inline-block h-4 bg-transparent;

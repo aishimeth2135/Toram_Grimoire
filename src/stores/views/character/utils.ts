@@ -5,27 +5,20 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 
-export function checkStatRestriction(
-  chara: Character,
-  stat: StatRestriction
-): boolean {
+export function checkStatRestriction(chara: Character, stat: StatRestriction): boolean {
   if (stat.isPlain()) {
     return true
   }
   const types = stat.restriction!
 
   const checkMain =
-    types.main !== null &&
-    chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main)
+    types.main !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main)
   const checkMainSub =
-    types.main !== null &&
-    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.main)
+    types.main !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.main)
   const checkSub =
-    types.sub !== null &&
-    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub)
+    types.sub !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub)
   const checkBody =
-    types.body !== null &&
-    chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body)
+    types.body !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body)
 
   return !!types.other || checkMain || checkMainSub || checkSub || checkBody
 }
@@ -42,9 +35,7 @@ export function createElementMap(): Record<EnemyElements, number> {
   }
 }
 
-export function getCharacterElement(
-  chara: Character
-): Record<EnemyElements, number> {
+export function getCharacterElement(chara: Character): Record<EnemyElements, number> {
   const element = createElementMap()
 
   let neutralFlag = true
@@ -56,18 +47,9 @@ export function getCharacterElement(
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
   // 主手弓/弩、副手矢時，矢優先於弓
   if (
-    (chara.checkFieldEquipmentType(
-      EquipmentFieldTypes.MainWeapon,
-      EquipmentTypes.Bow
-    ) ||
-      chara.checkFieldEquipmentType(
-        EquipmentFieldTypes.MainWeapon,
-        EquipmentTypes.Bowgun
-      )) &&
-    chara.checkFieldEquipmentType(
-      EquipmentFieldTypes.SubWeapon,
-      EquipmentTypes.Arrow
-    ) &&
+    (chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow) ||
+      chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bowgun)) &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) &&
     sub.equipment!.elementStat
   ) {
     setElement(sub.equipment!.elementStat)
@@ -82,10 +64,7 @@ export function getCharacterElement(
 
   // 雙劍副手：雙重屬性
   if (
-    chara.checkFieldEquipmentType(
-      EquipmentFieldTypes.SubWeapon,
-      EquipmentTypes.OneHandSword
-    ) &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword) &&
     sub.equipment!.elementStat
   ) {
     setElement(sub.equipment!.elementStat)
@@ -98,9 +77,7 @@ export function getCharacterElement(
   return element
 }
 
-export function migrateCharacterSimulatorSaveData(
-  datas: CharacterSimulatorSaveData
-) {
+export function migrateCharacterSimulatorSaveData(datas: CharacterSimulatorSaveData) {
   if (!datas.registletBuilds) {
     datas.registletBuilds = []
   }

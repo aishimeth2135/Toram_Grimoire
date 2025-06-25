@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import {
-  CharacterEquipment,
-  EquipmentCrystal,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { BagPotion } from '@/lib/Items/BagItem'
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
@@ -21,11 +18,7 @@ const { t } = useI18n()
 
 <template>
   <div class="space-y-1 py-1 pl-2 pr-3 text-sm">
-    <div
-      v-for="(src, idx) in stat.sources"
-      :key="idx"
-      class="flex items-center space-x-2"
-    >
+    <div v-for="(src, idx) in stat.sources" :key="idx" class="flex items-center space-x-2">
       <cy-icon icon="ic-round-add" small />
       <template v-if="src.type === StatValueSourceTypes.Skill">
         <div
@@ -43,12 +36,7 @@ const { t } = useI18n()
       </template>
       <template v-else-if="src.type === StatValueSourceTypes.Equipment">
         <div class="text-orange-30">
-          {{
-            t(
-              'common.Equipment.category.' +
-                (src.src as CharacterEquipment).type
-            )
-          }}
+          {{ t('common.Equipment.category.' + (src.src as CharacterEquipment).type) }}
         </div>
         <div>
           {{ (src.src as CharacterEquipment).name }}
@@ -62,10 +50,7 @@ const { t } = useI18n()
           {{ (src.src as EquipmentCrystal).name }}
         </div>
       </template>
-      <div
-        v-else-if="src.type === StatValueSourceTypes.Food"
-        class="text-emerald-30"
-      >
+      <div v-else-if="src.type === StatValueSourceTypes.Food" class="text-emerald-30">
         {{ t('character-simulator.character-stat-detail.food') }}
       </div>
       <template v-else-if="src.type === StatValueSourceTypes.Registlet">

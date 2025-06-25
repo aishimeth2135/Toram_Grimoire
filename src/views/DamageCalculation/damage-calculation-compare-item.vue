@@ -6,11 +6,7 @@
         {{ t('damage-calculation.result.modes.expected') }}
       </cy-icon-text>
       <span class="ml-2 mr-4 text-primary-50">{{ expectedResult }}</span>
-      <div
-        :class="
-          calculationResultDifferenceRate >= 0 ? 'text-blue-60' : 'text-red-60'
-        "
-      >
+      <div :class="calculationResultDifferenceRate >= 0 ? 'text-blue-60' : 'text-red-60'">
         {{ calculationResultDifferenceRateDisplay }}
       </div>
     </div>
@@ -22,24 +18,12 @@
       >
         <cy-icon-text class="mr-2" small>
           <span
-            v-html="
-              markText(
-                t(
-                  'damage-calculation.item-base-titles.' +
-                    comparedItem.item.base.id
-                )
-              )
-            "
+            v-html="markText(t('damage-calculation.item-base-titles.' + comparedItem.item.base.id))"
           ></span>
         </cy-icon-text>
-        <span
-          :class="comparedItem.value >= 0 ? 'text-blue-60' : 'text-red-60'"
-          class="text-sm"
-        >
+        <span :class="comparedItem.value >= 0 ? 'text-blue-60' : 'text-red-60'" class="text-sm">
           {{
-            (comparedItem.value > 0 ? '+' : '') +
-            comparedItem.value +
-            comparedItem.item.base.unit
+            (comparedItem.value > 0 ? '+' : '') + comparedItem.value + comparedItem.item.base.unit
           }}
         </span>
       </div>
@@ -81,10 +65,7 @@ const calculationResultDifferenceRate = computed(() => {
   if (comparedResult < 1) {
     return 1000
   }
-  return numberToFixed(
-    ((expectedResult.value - comparedResult) * 100) / comparedResult,
-    1
-  )
+  return numberToFixed(((expectedResult.value - comparedResult) * 100) / comparedResult, 1)
 })
 
 const calculationResultDifferenceRateDisplay = computed(() => {
@@ -98,14 +79,11 @@ const calculationResultDifferenceRateDisplay = computed(() => {
 const comparedItems = computed(() => {
   const result: { item: CalcItem; value: number }[] = []
   Array.from(calculation.value.containers.values()).forEach(container => {
-    const comparedContainer = comparedCalculation.value.containers.get(
-      container.base.id
-    )!
+    const comparedContainer = comparedCalculation.value.containers.get(container.base.id)!
     if (container.selectable) {
       result.push({
         item: container.currentItem,
-        value:
-          container.currentItem.value - comparedContainer.currentItem.value,
+        value: container.currentItem.value - comparedContainer.currentItem.value,
       })
     } else {
       Array.from(container.items.values()).forEach(item => {

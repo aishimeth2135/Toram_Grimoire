@@ -2,21 +2,15 @@
   <AppLayoutMain class="pb-6">
     <EnchantDollStepEquipment />
     <cy-transition @after-enter="stepAfterEnter">
-      <EnchantDollStepPositiveStats
-        v-if="currentStep >= StepIds.SelectPositiveStat"
-      />
+      <EnchantDollStepPositiveStats v-if="currentStep >= StepIds.SelectPositiveStat" />
     </cy-transition>
     <cy-transition @after-enter="stepAfterEnter">
-      <EnchantDollStepNegativeStats
-        v-if="currentStep >= StepIds.SelectNegativeStat"
-      />
+      <EnchantDollStepNegativeStats v-if="currentStep >= StepIds.SelectNegativeStat" />
     </cy-transition>
     <cy-transition @after-enter="stepAfterEnter">
       <EnchantDollStepResult v-if="currentStep >= StepIds.Result" />
     </cy-transition>
-    <div
-      class="relative mt-12 flex items-center justify-center border-t border-fuchsia-60 pt-4"
-    >
+    <div class="relative mt-12 flex items-center justify-center border-t border-fuchsia-60 pt-4">
       <cy-button-action
         v-if="currentStep !== StepIds.Result"
         icon="mdi-leaf"
@@ -38,18 +32,10 @@
       </span>
     </div>
     <div
-      v-if="
-        equipmentState.autoFindPotentialMinimum &&
-        currentStep === StepIds.SelectNegativeStat
-      "
+      v-if="equipmentState.autoFindPotentialMinimum && currentStep === StepIds.SelectNegativeStat"
       class="my-2 flex justify-center"
     >
-      <cy-icon-text
-        icon="ic-outline-info"
-        small
-        text-color="blue-60"
-        icon-color="blue-30"
-      >
+      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
         <!-- prettier-ignore -->
         {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum') }}
       </cy-icon-text>
@@ -76,16 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  type Ref,
-  computed,
-  nextTick,
-  provide,
-  reactive,
-  readonly,
-  ref,
-  watch,
-} from 'vue'
+import { type Ref, computed, nextTick, provide, reactive, readonly, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
@@ -95,11 +72,7 @@ import Confirm from '@/shared/setup/Confirm'
 import Notify from '@/shared/setup/Notify'
 import { useToggle } from '@/shared/setup/State'
 
-import {
-  EnchantEquipment,
-  EnchantEquipmentTypes,
-  EnchantStat,
-} from '@/lib/Enchant/Enchant'
+import { EnchantEquipment, EnchantEquipmentTypes, EnchantStat } from '@/lib/Enchant/Enchant'
 import {
   type AutoFindNegaitveStatsResult,
   EnchantDoll,
@@ -116,11 +89,7 @@ import EnchantDollStepResult from './enchant-doll-step-result.vue'
 
 import { type EnchantStatOptionBase } from '../EnchantSimulator/setup'
 import { EnchantDollInjectionKey } from './injection-keys'
-import {
-  AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT,
-  SelectItemModes,
-  StepIds,
-} from './setup'
+import { AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT, SelectItemModes, StepIds } from './setup'
 
 defineOptions({
   name: 'EnchantDollView',
@@ -141,8 +110,7 @@ AutoSave({
 const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
 const currentStep = ref(StepIds.Equipment)
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
-const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> =
-  ref(null)
+const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> = ref(null)
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
 
 const equipmentState = reactive({
@@ -195,9 +163,7 @@ const toItem = (stat: EnchantStat) => ({
 
 const selectedItems = computed(() => {
   const posItems = doll.value.positiveStats.map(toItem)
-  const negItems = negativeStatsState.auto
-    ? []
-    : negativeStatsState.manually.map(toItem)
+  const negItems = negativeStatsState.auto ? [] : negativeStatsState.manually.map(toItem)
   return [...posItems, ...negItems] as EnchantStatOptionBase[]
 })
 
@@ -218,17 +184,13 @@ const autoFindNegaitveStats = async (
   setTimeout(() => {
     try {
       if (originalPotentialUnknow) {
-        autoNegativeStatsResult.value = doll.value.autoFindNegaitveStats(
-          manuallyStats,
-          100
-        )
+        autoNegativeStatsResult.value = doll.value.autoFindNegaitveStats(manuallyStats, 100)
         // if (this.autoNegativeStatsData.realSuccessRate >= 100) {
         //   this.autoFindPotentialMinimumEquipment();
         //   this.autoNegativeStatsData = doll.value.autoFindNegaitveStats(manuallyStats);
         // }
       } else {
-        autoNegativeStatsResult.value =
-          doll.value.autoFindNegaitveStats(manuallyStats)
+        autoNegativeStatsResult.value = doll.value.autoFindNegaitveStats(manuallyStats)
       }
     } catch (err) {
       console.warn('[enchant-doll] unknown error when auto find negative stats')
@@ -306,9 +268,7 @@ const nextStep = async () => {
     const physicals = ['atk', 'physical_pierce']
     const magic = ['matk', 'magic_pierce']
     let current = EnchantDollBaseTypes.None
-    if (
-      doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))
-    ) {
+    if (doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))) {
       current = EnchantDollBaseTypes.Physical
     }
     if (doll.value.positiveStats.find(stat => magic.includes(stat.baseId))) {
@@ -332,9 +292,7 @@ const nextStep = async () => {
         await nextTick()
         currentStep.value += 1
       } catch (err) {
-        console.warn(
-          '[enchant-doll] some error when auto find potential minimum'
-        )
+        console.warn('[enchant-doll] some error when auto find potential minimum')
         console.log(err)
         notify(t('enchant-doll.tips.unknown-error-when-calc'))
       } finally {
@@ -364,9 +322,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       doll.value.removePositiveStat(findPosStat)
       return
     }
-    const value = positiveStatsState.autoFill
-      ? item.origin.getLimit(item.type).max
-      : 1
+    const value = positiveStatsState.autoFill ? item.origin.getLimit(item.type).max : 1
     if (!doll.value.appendPositiveStat(item.origin, item.type, value)) {
       notify(t('enchant-doll.tips.stats-reached-upper-limit'))
     }
@@ -388,11 +344,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       return
     }
     negativeStatsState.manually.push(
-      new EnchantStat(
-        item.origin,
-        item.type,
-        item.origin.getLimit(item.type).min
-      )
+      new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type).min)
     )
   }
 }

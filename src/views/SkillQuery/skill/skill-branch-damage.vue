@@ -29,15 +29,10 @@
         <SkillBranchExtraColumn
           v-if="container.has('dual_element')"
           icon="bx-bx-circle"
-          :title="
-            t('skill-query.branch.global-suffix.extra.condition-default-value')
-          "
+          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
         >
           <div class="flex items-center py-0.5">
-            <GlossaryTagPopover
-              class="mr-2"
-              :name="t('skill-query.branch.dual-element-title')"
-            />
+            <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
               {{ container.get('dual_element') }}
             </div>
@@ -50,10 +45,7 @@
           :title="sufContainer.get('condition')"
         >
           <div class="flex items-center py-0.5">
-            <GlossaryTagPopover
-              class="mr-2"
-              :name="t('skill-query.branch.dual-element-title')"
-            />
+            <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
               {{ sufContainer.get('dual_element') }}
             </div>
@@ -64,20 +56,12 @@
           icon="mdi:creation"
           :title="t('skill-query.branch.ailment-title')"
         >
-          <i18n-t
-            keypath="skill-query.branch.damage.ailment-caption"
-            scope="global"
-          >
+          <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
-              <SkillBranchPropValue
-                :result="container.result('ailment_chance')"
-              />
+              <SkillBranchPropValue :result="container.result('ailment_chance')" />
             </template>
             <template #name>
-              <GlossaryTagPopover
-                class="mr-2"
-                :name="container.get('ailment_name')"
-              />
+              <GlossaryTagPopover class="mr-2" :name="container.get('ailment_name')" />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -87,20 +71,12 @@
           icon="mdi:creation"
           :title="sufContainer.get('condition')"
         >
-          <i18n-t
-            keypath="skill-query.branch.damage.ailment-caption"
-            scope="global"
-          >
+          <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
-              <SkillBranchPropValue
-                :result="sufContainer.result('ailment_chance')"
-              />
+              <SkillBranchPropValue :result="sufContainer.result('ailment_chance')" />
             </template>
             <template #name>
-              <GlossaryTagPopover
-                class="mr-2"
-                :name="sufContainer.get('ailment_name')"
-              />
+              <GlossaryTagPopover class="mr-2" :name="sufContainer.get('ailment_name')" />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -116,10 +92,7 @@ import { useI18n } from 'vue-i18n'
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
@@ -153,9 +126,7 @@ const { t } = useI18n()
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  DamageHandler(props.computing, branchItem.value)
-)
+const container = computed(() => DamageHandler(props.computing, branchItem.value))
 
 const mainTitie = computed(() => {
   let res = container.value.get('damage_type')
@@ -192,10 +163,7 @@ const subContents = computed(() => {
       icon: 'bi-circle-square',
     })
   }
-  if (
-    container.value.getValue('duration') !== '0' &&
-    container.value.getValue('cycle') !== '0'
-  ) {
+  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
     result.push({
       key: 'duration|cycle',
       icon: 'ic-round-timer',
@@ -249,10 +217,7 @@ const subContents = computed(() => {
       type: getBoolColorType(branchItem.value.prop('combo_rate')),
     }
   )
-  if (
-    container.value.has('frequency') &&
-    (toInt(container.value.getValue('frequency')) ?? 0) > 1
-  ) {
+  if (container.value.has('frequency') && (toInt(container.value.getValue('frequency')) ?? 0) > 1) {
     result.push(
       {
         key: 'judgment',

@@ -29,20 +29,13 @@ class StatRestriction extends Stat {
     if (this.restriction !== null) {
       const rst = this.restriction
       const rstList = [rst.main, rst.sub, rst.body, rst.other]
-      rtext = rstList
-        .map(item => (typeof item === 'string' ? item : 'none'))
-        .join('+')
+      rtext = rstList.map(item => (typeof item === 'string' ? item : 'none')).join('+')
     }
     this.statId = `${this.statId}|${rtext}`
   }
 
   override clone() {
-    return new StatRestriction(
-      this.base,
-      this.type,
-      this.value,
-      this.restriction
-    )
+    return new StatRestriction(this.base, this.type, this.value, this.restriction)
   }
 
   clonePured() {
@@ -91,15 +84,10 @@ class StatRestriction extends Stat {
           showData.push((item.key === 'main' ? '' : item.key + '.') + type)
         })
     }
-    return showData.map(item =>
-      Grimoire.i18n.t('common.Equipment.stat-restriction.' + item)
-    )
+    return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
   }
 
-  static from(
-    stat: Stat,
-    restriction?: EquipmentRestrictions | null
-  ): StatRestriction {
+  static from(stat: Stat, restriction?: EquipmentRestrictions | null): StatRestriction {
     return new StatRestriction(stat.base, stat.type, stat.value, restriction)
   }
 
@@ -140,10 +128,7 @@ class StatRestriction extends Stat {
         : restrictionMapping[_restriction]
       if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
-          CommonLogger.start(
-            'StatRestriction.fromOrigin',
-            'unknown restriction of stat'
-          )
+          CommonLogger.start('StatRestriction.fromOrigin', 'unknown restriction of stat')
             .log(item)
             .end()
         }
@@ -197,9 +182,7 @@ class StatRestriction extends Stat {
       return StatRestriction.from(stat, restriction)
     }
 
-    console.warn(
-      '[CharacterEquipment.load] can not find stat which id: ' + data.id
-    )
+    console.warn('[CharacterEquipment.load] can not find stat which id: ' + data.id)
     return null
   }
 }

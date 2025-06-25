@@ -92,18 +92,7 @@ const color = {
   white: '#ffffff',
   black: '#171717',
 }
-const colorOrders = [
-  '50',
-  '100',
-  '200',
-  '300',
-  '400',
-  '500',
-  '600',
-  '700',
-  '800',
-  '900',
-]
+const colorOrders = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
 
 /**
  * @type Record<string, string>
@@ -182,10 +171,7 @@ async function start() {
     'color-dark-rgb': toDesignTokenData(toRgbData(dark)),
   }
 
-  await fs.writeFile(
-    path.join(__dirname, 'color.json'),
-    JSON.stringify(data, null, 2)
-  )
+  await fs.writeFile(path.join(__dirname, 'color.json'), JSON.stringify(data, null, 2))
   console.log('done.')
 }
 

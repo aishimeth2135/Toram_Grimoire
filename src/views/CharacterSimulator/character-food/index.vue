@@ -26,9 +26,7 @@ const foodStore = useCharacterFoodStore()
 
 const { currentFoodBuild: selectedBuild, foodBuilds } = storeToRefs(foodStore)
 
-const currentFoodBuild = computed(
-  () => characterStore.currentCharacterState.foodBuild
-)
+const currentFoodBuild = computed(() => characterStore.currentCharacterState.foodBuild)
 
 const copySelectedFoodBuild = () => {
   if (!selectedBuild.value) {
@@ -59,11 +57,7 @@ const removeSelectedFoodBuild = () => {
           text: t('global.recovery'),
           click: () => {
             foodStore.appendFoodBuild(from)
-            notify(
-              t(
-                'character-simulator.food-build.restore-food-build-success-tips'
-              )
-            )
+            notify(t('character-simulator.food-build.restore-food-build-success-tips'))
           },
           removeMessageAfterClick: true,
         },
@@ -106,12 +100,7 @@ const addFoodBuild = () => {
     <template #content>
       <div>
         <div class="mt-1 pl-2">
-          <cy-icon-text
-            icon="ic-outline-info"
-            text-color="primary-50"
-            small
-            class="mr-2"
-          >
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mr-2">
             {{ t('character-simulator.food-build.introduction.0') }}
           </cy-icon-text>
           <cy-icon-text icon="ic-outline-info" text-color="primary-50" small>

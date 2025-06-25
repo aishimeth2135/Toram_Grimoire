@@ -19,9 +19,7 @@ export default function PageControl<Item = unknown>({
       },
     })
   })()
-  const currentItems = computed(() =>
-    items.value.slice((page.value - 1) * step, page.value * step)
-  )
+  const currentItems = computed(() => items.value.slice((page.value - 1) * step, page.value * step))
 
   watch(items, () => {
     page.value = 1

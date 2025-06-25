@@ -6,20 +6,10 @@
         :data="homeRouteData"
         :is-main="isMain"
       />
-      <AppRouterLink
-        v-for="data in viewButtons"
-        :key="data.title"
-        :data="data"
-        :is-main="isMain"
-      />
+      <AppRouterLink v-for="data in viewButtons" :key="data.title" :data="data" :is-main="isMain" />
     </div>
     <div v-if="routeNotHome(currentRoute.name!)" class="mt-0.5 pt-0.5">
-      <AppRouterLink
-        v-for="data in routeLinks"
-        :key="data.title"
-        :data="data"
-        :is-main="isMain"
-      />
+      <AppRouterLink v-for="data in routeLinks" :key="data.title" :data="data" :is-main="isMain" />
       <div
         class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
         @click.stop="toggleLinksMenu"
@@ -83,9 +73,7 @@ const routeLinks = computed(() => {
       }
       const { leftMenuViewButtons } = currentRoute.value.meta
       if (leftMenuViewButtons) {
-        return leftMenuViewButtons.every(
-          viewButton => item.pathName !== viewButton.pathName
-        )
+        return leftMenuViewButtons.every(viewButton => item.pathName !== viewButton.pathName)
       }
       return true
     })

@@ -2,9 +2,7 @@ import { type Ref, type WritableComputedRef, computed, ref } from 'vue'
 
 import { type CharacterBindingBuild } from '@/lib/Character/Character'
 
-export function useCharacterBindingBuild<
-  Build extends CharacterBindingBuild,
->() {
+export function useCharacterBindingBuild<Build extends CharacterBindingBuild>() {
   const builds: Ref<Build[]> = ref([])
   const currentBuildIndex = ref(-1)
 

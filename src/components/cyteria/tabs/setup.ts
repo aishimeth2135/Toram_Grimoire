@@ -1,10 +1,6 @@
 import { type Ref, type StyleValue, computed, onUnmounted, watch } from 'vue'
 
-import {
-  type ContextId,
-  getContextIdFromElement,
-  useContext,
-} from '@/shared/setup/ContextState'
+import { type ContextId, getContextIdFromElement, useContext } from '@/shared/setup/ContextState'
 import { defineState } from '@/shared/setup/State'
 import { nextFrame } from '@/shared/utils/dom'
 import { toInt } from '@/shared/utils/number'
@@ -32,8 +28,7 @@ const useTabsContextState = defineState(() => {
 })
 
 export function useTabsContext(componentContext: TabsComponentContext) {
-  const { allocTabsContext, deallocTabsContext, TABS_ID_ATTR_NAME } =
-    useTabsContextState()
+  const { allocTabsContext, deallocTabsContext, TABS_ID_ATTR_NAME } = useTabsContextState()
 
   const { id, context } = allocTabsContext(componentContext)
 
@@ -73,8 +68,7 @@ const useTabContextState = defineState(() => {
 })
 
 export function useTabContext(componentContext: TabComponentContext) {
-  const { allocTabContext, deallocTabContext, TAB_ID_ATTR_NAME } =
-    useTabContextState()
+  const { allocTabContext, deallocTabContext, TAB_ID_ATTR_NAME } = useTabContextState()
 
   const { id, context: tabContext } = allocTabContext(componentContext)
   const { sourceEl, tabValue } = tabContext
@@ -83,8 +77,7 @@ export function useTabContext(componentContext: TabComponentContext) {
     deallocTabContext(id)
   })
 
-  const { getTabsContext: _getTabsContext, TABS_ID_ATTR_NAME } =
-    useTabsContextState()
+  const { getTabsContext: _getTabsContext, TABS_ID_ATTR_NAME } = useTabsContextState()
 
   const getTabsContext = (): TabsComponentContext | null => {
     const tabsEl = sourceEl.value?.closest('.cy-tabs')
@@ -153,9 +146,7 @@ export const useTabsSlider = defineState(() => {
   const { TAB_ID_ATTR_NAME, getTabContext } = useTabContextState()
 
   const findTab = (tabsEl: HTMLElement, value: any) => {
-    const tabEls = Array.from(
-      tabsEl.querySelectorAll(`div[${TAB_ID_ATTR_NAME}]`)
-    )
+    const tabEls = Array.from(tabsEl.querySelectorAll(`div[${TAB_ID_ATTR_NAME}]`))
     const el =
       tabEls.find(tabEl => {
         const tabId = getContextIdFromElement(tabEl, TAB_ID_ATTR_NAME)
@@ -188,9 +179,7 @@ export const useTabsSlider = defineState(() => {
     const nextStyle = {
       [scaleAttr]: `${toRect[scaleAttr]}px`,
       [dirAttr]: `${toRect[dirAttr] - tabsRect[dirAttr]}px`,
-      [sliderDirAttr]: `calc(${
-        tabsRect[sliderDirAttr] - toRect[sliderDirAttr]
-      }px - 0.125rem)`,
+      [sliderDirAttr]: `calc(${tabsRect[sliderDirAttr] - toRect[sliderDirAttr]}px - 0.125rem)`,
       [rscaleAttr]: '0.25rem',
       'transition-duration': `${duration}ms`,
     }
@@ -245,12 +234,7 @@ export const useTabsSlider = defineState(() => {
       if (!tabEl) {
         return
       }
-      const { nextStyle } = getSliderNextStyle(
-        tabsEl.value,
-        isHorizontal.value,
-        null,
-        tabEl
-      )
+      const { nextStyle } = getSliderNextStyle(tabsEl.value, isHorizontal.value, null, tabEl)
       sliderStyle.value = nextStyle
     }
 

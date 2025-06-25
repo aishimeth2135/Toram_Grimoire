@@ -37,9 +37,7 @@ class BagPotionsCategory {
   }
 
   appendObtainCategory(id: string, name: string): BagPotionsObtainCategory {
-    const obtainCategory = markRaw(
-      new BagPotionsObtainCategory(this, `${this.id}-${id}`, name)
-    )
+    const obtainCategory = markRaw(new BagPotionsObtainCategory(this, `${this.id}-${id}`, name))
     this.obtainCategorys.push(obtainCategory)
     return obtainCategory
   }
@@ -59,9 +57,7 @@ class BagPotionsObtainCategory {
   }
 
   appendPotion(name: string): BagPotion {
-    const potion = markRaw(
-      new BagPotion(this, `${this.id}-${this.potions.length}`, name)
-    )
+    const potion = markRaw(new BagPotion(this, `${this.id}-${this.potions.length}`, name))
     this._parent.root.allPotions.push(potion)
     this.potions.push(potion)
     return potion

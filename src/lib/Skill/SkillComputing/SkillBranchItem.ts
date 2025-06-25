@@ -13,11 +13,7 @@ import { StatComputed, StatTypes } from '@/lib/Character/Stat'
 import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
-import type {
-  BranchGroupState,
-  SkillEffectItem,
-  SkillEffectItemBase,
-} from './SkillEffectItem'
+import type { BranchGroupState, SkillEffectItem, SkillEffectItemBase } from './SkillEffectItem'
 
 type SkillBranchItemOverwriteRecord<T> = {
   overwrite: T[]
@@ -29,9 +25,8 @@ type SkillBranchItemOverwriteRecords = {
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>
 }
 
-abstract class SkillBranchItemBase<
-  Parent extends SkillEffectItemBase = SkillEffectItemBase,
-> implements InstanceWithId
+abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase>
+  implements InstanceWithId
 {
   private static _idGenerator = new InstanceIdGenerator()
 
@@ -84,9 +79,7 @@ abstract class SkillBranchItemBase<
     this._inherit = null
     this.name = this._name // init _inherit
 
-    this._props = new Map(
-      branch instanceof SkillBranch ? branch.props : branch.allProps
-    )
+    this._props = new Map(branch instanceof SkillBranch ? branch.props : branch.allProps)
     this.stats = branch.stats.map(stat => stat.clone())
     this.buffs = null
 
@@ -183,12 +176,8 @@ abstract class SkillBranchItemBase<
     this.record.stats.overwrite = record.stats.overwrite.map(
       item => item.slice() as [string, StatTypes]
     )
-    this.record.stats.append = record.stats.append.map(
-      item => item.slice() as [string, StatTypes]
-    )
-    this.record.stats.remove = record.stats.remove.map(
-      item => item.slice() as [string, StatTypes]
-    )
+    this.record.stats.append = record.stats.append.map(item => item.slice() as [string, StatTypes])
+    this.record.stats.remove = record.stats.remove.map(item => item.slice() as [string, StatTypes])
   }
 
   setHistoryRecord(record: SkillBranchItemOverwriteRecords) {
@@ -219,13 +208,10 @@ class SkillBranchItem<
     this.suffixBranches = []
     this.emptySuffixBranches = []
 
-    this.stackId =
-      this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 
     this.linkedStackIds =
-      this.stackId !== null
-        ? []
-        : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
+      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
 
     this.groupState = reactive({
       size: 0,
@@ -283,9 +269,7 @@ class SkillBranchItem<
     parent = (parent ?? this.parent) as TargetParent
     const clone = new SkillBranchItem(parent, this)
 
-    clone.suffixBranches.push(
-      ...this.suffixBranches.map(suf => suf.clone(parent))
-    )
+    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
 
     return clone
   }
@@ -299,11 +283,7 @@ class SkillBranchItemSuffix<
 > extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 
-  constructor(
-    parent: Parent,
-    branch: SkillBranchItemBase,
-    mainBranch: SkillBranchItem
-  ) {
+  constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
     super(parent, branch)
 
     this.mainBranch = mainBranch

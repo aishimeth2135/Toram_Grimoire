@@ -7,12 +7,7 @@
         </div>
         <div v-for="(bch, idx) in eft.branches" :key="idx">
           <code class="text-violet-60">
-            {{
-              `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(
-                /\s/g,
-                '_'
-              )}`
-            }}
+            {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(/\s/g, '_')}` }}
           </code>
           <div class="mt-1 space-y-1 pl-2">
             <div>
@@ -42,12 +37,7 @@
           <div class="mt-2">
             <div v-for="(bch, idx) in history.branches" :key="idx">
               <code class="text-violet-60">
-                {{
-                  `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(
-                    /\s/g,
-                    '_'
-                  )}`
-                }}
+                {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name.replace(/\s/g, '_')}` }}
               </code>
               <div class="mt-1 space-y-1 pl-2">
                 <div>

@@ -29,8 +29,6 @@ export function checkLoadedId(
   id: number | null
 ) {
   return (
-    instance.loadedId !== null &&
-    id !== null &&
-    getLoadedId(loadCategory, id) === instance.loadedId
+    instance.loadedId !== null && id !== null && getLoadedId(loadCategory, id) === instance.loadedId
   )
 }

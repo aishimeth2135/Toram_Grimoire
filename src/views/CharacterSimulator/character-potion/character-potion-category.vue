@@ -1,8 +1,6 @@
 <template>
   <CardRowsWrapper>
-    <div
-      class="border-b border-primary-20 bg-white px-3 py-0.5 text-sm text-primary-30"
-    >
+    <div class="border-b border-primary-20 bg-white px-3 py-0.5 text-sm text-primary-30">
       {{ category.base.name }}
     </div>
     <CardRows>

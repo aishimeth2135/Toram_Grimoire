@@ -12,11 +12,7 @@
         </span>
         <cy-icon
           v-if="sub"
-          :icon="
-            detailVisible
-              ? 'ic:round-keyboard-arrow-down'
-              : 'ic:round-keyboard-arrow-up'
-          "
+          :icon="detailVisible ? 'ic:round-keyboard-arrow-down' : 'ic:round-keyboard-arrow-up'"
           class="ml-4"
         />
         <cy-icon
@@ -36,12 +32,7 @@
       v-if="includedTags.length > 0"
       class="divide divide-y-1 divide-primary-10 border-t-1 border-primary-20"
     >
-      <GlossaryTagContent
-        v-for="tag in includedTags"
-        :key="tag.name"
-        :tag="tag"
-        sub
-      />
+      <GlossaryTagContent v-for="tag in includedTags" :key="tag.name" :tag="tag" sub />
     </div>
   </div>
 </template>
@@ -66,11 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const detailVisible = ref(false)
 
-const categoryRow = computed(() =>
-  props.tag.rows.find(row => row.type === 'category')
-)
+const categoryRow = computed(() => props.tag.rows.find(row => row.type === 'category'))
 
-const includedTags = computed(() =>
-  props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)
-)
+const includedTags = computed(() => (props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)))
 </script>

@@ -1,14 +1,7 @@
 <template>
   <div class="flex flex-wrap space-x-3">
-    <div
-      v-for="container in statContainers"
-      :key="container.stat.statId"
-      class="text-primary-30"
-    >
-      <SkillBranchPropValue
-        :result="container"
-        :display-result="getResultDisplay(container)"
-      />
+    <div v-for="container in statContainers" :key="container.stat.statId" class="text-primary-30">
+      <SkillBranchPropValue :result="container" :display-result="getResultDisplay(container)" />
     </div>
   </div>
 </template>

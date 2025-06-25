@@ -3,11 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import {
-  PrepareLocaleInit,
-  ViewInit,
-  ViewInitSlient,
-} from '@/shared/services/ViewInit'
+import { PrepareLocaleInit, ViewInit, ViewInitSlient } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 

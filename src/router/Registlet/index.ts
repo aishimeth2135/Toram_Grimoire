@@ -9,8 +9,7 @@ import ViewWrapper from './view-wrapper.vue'
 
 import { AppRouteNames } from '../enums'
 
-const RegistletQueryView = () =>
-  import('@/views/Registlet/RegistletQuery/index.vue')
+const RegistletQueryView = () => import('@/views/Registlet/RegistletQuery/index.vue')
 
 export default {
   name: AppRouteNames.Registlet,

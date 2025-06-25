@@ -77,10 +77,7 @@ class EnchantDollCategory {
     num = num === undefined ? this.stats.length : num
     return this.stats
       .slice(0, num)
-      .reduce(
-        (cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0),
-        0
-      )
+      .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0), 0)
   }
 }
 

@@ -1,8 +1,5 @@
 <template>
-  <CardRow
-    class="relative py-2 pl-2 pr-4"
-    :class="item.enabled ? 'opacity-100' : 'opacity-60'"
-  >
+  <CardRow class="relative py-2 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
@@ -32,10 +29,7 @@
       </div>
     </div>
     <div v-if="item.enabled && detailVisible" class="p-2 pl-10">
-      <div
-        v-if="!!(item.base.link instanceof StatBase)"
-        class="flex items-center"
-      >
+      <div v-if="!!(item.base.link instanceof StatBase)" class="flex items-center">
         <div>{{ item.base.link.text }}</div>
         <div>+</div>
         <div class="ml-2 border-x border-primary-20 px-2 text-primary-60">
@@ -45,10 +39,7 @@
       <template v-else>
         <template v-for="row in item.base.rows" :key="row.type + row.value">
           <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
-          <div
-            v-else-if="row.type === 'remark'"
-            class="text-sm text-primary-40"
-          >
+          <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
             {{ row.value }}
           </div>
         </template>
@@ -78,9 +69,7 @@ withDefaults(defineProps<Props>(), {
 const { t } = useI18n()
 
 const handleValue = (str: string) =>
-  str
-    .replace(/Lv/g, t('registlet-query.detail.registlet-level'))
-    .replace(/\*/g, '×')
+  str.replace(/Lv/g, t('registlet-query.detail.registlet-level')).replace(/\*/g, '×')
 
 const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

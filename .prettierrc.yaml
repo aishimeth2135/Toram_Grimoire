@@ -9,7 +9,6 @@ bracketSameLine: false
 plugins:
   - '@trivago/prettier-plugin-sort-imports'
   - prettier-plugin-tailwindcss
-pluginSearchDirs: false
 importOrder:
   - <THIRD_PARTY_MODULES>
   - ^@/stores/.+$

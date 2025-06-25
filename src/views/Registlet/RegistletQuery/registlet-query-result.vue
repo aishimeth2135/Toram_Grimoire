@@ -4,20 +4,12 @@
     <CardRowsWrapper class="mx-1">
       <div class="overflow-x-auto">
         <CardRows class="min-w-min">
-          <RegistletQueryResultItem
-            v-for="item in currentItems"
-            :key="item.id"
-            :item="item"
-          />
+          <RegistletQueryResultItem v-for="item in currentItems" :key="item.id" :item="item" />
         </CardRows>
       </div>
     </CardRowsWrapper>
     <div class="mt-3">
-      <cy-pagination
-        v-model:value="page"
-        :max-page="maxPage"
-        @changed="pageChanged"
-      />
+      <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
   </div>
 </template>

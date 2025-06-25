@@ -57,10 +57,7 @@ function createLinearGradient(
   stops: Attrs[],
   attr: Attrs = {}
 ) {
-  const lg = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'linearGradient'
-  )
+  const lg = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient')
   attr = Object.assign(
     {
       id,

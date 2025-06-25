@@ -1,27 +1,16 @@
 <template>
   <div>
     <template v-if="comparedStatsDatas.length != 0">
-      <div
-        v-for="data in comparedStatsDatas"
-        :key="data.id"
-        class="flex items-center"
-      >
+      <div v-for="data in comparedStatsDatas" :key="data.id" class="flex items-center">
         <template v-if="!data.isBoolStat">
           <cy-icon-text small>
             {{ data.text }}
           </cy-icon-text>
-          <span
-            class="ml-1 text-sm text-primary-50"
-            :class="{ 'text-gray': data.negative }"
-          >
+          <span class="ml-1 text-sm text-primary-50" :class="{ 'text-gray': data.negative }">
             {{ data.displayValue }}
           </span>
         </template>
-        <cy-icon-text
-          v-else
-          small
-          :text-color="data.negative ? 'gray-60' : 'primary-50'"
-        >
+        <cy-icon-text v-else small :text-color="data.negative ? 'gray-60' : 'primary-50'">
           {{ data.text }}
         </cy-icon-text>
       </div>
@@ -54,18 +43,13 @@ const comparedStatsDatas = computed(() => {
   const before = props.before.map(result => result.stats).flat(),
     after = props.after.map(result => result.stats).flat()
 
-  const handle = (
-    stat: CharacterStatResultWithId,
-    value: number,
-    hidden: boolean
-  ) => {
+  const handle = (stat: CharacterStatResultWithId, value: number, hidden: boolean) => {
     const isBoolStat = stat.origin.isBoolStat
     return {
       id: stat.id,
       text: isBoolStat ? (value >= 0 ? '+' : '-') + stat.name : stat.name,
       value,
-      displayValue:
-        (value >= 0 ? '+' : '') + stat.origin.getDisplayValue(value),
+      displayValue: (value >= 0 ? '+' : '') + stat.origin.getDisplayValue(value),
       negative: value < 0,
       isBoolStat,
       hidden,
@@ -86,9 +70,7 @@ const comparedStatsDatas = computed(() => {
   })
 
   res.push(
-    ...before.map(beforeStat =>
-      handle(beforeStat, -1 * beforeStat.value, beforeStat.hidden)
-    )
+    ...before.map(beforeStat => handle(beforeStat, -1 * beforeStat.value, beforeStat.hidden))
   )
 
   return res.filter(item => !item.hidden).filter(item => item.value !== 0)

@@ -71,9 +71,7 @@ export function prepareSetupCharacter() {
     )
 
     const skill_Conversion = computed(() => {
-      const stc = Grimoire.Skill.skillRoot.skillTreeCategorys.find(
-        _stc => _stc.id === 4
-      )
+      const stc = Grimoire.Skill.skillRoot.skillTreeCategorys.find(_stc => _stc.id === 4)
       const st = stc?.skillTrees.find(_st => _st.id === 1)
       return st?.skills.find(_skill => _skill.id === 1) ?? null
     })
@@ -94,17 +92,12 @@ export function prepareSetupCharacter() {
           EquipmentFieldTypes.MainWeapon,
           EquipmentTypes.OneHandSword
         ) &&
-        chara.checkFieldEquipmentType(
-          EquipmentFieldTypes.SubWeapon,
-          EquipmentTypes.OneHandSword
-        )
+        chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
 
       const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
       const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon)
       const bodyField = chara.fieldEquipment(EquipmentFieldTypes.BodyArmor)
-      const additionalField = chara.fieldEquipment(
-        EquipmentFieldTypes.Additional
-      )
+      const additionalField = chara.fieldEquipment(EquipmentFieldTypes.Additional)
       const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special)
       return {
         value: {
@@ -160,9 +153,7 @@ export function prepareSetupCharacter() {
                 def: 0,
                 refining: 0,
               },
-          '@special': specialField
-            ? { def: specialField.basicValue }
-            : { def: 0 },
+          '@special': specialField ? { def: specialField.basicValue } : { def: 0 },
           '@shield': chara.checkFieldEquipmentType(
             EquipmentFieldTypes.SubWeapon,
             EquipmentTypes.Shield
@@ -178,7 +169,7 @@ export function prepareSetupCharacter() {
           '@element': equipmentElement.value,
           '@skill': {
             Conversion: skill_Conversion.value
-              ? skillBuild.value?.getSkillLevel(skill_Conversion.value) ?? 0
+              ? (skillBuild.value?.getSkillLevel(skill_Conversion.value) ?? 0)
               : 0,
           },
         },
@@ -193,10 +184,7 @@ export function prepareSetupCharacter() {
             EquipmentFieldTypes.MainWeapon,
             EquipmentTypes.TwoHandSword
           ),
-          '@bow': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Bow
-          ),
+          '@bow': chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow),
           '@bowgun': chara.checkFieldEquipmentType(
             EquipmentFieldTypes.MainWeapon,
             EquipmentTypes.Bowgun
@@ -308,10 +296,7 @@ export function prepareSetupCharacter() {
           return resultsCache.characterPureStats.value
         }
         const allStats = new Map<string, StatRecorded>(
-          basePureStatsEntries.value.map(([statId, stat]) => [
-            statId,
-            stat.clone(),
-          ])
+          basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()])
         )
         if (postponeStats) {
           mergeStats(allStats, postponeStats.value)
@@ -360,9 +345,7 @@ export function prepareSetupCharacter() {
       characterPureStats: _characterPureStats,
     } = baseResults
 
-    const baseCharacterStatCategoryResultsMap = ref(
-      undefined as unknown as Map<string, number>
-    )
+    const baseCharacterStatCategoryResultsMap = ref(undefined as unknown as Map<string, number>)
     watch(
       _characterStatCategoryResults,
       newValue => {
@@ -377,9 +360,7 @@ export function prepareSetupCharacter() {
       { immediate: true }
     )
 
-    const baseCharacterPureStats = ref(
-      undefined as unknown as Map<string, number>
-    )
+    const baseCharacterPureStats = ref(undefined as unknown as Map<string, number>)
     watch(
       _characterPureStats,
       newValue => {
@@ -398,65 +379,44 @@ export function prepareSetupCharacter() {
       activeSkillResultStates: postponedActiveSkillResultStates,
       passiveSkillResultStates: postponedPassiveSkillResultStates,
       damageSkillResultStates,
-    } = setupCharacterSkills(
-      character,
-      skillBuild,
-      skillItemStates,
-      registletBuild,
-      setupOptions,
-      {
-        getCharacterStatValue: id =>
-          baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
-        getCharacterPureStatValue: id =>
-          baseCharacterPureStats.value.get(id) ?? 0,
-      }
-    )
+    } = setupCharacterSkills(character, skillBuild, skillItemStates, registletBuild, setupOptions, {
+      getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
+      getCharacterPureStatValue: id => baseCharacterPureStats.value.get(id) ?? 0,
+    })
     const finalResults = setupResults(postponedSkillPureStats, baseResults)
-    const {
-      categoryResults: characterStatCategoryResults,
-      characterPureStats,
-    } = finalResults
+    const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
-    const setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended =
-      (otherStats, skillResult) => {
-        const conditionalStats = computed(() => {
-          if (!skillResult.value.root.basicContainer) {
-            return []
+    const setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended = (
+      otherStats,
+      skillResult
+    ) => {
+      const conditionalStats = computed(() => {
+        if (!skillResult.value.root.basicContainer) {
+          return []
+        }
+        const stats: StatRecorded[] = []
+        skillConditionalStatContainers.value.forEach(statContainer => {
+          if (getSkillStatContainerValid(character.value, skillResult.value, statContainer)) {
+            const stat = statContainer.toStatRecorded(parseFloat(statContainer.value))
+            stats.push(stat)
           }
-          const stats: StatRecorded[] = []
-          skillConditionalStatContainers.value.forEach(statContainer => {
-            if (
-              getSkillStatContainerValid(
-                character.value,
-                skillResult.value,
-                statContainer
-              )
-            ) {
-              const stat = statContainer.toStatRecorded(
-                parseFloat(statContainer.value)
-              )
-              stats.push(stat)
-            }
-          })
-          const statsMap = new Map<string, StatRecorded>()
-          mergeStats(statsMap, stats)
-          return [...statsMap.values()]
         })
-        const stats = computed(() => {
-          if (
-            otherStats.value.length === 0 &&
-            conditionalStats.value.length === 0
-          ) {
-            return []
-          }
-          const allStats = new Map<string, StatRecorded>()
-          mergeStats(allStats, otherStats.value)
-          mergeStats(allStats, postponedSkillPureStats.value)
-          mergeStats(allStats, conditionalStats.value)
-          return [...allStats.values()]
-        })
-        return setupResults(stats, finalResults)
-      }
+        const statsMap = new Map<string, StatRecorded>()
+        mergeStats(statsMap, stats)
+        return [...statsMap.values()]
+      })
+      const stats = computed(() => {
+        if (otherStats.value.length === 0 && conditionalStats.value.length === 0) {
+          return []
+        }
+        const allStats = new Map<string, StatRecorded>()
+        mergeStats(allStats, otherStats.value)
+        mergeStats(allStats, postponedSkillPureStats.value)
+        mergeStats(allStats, conditionalStats.value)
+        return [...allStats.values()]
+      })
+      return setupResults(stats, finalResults)
+    }
 
     return {
       characterStatCategoryResults,

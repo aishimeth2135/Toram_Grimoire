@@ -45,9 +45,7 @@ const props = defineProps<Props>()
 
 const { t } = useI18n()
 
-const currentSkill = computed(() =>
-  Grimoire.Skill.skillRoot.findSkillByName(props.name)
-)
+const currentSkill = computed(() => Grimoire.Skill.skillRoot.findSkillByName(props.name))
 
 const skillQueryState = useSkillQueryState()
 </script>

@@ -1,15 +1,7 @@
 <template>
-  <cy-modal
-    :visible="visible"
-    :title="t('crystal-query.select-stat.title')"
-    @close="emit('close')"
-  >
+  <cy-modal :visible="visible" :title="t('crystal-query.select-stat.title')" @close="emit('close')">
     <div class="sticky top-0 mb-3">
-      <cy-title-input
-        v-model:value="searchText"
-        icon="ic:baseline-search"
-        clearable
-      />
+      <cy-title-input v-model:value="searchText" icon="ic:baseline-search" clearable />
     </div>
     <div>
       <cy-list-item
@@ -76,9 +68,7 @@ const searchText = ref('')
 
 const searchResult = computed(() => {
   const _searchText = searchText.value.toLowerCase()
-  return statOptions.filter(option =>
-    option.text.toLowerCase().includes(_searchText)
-  )
+  return statOptions.filter(option => option.text.toLowerCase().includes(_searchText))
 })
 
 const selectStat = (option: StatOptionItem) => {

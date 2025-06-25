@@ -19,9 +19,7 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 
 const valid = computed(
-  () =>
-    container.value.has('radius') ||
-    container.value.getOrigin('effective_area') === 'sector'
+  () => container.value.has('radius') || container.value.getOrigin('effective_area') === 'sector'
 )
 
 type AreaElement = {
@@ -72,9 +70,7 @@ const areaDatas = computed(() => {
 
   const skillRangeDefault = '100'
   let skillRangeOrigin: string | null = ctner.getValue('range') || null
-  skillRangeOrigin = skillRangeOrigin
-    ? parseFloat(skillRangeOrigin).toFixed(2)
-    : skillRangeDefault
+  skillRangeOrigin = skillRangeOrigin ? parseFloat(skillRangeOrigin).toFixed(2) : skillRangeDefault
   const skillRange: number = parseFloat(
     isNumberString(skillRangeOrigin) ? skillRangeOrigin : skillRangeDefault
   )
@@ -89,15 +85,11 @@ const areaDatas = computed(() => {
     const value = ctner.getValue('target_offsets')
     targetOffset = isNumberString(value) ? parseFloat(value) : 0
   }
-  const moveDistance = Math.min(
-    Math.max(targetOffset + moveDistanceFix, moveDistanceOrigin),
-    9
-  )
+  const moveDistance = Math.min(Math.max(targetOffset + moveDistanceFix, moveDistanceOrigin), 9)
 
   if (type === 'circle') {
     // character
-    let bx =
-      ctner.getOrigin('end_position') === 'self' ? padding + radius : padding
+    let bx = ctner.getOrigin('end_position') === 'self' ? padding + radius : padding
     const by = padding + radius
 
     // target
@@ -129,8 +121,7 @@ const areaDatas = computed(() => {
     }
 
     // area center
-    const ax =
-      ctner.getOrigin('end_position') === 'self' ? bx : tx + endPositionOffsets
+    const ax = ctner.getOrigin('end_position') === 'self' ? bx : tx + endPositionOffsets
     const ay = ctner.getOrigin('end_position') === 'self' ? by : ty
 
     const area: AreaElement = {
@@ -208,9 +199,7 @@ const areaDatas = computed(() => {
       animations: [],
     }
 
-    const endx = ctner.has('move_distance')
-      ? bx + moveDistance
-      : tx + endPositionOffsets
+    const endx = ctner.has('move_distance') ? bx + moveDistance : tx + endPositionOffsets
     const endy = ty
 
     area.animations!.push(
@@ -256,9 +245,7 @@ const areaDatas = computed(() => {
           radius
         )},0 0 1,${grid(ax)} ${grid(ay - radius)}L${grid(endx)} ${grid(
           endy - radius
-        )}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(
-          endy + radius
-        )}Z`,
+        )}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(endy + radius)}Z`,
         fill: pcolorl,
       },
     }

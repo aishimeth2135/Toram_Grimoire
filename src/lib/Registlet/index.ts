@@ -27,9 +27,7 @@ export default class RegistletSystem {
       new RegistletCategory<RegistletItemBaseStat>(RegistletCategoryIds.Stat)
     )
     this.specialCategory = markRaw(
-      new RegistletCategory<RegistletItemBaseSpecial>(
-        RegistletCategoryIds.Special
-      )
+      new RegistletCategory<RegistletItemBaseSpecial>(RegistletCategoryIds.Special)
     )
   }
 

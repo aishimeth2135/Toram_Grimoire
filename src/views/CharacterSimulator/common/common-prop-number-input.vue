@@ -75,15 +75,24 @@ const incValue = (value: number) => {
 </script>
 
 <template>
-  <div class="w-full pt-1 max-w-[8rem]">
+  <div class="w-full max-w-[8rem] pt-1">
     <div class="px-1.5 text-sm text-stone-60">{{ title }}</div>
-    <label class="mt-0.5 flex cursor-text border-b border-primary-20 px-1.5 py-1 duration-150"
-      :class="{ 'border-primary-70': focus }" :for="inputId">
+    <label
+      class="mt-0.5 flex cursor-text border-b border-primary-20 px-1.5 py-1 duration-150"
+      :class="{ 'border-primary-70': focus }"
+      :for="inputId"
+    >
       <div class="relative min-w-4" @click.stop>
         <div class="invisible h-6">{{ innerValue }}</div>
-        <input :id="inputId" ref="inputElement" v-model="innerValue" type="number"
-          class="absolute left-0 top-0 w-full bg-transparent text-primary-70" @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)" />
+        <input
+          :id="inputId"
+          ref="inputElement"
+          v-model="innerValue"
+          type="number"
+          class="absolute left-0 top-0 w-full bg-transparent text-primary-70"
+          @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)"
+        />
       </div>
       <div v-if="unit" class="pl-1 pr-2 text-primary-40">{{ unit }}</div>
       <div class="ml-auto flex shrink-0 items-center space-x-1">

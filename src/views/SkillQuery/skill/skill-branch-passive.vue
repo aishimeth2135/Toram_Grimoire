@@ -22,10 +22,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
@@ -42,12 +39,7 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  PassiveHandler(props.computing, branchItem.value)
-)
+const container = computed(() => PassiveHandler(props.computing, branchItem.value))
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(
-  props.computing,
-  branchItem
-)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
 </script>

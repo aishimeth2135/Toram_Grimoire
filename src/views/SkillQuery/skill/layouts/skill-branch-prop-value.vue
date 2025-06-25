@@ -1,12 +1,6 @@
 <template>
-  <span
-    v-if="!!(result instanceof SkillBranchStatResult)"
-    class="inline-flex items-center"
-  >
-    <RenderDisplayTitle
-      class="text-primary-90"
-      :title="result.statResultData.title"
-    />
+  <span v-if="!!(result instanceof SkillBranchStatResult)" class="inline-flex items-center">
+    <RenderDisplayTitle class="text-primary-90" :title="result.statResultData.title" />
     <span class="text-primary-50">{{ result.statResultData.sign }}</span>
     <span>
       <RenderResult :key="result.instanceId" />
@@ -24,16 +18,9 @@ import {
   SkillBranchStatResult,
   SkillBranchTextResult,
 } from '@/lib/Skill/SkillComputing'
-import {
-  getCommonTextParseItems,
-  handleParseText,
-} from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItems, handleParseText } from '@/lib/common/ResultContainer/parseText'
 
-import {
-  RenderContainerResult,
-  RenderPlainTextParts,
-  RenderTextParts,
-} from './setup'
+import { RenderContainerResult, RenderPlainTextParts, RenderTextParts } from './setup'
 
 interface Props {
   result: SkillBranchResultBase | null
@@ -66,9 +53,7 @@ const RenderDisplayTitle = ({
 const RenderResult = () => {
   if (props.result instanceof SkillBranchResult) {
     if (props.parseGlossaryTag) {
-      const parts = handleParseText(props.result.result, [
-        glossaryTagParseItem,
-      ]).parts
+      const parts = handleParseText(props.result.result, [glossaryTagParseItem]).parts
       return h('div', RenderPlainTextParts(parts))
     }
     return RenderContainerResult(props.result, props.displayResult)

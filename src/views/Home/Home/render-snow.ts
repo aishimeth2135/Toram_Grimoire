@@ -80,9 +80,7 @@ function startDraw(
     }
 
     if (count === 0) {
-      const newSnows = createEmptyArray(frames).map((_item, idx) =>
-        getRandomSnow(false, idx + 1)
-      )
+      const newSnows = createEmptyArray(frames).map((_item, idx) => getRandomSnow(false, idx + 1))
       snows.push(...newSnows)
       count = 30
     }

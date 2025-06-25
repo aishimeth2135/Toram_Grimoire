@@ -36,9 +36,7 @@ const buttonClick = (evt: MouseEvent) => {
     @click="buttonClick"
   >
     <ButtonIcon
-      :icon="
-        selected ? 'ic:round-check-box' : 'ic:round-check-box-outline-blank'
-      "
+      :icon="selected ? 'ic:round-check-box' : 'ic:round-check-box-outline-blank'"
       :class="iconClass"
     />
     <div v-if="$slots.default" class="ml-2.5 mr-1.5 flex">

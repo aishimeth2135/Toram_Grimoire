@@ -18,10 +18,7 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'
@@ -48,10 +45,7 @@ const subContents = computed(() => {
     key: 'frequency',
     icon: 'bi-circle-square',
   })
-  if (
-    container.value.getValue('duration') !== '0' &&
-    container.value.getValue('cycle') !== '0'
-  ) {
+  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
     result.push({
       key: 'duration|cycle',
       icon: 'ic-round-timer',
@@ -64,10 +58,7 @@ const subContents = computed(() => {
   return result
 })
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(
-  props.computing,
-  branchItem
-)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
 
 const hasArea = computed(() => container.value.getOrigin('target') === 'party')
 </script>

@@ -79,9 +79,7 @@ const onClick = () => {
   }
 
   if (popper.value && innerShowTriggers.value.includes('click')) {
-    popper.value.togglePopper(
-      innerShowTriggers.value.includes('hover') ? true : undefined
-    )
+    popper.value.togglePopper(innerShowTriggers.value.includes('hover') ? true : undefined)
     fixed.value = true
   }
 }
@@ -90,11 +88,7 @@ const onHover = () => {
     return
   }
 
-  if (
-    popper.value &&
-    innerShowTriggers.value.includes('hover') &&
-    !fixed.value
-  ) {
+  if (popper.value && innerShowTriggers.value.includes('hover') && !fixed.value) {
     popper.value.togglePopper()
   }
 }

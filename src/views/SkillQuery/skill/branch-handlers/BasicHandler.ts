@@ -1,7 +1,4 @@
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
@@ -47,14 +44,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(
   } else {
     valuePropsMap.set('range', 'm')
   }
-  const titles = [
-    'mp_cost',
-    'range',
-    'skill_type',
-    'in_combo',
-    'action_time',
-    'casting_time',
-  ]
+  const titles = ['mp_cost', 'range', 'skill_type', 'in_combo', 'action_time', 'casting_time']
 
   return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,

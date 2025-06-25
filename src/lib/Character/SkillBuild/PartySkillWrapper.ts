@@ -30,9 +30,7 @@ class PartySkill {
     skill.effects.forEach(effect => {
       effect.branches.forEach(branch => {
         if (checkSkillBranchForParty(branch)) {
-          this.partySkillBranches.push(
-            new PartySkillBranch(getPartySkillBranchId(branch), branch)
-          )
+          this.partySkillBranches.push(new PartySkillBranch(getPartySkillBranchId(branch), branch))
         }
       })
     })
@@ -72,9 +70,7 @@ export class PartySkillBuild {
   }
 
   removeSkill(partySkill: PartySkill): void {
-    const idx = this.partySkills.findIndex(
-      skill => skill.skillId === partySkill.skillId
-    )
+    const idx = this.partySkills.findIndex(skill => skill.skillId === partySkill.skillId)
     if (idx > -1) {
       this.partySkills.splice(idx, 1)
       this.selectedIds.delete(partySkill.skillId)
@@ -90,14 +86,12 @@ export class PartySkillBuild {
   }
 
   save(): PartySkillBuildSaveData {
-    const skills = Array.from(this.selectedIds.entries()).map(
-      ([skillId, selecteds]) => {
-        return {
-          id: skillId,
-          selecteds,
-        } as SelectedPartySkillData
-      }
-    )
+    const skills = Array.from(this.selectedIds.entries()).map(([skillId, selecteds]) => {
+      return {
+        id: skillId,
+        selecteds,
+      } as SelectedPartySkillData
+    })
     return {
       skills,
     }

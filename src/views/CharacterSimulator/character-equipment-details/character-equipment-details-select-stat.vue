@@ -55,23 +55,20 @@ const statsSearchResult = computed(() => {
   return statOptions.filter(option => fuzzySearch(text, option.text))
 })
 
-const currentEquipmentStatOptions: ComputedRef<Map<string, StatRestriction>> =
-  computed(() => {
-    if (!props.equipment) {
-      return new Map()
+const currentEquipmentStatOptions: ComputedRef<Map<string, StatRestriction>> = computed(() => {
+  if (!props.equipment) {
+    return new Map()
+  }
+  const stats = props.equipment.stats
+  const statsMap = new Map<string, StatRestriction>()
+  statOptions.forEach(option => {
+    const equipmentStat = stats.find(stat => option.origin.baseEqual(stat, option.type))
+    if (equipmentStat) {
+      statsMap.set(option.id, equipmentStat)
     }
-    const stats = props.equipment.stats
-    const statsMap = new Map<string, StatRestriction>()
-    statOptions.forEach(option => {
-      const equipmentStat = stats.find(stat =>
-        option.origin.baseEqual(stat, option.type)
-      )
-      if (equipmentStat) {
-        statsMap.set(option.id, equipmentStat)
-      }
-    })
-    return statsMap
   })
+  return statsMap
+})
 
 const currentEquipmentStatOptionIds = computed(() =>
   Array.from(currentEquipmentStatOptions.value.keys())
@@ -81,9 +78,7 @@ const { t } = useI18n()
 
 const toggleStat = (option: StatOption) => {
   if (currentEquipmentStatOptions.value.has(option.id)) {
-    props.equipment.removeStat(
-      currentEquipmentStatOptions.value.get(option.id)!
-    )
+    props.equipment.removeStat(currentEquipmentStatOptions.value.get(option.id)!)
   } else {
     const newStat = new StatRestriction(option.origin, option.type, 0)
     // eslint-disable-next-line vue/no-mutating-props
@@ -95,11 +90,7 @@ const toggleStat = (option: StatOption) => {
 <template>
   <CommonSearchableItems
     v-model:search-text="searchText"
-    :placeholder="
-      t(
-        'character-simulator.equipment-basic-editor.edit-stats.search-placeholder'
-      )
-    "
+    :placeholder="t('character-simulator.equipment-basic-editor.edit-stats.search-placeholder')"
     :items="statsSearchResult"
     :selected-item-ids="currentEquipmentStatOptionIds"
     @select-item="toggleStat"

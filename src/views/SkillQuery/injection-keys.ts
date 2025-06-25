@@ -17,14 +17,14 @@ interface ComputingContainerInjection {
   getSkillRegistletItemsState: (sklll: Skill) => SkillRegistletItemState[]
 }
 
-const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> =
-  Symbol('skill-computing-container')
+const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> = Symbol(
+  'skill-computing-container'
+)
 
 interface SkillEffectInjection {
   currentEffectItem: Ref<SkillEffectItem | null>
 }
-const SkillEffectInjectionKey: InjectionKey<SkillEffectInjection> =
-  Symbol('skill-effect')
+const SkillEffectInjectionKey: InjectionKey<SkillEffectInjection> = Symbol('skill-effect')
 
 export { ComputingContainerInjectionKey, SkillEffectInjectionKey }
 

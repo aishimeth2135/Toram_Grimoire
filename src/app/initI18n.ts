@@ -8,10 +8,7 @@ export default function (app: App<Element>) {
   languageStore.initLocale()
   const primaryLocale = languageStore.primaryLocale
   const fallbackLocales = [languageStore.fallbackLocale]
-  if (
-    primaryLocale !== DEFAULT_LOCALE &&
-    fallbackLocales[0] !== DEFAULT_LOCALE
-  ) {
+  if (primaryLocale !== DEFAULT_LOCALE && fallbackLocales[0] !== DEFAULT_LOCALE) {
     fallbackLocales.push(DEFAULT_LOCALE)
   }
   const i18n = createI18n({

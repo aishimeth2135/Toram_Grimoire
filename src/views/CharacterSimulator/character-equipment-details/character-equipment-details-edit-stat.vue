@@ -6,9 +6,9 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 
 import CommonEditModeButton from '../common/common-edit-mode-button.vue'
+import CommonPropNumberInput from '../common/common-prop-number-input.vue'
 import CharacterEquipmentDetailsSelectStat from './character-equipment-details-select-stat.vue'
 import EquipmentPropInputContainer from './equipment-prop-input-container.vue'
-import CommonPropNumberInput from '../common/common-prop-number-input.vue'
 
 interface Props {
   equipment: CharacterEquipment
@@ -43,19 +43,32 @@ const getStatKey = (stat: StatRestriction) => stat.statId
       <CommonEditModeButton v-model:is-editing="isEditing" />
     </div>
     <div v-if="!isEditing">
-      <Draggable v-model="
-        // eslint-disable-next-line vue/no-mutating-props
-        equipment.stats
-        " class="space-y-6 px-1" :item-key="getStatKey" handle=".drag-handle">
+      <Draggable
+        v-model="
+          // eslint-disable-next-line vue/no-mutating-props
+          equipment.stats
+        "
+        class="space-y-6 px-1"
+        :item-key="getStatKey"
+        handle=".drag-handle"
+      >
         <template #item="{ element: stat }">
           <EquipmentPropInputContainer>
             <CommonPropNumberInput v-model:value="stat.value" :title="stat.title" />
             <template #append>
-              <cy-button-icon icon="mdi:close-circle-outline" small color="gray" class="ml-4"
-                @click="equipment.removeStat(stat)" />
+              <cy-button-icon
+                icon="mdi:close-circle-outline"
+                small
+                color="gray"
+                class="ml-4"
+                @click="equipment.removeStat(stat)"
+              />
             </template>
             <template #end>
-              <cy-icon icon="ic:baseline-drag-indicator" class="drag-handle shrink-0 cursor-pointer" />
+              <cy-icon
+                icon="ic:baseline-drag-indicator"
+                class="drag-handle shrink-0 cursor-pointer"
+              />
             </template>
           </EquipmentPropInputContainer>
         </template>

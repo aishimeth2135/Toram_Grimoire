@@ -9,8 +9,7 @@ type CsvData = string[][]
 type LangCsvData = [CsvData, CsvData | null, CsvData | null]
 
 export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
-  const isDataPathId = (value: any): value is DataPathIds =>
-    typeof value === 'number'
+  const isDataPathId = (value: any): value is DataPathIds => typeof value === 'number'
   const promises = paths.map(async pathItem => {
     if (isDataPathId(pathItem)) {
       pathItem = { path: pathItem }
@@ -50,9 +49,7 @@ export async function downloadCsv(path: string): Promise<CsvData> {
 
       return Papa.parse(csvstr).data as CsvData
     } catch (err) {
-      console.warn(
-        `[DownloadData] load backup of "${path}" failed. path: ${orignalPath}`
-      )
+      console.warn(`[DownloadData] load backup of "${path}" failed. path: ${orignalPath}`)
       throw err
     }
   }

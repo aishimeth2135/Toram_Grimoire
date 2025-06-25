@@ -24,14 +24,9 @@ class CommonLogger {
 
   private static _title: string
 
-  private static _handleLoggerContent(
-    scope: string,
-    desc: string,
-    level: 'info' | 'warn'
-  ) {
+  private static _handleLoggerContent(scope: string, desc: string, level: 'info' | 'warn') {
     const isDarkMode =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 
     let result = `%c${scope}`
     let scopeBgColor = '#0284c7'
@@ -46,11 +41,7 @@ class CommonLogger {
       colors.push(`color: ${isDarkMode ? '#bfdbfe' : '#075985'};`)
       CommonLogger._title = ''
     }
-    return [
-      `${result}%c ${desc}`,
-      ...colors,
-      `color: ${isDarkMode ? 'white' : 'black'}`,
-    ]
+    return [`${result}%c ${desc}`, ...colors, `color: ${isDarkMode ? 'white' : 'black'}`]
   }
 
   static addTitle(title: string) {

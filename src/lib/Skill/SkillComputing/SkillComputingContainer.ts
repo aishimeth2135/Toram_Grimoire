@@ -91,14 +91,10 @@ class SkillItem {
     ]
   }
 
-  findEffectItem(
-    equipment: EquipmentRestrictions,
-    getSkillLevel?: (skill: Skill) => number
-  ) {
+  findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {
     return (
-      this.effectItems.find(effectItem =>
-        effectItem.equipmentMatch(equipment, getSkillLevel)
-      ) ?? null
+      this.effectItems.find(effectItem => effectItem.equipmentMatch(equipment, getSkillLevel)) ??
+      null
     )
   }
 }

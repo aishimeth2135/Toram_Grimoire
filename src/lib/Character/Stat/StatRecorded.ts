@@ -1,7 +1,4 @@
-import type {
-  CharacterEquipment,
-  EquipmentCrystal,
-} from '@/lib/Character/CharacterEquipment'
+import type { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import type { Food } from '@/lib/Character/FoodBuild'
 import type { BagPotion } from '@/lib/Items/BagItem'
 import type { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
@@ -24,11 +21,7 @@ class StatValueSource {
   readonly type: StatValueSourceTypes | null
   readonly value: number
 
-  constructor(
-    src: StatValueSourceDetails,
-    value: number,
-    type: StatValueSourceTypes | null
-  ) {
+  constructor(src: StatValueSourceDetails, value: number, type: StatValueSourceTypes | null) {
     this.src = src
     this.type = type
     this.value = value
@@ -64,13 +57,7 @@ class StatRecorded extends StatElementBase {
     source: StatValueSourceDetails,
     sourceType: StatValueSourceTypes | null
   ): StatRecorded {
-    return new StatRecorded(
-      stat.base,
-      stat.type,
-      stat.value,
-      source,
-      sourceType
-    )
+    return new StatRecorded(stat.base, stat.type, stat.value, source, sourceType)
   }
 
   constructor(
@@ -91,11 +78,7 @@ class StatRecorded extends StatElementBase {
     return this._value
   }
 
-  add(
-    value: number,
-    source: StatValueSourceDetails,
-    type: StatValueSourceTypes | null
-  ): number {
+  add(value: number, source: StatValueSourceDetails, type: StatValueSourceTypes | null): number {
     if (value !== 0) {
       this._value += value
       if (source) {

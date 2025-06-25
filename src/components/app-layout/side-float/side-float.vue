@@ -18,11 +18,7 @@ const { t } = useI18n()
 <template>
   <teleport to="#app-float-pages">
     <cy-transition>
-      <div
-        v-if="visible"
-        class="app-layout--side-float-wrapper"
-        @click="emit('close')"
-      >
+      <div v-if="visible" class="app-layout--side-float-wrapper" @click="emit('close')">
         <div class="app-layout--side-float" @click.stop>
           <div class="flex justify-end pb-1.5 pt-2.5">
             <span

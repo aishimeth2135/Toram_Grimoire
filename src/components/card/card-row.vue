@@ -46,7 +46,7 @@ div.cy-card-row {
   }
 
   &.row-hover:hover {
-    @apply bg-primary-5/30 duration-150 wd:bg-primary-5/80;
+    @apply bg-primary-5/30 wd:bg-primary-5/80 duration-150;
   }
 }
 </style>

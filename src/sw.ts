@@ -5,12 +5,7 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
-import {
-  CacheFirst,
-  Strategy,
-  StrategyHandler,
-  type StrategyOptions,
-} from 'workbox-strategies'
+import { CacheFirst, Strategy, StrategyHandler, type StrategyOptions } from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -56,10 +51,7 @@ class StaleWhileRevalidateThrottled extends Strategy {
     return isFresh
   }
 
-  override async _handle(
-    request: Request,
-    handler: StrategyHandler
-  ): Promise<Response> {
+  override async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
     // const logs: any[] = []
     let response = await handler.cacheMatch(request)
     if (!response) {
@@ -210,10 +202,7 @@ registerRoute(
   }
 
   // Register this strategy to handle all navigations.
-  registerRoute(
-    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.*/,
-    handler
-  )
+  registerRoute(/^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.*/, handler)
 }
 
 self.addEventListener('message', event => {

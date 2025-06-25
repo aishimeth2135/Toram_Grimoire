@@ -14,10 +14,7 @@ export function getContainerStats(
   container: DisplayDataContainer
 ) {
   const stats: StatRecorded[] = []
-  if (
-    !store.getDamageCalculationSkillBranchState(container.branchItem.default)
-      ?.enabled
-  ) {
+  if (!store.getDamageCalculationSkillBranchState(container.branchItem.default)?.enabled) {
     return stats
   }
   container.statContainers.forEach(statContainer => {

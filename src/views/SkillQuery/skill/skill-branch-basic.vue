@@ -18,10 +18,7 @@
 <script lang="ts">
 import { computed, toRefs } from 'vue'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
@@ -71,24 +68,17 @@ interface Props {
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  BasicHandler(props.computing, branchItem.value)
-)
+const container = computed(() => BasicHandler(props.computing, branchItem.value))
 
 const attrDatas = computed(() => {
-  return ATTR_DATAS.filter(data => container.value.has(data.key)).map(
-    ({ key, icon }) => {
-      const iconRes =
-        typeof icon === 'object'
-          ? icon[container.value.branchItem.prop(key)]
-          : icon
-      return {
-        key,
-        icon: iconRes,
-        title: container.value.title(key),
-        result: container.value.result(key),
-      }
+  return ATTR_DATAS.filter(data => container.value.has(data.key)).map(({ key, icon }) => {
+    const iconRes = typeof icon === 'object' ? icon[container.value.branchItem.prop(key)] : icon
+    return {
+      key,
+      icon: iconRes,
+      title: container.value.title(key),
+      result: container.value.result(key),
     }
-  )
+  })
 })
 </script>

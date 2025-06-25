@@ -19,12 +19,9 @@ defineOptions({
 
 const characterStore = useCharacterStore()
 const potionStore = useCharacterPotionBuildStore()
-const { currentPotionBuild: selectedBuild, potionBuilds } =
-  storeToRefs(potionStore)
+const { currentPotionBuild: selectedBuild, potionBuilds } = storeToRefs(potionStore)
 
-const currentPotionBuild = computed(
-  () => characterStore.currentCharacterState.potionBuild
-)
+const currentPotionBuild = computed(() => characterStore.currentCharacterState.potionBuild)
 
 const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({

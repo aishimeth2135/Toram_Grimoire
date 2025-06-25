@@ -109,7 +109,7 @@ const closeEditingLabel = () => {
               </div>
               <div
                 v-if="currentEditedLabel === label"
-                class="mx-1 rounded-md bg-orange-5/50 py-2 pl-9 pr-2"
+                class="bg-orange-5/50 mx-1 rounded-md py-2 pl-9 pr-2"
               >
                 <cy-tabs v-model="label.color" plain>
                   <cy-tab

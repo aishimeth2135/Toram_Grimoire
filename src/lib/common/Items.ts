@@ -3,10 +3,7 @@ export interface CommonItem<Id = any> {
 }
 
 export abstract class Items {
-  static remove<Item extends CommonItem>(
-    source: Item[],
-    target: number | Item
-  ): boolean {
+  static remove<Item extends CommonItem>(source: Item[], target: number | Item): boolean {
     const id = typeof target !== 'object' ? target : target.id
     const idx = source.findIndex(item => item.id === id)
     if (idx > -1) {

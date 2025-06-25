@@ -13,11 +13,7 @@ const emit = defineEmits<Emits>()
 </script>
 
 <template>
-  <cy-tab
-    :value="mode"
-    class="w-full hover:bg-primary-5/50"
-    @click="emit('edit', mode)"
-  >
+  <cy-tab :value="mode" class="hover:bg-primary-5/50 w-full" @click="emit('edit', mode)">
     <slot />
   </cy-tab>
 </template>

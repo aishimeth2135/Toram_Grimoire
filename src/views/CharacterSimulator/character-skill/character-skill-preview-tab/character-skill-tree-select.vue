@@ -14,14 +14,12 @@ interface Props {
 
 defineProps<Props>()
 
-const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(
-  category => {
-    return {
-      category,
-      skillTrees: category.skillTrees,
-    }
+const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(category => {
+  return {
+    category,
+    skillTrees: category.skillTrees,
   }
-)
+})
 </script>
 
 <template>
@@ -31,10 +29,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(
     </template>
     <template #popper>
       <div class="px-3 py-2">
-        <div
-          v-for="{ category, skillTrees } in allSkillTreeCategorys"
-          :key="category.id"
-        >
+        <div v-for="{ category, skillTrees } in allSkillTreeCategorys" :key="category.id">
           <div class="py-0.5 text-sm text-primary-40">
             {{ category.name }}
           </div>
@@ -46,9 +41,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(
               hover
               @click="skillBuild.toggleSkillTreeSelected(skillTree)"
             >
-              <CommonSelectionIcon
-                :selected="skillBuild.hasSkillTree(skillTree)"
-              />
+              <CommonSelectionIcon :selected="skillBuild.hasSkillTree(skillTree)" />
               {{ skillTree.name }}
             </CardRow>
           </CardRows>

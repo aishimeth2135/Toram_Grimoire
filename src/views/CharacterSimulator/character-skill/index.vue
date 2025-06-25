@@ -23,20 +23,13 @@ const currentTab = ref(2)
 const characterStore = useCharacterStore()
 
 const skillStore = useCharacterSkillBuildStore()
-const { skillBuilds, currentSkillBuild: selectedBuild } =
-  storeToRefs(skillStore)
+const { skillBuilds, currentSkillBuild: selectedBuild } = storeToRefs(skillStore)
 
-const currentSkillBuild = computed(
-  () => characterStore.currentCharacterState.skillBuild
-)
+const currentSkillBuild = computed(() => characterStore.currentCharacterState.skillBuild)
 
-const buildMatched = computed(
-  () => selectedBuild.value === currentSkillBuild.value
-)
+const buildMatched = computed(() => selectedBuild.value === currentSkillBuild.value)
 
-const currentDisplayedTab = computed(() =>
-  buildMatched.value ? currentTab.value : 2
-)
+const currentDisplayedTab = computed(() => (buildMatched.value ? currentTab.value : 2))
 
 const addSkillBuild = () => {
   selectedBuild.value = skillStore.createSkillBuild()
@@ -63,10 +56,7 @@ const removeSkillBuild = () => {
     @remove-build="removeSkillBuild"
   >
     <template #content>
-      <cy-tabs
-        :model-value="currentDisplayedTab"
-        @update:model-value="currentTab = $event"
-      >
+      <cy-tabs :model-value="currentDisplayedTab" @update:model-value="currentTab = $event">
         <cy-tab :value="0" :disabled="!buildMatched">
           {{ t('character-simulator.skill-build.active-skills') }}
         </cy-tab>
@@ -81,9 +71,7 @@ const removeSkillBuild = () => {
         <CharacterSkillTab
           v-if="currentDisplayedTab !== 2"
           :skill-build="selectedBuild"
-          :type="
-            currentDisplayedTab === 0 ? SkillTypes.Active : SkillTypes.Passive
-          "
+          :type="currentDisplayedTab === 0 ? SkillTypes.Active : SkillTypes.Passive"
         />
         <CharacterSkillPreviewTab v-else :skill-build="selectedBuild" />
       </div>

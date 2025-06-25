@@ -31,12 +31,7 @@ class StatBase {
   hidden: boolean
   devOnly: boolean
 
-  constructor(
-    baseId: string,
-    text: string,
-    hasMultiplier: boolean,
-    order: number
-  ) {
+  constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
     this.baseId = baseId
     this.text = text
     this.hasMultiplier = hasMultiplier
@@ -63,9 +58,7 @@ class StatBase {
   }
 
   show(type: StatTypes, value: StatValue): string {
-    const calc =
-      (typeof value === 'string' && isNumberString(value)) ||
-      typeof value === 'number'
+    const calc = (typeof value === 'string' && isNumberString(value)) || typeof value === 'number'
     if (typeof value !== 'number' && calc) {
       value = parseFloat(value)
     }
@@ -73,32 +66,21 @@ class StatBase {
       const isPos = typeof value !== 'number' || value >= 0
       const sign = isPos ? '+' : ''
       formula = formula.split('::')[isPos ? 0 : 1] || formula
-      let res = formula
-        .replace('$t', this.text)
-        .replace('$u', unit)
-        .replace('$s', sign)
+      let res = formula.replace('$t', this.text).replace('$u', unit).replace('$s', sign)
       if (typeof value === 'number') {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)d/, (_match, p1) =>
-            (value as number).toFixed(toInt(p1) ?? 0)
-          )
+          .replace(/\$(\d+)d/, (_match, p1) => (value as number).toFixed(toInt(p1) ?? 0))
       }
       return res
     }
     switch (type) {
       case StatTypes.Constant:
-        return handleFormula(
-          this.constantDisplayFormat,
-          this.hasMultiplier ? '' : '%'
-        )
+        return handleFormula(this.constantDisplayFormat, this.hasMultiplier ? '' : '%')
       case StatTypes.Multiplier:
         return handleFormula(this.multiplierDisplayFormat, '%')
       case StatTypes.Total:
-        return handleFormula(
-          Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }),
-          '%'
-        )
+        return handleFormula(Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }), '%')
     }
   }
 
@@ -130,9 +112,7 @@ class StatBase {
     const showData = this.getShowData(type, value)
     value = value ?? showData.realValue
     const prefix = typeof value !== 'number' || value >= 0 ? '+' : ''
-    return `${prefix}${value}${
-      useDefaultTail || this.hasMultiplier ? showData.tail : ''
-    }`
+    return `${prefix}${value}${useDefaultTail || this.hasMultiplier ? showData.tail : ''}`
   }
 
   createStat(type: StatTypes, value: number): Stat {

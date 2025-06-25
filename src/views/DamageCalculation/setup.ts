@@ -41,9 +41,7 @@ const setupCalcMode = () => {
   ]
   const currentCalcModeId = ref('common')
   const selectCalcMode = (id: string) => (currentCalcModeId.value = id)
-  const calcMode = computed(
-    () => calcModeList.find(item => item.id === currentCalcModeId.value)!
-  )
+  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value)!)
 
   return {
     calcModeList,
@@ -210,9 +208,7 @@ const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
 
   const calculationContainerOptions = computed(() => {
     return options.map(item => {
-      const container = calculation.value.containers.get(
-        item.containerId
-      ) as CalcItemContainer
+      const container = calculation.value.containers.get(item.containerId) as CalcItemContainer
       return {
         container,
         containerItems: Array.from(container.items.values()),
@@ -234,9 +230,4 @@ export {
   setupCalculationCalcOptions,
 }
 
-export type {
-  ResultModeIdStability,
-  ResultModeIdExpected,
-  ResultModeItem,
-  CalcModeItem,
-}
+export type { ResultModeIdStability, ResultModeIdExpected, ResultModeItem, CalcModeItem }

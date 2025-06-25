@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia'
 import { type Ref, readonly, ref } from 'vue'
 
-import type {
-  MessageNotifyButtonItem,
-  MessageNotifyOptions,
-} from '@/shared/setup/Notify'
+import type { MessageNotifyButtonItem, MessageNotifyOptions } from '@/shared/setup/Notify'
 
 interface NotifyMessageItem {
   icon: string
@@ -51,9 +48,7 @@ export const useNotifyStore = defineStore('app-notify', () => {
     options: MessageNotifyOptions
   }) => {
     const find =
-      id !== null
-        ? messages.value.find(item => item.id !== null && item.id === id)
-        : null
+      id !== null ? messages.value.find(item => item.id !== null && item.id === id) : null
     if (!find) {
       const newOptions = {
         buttons: options.buttons

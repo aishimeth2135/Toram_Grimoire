@@ -19,7 +19,7 @@
                 />
               </div>
               <div class="flex items-center justify-center py-6">
-                <div class="flex items-center rounded-full bg-white/50 p-5 duration-150">
+                <div class="bg-white/50 flex items-center rounded-full p-5 duration-150">
                   <HomeIconTitle :root-el="rootEl" />
                 </div>
                 <div class="ml-5">

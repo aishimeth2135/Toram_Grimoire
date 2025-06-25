@@ -84,9 +84,7 @@ const postponedValidResultStates = computed(() => {
 })
 
 const validSkillStates = computed(() =>
-  validResultStates.value.map(state =>
-    currentSkillBuild.value!.getSkillState(state.skill)
-  )
+  validResultStates.value.map(state => currentSkillBuild.value!.getSkillState(state.skill))
 )
 const allSkillEnabled = computed<boolean>({
   get() {

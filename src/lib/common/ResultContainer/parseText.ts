@@ -1,8 +1,4 @@
-import {
-  ResultContainer,
-  TextResultContainerPart,
-  type TextResultContainerPartValue,
-} from '.'
+import { ResultContainer, TextResultContainerPart, type TextResultContainerPartValue } from '.'
 
 import { CommonLogger } from '@/shared/services/Logger'
 
@@ -79,17 +75,10 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
       return value
     }
 
-    const {
-      id,
-      pattern: _pattern,
-      units = [],
-      patternGroupsLength = 1,
-    } = order[currentIdx]
+    const { id, pattern: _pattern, units = [], patternGroupsLength = 1 } = order[currentIdx]
 
     let patternStr = _pattern.toString()
-    const patternFlag = !patternStr.endsWith('/')
-      ? patternStr.slice(-1)
-      : undefined
+    const patternFlag = !patternStr.endsWith('/') ? patternStr.slice(-1) : undefined
     patternStr = patternStr.slice(1, patternFlag ? -2 : -1)
     const pattern = new RegExp('(' + patternStr + ')')
 
@@ -106,9 +95,7 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
         if (str === undefined) {
           logger
             .addTitle('replacePatterns')
-            .warn(
-              'Please ensure "patternGroupsLength" of options match the "pattern".'
-            )
+            .warn('Please ensure "patternGroupsLength" of options match the "pattern".')
           return
         }
         parts.push(str)
@@ -121,7 +108,7 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
       }
 
       const next = idx === parseParts.length - 1 ? null : parseParts[idx + 1]
-      const unit = next ? units.find(item => next.startsWith(item)) ?? '' : ''
+      const unit = next ? (units.find(item => next.startsWith(item)) ?? '') : ''
       if (unit) {
         parseParts[idx + 1] = next!.slice(unit.length)
       }
@@ -178,19 +165,13 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
       containers.push(currentPart)
     }
 
-    const prevParts = values[0]
-      ? rollback(values[0], order.length - 1, containers).parts
-      : []
+    const prevParts = values[0] ? rollback(values[0], order.length - 1, containers).parts : []
 
-    const nextParts = values[1]
-      ? rollback(values[1], order.length - 1, containers).parts
-      : []
+    const nextParts = values[1] ? rollback(values[1], order.length - 1, containers).parts : []
 
-    const parts: TextResultContainerPartValue[] = [
-      ...prevParts,
-      currentPart,
-      ...nextParts,
-    ].filter(item => !!item)
+    const parts: TextResultContainerPartValue[] = [...prevParts, currentPart, ...nextParts].filter(
+      item => !!item
+    )
 
     return {
       parts,
@@ -222,11 +203,7 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
     handler(context) {
       const value = context.values[0]
       const computedValue = options.computedValue?.(value) ?? value
-      const container = new ResultContainer(
-        ResultContainerTypes.Number,
-        value,
-        computedValue
-      )
+      const container = new ResultContainer(ResultContainerTypes.Number, value, computedValue)
       container.displayOptions.unit = context.unit
       return container
     },
@@ -245,10 +222,7 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
         newPart.metadata.set('display-name', value1)
         return newPart
       }
-      return new TextResultContainerPart(
-        TextResultContainerPartTypes.GlossaryTag,
-        value1
-      )
+      return new TextResultContainerPart(TextResultContainerPartTypes.GlossaryTag, value1)
     },
     patternGroupsLength: 2,
   }
@@ -266,10 +240,7 @@ export function getMarkTextParseItems() {
     pattern: /\(\(!((?:(?!\(\().)+)\)\)/,
     handler(context) {
       const [value] = context.values
-      const newPart = new TextResultContainerPart(
-        TextResultContainerPartTypes.Other,
-        value
-      )
+      const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
       newPart.subType = 'mark'
       return newPart
     },
@@ -279,10 +250,7 @@ export function getMarkTextParseItems() {
     pattern: /\(\(_((?:(?!\(\().)+)\)\)/,
     handler(context) {
       const [value] = context.values
-      const newPart = new TextResultContainerPart(
-        TextResultContainerPartTypes.Other,
-        value
-      )
+      const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
       newPart.subType = 'underline'
       return newPart
     },

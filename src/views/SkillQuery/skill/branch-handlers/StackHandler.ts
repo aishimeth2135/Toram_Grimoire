@@ -2,16 +2,9 @@ import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
-import {
-  type HandleDisplayDataOptionFilters,
-  cloneBranchProps,
-  handleDisplayData,
-} from './handle'
+import { type HandleDisplayDataOptionFilters, cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'
 
 export default function StackHandler<BranchItem extends SkillBranchItem>(
@@ -25,9 +18,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(
     .indexOf(branchItem)
   const props = cloneBranchProps(branchItem, {
     name: value =>
-      value === 'auto'
-        ? t('skill-query.branch.stack.base-name') + (idx + 1).toString()
-        : value,
+      value === 'auto' ? t('skill-query.branch.stack.base-name') + (idx + 1).toString() : value,
   })
 
   if (props.get('default') === 'auto') {

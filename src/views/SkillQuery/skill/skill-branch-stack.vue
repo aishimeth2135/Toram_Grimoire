@@ -2,9 +2,7 @@
   <div class="flex flex-wrap items-center p-1 pb-0.5 pr-3">
     <div class="mt-0.5">
       <cy-input-counter
-        v-if="
-          computing.config.formulaDisplayMode === FormulaDisplayModes.Normal
-        "
+        v-if="computing.config.formulaDisplayMode === FormulaDisplayModes.Normal"
         v-model:value="stackValue"
         :range="stackValueRange"
         :input-width="container.getCustomData('stackInputWidth')"
@@ -42,10 +40,7 @@ import type { ComputedRef, WritableComputedRef } from 'vue'
 
 import { toInt } from '@/shared/utils/number'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
@@ -61,9 +56,7 @@ const { setStackValue } = inject(ComputingContainerInjectionKey)!
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() =>
-  StackHandler(props.computing, branchItem.value)
-)
+const container = computed(() => StackHandler(props.computing, branchItem.value))
 
 const stackState = computed(() => {
   return branchItem.value.parent.getStackState(branchItem.value.stackId!)

@@ -47,11 +47,9 @@ export function equipmentOriginalCategoryToType(item: BagEquipment) {
     ][item.category]
   }
   if (item.category < 200) {
-    return [
-      EquipmentTypes.Arrow,
-      EquipmentTypes.Dagger,
-      EquipmentTypes.NinjutsuScroll,
-    ][item.category - 100]
+    return [EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll][
+      item.category - 100
+    ]
   }
   if (item.category < 300) {
     return EquipmentTypes.Shield

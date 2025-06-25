@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
@@ -16,21 +16,12 @@
 
     <meta property="og:title" content="布偶的魔法書｜Cy's Grimoire" />
     <meta property="og:description" content="The web tool of Toram Online." />
-    <meta
-      property="og:image"
-      content="https://cy-grimoire.netlify.app/imgs/og-image.png"
-    />
+    <meta property="og:image" content="https://cy-grimoire.netlify.app/imgs/og-image.png" />
     <meta property="og:type" content="website" />
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:title" content="布偶的魔法書｜Cy's Grimoire" />
-    <meta
-      property="twitter:description"
-      content="The web tool of Toram Online."
-    />
-    <meta
-      property="twitter:image"
-      content="https://cy-grimoire.netlify.app/imgs/og-image.png"
-    />
+    <meta property="twitter:description" content="The web tool of Toram Online." />
+    <meta property="twitter:image" content="https://cy-grimoire.netlify.app/imgs/og-image.png" />
 
     <meta name="msapplication-TileColor" content="#ffffff" />
 
@@ -41,10 +32,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff51b0" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap"
@@ -86,10 +74,7 @@
         }
         var scripts = document.head.getElementsByTagName('script')
         var scriptHandler = function (_error) {
-          showMessage(
-            _error,
-            'The script ' + _error.target.src + " didn't load correctly."
-          )
+          showMessage(_error, 'The script ' + _error.target.src + " didn't load correctly.")
         }
         for (var i = 0; i < scripts.length; ++i) {
           scripts[i].onerror = scriptHandler
@@ -109,8 +94,8 @@
   <body>
     <noscript>
       <strong>
-        We're sorry but this page doesn't work properly without JavaScript
-        enabled. Please enable it to continue.
+        We're sorry but this page doesn't work properly without JavaScript enabled. Please enable it
+        to continue.
       </strong>
       <strong>
         很抱歉，此網站無法在禁用JavaScript的情況下運作。請到瀏覽器的設定中開啟JavaScript。
@@ -124,10 +109,6 @@
     <div id="app-popovers"></div>
     <div id="app-loading"></div>
 
-    <div
-      id="app--error"
-      data-flag="0"
-      style="max-width: 800px; margin: 16px auto"
-    ></div>
+    <div id="app--error" data-flag="0" style="max-width: 800px; margin: 16px auto"></div>
   </body>
 </html>

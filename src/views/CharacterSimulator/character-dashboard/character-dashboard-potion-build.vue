@@ -14,9 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const displayedItems = computed(() => {
-  return props.potionBuild.items.filter(
-    item => item.enabled && item.base.stats.length > 0
-  )
+  return props.potionBuild.items.filter(item => item.enabled && item.base.stats.length > 0)
 })
 </script>
 
@@ -27,11 +25,7 @@ const displayedItems = computed(() => {
     :tab-path-name="CharacterSimulatorRouteNames.Potion"
   >
     <div class="space-y-1.5">
-      <div
-        v-for="potion in displayedItems"
-        :key="potion.base.id"
-        class="flex items-center"
-      >
+      <div v-for="potion in displayedItems" :key="potion.base.id" class="flex items-center">
         {{ potion.base.name }}
         <div class="ml-2 text-sm text-primary-40">
           {{ potion.belongCategory.base.name }}

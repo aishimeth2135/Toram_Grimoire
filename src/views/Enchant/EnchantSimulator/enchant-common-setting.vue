@@ -9,9 +9,7 @@ const { config } = storeToRefs(store)
 
 const { t, tm } = useI18n()
 
-const materialTitleList = tm(
-  'enchant-simulator.material-point-type-list'
-) as string[]
+const materialTitleList = tm('enchant-simulator.material-point-type-list') as string[]
 const materialTypes = [0, 1, 2, 3, 4, 5]
 </script>
 

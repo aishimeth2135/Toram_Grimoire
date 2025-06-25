@@ -1,19 +1,13 @@
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import {
-  type SkillBranchItemBaseChilds,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { type SkillBranchItemBaseChilds, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
-import {
-  type HandleBranchLangPropsMap,
-  cloneBranchProps,
-  handleDisplayData,
-} from './handle'
+import { type HandleBranchLangPropsMap, cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'
 
-export default function ProrationHandler<
-  BranchItem extends SkillBranchItemBaseChilds,
->(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function ProrationHandler<BranchItem extends SkillBranchItemBaseChilds>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const props = cloneBranchProps(branchItem)
   if (props.get('proration') === 'auto') {
     props.set('proration', props.get('damage')!)

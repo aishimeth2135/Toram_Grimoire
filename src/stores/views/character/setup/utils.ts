@@ -4,10 +4,7 @@ import { isNumberString } from '@/shared/utils/string'
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded } from '@/lib/Character/Stat'
-import {
-  SkillBranchItem,
-  SkillBranchStatResult,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillBranchStatResult } from '@/lib/Skill/SkillComputing'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
@@ -61,26 +58,19 @@ function getSkillRange(
   ])
   if (rangeValueWeaponMap.has(rangeValue)) {
     const eqType = rangeValueWeaponMap.get(rangeValue)!
-    if (
-      character.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, eqType)
-    ) {
+    if (character.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, eqType)) {
       rangeValue = 'main'
-    } else if (
-      character.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, eqType)
-    ) {
+    } else if (character.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, eqType)) {
       rangeValue = 'sub'
     }
   }
 
   if (rangeValue === 'main' || rangeValue === 'sub') {
     const field = character.equipmentField(
-      rangeValue === 'main'
-        ? EquipmentFieldTypes.MainWeapon
-        : EquipmentFieldTypes.SubWeapon
+      rangeValue === 'main' ? EquipmentFieldTypes.MainWeapon : EquipmentFieldTypes.SubWeapon
     )
     const weaponRangeAdd =
-      field.equipment?.stats.find(stat => stat.baseId === 'weapon_range')
-        ?.value ?? 0
+      field.equipment?.stats.find(stat => stat.baseId === 'weapon_range')?.value ?? 0
     return getWeaponBaseRange(field.equipmentType) + weaponRangeAdd
   } else if (isNumberString(skillRange)) {
     return parseFloat(skillRange)
@@ -104,10 +94,7 @@ function getWeaponBaseRange(main: EquipmentTypes): number {
   return mapping[main] ?? 0
 }
 
-export function mergeStats(
-  allStats: Map<string, StatRecorded>,
-  stats: StatRecorded[]
-): void {
+export function mergeStats(allStats: Map<string, StatRecorded>, stats: StatRecorded[]): void {
   stats.forEach(stat => {
     if (allStats.has(stat.statId)) {
       allStats.get(stat.statId)!.addStat(stat)

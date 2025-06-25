@@ -4,10 +4,7 @@
       class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
       @click="detailVisible = !detailVisible"
     >
-      <cy-icon-text
-        icon="mdi:tag-outline"
-        :text-color="!sub ? 'primary-80' : 'orange-60'"
-      >
+      <cy-icon-text icon="mdi:tag-outline" :text-color="!sub ? 'primary-80' : 'orange-60'">
         {{ tag.name }}
       </cy-icon-text>
       <div class="ml-3 flex items-center space-x-1.5 text-sm text-primary-30">
@@ -57,11 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const detailVisible = ref(false)
 
-const categoryRows = computed(() =>
-  props.tag.rows.filter(row => row.type === 'category')
-)
+const categoryRows = computed(() => props.tag.rows.filter(row => row.type === 'category'))
 
-const includedTags = computed(() =>
-  props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)
-)
+const includedTags = computed(() => (props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)))
 </script>

@@ -2,10 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
-import {
-  SkillBranchItem,
-  SkillComputingContainer,
-} from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import {
   type HandleBranchValuePropsMap,
   computeBranchValue,
