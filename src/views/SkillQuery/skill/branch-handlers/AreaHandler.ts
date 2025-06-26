@@ -36,8 +36,6 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
 
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     angle: '°',
-    start_position_offsets: 'm',
-    end_position_offsets: 'm',
     move_distance: 'm',
   })
 
@@ -45,7 +43,11 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
     valuePropsMap.set('radius', 'm')
   }
 
-  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['effective_area'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>({
+    effective_area: null,
+    start_position_offsets: { type: 'value' },
+    end_position_offsets: { type: 'value' },
+  })
 
   const pureValues = []
   if (props.has('@range') && props.get('@range') !== 'no_limit' && props.get('@range') !== 'main') {

@@ -119,8 +119,6 @@ branch:
       AOE: 範圍
     title:
       normal_attack: 一般攻擊的傷害提升
-    frequency:
-      positive: 總傷害拆成$0次
     ailment-caption: 有{chance}機率使目標陷入{name}。
     effective_area:
       circle: 圓形
@@ -170,7 +168,7 @@ branch:
       'false': 連擊威力
     '@custom-base-caption':
       both: 根據((!角色的ATK及MATK的高低))。ATK比MATK高時，取((!有效ATK))；MATK比ATK高時，取((!有效MATK))。
-      dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。
+      dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#[雙劍特性說明]。
     'effective_area: title': 類型
     'radius: title': 傷害半徑
     'move_distance: title': 移動距離
@@ -178,6 +176,7 @@ branch:
     'start_position_offsets: title': 起點位置
     'end_position_offsets: title': 終點位置
     duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害
+    frequency-caption: 總傷害拆成{frequency}次
   'damage: extra':
     condition-default-value: 此傷害
   proration:

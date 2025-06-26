@@ -1,22 +1,18 @@
 <template>
   <div>
-    <SkillBranchLayoutNormal
-      :computing="computing"
-      :container="container"
-      name-icon="ri-sword-fill"
-      :sub-contents="subContents"
-      :has-area="hasArea"
-      :extra-columns="extraSuffixBranchDatas"
-      main-icon="mdi-sword"
-      :main-title="mainTitie"
-    >
+    <SkillBranchLayoutNormal :computing="computing" :container="container" name-icon="ri-sword-fill"
+      :sub-contents="subContents" :has-area="hasArea" :extra-columns="extraSuffixBranchDatas" main-icon="mdi-sword"
+      :main-title="mainTitie">
       <SkillDamageFormula :container="container" />
+      <template #sub-content(frequency)>
+        <i18n-t keypath="skill-query.branch.damage.frequency-caption" tag="span" scope="global">
+          <template #frequency>
+            <SkillBranchPropValue :result="container.result('frequency')" />
+          </template>
+        </i18n-t>
+      </template>
       <template #sub-content(duration|cycle)>
-        <i18n-t
-          keypath="skill-query.branch.damage.duration-caption-with-cycle"
-          tag="span"
-          scope="global"
-        >
+        <i18n-t keypath="skill-query.branch.damage.duration-caption-with-cycle" tag="span" scope="global">
           <template #duration>
             <SkillBranchPropValue :result="container.result('duration')" />
           </template>
@@ -26,11 +22,8 @@
         </i18n-t>
       </template>
       <template #extra-columns-start>
-        <SkillBranchExtraColumn
-          v-if="container.has('dual_element')"
-          icon="bx-bx-circle"
-          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
-        >
+        <SkillBranchExtraColumn v-if="container.has('dual_element')" icon="bx-bx-circle"
+          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')">
           <div class="flex items-center py-0.5">
             <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
@@ -38,12 +31,8 @@
             </div>
           </div>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn
-          v-for="sufContainer in dualElementSuffixBranchItems"
-          :key="sufContainer.instanceId"
-          icon="ic:round-done"
-          :title="sufContainer.get('condition')"
-        >
+        <SkillBranchExtraColumn v-for="sufContainer in dualElementSuffixBranchItems" :key="sufContainer.instanceId"
+          icon="ic:round-done" :title="sufContainer.get('condition')">
           <div class="flex items-center py-0.5">
             <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
@@ -51,11 +40,8 @@
             </div>
           </div>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn
-          v-if="container.get('ailment_name')"
-          icon="mdi:creation"
-          :title="t('skill-query.branch.ailment-title')"
-        >
+        <SkillBranchExtraColumn v-if="container.get('ailment_name')" icon="mdi:creation"
+          :title="t('skill-query.branch.ailment-title')">
           <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="container.result('ailment_chance')" />
@@ -65,12 +51,8 @@
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn
-          v-for="sufContainer in ailmentSuffixBranchItems"
-          :key="sufContainer.instanceId"
-          icon="mdi:creation"
-          :title="sufContainer.get('condition')"
-        >
+        <SkillBranchExtraColumn v-for="sufContainer in ailmentSuffixBranchItems" :key="sufContainer.instanceId"
+          icon="mdi:creation" :title="sufContainer.get('condition')">
           <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="sufContainer.result('ailment_chance')" />
@@ -140,6 +122,24 @@ const getElementIcon = (value: string) => {
   return ELEMENT_ICON_MAPPING[value] || 'bx-bx-circle'
 }
 
+
+const getBoolIcon = (value: string): string => {
+  const mapping = {
+    '1': 'ic:round-check-circle-outline',
+    '0': 'jam:close-circle',
+    'none': 'bx:bx-help-circle',
+  } as Record<string, string>
+  return mapping[value]
+}
+const getBoolColorType = (value: string) => {
+  const mapping = {
+    '1': 'cyan',
+    '0': 'gray',
+    'none': 'normal',
+  } as Record<string, NormalLayoutSubContent['type']>
+  return mapping[value]
+}
+
 const subContents = computed(() => {
   const result: NormalLayoutSubContent[] = []
   result.push(
@@ -155,52 +155,7 @@ const subContents = computed(() => {
     {
       key: 'is_place',
       icon: 'emojione-monotone:heavy-large-circle',
-    }
-  )
-  if (branchItem.value.prop('title') !== 'each') {
-    result.push({
-      key: 'frequency',
-      icon: 'bi-circle-square',
-    })
-  }
-  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
-    result.push({
-      key: 'duration|cycle',
-      icon: 'ic-round-timer',
-      custom: true,
-    })
-  }
-  result.push(
-    {
-      key: '@proration/damage',
-      icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/damage: title'),
-      value: container.value.get('@proration/damage'),
     },
-    {
-      key: '@proration/proration',
-      icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/proration: title'),
-      value: container.value.get('@proration/proration'),
-    }
-  )
-  const getBoolIcon = (value: string): string => {
-    const mapping = {
-      '1': 'ic:round-check-circle-outline',
-      '0': 'jam:close-circle',
-      'none': 'bx:bx-help-circle',
-    } as Record<string, string>
-    return mapping[value]
-  }
-  const getBoolColorType = (value: string) => {
-    const mapping = {
-      '1': 'cyan',
-      '0': 'gray',
-      'none': 'normal',
-    } as Record<string, NormalLayoutSubContent['type']>
-    return mapping[value]
-  }
-  result.push(
     {
       key: 'range_damage',
       icon: getBoolIcon(branchItem.value.prop('range_damage')),
@@ -215,8 +170,34 @@ const subContents = computed(() => {
       key: 'combo_rate',
       icon: 'jam:close-circle',
       type: getBoolColorType(branchItem.value.prop('combo_rate')),
+    },
+    {
+      key: '@proration/damage',
+      icon: 'ri-error-warning-line',
+      title: container.value.get('@proration/damage: title'),
+      value: container.value.get('@proration/damage'),
+    },
+    {
+      key: '@proration/proration',
+      icon: 'ri-error-warning-line',
+      title: container.value.get('@proration/proration: title'),
+      value: container.value.get('@proration/proration'),
     }
   )
+  if (branchItem.value.prop('title') !== 'each') {
+    result.push({
+      key: 'frequency',
+      icon: 'bi-circle-square',
+      custom: true,
+    })
+  }
+  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
+    result.push({
+      key: 'duration|cycle',
+      icon: 'ic-round-timer',
+      custom: true,
+    })
+  }
   if (container.value.has('frequency') && (toInt(container.value.getValue('frequency')) ?? 0) > 1) {
     result.push(
       {

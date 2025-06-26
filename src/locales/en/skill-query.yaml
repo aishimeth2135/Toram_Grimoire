@@ -99,8 +99,6 @@ branch:
       AOE: AOE
     title:
       normal_attack: 一般攻擊的傷害提升
-    frequency:
-      positive: 總傷害拆成$0次
     ailment-caption: 有{chance}機率使目標陷入{name}。
     effective_area:
       circle: 圓形
@@ -148,6 +146,7 @@ branch:
     'start_position_offsets: title': 起點位置
     'end_position_offsets: title': 終點位置
     duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害。
+    frequency-caption: 總傷害拆成{freqnency}次
   'damage: proration':
     'damage: title': 傷害慣性
     'proration: title': 造成慣性
