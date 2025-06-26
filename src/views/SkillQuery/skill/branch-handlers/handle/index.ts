@@ -52,15 +52,19 @@ interface HandleBranchLangPropsOptions {
   rootKey?: SkillBranchNames
   type?: 'auto' | 'normal' | 'value' | 'boolean'
   afterHandle?: ((value: string) => string) | null
+  handleAsText?: boolean
 }
 interface HandleBranchLangPropsMap {
   [key: string]: HandleBranchLangPropsOptions | null
+}
+type HandleBranchLangPropsResult<PropMap extends HandleBranchLangPropsMap> = {
+  [key in keyof PropMap]: SkillBranchResult
 }
 function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
   propMap: PropMap
-): Record<keyof PropMap, SkillBranchResult> {
+): HandleBranchLangPropsResult<PropMap> {
   const { t } = Grimoire.i18n
   const { branchItem } = helper
 
@@ -76,15 +80,17 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
     if (!value) {
       return
     }
+    let resultValue = value
     let resultStr: string
     if (type === 'value') {
-      const resultValue = computeBranchValue(value, helper)
+      const computedValue = computeBranchValue(value, helper)
       const sign =
-        isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive'
-      const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
+        isNumberString(computedValue) && parseFloat(computedValue) < 0 ? 'negative' : 'positive'
+      const displayValue = sign === 'negative' ? -1 * parseFloat(computedValue) : computedValue
       resultStr = t(`skill-query.branch.${rootKey ?? branchItem.name}.${String(attrKey)}.${sign}`, {
         value: displayValue.toString(),
       })
+      resultValue = computedValue
     } else {
       let displayValue = value
       if (
@@ -106,13 +112,15 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }
-    attrValues[attrKey] = new SkillBranchResult(
+    const resultContainer = new SkillBranchResult(
       ResultContainerTypes.String,
       branchItem,
       attrKey as string,
       value,
-      resultStr
+      resultValue
     )
+    resultContainer.initDisplayValue(resultStr)
+    attrValues[attrKey] = resultContainer
   })
   return attrValues
 }
@@ -204,9 +212,21 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
   })
 
+  const handleAsTextLangKeys: string[] = []
+  Object.entries(langs).forEach(([key, options]) => {
+    if (options?.handleAsText) {
+      handleAsTextLangKeys.push(key)
+    }
+  })
+  const langDatas = handleBranchLangProps(helper, props, langs)
+  handleAsTextLangKeys.forEach(key => {
+    props.set(key, langDatas[key].result as string)
+    texts[key] = null
+    delete langDatas[key]
+  })
+
   const valueDatas = handleBranchValueProps(helper, props, values)
   const textDatas = handleBranchTextProps(helper, props, texts)
-  const langDatas = handleBranchLangProps(helper, props, langs)
   const statDatas = handleBranchStats(helper, branchItem.stats)
 
   const titlesResult: SkillDisplayData = new Map()

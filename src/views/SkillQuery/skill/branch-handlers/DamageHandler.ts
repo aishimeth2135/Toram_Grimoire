@@ -1,9 +1,11 @@
 import Grimoire from '@/shared/Grimoire'
-import { markText } from '@/shared/utils/view'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
+import type {
+  HandleBranchTextPropsMap,
+  HandleBranchValuePropsMap,
+} from '@/lib/Skill/SkillComputing/compute'
 
 import ProrationHandler from './ProrationHandler'
 import {
@@ -46,7 +48,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
     multiplier: '%',
     constant: null,
     extra_constant: null,
-    frequency: t('global.times'),
+    frequency: null,
     ailment_chance: '%',
     duration: null,
     cycle: null,
@@ -68,6 +70,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
     'combo_rate',
   ])
 
+  const textPropsMap = new MapContainer<HandleBranchTextPropsMap>([])
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
   if (props.get('base') === 'auto') {
@@ -77,9 +80,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
         props.set('@custom-base-caption', baseSuffix.prop('type'))
         props.set('base', `@custom.${baseSuffix.prop('type')}`)
         langAttrsMap.append('base')
-        langAttrsMap.set('@custom-base-caption', {
-          afterHandle: value => markText(value, { mark: 'text-fuchsia-60' }),
-        })
+        langAttrsMap.set('@custom-base-caption', { handleAsText: true })
       } else {
         if (baseSuffix.prop('title') === 'auto') {
           props.set('base', '@custom.default')
@@ -90,7 +91,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
         }
         if (baseSuffix.prop('caption')) {
           props.set('@custom-base-caption', baseSuffix.prop('caption'))
-          pureDatas.push('@custom-base-caption')
+          textPropsMap.append('@custom-base-caption')
         }
       }
     } else {
@@ -125,6 +126,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
 
   const result = handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
+    texts: textPropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,

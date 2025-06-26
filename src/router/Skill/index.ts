@@ -39,9 +39,8 @@ export default {
       path: ':skillId?',
       component: SkillQueryView,
       meta: {
-        parentPathName: AppRouteNames.Skill,
         title: 'app.page-title.skill-query',
       },
     },
   ],
-} as RouteRecordRaw
+} satisfies RouteRecordRaw

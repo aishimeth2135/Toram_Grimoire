@@ -17,4 +17,4 @@ export default {
     title: '404',
     leftMenuViewButtons: [],
   },
-} as RouteRecordRaw
+} satisfies RouteRecordRaw

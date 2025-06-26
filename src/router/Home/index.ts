@@ -18,7 +18,6 @@ export default {
     ViewInit().then(next)
   },
   meta: {
-    title: null,
     leftMenuViewButtons: [
       {
         title: 'app.page-title.home',
@@ -47,4 +46,4 @@ export default {
       },
     },
   ],
-} as RouteRecordRaw
+} satisfies RouteRecordRaw

@@ -25,7 +25,6 @@ export default {
     ).then(next)
   },
   meta: {
-    title: null,
     leftMenuViewButtons: [
       {
         title: 'app.page-title.registlet-query',
@@ -44,4 +43,4 @@ export default {
       },
     },
   ],
-} as RouteRecordRaw
+} satisfies RouteRecordRaw

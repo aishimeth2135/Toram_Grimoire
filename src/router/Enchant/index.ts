@@ -52,4 +52,4 @@ export default {
       },
     },
   ],
-} as RouteRecordRaw
+} satisfies RouteRecordRaw

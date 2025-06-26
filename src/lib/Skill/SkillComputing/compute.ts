@@ -417,7 +417,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
 interface HandleBranchTextPropsMap {
   [key: string]: null
 }
-type HandleBranchTextPropsResult<PropMap extends HandleBranchValuePropsMap> = {
+type HandleBranchTextPropsResult<PropMap extends HandleBranchTextPropsMap> = {
   [key in keyof PropMap]: SkillBranchTextResult
 }
 function computedBranchText(

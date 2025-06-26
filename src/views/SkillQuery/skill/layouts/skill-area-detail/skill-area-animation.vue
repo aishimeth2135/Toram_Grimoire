@@ -54,6 +54,8 @@ const areaDatas = computed(() => {
     endPositionOffsets = getAttrNumValue('end_position_offsets'),
     moveDistanceOrigin = getAttrNumValue('move_distance')
 
+  console.log(endPositionOffsets, ctner.getValue('end_position_offsets'))
+
   const datas: AreaElement[] = []
 
   const body_style = getComputedStyle(document.body)
