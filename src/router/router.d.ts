@@ -4,13 +4,10 @@ import { LeftMenuViewButton } from '@/stores/app/left-menu'
 
 declare module 'vue-router' {
   interface RouteMeta {
-    title?: string | null
+    title?: string
     leftMenuViewButtons?: LeftMenuViewButton[]
     metaTags?: Record<string, string>[]
     twoColumnsLayout?: boolean
     wideLayout?: boolean
-
-    // parent path name to get pure path without params
-    parentPathName?: string
   }
 }
