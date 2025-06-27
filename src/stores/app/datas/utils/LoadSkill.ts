@@ -217,7 +217,13 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
 
   skillSystem.skillRoot.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      st.skills.forEach(skill => skill.initTypes())
+      st.skills.forEach(skill => {
+        if (!skill.defaultEffect) {
+          const newEffect = skill.appendSkillEffect(0, 0, 0)
+          skill.setDefaultEffect(newEffect)
+        }
+        skill.initTypes()
+      })
     })
   })
 }
