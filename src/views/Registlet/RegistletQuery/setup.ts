@@ -1,12 +1,8 @@
 import { h, reactive } from 'vue'
 
-import { ResultContainer } from '@/lib/common/ResultContainer'
+import { CommonTextParseItemIds, ResultContainer } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
-import {
-  type TextParseItem,
-  getCommonTextParseItems,
-  handleParseText,
-} from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
@@ -25,20 +21,12 @@ export function useRegistletQueryState() {
   return registletQueryState
 }
 
-const getTextParseItems = (() => {
-  let items: TextParseItem[]
-  return () => {
-    if (!items) {
-      const commonTextParseItems = getCommonTextParseItems()
-      items = [commonTextParseItems.value, commonTextParseItems.glossaryTag]
-    }
-    return items
-  }
-})()
-
 export function getRegistletCaptionRender(handleValue: (value: string) => string) {
   return ({ text }: { text: string }) => {
-    const { parts } = handleParseText(text, getTextParseItems())
+    const { parts } = handleParseText(text, [
+      getCommonTextParseItem(CommonTextParseItemIds.Value),
+      getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag),
+    ])
     const childs = parts.map(part => {
       if (typeof part === 'string') {
         return h('span', part)

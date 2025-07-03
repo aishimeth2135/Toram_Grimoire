@@ -1,8 +1,13 @@
+import { defineState } from '@/shared/setup/State'
 import { toFloat, toInt } from '@/shared/utils/number'
 import { escapeRegExp, splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
-import { ResultContainerTypes, TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
+import {
+  CommonTextParseItemIds,
+  ResultContainerTypes,
+  TextResultContainerPartTypes,
+} from '@/lib/common/ResultContainer'
 import {
   ResultContainer,
   ResultContainerBase,
@@ -10,8 +15,10 @@ import {
   TextResultContainerPart,
 } from '@/lib/common/ResultContainer/index'
 import {
+  type TextParseHandler,
   type TextParseItem,
-  getCommonTextParseItems,
+  getCommonTextParseItemBase,
+  getCommonTextParseItemHandler,
   handleParseText,
 } from '@/lib/common/ResultContainer/parseText'
 
@@ -175,6 +182,56 @@ class SkillBranchStatResult extends SkillBranchResult {
   }
 }
 
+const useTextResultBaseParseItems = defineState(() => {
+  const glossaryTagHandler = getCommonTextParseItemHandler(CommonTextParseItemIds.GlossaryTag)
+  const glossaryTagItem: TextParseItem = {
+    ...getCommonTextParseItemBase(CommonTextParseItemIds.GlossaryTag),
+    handler(context) {
+      return SkillBranchTextResultPart.from(glossaryTagHandler(context))
+    },
+  }
+
+  const separateHandler = getCommonTextParseItemHandler(CommonTextParseItemIds.Separate)
+  const separateItem: TextParseItem = {
+    ...getCommonTextParseItemBase(CommonTextParseItemIds.Separate),
+    handler(context) {
+      return SkillBranchTextResultPart.from(separateHandler(context))
+    },
+  }
+
+  const getSkillQueryMarkHandler = (typeForSkillResultDipslay: string) =>
+    (context => {
+      const newPart = new SkillBranchTextResultPart(
+        TextResultContainerPartTypes.Other,
+        context.values[0]
+      )
+      newPart.subType = typeForSkillResultDipslay
+      return newPart
+    }) as TextParseHandler
+
+  const simpleMark: TextParseItem = {
+    id: '@mark-simple',
+    pattern: /!\[([^\]]+)\]/,
+    handler: getSkillQueryMarkHandler('mark'),
+  }
+  const skillMark: TextParseItem = {
+    id: '@mark-skill',
+    pattern: /!S\[([^\]]+)\]/,
+    handler: getSkillQueryMarkHandler('skill'),
+  }
+  const skillBranchMark: TextParseItem = {
+    id: '@mark-skill-branch',
+    pattern: /!B\[([^\]]+)\]/,
+    handler: getSkillQueryMarkHandler('branch'),
+  }
+
+  const getParseItems = (valueParseItem: TextParseItem): TextParseItem[] => {
+    return [glossaryTagItem, valueParseItem, separateItem, skillMark, skillBranchMark, simpleMark]
+  }
+
+  return { getParseItems }
+})
+
 type SkillBranchTextResultPartValue = SkillBranchTextResultPart | SkillBranchResult | string
 
 interface SkillBranchTextResultParseResult {
@@ -194,24 +251,18 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     rootValue: string,
     computedValue: (value: string) => string
   ): SkillBranchTextResultParseResult {
-    const commonParseItems = getCommonTextParseItems({ computedValue })
-
-    const originalHandlers = {
-      value: commonParseItems.value.handler,
-      separate: commonParseItems.separate.handler,
-      glossaryTag: commonParseItems.glossaryTag.handler,
-    }
-    commonParseItems.value.handler = context => {
-      return SkillBranchResult.from(originalHandlers.value(context), branch, key)
-    }
-    commonParseItems.separate.handler = context => {
-      return SkillBranchTextResultPart.from(originalHandlers.separate(context))
-    }
-    commonParseItems.glossaryTag.handler = context => {
-      return SkillBranchTextResultPart.from(originalHandlers.glossaryTag(context))
+    const valueParseHandlerBase = getCommonTextParseItemHandler(CommonTextParseItemIds.Value, {
+      computedValue,
+    })
+    const valueParseItem: TextParseItem = {
+      ...getCommonTextParseItemBase(CommonTextParseItemIds.Value),
+      handler(context) {
+        return SkillBranchResult.from(valueParseHandlerBase(context), branch, key)
+      },
     }
 
-    const items = [commonParseItems.glossaryTag, commonParseItems.value, commonParseItems.separate]
+    const { getParseItems } = useTextResultBaseParseItems()
+    const parseItems = getParseItems(valueParseItem)
 
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
@@ -219,26 +270,29 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
         if (values.length === 1 && !values[0]) {
           return
         }
+
+        const handler: TextParseHandler<SkillBranchTextResultPart> = context => {
+          const newPart = new SkillBranchTextResultPart(
+            TextResultContainerPartTypes.Other,
+            context.values[0]
+          )
+          newPart.subType = propKey
+          return newPart
+        }
+
         const item: TextParseItem<SkillBranchTextResultPart> = {
           id: propKey,
           pattern: new RegExp(`(${values.map(value => escapeRegExp(value)).join('|')})`),
-          handler(context) {
-            const newPart = new SkillBranchTextResultPart(
-              TextResultContainerPartTypes.Other,
-              context.values[0]
-            )
-            newPart.subType = propKey
-            return newPart
-          },
+          handler,
         }
-        items.push(item)
+        parseItems.push(item)
       }
     }
     handleOtherParse('skill')
-    handleOtherParse('mark')
     handleOtherParse('branch')
+    handleOtherParse('mark')
 
-    const result = handleParseText(rootValue, items)
+    const result = handleParseText(rootValue, parseItems)
 
     return {
       parts: result.parts as SkillBranchTextResultPartValue[],
@@ -263,7 +317,7 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
   }
 }
 
-class SkillBranchTextResultPart extends TextResultContainerPart {
+export class SkillBranchTextResultPart extends TextResultContainerPart {
   declare parts: SkillBranchTextResultPartValue[]
 
   static from(resultPart: TextResultContainerPart): SkillBranchTextResultPart {
