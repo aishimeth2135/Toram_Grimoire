@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { HandleLanguageData } from '@/shared/services/Language'
+import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
 import SkillSystem from '@/lib/Skill'
@@ -20,10 +21,8 @@ import type { CsvData, LangCsvData } from './DownloadDatas'
 function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
   const sr = skillSystem.skillRoot
 
-  const /* all */
-    ID = 0,
+  const ID = 0,
     CONFIRM = 1,
-    /* Skill */
     NAME = 1,
     DEFAULT_SET = 2,
     DEFAULT_SET_LIST = ['預設', '非預設', '預設/and', '非預設/and', '歷史紀錄'],
@@ -75,14 +74,21 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       DATE: 4,
     }
 
-  let curElement: string = ''
+  const enum SKillElementType {
+    SkillTreeCategory,
+    SkillTree,
+    Skill,
+    SkillEffect,
+  }
+
+  let curElement: SKillElementType
   let curSkillTreeCategory: SkillTreeCategory
   let curSkillTree: SkillTree
   let curSkill: Skill
   let curSkillEffect: SkillEffectBase | void
   let curSkillBranch: SkillBranch | void
 
-  // language data
+  // Handle language data
   HandleLanguageData(datas, {
     [EFFECT_BRANCH_ATTRIBUTE_VALUE]: LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE,
   })
@@ -93,7 +99,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
   }
 
   /**
-   * if branch id is empty, clone branches from previous effect
+   * If branch id is empty, clone branches from previous effect
    */
   const checkEffectEmpty = (
     row: string[],
@@ -112,7 +118,6 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       if (index === 0 || row.every(item => item === '')) {
         return
       }
-      //console.log(row);
 
       const id = toInt(row[ID])
       if (id !== null) {
@@ -120,11 +125,11 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
         if (confirmName === CONFIRM_SKILL_TREE_CATEGORY) {
           const name = row[SKILL_TREE_CATEGORY_NAME]
           curSkillTreeCategory = sr.appendSkillTreeCategory(id, name)
-          curElement = 'tree-category'
+          curElement = SKillElementType.SkillTreeCategory
         } else if (confirmName === CONFIRM_SKILL_TREE) {
           const name = row[SKILL_TREE_NAME]
           curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
-          curElement = 'tree'
+          curElement = SKillElementType.SkillTree
           if (row[SKILL_TREE_SIMULATOR_FLAG]) {
             curSkillTree.attrs.simulatorFlag = true
           }
@@ -132,7 +137,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           if (confirmName !== '') {
             const name = row[NAME]
             curSkill = curSkillTree.appendSkill(id, name)
-            curElement = 'skill'
+            curElement = SKillElementType.Skill
           }
 
           const mainWeapon = MAIN_WEAPON_LIST.indexOf(row[MAIN_WEAPON]),
@@ -152,7 +157,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
               row[HISTORY_EFFECT.DATE]
             )
           }
-          curElement = 'effect'
+          curElement = SKillElementType.SkillEffect
           if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
             if (defaultSelected === 0 || defaultSelected === 2) {
               curSkill.setDefaultEffect(curSkillEffect)
@@ -187,7 +192,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           return
         }
       }
-      if (curElement !== 'effect' || !curSkillEffect) {
+      if (curElement !== SKillElementType.SkillEffect || !curSkillEffect) {
         return
       }
       const bid = row[EFFECT_BRANCH_ID] || null
@@ -209,9 +214,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
         }
       }
     } catch (err) {
-      console.warn('[LoadSkill] unable to parse row:', row)
-      //console.log(e);
-      // console.log(row);
+      CommonLogger.warn('LoadSkill', 'Unable to parse row:', row)
     }
   })
 
@@ -301,10 +304,7 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
         }
       }
     } catch (error) {
-      console.groupCollapsed('[LoadSkillMain] unknown error')
-      console.warn(error)
-      console.warn(row)
-      console.groupEnd()
+      CommonLogger.start('LoadSkillMain', 'Unexpected error').log(error).log(row).end()
     }
   })
 }

@@ -77,7 +77,18 @@ class ResultContainer extends ResultContainerBase {
     return this._displayOptions
   }
 
-  mergeDisplayOptions(options: ResultContainerDisplayOptions | string | null) {
+  normalizeDisplayOptions<T extends ResultContainerDisplayOptions>(
+    options: T | string | null
+  ): T | null {
+    if (typeof options === 'string') {
+      return {
+        unit: options,
+      } as T
+    }
+    return options
+  }
+
+  mergeDisplayOptions(options: ResultContainerDisplayOptions | null) {
     if (!options) {
       return
     }

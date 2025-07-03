@@ -366,8 +366,11 @@ function computeBranchValueProps<Key extends string>(
   return propValues
 }
 
+interface HandleBranchValueOptions extends ResultContainerDisplayOptions {
+  toPersentage?: boolean
+}
 interface HandleBranchValuePropsMap {
-  [key: string]: ResultContainerDisplayOptions | string | null
+  [key: string]: HandleBranchValueOptions | string | null
 }
 type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
   [key in keyof PropMap]: SkillBranchResult
@@ -402,7 +405,17 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       originalFormula,
       propValues.get(propKey)!
     )
-    container.mergeDisplayOptions(propMap[propKey] as ResultContainerDisplayOptions | string)
+    const options = container.normalizeDisplayOptions<HandleBranchValueOptions>(propMap[propKey])
+    if (options?.toPersentage) {
+      container.handle(value => {
+        if (isNumberString(value)) {
+          return (parseFloat(value) * 100).toString()
+        }
+        return value
+      })
+      options.unit = '%'
+    }
+    container.mergeDisplayOptions(options)
 
     handleDisplayValue(container, helper)
     handleRegistletValue(container, helper)
@@ -499,7 +512,7 @@ function handleBranchStats(
     }
 
     const showData = stat.getShowData()
-    container.mergeDisplayOptions(showData.tail)
+    container.mergeDisplayOptions(container.normalizeDisplayOptions(showData.tail))
 
     handleHighlight(container)
 

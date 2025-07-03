@@ -6,18 +6,15 @@
         {{ t('skill-query.branch.heal.constant-prefix') }}
       </span>
       <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
-      <cy-icon
-        v-if="container.has('constant') && extraValueList.length !== 0"
-        icon="ic-round-add"
-      />
+      <cy-icon v-if="container.has('constant') && extraTextList.length !== 0" icon="ic-round-add" />
 
-      <template v-for="(item, idx) in extraValueList" :key="item.text + item.value">
+      <template v-for="(text, idx) in extraTextList" :key="text + idx">
         <span class="attr-item space-x-0.5">
-          <span>{{ item.text }}</span>
+          <span>{{ text }}</span>
           <cy-icon icon="ic-round-close" />
-          <span class="text-primary-50" v-html="item.value" />
+          <SkillBranchPropValue class="attr-item" :result="container.result(`@extra_value[${idx}]`)" />
         </span>
-        <cy-icon v-if="idx !== extraValueList.length - 1" icon="ic-round-add" />
+        <cy-icon v-if="idx !== extraTextList.length - 1" icon="ic-round-add" />
       </template>
     </div>
   </div>
@@ -42,16 +39,13 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 const { t } = useI18n()
 
-const extraValueList = computed(
+const extraTextList = computed(
   () =>
-    container.value.getCustomData('extraValueList') as {
-      text: string
-      value: string
-    }[]
+    container.value.getCustomData('extraTextList') as string[]
 )
 
 const isSingleValue = computed(() => {
-  return extraValueList.value.length === 0 && isNumberString(container.value.getValue('constant'))
+  return extraTextList.value.length === 0 && isNumberString(container.value.getValue('constant'))
 })
 </script>
 
@@ -62,7 +56,7 @@ const isSingleValue = computed(() => {
   @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }
 
-.heal-formula-main > .heal-formula-main-first + .attr-item {
+.heal-formula-main>.heal-formula-main-first+.attr-item {
   @apply pl-0;
 }
 </style>

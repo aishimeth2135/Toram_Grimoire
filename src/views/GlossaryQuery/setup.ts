@@ -1,17 +1,11 @@
-import { TextResultContainerPart } from '@/lib/common/ResultContainer'
+import { CommonTextParseItemIds, TextResultContainerPart } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
-import {
-  type TextParseItem,
-  getCommonTextParseItems,
-  getMarkTextParseItems,
-} from '@/lib/common/ResultContainer/parseText'
+import { type TextParseItem, getCommonTextParseItem } from '@/lib/common/ResultContainer/parseText'
 
 export const getTextParseItems = (() => {
   let items: TextParseItem[]
   return () => {
     if (!items) {
-      const commonTextParseItems = getCommonTextParseItems()
-      const markTextParseItems = getMarkTextParseItems()
       const lagacyGlossaryTagParseItem: TextParseItem = {
         id: 'glossary-tag--lagacy',
         pattern: /#([^\s]+)\s/g,
@@ -26,11 +20,11 @@ export const getTextParseItems = (() => {
         },
       }
       items = [
-        commonTextParseItems.glossaryTag,
+        getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag),
         lagacyGlossaryTagParseItem,
-        markTextParseItems.mark,
-        markTextParseItems.underline,
-        commonTextParseItems.separate,
+        getCommonTextParseItem(CommonTextParseItemIds.Mark),
+        getCommonTextParseItem(CommonTextParseItemIds.Underline),
+        getCommonTextParseItem(CommonTextParseItemIds.Separate),
       ]
     }
     return items

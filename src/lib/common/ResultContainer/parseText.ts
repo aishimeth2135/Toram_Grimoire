@@ -2,7 +2,7 @@ import { ResultContainer, TextResultContainerPart, type TextResultContainerPartV
 
 import { CommonLogger } from '@/shared/services/Logger'
 
-import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'
+import { CommonTextParseItemIds, ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
 interface TextParseContext {
   /**
@@ -14,7 +14,7 @@ interface TextParseContext {
   unit: string
 }
 
-interface TextParseHandler<
+export interface TextParseHandler<
   Value extends TextResultContainerPartValue = TextResultContainerPartValue,
 > {
   (context: TextParseContext): Value
@@ -188,75 +188,99 @@ interface ParseValueOptions {
   computedValue?: (value: string) => string
 }
 
-export function getCommonTextParseItems(options: ParseValueOptions = {}) {
-  const units = ['%', 'm']
-
-  const separateParse: TextParseItem<TextResultContainerPart> = {
-    id: 'separate',
-    pattern: /\(\(((?:[^)]|\)(?!\)))+)\)\)/,
-    handler: generateCommonHandler(TextResultContainerPartTypes.Separate),
-    units,
-  }
-  const valueParse: TextParseItem<ResultContainer> = {
-    id: 'value',
-    pattern: /\$\{([^}]+)\}/,
-    handler(context) {
-      const value = context.values[0]
-      const computedValue = options.computedValue?.(value) ?? value
-      const container = new ResultContainer(ResultContainerTypes.Number, value, computedValue)
-      container.displayOptions.unit = context.unit
-      return container
-    },
-    units,
-  }
-  const glossaryTagParse: TextParseItem<TextResultContainerPart> = {
-    id: 'glossary-tag',
-    pattern: /#\[([^\]]+)\](?:\[([^\]]+)\])?/,
-    handler(context) {
-      const [value1, value2] = context.values
-      if (value2) {
-        const newPart = new TextResultContainerPart(
-          TextResultContainerPartTypes.GlossaryTag,
-          value2
-        )
-        newPart.metadata.set('display-name', value1)
-        return newPart
+export function getCommonTextParseItemBase(
+  id: CommonTextParseItemIds
+): Omit<TextParseItem, 'handler'> {
+  switch (id) {
+    case CommonTextParseItemIds.Separate:
+      return {
+        id: CommonTextParseItemIds.Separate,
+        pattern: /\(\(((?:[^)]|\)(?!\)))+)\)\)/,
+        units: ['%', 'm'],
       }
-      return new TextResultContainerPart(TextResultContainerPartTypes.GlossaryTag, value1)
-    },
-    patternGroupsLength: 2,
-  }
-
-  return {
-    separate: separateParse,
-    value: valueParse,
-    glossaryTag: glossaryTagParse,
+    case CommonTextParseItemIds.Value:
+      return {
+        id: CommonTextParseItemIds.Value,
+        pattern: /\$\{([^}]+)\}/,
+        units: ['%', 'm'],
+      }
+    case CommonTextParseItemIds.GlossaryTag:
+      return {
+        id: CommonTextParseItemIds.GlossaryTag,
+        pattern: /#\[([^\]]+)\](?:\[([^\]]+)\])?/,
+        patternGroupsLength: 2,
+      }
+    case CommonTextParseItemIds.Mark:
+      return {
+        id: CommonTextParseItemIds.Mark,
+        pattern: /\(\(!((?:(?!\(\().)+)\)\)/,
+      }
+    case CommonTextParseItemIds.Underline:
+      return {
+        id: CommonTextParseItemIds.Underline,
+        pattern: /\(\(_((?:(?!\(\().)+)\)\)/,
+      }
   }
 }
 
-export function getMarkTextParseItems() {
-  const markParse: TextParseItem = {
-    id: 'mark',
-    pattern: /\(\(!((?:(?!\(\().)+)\)\)/,
-    handler(context) {
-      const [value] = context.values
-      const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
-      newPart.subType = 'mark'
-      return newPart
-    },
+type CommonTextParseItemHandlerTypeMap = {
+  [CommonTextParseItemIds.Separate]: TextParseHandler<TextResultContainerPart>
+  [CommonTextParseItemIds.Value]: TextParseHandler<ResultContainer>
+  [CommonTextParseItemIds.GlossaryTag]: TextParseHandler<TextResultContainerPart>
+  [CommonTextParseItemIds.Mark]: TextParseHandler<TextResultContainerPart>
+  [CommonTextParseItemIds.Underline]: TextParseHandler<TextResultContainerPart>
+}
+
+export function getCommonTextParseItemHandler<Id extends CommonTextParseItemIds>(
+  id: Id,
+  options?: ParseValueOptions
+) {
+  switch (id) {
+    case CommonTextParseItemIds.Separate:
+      return generateCommonHandler(
+        TextResultContainerPartTypes.Separate
+      ) as CommonTextParseItemHandlerTypeMap[Id]
+    case CommonTextParseItemIds.Value:
+      return (context => {
+        const value = context.values[0]
+        const computedValue = options?.computedValue?.(value) ?? value
+        const container = new ResultContainer(ResultContainerTypes.Number, value, computedValue)
+        container.displayOptions.unit = context.unit
+        return container
+      }) as CommonTextParseItemHandlerTypeMap[Id]
+    case CommonTextParseItemIds.GlossaryTag:
+      return (context => {
+        const [value1, value2] = context.values
+        if (value2) {
+          const newPart = new TextResultContainerPart(
+            TextResultContainerPartTypes.GlossaryTag,
+            value2
+          )
+          newPart.metadata.set('display-name', value1)
+          return newPart
+        }
+        return new TextResultContainerPart(TextResultContainerPartTypes.GlossaryTag, value1)
+      }) as CommonTextParseItemHandlerTypeMap[Id]
+    case CommonTextParseItemIds.Mark:
+      return (context => {
+        const [value] = context.values
+        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
+        newPart.subType = 'mark'
+        return newPart
+      }) as CommonTextParseItemHandlerTypeMap[Id]
+    case CommonTextParseItemIds.Underline:
+      return (context => {
+        const [value] = context.values
+        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
+        newPart.subType = 'underline'
+        return newPart
+      }) as CommonTextParseItemHandlerTypeMap[Id]
   }
-  const underlineParse: TextParseItem = {
-    id: 'underline',
-    pattern: /\(\(_((?:(?!\(\().)+)\)\)/,
-    handler(context) {
-      const [value] = context.values
-      const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
-      newPart.subType = 'underline'
-      return newPart
-    },
-  }
+}
+
+export function getCommonTextParseItem(id: CommonTextParseItemIds, options?: ParseValueOptions) {
   return {
-    mark: markParse,
-    underline: underlineParse,
+    ...getCommonTextParseItemBase(id),
+    handler: getCommonTextParseItemHandler(id, options),
   }
 }

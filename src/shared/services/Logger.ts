@@ -49,14 +49,14 @@ class CommonLogger {
     return CommonLogger
   }
 
-  static warn(scope: string, desc: string): void {
+  static warn(scope: string, desc: string, ...datas: any[]): void {
     const contents = CommonLogger._handleLoggerContent(scope, desc, 'warn')
-    console.log(...contents)
+    console.log(...contents, ...datas)
   }
 
-  static info(scope: string, desc: string): void {
+  static info(scope: string, desc: string, ...datas: any[]): void {
     const contents = CommonLogger._handleLoggerContent(scope, desc, 'info')
-    console.log(...contents)
+    console.log(...contents, ...datas)
   }
 
   static start(scope: string, desc: string, collapsed: boolean = true) {

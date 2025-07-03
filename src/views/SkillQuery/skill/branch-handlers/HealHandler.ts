@@ -1,13 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
-import { isNumberString, splitComma } from '@/shared/utils/string'
+import { splitComma } from '@/shared/utils/string'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import {
-  type HandleBranchValuePropsMap,
-  computeBranchValue,
-  computedBranchHelper,
-} from '@/lib/Skill/SkillComputing/compute'
+import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
 
 import {
   type HandleBranchLangPropsMap,
@@ -16,7 +12,6 @@ import {
   handleDisplayData,
 } from './handle'
 import MapContainer from './handle/MapContainer'
-import { numberStringToPercentage } from './handle/utils'
 
 export default function HealHandler<BranchItem extends SkillBranchItem>(
   computing: SkillComputingContainer,
@@ -44,24 +39,18 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
 
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['type'])
 
-  const extraValueList: { text: string; value: string }[] = []
+  const extraTextList: string[] = []
   if (props.has('extra_value') && props.has('extra_text')) {
-    const originalValues = props.get('extra_value')!.split(/\s*,,\s*/)
-    const helper = computedBranchHelper(computing, branchItem, originalValues)
-    const values = originalValues.map(item => {
-      let res = computeBranchValue(item, helper)
-      if (isNumberString(res)) {
-        res = numberStringToPercentage(res)
-      }
-      return res
-    })
+    props
+      .get('extra_value')!
+      .split(/\s*,,\s*/)
+      .forEach((item, idx) => {
+        const key = `@extra_value[${idx}]`
+        props.set(key, item)
+        valuePropsMap.set(key, { toPersentage: true })
+      })
     const texts = splitComma(props.get('extra_text')!)
-    extraValueList.push(
-      ...values.map((value, idx) => ({
-        text: texts[idx] || '@',
-        value,
-      }))
-    )
+    extraTextList.push(...texts)
   }
 
   const pureDatas = ['name', 'target']
@@ -73,7 +62,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
     pureDatas,
   })
 
-  displayData.setCustomData('extraValueList', extraValueList)
+  displayData.setCustomData('extraTextList', extraTextList)
 
   return displayData
 }

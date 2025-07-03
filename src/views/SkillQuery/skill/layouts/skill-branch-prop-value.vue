@@ -18,9 +18,10 @@ import {
   SkillBranchStatResult,
   SkillBranchTextResult,
 } from '@/lib/Skill/SkillComputing'
-import { getCommonTextParseItems, handleParseText } from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
 
 import { RenderContainerResult, RenderPlainTextParts, RenderTextParts } from './setup'
+import { CommonTextParseItemIds } from '@/lib/common/ResultContainer'
 
 interface Props {
   result: SkillBranchResultBase | null
@@ -32,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   parseGlossaryTag: false,
 })
 
-const glossaryTagParseItem = getCommonTextParseItems().glossaryTag
+const glossaryTagParseItem = getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag)
 
 const RenderTextResult = (res: SkillBranchTextResult) => {
   return h('div', RenderTextParts(res.parts))
