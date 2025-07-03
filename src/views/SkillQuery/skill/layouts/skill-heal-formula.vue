@@ -12,7 +12,10 @@
         <span class="attr-item space-x-0.5">
           <span>{{ text }}</span>
           <cy-icon icon="ic-round-close" />
-          <SkillBranchPropValue class="attr-item" :result="container.result(`@extra_value[${idx}]`)" />
+          <SkillBranchPropValue
+            class="attr-item"
+            :result="container.result(`@extra_value[${idx}]`)"
+          />
         </span>
         <cy-icon v-if="idx !== extraTextList.length - 1" icon="ic-round-add" />
       </template>
@@ -39,10 +42,7 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 const { t } = useI18n()
 
-const extraTextList = computed(
-  () =>
-    container.value.getCustomData('extraTextList') as string[]
-)
+const extraTextList = computed(() => container.value.getCustomData('extraTextList') as string[])
 
 const isSingleValue = computed(() => {
   return extraTextList.value.length === 0 && isNumberString(container.value.getValue('constant'))
@@ -56,7 +56,7 @@ const isSingleValue = computed(() => {
   @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }
 
-.heal-formula-main>.heal-formula-main-first+.attr-item {
+.heal-formula-main > .heal-formula-main-first + .attr-item {
   @apply pl-0;
 }
 </style>

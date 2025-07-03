@@ -19,9 +19,16 @@ const materialTypes = [0, 1, 2, 3, 4, 5]
       {{ t('enchant-simulator.common-options') }}
     </div>
     <div class="space-y-2 py-2">
-      <cy-input-counter v-model:value="config.characterLevel" :step="10"
-        :title="t('enchant-simulator.character-level')" />
-      <cy-input-counter v-model:value="config.smithLevel" :step="10" :title="t('enchant-simulator.smith-level')" />
+      <cy-input-counter
+        v-model:value="config.characterLevel"
+        :step="10"
+        :title="t('enchant-simulator.character-level')"
+      />
+      <cy-input-counter
+        v-model:value="config.smithLevel"
+        :step="10"
+        :title="t('enchant-simulator.smith-level')"
+      />
     </div>
     <div class="mt-2 text-sm text-gray-50">
       {{ t('enchant-simulator.skill-level-options') }}
@@ -36,9 +43,13 @@ const materialTypes = [0, 1, 2, 3, 4, 5]
         </div>
       </div>
       <div>
-        <cy-input-counter v-model:value="config.materialAnvilSkillLevelSum" :step="5"
-          :title="t('enchant-simulator.material-anvil-skill-level-sum')" :range="[0, 40]" />
-        <div class="text-sm text-primary-30 mt-1">
+        <cy-input-counter
+          v-model:value="config.materialAnvilSkillLevelSum"
+          :step="5"
+          :title="t('enchant-simulator.material-anvil-skill-level-sum')"
+          :range="[0, 40]"
+        />
+        <div class="mt-1 text-sm text-primary-30">
           {{ t('enchant-simulator.material-anvil-skill-level-desc') }}
         </div>
       </div>
@@ -47,9 +58,13 @@ const materialTypes = [0, 1, 2, 3, 4, 5]
       {{ t('enchant-simulator.material-skill-level-options') }}
     </div>
     <div class="space-y-2 py-2">
-      <cy-input-counter v-for="materialType in materialTypes" :key="materialType"
-        v-model:value="config.materialSkillLevels[materialType]" :range="[0, 10]"
-        :title="materialTitleList[materialType]" />
+      <cy-input-counter
+        v-for="materialType in materialTypes"
+        :key="materialType"
+        v-model:value="config.materialSkillLevels[materialType]"
+        :range="[0, 10]"
+        :title="materialTitleList[materialType]"
+      />
     </div>
   </div>
 </template>

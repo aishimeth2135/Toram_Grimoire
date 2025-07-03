@@ -1,23 +1,49 @@
 <template>
   <div class="flex">
-    <div class="cy--input-counter shadow-xs outline-hidden border border-l-2 bg-white duration-300"
-      :class="rootClassList" :style="rootStyle">
-      <div v-if="$slots['title'] || title" class="mr-3 text-primary-80 inline-flex items-center">
+    <div
+      class="cy--input-counter shadow-xs outline-hidden border border-l-2 bg-white duration-300"
+      :class="rootClassList"
+      :style="rootStyle"
+    >
+      <div v-if="$slots['title'] || title" class="mr-3 inline-flex items-center text-primary-80">
         <slot name="title">
           {{ title }}
         </slot>
       </div>
       <div class="counter-content">
-        <cy-button-icon v-if="minButton && range[0] !== null" icon="akar-icons:circle-chevron-left"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken" @click="setValue(range[0]!)" />
-        <cy-button-icon icon="ic-round-remove-circle-outline" :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken" @click="setValue(value - step)" />
-        <input v-model.number.lazy="inputValue" type="number" @click="selectInput($event)" @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)" />
-        <cy-button-icon icon="ic-round-add-circle-outline" :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken" @click="setValue(value + step)" />
-        <cy-button-icon v-if="maxButton && range[1] !== null" icon="akar-icons:circle-chevron-right"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken" @click="setValue(range[1]!)" />
+        <cy-button-icon
+          v-if="minButton && range[0] !== null"
+          icon="akar-icons:circle-chevron-left"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[0]!)"
+        />
+        <cy-button-icon
+          icon="ic-round-remove-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value - step)"
+        />
+        <input
+          v-model.number.lazy="inputValue"
+          type="number"
+          @click="selectInput($event)"
+          @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)"
+        />
+        <cy-button-icon
+          icon="ic-round-add-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value + step)"
+        />
+        <cy-button-icon
+          v-if="maxButton && range[1] !== null"
+          icon="akar-icons:circle-chevron-right"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[1]!)"
+        />
         <span v-if="$slots['unit'] || unit" class="ml-1 text-sm">
           <slot name="unit">
             {{ unit }}
@@ -74,9 +100,9 @@ const mainColorInstance = computed(() => new Color(props.mainColor))
 
 const rootClassList = computed(() => {
   return {
-    'inline': props.inline,
+    inline: props.inline,
     ['border-' + props.mainColor]: !focus.value,
-    'disabled': props.disabled,
+    disabled: props.disabled,
     ['border-' + mainColorInstance.value.darken]: !props.inline && focus.value,
   } as Record<string, boolean>
 })
@@ -116,7 +142,7 @@ const setInputFocus = (value: boolean) => {
   focus.value = value
 }
 const selectInput = (evt: MouseEvent) => {
-  ; (evt.target as HTMLInputElement).select()
+  ;(evt.target as HTMLInputElement).select()
 }
 const setValue = (value: number) => {
   inputValue.value = value
@@ -139,11 +165,11 @@ const setValue = (value: number) => {
     background-color: transparent;
   }
 
-  &>.counter-content {
+  & > .counter-content {
     display: inline-flex;
     align-items: center;
 
-    &>input {
+    & > input {
       width: var(--input-width);
       border: 0;
       outline: 0;

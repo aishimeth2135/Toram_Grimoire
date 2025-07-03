@@ -1,8 +1,15 @@
 <template>
   <div>
-    <SkillBranchLayoutNormal :computing="computing" :container="container" name-icon="ri-sword-fill"
-      :sub-contents="subContents" :has-area="hasArea" :extra-columns="extraSuffixBranchDatas" main-icon="mdi-sword"
-      :main-title="mainTitie">
+    <SkillBranchLayoutNormal
+      :computing="computing"
+      :container="container"
+      name-icon="ri-sword-fill"
+      :sub-contents="subContents"
+      :has-area="hasArea"
+      :extra-columns="extraSuffixBranchDatas"
+      main-icon="mdi-sword"
+      :main-title="mainTitie"
+    >
       <SkillDamageFormula :container="container" />
       <template #sub-content(frequency)>
         <i18n-t keypath="skill-query.branch.damage.frequency-caption" tag="span" scope="global">
@@ -12,7 +19,11 @@
         </i18n-t>
       </template>
       <template #sub-content(duration|cycle)>
-        <i18n-t keypath="skill-query.branch.damage.duration-caption-with-cycle" tag="span" scope="global">
+        <i18n-t
+          keypath="skill-query.branch.damage.duration-caption-with-cycle"
+          tag="span"
+          scope="global"
+        >
           <template #duration>
             <SkillBranchPropValue :result="container.result('duration')" />
           </template>
@@ -22,8 +33,11 @@
         </i18n-t>
       </template>
       <template #extra-columns-start>
-        <SkillBranchExtraColumn v-if="container.has('dual_element')" icon="bx-bx-circle"
-          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')">
+        <SkillBranchExtraColumn
+          v-if="container.has('dual_element')"
+          icon="bx-bx-circle"
+          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
+        >
           <div class="flex items-center py-0.5">
             <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
@@ -31,8 +45,12 @@
             </div>
           </div>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn v-for="sufContainer in dualElementSuffixBranchItems" :key="sufContainer.instanceId"
-          icon="ic:round-done" :title="sufContainer.get('condition')">
+        <SkillBranchExtraColumn
+          v-for="sufContainer in dualElementSuffixBranchItems"
+          :key="sufContainer.instanceId"
+          icon="ic:round-done"
+          :title="sufContainer.get('condition')"
+        >
           <div class="flex items-center py-0.5">
             <GlossaryTagPopover class="mr-2" :name="t('skill-query.branch.dual-element-title')" />
             <div class="text-violet-60">
@@ -40,8 +58,11 @@
             </div>
           </div>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn v-if="container.get('ailment_name')" icon="mdi:creation"
-          :title="t('skill-query.branch.ailment-title')">
+        <SkillBranchExtraColumn
+          v-if="container.get('ailment_name')"
+          icon="mdi:creation"
+          :title="t('skill-query.branch.ailment-title')"
+        >
           <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="container.result('ailment_chance')" />
@@ -51,8 +72,12 @@
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
-        <SkillBranchExtraColumn v-for="sufContainer in ailmentSuffixBranchItems" :key="sufContainer.instanceId"
-          icon="mdi:creation" :title="sufContainer.get('condition')">
+        <SkillBranchExtraColumn
+          v-for="sufContainer in ailmentSuffixBranchItems"
+          :key="sufContainer.instanceId"
+          icon="mdi:creation"
+          :title="sufContainer.get('condition')"
+        >
           <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="sufContainer.result('ailment_chance')" />
@@ -121,7 +146,6 @@ const mainTitie = computed(() => {
 const getElementIcon = (value: string) => {
   return ELEMENT_ICON_MAPPING[value] || 'bx-bx-circle'
 }
-
 
 const getBoolIcon = (value: string): string => {
   const mapping = {

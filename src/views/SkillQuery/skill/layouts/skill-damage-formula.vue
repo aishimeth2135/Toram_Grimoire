@@ -2,7 +2,10 @@
   <div>
     <div class="damage-formula-main inline-flex flex-wrap items-center">
       <div class="damage-formula-main-first" />
-      <span v-if="container.has('extra_constant') && frequencyVisible" class="divider border-orange-60" />
+      <span
+        v-if="container.has('extra_constant') && frequencyVisible"
+        class="divider border-orange-60"
+      />
       <span v-if="container.has('constant')" class="divider" />
       <span v-if="container.has('base')" class="attr-item">
         {{ container.get('base') }}
@@ -14,16 +17,29 @@
       <SkillBranchPropValue class="attr-item" :result="container.result('multiplier')" />
       <cy-icon v-if="container.has('extra_constant')" icon="ic-round-add" />
       <SkillBranchPropValue class="attr-item" :result="container.result('extra_constant')" />
-      <span v-if="container.has('extra_constant') && frequencyVisible" class="divider border-orange-60" />
+      <span
+        v-if="container.has('extra_constant') && frequencyVisible"
+        class="divider border-orange-60"
+      />
       <cy-icon v-if="frequencyVisible && container.has('frequency')" icon="ic-round-close" />
-      <SkillBranchPropValue v-if="frequencyVisible" class="attr-item" :result="container.result('frequency')" />
+      <SkillBranchPropValue
+        v-if="frequencyVisible"
+        class="attr-item"
+        :result="container.result('frequency')"
+      />
     </div>
-    <div v-if="container.has('@custom-base-caption')" class="mb-2.5 flex flex-wrap items-center pl-2 text-sm">
+    <div
+      v-if="container.has('@custom-base-caption')"
+      class="mb-2.5 flex flex-wrap items-center pl-2 text-sm"
+    >
       <cy-icon small class="text-fuchsia-30" />
-      <span class=" text-fuchsia-60 ml-1">
+      <span class="ml-1 text-fuchsia-60">
         {{ container.get('base') }}
       </span>
-      <SkillBranchPropValue class="pl-3 text-primary-50" :result="container.result('@custom-base-caption')" />
+      <SkillBranchPropValue
+        class="pl-3 text-primary-50"
+        :result="container.result('@custom-base-caption')"
+      />
     </div>
   </div>
 </template>
@@ -59,11 +75,11 @@ const frequencyVisible = computed(() => {
   @apply my-1 inline-flex items-center px-1.5 py-0.5;
 }
 
-.damage-formula-main>.damage-formula-main-first+.divider {
+.damage-formula-main > .damage-formula-main-first + .divider {
   @apply ml-0.5;
 }
 
-.damage-formula-main>.damage-formula-main-first+.attr-item {
+.damage-formula-main > .damage-formula-main-first + .attr-item {
   @apply pl-0;
 }
 </style>

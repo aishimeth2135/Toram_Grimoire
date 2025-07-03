@@ -19,7 +19,10 @@
       </div>
     </div>
     <div class="mt-4 space-y-6">
-      <AppSettingsRow :title="t('app.settings.switch-font.title')" title-icon="ic-round-text-fields">
+      <AppSettingsRow
+        :title="t('app.settings.switch-font.title')"
+        title-icon="ic-round-text-fields"
+      >
         <template #caption>
           {{ t('app.settings.switch-font.caption') }}
         </template>
@@ -42,7 +45,13 @@
           {{ t('app.settings.set-rem.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" class="mr-2" align-v="start">
+          <cy-icon-text
+            icon="bx-bx-error-circle"
+            small
+            text-color="primary-50"
+            class="mr-2"
+            align-v="start"
+          >
             {{ t('app.settings.set-rem.tips-1') }}
           </cy-icon-text>
         </template>
@@ -61,7 +70,13 @@
           {{ t('app.settings.primary-language.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" class="mr-2" align-v="start">
+          <cy-icon-text
+            icon="bx-bx-error-circle"
+            small
+            text-color="primary-50"
+            class="mr-2"
+            align-v="start"
+          >
             {{ t('app.settings.primary-language.tips-1') }}
           </cy-icon-text>
           <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
@@ -69,8 +84,12 @@
           </cy-icon-text>
         </template>
         <template #actions>
-          <cy-button-radio v-for="(item, idx) in primaryLanguageList" :key="item" :selected="primaryLanguage === idx"
-            @click="setLanguage(0, idx)">
+          <cy-button-radio
+            v-for="(item, idx) in primaryLanguageList"
+            :key="item"
+            :selected="primaryLanguage === idx"
+            @click="setLanguage(0, idx)"
+          >
             {{ t('app.settings.primary-language.lang-title.' + item) }}
           </cy-button-radio>
         </template>
@@ -80,7 +99,13 @@
               {{ t('app.settings.secondary-language.caption') }}
             </template>
             <template #caption-sub>
-              <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start" class="mr-2">
+              <cy-icon-text
+                icon="bx-bx-error-circle"
+                small
+                text-color="primary-50"
+                align-v="start"
+                class="mr-2"
+              >
                 {{ t('app.settings.secondary-language.tips-1') }}
               </cy-icon-text>
               <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
@@ -88,15 +113,22 @@
               </cy-icon-text>
             </template>
             <template #actions>
-              <cy-button-radio v-for="(item, idx) in fallbackLanguageList" :key="item"
-                :selected="fallbackLanguage === idx" @click="setLanguage(1, idx)">
+              <cy-button-radio
+                v-for="(item, idx) in fallbackLanguageList"
+                :key="item"
+                :selected="fallbackLanguage === idx"
+                @click="setLanguage(1, idx)"
+              >
                 {{ t('app.settings.primary-language.lang-title.' + item) }}
               </cy-button-radio>
             </template>
           </AppSettingsRow>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow :title="t('app.settings.clear-spreadsheets-caches.title')" title-icon="carbon-cloud-data-ops">
+      <AppSettingsRow
+        :title="t('app.settings.clear-spreadsheets-caches.title')"
+        title-icon="carbon-cloud-data-ops"
+      >
         <template #caption>
           {{ t('app.settings.clear-spreadsheets-caches.caption') }}
         </template>

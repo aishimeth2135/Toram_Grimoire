@@ -18,10 +18,10 @@ import {
   SkillBranchStatResult,
   SkillBranchTextResult,
 } from '@/lib/Skill/SkillComputing'
+import { CommonTextParseItemIds } from '@/lib/common/ResultContainer'
 import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
 
 import { RenderContainerResult, RenderPlainTextParts, RenderTextParts } from './setup'
-import { CommonTextParseItemIds } from '@/lib/common/ResultContainer'
 
 interface Props {
   result: SkillBranchResultBase | null

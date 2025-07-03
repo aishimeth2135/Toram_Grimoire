@@ -25,18 +25,29 @@
           </div>
         </div>
       </div>
-      <div v-if="subContentDatas && subContentDatas.length > 0" class="flex items-start py-1.5 pl-2.5">
+      <div
+        v-if="subContentDatas && subContentDatas.length > 0"
+        class="flex items-start py-1.5 pl-2.5"
+      >
         <IconCircle icon="mdi:help" />
         <div class="border-y border-transparent pl-4 pr-2 pt-1">
-          <span v-for="contentData in subContentDatas" :key="contentData.key"
-            class="my-0.5 mr-3 inline-flex items-center text-sm" :class="contentData.colorClass">
+          <span
+            v-for="contentData in subContentDatas"
+            :key="contentData.key"
+            class="my-0.5 mr-3 inline-flex items-center text-sm"
+            :class="contentData.colorClass"
+          >
             <cy-icon small :icon="contentData.icon" :class="contentData.colorClass" />
             <div class="ml-1 flex items-center">
               <slot :name="`sub-content(${contentData.key})`">
                 <span v-if="typeof contentData.title === 'string'" class="prop-value-wrapper">
                   {{ contentData.title }}
                 </span>
-                <SkillBranchPropValue v-else class="prop-value-wrapper" :result="contentData.title" />
+                <SkillBranchPropValue
+                  v-else
+                  class="prop-value-wrapper"
+                  :result="contentData.title"
+                />
               </slot>
               <span v-if="contentData.value" class="prop-value-wrapper ml-1.5 text-primary-50">
                 {{ contentData.value }}
@@ -75,9 +86,16 @@
       </div>
       <div v-if="hasArea" class="py-1.5">
         <div class="flex items-center pl-2">
-          <cy-button-circle :selected="contents.areaDetail" icon="carbon:zoom-in-area" small
-            @click.stop="toggle('contents/areaDetail')" />
-          <div class="cursor-pointer pl-4 text-primary-30" @click.stop="toggle('contents/areaDetail')">
+          <cy-button-circle
+            :selected="contents.areaDetail"
+            icon="carbon:zoom-in-area"
+            small
+            @click.stop="toggle('contents/areaDetail')"
+          />
+          <div
+            class="cursor-pointer pl-4 text-primary-30"
+            @click.stop="toggle('contents/areaDetail')"
+          >
             {{ t('skill-query.branch.skill-area.button-text') }}
           </div>
         </div>
@@ -90,8 +108,14 @@
       <div class="ml-7 h-3 border-l-1 border-primary-20" />
       <div class="rounded-sm border-1 border-primary-20 bg-white pb-2 pt-2.5">
         <slot name="extra-columns-start" />
-        <SkillBranchExtraColumn v-for="suffixData in extraColumns" :key="suffixData.id" :icon="suffixData.icon"
-          :title="suffixData.title" :result="suffixData.result" :stat-containers="suffixData.statContainers" />
+        <SkillBranchExtraColumn
+          v-for="suffixData in extraColumns"
+          :key="suffixData.id"
+          :icon="suffixData.icon"
+          :title="suffixData.title"
+          :result="suffixData.result"
+          :stat-containers="suffixData.statContainers"
+        />
       </div>
     </template>
   </div>
