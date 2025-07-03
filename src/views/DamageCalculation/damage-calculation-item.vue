@@ -1,89 +1,43 @@
 <template>
-  <div
-    v-if="currentContainer"
-    class="flex items-start"
+  <div v-if="currentContainer" class="flex items-start"
     :style="{ marginLeft: root ? '1.8rem' : (maxLayer - layer) * 0.5 + 'rem' }"
-    :class="{ 'opacity-50': currentContainer.hidden }"
-  >
-    <div
-      class="bg-primary-10/50 w-20 rounded-md p-2 text-center text-primary-80"
-      :class="{ 'opacity-60': !currentContainerEnabled }"
-    >
+    :class="{ 'opacity-50': currentContainer.hidden }">
+    <div class="bg-primary-10/50 w-20 rounded-md p-2 text-center text-primary-80"
+      :class="{ 'opacity-60': !currentContainerEnabled }">
       {{ currentContainerResult }}
     </div>
     <div class="space-y-4">
-      <div
-        v-for="container in editableContainers"
-        :key="container.base.id"
-        class="flex items-start"
-      >
+      <div v-for="container in editableContainers" :key="container.base.id" class="flex items-start">
         <div class="flex h-10 items-center">
-          <cy-button-toggle
-            v-model:selected="container.enabled"
-            :disabled="!container.base.controls.toggle"
-          />
+          <cy-button-toggle v-model:selected="container.enabled" :disabled="!container.base.controls.toggle" />
         </div>
         <div class="space-y-2" :class="{ 'opacity-60': !container.enabled && !container.hidden }">
-          <div
-            v-for="item in getContainerItems(container)"
-            :key="item.base.id"
-            class="flex items-center"
-          >
-            <cy-input-counter
-              v-if="editedItem !== item"
-              v-model:value="item.value"
-              :range="[item.base.min, item.base.max]"
-              :step="item.base.step"
-              input-width="3rem"
-            >
+          <div v-for="item in getContainerItems(container)" :key="item.base.id" class="flex items-center">
+            <cy-button-check v-if="container.selectable" inline :selected="container.currentItem === item"
+              @click="container!.selectItem(item.base.id)" />
+            <cy-input-counter v-if="editedItem !== item" v-model:value="item.value"
+              :range="[item.base.min, item.base.max]" :step="item.base.step" input-width="3rem">
               <template #title>
-                <cy-icon-text v-if="!container.selectable">
-                  <span
-                    v-if="!item.isCustom()"
-                    v-html="markText(t('damage-calculation.item-base-titles.' + item.base.id))"
-                  ></span>
-                  <template v-else>
-                    {{ (item as CalcItemCustom).name }}
-                  </template>
-                </cy-icon-text>
-                <cy-button-check
-                  v-else
-                  inline
-                  :selected="container.currentItem === item"
-                  @click="container!.selectItem(item.base.id)"
-                >
-                  {{ t('damage-calculation.item-base-titles.' + item.base.id) }}
-                </cy-button-check>
+                <span v-if="!item.isCustom()"
+                  v-html="markText(t('damage-calculation.item-base-titles.' + item.base.id))"></span>
+                <template v-else>
+                  {{ (item as CalcItemCustom).name }}
+                </template>
               </template>
               <template #unit>
                 {{ item.base.unit }}
               </template>
             </cy-input-counter>
-            <cy-title-input
-              v-else-if="item instanceof CalcItemCustom"
-              v-model:value="item.name"
-              class="w-64"
-              @keyup.enter="toggleEditedItem(null)"
-            />
-            <cy-button-icon
-              v-if="item.isCustom()"
-              icon="ant-design:edit-outlined"
-              class="ml-3"
-              :selected="editedItem === item"
-              @click="toggleEditedItem(item)"
-            />
-            <cy-button-icon
-              v-if="item.isCustom()"
-              icon="jam:close-circle"
-              class="ml-2"
-              @click="removeCustomItem(item)"
-            />
+            <cy-title-input v-else-if="item instanceof CalcItemCustom" v-model:value="item.name" class="w-64"
+              @keyup.enter="toggleEditedItem(null)" />
+            <cy-button-icon v-if="item.isCustom()" icon="ant-design:edit-outlined" class="ml-3"
+              :selected="editedItem === item" @click="toggleEditedItem(item)" />
+            <cy-button-icon v-if="item.isCustom()" icon="jam:close-circle" class="ml-2"
+              @click="removeCustomItem(item)" />
           </div>
-          <div
-            v-if="container.customItemAddable"
+          <div v-if="container.customItemAddable"
             class="flex w-64 cursor-pointer items-center justify-center border border-primary-50 bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
-            @click="createCustomItem"
-          >
+            @click="createCustomItem">
             <cy-icon-text icon="ic:round-add-circle-outline" text-color="primary-50">
               {{ t('damage-calculation.create-custom-item') }}
             </cy-icon-text>
@@ -92,37 +46,22 @@
       </div>
     </div>
   </div>
-  <div
-    v-else
-    class="border-primary-50/70 relative px-2 py-3"
-    :class="{ 'border-l-2': !root }"
-    style="margin-left: -0.2rem"
-  >
+  <div v-else class="border-primary-50/70 relative px-2 py-3" :class="{ 'border-l-2': !root, 'border': !root }"
+    style="margin-left: -0.2rem">
     <div v-if="!!(typeof calcStructItem !== 'string')">
       <template v-if="calcStructItem.operator === '+' || calcStructItem.operator === '*'">
         <DamageCalculationItem :calc-struct-item="calcStructItem.left" :layer="layer + 1" />
         <div>
-          <cy-icon
-            :icon="calcStructItem.operator === '+' ? 'mono-icons:add' : 'eva:close-fill'"
-            width="2rem"
-            class="mt-1"
-            :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
-          />
+          <cy-icon :icon="calcStructItem.operator === '+' ? 'mono-icons:add' : 'eva:close-fill'" width="2rem"
+            class="mt-1" :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }" />
         </div>
         <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
       </template>
       <template v-else-if="calcStructItem.operator === '+++' || calcStructItem.operator === '***'">
-        <template
-          v-for="(structItem, idx) in handleCalcStructList(calcStructItem)"
-          :key="getCalcItemId(structItem)"
-        >
+        <template v-for="(structItem, idx) in handleCalcStructList(calcStructItem)" :key="getCalcItemId(structItem)">
           <div v-if="idx !== 0">
-            <cy-icon
-              :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
-              width="2rem"
-              class="mt-1"
-              :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
-            />
+            <cy-icon :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'" width="2rem"
+              class="mt-1" :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }" />
           </div>
           <DamageCalculationItem :calc-struct-item="structItem" :layer="layer + 1" />
         </template>
@@ -233,9 +172,8 @@ const getCalcItemId = (structItem: CalcStructItem | CalcStructAction): string =>
     return structItem
   }
   if (structItem.operator === '+' || structItem.operator === '*') {
-    return `(${getCalcItemId(structItem.left)})${
-      structItem.operator
-    }(${getCalcItemId(structItem.right)})`
+    return `(${getCalcItemId(structItem.left)})${structItem.operator
+      }(${getCalcItemId(structItem.right)})`
   }
   if (structItem.operator === '+++' || structItem.operator === '***') {
     return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator)

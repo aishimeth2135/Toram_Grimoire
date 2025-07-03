@@ -281,11 +281,11 @@ class CalcItemBase {
   }
 
   get min(): number {
-    return this._min === null ? -9999 : this._min
+    return this._min === null ? -99999 : this._min
   }
 
   get max(): number {
-    return this._max === null ? 9999 : this._max
+    return this._max === null ? 99999 : this._max
   }
 
   get belongCalculationBase() {
