@@ -18,5 +18,8 @@ export const enchantStates = {
     getMaterialSkillLevel(type: MaterialPointTypeRange) {
       return enchantConfig.materialSkillLevels[type]
     },
+    get materialAnvilSkillLevelSum() {
+      return enchantConfig.materialAnvilSkillLevelSum
+    },
   },
 }

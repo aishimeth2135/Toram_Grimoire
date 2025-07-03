@@ -41,9 +41,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
     config.smithLevel = configToSet.smithLevel
 
     // need migrate
-    if (configToSet.materialSkillLevels) {
-      config.materialSkillLevels = configToSet.materialSkillLevels.slice()
-    }
+    config.materialSkillLevels = (configToSet.materialSkillLevels ?? []).slice()
+    config.materialAnvilSkillLevelSum = configToSet.materialAnvilSkillLevelSum ?? 40
+    config.hasExpertsCustomization2Skill = configToSet.hasExpertsCustomization2Skill ?? true
   }
 
   const appendBuild = (build: EnchantBuild) => {

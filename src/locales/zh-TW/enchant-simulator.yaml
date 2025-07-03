@@ -2,7 +2,8 @@ build: 配置
 base-options: 基本設定
 advanced-options: 進階設定
 common-options: 共通設定
-skill-level-options: 角色技能等級設定
+skill-level-options: 一般技能等級設定
+material-skill-level-options: 理解素材技能等級設定
 equipment-type: 裝備類型
 append-build: 新增配置
 equipment-types:
@@ -27,6 +28,10 @@ material-point-type-list:
   - 布料
   - 藥品
   - 魔素
+material-anvil-skill-level-sum: 鐵砧技能等級總和
+material-anvil-skill-level-desc: 指除了「自身的鐵砧」外，其他減少素材消耗的鐵砧類技能的技能等級總和。
+experts-customization-2-skill: 大師級強化技術II
+experts-customization-2-skill-desc: 僅用於實際成功率的計算。
 step:
   insert-step-before: 向前插入步驟
   step-move-up: 上移一格

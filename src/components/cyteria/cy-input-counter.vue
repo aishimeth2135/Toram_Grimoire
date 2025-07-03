@@ -1,51 +1,23 @@
 <template>
   <div class="flex">
-    <div
-      class="cy--input-counter shadow-xs outline-hidden border bg-white duration-300"
-      :class="rootClassList"
-      :style="rootStyle"
-    >
-      <div v-if="$slots['title'] || title" class="mr-3 inline-flex">
+    <div class="cy--input-counter shadow-xs outline-hidden border border-l-2 bg-white duration-300"
+      :class="rootClassList" :style="rootStyle">
+      <div v-if="$slots['title'] || title" class="mr-3 text-primary-80 inline-flex items-center">
         <slot name="title">
-          <cy-icon-text :icon="titleIcon">
-            {{ title }}
-          </cy-icon-text>
+          {{ title }}
         </slot>
       </div>
       <div class="counter-content">
-        <cy-button-icon
-          v-if="minButton && range[0] !== null"
-          icon="akar-icons:circle-chevron-left"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[0]!)"
-        />
-        <cy-button-icon
-          icon="ic-round-remove-circle-outline"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value - step)"
-        />
-        <input
-          v-model.number.lazy="inputValue"
-          type="number"
-          @click="selectInput($event)"
-          @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)"
-        />
-        <cy-button-icon
-          icon="ic-round-add-circle-outline"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value + step)"
-        />
-        <cy-button-icon
-          v-if="maxButton && range[1] !== null"
-          icon="akar-icons:circle-chevron-right"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[1]!)"
-        />
+        <cy-button-icon v-if="minButton && range[0] !== null" icon="akar-icons:circle-chevron-left"
+          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken" @click="setValue(range[0]!)" />
+        <cy-button-icon icon="ic-round-remove-circle-outline" :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken" @click="setValue(value - step)" />
+        <input v-model.number.lazy="inputValue" type="number" @click="selectInput($event)" @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)" />
+        <cy-button-icon icon="ic-round-add-circle-outline" :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken" @click="setValue(value + step)" />
+        <cy-button-icon v-if="maxButton && range[1] !== null" icon="akar-icons:circle-chevron-right"
+          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken" @click="setValue(range[1]!)" />
         <span v-if="$slots['unit'] || unit" class="ml-1 text-sm">
           <slot name="unit">
             {{ unit }}
@@ -106,8 +78,6 @@ const rootClassList = computed(() => {
     ['border-' + props.mainColor]: !focus.value,
     'disabled': props.disabled,
     ['border-' + mainColorInstance.value.darken]: !props.inline && focus.value,
-    ['ring-' + mainColorInstance.value.darken]: !props.inline && focus.value,
-    'ring-1': !props.inline && focus.value,
   } as Record<string, boolean>
 })
 
@@ -146,7 +116,7 @@ const setInputFocus = (value: boolean) => {
   focus.value = value
 }
 const selectInput = (evt: MouseEvent) => {
-  ;(evt.target as HTMLInputElement).select()
+  ; (evt.target as HTMLInputElement).select()
 }
 const setValue = (value: number) => {
   inputValue.value = value
@@ -157,7 +127,7 @@ const setValue = (value: number) => {
 .cy--input-counter {
   display: flex;
   align-items: center;
-  padding: 0.25rem 1rem;
+  padding: 0.25rem 0.75rem 0.25rem 1rem;
   transition: border-color 0.3s;
   position: relative;
   --input-width: 2.125rem;
@@ -169,11 +139,11 @@ const setValue = (value: number) => {
     background-color: transparent;
   }
 
-  & > .counter-content {
+  &>.counter-content {
     display: inline-flex;
     align-items: center;
 
-    & > input {
+    &>input {
       width: var(--input-width);
       border: 0;
       outline: 0;

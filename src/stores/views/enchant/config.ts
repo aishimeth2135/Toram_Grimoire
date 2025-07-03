@@ -8,6 +8,8 @@ export interface EnchantStoreConfig {
   characterLevel: number
   smithLevel: number
   materialSkillLevels: number[]
+  materialAnvilSkillLevelSum: number
+  hasExpertsCustomization2Skill: boolean
 }
 
 let characterMaxLevel = CHARACTER_MAX_LEVEL
@@ -37,5 +39,7 @@ export const enchantConfig: EnchantStoreConfig = (() => {
       },
     }),
     materialSkillLevels: [0, 0, 0, 0, 0, 0],
+    materialAnvilSkillLevelSum: 40,
+    hasExpertsCustomization2Skill: true,
   })
 })()

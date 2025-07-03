@@ -1,46 +1,29 @@
 <template>
   <div v-if="enchantResult.length !== 0">
     <div class="flex items-start">
-      <cy-button-icon
-        :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
-        class="shrink-0"
-        icon-color="orange-60"
-        :selected="contents.resultStats"
-        @click="toggle('contents/resultStats')"
-      />
+      <cy-button-icon :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
+        class="shrink-0" icon-color="orange-60" :selected="contents.resultStats"
+        @click="toggle('contents/resultStats')" />
       <cy-transition>
         <div v-if="contents.resultStats" class="mb-2">
           <div>
-            <span
-              v-for="item in enchantResultStats"
-              :key="item.stat.statId"
-              :class="
-                item.negative
-                  ? ['text-orange-60', 'border-orange-60']
-                  : ['text-primary-60', 'border-primary-60']
-              "
-              class="stat-scope"
-            >
+            <span v-for="item in enchantResultStats" :key="item.stat.statId" :class="item.negative
+                ? ['text-orange-60', 'border-orange-60']
+                : ['text-primary-60', 'border-primary-60']
+              " class="stat-scope">
               {{ item.text }}
             </span>
           </div>
           <div class="mt-2">
-            <span
-              v-for="item in enchantResultMaterials"
-              :key="item.title"
-              class="stat-scope border-blue-30 text-sm text-blue-30"
-            >
+            <span v-for="item in enchantResultMaterials" :key="item.title"
+              class="stat-scope border-blue-30 text-sm text-blue-30">
               <span class="text-primary-90">{{ item.title }}</span>
               <span class="ml-2 text-blue-60">{{ item.value }}</span>
             </span>
           </div>
         </div>
       </cy-transition>
-      <cy-button-icon
-        icon="bx-bx-copy-alt"
-        class="ml-auto shrink-0"
-        @click="copyEnchantResultText"
-      />
+      <cy-button-icon icon="bx-bx-copy-alt" class="ml-auto shrink-0" @click="copyEnchantResultText" />
     </div>
     <div class="my-1 flex items-center">
       <cy-icon-text icon="ic:round-numbers" text-color="primary-30">
@@ -55,54 +38,30 @@
       <template v-if="item.type === 'normal'">
         <span class="my-1 mr-2 shrink-0">{{ item.parts[0] }}</span>
         <div class="flex flex-wrap items-center">
-          <span
-            v-for="part in item.parts.slice(1) as EnchantResultPart[]"
-            :key="part.text"
-            class="stat-scope"
-            :class="
-              part.negative
-                ? ['text-orange-60', 'border-orange-60']
-                : ['text-primary-60', 'border-primary-60']
-            "
-          >
+          <span v-for="part in item.parts.slice(1) as EnchantResultPart[]" :key="part.text" class="stat-scope" :class="part.negative
+              ? ['text-orange-60', 'border-orange-60']
+              : ['text-primary-60', 'border-primary-60']
+            ">
             {{ part.text }}
           </span>
-          <cy-icon-text
-            icon="mdi-creation"
-            small
-            icon-color="blue-60"
-            text-color="blue-60"
-            class="ml-2"
-          >
+          <cy-icon-text icon="mdi-creation" small icon-color="blue-60" text-color="blue-60" class="ml-2">
             {{ item.remainingPotential }}
           </cy-icon-text>
         </div>
       </template>
       <div v-else>
         <template v-for="part in item.parts">
-          <span
-            v-if="typeof part !== 'string'"
-            :key="part.text"
-            class="stat-scope"
-            :class="
-              part.negative
-                ? ['text-orange-60', 'border-orange-60']
-                : ['text-primary-60', 'border-primary-60']
-            "
-          >
+          <span v-if="typeof part !== 'string'" :key="part.text" class="stat-scope" :class="part.negative
+              ? ['text-orange-60', 'border-orange-60']
+              : ['text-primary-60', 'border-primary-60']
+            ">
             {{ part.text }}
           </span>
           <span v-else :key="part" class="my-1 mr-2">
             {{ part }}
           </span>
         </template>
-        <cy-icon-text
-          icon="mdi-creation"
-          small
-          icon-color="blue-60"
-          text-color="blue-60"
-          class="my-1 ml-2"
-        >
+        <cy-icon-text icon="mdi-creation" small icon-color="blue-60" text-color="blue-60" class="my-1 ml-2">
           {{ item.remainingPotential }}
         </cy-icon-text>
       </div>
@@ -284,7 +243,10 @@ const expectedSuccessRate = computed(() => {
     return '100%'
   }
 
-  const positiveNums = enchantResultStats.value.filter(item => item.stat.value >= 0).length
+  let positiveNums = enchantResultStats.value.filter(item => item.stat.value >= 0).length
+  if (positiveNums > 1 && config.value.hasExpertsCustomization2Skill) {
+    positiveNums -= 1
+  }
   let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100
   res = Math.min(100, res)
   return trimFloatStringZero(res.toFixed(2)) + '%'
@@ -311,24 +273,22 @@ const copyEnchantResultText = () => {
       : `${t('enchant-simulator.equipment-base-potential')}｜${equipment.value.basePotential}\n`
   CY.copyToClipboard(
     `✩ ${t('enchant-simulator.equipment-types.' + equipment.value.fieldType)}\n` +
-      `${t('enchant-simulator.equipment-original-potential')}｜${
-        equipment.value.originalPotential
-      }\n` +
-      `${t('enchant-simulator.smith-level')}｜${config.value.smithLevel}\n` +
-      basePotential +
-      `✩ ${t('enchant-simulator.result.stats')}\n` +
-      `${resultStatsText}\n` +
-      `✩ ${t('enchant-simulator.result.materials-skill-levels')}\n` +
-      `${materialsSkillText}\n` +
-      `✩ ${t('enchant-simulator.result.materials')}\n` +
-      `${materialsText}\n\n` +
-      `${t('enchant-simulator.result.operation-steps-quantity')}｜${
-        equipment.value.operationStepsQuantity
-      }\n\n` +
-      `${stepsText}\n\n` +
-      `✩ ${t('enchant-simulator.success-rate')}｜${successRate.value}\n` +
-      `✩ ${t('enchant-simulator.expected-success-rate')}｜${expectedSuccessRate.value}\n\n` +
-      '｜cy-grimoire.netlify.app｜'
+    `${t('enchant-simulator.equipment-original-potential')}｜${equipment.value.originalPotential
+    }\n` +
+    `${t('enchant-simulator.smith-level')}｜${config.value.smithLevel}\n` +
+    basePotential +
+    `✩ ${t('enchant-simulator.result.stats')}\n` +
+    `${resultStatsText}\n` +
+    `✩ ${t('enchant-simulator.result.materials-skill-levels')}\n` +
+    `${materialsSkillText}\n` +
+    `✩ ${t('enchant-simulator.result.materials')}\n` +
+    `${materialsText}\n\n` +
+    `${t('enchant-simulator.result.operation-steps-quantity')}｜${equipment.value.operationStepsQuantity
+    }\n\n` +
+    `${stepsText}\n\n` +
+    `✩ ${t('enchant-simulator.success-rate')}｜${successRate.value}\n` +
+    `✩ ${t('enchant-simulator.expected-success-rate')}｜${expectedSuccessRate.value}\n\n` +
+    '｜cy-grimoire.netlify.app｜'
   )
   notify(t('enchant-simulator.tips.copy-result-text-success'))
 }

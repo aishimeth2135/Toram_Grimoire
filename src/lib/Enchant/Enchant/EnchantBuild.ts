@@ -696,37 +696,42 @@ class EnchantStat {
   }
 
   /**
-   * calc material point cost of from -> old. order of params has no effect.
+   * Calc the material point cost. The order of params has no effect.
    */
-  calcMaterialPointCost(from: number, to: number): number {
-    if (from > to) {
-      const tmp = from
-      from = to
-      to = tmp
+  calcMaterialPointCost(current: number, target: number): number {
+    if (current > target) {
+      const tmp = current
+      current = target
+      target = tmp
     }
 
     const smithlv = enchantStates.Character.smithLevel
-    const rate = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
-    const skillRate =
+    const baseRate = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
+    const materialSkillRate =
       100 - enchantStates.Character.getMaterialSkillLevel(this.itemBase.materialPointType)
-    const bv = this.itemBase.getMaterialPointValue(this.type)
+    const anvilSkillRate = 100 - enchantStates.Character.materialAnvilSkillLevelSum
+    const baseValue = this.itemBase.getMaterialPointValue(this.type)
 
-    const calc = (_from: number, _to: number) => {
-      _to = Math.abs(_to)
-      _from = Math.abs(_from)
-      if (_from > _to) {
-        ;[_from, _to] = [_to, _from]
+    const calc = (from: number, to: number) => {
+      to = Math.abs(to)
+      from = Math.abs(from)
+      if (from > to) {
+        const tmp = from
+        from = to
+        to = tmp
       }
-      return Array(_to - _from)
+      return Array(to - from)
         .fill(0)
-        .map((_item, idx) => idx + _from + 1)
-        .reduce(
-          (item1, item2) => item1 + Math.floor((item2 * item2 * bv * rate * skillRate) / 10000),
-          0
-        )
+        .map((_item, idx) => idx + from + 1)
+        .reduce((item1, item2) => {
+          let value = Math.floor(item2 * item2 * baseValue * baseRate) / 100
+          value = Math.floor((value * materialSkillRate) / 100)
+          value = Math.floor((value * anvilSkillRate) / 100)
+          return item1 + value
+        }, 0)
     }
 
-    return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to)
+    return current * target >= 0 ? calc(current, target) : calc(current, 0) + calc(0, target)
   }
 
   showAmount(type: 'current' | 'base' = 'current', previousValue: number = 0): string {
