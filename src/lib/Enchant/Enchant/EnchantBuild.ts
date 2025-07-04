@@ -724,7 +724,7 @@ class EnchantStat {
         .fill(0)
         .map((_item, idx) => idx + from + 1)
         .reduce((item1, item2) => {
-          let value = Math.floor(item2 * item2 * baseValue * baseRate) / 100
+          let value = Math.floor((item2 * item2 * baseValue * baseRate) / 100)
           value = Math.floor((value * materialSkillRate) / 100)
           value = Math.floor((value * anvilSkillRate) / 100)
           return item1 + value
