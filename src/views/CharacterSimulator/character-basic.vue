@@ -101,7 +101,7 @@ const RenderContentTitie = (attrs: { title: string }) => {
           <CommonPropNumberInput
             v-model:value="selectedCharacter.level"
             :title="t('character-simulator.character-basic.character-level')"
-            :range="[0, 300]"
+            :range="[0, 350]"
           />
         </div>
         <RenderContentTitie
