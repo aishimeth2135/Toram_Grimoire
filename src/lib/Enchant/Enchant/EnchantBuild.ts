@@ -707,9 +707,10 @@ class EnchantStat {
 
     const smithlv = enchantStates.Character.smithLevel
     const baseRate = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
-    const materialSkillRate =
-      100 - enchantStates.Character.getMaterialSkillLevel(this.itemBase.materialPointType)
-    const anvilSkillRate = 100 - enchantStates.Character.materialAnvilSkillLevelSum
+    const materialSkillRate = enchantStates.Character.getMaterialSkillLevel(
+      this.itemBase.materialPointType
+    )
+    const anvilSkillRate = enchantStates.Character.materialAnvilSkillLevelSum
     const baseValue = this.itemBase.getMaterialPointValue(this.type)
 
     const calc = (from: number, to: number) => {
@@ -725,8 +726,8 @@ class EnchantStat {
         .map((_item, idx) => idx + from + 1)
         .reduce((item1, item2) => {
           let value = Math.floor((item2 * item2 * baseValue * baseRate) / 100)
-          value = Math.floor((value * materialSkillRate) / 100)
-          value = Math.floor((value * anvilSkillRate) / 100)
+          value -= Math.floor((value * materialSkillRate) / 100)
+          value -= Math.floor((value * anvilSkillRate) / 100)
           return item1 + value
         }, 0)
     }
