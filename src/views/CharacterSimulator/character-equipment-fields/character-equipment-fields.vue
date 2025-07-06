@@ -42,7 +42,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
 
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="flex grow flex-col items-center items-stretch justify-center">
+  <div class="flex grow flex-col items-center justify-center">
     <div class="flex flex-wrap px-2 wd-lg:flex-nowrap">
       <div class="flex flex-wrap items-start wd:flex-nowrap">
         <cy-tabs
@@ -85,7 +85,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
     /> -->
       <div
         :class="device.isMobile ? 'mt-5 border-t border-primary-10' : 'pl-4'"
-        class="flex max-h-[45rem] min-w-[20rem] grow flex-col pt-4"
+        class="flex h-[45rem] min-w-[20rem] grow flex-col pt-4"
       >
         <BrowseEquipmentsMain
           :selected-equipment="selectedEquipment"
