@@ -36,22 +36,6 @@ const colorsConfig = (() => {
   }
 })()
 
-const getColorList = (prefix: string) => {
-  prefix = prefix + '-'
-  const config = colorsConfig
-  const keys: string[] = []
-  Object.entries(config).forEach(([key, value]) => {
-    if (typeof value === 'string') {
-      keys.push(prefix + key)
-      return
-    }
-    Object.keys(value).forEach(subkey => {
-      keys.push(prefix + (subkey === 'DEFAULT' ? key : `${key}-${subkey}`))
-    })
-  })
-  return keys
-}
-
 const borderWidth = {
   DEFAULT: '1px',
   0: '0',
@@ -105,12 +89,6 @@ const colorCssPlugin = plugin(function ({ addBase }) {
 
 module.exports = <import('tailwindcss').Config>{
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  safelist: [
-    ...getColorList('bg'),
-    ...getColorList('text'),
-    ...getColorList('border'),
-    ...getColorList('ring'),
-  ],
   plugins: [colorCssPlugin],
   darkMode: ['class', '.theme--night-mode'],
   theme: {
@@ -142,99 +120,4 @@ module.exports = <import('tailwindcss').Config>{
       },
     },
   },
-  corePlugins: [
-    'preflight',
-
-    'alignContent',
-    'alignItems',
-    'alignSelf',
-
-    'backgroundColor',
-    'backgroundOpacity',
-    'backgroundSize',
-    'backgroundPosition',
-    'borderColor',
-    'borderOpacity',
-    'borderRadius',
-    'borderWidth',
-    'borderStyle',
-    'boxShadow',
-    'boxShadowColor',
-    'borderCollapse',
-    'borderSpacing',
-
-    'cursor',
-
-    'display',
-    'divideColor',
-    'divideOpacity',
-    'divideWidth',
-    'dropShadow',
-
-    'flex',
-    'flexBasis',
-    'flexDirection',
-    'flexGrow',
-    'flexShrink',
-    'flexWrap',
-    'fontFamily',
-    'fontSize',
-    'fontWeight',
-
-    'height',
-
-    'inset',
-
-    'justifyContent',
-    'justifyItems',
-    'justifySelf',
-
-    'lineHeight',
-
-    'margin',
-    'maxHeight',
-    'maxWidth',
-    'minHeight',
-    'minWidth',
-    'maxWidth',
-
-    'opacity',
-    'outlineColor',
-    'outlineStyle',
-    'outlineWidth',
-    'overflow',
-
-    'padding',
-    'pointerEvents',
-    'position',
-
-    'resize',
-    'ringColor',
-    'ringOpacity',
-    'ringWidth',
-    'rotate',
-
-    'space',
-
-    'textAlign',
-    'textColor',
-    'textDecoration',
-    'textDecorationColor',
-    'textOpacity',
-    'textOverflow',
-    'transitionDuration',
-    'transitionTimingFunction',
-    'transitionDelay',
-
-    'verticalAlign',
-    'visibility',
-
-    'userSelect',
-
-    'whitespace',
-    'width',
-    'wordBreak',
-
-    'zIndex',
-  ],
 }

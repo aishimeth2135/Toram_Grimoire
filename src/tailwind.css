@@ -2,6 +2,8 @@
 
 @config "../tailwind.config.ts";
 
+@source inline("{text,bg,border,}-{primary,fuchsia,violet,blue,cyan,orange,emerald,red,gray,stone,}-{5,{10..90..10}}");
+
 code,
 kbd,
 samp,
