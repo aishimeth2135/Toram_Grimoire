@@ -5,11 +5,11 @@ import { useI18n } from 'vue-i18n'
 import { useToggle } from '@/shared/setup/State'
 import { numberToFixed } from '@/shared/utils/number'
 
-import type { MainQuestSection, MainQuestSectionId } from '@/lib/Quest/Quest'
+import type { MainQuestSection, MainQuestSectionIndex } from '@/lib/Quest/Quest'
 
 interface Props {
   selectedQuestSections: MainQuestSection[]
-  skippedSubSectionIds: Set<MainQuestSectionId>
+  skippedSubSectionIds: Set<MainQuestSectionIndex>
 }
 
 const props = defineProps<Props>()
@@ -20,7 +20,7 @@ const toggleExpRateVisible = useToggle(expRateVisible)
 
 const getSectionRealExp = (section: MainQuestSection) => {
   let sectionExp = section.exp
-  if (!props.skippedSubSectionIds.has(section.id)) {
+  if (!props.skippedSubSectionIds.has(section.index)) {
     sectionExp += section.skippableExp
   }
   return sectionExp
@@ -65,22 +65,9 @@ const displayDatas = computed(() => {
       titleClass: 'text-gray-40',
       barClass: 'bg-primary-50',
     })
-    // chapterExpData.sections.forEach(section => {
-    //   const expRate = numberToFixed(
-    //     (getSectionRealExp(section) * 100) / totalExpSum,
-    //     1
-    //   )
-    //   if (expRate > 1) {
-    //     results.push({
-    //       id: section.id,
-    //       title: `${section.sectionId.toString().padStart(2, '0')}.`,
-    //       expRate,
-    //       titleClass: 'text-primary-40',
-    //       barClass: 'bg-primary-30',
-    //     })
-    //   }
-    // })
   })
+
+  console.log(props.selectedQuestSections, chapterSections)
 
   return results
 })

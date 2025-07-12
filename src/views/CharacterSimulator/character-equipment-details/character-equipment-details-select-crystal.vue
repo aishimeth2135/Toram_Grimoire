@@ -29,9 +29,10 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 
 const searchText = ref('')
-const showCrytalStats = ref(false)
+const showCrystalStats = ref(false)
+const onlyshowLastCrystal = ref(true)
 
-const { crystalCategorys } = (() => {
+const crystalCategorys = (() => {
   const crystals = Grimoire.Items.crystals
   const categorys = Array(5)
     .fill(0)
@@ -44,7 +45,7 @@ const { crystalCategorys } = (() => {
   crystals.forEach(crystal => {
     categorys[crystal.category].crystals.push(crystal)
   })
-  return { crystalCategorys: categorys }
+  return categorys
 })()
 
 const availableCrystalCategoryIds = computed(() => {
@@ -75,18 +76,27 @@ const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
     .map(category => {
       const text = searchText.value
 
+      const allCategoryCrystalEnhancers = new Set<string>()
+      category.crystals.forEach(crystal => {
+        if (crystal.enhancer) {
+          allCategoryCrystalEnhancers.add(crystal.enhancer)
+        }
+      })
+
       const crystals = category.crystals.filter(crystal => {
+        if (
+          onlyshowLastCrystal.value &&
+          (crystal.stats.length <= 1 || allCategoryCrystalEnhancers.has(crystal.name))
+        ) {
+          return false
+        }
         if (crystal.name.toLowerCase().includes(text)) {
           return true
         }
-        const categoryCrystals = category.crystals
-        if (categoryCrystals) {
-          const relatedCrystals = crystal.getRelatedCrystals(categoryCrystals)
-          return [...relatedCrystals.enhancers, ...relatedCrystals.prependeds].some(item =>
-            item.name.toLowerCase().includes(text)
-          )
-        }
-        return false
+        const relatedCrystals = crystal.getRelatedCrystals(category.crystals)
+        return [...relatedCrystals.enhancers, ...relatedCrystals.prependeds].some(item =>
+          item.name.toLowerCase().includes(text)
+        )
       })
 
       return {
@@ -149,7 +159,7 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
           <cy-icon icon={crystal.crystalIconPath} class="mr-1.5" />
           {crystal.name}
         </div>
-        {showCrytalStats.value ? (
+        {showCrystalStats.value ? (
           <div class="mt-1 pl-8">
             {crystal.stats.map(stat => (
               <ShowStat
@@ -170,17 +180,37 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
 <template>
   <div class="flex max-h-[24rem] min-h-0 max-w-[20rem] grow flex-col wd-lg:max-h-none">
     <div class="flex justify-end pb-1">
-      <cy-button-toggle v-model:selected="showCrytalStats">
+      <cy-button-toggle v-model:selected="showCrystalStats">
         {{ t('character-simulator.select-crystals.show-crystal-stats') }}
       </cy-button-toggle>
     </div>
     <CardRowsWrapper class="flex grow flex-col">
-      <div class="pb-1">
+      <div class="flex items-stretch pb-1">
         <CommonSearchInput
           v-model="searchText"
           :placeholder="t('character-simulator.select-crystals.search-placeholder')"
           is-header
+          class="grow"
         />
+        <cy-popover
+          class="flex items-center border-b border-l border-primary-5 bg-white px-2"
+          placement="bottom-end"
+        >
+          <cy-button-icon icon="mdi-filter" />
+          <template #popper>
+            <div class="flex flex-col px-2 py-1">
+              <cy-button-check
+                :selected="!onlyshowLastCrystal"
+                @update:selected="onlyshowLastCrystal = !$event"
+              >
+                {{ t('character-simulator.select-crystals.filter-all-crystal') }}
+              </cy-button-check>
+              <cy-button-check v-model:selected="onlyshowLastCrystal">
+                {{ t('character-simulator.select-crystals.filter-last-crystal') }}
+              </cy-button-check>
+            </div>
+          </template>
+        </cy-popover>
       </div>
       <div class="grow space-y-3 overflow-y-auto py-2">
         <div v-for="category in currentCrystalCategorys" :key="category.id">

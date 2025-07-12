@@ -75,7 +75,7 @@
     <cy-transition>
       <div
         v-if="contents.detail"
-        class="overscroll-none relative max-w-full bg-white pb-3 pl-4 pr-3 pt-2"
+        class="relative max-w-full overscroll-none bg-white pb-3 pl-4 pr-3 pt-2"
       >
         <div v-if="originEquipment.extra" class="mb-2">
           <cy-icon-text

@@ -1,26 +1,26 @@
-const path = require('path');
-const fs = require('fs').promises;
-const finder = require('findit2')(process.argv[2] || path.join(__dirname, '..', '..'));
-const conv = require('chinese-conv');
+const path = require('path')
+const fs = require('fs').promises
+const finder = require('findit2')(process.argv[2] || path.join(__dirname, '..', '..'))
+const conv = require('chinese-conv')
 
-console.log('start...');
+console.log('start...')
 
-const files = [];
+const files = []
 finder.on('file', function (file) {
   if (path.basename(file) === 'zh_tw.js') {
-    files.push(file);
+    files.push(file)
   }
-});
+})
 
-finder.on('end', async function() {
-  console.log('start handle...');
-  console.log(files);
+finder.on('end', async function () {
+  console.log('start handle...')
+  console.log(files)
   for (const file of files) {
-    const text = await fs.readFile(file, { encoding: 'utf8' });
-    const data = conv.sify(text);
-    console.log('handle: ' + file);
-    await fs.writeFile(path.dirname(file) + '/' + 'zh_cn.js', data);
-    console.log('...success');
+    const text = await fs.readFile(file, { encoding: 'utf8' })
+    const data = conv.sify(text)
+    console.log('handle: ' + file)
+    await fs.writeFile(path.dirname(file) + '/' + 'zh_cn.js', data)
+    console.log('...success')
   }
-  console.log('Finished');
-});
+  console.log('Finished')
+})

@@ -25,8 +25,9 @@ const { t } = useI18n()
       <div class="text-primary-80">
         {{ section.name }}
       </div>
-      <div class="text-sm text-primary-40">
+      <div class="text-sm text-primary-50">
         {{ numberWithCommas(section.exp) }}
+        <span class="text-primary-30">EXP</span>
       </div>
       <template v-if="section.hasSubSection()">
         <div class="mt-2 flex items-center text-gray-50">
@@ -35,8 +36,9 @@ const { t } = useI18n()
             {{ t('main-quest-calc.skippable-sub-section-annotation') }}
           </span>
         </div>
-        <div class="text-sm text-primary-40">
+        <div class="text-sm text-primary-50">
           {{ numberWithCommas(section.skippableExp) }}
+          <span class="text-primary-30">EXP</span>
         </div>
       </template>
     </div>

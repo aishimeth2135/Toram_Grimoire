@@ -29,7 +29,7 @@
           <template v-if="column.title === 'partnership'">
             <div class="relative w-96 rounded-b-lg shadow-lg">
               <div
-                class="bg-no-repeat h-28 bg-cover bg-center"
+                class="h-28 bg-cover bg-center bg-no-repeat"
                 :style="{
                   backgroundImage: discordGroupData.splashUrl
                     ? `url('${discordGroupData.splashUrl}')`
