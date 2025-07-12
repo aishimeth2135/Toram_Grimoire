@@ -13,7 +13,9 @@ const { findTargetRowItem } = setupCardRowsDelegation()
 
 const onClick = (evt: MouseEvent) => {
   const item = findTargetRowItem(evt.target as HTMLElement)
-  emit('row-clicked', item)
+  if (item) {
+    emit('row-clicked', item)
+  }
 }
 </script>
 

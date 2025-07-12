@@ -48,6 +48,9 @@ export function setupCardRowsDelegation() {
     if (!el.hasAttribute(CARD_ROW_ID_ATTR_NAME)) {
       el = el.closest(`div[${CARD_ROW_ID_ATTR_NAME}]`)!
     }
+    if (!el) {
+      return null
+    }
     const rowId = getContextIdFromElement(el, CARD_ROW_ID_ATTR_NAME)
     return getCardRowContext(rowId)!.item.value as any
   }

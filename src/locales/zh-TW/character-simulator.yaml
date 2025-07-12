@@ -81,6 +81,8 @@ equipment-basic-editor:
 select-crystals:
   title: 選擇鍛晶
   show-crystal-stats: 顯示鍛晶能力
+  filter-all-crystal: 全部鍛晶
+  filter-last-crystal: 高階鍛晶
   search-placeholder: 搜尋緞晶
   selected-crystals: 已選擇的鍛晶
   category-title:
