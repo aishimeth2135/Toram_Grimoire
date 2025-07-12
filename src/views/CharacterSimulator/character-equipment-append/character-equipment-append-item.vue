@@ -64,7 +64,7 @@ const { t } = useI18n()
     </div>
     <div
       v-if="showDetail"
-      class="overscroll-none shadow-xs bg-orange-20/5 relative mt-2.5 max-w-max py-3 pl-6 pr-4"
+      class="shadow-xs bg-orange-20/5 relative mt-2.5 max-w-max overscroll-none py-3 pl-6 pr-4"
     >
       <div class="mb-1 flex items-center text-sm">
         <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" small />

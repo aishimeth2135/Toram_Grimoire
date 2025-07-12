@@ -55,7 +55,14 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
 
     filters.set('dual_element', value => !!value)
     langPropsMap.set('dual_element', { rootKey: SkillBranchNames.Damage })
-  } else if (['effect', 'next', 'passive', 'heal'].includes(mainBranch.name)) {
+  } else if (
+    [
+      SkillBranchNames.Effect,
+      SkillBranchNames.Next,
+      SkillBranchNames.Passive,
+      SkillBranchNames.Heal,
+    ].includes(mainBranch.name)
+  ) {
     filters.set('caption', value => !!value)
     textPropsMap.append('caption', 'condition')
   }

@@ -17,7 +17,7 @@
                 </cy-icon-text>
               </slot>
             </div>
-            <div class="overscroll-none relative h-full overflow-y-auto p-4 pt-0">
+            <div class="relative h-full overflow-y-auto overscroll-none p-4 pt-0">
               <slot />
             </div>
             <div v-if="footer" class="mx-4 flex justify-end space-x-2 bg-white py-1.5">
