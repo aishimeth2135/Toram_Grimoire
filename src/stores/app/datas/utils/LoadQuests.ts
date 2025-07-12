@@ -26,6 +26,7 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
   let currentQuest: MainQuestSection | null = null
   const INVALID_CHAPTER = 0
   const INVALID_SECTION = 0
+  let sectionIndex = 0
 
   datas.forEach(row => {
     if (currentType === 'side') {
@@ -56,11 +57,13 @@ export default function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
 
     if (currentSection !== INVALID_SECTION) {
       const newQuest = new MainQuestSection(
+        sectionIndex,
         currentChapter,
         handleIntData(row[ROW_SECTION]),
         row[ROW_SECTION_NAME],
         handleIntData(row[ROW_EXP])
       )
+      sectionIndex += 1
       parseSubmit(newQuest, row[ROW_SUBMIT])
       parseReward(newQuest, row[ROW_REWARD])
       newQuest.appendCaption(row[ROW_CAPTION])

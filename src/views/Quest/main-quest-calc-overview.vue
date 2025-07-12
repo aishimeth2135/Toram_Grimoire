@@ -6,7 +6,7 @@ import { numberWithCommas } from '@/shared/utils/number'
 
 import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { MainQuestSection } from '@/lib/Quest/Quest'
-import type { MainQuestSectionId } from '@/lib/Quest/Quest'
+import type { MainQuestSectionIndex } from '@/lib/Quest/Quest'
 import { QuestItemType } from '@/lib/Quest/Quest/enums'
 
 import CommonPropNumberInput from '@/views/CharacterSimulator/common/common-prop-number-input.vue'
@@ -29,7 +29,7 @@ const firstSection = computed<MainQuestSection | null>(
 )
 const lastSection = computed(() => props.selectedQuestSections[0])
 
-const skippedSubSectionIds = reactive(new Set<MainQuestSectionId>())
+const skippedSubSectionIds = reactive(new Set<MainQuestSectionIndex>())
 
 const skippableSubSectionItems = computed(() => {
   return props.selectedQuestSections
@@ -41,7 +41,7 @@ const skippableSubSectionItems = computed(() => {
     }))
 })
 
-const toggleSkippedSubSection = (id: MainQuestSectionId) => {
+const toggleSkippedSubSection = (id: MainQuestSectionIndex) => {
   if (skippedSubSectionIds.has(id)) {
     skippedSubSectionIds.delete(id)
   } else {
@@ -52,7 +52,7 @@ const toggleSkippedSubSection = (id: MainQuestSectionId) => {
 const expSum = computed(() => {
   let resultRxp = props.selectedQuestSections.reduce((cur, section) => cur + section.exp, 0)
   resultRxp += skippableSubSectionItems.value
-    .filter(({ section }) => !skippedSubSectionIds.has(section.id))
+    .filter(({ section }) => !skippedSubSectionIds.has(section.index))
     .reduce((cur, { exp }) => cur + exp, 0)
   return resultRxp
 })
@@ -121,21 +121,22 @@ const submitItemDatas = computed(() => {
       {{ t('main-quest-calc.select-skipped-sub-section-title') }}
     </div>
     <div v-if="skippableSubSectionItems.length > 0" class="mt-4 space-y-2">
-      <div v-for="{ section, name, exp } in skippableSubSectionItems" :key="section.id">
+      <div v-for="{ section, name, exp } in skippableSubSectionItems" :key="section.index">
         <div class="px-1.5 text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>
         <div class="mt-2 flex items-start">
           <cy-button-check
-            :selected="skippedSubSectionIds.has(section.id)"
-            @update:selected="toggleSkippedSubSection(section.id)"
+            :selected="skippedSubSectionIds.has(section.index)"
+            @update:selected="toggleSkippedSubSection(section.index)"
           />
           <div class="ml-2">
             <div class="text-primary-80">
               {{ name }}
             </div>
-            <div class="text-sm text-primary-40">
+            <div class="text-sm text-primary-50">
               {{ numberWithCommas(exp) }}
+              <span class="text-primary-30">EXP</span>
             </div>
           </div>
         </div>
@@ -158,6 +159,7 @@ const submitItemDatas = computed(() => {
       </div>
       <div class="mt-0.5 flex items-center space-x-1 text-primary-80">
         <span>{{ numberWithCommas(expSum) }}</span>
+        <span class="text-primary-30">EXP</span>
         <template v-if="diaryRounds > 1">
           <cy-icon icon="mdi-close" width="1rem" class="text-primary-30" />
           <span class="text-primary-50">{{ diaryRounds }}</span>
@@ -191,7 +193,7 @@ const submitItemDatas = computed(() => {
       {{ t('main-quest-calc.submit-items-title') }}
     </div>
     <div class="mt-4 space-y-3 px-1.5">
-      <div v-for="{ section, items } in submitItemDatas" :key="section.id" class="text-sm">
+      <div v-for="{ section, items } in submitItemDatas" :key="section.index" class="text-sm">
         <div class="text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>

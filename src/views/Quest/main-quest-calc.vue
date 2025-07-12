@@ -17,12 +17,12 @@ const { t } = useI18n()
 <template>
   <AppLayoutMain>
     <div class="wd:flex">
-      <div class="my-4 px-3">
-        <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
-          {{ t('main-quest-calc.select-start-section-title') }}
-        </div>
-        <div class="mt-4 max-h-[32rem] overflow-y-auto wd:min-w-96">
-          <MainQuestChapters @selected-sections-changed="selectedSections = $event" />
+      <div class="px-3">
+        <div class="top-0 flex flex-col py-4 wd:sticky">
+          <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
+            {{ t('main-quest-calc.select-start-section-title') }}
+          </div>
+          <MainQuestChapters @selected-sections-changed="selectedSections = $event" class="mt-4" />
         </div>
       </div>
       <div class="grow px-3 py-4 wd:ml-2">
