@@ -203,7 +203,7 @@ class EnchantItem {
 
     const { base: extraLimitBase, negative: extraLimitNegative } = this.extraLimit[type]
     const CLv = enchantStates.Character.level - 200
-    const vars = { CLv }
+    const vars = { CLv: Math.floor(CLv / 10) * 10 }
     const extraLimitMax =
       extraLimitBase !== null && CLv > 0
         ? Math.floor(computeFormula(extraLimitBase, vars) as number)
