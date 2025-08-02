@@ -204,7 +204,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     })
   }
 
-  equipmentId() {
+  get equipmentId() {
     const keys = ['main', 'sub', 'body'] as const
     return this.equipments.map(equip => keys.map(key => equip[key] || 'none').join('+')).join('/')
   }

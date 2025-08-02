@@ -8,7 +8,13 @@
           </div>
         </td>
         <td class="pl-2 text-primary-60">
-          <SkillBranchPropValue :result="result" parse-glossary-tag />
+          <SkillBranchPropValue
+            :result="result"
+            :parse-glossary-tag="
+              key === 'range' &&
+              !(result instanceof SkillBranchResult && result.type === ResultContainerTypes.Number)
+            "
+          />
         </td>
       </tr>
     </table>
@@ -18,7 +24,12 @@
 <script lang="ts">
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchItem,
+  SkillBranchResult,
+  SkillComputingContainer,
+} from '@/lib/Skill/SkillComputing'
+import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
