@@ -10,6 +10,10 @@ import { SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 import type CharacterSystem from '..'
 import { StatBase, StatRecorded, StatTypes, StatValueSource, StatValueSourceTypes } from '../Stat'
 
+function calcResultToInt(value: number): number {
+  return value >= 0 ? Math.floor(value) : Math.ceil(value)
+}
+
 class CharacterStatCategory {
   private _parent: CharacterSystem
   name: string
@@ -34,6 +38,7 @@ class CharacterStatCategory {
 
 interface CharacterStatFormulaResult {
   value: number
+  valueInt: number
   readonly isDefaultFormula: boolean
   readonly statValueParts: {
     base: number
@@ -185,7 +190,7 @@ class CharacterStat {
       if (ignoreDecimal) {
         return value.toString()
       }
-      return p1 !== undefined ? value.toFixed(toInt(p1) ?? 0) : Math.floor(value).toString()
+      return p1 !== undefined ? value.toFixed(toInt(p1) ?? 0) : calcResultToInt(value).toString()
     })
   }
 
@@ -232,6 +237,7 @@ class CharacterStat {
       return {
         origin: this,
         value,
+        valueInt: res.valueInt,
         resultValue,
         displayValue,
         isDefaultFormula: res.isDefaultFormula,
@@ -241,9 +247,9 @@ class CharacterStat {
         hidden:
           hiddenOption === 0 ||
           (hiddenOption === 1 &&
-            (['constant', 'multiplier', 'total'] as const).every(
-              key => res.statValueParts[key] === 0
-            )) ||
+            res.statValueParts.constant === 0 &&
+            res.statValueParts.multiplier === 0 &&
+            res.statValueParts.total === 0) ||
           (hiddenOption === 2 && originalValue === 0),
       }
     } catch (error) {
@@ -251,6 +257,7 @@ class CharacterStat {
       return {
         origin: this,
         value: 0,
+        valueInt: 0,
         resultValue: 0,
         displayValue: '0',
         isDefaultFormula: true,
@@ -329,20 +336,19 @@ class CharacterStatFormula {
    */
   calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: Record<string, CharacterStat> = {}
-    this.belongCharacterStat.category.belongCategorys
-      .map(cat => cat.stats)
-      .flat()
-      .forEach(stat => (allCharacterStatMap[stat.id] = stat))
+    this.belongCharacterStat.category.belongCategorys.forEach(cat => {
+      cat.stats.forEach(stat => {
+        allCharacterStatMap[stat.id] = stat
+      })
+    })
 
     const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
-    let cstat =
-        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)?.clone() ??
-        null,
-      mstat =
-        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)?.clone() ??
-        null,
-      tstat =
-        pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)?.clone() ?? null
+    const getStatByType = (type: StatTypes): StatRecorded | null => {
+      return pureStats.find(stat => checkBaseId(stat) && stat.type === type)?.clone() ?? null
+    }
+    let cstat = getStatByType(StatTypes.Constant),
+      mstat = getStatByType(StatTypes.Multiplier),
+      tstat = getStatByType(StatTypes.Total)
 
     // `sub-weapon-atk` will ignore `weapon_atk` provided by active skill
     if (this.belongCharacterStat.id === 'sub_weapon_atk') {
@@ -482,7 +488,7 @@ class CharacterStatFormula {
         const originalRes = getOriginalResult(originalKey)
         let res = originalRes?.value ?? 0
         res = typeof res === 'string' ? parseFloat(res) : res
-        res = Math.floor(res)
+        res = calcResultToInt(res)
         src[key] = res
         return res
       })
@@ -614,6 +620,7 @@ class CharacterStatFormula {
     statPartsDetail.initValue['base'] = initBasev
     return {
       value: res,
+      valueInt: calcResultToInt(res),
       statValueParts: {
         base: basev,
         constant: cvalue,

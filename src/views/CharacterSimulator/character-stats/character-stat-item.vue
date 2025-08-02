@@ -5,7 +5,7 @@
         <div class="min-w-[2rem] text-stone-60">
           {{ characterStatResult.name }}
         </div>
-        <span class="ml-4 text-primary-60">
+        <span class="ml-2 text-primary-60">
           {{ characterStatResult.displayValue }}
         </span>
       </template>
@@ -18,29 +18,23 @@
         </div>
       </div>
     </div>
-    <div v-if="detailVisible" class="mb-4 mt-2 border border-primary-10 px-4 py-3">
-      <div class="mb-2 mt-0.5 flex flex-wrap items-center">
-        <div class="mr-4 flex">
-          <cy-icon-text icon="gridicons:stats-alt" color="primary-80">
-            {{ characterStatResult.name }}
-          </cy-icon-text>
+    <div v-if="detailVisible" class="mb-4 mt-2 border border-primary-10">
+      <div
+        v-if="characterStatResult.origin.max || characterStatResult.origin.min"
+        class="flex items-center border-b border-primary-10 px-3 py-1 text-sm text-primary-50"
+      >
+        <div v-if="characterStatResult.origin.min" class="flex items-center">
+          <cy-icon icon="ic:round-arrow-downward" small class="mr-1" />
+          {{ characterStatResult.origin.min }}
         </div>
-        <div
-          v-if="characterStatResult.origin.max || characterStatResult.origin.min"
-          class="ml-auto flex items-center space-x-0.5 text-sm text-primary-30"
-        >
-          <div v-if="characterStatResult.origin.min">
-            {{ characterStatResult.origin.min }}
-          </div>
-          <cy-icon icon="mdi:tilde" width="0.75rem" />
-          <div v-if="characterStatResult.origin.max">
-            {{ characterStatResult.origin.max }}
-          </div>
+        <div v-if="characterStatResult.origin.max" class="flex items-center">
+          <cy-icon icon="ic:round-arrow-upward" small class="mr-1" />
+          {{ characterStatResult.origin.max }}
         </div>
       </div>
       <div
         v-if="statDetailCaption"
-        class="stat-detail-caption mb-3 text-sm text-stone-50"
+        class="stat-detail-caption border-b border-primary-10 px-3 py-2 text-sm text-stone-50"
         v-html="statDetailCaption"
       />
       <cy-icon-text v-if="showStatDetailDatas.conditionalBase" icon="mdi-sword">
@@ -48,19 +42,19 @@
           :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments"
         />
       </cy-icon-text>
-      <div class="mb-0.5 max-w-full overflow-x-auto pb-0.5">
-        <div v-for="data in showStatDetailDatas.datas" :key="data.id" class="mt-1.5">
-          <div class="mb-1 flex items-center text-primary-70">
-            <cy-icon icon="mdi:label-outline" class="mr-3 text-primary-20" />
+      <div class="max-w-full space-y-2 overflow-x-auto px-3 py-3 text-sm">
+        <div v-for="data in showStatDetailDatas.datas" :key="data.id">
+          <div class="flex items-center text-primary-70">
+            <cy-icon icon="mdi:label-outline" class="mr-2 text-primary-20" />
             <span>{{ data.title.text }}</span>
-            <span v-if="data.title.value !== null" class="ml-2.5 text-primary-50">
+            <span v-if="data.title.value !== null" class="ml-2 text-primary-50">
               {{ data.title.value }}
             </span>
           </div>
-          <div v-if="data.lines.length !== 0" class="space-y-0.5 pb-1 pl-2">
-            <div v-for="line in data.lines" :key="'line-' + line.iid" class="flex text-sm">
+          <div v-if="data.lines.length !== 0" class="mt-1.5 space-y-0.5 pb-1 pl-2">
+            <div v-for="line in data.lines" :key="'line-' + line.iid" class="flex">
               <div class="h-text-sm flex items-center">
-                <cy-icon icon="ic-round-add" small class="mr-2" />
+                <cy-icon icon="ic-round-add" small class="mr-1" />
               </div>
               <div class="flex flex-wrap items-center">
                 <template v-if="typeof line.title === 'string'">
@@ -87,7 +81,11 @@
               </div>
             </div>
           </div>
-          <CharacterStatRecordedDetails v-if="data.statRecorded" :stat="data.statRecorded" />
+          <CharacterStatRecordedDetails
+            class="mt-1.5"
+            v-if="data.statRecorded"
+            :stat="data.statRecorded"
+          />
         </div>
       </div>
     </div>
@@ -191,17 +189,17 @@ const showStatDetailDatas = computed(() => {
     }
   }
 
-  const stat = props.characterStatResult
-  const linkedBaseStat = stat.origin.linkedStatBase
+  const statResult = props.characterStatResult
+  const linkedBaseStat = statResult.origin.linkedStatBase
 
-  const conditionalBase = stat.conditionalBase
+  const conditionalBase = statResult.conditionalBase
     ? {
-        title: handleConditional(stat.conditionalBase),
+        title: handleConditional(statResult.conditionalBase),
       }
     : null
 
   const getDisplayedData = (key: DisplayedPartKeys) => {
-    const value = stat.statValueParts[key]
+    const value = statResult.statValueParts[key]
     const isBase = key === 'base'
 
     let title: {
@@ -212,7 +210,7 @@ const showStatDetailDatas = computed(() => {
     if (isBase) {
       title = {
         text: t('character-simulator.character-stat-detail.base-value'),
-        value: valueFix(stat.statValueParts.base),
+        value: valueFix(statResult.statValueParts.base),
       }
     } else {
       const statType = getStatTypeByPartKey(key)
@@ -220,10 +218,10 @@ const showStatDetailDatas = computed(() => {
         text: linkedBaseStat!.show(statType!, value),
         value: null,
       }
-      if (stat.isDefaultFormula) {
+      if (statResult.isDefaultFormula) {
         if (key === 'multiplier') {
-          const originalValue = Math.floor((value * stat.statValueParts.base) / 100)
-          title.value = (originalValue > 0 ? '+' : '') + originalValue.toString()
+          const displayedValue = valueFix((value * statResult.statValueParts.base) / 100)
+          title.value = (displayedValue.startsWith('-') ? '' : '+') + displayedValue
         } else {
           title.value = linkedBaseStat!.showValue(statType!, value, false)
         }
@@ -231,12 +229,12 @@ const showStatDetailDatas = computed(() => {
     }
 
     const displayedLines: DetailLine[] = []
-    const adds = stat.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
+    const adds = statResult.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
 
     const hasExtraUnit = key === 'multiplier' || key === 'total'
 
     if (adds.length !== 0) {
-      const initValue = stat.statPartsDetail.initValue[key]
+      const initValue = statResult.statPartsDetail.initValue[key]
       let hasInit = false
       if (initValue !== 0) {
         displayedLines.push({
@@ -295,19 +293,19 @@ const showStatDetailDatas = computed(() => {
     return {
       id: key,
       title,
-      statRecorded: !isBase ? stat.statPartsDetail.statRecordeds[key] : null,
+      statRecorded: !isBase ? statResult.statPartsDetail.statRecordeds[key] : null,
       lines: displayedLines,
     }
   }
 
   const datas = [getDisplayedData('base')]
-  if (stat.statValueParts.multiplier) {
+  if (statResult.statValueParts.multiplier) {
     datas.push(getDisplayedData('multiplier'))
   }
-  if (stat.statValueParts.constant) {
+  if (statResult.statValueParts.constant) {
     datas.push(getDisplayedData('constant'))
   }
-  if (stat.statValueParts.total) {
+  if (statResult.statValueParts.total) {
     datas.push(getDisplayedData('total'))
   }
 
