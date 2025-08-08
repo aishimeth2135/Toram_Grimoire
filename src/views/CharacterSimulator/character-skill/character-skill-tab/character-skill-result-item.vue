@@ -1,12 +1,12 @@
 <template>
   <div class="flex items-start py-0.5">
-    <div v-if="!hideName" class="flex shrink-0 pr-1.5">
+    <div v-if="!hideName" class="flex shrink-0">
       <cy-button-check
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
       />
     </div>
-    <div class="w-full">
+    <div class="grow">
       <div v-if="!hideName" class="pt-0.5 text-primary-70">
         {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
       </div>

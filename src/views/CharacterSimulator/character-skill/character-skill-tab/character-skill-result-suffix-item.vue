@@ -1,6 +1,6 @@
 <template>
   <div v-if="container" class="flex items-center">
-    <div v-if="toggleable" class="mr-3 flex shrink-0">
+    <div v-if="toggleable" class="mr-1 flex shrink-0">
       <cy-button-check
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"

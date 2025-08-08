@@ -15,7 +15,7 @@
           <cy-icon :icon="skillIconPath" width="1.5rem" />
         </div>
       </div>
-      <div class="w-full pr-3 pt-1" :class="{ 'opacity-50': !enabled }">
+      <div class="grow pr-3 pt-1" :class="{ 'opacity-50': !enabled }">
         <div>
           <div class="flex items-center">
             <div class="flex cursor-pointer items-center" @click="enabled = !enabled">
@@ -37,7 +37,11 @@
             <div v-if="isMutipleItem" class="py-1 text-primary-30">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
-            <CharacterSkillResultItem v-else :result="firstResult" hide-name />
+            <CharacterSkillResultItem
+              v-else
+              :result="firstResult"
+              :hide-name="!branchForceToggleable"
+            />
           </div>
         </div>
         <div v-if="!invalid">
@@ -69,9 +73,12 @@ import CharacterSkillResultItem from './character-skill-result-item.vue'
 
 interface Props {
   skillResultsState: SkillResultsState
+  branchForceToggleable?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  branchForceToggleable: false,
+})
 
 const { t } = useI18n()
 const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())

@@ -10,20 +10,22 @@
     </div>
     <CardRows :class="{ 'opacity-50': disableAll }" class="min-w-[30rem]">
       <CharacterSkillItem
-        v-for="skillResultsState in validResultStates"
-        :key="skillResultsState.skill.skillId"
-        :skill-results-state="skillResultsState"
+        v-for="resultItem in validResultItem"
+        :key="resultItem.resultsState.skill.skillId"
+        :skill-results-state="resultItem.resultsState"
+        :branch-force-toggleable="resultItem.branchForceToggleable"
       />
     </CardRows>
     <CardRows
-      v-if="postponedValidResultStates.length > 0"
+      v-if="postponedValidResultItem.length > 0"
       class="border-t-1 border-primary-30 pt-0.5"
       :class="{ 'opacity-50': disableAll }"
     >
       <CharacterSkillItem
-        v-for="skillResultsState in postponedValidResultStates"
-        :key="skillResultsState.skill.skillId"
-        :skill-results-state="skillResultsState"
+        v-for="resultItem in postponedValidResultItem"
+        :key="resultItem.resultsState.skill.skillId"
+        :skill-results-state="resultItem.resultsState"
+        :branch-force-toggleable="resultItem.branchForceToggleable"
       />
     </CardRows>
   </CardRowsWrapper>
@@ -64,34 +66,50 @@ const skillResultsStates = computed<SkillResultsState[]>(() => {
     : characterStore.passiveSkillResultStates
 })
 
-const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
-const validResultStates = computed(() => {
-  return skillResultsStates.value.filter(
-    state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
-  )
-})
-
 const postponedSkillResultsStates = computed<SkillResultsState[]>(() => {
   return props.type === SkillTypes.Active
     ? characterStore.postponedActiveSkillResultStates
     : characterStore.postponedPassiveSkillResultStates
 })
 
-const postponedValidResultStates = computed(() => {
-  return postponedSkillResultsStates.value.filter(
-    state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
-  )
+const skillIds = computed(() => {
+  return skillResultsStates.value.map(state => state.skill.id)
 })
 
-const validSkillStates = computed(() =>
-  validResultStates.value.map(state => currentSkillBuild.value!.getSkillState(state.skill))
-)
+const postponedSkillIds = computed(() => {
+  return postponedSkillResultsStates.value.map(state => state.skill.id)
+})
+
+const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
+const validResultItem = computed(() => {
+  return skillResultsStates.value
+    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .map(resultsState => {
+      return {
+        resultsState,
+        branchForceToggleable: postponedSkillIds.value.includes(resultsState.skill.id),
+        skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
+      }
+    })
+})
+
+const postponedValidResultItem = computed(() => {
+  return postponedSkillResultsStates.value
+    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .map(resultsState => {
+      return {
+        resultsState,
+        branchForceToggleable: skillIds.value.includes(resultsState.skill.id),
+      }
+    })
+})
+
 const allSkillEnabled = computed<boolean>({
   get() {
-    return validSkillStates.value.every(state => state.enabled)
+    return validResultItem.value.every(item => item.skillState.enabled)
   },
   set(value) {
-    validSkillStates.value.forEach(state => (state.enabled = value))
+    validResultItem.value.forEach(item => (item.skillState.enabled = value))
   },
 })
 
