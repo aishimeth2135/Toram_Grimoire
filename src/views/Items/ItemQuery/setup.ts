@@ -13,8 +13,8 @@ export interface StatOption {
   text: string
   type: StatTypes
 }
-export interface CommonOption {
-  value: string
+export interface CommonOption<V = unknown> {
+  value: V
   selected: boolean
 }
 
@@ -62,8 +62,8 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): BagItemOb
   })
 }
 
-export function handleOptions(opts: string[]): CommonOption[] {
-  return opts.map(value => ({
+export function handleOptions<V>(option: V[]): CommonOption<V>[] {
+  return option.map(value => ({
     value,
     selected: true,
   }))
@@ -114,7 +114,7 @@ const modes = reactive({
   [SearchModes.Normal]: {
     id: SearchModes
     icon: string
-    targets: CommonOption[]
+    targets: CommonOption<string>[]
     optionsVisible: boolean
     searchText: string
   }

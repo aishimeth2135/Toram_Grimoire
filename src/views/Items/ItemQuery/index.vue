@@ -172,67 +172,8 @@
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
-            <div v-for="typeItem in conditions.type" :key="typeItem.id">
-              <div class="flex items-center space-x-1.5">
-                <cy-button-check
-                  v-model:selected="typeItem.selected"
-                  class="mr-4 cursor-pointer"
-                  color="orange"
-                >
-                  {{ getEquipmentFieldTypeText(typeItem.id, t) }}
-                </cy-button-check>
-                <template v-if="typeItem.types.length > 1">
-                  <cy-button-circle
-                    icon="ic-round-border-all"
-                    small
-                    @click="selectAll(typeItem.types)"
-                  />
-                  <cy-button-circle
-                    icon="eva-close-outline"
-                    small
-                    @click="cancelAll(typeItem.types)"
-                  />
-                </template>
-              </div>
-              <div v-if="typeItem.types.length > 1" class="space-x-0.5 px-2 py-0.5 pt-1.5">
-                <cy-button-check
-                  v-for="item in typeItem.types"
-                  :key="item.value"
-                  :selected="typeItem.selected && item.selected"
-                  @click="toggleSelected(item)"
-                >
-                  {{ t('common.Equipment.category.' + item.value) }}
-                </cy-button-check>
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center space-x-1.5">
-                <cy-icon-text class="mr-4" color="fuchsia">
-                  {{ t('item-query.equipment-detail.content-titles.obtains') }}
-                </cy-icon-text>
-                <cy-button-circle
-                  icon="ic-round-border-all"
-                  small
-                  @click="selectAll(conditions.obtains)"
-                />
-                <cy-button-circle
-                  icon="eva-close-outline"
-                  small
-                  @click="cancelAll(conditions.obtains)"
-                />
-              </div>
-              <div class="px-2 py-0.5 pt-1.5">
-                <cy-button-check
-                  v-for="obtain in conditions.obtains"
-                  :key="obtain.value"
-                  v-model:selected="obtain.selected"
-                  class="mr-2"
-                >
-                  {{ t('common.Equipment.obtain.' + obtain.value) }}
-                </cy-button-check>
-              </div>
-            </div>
+          <AppLayoutBottomContent v-if="menus.conditionOptions">
+            <ItemQueryFilterMenu :equipments="equipments" @filter="validEquipments = $event" />
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
             <div>
@@ -312,7 +253,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive } from 'vue'
+import { computed, reactive, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
@@ -321,32 +262,16 @@ import Grimoire from '@/shared/Grimoire'
 import ToggleService from '@/shared/setup/ToggleService'
 import { toFloat, toInt } from '@/shared/utils/number'
 
-import { EquipmentFieldTypes } from '@/lib/Character/Character'
-import { getEquipmentFieldTypeText } from '@/lib/Character/Character/utils'
-import {
-  CharacterEquipment,
-  EquipmentKinds,
-  EquipmentTypes,
-  MainWeaponTypeList,
-  SubArmorTypeList,
-  SubWeaponTypeList,
-} from '@/lib/Character/CharacterEquipment'
+import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
+import ItemQueryFilterMenu from './item-query-filter-menu.vue'
 import ItemQueryResult from './item-query-result.vue'
 
-import {
-  type CommonOption,
-  SearchModes,
-  type StatOption,
-  findObtainByDye,
-  findStat,
-  handleOptions,
-  useItemQueryModes,
-} from './setup'
+import { SearchModes, type StatOption, findObtainByDye, findStat, useItemQueryModes } from './setup'
 
 defineOptions({
   name: 'ItemQuery',
@@ -399,18 +324,6 @@ const toggleBookmark = () => {
 const hasBookmark = computed(() => {
   return bookmarkStore.hasBookmark(currentBookmarkItem.value)
 })
-
-interface EquipmentTypeOption extends CommonOption {
-  imagePath: string
-}
-const handleEquipmentTypes = (opts: EquipmentTypes[]): EquipmentTypeOption[] => {
-  const newOpts = handleOptions(opts)
-  const finalOpts = newOpts.map(opt => ({
-    ...opt,
-    imagePath: CharacterEquipment.getImagePath(opt.value as EquipmentTypes),
-  }))
-  return finalOpts
-}
 
 const sortState = reactive({
   currentSelected: 'default',
@@ -492,58 +405,6 @@ const sortOptions: {
   },
 }
 
-const conditions: {
-  type: {
-    id: EquipmentFieldTypes
-    types: EquipmentTypeOption[]
-    selected: boolean
-  }[]
-  obtains: CommonOption[]
-} = reactive({
-  type: [
-    {
-      id: EquipmentFieldTypes.MainWeapon,
-      types: handleEquipmentTypes(MainWeaponTypeList),
-      selected: true,
-    },
-    {
-      id: EquipmentFieldTypes.SubWeapon,
-      types: [
-        ...handleEquipmentTypes(SubWeaponTypeList),
-        ...handleEquipmentTypes(SubArmorTypeList),
-      ],
-      selected: true,
-    },
-    {
-      id: EquipmentFieldTypes.BodyArmor,
-      types: handleEquipmentTypes([EquipmentTypes.BodyNormal]),
-      selected: true,
-    },
-    {
-      id: EquipmentFieldTypes.Additional,
-      types: handleEquipmentTypes([EquipmentTypes.Additional]),
-      selected: true,
-    },
-    {
-      id: EquipmentFieldTypes.Special,
-      types: handleEquipmentTypes([EquipmentTypes.Special]),
-      selected: true,
-    },
-  ],
-  obtains: handleOptions([
-    'smith',
-    'boss',
-    'mini_boss',
-    'mobs',
-    'quest',
-    'box',
-    'exchange',
-    'other',
-    'unknown',
-    'ex_skill',
-  ]),
-})
-
 const consts = {
   sortOrderOptions: ['down', 'up'].map(id => ({
     value: id,
@@ -577,33 +438,7 @@ const statsSearchResult = computed(() => {
   return modes[SearchModes.Stat].stats.filter(stat => stat.text.toLowerCase().includes(searchText))
 })
 
-const validEquipments = computed(() => {
-  const validTypes = conditions.type.filter(type => type.selected)
-  if (validTypes.length === 0) {
-    validTypes.push({
-      id: EquipmentFieldTypes.Avatar,
-      types: handleEquipmentTypes([EquipmentTypes.Avatar]),
-      selected: true,
-    })
-  }
-  const unknowObtain = conditions.obtains.find(
-    obtain => obtain.value === 'unknown' && obtain.selected
-  )
-  const validObtains = conditions.obtains.filter(
-    obtain => obtain.value !== 'unknown' && obtain.selected
-  )
-  return equipments.filter(equip => {
-    const checkType = validTypes.some(typeItem =>
-      typeItem.types.some(item => item.selected && item.value === equip.type)
-    )
-    const checkObtain =
-      (unknowObtain && equip.origin!.obtains.length === 0) ||
-      validObtains.find(obtain =>
-        equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value)
-      )
-    return checkType && checkObtain
-  })
-})
+const validEquipments = shallowRef<CharacterEquipment[]>(equipments.slice())
 
 const allSearchResult = computed(() => {
   if (state.currentMode === SearchModes.Normal) {
@@ -672,16 +507,6 @@ const searchResult = computed(() => {
   sr.sort(target === 'default' ? sortOptions[mode].default : sortOptions.global[target])
   return sortState.currentOrder === 'down' ? sr.reverse() : sr.slice()
 })
-
-const toggleSelected = (item: CommonOption) => {
-  item.selected = !item.selected
-}
-const selectAll = (list: CommonOption[]) => {
-  list.forEach(item => (item.selected = true))
-}
-const cancelAll = (list: CommonOption[]) => {
-  list.forEach(item => (item.selected = false))
-}
 
 const selectStat = (stat: StatOption) => {
   const searchStats = modes[SearchModes.Stat].currentStats
