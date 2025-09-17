@@ -14,7 +14,7 @@
       <div class="space-y-2 pl-2 pt-2">
         <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
           <CharacterComboItemDamageResultItem
-            ref="resultItemRefs"
+            ref="resultItems"
             v-model:unselected-branches="
               /* eslint-disable-next-line vue/no-mutating-props */
               comboSkillState.comboSkill.parent.config.unselectedBranches
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, computed, ref } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -50,7 +50,6 @@ import { type SkillResultsState } from '@/stores/views/character/setup'
 
 import { type ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { StatRecorded } from '@/lib/Character/Stat'
-import { Skill } from '@/lib/Skill/Skill'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
@@ -68,9 +67,13 @@ const props = defineProps<Props>()
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 
-const resultItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageResultItem>[]> = ref([])
+const resultItemRefs =
+  useTemplateRef<InstanceType<typeof CharacterComboItemDamageResultItem>[]>('resultItems')
 
 const expectedResultSum = computed(() => {
+  if (!resultItemRefs.value) {
+    return 0
+  }
   return resultItemRefs.value.reduce((cur, item) => cur + item.expectedResult, 0)
 })
 
@@ -82,8 +85,8 @@ const previousSkillNextResultsState = computed(() => {
     return null
   }
   const resultsState = characterStore.nextSkillResultStates.find(
-    state => (state.skill as Skill) === previousSkill
-  ) as SkillResultsState | undefined
+    state => state.skill === previousSkill
+  )
   return resultsState ?? null
 })
 

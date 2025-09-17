@@ -48,7 +48,7 @@
         <CharacterComboItemDamageItem
           v-for="{ resultsState, comboSkillState } in comboSkillStateItems"
           :key="resultsState.skill.skillId"
-          ref="comboDamageItemRefs"
+          ref="comboDamageItems"
           :combo-skill-state="comboSkillState"
           :skill-results-state="resultsState"
         />
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, computed, ref } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -92,11 +92,15 @@ const damageCalcEnabled = computed({
   },
 })
 
-const comboDamageItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageItem>[]> = ref([])
+const comboDamageItemRefs =
+  useTemplateRef<InstanceType<typeof CharacterComboItemDamageItem>[]>('comboDamageItems')
 
-const expectedDamageSum = computed(() =>
-  comboDamageItemRefs.value.reduce((sum, item) => sum + item.expectedResultSum, 0)
-)
+const expectedDamageSum = computed(() => {
+  if (!comboDamageItemRefs.value) {
+    return 0
+  }
+  return comboDamageItemRefs.value.reduce((sum, item) => sum + item.expectedResultSum, 0)
+})
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 
@@ -160,7 +164,7 @@ const comboSkillStateItems = computed(() => {
 })
 
 const getDamageRatio = (skill: Skill) => {
-  if (expectedDamageSum.value === 0) {
+  if (expectedDamageSum.value === 0 || !comboDamageItemRefs.value) {
     return 0
   }
   const component = comboDamageItemRefs.value.find(item => item.skill === skill)
