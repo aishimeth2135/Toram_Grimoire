@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, computed, ref, useSlots, watch } from 'vue'
+import { computed, ref, useSlots, useTemplateRef, watch } from 'vue'
 
 import CyPopper from './cy-popper.vue'
 
@@ -66,8 +66,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const slots = useSlots()
 
-const mainElement: Ref<HTMLElement | null> = ref(null)
-const popper: Ref<InstanceType<typeof CyPopper> | null> = ref(null)
+const mainElement = useTemplateRef<HTMLElement>('mainElement')
+const popper = useTemplateRef<InstanceType<typeof CyPopper>>('popper')
 
 const fixed = ref(false)
 
@@ -79,7 +79,11 @@ const onClick = () => {
   }
 
   if (popper.value && innerShowTriggers.value.includes('click')) {
-    popper.value.togglePopper(innerShowTriggers.value.includes('hover') ? true : undefined)
+    if (innerShowTriggers.value.includes('hover')) {
+      popper.value.togglePopper(true)
+    } else {
+      popper.value.togglePopper()
+    }
     fixed.value = true
   }
 }
