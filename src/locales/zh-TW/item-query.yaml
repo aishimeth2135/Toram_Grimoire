@@ -23,6 +23,7 @@ sort-options:
     def: DEF
     stability: 穩定度
     name: 名稱
+    id: 加入時間
   order:
     title: 排序順序
     up: 由小至大

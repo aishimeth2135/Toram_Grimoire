@@ -365,6 +365,7 @@ const sortOptions: {
       return value1 - value2
     },
     name: (item1, item2) => item1.name.localeCompare(item2.name),
+    id: idComparation,
   },
   [SearchModes.Normal]: {
     default: idComparation,
@@ -410,7 +411,7 @@ const consts = {
     value: id,
     text: t('item-query.sort-options.order.' + id),
   })),
-  sortOptions: ['default', 'atk', 'def', 'stability', 'name'].map(id => ({
+  sortOptions: ['default', 'atk', 'def', 'stability', 'name', 'id'].map(id => ({
     value: id,
     text: t('item-query.sort-options.options.' + id),
   })),
