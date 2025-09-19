@@ -51,8 +51,9 @@ interface CharacterStatFormulaResult {
 }
 interface CharacterStatResult extends CharacterStatFormulaResult {
   origin: CharacterStat
-  resultValue: number
-  displayValue: string
+  originalValue: number // original value
+  displayValue: string // `originalValue` after min-max for display
+  resultValue: number // `displayValue` after `parseFloat`
   hidden: boolean
 }
 
@@ -231,13 +232,13 @@ class CharacterStat {
       const hiddenOption = this.options.hidden
       const displayValue = this.getDisplayValue(value)
 
-      // resultValue: after min-max and to integer
       const resultValue = parseFloat(displayValue.replace(/[^\-\d.]/g, ''))
 
       return {
         origin: this,
         value,
         valueInt: res.valueInt,
+        originalValue,
         resultValue,
         displayValue,
         isDefaultFormula: res.isDefaultFormula,
@@ -259,6 +260,7 @@ class CharacterStat {
         value: 0,
         valueInt: 0,
         resultValue: 0,
+        originalValue: 0,
         displayValue: '0',
         isDefaultFormula: true,
         statValueParts: {
@@ -618,6 +620,7 @@ class CharacterStatFormula {
     }
 
     statPartsDetail.initValue['base'] = initBasev
+
     return {
       value: res,
       valueInt: calcResultToInt(res),

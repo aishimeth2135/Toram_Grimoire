@@ -1,18 +1,27 @@
 <template>
   <div>
     <div class="flex cursor-pointer items-center py-0.5" @click="detailVisible = !detailVisible">
-      <template v-if="!characterStatResult.origin.isBoolStat">
+      <template v-if="!statResult.origin.isBoolStat">
         <div class="min-w-[2rem] text-stone-60">
-          {{ characterStatResult.name }}
+          {{ statResult.name }}
         </div>
-        <span class="ml-2 text-primary-60">
-          {{ characterStatResult.displayValue }}
+        <span
+          v-if="
+            (statResult.origin.min !== null && statResult.originalValue < statResult.origin.min) ||
+            (statResult.origin.max !== null && statResult.originalValue > statResult.origin.max)
+          "
+          class="ml-2 text-red-60 underline"
+        >
+          {{ statResult.displayValue }}
+        </span>
+        <span v-else class="ml-2 text-primary-60">
+          {{ statResult.displayValue }}
         </span>
       </template>
       <span v-else class="text-primary-60">
-        {{ characterStatResult.name }}
+        {{ statResult.name }}
       </span>
-      <div v-if="showPreviewValues" class="ml-6 flex items-center space-x-2 text-primary-30">
+      <div v-if="showPreviewValues" class="ml-4 flex items-center space-x-2 text-primary-30">
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
           {{ data.title.value }}
         </div>
@@ -20,16 +29,22 @@
     </div>
     <div v-if="detailVisible" class="mb-4 mt-2 border border-primary-10">
       <div
-        v-if="characterStatResult.origin.max || characterStatResult.origin.min"
-        class="flex items-center border-b border-primary-10 px-3 py-1 text-sm text-primary-50"
+        class="flex flex-wrap items-center border-b border-primary-10 px-3 py-1 text-sm text-primary-50"
       >
-        <div v-if="characterStatResult.origin.min" class="flex items-center">
-          <cy-icon icon="ic:round-arrow-downward" small class="mr-1" />
-          {{ characterStatResult.origin.min }}
-        </div>
-        <div v-if="characterStatResult.origin.max" class="flex items-center">
-          <cy-icon icon="ic:round-arrow-upward" small class="mr-1" />
-          {{ characterStatResult.origin.max }}
+        <cy-icon icon="mdi:label-outline" class="mr-2 text-primary-20" />
+        {{ statResult.originalValue }}
+        <div
+          v-if="statResult.origin.min || statResult.origin.max"
+          class="ml-auto flex items-center space-x-2.5"
+        >
+          <div v-if="statResult.origin.min" class="flex items-center">
+            <cy-icon icon="ic:round-arrow-downward" small class="mr-1" />
+            {{ statResult.origin.min }}
+          </div>
+          <div v-if="statResult.origin.max" class="flex items-center">
+            <cy-icon icon="ic:round-arrow-upward" small class="mr-1" />
+            {{ statResult.origin.max }}
+          </div>
         </div>
       </div>
       <div
@@ -115,6 +130,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const statResult = computed(() => props.characterStatResult)
+
 const { t } = useI18n()
 
 const detailVisible = ref(false)
@@ -189,17 +206,17 @@ const showStatDetailDatas = computed(() => {
     }
   }
 
-  const statResult = props.characterStatResult
-  const linkedBaseStat = statResult.origin.linkedStatBase
+  const result = statResult.value
+  const linkedBaseStat = result.origin.linkedStatBase
 
-  const conditionalBase = statResult.conditionalBase
+  const conditionalBase = result.conditionalBase
     ? {
-        title: handleConditional(statResult.conditionalBase),
+        title: handleConditional(result.conditionalBase),
       }
     : null
 
   const getDisplayedData = (key: DisplayedPartKeys) => {
-    const value = statResult.statValueParts[key]
+    const value = result.statValueParts[key]
     const isBase = key === 'base'
 
     let title: {
@@ -210,7 +227,7 @@ const showStatDetailDatas = computed(() => {
     if (isBase) {
       title = {
         text: t('character-simulator.character-stat-detail.base-value'),
-        value: valueFix(statResult.statValueParts.base),
+        value: valueFix(result.statValueParts.base),
       }
     } else {
       const statType = getStatTypeByPartKey(key)
@@ -218,9 +235,9 @@ const showStatDetailDatas = computed(() => {
         text: linkedBaseStat!.show(statType!, value),
         value: null,
       }
-      if (statResult.isDefaultFormula) {
+      if (result.isDefaultFormula) {
         if (key === 'multiplier') {
-          const displayedValue = valueFix((value * statResult.statValueParts.base) / 100)
+          const displayedValue = valueFix((value * result.statValueParts.base) / 100)
           title.value = (displayedValue.startsWith('-') ? '' : '+') + displayedValue
         } else {
           title.value = linkedBaseStat!.showValue(statType!, value, false)
@@ -229,12 +246,12 @@ const showStatDetailDatas = computed(() => {
     }
 
     const displayedLines: DetailLine[] = []
-    const adds = statResult.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
+    const adds = result.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
 
     const hasExtraUnit = key === 'multiplier' || key === 'total'
 
     if (adds.length !== 0) {
-      const initValue = statResult.statPartsDetail.initValue[key]
+      const initValue = result.statPartsDetail.initValue[key]
       let hasInit = false
       if (initValue !== 0) {
         displayedLines.push({
@@ -293,19 +310,19 @@ const showStatDetailDatas = computed(() => {
     return {
       id: key,
       title,
-      statRecorded: !isBase ? statResult.statPartsDetail.statRecordeds[key] : null,
+      statRecorded: !isBase ? result.statPartsDetail.statRecordeds[key] : null,
       lines: displayedLines,
     }
   }
 
   const datas = [getDisplayedData('base')]
-  if (statResult.statValueParts.multiplier) {
+  if (result.statValueParts.multiplier) {
     datas.push(getDisplayedData('multiplier'))
   }
-  if (statResult.statValueParts.constant) {
+  if (result.statValueParts.constant) {
     datas.push(getDisplayedData('constant'))
   }
-  if (statResult.statValueParts.total) {
+  if (result.statValueParts.total) {
     datas.push(getDisplayedData('total'))
   }
 
@@ -316,7 +333,7 @@ const showStatDetailDatas = computed(() => {
 })
 
 const statDetailCaption = computed(() => {
-  return props.characterStatResult.origin.caption.replace(
+  return statResult.value.origin.caption.replace(
     /\(\(([^)]+)\)\)/g,
     (_match, m1) => `<span class="cy--text-separate">${m1}</span>`
   )
@@ -326,12 +343,12 @@ const showPreviewValues = computed(() => {
   if (!props.previewVisible) {
     return false
   }
-  if (props.characterStatResult.origin.isBoolStat) {
+  if (statResult.value.origin.isBoolStat) {
     return false
   }
   if (showStatDetailDatas.value.datas.length <= 1) {
     return false
   }
-  return props.characterStatResult.isDefaultFormula
+  return statResult.value.isDefaultFormula
 })
 </script>
