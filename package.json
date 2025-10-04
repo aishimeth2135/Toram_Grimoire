@@ -26,7 +26,7 @@
     "sanitize-filename": "^1.6.3",
     "utility-types": "^3.10.0",
     "velocity-animate": "^1.5.2",
-    "vue": "^3.5.14",
+    "vue": "^3.5.22",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.5.0",
@@ -35,8 +35,7 @@
   "devDependencies": {
     "@iconify/vue": "^5.0.0",
     "@modyfi/vite-plugin-yaml": "^1.1.1",
-    "@tailwindcss/postcss": "^4.1.7",
-    "@tailwindcss/vite": "^4.1.7",
+    "@tailwindcss/vite": "^4.1.14",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/node22": "^22.0.1",
     "@types/dompurify": "^2.3.3",
@@ -60,7 +59,7 @@
     "npm-run-all2": "^7.0.2",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.3",
-    "tailwindcss": "^4.1.7",
+    "tailwindcss": "^4.1.14",
     "tinycolor2": "^1.4.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
@@ -77,5 +76,5 @@
     "not ie <= 11",
     "not dead"
   ],
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@4.10.3"
 }
