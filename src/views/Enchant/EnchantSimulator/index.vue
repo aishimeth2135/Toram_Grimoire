@@ -15,11 +15,11 @@
     </div>
     <div>
       <EnchantSelectItem
-        :visible="windows.selectItem"
+        :visible="selectItemVisible"
         :once="selectItemTarget.once"
         :is-weapon="isWeapon"
         :selected-items="selectedItems"
-        @close="toggle('windows/selectItem', false)"
+        @close="toggleSelectItemVisible(false)"
         @select-item="selectItem"
       />
     </div>
@@ -40,8 +40,8 @@
           color="blue"
           float
           toggle
-          :selected="contents.result"
-          @click="toggle('contents/result', null, false)"
+          :selected="resultVisible"
+          @click="toggleBottomContents(false).after(toggleResultVisible)"
         />
       </template>
       <template #side-buttons>
@@ -50,16 +50,16 @@
           color="bright"
           float
           toggle
-          :selected="contents.top"
-          @click="toggle('contents/top', null, false)"
+          :selected="topVisible"
+          @click="toggleBottomContents(false).after(toggleTopVisible)"
         />
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="contents.result" class="p-3">
+          <AppLayoutBottomContent v-if="resultVisible" class="p-3">
             <EnchantResult :equipment="currentEquipment" />
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="contents.top" class="p-3">
+          <AppLayoutBottomContent v-else-if="topVisible" class="p-3">
             <div class="flex items-center">
               <cy-title-input
                 v-model:value="currentBuild.name"
@@ -122,13 +122,13 @@
                   class="my-2 ml-2"
                   icon-color="blue-30"
                   icon-color-hover="blue"
-                  :selected="contents.extraOptions"
-                  @click="toggle('contents/extraOptions')"
+                  :selected="extraOptionsVisible"
+                  @click="toggleExtraOptionsVisible"
                 />
               </div>
             </div>
             <cy-transition>
-              <div v-if="contents.extraOptions" class="mt-2 pl-2">
+              <div v-if="extraOptionsVisible" class="mt-2 pl-2">
                 <div class="text-sm text-gray-50">
                   {{ t('enchant-simulator.advanced-options') }}
                 </div>
@@ -215,7 +215,6 @@ import AutoSave from '@/shared/setup/AutoSave'
 import Confirm from '@/shared/setup/Confirm'
 import ExportBuild from '@/shared/setup/ExportBuild'
 import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -228,11 +227,26 @@ import EnchantStepView from './enchant-step/index.vue'
 import { EnchantSimulatorInjectionKey } from './injection-keys'
 import { type EnchantStatOptionBase } from './setup'
 import EnchantCommonSetting from './enchant-common-setting.vue'
+import { useToggle, useToggleGroup } from '@/shared/setup/State'
 
-const { windows, contents, toggle } = ToggleService({
-  windows: ['selectItem'] as const,
-  contents: ['top', 'extraOptions', 'result'] as const,
-})
+const selectItemVisible = ref(false)
+const toggleSelectItemVisible = useToggle(selectItemVisible)
+
+const topVisible = ref(false)
+const toggleTopVisible = useToggle(topVisible)
+
+const extraOptionsVisible = ref(false)
+const toggleExtraOptionsVisible = useToggle(extraOptionsVisible)
+
+const resultVisible = ref(false)
+const toggleResultVisible = useToggle(resultVisible)
+
+const toggleBottomContents = useToggleGroup([
+  toggleTopVisible,
+  toggleExtraOptionsVisible,
+  toggleResultVisible,
+])
+
 const store = useEnchantStore()
 const { t } = useI18n()
 const { notify } = Notify()
@@ -371,7 +385,7 @@ const openSelectItem = (type: 'step', target: EnchantStep, once = false) => {
   selectItemTarget.type = type
   selectItemTarget.target = target
   selectItemTarget.once = once
-  toggle('windows/selectItem', true)
+  toggleSelectItemVisible(true)
 }
 
 const selectItem = (item: EnchantStatOptionBase) => {

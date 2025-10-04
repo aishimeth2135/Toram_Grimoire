@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import type { ComputedRef, Ref, WritableComputedRef } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
+import type { ComputedRef, WritableComputedRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -97,7 +97,7 @@ const selectSkillFromKeyup = () => {
   }
 }
 
-const searchInputComponent: Ref<{ focus: () => void } | null> = ref(null)
+const searchInputComponent = useTemplateRef('searchInputComponent')
 
 onMounted(async () => {
   await nextTick()

@@ -15,6 +15,7 @@ import { useCharacterFoodStore } from '../food-build'
 import { useCharacterPotionBuildStore } from '../potion-build'
 import { useCharacterRegistletBuildStore } from '../registlet-build'
 import { useCharacterSkillBuildStore } from '../skill-build'
+import type { CharacterBuildsContext } from './context'
 import { useCharacterBindingBuild } from './useCharacterBindingBuild'
 
 export function setupCharacters() {
@@ -34,16 +35,8 @@ export function setupCharacters() {
 
   const currentCharacter = _currentCharacter as ComputedRef<Character>
 
-  const characterStates = new Map<
-    number,
-    {
-      skillBuild: SkillBuild | null
-      foodBuild: FoodsBuild | null
-      registletBuild: RegistletBuild | null
-      potionBuild: PotionBuild | null
-    }
-  >()
-  const getCharacterState = (chara: Character) => {
+  const characterStates = new Map<number, CharacterBuildsContext>()
+  const getCharacterState = (chara: Character): CharacterBuildsContext => {
     if (!characterStates.has(chara.id)) {
       characterStates.set(
         chara.id,

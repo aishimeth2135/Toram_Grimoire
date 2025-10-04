@@ -31,7 +31,17 @@ import {
   shift,
   size,
 } from '@floating-ui/dom'
-import { type CSSProperties, type Ref, computed, nextTick, ref, toRef, useAttrs, watch } from 'vue'
+import {
+  type CSSProperties,
+  type Ref,
+  computed,
+  nextTick,
+  ref,
+  toRef,
+  useAttrs,
+  useTemplateRef,
+  watch,
+} from 'vue'
 
 import { type PopperHideEventDetail, type PopperOptions, setupPopperOptions } from './setup'
 
@@ -57,7 +67,7 @@ const popperOptions = setupPopperOptions(props.options)
 
 const mainElement = toRef(props, 'element')
 
-const popperElement: Ref<HTMLElement | null> = ref(null)
+const popperElement = useTemplateRef('popperElement')
 const shown = ref(false)
 const popperStyle: Ref<CSSProperties> = ref({})
 

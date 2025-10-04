@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, nextTick, ref, toRefs } from 'vue'
+import { nextTick, toRefs, useTemplateRef } from 'vue'
 
 import PageControl from '@/shared/setup/PageControl'
 
@@ -39,7 +39,7 @@ const { currentItems, page, maxPage } = PageControl({
   step: 30,
 })
 
-const topElement: Ref<HTMLElement | null> = ref(null)
+const topElement = useTemplateRef('topElement')
 const pageChanged = async () => {
   await nextTick()
   topElement.value?.scrollIntoView({ behavior: 'smooth' })

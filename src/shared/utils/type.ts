@@ -5,3 +5,5 @@ export type UnionToIntersection<T> = (T extends any ? (k: T) => void : never) ex
   : never
 
 export type Opaque<K, T> = T & { __TYPE__: K }
+
+export type AnyFunction = (...args: any[]) => any

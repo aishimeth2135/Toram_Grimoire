@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
+import { computed } from 'vue'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
@@ -25,27 +25,25 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { branchItem } = toRefs(props)
 
-const container = computed(() => TextHandler(props.computing, branchItem.value))
+const container = computed(() => TextHandler(props.computing, props.branchItem))
 
-if (branchItem.value.isGroup) {
-  // not toggle, init only
-  branchItem.value.toggleGroupExpanded(true, branchItem.value.groupState.expanded)
+if (props.branchItem.isGroup) {
+  props.branchItem.initGroupExpaneded()
 }
 
 const rootClicked = () => {
-  if (branchItem.value.isGroup) {
-    branchItem.value.toggleGroupExpanded(true)
+  if (props.branchItem.isGroup) {
+    props.branchItem.toggleGroupExpanded()
   }
 }
 
 const rootClassList = computed(() => {
   return {
-    'is-tips': branchItem.value.is(SkillBranchNames.Tips),
-    'is-mark': branchItem.value.propBoolean('is_mark'),
-    'is-group': branchItem.value.isGroup,
-    'group-active': branchItem.value.groupState.expanded,
+    'is-tips': props.branchItem.is(SkillBranchNames.Tips),
+    'is-mark': props.branchItem.propBoolean('is_mark'),
+    'is-group': props.branchItem.isGroup,
+    'group-active': props.branchItem.groupState.expanded,
   }
 })
 </script>

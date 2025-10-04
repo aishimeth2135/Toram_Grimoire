@@ -31,7 +31,7 @@ const { editEquipment } = useCharacterSimulatorState()
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center py-1" @click.stop>
+  <div class="flex flex-wrap items-center py-0.5 pl-4 pr-2" @click.stop>
     <template v-if="!equipDisabled">
       <template v-if="!equipped">
         <div
@@ -56,9 +56,15 @@ const { editEquipment } = useCharacterSimulatorState()
         </span>
       </template>
     </template>
-    <div class="ml-auto flex items-center space-x-4">
-      <cy-button-icon v-if="!equipDisabled" icon="mdi:edit" small @click="editEquipment(current)" />
-      <cy-button-icon icon="bx:copy-alt" small @click="copyEquipment" />
+    <div class="ml-auto flex items-center">
+      <cy-button-icon
+        v-if="!equipDisabled"
+        class="mr-2.5"
+        icon="mdi:edit"
+        small
+        @click="editEquipment(current)"
+      />
+      <cy-button-icon icon="bx:copy-alt" class="mr-2.5" small @click="copyEquipment" />
       <cy-button-icon icon="mdi:delete-outline" @click="removeEquipment" />
     </div>
   </div>

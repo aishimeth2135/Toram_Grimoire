@@ -1,10 +1,7 @@
 <template>
   <div v-if="calculationItems.length > 0" class="w-full">
     <div>
-      <cy-button-action
-        icon="bx:bx-git-compare"
-        @click="toggle('contents/selectCalculation', true)"
-      >
+      <cy-button-action icon="bx:bx-git-compare" @click="toggleSelectCalculationVisible(true)">
         {{ t('damage-calculation.compare.select-build') }}
       </cy-button-action>
     </div>
@@ -21,9 +18,9 @@
       </cy-default-tips>
     </div>
     <cy-modal
-      :visible="contents.selectCalculation"
+      :visible="selectCalculationVisible"
       footer
-      @close="toggle('contents/selectCalculation', false)"
+      @close="toggleSelectCalculationVisible(false)"
     >
       <template #title>
         <cy-icon-text icon="bx:bx-git-compare">
@@ -50,7 +47,7 @@
 import { type Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
 import { Calculation } from '@/lib/Damage/DamageCalculation'
 
@@ -91,9 +88,8 @@ const comparedCalculationItems = computed(() => {
   )
 })
 
-const { contents, toggle } = ToggleService({
-  contents: ['selectCalculation'] as const,
-})
+const selectCalculationVisible = ref(false)
+const toggleSelectCalculationVisible = useToggle(selectCalculationVisible)
 
 const { t } = useI18n()
 </script>

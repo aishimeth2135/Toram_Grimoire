@@ -5,7 +5,7 @@
         <cy-icon-text icon="ic-baseline-settings">
           {{ t('app.settings.title') }}
         </cy-icon-text>
-        <span class="ml-auto text-fuchsia-60"> v{{ mainStore.version }} </span>
+        <span class="ml-auto text-gray-60"> v{{ mainStore.version }} </span>
       </div>
     </template>
     <div v-if="mainStore.serviceWorker.hasUpdate" class="flex items-center justify-center p-4">
@@ -18,11 +18,8 @@
         </cy-button-action>
       </div>
     </div>
-    <div class="mt-4 space-y-6">
-      <AppSettingsRow
-        :title="t('app.settings.switch-font.title')"
-        title-icon="ic-round-text-fields"
-      >
+    <div class="mt-4 space-y-4">
+      <AppSettingsRow :title="t('app.settings.switch-font.title')">
         <template #caption>
           {{ t('app.settings.switch-font.caption') }}
         </template>
@@ -30,7 +27,7 @@
           <cy-button-radio-group v-model:value="appFont" :options="appFontOptions" />
         </template>
       </AppSettingsRow>
-      <AppSettingsRow :title="t('app.settings.night-mode.title')" title-icon="mdi-weather-night">
+      <AppSettingsRow :title="t('app.settings.night-mode.title')">
         <template #caption>
           {{ t('app.settings.night-mode.caption') }}
         </template>
@@ -40,48 +37,28 @@
           </cy-button-toggle>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow :title="t('app.settings.set-rem.title')" title-icon="bx-bx-ruler">
+      <AppSettingsRow :title="t('app.settings.set-rem.title')">
         <template #caption>
           {{ t('app.settings.set-rem.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            class="mr-2"
-            align-v="start"
-          >
-            {{ t('app.settings.set-rem.tips-1') }}
-          </cy-icon-text>
+          <AppSettingsWarningText :text="t('app.settings.set-rem.tips-1')" />
         </template>
         <template #actions>
-          <cy-input-counter v-model:value="appRem" :range="[120, 200]">
-            <template #title>
-              <cy-icon-text icon="bx-bx-ruler">
-                {{ t('app.settings.set-rem.rem-title') }}
-              </cy-icon-text>
-            </template>
-          </cy-input-counter>
+          <cy-input-counter
+            v-model:value="appRem"
+            :title="t('app.settings.set-rem.rem-title')"
+            :range="[120, 200]"
+          />
         </template>
       </AppSettingsRow>
-      <AppSettingsRow :title="t('app.settings.primary-language.title')" title-icon="ion-language">
+      <AppSettingsRow :title="t('app.settings.primary-language.title')">
         <template #caption>
           {{ t('app.settings.primary-language.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text
-            icon="bx-bx-error-circle"
-            small
-            text-color="primary-50"
-            class="mr-2"
-            align-v="start"
-          >
-            {{ t('app.settings.primary-language.tips-1') }}
-          </cy-icon-text>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-            {{ t('app.settings.primary-language.tips-2') }}
-          </cy-icon-text>
+          <AppSettingsWarningText :text="t('app.settings.primary-language.tips-1')" />
+          <AppSettingsWarningText :text="t('app.settings.primary-language.tips-2')" />
         </template>
         <template #actions>
           <cy-button-radio
@@ -99,18 +76,8 @@
               {{ t('app.settings.secondary-language.caption') }}
             </template>
             <template #caption-sub>
-              <cy-icon-text
-                icon="bx-bx-error-circle"
-                small
-                text-color="primary-50"
-                align-v="start"
-                class="mr-2"
-              >
-                {{ t('app.settings.secondary-language.tips-1') }}
-              </cy-icon-text>
-              <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-                {{ t('app.settings.secondary-language.tips-2') }}
-              </cy-icon-text>
+              <AppSettingsWarningText :text="t('app.settings.secondary-language.tips-1')" />
+              <AppSettingsWarningText :text="t('app.settings.secondary-language.tips-2')" />
             </template>
             <template #actions>
               <cy-button-radio
@@ -125,20 +92,13 @@
           </AppSettingsRow>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow
-        :title="t('app.settings.clear-spreadsheets-caches.title')"
-        title-icon="carbon-cloud-data-ops"
-      >
+      <AppSettingsRow :title="t('app.settings.clear-spreadsheets-caches.title')">
         <template #caption>
           {{ t('app.settings.clear-spreadsheets-caches.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-            {{ t('app.settings.clear-spreadsheets-caches.tips-1') }}
-          </cy-icon-text>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-            {{ t('app.settings.clear-spreadsheets-caches.tips-2') }}
-          </cy-icon-text>
+          <AppSettingsWarningText :text="t('app.settings.clear-spreadsheets-caches.tips-1')" />
+          <AppSettingsWarningText :text="t('app.settings.clear-spreadsheets-caches.tips-2')" />
         </template>
         <template #actions>
           <cy-button-action icon="ic-round-delete" @click="clearSpreadsheetsCaches">
@@ -146,17 +106,13 @@
           </cy-button-action>
         </template>
       </AppSettingsRow>
-      <AppSettingsRow :title="t('app.settings.storage-backup.title')" title-icon="ic-round-save">
+      <AppSettingsRow :title="t('app.settings.storage-backup.title')">
         <template #caption>
           {{ t('app.settings.storage-backup.caption') }}
         </template>
         <template #caption-sub>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-            {{ t('app.settings.storage-backup.tips-1') }}
-          </cy-icon-text>
-          <cy-icon-text icon="bx-bx-error-circle" small text-color="primary-50" align-v="start">
-            {{ t('app.settings.storage-backup.tips-2') }}
-          </cy-icon-text>
+          <AppSettingsWarningText :text="t('app.settings.storage-backup.tips-1')" />
+          <AppSettingsWarningText :text="t('app.settings.storage-backup.tips-2')" />
         </template>
         <template #actions>
           <cy-default-tips v-if="currentRoute.name !== AppRouteNames.Home" icon="mdi-ghost">
@@ -191,7 +147,8 @@ import CY from '@/shared/utils/Cyteria'
 
 import { AppRouteNames } from '@/router/enums'
 
-import AppSettingsRow from './app-settings/app-settings-row.vue'
+import AppSettingsRow from './app-settings-row.vue'
+import AppSettingsWarningText from './app-settings-warning-text.vue'
 
 defineOptions({
   name: 'AppSettings',

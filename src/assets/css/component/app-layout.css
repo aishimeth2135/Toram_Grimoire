@@ -1,5 +1,3 @@
-@reference "@/tailwind.css";
-
 #app {
   @apply relative h-full w-full;
 }

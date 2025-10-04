@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 
 import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
@@ -27,10 +27,11 @@ const registletStore = useCharacterRegistletBuildStore()
 const { currentRegistletBuild: selectedBuild, registletBuilds } = storeToRefs(registletStore)
 
 const { t } = useI18n()
-const { toggle, modals, controls } = ToggleService({
-  modals: ['edit'] as const,
-  controls: ['itemDetail'] as const,
-})
+
+const editingVisible = ref(false)
+const toggleEditingVisible = useToggle(editingVisible)
+
+const itemDetailVisible = ref(true)
 
 const currentRegistletBuild = computed(() => characterStore.currentCharacterState.registletBuild)
 
@@ -81,10 +82,10 @@ const addRegistletBuild = () => {
     </template>
     <template #content>
       <div class="flex items-center space-x-2 py-3">
-        <cy-button-action icon="ic:edit" @click="toggle('modals/edit', true)">
+        <cy-button-action icon="ic:edit" @click="toggleEditingVisible(true)">
           {{ t('character-simulator.registlet-build.edit-registlet') }}
         </cy-button-action>
-        <cy-button-check v-model:selected="controls.itemDetail">
+        <cy-button-check v-model:selected="itemDetailVisible">
           {{ t('character-simulator.registlet-build.show-detail') }}
         </cy-button-check>
       </div>
@@ -94,7 +95,7 @@ const addRegistletBuild = () => {
             v-for="item in selectedBuild.items"
             :key="item.base.id"
             :item="item"
-            :detail-visible="controls.itemDetail"
+            :detail-visible="itemDetailVisible"
           />
         </CardRows>
         <cy-default-tips v-else>
@@ -117,9 +118,9 @@ const addRegistletBuild = () => {
     <template #modals>
       <CharacterRegistletEdit
         v-if="selectedBuild"
-        :visible="modals.edit"
+        :visible="editingVisible"
         :registlet-build="selectedBuild"
-        @close="toggle('modals/edit', false)"
+        @close="toggleEditingVisible(false)"
       />
     </template>
   </CommonBuildPage>

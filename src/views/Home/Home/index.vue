@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'
@@ -75,7 +75,7 @@ const storageAvailable = Cyteria.storageAvailable('localStorage')
 const mainStore = useMainStore()
 const { device } = useDevice()
 
-const rootEl: Ref<HTMLElement | null> = ref(null)
+const rootEl = useTemplateRef('rootEl')
 
 // const { bookmarks } = useBookmarkStore()
 </script>

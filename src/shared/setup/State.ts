@@ -1,6 +1,7 @@
 import { type Ref, onUnmounted } from 'vue'
 
 import { ViewNames } from '../consts/view'
+import type { AnyFunction } from '../utils/type'
 
 /**
  * The lite state management API that is like `pinia`.
@@ -67,7 +68,8 @@ export function useToggleList<Item>(list: Ref<Item[]>) {
 }
 
 interface ToggleHelper {
-  (value?: boolean | any): void
+  // Allow to use on native event like `click`
+  (value?: boolean | Event): void
 }
 
 export function useToggle(target: Ref<boolean>): ToggleHelper {
@@ -77,15 +79,22 @@ export function useToggle(target: Ref<boolean>): ToggleHelper {
   }) satisfies ToggleHelper
 }
 
-export function useToggleGroup(helpers: ToggleHelper[]) {
-  return (value: boolean, targetHandler?: ToggleHelper) => {
-    if (targetHandler) {
-      targetHandler()
-    }
+interface ToggleGroupUtils {
+  after: (callback: AnyFunction) => void
+}
+type ToggleGroupHandler = (value: boolean) => ToggleGroupUtils
+
+export function useToggleGroup(helpers: ToggleHelper[]): ToggleGroupHandler {
+  return (value: boolean) => {
     helpers.forEach(helper => {
-      if (helper !== targetHandler) {
-        helper(value)
-      }
+      helper(value)
     })
+
+    return {
+      after: (callback: AnyFunction) => {
+        // call the callback after all toggles
+        callback()
+      },
+    }
   }
 }

@@ -10,12 +10,11 @@ import {
   EquipmentFieldTypes,
 } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
-import { RegistletBuild } from '@/lib/Character/RegistletBuild'
-import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
 import { checkStatRestriction, getCharacterElement } from '../utils'
+import type { CharacterBuildsContext, CharacterPureStatsResult } from './context'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { type SkillResult, setupCharacterSkills } from './setupCharacterSkills'
 import { getSkillStatContainerValid, mergeStats } from './utils'
@@ -42,12 +41,8 @@ export interface SetupCharacterStatCategoryResultsExtended {
 export function prepareSetupCharacter() {
   const setupCharacterStats = (
     character: Ref<Character | null>,
-    skillBuild: Ref<SkillBuild | null>,
-    skillStats: Ref<StatRecorded[]>,
-    foodStats: Ref<StatRecorded[]>,
-    registletBuild: Ref<RegistletBuild | null>,
-    registletStats: Ref<StatRecorded[]>,
-    potionStats: Ref<StatRecorded[]>,
+    buildsContext: Ref<CharacterBuildsContext>,
+    statsResult: CharacterPureStatsResult,
     skillItemStates: Map<Skill, SkillItemState>,
     setupOptions: Ref<CharacterSetupOptions>
   ) => {
@@ -81,7 +76,7 @@ export function prepareSetupCharacter() {
       if (!skill) {
         return 0
       }
-      return skillBuild.value?.getSkillLevel(skill) ?? 0
+      return buildsContext.value.skillBuild?.getSkillLevel(skill) ?? 0
     }
 
     const computedVarsBase = computed(() => {
@@ -169,7 +164,7 @@ export function prepareSetupCharacter() {
           '@element': equipmentElement.value,
           '@skill': {
             Conversion: skill_Conversion.value
-              ? (skillBuild.value?.getSkillLevel(skill_Conversion.value) ?? 0)
+              ? (buildsContext.value.skillBuild?.getSkillLevel(skill_Conversion.value) ?? 0)
               : 0,
           },
         },
@@ -266,15 +261,15 @@ export function prepareSetupCharacter() {
     const basePureStatsEntries = computed(() => {
       const allStats = new Map<string, StatRecorded>()
       mergeStats(allStats, allEquipmentStats.value)
-      mergeStats(allStats, skillStats.value)
+      mergeStats(allStats, statsResult.skillStats.value)
       if (setupOptions.value.handleFood) {
-        mergeStats(allStats, foodStats.value)
+        mergeStats(allStats, statsResult.foodStats.value)
       }
       if (setupOptions.value.handleRegistlet) {
-        mergeStats(allStats, registletStats.value)
+        mergeStats(allStats, statsResult.registletStats.value)
       }
       if (setupOptions.value.handlePotion) {
-        mergeStats(allStats, potionStats.value)
+        mergeStats(allStats, statsResult.potionStats.value)
       }
       return [...allStats]
     })
@@ -379,7 +374,7 @@ export function prepareSetupCharacter() {
       activeSkillResultStates: postponedActiveSkillResultStates,
       passiveSkillResultStates: postponedPassiveSkillResultStates,
       damageSkillResultStates,
-    } = setupCharacterSkills(character, skillBuild, skillItemStates, registletBuild, setupOptions, {
+    } = setupCharacterSkills(character, buildsContext, skillItemStates, setupOptions, {
       getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
       getCharacterPureStatValue: id => baseCharacterPureStats.value.get(id) ?? 0,
     })

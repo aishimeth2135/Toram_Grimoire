@@ -317,14 +317,14 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
   effectItem.branchItems.forEach(branchItem => {
     const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.is(SkillBranchNames.Group)) {
-        const groupState: BranchGroupState = {
+        const newGroupState: BranchGroupState = {
           size: toInt(suffix.prop('size')) ?? 0,
           expandable: suffix.prop('expandable') === '1',
           expanded: suffix.prop('expansion_default') === '1',
           parentExpanded: true,
           isGroupEnd: false,
         }
-        branchItem.groupState = groupState
+        Object.assign(branchItem.groupState, newGroupState)
         return false
       }
 

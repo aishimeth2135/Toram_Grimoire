@@ -8,7 +8,7 @@
         {{ t('skill-query.historical-record') }}
       </cy-tab>
     </cy-tabs>
-    <div ref="skillBranchesElement" class="skill-effect-main">
+    <div class="skill-effect-main">
       <div v-if="currentTab === ContentTabs.Info">
         <SkillBranch
           v-for="branchItem in effectItem.visibleBranchItems"
@@ -59,7 +59,6 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide, ref, watch } from 'vue'
-import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
@@ -124,9 +123,13 @@ const tabVisible = computed(() => {
   return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false
 })
 
-const skillBranchesElement: Ref<HTMLElement | null> = ref(null)
-
-watch(effectItem, () => setTab(ContentTabs.Info), { immediate: true })
+watch(
+  effectItem,
+  () => {
+    setTab(ContentTabs.Info)
+  },
+  { immediate: true }
+)
 
 provide(SkillEffectInjectionKey, {
   currentEffectItem: effectItem,

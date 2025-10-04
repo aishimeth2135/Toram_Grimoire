@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T extends any">
-import { type Ref, type StyleValue, computed, shallowRef } from 'vue'
+import { type Ref, type StyleValue, computed, shallowRef, useTemplateRef } from 'vue'
 
 import { useResizeObserver } from '@/shared/setup/ElementObserver'
 import { nextFrame } from '@/shared/utils/dom'
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const currentValue = defineModel<T>({ required: true })
 
 const sliderStyle: Ref<StyleValue | undefined> = shallowRef(undefined)
-const tabsEl: Ref<HTMLElement | null> = shallowRef(null)
+const tabsEl = useTemplateRef('tabsEl')
 const isHorizontal = computed(() => props.direction === 'horizontal')
 
 const tabsContext = { tabsEl, isHorizontal, currentValue, sliderStyle }

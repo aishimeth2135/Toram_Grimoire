@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, type StyleValue, computed, ref, useAttrs, useSlots } from 'vue'
+import { type StyleValue, computed, useAttrs, useSlots, useTemplateRef } from 'vue'
 
 import { slotNotEmpty } from '@/shared/utils/vue'
 
@@ -58,7 +58,7 @@ const closePage = () => {
   innerVisible.value = false
 }
 
-const containerEl: Ref<HTMLElement | null> = ref(null)
+const containerEl = useTemplateRef('containerEl')
 
 const switchToContent = () => {
   containerEl.value

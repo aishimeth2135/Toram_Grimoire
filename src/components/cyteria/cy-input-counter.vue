@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter shadow-xs outline-hidden border border-l-2 bg-white duration-300"
+      class="cy--input-counter outline-hidden border border-l-2 bg-white duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
@@ -104,6 +104,7 @@ const rootClassList = computed(() => {
     ['border-' + props.mainColor]: !focus.value,
     disabled: props.disabled,
     ['border-' + mainColorInstance.value.darken]: !props.inline && focus.value,
+    ['shadow-xs']: !props.inline,
   } as Record<string, boolean>
 })
 

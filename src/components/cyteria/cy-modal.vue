@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type CSSProperties, type Ref, computed, ref, useAttrs, useSlots } from 'vue'
+import { type CSSProperties, computed, ref, useAttrs, useSlots, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/dom'
@@ -106,7 +106,7 @@ const closeModal = () => {
   emit('close')
 }
 
-const extraContentElement: Ref<HTMLElement | null> = ref(null)
+const extraContentElement = useTemplateRef('extraContentElement')
 const extraContentStyle = ref<CSSProperties>({})
 const showExtraContent = () => {
   if (extraContentElement.value && !extraContentVisible.value) {

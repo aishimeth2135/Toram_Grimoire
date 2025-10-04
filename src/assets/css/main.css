@@ -1,5 +1,9 @@
 @reference "@/tailwind.css";
 
+@import './font/font.css' layer(base);
+@import './global.css' layer(components);
+@import './component.css' layer(components);
+
 :root {
   --app-screen-max-width: 1376px;
   --app-side-menu-width: 240px;

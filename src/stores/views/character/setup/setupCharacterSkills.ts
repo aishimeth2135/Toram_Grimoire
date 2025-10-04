@@ -6,8 +6,6 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { Character, CharacterBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
-import { RegistletBuild } from '@/lib/Character/RegistletBuild'
-import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
 import {
@@ -27,6 +25,7 @@ import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHand
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
+import type { CharacterBuildsContext } from './context'
 import { getSkillBranchState } from './getState'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { useGetSkillLevel } from './setupCharacterBuilds'
@@ -210,15 +209,17 @@ function useFormulaExtraValueVariables(
 
 export function setupCharacterSkills(
   character: Ref<Character | null>,
-  skillBuild: Ref<SkillBuild | null>,
+  buildsContext: Ref<CharacterBuildsContext>,
   skillItemStates: Map<Skill, SkillItemState>,
-  registletBuild: Ref<RegistletBuild | null>,
   setupOptions: Ref<CharacterSetupOptions>,
   postponeOptions?: SkillSetupPostponeOptions
 ) {
   const isPostpone = !!postponeOptions
 
-  const getSkillLevel = useGetSkillLevel(skillItemStates, skillBuild)
+  const getSkillLevel = useGetSkillLevel(
+    skillItemStates,
+    computed(() => buildsContext.value.skillBuild)
+  )
 
   const computing = new SkillComputingContainer()
   computing.varGetters.skillLevel = getSkillLevel
@@ -231,11 +232,11 @@ export function setupCharacterSkills(
           skill,
           computed(() => {
             const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
-            if (!registletBuild.value) {
+            if (!buildsContext.value.registletBuild) {
               return registletItems.map(() => 0)
             }
             return registletItems.map(itemBase => {
-              const item = registletBuild.value!.getItem(itemBase)
+              const item = buildsContext.value.registletBuild!.getItem(itemBase)
               return item && item.enabled ? item.level : 0
             })
           })
@@ -508,7 +509,7 @@ export function setupCharacterSkills(
     }
   })()
 
-  const skillBuildAllSkills = computed(() => skillBuild.value?.allSkills ?? [])
+  const skillBuildAllSkills = computed(() => buildsContext.value.skillBuild?.allSkills ?? [])
 
   const getUsedStackContainers = (branchItems: SkillBranchItem[], skill: Skill) => {
     const stackIds = new Set<number>()
@@ -540,7 +541,7 @@ export function setupCharacterSkills(
         )
       })
       const resultStates = reactive({
-        skillLevel: computed(() => skillBuild.value?.getSkillLevel(skill) ?? 0),
+        skillLevel: computed(() => buildsContext.value.skillBuild?.getSkillLevel(skill) ?? 0),
         skill,
         stackContainers,
         basicContainer,
@@ -588,7 +589,7 @@ export function setupCharacterSkills(
   const { resultStates: damageSkillResultStates } = getSkillResultStatesComputed(damageSkillResults)
 
   const skillStatResults = computed(() => {
-    if (!skillBuild.value) {
+    if (!buildsContext.value.skillBuild) {
       return {
         stats: [],
         conditionalStatContainers: [],
@@ -629,7 +630,7 @@ export function setupCharacterSkills(
     }
     list
       .filter(resultState => {
-        const state = skillBuild.value!.getSkillState(resultState.skill)
+        const state = buildsContext.value.skillBuild!.getSkillState(resultState.skill)
         return state.enabled && (state.level !== 0 || state.starGemLevel !== 0)
       })
       .forEach(resultState => {
