@@ -45,7 +45,7 @@
       <cy-button-icon
         icon="majesticons:checkbox-list-detail-line"
         class="ml-auto"
-        @click="toggle('contents/detail')"
+        @click="toggleDetailVisible"
       />
     </div>
     <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div
-      v-if="contents.detail"
+      v-if="detailVisible"
       class="mt-2 rounded-sm border-1 border-primary-20 bg-white px-3 py-2 text-sm"
     >
       <div
@@ -100,13 +100,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 import { markText } from '@/shared/utils/view'
 
 import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
@@ -126,9 +126,8 @@ const props = defineProps<Props>()
 
 const characterStore = useCharacterStore()
 const { t } = useI18n()
-const { contents, toggle } = ToggleService({
-  contents: ['detail'] as const,
-})
+const detailVisible = ref(false)
+const toggleDetailVisible = useToggle(detailVisible)
 
 const result = computed(() => props.result)
 

@@ -30,12 +30,12 @@
         <cy-button-circle
           icon="ic:round-filter-list"
           color="orange"
-          @click="toggle('menus/displayMode')"
+          @click="toggleDisplayModeMenuVisible"
         />
       </template>
       <template #side-contents>
         <cy-transition>
-          <AppLayoutBottomContent v-if="menus.displayMode" class="p-3">
+          <AppLayoutBottomContent v-if="displayModeMenuVisible" class="p-3">
             <div>
               <cy-icon-text small text-color="primary-30">
                 {{ t('registlet-query.display-mode.title') }}
@@ -78,8 +78,6 @@ import Grimoire from '@/shared/Grimoire'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
-import ToggleService from '@/shared/setup/ToggleService'
-
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
@@ -87,6 +85,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import RegistletQueryResult from './registlet-query-result.vue'
 
 import { useRegistletQueryState } from './setup'
+import { useToggle } from '@/shared/setup/State'
 
 const Registlet = Grimoire.Registlet!
 
@@ -97,7 +96,9 @@ const registletItems: RegistletItemBase[] = [
 ]
 
 const { t } = useI18n()
-const { toggle, menus } = ToggleService({ menus: ['displayMode'] as const })
+
+const displayModeMenuVisible = ref(false)
+const toggleDisplayModeMenuVisible = useToggle(displayModeMenuVisible)
 
 const searchText = ref('')
 

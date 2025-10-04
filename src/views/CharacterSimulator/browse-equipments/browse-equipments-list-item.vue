@@ -78,7 +78,7 @@ const { device } = useDevice()
           </div>
         </div>
       </div>
-      <div v-if="selected" class="mt-1 border-t border-primary-10 px-4 py-2.5">
+      <div v-if="selected" class="border-t border-primary-10 py-1">
         <EquipmentBrowseActions
           :equipment="equipment"
           :equipped="equipped"

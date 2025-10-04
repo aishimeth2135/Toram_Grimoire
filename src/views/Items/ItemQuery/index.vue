@@ -49,7 +49,7 @@
             </div>
           </template>
           <template v-else-if="state.currentMode === SearchModes.Stat">
-            <cy-button-plain width-full @click="toggle('modals/selecteStat')">
+            <cy-button-plain width-full @click="toggleSelectStatModalVisible">
               <template v-if="modes[SearchModes.Stat].currentStats.length === 0">
                 {{ t('item-query.options-stat.select-stat.title') }}
               </template>
@@ -156,26 +156,26 @@
         <cy-button-circle
           icon="mdi-sort-variant"
           color="blue"
-          :selected="menus.sortOptions"
+          :selected="sortOptionsVisible"
           float
           toggle
-          @click="toggle('menus/sortOptions', null, false)"
+          @click="toggleOptionContents(false).after(toggleSortOptionsVisible)"
         />
         <cy-button-circle
           icon="mdi:filter"
           color="bright"
-          :selected="menus.conditionOptions"
+          :selected="conditionOptionsVisible"
           float
           toggle
-          @click="toggle('menus/conditionOptions', null, false)"
+          @click="toggleOptionContents(false).after(toggleConditionOptionsVisible)"
         />
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="menus.conditionOptions">
+          <AppLayoutBottomContent v-if="conditionOptionsVisible">
             <ItemQueryFilterMenu :equipments="equipments" @filter="validEquipments = $event" />
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
+          <AppLayoutBottomContent v-else-if="sortOptionsVisible" class="p-3">
             <div>
               <div>
                 <cy-icon-text icon="mdi-sort-variant" color="fuchsia" small>
@@ -204,7 +204,7 @@
         </cy-transition>
       </template>
     </AppLayoutBottom>
-    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start" footer>
+    <cy-modal v-model:visible="selectStatModalVisible" vertical-position="start" footer>
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ t('item-query.options-stat.select-stat.title') }}
@@ -253,13 +253,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, shallowRef } from 'vue'
+import { computed, reactive, ref, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
 
 import Grimoire from '@/shared/Grimoire'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle, useToggleGroup } from '@/shared/setup/State'
 import { toFloat, toInt } from '@/shared/utils/number'
 
 import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'
@@ -285,10 +285,18 @@ const handleCompareValue = (value: string) => toFloat(value) ?? -99999
 
 const { state, modes } = useItemQueryModes()
 
-const { menus, modals, toggle } = ToggleService({
-  menus: ['conditionOptions', 'sortOptions'] as const,
-  modals: ['selecteStat'] as const,
-})
+const conditionOptionsVisible = ref(false)
+const toggleConditionOptionsVisible = useToggle(conditionOptionsVisible)
+const sortOptionsVisible = ref(false)
+const toggleSortOptionsVisible = useToggle(sortOptionsVisible)
+
+const toggleOptionContents = useToggleGroup([
+  toggleConditionOptionsVisible,
+  toggleSortOptionsVisible,
+])
+
+const selectStatModalVisible = ref(false)
+const toggleSelectStatModalVisible = useToggle(selectStatModalVisible)
 
 const { t } = useI18n()
 

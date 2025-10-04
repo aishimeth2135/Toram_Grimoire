@@ -4,7 +4,11 @@ import { type Ref, computed, readonly, ref } from 'vue'
 import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
 
-import { Character, type CharacterSaveData } from '@/lib/Character/Character'
+import {
+  Character,
+  type CharacterBindingBuild,
+  type CharacterSaveData,
+} from '@/lib/Character/Character'
 import { type CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
 import { CharacterEquipment, type EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
@@ -18,6 +22,7 @@ import { Skill } from '@/lib/Skill/Skill'
 import { useCharacterFoodStore } from './food-build'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
+import type { CharacterPureStatsResult } from './setup/context'
 import { getSkillBranchState } from './setup/getState'
 import { prepareSetupCharacter } from './setup/setupCharacter'
 import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
@@ -252,36 +257,32 @@ export const useCharacterStore = defineStore('view-character', () => {
         potionBuildStore.appendPotionBuild(build, false)
       })
 
+      const getMatchedBuild = <Build extends CharacterBindingBuild>(
+        builds: Build[],
+        id: number | null
+      ): Build | null => {
+        return builds.find(build => build.matchLoadedId(loadedCategory, id)) ?? null
+      }
+
       saveData.characterStates.forEach(item => {
-        const targetCharacter = characters.value.find(ch =>
-          ch.matchLoadedId(loadedCategory, item.id)
-        )
+        const targetCharacter = getMatchedBuild(characters.value, item.id)
+
         if (targetCharacter) {
           const characterState = getCharacterState(targetCharacter)
 
-          // skill
-          const skillBuild = skillBuildStore.skillBuilds.find(build =>
-            build.matchLoadedId(loadedCategory, item.skillBuildId)
+          characterState.skillBuild = getMatchedBuild(
+            skillBuildStore.skillBuilds,
+            item.skillBuildId
           )
-          characterState.skillBuild = skillBuild ?? null
-
-          // food
-          const foodBuild = foodStore.foodBuilds.find(build =>
-            build.matchLoadedId(loadedCategory, item.foodBuildId)
+          characterState.foodBuild = getMatchedBuild(foodStore.foodBuilds, item.foodBuildId)
+          characterState.registletBuild = getMatchedBuild(
+            registletBuildStore.registletBuilds,
+            item.registletBuildId
           )
-          characterState.foodBuild = foodBuild ?? null
-
-          // registlet
-          const registletBuild = registletBuildStore.registletBuilds.find(build =>
-            build.matchLoadedId(loadedCategory, item.registletBuildId)
+          characterState.potionBuild = getMatchedBuild(
+            potionBuildStore.potionBuilds,
+            item.potionBuildId
           )
-          characterState.registletBuild = registletBuild ?? null
-
-          // potion
-          const potionBuild = potionBuildStore.potionBuilds.find(build =>
-            build.matchLoadedId(loadedCategory, item.potionBuildId)
-          )
-          characterState.potionBuild = potionBuild ?? null
         }
       })
     }
@@ -327,11 +328,15 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const currentCharacterState = computed(() => getCharacterState(currentCharacter.value))
-  const currentCharacterSkillBuild = computed(() => currentCharacterState.value.skillBuild)
-  const currentCharacterRegistletBuild = computed(() => currentCharacterState.value.registletBuild)
-  const currentCharacterPotionBuild = computed(() => currentCharacterState.value.potionBuild)
-  const currentCharacterFoodBuild = computed(() => currentCharacterState.value.foodBuild)
+  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
+  const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
+  const currentCharacterRegistletBuild = computed(
+    () => currentCharacterBuildsContext.value.registletBuild
+  )
+  const currentCharacterPotionBuild = computed(
+    () => currentCharacterBuildsContext.value.potionBuild
+  )
+  const currentCharacterFoodBuild = computed(() => currentCharacterBuildsContext.value.foodBuild)
 
   const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
@@ -347,9 +352,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     skillPureStats,
   } = setupCharacterSkills(
     currentCharacter,
-    currentCharacterSkillBuild,
+    currentCharacterBuildsContext,
     skillItemStates,
-    currentCharacterRegistletBuild,
     setupOptions
   )
 
@@ -359,6 +363,13 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const { allPotionBuildStats } = setupPotionStats(currentCharacterPotionBuild)
 
+  const allPureStatsResult: CharacterPureStatsResult = {
+    skillStats: skillPureStats,
+    foodStats: allFoodBuildStats,
+    registletStats: allRegistletBuildStats,
+    potionStats: allPotionBuildStats,
+  }
+
   const {
     characterStatCategoryResults,
     postponedActiveSkillResultStates,
@@ -367,12 +378,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupCharacterStatCategoryResultsExtended,
   } = setupCharacterStats(
     currentCharacter,
-    currentCharacterSkillBuild,
-    skillPureStats,
-    allFoodBuildStats,
-    currentCharacterRegistletBuild,
-    allRegistletBuildStats,
-    allPotionBuildStats,
+    currentCharacterBuildsContext,
+    allPureStatsResult,
     skillItemStates,
     setupOptions
   )
@@ -382,15 +389,12 @@ export const useCharacterStore = defineStore('view-character', () => {
       comparedCharacter,
       currentCharacterSkillBuild
     )
+
     const { characterStatCategoryResults: comparedCharacterStatCategoryResults } =
       setupCharacterStats(
         comparedCharacter,
-        currentCharacterSkillBuild,
-        skillPureStats,
-        allFoodBuildStats,
-        currentCharacterRegistletBuild,
-        allRegistletBuildStats,
-        allPotionBuildStats,
+        currentCharacterBuildsContext,
+        allPureStatsResult,
         _skillItemStates,
         setupOptions
       )
@@ -459,7 +463,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
     setupOptions,
-    currentCharacterState,
+    currentCharacterState: currentCharacterBuildsContext,
     getCharacterState,
 
     autoSaveDisabled: readonly(autoSaveDisabled),

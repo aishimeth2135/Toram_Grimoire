@@ -1,4 +1,4 @@
-import { provide, reactive, ref, shallowRef, watch } from 'vue'
+import { provide, reactive, ref, shallowReadonly, shallowRef, watchEffect } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -26,13 +26,37 @@ export const useSkillQueryState = defineState(() => {
   const skillLevel = ref(10)
   const characterLevel = ref(300)
 
+  const updateCurrentSkillTreeCategory = (category: SkillTreeCategory) => {
+    currentSkillTreeCategory.value = category
+    currentSkillTree.value = null
+    currentSkill.value = null
+  }
+
+  const updateCurrentSkillTree = (tree: SkillTree) => {
+    currentSkillTree.value = tree
+    currentSkill.value = null
+  }
+
+  const updateCurrentSkill = (skill: Skill, syncParent = false) => {
+    if (syncParent) {
+      currentSkillTreeCategory.value = skill.parent.parent
+      currentSkillTree.value = skill.parent
+    }
+    currentSkill.value = skill
+  }
+
   return {
     skillLevel,
     characterLevel,
-    currentSkill,
-    currentSkillTree,
-    currentSkillTreeCategory,
     currentEquipment,
+
+    currentSkill: shallowReadonly(currentSkill),
+    currentSkillTree: shallowReadonly(currentSkillTree),
+    currentSkillTreeCategory: shallowReadonly(currentSkillTreeCategory),
+
+    updateCurrentSkillTreeCategory,
+    updateCurrentSkillTree,
+    updateCurrentSkill,
   }
 })
 
@@ -47,17 +71,15 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] => {
     if (!skillRegistletItemsStates.has(skill)) {
       const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
-      skillRegistletItemsStates.set(
-        skill,
-        registletItems.map(registletItem => {
-          const maxLevel = registletItem.maxLevel
-          return reactive({
-            item: registletItem,
-            level: ref(maxLevel),
-            enabled: false,
-          }) as SkillRegistletItemState
-        })
-      )
+      const registletItemStates = registletItems.map(registletItem => {
+        const maxLevel = registletItem.maxLevel
+        return reactive({
+          item: registletItem,
+          level: ref(maxLevel),
+          enabled: false,
+        }) as SkillRegistletItemState
+      })
+      skillRegistletItemsStates.set(skill, registletItemStates)
     }
     return skillRegistletItemsStates.get(skill)!
   }
@@ -98,18 +120,14 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   }
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
-  watch(
-    skillRef,
-    newValue => {
-      currentSkillItem.value = newValue ? new SkillItem(newValue) : null
-      const vars = {
-        slv: skillLevel.value,
-        clv: characterLevel.value,
-      }
-      currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
-    },
-    { immediate: true }
-  )
+  watchEffect(() => {
+    currentSkillItem.value = skillRef.value ? new SkillItem(skillRef.value) : null
+    const vars = {
+      slv: skillLevel.value,
+      clv: characterLevel.value,
+    }
+    currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
+  })
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
     const stackId = branchItem.stackId

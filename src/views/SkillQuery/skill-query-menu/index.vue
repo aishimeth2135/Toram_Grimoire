@@ -24,7 +24,7 @@
           :icon="
             advancedMenuVisible ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'
           "
-          @click="(toggleAdvancedMenu(), toggleContentGroup(false))"
+          @click="toggleContentGroup(false).after(toggleAdvancedMenu)"
         />
       </div>
     </template>
@@ -49,10 +49,8 @@
       <AppLayoutBottomContent v-if="advancedMenuVisible" class="p-4">
         <div class="space-y-3">
           <div v-for="{ key, value } in equipmentOptions" :key="key">
-            <div>
-              <cy-icon-text text-color="fuchsia-60" small>
-                {{ t(`skill-query.equipment.${key}: title`) }}
-              </cy-icon-text>
+            <div class="text-sm text-primary-30">
+              {{ t(`skill-query.equipment.${key}: title`) }}
             </div>
             <div class="flex flex-wrap items-start">
               <cy-button-radio
@@ -82,10 +80,8 @@
           />
         </div>
         <div class="mt-3">
-          <div>
-            <cy-icon-text text-color="fuchsia-60" small>
-              {{ t('skill-query.formula-display-mode.title') }}
-            </cy-icon-text>
+          <div class="text-sm text-primary-30">
+            {{ t('skill-query.formula-display-mode.title') }}
           </div>
           <div class="flex flex-wrap items-center">
             <cy-button-radio

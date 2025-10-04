@@ -1,10 +1,10 @@
 <template>
-  <CardRow :selected="contents.detail">
+  <CardRow :selected="detailVisible">
     <div class="sticky top-0 z-1 min-w-max">
       <div
         class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
-        :class="{ 'bg-white': contents.detail }"
-        @click="toggle('contents/detail')"
+        :class="{ 'bg-white': detailVisible }"
+        @click="toggleDetailVisible"
       >
         <div class="flex w-full items-start">
           <div class="flex w-48 shrink-0 items-center">
@@ -31,14 +31,20 @@
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon-text icon="mdi-sword" text-color="primary-30"> ATK </cy-icon-text>
+              <div class="flex items-center">
+                <cy-icon icon="mdi-sword" />
+                <div class="ml-0.5 text-primary-30">ATK</div>
+              </div>
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
-              <span class="border-l border-blue-50 pl-2 text-blue-50">
+              <span class="border-l border-blue-30 pl-2 text-blue-50">
                 {{ equipment.stability }}%
               </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon-text icon="mdi:shield-outline" text-color="primary-30"> DEF </cy-icon-text>
+              <div class="flex items-center">
+                <cy-icon icon="mdi:shield-outline" />
+                <div class="ml-0.5 text-primary-30">DEF</div>
+              </div>
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
@@ -74,7 +80,7 @@
     </div>
     <cy-transition>
       <div
-        v-if="contents.detail"
+        v-if="detailVisible"
         class="relative max-w-full overscroll-none bg-white pb-3 pl-4 pr-3 pt-2"
       >
         <div v-if="originEquipment.extra" class="mb-2">
@@ -295,9 +301,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 
 import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
@@ -317,13 +324,11 @@ const props = defineProps<Props>()
 const { state, modes } = useItemQueryModes()
 
 const { t } = useI18n()
-const { contents, toggle } = ToggleService({
-  contents: ['detail'] as const,
-})
 
-const originEquipment = computed(() => {
-  return props.equipment.origin!
-})
+const detailVisible = ref(false)
+const toggleDetailVisible = useToggle(detailVisible)
+
+const originEquipment = computed(() => props.equipment.origin!)
 
 const obtainsDataConvert = (obtains: BagItemObtain[]) => {
   const icons: Record<string, string> = {

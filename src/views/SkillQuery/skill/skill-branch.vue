@@ -15,7 +15,58 @@
           </div>
           <SkillEquipmentButton :equipments="currentEffectEquipments" selected />
         </div>
-        <component :is="currentComponent" :branch-item="skillBranchItem" :computing="computing" />
+        <!-- <component :is="currentComponent" :branch-item="skillBranchItem" :computing="computing" /> -->
+        <SkillBranchDamage
+          v-if="branchItem.name === SkillBranchNames.Damage"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchEffect
+          v-else-if="branchItem.name === SkillBranchNames.Effect"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchHeal
+          v-else-if="branchItem.name === SkillBranchNames.Heal"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchPassive
+          v-else-if="branchItem.name === SkillBranchNames.Passive"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchStack
+          v-else-if="branchItem.name === SkillBranchNames.Stack"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchProration
+          v-else-if="branchItem.name === SkillBranchNames.Proration"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchList
+          v-else-if="branchItem.name === SkillBranchNames.List"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchBasic
+          v-else-if="branchItem.name === SkillBranchNames.Basic"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchReference
+          v-else-if="branchItem.name === SkillBranchNames.Reference"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <skillBranchTable
+          v-else-if="branchItem.name === SkillBranchNames.Table"
+          :branch-item="skillBranchItem"
+          :computing="computing"
+        />
+        <SkillBranchText v-else :branch-item="skillBranchItem" :computing="computing" />
         <cy-button-circle
           v-if="subButtonAvailable"
           icon="mdi:select-compare"
@@ -105,32 +156,32 @@ const { t } = useI18n()
 const subContentVisible = ref(false)
 const toggleSubContent = useToggle(subContentVisible)
 
-const currentComponent = computed(() => {
-  switch (branchItem.value.name) {
-    case SkillBranchNames.Damage:
-      return SkillBranchDamage
-    case SkillBranchNames.Effect:
-      return SkillBranchEffect
-    case SkillBranchNames.Heal:
-      return SkillBranchHeal
-    case SkillBranchNames.Passive:
-      return SkillBranchPassive
-    case SkillBranchNames.Stack:
-      return SkillBranchStack
-    case SkillBranchNames.Proration:
-      return SkillBranchProration
-    case SkillBranchNames.List:
-      return SkillBranchList
-    case SkillBranchNames.Basic:
-      return SkillBranchBasic
-    case SkillBranchNames.Reference:
-      return SkillBranchReference
-    case SkillBranchNames.Table:
-      return skillBranchTable
-    default:
-      return SkillBranchText
-  }
-})
+// const currentComponent = computed(() => {
+//   switch (branchItem.value.name) {
+//     case SkillBranchNames.Damage:
+//       return SkillBranchDamage
+//     case SkillBranchNames.Effect:
+//       return SkillBranchEffect
+//     case SkillBranchNames.Heal:
+//       return SkillBranchHeal
+//     case SkillBranchNames.Passive:
+//       return SkillBranchPassive
+//     case SkillBranchNames.Stack:
+//       return SkillBranchStack
+//     case SkillBranchNames.Proration:
+//       return SkillBranchProration
+//     case SkillBranchNames.List:
+//       return SkillBranchList
+//     case SkillBranchNames.Basic:
+//       return SkillBranchBasic
+//     case SkillBranchNames.Reference:
+//       return SkillBranchReference
+//     case SkillBranchNames.Table:
+//       return skillBranchTable
+//     default:
+//       return SkillBranchText
+//   }
+// })
 
 const paddingBottomClass = computed(() => {
   const curBch = branchItem.value

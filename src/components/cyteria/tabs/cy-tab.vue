@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, computed, ref } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 
 import { useTabContext } from './setup'
 
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 })
 
-const navEl: Ref<HTMLElement | null> = ref(null)
+const navEl = useTemplateRef('navEl')
 
 const tabContext = {
   sourceEl: navEl,

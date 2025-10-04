@@ -34,7 +34,7 @@ const rootStyle = computed(() => {
     v-slot="{ iconClass }"
     v-bind="buttonBaseBinds"
     :style="rootStyle"
-    class="cy-button-icon mx-1"
+    class="cy-button-icon"
   >
     <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>

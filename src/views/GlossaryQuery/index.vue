@@ -32,7 +32,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type Ref, computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
@@ -68,7 +68,7 @@ const { currentItems, page, maxPage } = PageControl({
   step: 30,
 })
 
-const topElement: Ref<HTMLElement | null> = ref(null)
+const topElement = useTemplateRef('topElement')
 const pageChanged = async () => {
   await nextTick()
   topElement.value?.scrollIntoView({ behavior: 'smooth' })

@@ -1,5 +1,3 @@
-@reference "@/tailwind.css";
-
 .cy-button-base {
   --button-color-main: var(--app-primary-60);
   --button-color-main-light: var(--app-primary-30);
@@ -161,7 +159,7 @@
 
 /* button icon */
 .cy-button-icon {
-  @apply rounded-full duration-200;
+  @apply mx-2 rounded-full duration-200;
 
   &:focus:not(:active) {
     @apply bg-primary-30/20;
@@ -183,7 +181,7 @@
   }
 
   &.theme-secondary {
-    --button-color-main: var(--app-primary-50);
+    --button-color-main: var(--app-primary-60);
     --button-color-main-light: var(--app-primary-30);
   }
 }

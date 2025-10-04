@@ -44,13 +44,15 @@ const iconClass = computed(() => {
 </template>
 
 <style>
-.cy-icon-md {
-  width: 1.125rem;
-  height: 1.125rem;
-}
+@layer components {
+  .cy-icon-md {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
 
-.cy-icon-sm {
-  width: 0.875rem;
-  height: 0.875rem;
+  .cy-icon-sm {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <AppLayoutMain>
-    <cy-top-header class="cursor-pointer" @click="toggle('contents/search')">
+    <cy-top-header class="cursor-pointer" @click="toggleSearchVisible">
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}
       </cy-icon-text>
@@ -41,8 +41,13 @@
         />
       </div>
     </div>
-    <div v-if="currentSkillItem" ref="skillEffectElement" class="pt-10" style="min-height: 50vh">
-      <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
+    <div
+      v-if="currentSkill && currentSkillItem"
+      ref="skillEffectElement"
+      class="pt-10"
+      style="min-height: 50vh"
+    >
+      <div class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
           @set-current-skill="selectCurrentSkill($event, true)"
@@ -54,11 +59,11 @@
           color="fuchsia"
           small
           toggle
-          :selected="contents.skillDev"
-          @click="toggle('contents/skillDev')"
+          :selected="skillDevVisible"
+          @click="toggleSkillDevVisible"
         />
       </div>
-      <SkillDevDetail v-if="contents.skillDev" :skill="currentSkillItem.skill" class="mt-2" />
+      <SkillDevDetail v-if="skillDevVisible" :skill="currentSkillItem.skill" class="mt-2" />
     </div>
     <SkillQueryMenu
       v-if="currentSkillTree"
@@ -69,22 +74,22 @@
       @go-skill-top="goToSkillTop"
     />
     <SkillQuerySearch
-      v-if="contents.search"
-      @close="toggle('contents/search', false)"
+      v-if="searchVisible"
+      @close="toggleSearchVisible(false)"
       @submit="selectCurrentSkillFromSearch"
     />
   </AppLayoutMain>
 </template>
 
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, nextTick, ref } from 'vue'
+import { type ComputedRef, computed, nextTick, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 import { toInt } from '@/shared/utils/number'
 
 import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
@@ -104,23 +109,24 @@ defineOptions({
   name: 'SkillQuery',
 })
 
-const { toggle, contents } = ToggleService({
-  contents: ['skillEffect', 'search', 'skillDev'] as const,
-})
+const searchVisible = ref(false)
+const toggleSearchVisible = useToggle(searchVisible)
+const skillDevVisible = ref(false)
+const toggleSkillDevVisible = useToggle(skillDevVisible)
 
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const mainStore = useMainStore()
 
-const skillEffectElement: Ref<HTMLElement | null> = ref(null)
+const skillEffectElement = useTemplateRef('skillEffectElement')
 const jumpToSkillEffect = async () => {
   await nextTick()
   if (skillEffectElement.value) {
     skillEffectElement.value.scrollIntoView({ behavior: 'smooth' })
   }
 }
-const skillTreeCategoryMenuElement: Ref<HTMLElement | null> = ref(null)
+const skillTreeCategoryMenuElement = useTemplateRef('skillTreeCategoryMenuElement')
 const goToSkillTop = async () => {
   await nextTick()
   if (skillTreeCategoryMenuElement.value) {
@@ -130,42 +136,39 @@ const goToSkillTop = async () => {
 
 const skillRoot: ComputedRef<SkillRoot> = computed(() => Grimoire.Skill.skillRoot)
 
-const { currentSkill, currentSkillTree, currentSkillTreeCategory, currentEquipment } =
-  useSkillQueryState()
+const {
+  currentSkill,
+  currentSkillTree,
+  currentSkillTreeCategory,
+  currentEquipment,
+  updateCurrentSkillTreeCategory,
+  updateCurrentSkillTree,
+  updateCurrentSkill,
+} = useSkillQueryState()
 
 const updateRouteParam = (skillId: string) => {
-  router.replace({ name: 'SkillQuery', params: { skillId } })
+  router.replace({ name: AppRouteNames.SkillQuery, params: { skillId } })
 }
 
 const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {
-  currentSkillTreeCategory.value = stc
-  currentSkillTree.value = null
-  currentSkill.value = null
-  toggle('contents/skillEffect', false)
+  updateCurrentSkillTreeCategory(stc)
   updateRouteParam(stc.id.toString())
 }
 
 const selectCurrentSkillTree = (st: SkillTree) => {
-  currentSkillTree.value = st
-  currentSkill.value = null
-  toggle('contents/skillEffect', false)
+  updateCurrentSkillTree(st)
   updateRouteParam(st.skillTreeId)
 }
 
 const selectCurrentSkill = (skill: Skill, syncParent = false) => {
-  if (syncParent) {
-    currentSkillTreeCategory.value = skill.parent.parent
-    currentSkillTree.value = skill.parent
-  }
-  currentSkill.value = skill
-  toggle('contents/skillEffect', true)
+  updateCurrentSkill(skill, syncParent)
   jumpToSkillEffect()
 
   updateRouteParam(skill.skillId)
 }
 
 const selectCurrentSkillFromSearch = (skill: Skill) => {
-  toggle('contents/search')
+  toggleSearchVisible(false)
   selectCurrentSkill(skill, true)
 }
 

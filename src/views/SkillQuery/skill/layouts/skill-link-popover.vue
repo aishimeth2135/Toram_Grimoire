@@ -15,7 +15,7 @@
         <cy-button-plain
           icon="carbon:location-current"
           class="ml-4"
-          @click="skillQueryState.currentSkill.value = currentSkill"
+          @click="updateCurrentSkill(currentSkill, true)"
         >
           {{ t('skill-query.go-to-skill') }}
         </cy-button-plain>
@@ -47,5 +47,5 @@ const { t } = useI18n()
 
 const currentSkill = computed(() => Grimoire.Skill.skillRoot.findSkillByName(props.name))
 
-const skillQueryState = useSkillQueryState()
+const { updateCurrentSkill } = useSkillQueryState()
 </script>

@@ -1,11 +1,10 @@
 import jsep from 'jsep'
 
 import { isNumberString, lastChar } from '@/shared/utils/string'
+import { type AnyFunction } from '@/shared/utils/type'
 
 import { toFloat } from '../number'
 import { getGettersMap, getVarsMap, handleReplacedKey, jsepTypes, varMapToArray } from './utils'
-
-type AnyFunction = (...param: any) => any
 
 function trimBrackets(value: string) {
   while (value[0] === '(' && lastChar(value) === ')') {

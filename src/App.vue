@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useLanguageStore } from '@/stores/app/language'
@@ -52,7 +52,7 @@ import AppConfirm from '@/views/app/app-confirm.vue'
 import AppInitialize from '@/views/app/app-initialize.vue'
 import AppLoading from '@/views/app/app-loading.vue'
 import AppNotify from '@/views/app/app-notify.vue'
-import AppSetting from '@/views/app/app-settings.vue'
+import AppSetting from '@/views/app/app-settings/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
@@ -70,7 +70,7 @@ const { layout } = usePageLayout()
 const { device } = useDevice()
 
 const sideMenuButtonVisible = ref(false)
-const appElement: Ref<HTMLElement | null> = ref(null)
+const appElement = useTemplateRef('appElement')
 
 const startDetectScroll = (el: HTMLElement) => {
   let lastTop = 0
@@ -99,7 +99,7 @@ watch(appElement, value => {
   }
 })
 
-const appSticky: Ref<HTMLElement | null> = ref(null)
+const appSticky = useTemplateRef('appSticky')
 const appStickyHeight = ref(0)
 useResizeObserver(appSticky, () => {
   if (appSticky.value) {

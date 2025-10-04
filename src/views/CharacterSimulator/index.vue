@@ -3,13 +3,10 @@
   <AppLayoutMain>
     <div class="flex w-full grow flex-col overflow-x-auto">
       <CharacterStats
-        :visible="mainContents.characterStats"
-        @close="toggle('mainContents/characterStats', false)"
+        :visible="characterStatsVisible"
+        @close="toggleCharacterStatsVisible(false)"
       />
-      <CharacterDamage
-        :visible="mainContents.damage"
-        @close="toggle('mainContents/damage', false)"
-      />
+      <CharacterDamage :visible="damageVisible" @close="toggleDamageVisible(false)" />
       <div class="flex grow flex-col">
         <AppLayoutTopSticky>
           <cy-tabs :model-value="route.name" class="mb-4 bg-white">
@@ -36,20 +33,20 @@
       <template #side-buttons>
         <cy-button-circle icon="mdi:arrow-top" color="blue" float @click="scrollToPageTop" />
         <cy-button-circle
-          :selected="mainContents.damage"
+          :selected="damageVisible"
           icon="ic:outline-calculate"
           color="orange"
           float
           toggle
-          @click="toggle('mainContents/damage', null, false)"
+          @click="toggleMainContents(false).after(toggleDamageVisible)"
         />
         <cy-button-circle
-          :selected="mainContents.characterStats"
+          :selected="characterStatsVisible"
           icon="bx-bxs-user-detail"
           color="bright"
           float
           toggle
-          @click="toggle('mainContents/characterStats', null, false)"
+          @click="toggleMainContents(false).after(toggleCharacterStatsVisible)"
         />
         <!-- <cy-button-circle
           v-if="mainStore.devMode"
@@ -78,7 +75,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
@@ -91,8 +88,7 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 import { ViewNames } from '@/shared/consts/view'
 import { useAppPageActions } from '@/shared/setup/App'
 import AutoSave from '@/shared/setup/AutoSave'
-import { registViewStatesCleaning } from '@/shared/setup/State'
-import ToggleService from '@/shared/setup/ToggleService'
+import { registViewStatesCleaning, useToggle, useToggleGroup } from '@/shared/setup/State'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
@@ -111,9 +107,14 @@ defineOptions({
 })
 
 const { t } = useI18n()
-const { mainContents, toggle } = ToggleService({
-  mainContents: ['characterStats', 'damage', 'combo'] as const,
-})
+
+const characterStatsVisible = ref(false)
+const toggleCharacterStatsVisible = useToggle(characterStatsVisible)
+const damageVisible = ref(false)
+const toggleDamageVisible = useToggle(damageVisible)
+// const comboVisible = ref(false)
+
+const toggleMainContents = useToggleGroup([toggleCharacterStatsVisible, toggleDamageVisible])
 
 const { scrollToPageTop } = useAppPageActions()
 

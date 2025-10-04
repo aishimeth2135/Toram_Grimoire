@@ -10,7 +10,7 @@
         </cy-icon-text>
       </div>
       <div class="flex items-center py-2">
-        <cy-button-action icon="mdi:export" @click="toggle('modals/exportSaveData', true)">
+        <cy-button-action icon="mdi:export" @click="toggleExportSaveDataVisible(true)">
           {{ t('character-simulator.save-load-control.export-save-data-title') }}
         </cy-button-action>
         <cy-button-action icon="mdi:import" @click="importSaveData">
@@ -65,10 +65,7 @@
         </div>
       </div>
     </CharacterSaveRow>
-    <CharacterSaveExport
-      :visible="modals.exportSaveData"
-      @close="toggle('modals/exportSaveData', false)"
-    />
+    <CharacterSaveExport :visible="exportSaveDataVisible" @close="toggleExportSaveDataVisible" />
   </div>
   <cy-default-tips v-else icon="mdi-ghost">
     {{ t('app.features.localStorage-inavailable-tips') }}
@@ -82,7 +79,7 @@ import { useI18n } from 'vue-i18n'
 import { type CharacterSimulatorSaveData, useCharacterStore } from '@/stores/views/character'
 
 import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 import CY from '@/shared/utils/Cyteria'
 import Cyteria from '@/shared/utils/Cyteria'
 
@@ -98,9 +95,9 @@ const deleteCounter = ref(0)
 const { t } = useI18n()
 const { notify } = Notify()
 const store = useCharacterStore()
-const { modals, toggle } = ToggleService({
-  modals: ['exportSaveData'] as const,
-})
+
+const exportSaveDataVisible = ref(false)
+const toggleExportSaveDataVisible = useToggle(exportSaveDataVisible)
 
 const storageAvailable = CY.storageAvailable('localStorage')
 

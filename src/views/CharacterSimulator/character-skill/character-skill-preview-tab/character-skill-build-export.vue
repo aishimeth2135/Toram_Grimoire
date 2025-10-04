@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, computed, ref, watch } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDevice } from '@/shared/setup/Device'
@@ -28,7 +28,7 @@ const enum ExportMode {
 }
 
 const currentExportMode = ref<ExportMode>(ExportMode.Text)
-const eportedTextContent: Ref<HTMLElement | null> = ref(null)
+const eportedTextContent = useTemplateRef('eportedTextContent')
 
 const exportedText = computed(() => getSkillBuildText(props.skillBuild))
 

@@ -87,19 +87,16 @@
       <div v-if="hasArea" class="py-1.5">
         <div class="flex items-center pl-2">
           <cy-button-circle
-            :selected="contents.areaDetail"
+            :selected="areaDetailVisible"
             icon="carbon:zoom-in-area"
             small
-            @click.stop="toggle('contents/areaDetail')"
+            @click.stop="toggleAreaDetailVisible"
           />
-          <div
-            class="cursor-pointer pl-4 text-primary-30"
-            @click.stop="toggle('contents/areaDetail')"
-          >
+          <div class="cursor-pointer pl-4 text-primary-30" @click.stop="toggleAreaDetailVisible">
             {{ t('skill-query.branch.skill-area.button-text') }}
           </div>
         </div>
-        <div v-if="contents.areaDetail" class="pl-6">
+        <div v-if="areaDetailVisible" class="pl-6">
           <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
@@ -123,9 +120,10 @@
 
 <script lang="ts" setup>
 import { computed, toRefs, useSlots } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 import { slotNotEmpty } from '@/shared/utils/vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
@@ -161,9 +159,8 @@ const { container, subContents, hasArea } = toRefs(props)
 const slots = useSlots()
 const { t } = useI18n({ useScope: 'global' })
 
-const { toggle, contents } = ToggleService({
-  contents: ['areaDetail'] as const,
-})
+const areaDetailVisible = ref(false)
+const toggleAreaDetailVisible = useToggle(areaDetailVisible)
 
 const extraColumnsEmpty = computed(() => slotNotEmpty(slots['extra-columns-start']))
 

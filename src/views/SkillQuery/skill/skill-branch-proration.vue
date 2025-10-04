@@ -4,20 +4,22 @@
       class="flex flex-wrap items-center rounded-sm border-1 border-primary-10 bg-white px-4 py-0.5"
     >
       <div class="my-1 flex items-center">
-        <cy-icon-text icon="mdi-sword" block>
+        <cy-icon icon="mdi-sword" />
+        <div class="ml-1 text-primary-80">
           {{ container.title('proration') }}
-        </cy-icon-text>
+        </div>
         <SkillBranchPropValue
-          class="ml-1.5 text-primary-50"
+          class="ml-2 text-primary-60"
           :result="container.result('proration')"
         />
       </div>
-      <div class="mx-4 h-5 border-l-1 border-primary-20" />
+      <div class="mx-4 h-6 border-l border-primary-10" />
       <div class="my-1 flex items-center">
-        <cy-icon-text icon="mdi-sword" block>
+        <cy-icon icon="mdi-sword" />
+        <div class="ml-1 text-primary-80">
           {{ container.title('damage') }}
-        </cy-icon-text>
-        <SkillBranchPropValue class="ml-1.5 text-primary-50" :result="container.result('damage')" />
+        </div>
+        <SkillBranchPropValue class="ml-2 text-primary-60" :result="container.result('damage')" />
       </div>
     </div>
   </div>

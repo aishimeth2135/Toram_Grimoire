@@ -12,7 +12,7 @@ const buttonBaseBinds = useButtonBaseBinds(props)
 </script>
 
 <template>
-  <CyButtonBase v-slot="{ iconClass }" v-bind="buttonBaseBinds" class="cy-button-radio px-2 py-1">
+  <CyButtonBase v-slot="{ iconClass }" v-bind="buttonBaseBinds" class="cy-button-radio mx-2 my-1">
     <ButtonIcon
       :icon="selected ? 'ic:round-radio-button-checked' : 'ic:round-radio-button-unchecked'"
       :class="iconClass"

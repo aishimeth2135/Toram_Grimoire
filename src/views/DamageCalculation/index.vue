@@ -30,11 +30,11 @@
       <template #default>
         <div
           class="flex cursor-pointer items-center justify-end px-3 py-0.5"
-          @click="toggle('contents/resultDetail', null, false)"
+          @click="toggleMainContents(false).after(toggleResultDetailVisible)"
         >
           <cy-icon
             :icon="
-              contents.resultDetail
+              resultDetailVisible
                 ? 'akar-icons:circle-chevron-down'
                 : 'akar-icons:circle-chevron-up'
             "
@@ -44,7 +44,7 @@
         </div>
       </template>
       <template #main-content>
-        <AppLayoutBottomContent v-if="contents.resultDetail" class="px-4 py-3">
+        <AppLayoutBottomContent v-if="resultDetailVisible" class="px-4 py-3">
           <div>
             <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
               {{ t('damage-calculation.result.title') }}
@@ -75,32 +75,32 @@
       <template #side-buttons>
         <cy-button-circle
           icon="bx:bx-git-compare"
-          :selected="contents.compare"
+          :selected="compareVisible"
           color="cyan"
           float
           toggle
-          @click="toggle('contents/compare', null, false)"
+          @click="toggleMainContents(false).after(toggleCompareVisible)"
         />
         <cy-button-circle
           icon="ic:outline-calculate"
-          :selected="contents.calcModeDetail"
+          :selected="calcModeDetailVisible"
           color="orange"
           float
           toggle
-          @click="toggle('contents/calcModeDetail', null, false)"
+          @click="toggleMainContents(false).after(toggleCalcModeDetailVisible)"
         />
         <cy-button-circle
           icon="ant-design:build-outlined"
-          :selected="contents.mainMenu"
+          :selected="mainMenuVisible"
           color="bright"
           float
           toggle
-          @click="toggle('contents/mainMenu', null, false)"
+          @click="toggleMainContents(false).after(toggleMainMenuVisible)"
         />
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="contents.mainMenu" class="p-3">
+          <AppLayoutBottomContent v-if="mainMenuVisible" class="p-3">
             <div class="flex items-center">
               <cy-title-input
                 v-model:value="currentCalculation.name"
@@ -150,7 +150,7 @@
               </div>
             </div>
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="contents.compare" class="px-4 py-3">
+          <AppLayoutBottomContent v-else-if="compareVisible" class="px-4 py-3">
             <div>
               <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
                 {{ t('damage-calculation.compare.title') }}
@@ -169,7 +169,7 @@
             </div>
             <DamageCalculationCompare />
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="contents.calcModeDetail" class="px-4 py-3">
+          <AppLayoutBottomContent v-else-if="calcModeDetailVisible" class="px-4 py-3">
             <div>
               <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
                 {{ t('damage-calculation.calc-mode.title') }}
@@ -222,7 +222,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, provide } from 'vue'
+import { computed, provide, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
@@ -230,7 +230,7 @@ import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import Grimoire from '@/shared/Grimoire'
 import AutoSave from '@/shared/setup/AutoSave'
 import ExportBuild from '@/shared/setup/ExportBuild'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle, useToggleGroup } from '@/shared/setup/State'
 
 import { type CalculationSaveData } from '@/lib/Damage/DamageCalculation'
 
@@ -291,9 +291,21 @@ const { exportBuild, importBuild } = ExportBuild({
   },
 })
 
-const { contents, toggle } = ToggleService({
-  contents: ['compare', 'resultDetail', 'calcModeDetail', 'mainMenu'] as const,
-})
+const compareVisible = ref(false)
+const toggleCompareVisible = useToggle(compareVisible)
+const resultDetailVisible = ref(false)
+const toggleResultDetailVisible = useToggle(resultDetailVisible)
+const calcModeDetailVisible = ref(false)
+const toggleCalcModeDetailVisible = useToggle(calcModeDetailVisible)
+const mainMenuVisible = ref(false)
+const toggleMainMenuVisible = useToggle(mainMenuVisible)
+
+const toggleMainContents = useToggleGroup([
+  toggleCompareVisible,
+  toggleResultDetailVisible,
+  toggleCalcModeDetailVisible,
+  toggleMainMenuVisible,
+])
 
 const { t } = useI18n()
 

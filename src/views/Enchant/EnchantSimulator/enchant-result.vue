@@ -2,14 +2,14 @@
   <div v-if="enchantResult.length !== 0">
     <div class="flex items-start">
       <cy-button-icon
-        :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
+        :icon="resultStatsVisible ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
         class="shrink-0"
         icon-color="orange-60"
-        :selected="contents.resultStats"
-        @click="toggle('contents/resultStats')"
+        :selected="resultStatsVisible"
+        @click="toggleResultStatsVisible"
       />
       <cy-transition>
-        <div v-if="contents.resultStats" class="mb-2">
+        <div v-if="resultStatsVisible" class="mb-2">
           <div>
             <span
               v-for="item in enchantResultStats"
@@ -151,12 +151,13 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { computed, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
 import Notify from '@/shared/setup/Notify'
-import ToggleService from '@/shared/setup/ToggleService'
+import { useToggle } from '@/shared/setup/State'
 import CY from '@/shared/utils/Cyteria'
 import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'
@@ -177,13 +178,13 @@ interface Props {
 const props = defineProps<Props>()
 const { equipment } = toRefs(props)
 
-const { contents, toggle } = ToggleService({
-  contents: [{ name: 'resultStats', default: true }] as const,
-})
 const { t, tm } = useI18n()
 const store = useEnchantStore()
 const { config } = storeToRefs(store)
 const { notify } = Notify()
+
+const resultStatsVisible = ref(true)
+const toggleResultStatsVisible = useToggle(resultStatsVisible)
 
 interface EnchantResultPart {
   stat: EnchantStepStat

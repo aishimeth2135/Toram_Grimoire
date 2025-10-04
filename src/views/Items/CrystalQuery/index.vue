@@ -1,6 +1,6 @@
 <template>
   <AppLayoutMain>
-    <div ref="topElement" />
+    <div ref="top-element" />
     <div class="px-1 py-4">
       <CardRowsWrapper class="mb-4">
         <div class="overflow-x-auto" style="min-height: 75vh">
@@ -63,7 +63,7 @@
           v-else-if="mode === 'stat'"
           icon="mdi-rhombus-outline"
           :color="modeStat.statItem ? 'primary' : 'red'"
-          @click="toggle('modals/selectStat')"
+          @click="toggleSelectedStatVisible"
         >
           {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
         </cy-button-plain>
@@ -83,39 +83,26 @@
         <cy-button-circle
           icon="mdi:filter"
           color="orange"
-          :selected="contents.searchFilter"
+          :selected="searchFilterVisible"
           float
           toggle
-          @click="toggle('contents/searchFilter')"
+          @click="toggleSearchFilterVisible"
         />
       </template>
       <template #side-contents>
-        <AppLayoutBottomContent v-if="contents.searchFilter" class="p-3">
-          <div class="flex items-center">
-            <cy-icon-text small text-color="fuchsia-60">
+        <AppLayoutBottomContent v-if="searchFilterVisible" class="p-3">
+          <div>
+            <cy-button-check v-model:selected="allSearchFilterSelected" color="orange">
               {{ t('crystal-query.crystal-category.title') }}
-            </cy-icon-text>
-            <div class="ml-4 inline-flex items-center space-x-2">
-              <cy-button-circle
-                small
-                icon="ic-round-border-all"
-                @click="toggleSearchFilterAll(searchFilter.category, true)"
-              />
-              <cy-button-circle
-                small
-                icon="eva-close-outline"
-                @click="toggleSearchFilterAll(searchFilter.category, false)"
-              />
-            </div>
+            </cy-button-check>
           </div>
           <div>
             <cy-button-check
-              v-for="option in searchFilter.category.options"
-              :key="option"
-              :selected="searchFilter.category.selectedOptions.includes(option)"
-              @click="toggleSearchFilter(searchFilter.category, option)"
+              v-for="option in categoryOptions"
+              :key="option.category"
+              v-model:selected="option.selected"
             >
-              {{ t('crystal-query.crystal-category.categorys.' + option) }}
+              {{ t('crystal-query.crystal-category.categorys.' + option.category) }}
             </cy-button-check>
           </div>
         </AppLayoutBottomContent>
@@ -123,29 +110,22 @@
     </AppLayoutBottom>
     <CrystalQuerySelectStat
       v-model:selected-stat-item="modeStat.statItem"
-      :visible="modals.selectStat"
-      @close="toggle('modals/selectStat')"
+      :visible="selectedStatVisible"
+      @close="toggleSelectedStatVisible"
     />
   </AppLayoutMain>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CrystalQuery',
-}
-</script>
-
 <script lang="ts" setup>
-import { type Ref, computed, reactive, ref } from 'vue'
+import { type Ref, computed, reactive, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import PageControl from '@/shared/setup/PageControl'
+import { useToggle } from '@/shared/setup/State'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
-
-import PageControl from '@/shared/setup/PageControl'
-import ToggleService from '@/shared/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -155,17 +135,26 @@ import CardRows from '@/components/card/card-rows.vue'
 
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
+
 import { type StatOptionItem } from './setup'
 
-const { t } = useI18n()
-const { modals, contents, toggle } = ToggleService({
-  modals: ['selectStat'] as const,
-  contents: ['searchFilter'] as const,
+defineOptions({
+  name: 'CrystalQuery',
 })
 
-const crystals = Grimoire.Items.crystals.map(crystal => new EquipmentCrystal(crystal))
+const { t } = useI18n()
+
+const selectedStatVisible = ref(false)
+const toggleSelectedStatVisible = useToggle(selectedStatVisible)
+
+const searchFilterVisible = ref(false)
+const toggleSearchFilterVisible = useToggle(searchFilterVisible)
+
+const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(
+  crystal => new EquipmentCrystal(crystal)
+)
 const resultItemsDetailVisibleDefault = ref(false)
-const topElement: Ref<HTMLElement | null> = ref(null)
+const topElement = useTemplateRef('top-element')
 
 // ----- mode
 const mode: Ref<'normal' | 'stat'> = ref('normal')
@@ -190,45 +179,36 @@ const modeNormal = reactive({
 })
 
 const modeStat = reactive({
-  statItem: null,
-}) as {
-  statItem: StatOptionItem | null
-}
+  statItem: null as StatOptionItem | null,
+})
 
 const selectMode = (id: 'normal' | 'stat') => {
   mode.value = id
   resultItemPreviewMode.value = id === 'stat' ? 'mode' : 'default'
 }
 
-// ----- search filter
-interface SearchFilterItem {
-  options: any[]
-  selectedOptions: any[]
-}
+// Search filter
+const allCategories = [0, 1, 2, 3, 4]
 
-const searchFilter = {
-  category: reactive({
-    options: [0, 1, 2, 3, 4],
-    selectedOptions: [0, 1, 2, 3, 4],
-  }),
-} as Record<'category', SearchFilterItem>
-
-const toggleSearchFilter = (target: SearchFilterItem, item: unknown) => {
-  const idx = target.selectedOptions.indexOf(item)
-  if (idx > -1) {
-    target.selectedOptions.splice(idx, 1)
-  } else {
-    target.selectedOptions.push(item)
-  }
-}
-
-const toggleSearchFilterAll = (target: SearchFilterItem, force: boolean) => {
-  target.selectedOptions = force ? target.options.slice() : []
-}
-
-const categoryCrystalsMap = new Map<number, BagCrystal[]>(
-  searchFilter.category.options.map(item => [item, []])
+const categoryOptions = reactive(
+  allCategories.map(item => ({
+    category: item,
+    selected: true,
+  }))
 )
+
+const allSearchFilterSelected = computed({
+  get() {
+    return categoryOptions.every(item => item.selected)
+  },
+  set(value) {
+    categoryOptions.forEach(item => {
+      item.selected = value
+    })
+  },
+})
+
+const categoryCrystalsMap = new Map<number, BagCrystal[]>(allCategories.map(item => [item, []]))
 crystals.forEach(_crystal => {
   const list = categoryCrystalsMap.get(_crystal.origin.category)
   if (list) {
@@ -236,10 +216,14 @@ crystals.forEach(_crystal => {
   }
 })
 
-// search result
+// Search result
 const resultCrystals = computed(() => {
+  const selectedCategories = categoryOptions
+    .filter(option => option.selected)
+    .map(option => option.category)
+
   const filteredCrystals = crystals.filter(crystal =>
-    searchFilter.category.selectedOptions.includes(crystal.origin.category)
+    selectedCategories.includes(crystal.origin.category)
   )
   if (mode.value === 'normal') {
     const text = modeNormal.searchText.toLowerCase()
@@ -279,7 +263,7 @@ const resultCrystals = computed(() => {
   return []
 })
 
-// ----- page control
+// Page control
 const { currentItems, page, maxPage } = PageControl({
   items: resultCrystals,
   step: 30,

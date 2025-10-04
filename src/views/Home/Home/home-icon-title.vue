@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, nextTick, onUnmounted, ref, toRefs, watch } from 'vue'
+import { type Ref, nextTick, onUnmounted, ref, toRefs, useTemplateRef, watch } from 'vue'
 
 import { debounce } from '@/shared/utils/function'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
@@ -36,8 +36,8 @@ const { rootEl } = toRefs(props)
 
 const iconWrapperTouched = ref(false)
 
-const appIcon: Ref<HTMLElement | null> = ref(null)
-const appIconTouched: Ref<HTMLElement | null> = ref(null)
+const appIcon = useTemplateRef('appIcon')
+const appIconTouched = useTemplateRef('appIconTouched')
 
 const iconWrapperTouchedCount = ref(0)
 const appIconPosition: Ref<{ x: number; y: number } | null> = ref(null)

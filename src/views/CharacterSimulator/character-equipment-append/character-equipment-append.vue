@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, computed, nextTick, ref } from 'vue'
+import { type Ref, computed, nextTick, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -61,7 +61,7 @@ const { currentItems, page, maxPage } = PageControl({
   step: 30,
 })
 
-const topElement: Ref<HTMLElement | null> = ref(null)
+const topElement = useTemplateRef('topElement')
 const pageChanged = async () => {
   await nextTick()
   topElement.value?.scrollIntoView({ behavior: 'smooth' })

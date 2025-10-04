@@ -7,8 +7,8 @@ import { useCharacterStore } from '@/stores/views/character'
 
 import { useDevice } from '@/shared/setup/Device'
 
-import { EquipmentField } from '@/lib/Character/Character'
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
+import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import BrowseEquipmentsMain from '../browse-equipments/browse-equipments-main.vue'
 import CharacterEquipmentDetails from '../character-equipment-details/character-equipment-details.vue'
@@ -38,6 +38,20 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
     selectedEquipment.value = equip
   }
 }
+
+const getFieldDefaultIcon = (field: EquipmentField): string => {
+  if (field.type === EquipmentFieldTypes.BodyArmor) {
+    return CharacterEquipment.getImagePath(EquipmentTypes.BodyNormal)
+  }
+  if (field.type === EquipmentFieldTypes.Additional) {
+    return CharacterEquipment.getImagePath(EquipmentTypes.Additional)
+  }
+  if (field.type === EquipmentFieldTypes.Special) {
+    return CharacterEquipment.getImagePath(EquipmentTypes.Special)
+  }
+
+  return 'mdi:circle-outline'
+}
 </script>
 
 <!-- eslint-disable vue/no-mutating-props -->
@@ -66,7 +80,7 @@ const selectEquipment = (equip: CharacterEquipment | null) => {
               :equipment="field.equipment"
               width="1.5rem"
             />
-            <cy-icon v-else width="1.5rem" icon="mdi:circle-outline" />
+            <cy-icon v-else width="1.5rem" :icon="getFieldDefaultIcon(field)" class="opacity-50" />
           </cy-tab>
         </cy-tabs>
         <div class="px-2 py-4 wd:px-0 wd-lg:pb-0">

@@ -1,9 +1,6 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
-import '@/assets/css/component.css'
-import '@/assets/css/font/font.css'
-import '@/assets/css/global.css'
 import '@/assets/css/main.css'
 import Confirm from '@/plugin/Confirm'
 import Notify from '@/plugin/Notify'

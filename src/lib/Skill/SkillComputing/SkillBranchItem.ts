@@ -200,7 +200,7 @@ class SkillBranchItem<
   readonly linkedStackIds: number[]
   readonly stackId: number | null
 
-  groupState: BranchGroupState
+  readonly groupState: BranchGroupState
 
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItem) {
     super(parent, branch)
@@ -227,11 +227,10 @@ class SkillBranchItem<
   }
 
   /**
-   * Toggle expanded of group state of item
-   * @param root - whether this item is called from external
-   * @param [force]
+   * Handle toggling expanded of group state of item
+   * @param isRoot - Whether this item is called from group head
    */
-  toggleGroupExpanded(root: boolean, force?: boolean | null) {
+  private _toggleGroupExpanded(isRoot: boolean, force?: boolean) {
     force = force ?? !this.groupState.expanded
     if (this.isGroup) {
       const { branchItems } = this.parent
@@ -241,7 +240,7 @@ class SkillBranchItem<
       let bitem: SkillBranchItem | null = null
       while (cur < branchItems.length && remain !== 0) {
         bitem = branchItems[cur]
-        bitem.toggleGroupExpanded(false, force)
+        bitem._toggleGroupExpanded(false, force)
         cur += bitem.groupState.size + 1
         remain -= 1
       }
@@ -249,12 +248,20 @@ class SkillBranchItem<
         bitem.groupState.isGroupEnd = force
       }
     }
-    if (!root) {
+    if (!isRoot) {
       this.groupState.parentExpanded = force
       this.groupState.isGroupEnd = false
     } else {
       this.groupState.expanded = force
     }
+  }
+
+  toggleGroupExpanded(force?: boolean) {
+    this._toggleGroupExpanded(true, force)
+  }
+
+  initGroupExpaneded() {
+    this._toggleGroupExpanded(true, this.groupState.expanded)
   }
 
   toSuffix(mainBranch: SkillBranchItem): SkillBranchItemSuffix {
