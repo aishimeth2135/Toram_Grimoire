@@ -73,15 +73,15 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full max-w-xs items-center">
-    <CommonSearchInput v-model="serachText" class="mr-2 w-full" />
+  <div class="flex w-full items-center">
+    <CommonSearchInput v-model="serachText" class="mr-2 grow" />
     <BrowseEquipmentTypeFilter
       v-model="selectedEquipmentTypes"
       :current-field="currentField"
       :current-field-types="currentFieldTypes"
       @update:current-field-types="emit('update:current-field-types', $event)"
     />
-    <cy-popover class="ml-2 shrink-0">
+    <cy-popover class="ml-2 shrink-0" placement="bottom-end">
       <cy-button-circle icon="mdi:label" small />
       <template #popper>
         <CardRows class="px-1 py-2.5">

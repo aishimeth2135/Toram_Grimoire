@@ -27,6 +27,10 @@ watch(currentCharacter, newValue => {
 
 const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
 
+watch(currentField, () => {
+  selectedEquipment.value = null
+})
+
 const applySelectedEquipment = (equip: CharacterEquipment | null) => {
   currentField.value.setEquipment(equip)
 }
@@ -57,7 +61,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex grow flex-col items-center justify-center">
-    <div class="flex flex-wrap px-2 wd-lg:flex-nowrap">
+    <div class="flex w-full flex-wrap px-2 wd-lg:flex-nowrap">
       <div class="flex flex-wrap items-start wd:flex-nowrap">
         <cy-tabs
           v-model="currentField"

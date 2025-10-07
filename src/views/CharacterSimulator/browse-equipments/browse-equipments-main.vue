@@ -4,11 +4,14 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
+import { useDevice } from '@/shared/setup/Device'
+
 import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import CardRows from '@/components/card/card-rows.vue'
 
+import CommonSwitchModeButton from '../common/common-switch-mode-button.vue'
 import BrowseEquipmentsItem from './browse-equipments-item.vue'
 import BrowseEquipmentsListItem from './browse-equipments-list-item.vue'
 import BrowseEquipmentsMainFilters from './browse-equipments-main-filters.vue'
@@ -37,6 +40,7 @@ const selectedEquipment = defineModel<CharacterEquipment | null>('selectedEquipm
 })
 
 const { t } = useI18n()
+const { device } = useDevice()
 
 const characterStore = useCharacterStore()
 const allEquipments = computed(() => characterStore.equipments)
@@ -91,40 +95,43 @@ const enum DisplayModes {
 
 const displayMode = ref(DisplayModes.List)
 
-const toggleDisplayMode = () => {
-  displayMode.value =
-    displayMode.value === DisplayModes.Grid ? DisplayModes.List : DisplayModes.Grid
+const toggleDisplayMode = (isListMode: boolean) => {
+  displayMode.value = isListMode ? DisplayModes.List : DisplayModes.Grid
 }
 </script>
 
 <template>
-  <div class="flex max-w-[45rem] flex-col">
-    <div class="shrink-0 px-2">
-      <div class="flex w-full flex-wrap items-center">
+  <div class="flex max-w-[45rem] grow flex-col">
+    <div class="flex w-full shrink-0 flex-wrap items-center justify-end px-2 pb-1">
+      <CharacterEquipmentAppendActions class="mr-5" />
+      <CommonSwitchModeButton
+        :is-left="displayMode === DisplayModes.List"
+        left-icon="ic:baseline-format-list-bulleted"
+        right-icon="ic:baseline-grid-on"
+        @update:is-left="toggleDisplayMode"
+      />
+    </div>
+    <div class="mx-2 mt-2 flex min-h-0 grow flex-col rounded-sm border border-primary-20 py-0.5">
+      <div class="shrink-0 border-b border-primary-20 px-2 py-1">
         <BrowseEquipmentsMainFilters
           v-model="filteredEquipments"
           v-model:current-field-types="currentFieldTypes"
           :current-field="currentField"
-          class="mr-4 pb-4"
         />
-        <div class="ml-auto flex items-center pb-4">
-          <CharacterEquipmentAppendActions class="mr-5" />
-          <cy-button-circle
-            icon="mdi:format-list-bulleted-type"
-            color="orange"
-            small
-            :selected="displayMode === DisplayModes.List"
-            @click="toggleDisplayMode"
-          />
-        </div>
       </div>
-    </div>
-    <div v-if="displayMode === DisplayModes.Grid" class="flex grow flex-col px-1">
       <div
-        class="mx-1.5 mb-2 flex shrink-0 flex-wrap items-center rounded-full border border-primary-50 py-1 pl-5 pr-3"
+        v-if="displayMode === DisplayModes.Grid"
+        class="m-3 mb-2 flex shrink-0 flex-wrap items-center border border-primary-10 py-1"
       >
         <template v-if="selectedEquipment">
-          <EquipmentBrowseTitle :equipment="selectedEquipment" class="mr-6" />
+          <EquipmentBrowseTitle
+            v-if="!device.isMobile"
+            :equipment="selectedEquipment"
+            class="mr-6 pl-4"
+          />
+          <div v-else class="mb-1 w-full border-b border-primary-10 px-4 pb-1">
+            <EquipmentBrowseTitle :equipment="selectedEquipment" />
+          </div>
           <EquipmentBrowseActions
             :equip-disabled="!allowEquip"
             :equipment="selectedEquipment"
@@ -139,38 +146,40 @@ const toggleDisplayMode = () => {
         </span>
       </div>
       <div class="grow overflow-y-auto">
-        <BrowseEquipmentsItem
-          v-for="equip in filteredEquipments"
-          :key="equip.id"
-          :equipment="equip"
-          :selected="selectedEquipment === equip"
-          :equipped="currentFieldEquipment === equip"
-          :invalid="!checkEquipmentValid(equip)"
-          class="m-1.5"
-          @click="handleSelectItem(equip)"
-        />
-      </div>
-    </div>
-    <div v-else class="mx-2 mt-2 grow overflow-y-auto rounded-sm border border-primary-10 py-0.5">
-      <CardRows v-if="filteredEquipments.length > 0">
-        <BrowseEquipmentsListItem
-          v-for="equip in filteredEquipments"
-          :key="equip.id"
-          :equipment="equip"
-          :selected="selectedEquipment === equip"
-          :equipped="currentFieldEquipment === equip"
-          :invalid="!checkEquipmentValid(equip)"
-          :allow-equip="allowEquip"
-          @click="handleSelectItem(equip)"
-          @equip="emit('equip', $event)"
-          @equip-cancel="emit('equip-cancel')"
-        />
-      </CardRows>
-      <div v-else-if="allEquipments.length !== 0" class="px-8 py-12 text-primary-50">
-        {{ t('character-simulator.browse-equipments.serach-no-equipment-tips') }}
-      </div>
-      <div v-else class="px-4 py-3 text-sm text-primary-40">
-        {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
+        <template v-if="filteredEquipments.length > 0">
+          <CardRows v-if="displayMode === DisplayModes.List">
+            <BrowseEquipmentsListItem
+              v-for="equip in filteredEquipments"
+              :key="equip.id"
+              :equipment="equip"
+              :selected="selectedEquipment === equip"
+              :equipped="currentFieldEquipment === equip"
+              :invalid="!checkEquipmentValid(equip)"
+              :allow-equip="allowEquip"
+              @click="handleSelectItem(equip)"
+              @equip="emit('equip', $event)"
+              @equip-cancel="emit('equip-cancel')"
+            />
+          </CardRows>
+          <div v-else class="flex flex-wrap px-1.5">
+            <BrowseEquipmentsItem
+              v-for="equip in filteredEquipments"
+              :key="equip.id"
+              :equipment="equip"
+              :selected="selectedEquipment === equip"
+              :equipped="currentFieldEquipment === equip"
+              :invalid="!checkEquipmentValid(equip)"
+              class="m-1.5"
+              @click="handleSelectItem(equip)"
+            />
+          </div>
+        </template>
+        <div v-else-if="allEquipments.length !== 0" class="px-8 py-12 text-primary-50">
+          {{ t('character-simulator.browse-equipments.serach-no-equipment-tips') }}
+        </div>
+        <div v-else class="px-4 py-3 text-sm text-primary-40">
+          {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
+        </div>
       </div>
     </div>
   </div>

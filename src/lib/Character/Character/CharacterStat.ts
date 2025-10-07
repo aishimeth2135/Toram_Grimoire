@@ -106,7 +106,7 @@ interface CharacterStatOptions {
   hiddenOption: number
 }
 
-interface CharacterStatResultInputVars {
+export interface CharacterStatResultInputVars {
   value: {
     [key: string]: number | Record<string, number>
   }

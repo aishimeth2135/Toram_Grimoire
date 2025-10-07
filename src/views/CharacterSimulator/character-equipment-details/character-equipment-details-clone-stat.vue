@@ -94,10 +94,10 @@ const submit = () => {
         </CardRows>
         <div v-else class="px-6 py-4 text-sm text-primary-40">
           <div class="mb-2">
-            {{ t('character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-1') }}
+            {{ t('character-simulator.equipment-basic-editor.clone-stats.caption-1') }}
           </div>
           <div>
-            {{ t('character-simulator.equipment-basic-editor.edit-stats.clone-stats-caption-2') }}
+            {{ t('character-simulator.equipment-basic-editor.clone-stats.caption-2') }}
           </div>
         </div>
       </CardRowsWrapper>

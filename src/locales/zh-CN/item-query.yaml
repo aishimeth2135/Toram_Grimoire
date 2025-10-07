@@ -23,12 +23,15 @@ sort-options:
     def: DEF
     stability: 稳定度
     name: 名称
+    id: 加入时间
   order:
     title: 排序顺序
     up: 由小至大
     down: 由大至小
 equipment-detail:
   production-equipment: 制作装备
+  equipment-type: 装备类型
+  stability: 稳定度
   content-titles:
     stats: 装备能力
     recipe: 制作配方

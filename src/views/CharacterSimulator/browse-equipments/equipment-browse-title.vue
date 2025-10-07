@@ -9,7 +9,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="text-primary-80">
+  <div class="flex h-9 items-center text-primary-80">
     {{ equipment.name }}
     <span
       v-if="equipment.hasRefining && equipment.refining > 0"

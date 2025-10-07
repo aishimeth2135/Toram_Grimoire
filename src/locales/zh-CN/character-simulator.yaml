@@ -2,7 +2,6 @@ character-stats: 角色面板
 character: 角色
 custom-equipment:
   button-title: 自订装备
-  default-name-prefix: 自订
 character-basic:
   title: 角色设定
   character-level: 角色等级
@@ -13,20 +12,25 @@ character-basic:
   remove-character-success: 已成功移除「{name}」
   restore-character-success: 已复原被删除的「{name}」
   at-least-one-character: 必须至少留下一个角色。
+  character-builds-tip: 技能配置、料理配置等其他配置皆是以角色为单位进行绑定，系统会纪录每个角色绑定了哪些配置。
+character-dashboard:
+  title: 总览
+  no--any-equipment-tips: 还没有装备任何装备。点击右侧的按钮来编辑装备。
 browse-equipments:
-  action:
-    normal: 装备清单
-    select-field-equipment: 装备清单
   append-equipments: 新增装备
+  equip-label: 装备
+  equip-cancel-label: 取消装备
+  select-equipment-tips: 选择的装备会显示在这里
   remove-equipment-tips: 已移除装备「{name}」。
   removed-equipment-restore-tips: 已复原装备「{name}」。
   copy-equipment-tips: 已复制装备。
-  move-equipment-title: 移动中
   no-any-equipment-tips: 这里目前空空的...请点选右上角的按扭来新增装备0.0
-  equipment-item-actions-tips: 请打开左下角的「显示全部装备」以使用整理相关的功能。
+  serach-no-equipment-tips: 没有搜寻到任何装备。
+  double-click-to-select-tips: 提示：可以透过双击来直接更换装备
   equipped: 装备中
   click-edit-tips: 或是点击上方各区块可以直接编辑
   auto-arrange-success-tips: 自动整理成功。
+  equipped-equipments-title: 装备中的装备
 append-equipments:
   title: 新增装备
   search-equipment-placeholder: 搜寻装备名称...
@@ -34,34 +38,35 @@ append-equipments:
   search-text-empty-tips: 搜寻的关键字须至少一个字元。
   append-equipments-success-tips: 已成功新增{num}件装备。
   selected-equipments-cleared-tips: 已清除选取的装备。
+  selected-equipments-default-tips: 已选取的装备会显示在这里。
+  search-stat-tips: 点击此处以选择能力
+  current-selected-stat: 目前能力
 create-custom-equipment:
-  title: 建立自订装备
-  select-equipment-type: 选择装备类型
   equipment-default-name: 自订{type}
+  select-equipment-type-message: 请选择新增的自订装备的类型
 equipment-info:
-  equipment: 装备配置
+  equipment: 装备
   stability: 稳定度
   refining: 精炼值
   stat-empty: 此装备没有能力
   crystal-empty: 此装备没有缎晶
 equipment-basic-editor:
   title: 装备设定
-  edit-stats:
-    title: 管理装备能力
-    search-placeholder: 搜寻能力
-    current-stats: 现存的能力
-    appended-stats: 新增的能力
-    removed-stats: 移除的能力
-  equipment-basic: 基本设定
+  select-equipment-to-edit-tips: 选择要编辑的装备
+  clone-stats:
+    caption-1: 此功能可以透过复制其他装备的能力，来新增能力到目前的装备上。
+    caption-2: 选择一件装备后，该装备的能力会显示在这里。可以从中勾选想要复制的装备能力。
   equipment-name: 装备名称
-  equipment-stats: 装备能力
   equipment-type: 装备类型
-  equipment-crystal: 锻晶
-  no-equipment-type-selected-tips: 请先选择一个装备类别。
-  selected-stats-cleared-tips: 已取消更动。
+  equipment-label: 装备标签
+  label-delete: 删除标签
+  label-empty-caption: 目前还没有任何标签～点选上方的按扭来新增一个标签。
   only-one-element-stat-tips: 一件装备只能拥有一个属性，请确认编辑中的能力清单。
 select-crystals:
   title: 选择锻晶
+  show-crystal-stats: 显示锻晶能力
+  filter-all-crystal: 全部锻晶
+  filter-last-crystal: 高阶锻晶
   search-placeholder: 搜寻缎晶
   selected-crystals: 已选择的锻晶
   category-title:
@@ -71,9 +76,13 @@ select-crystals:
     - 特殊装备
     - 通用
 skill-build:
-  title: 技能配置
+  title: 技能
   passive-skills: 被动技能
   active-skills: 主动技能
+  skills-preview: 技能一览
+  skill-trees-directory:
+    title: 技能树目录
+    caption: 透过点击技能树名称可以快速移动到对应的技能树。
   disable-skills: 停用{type}
   display-stats-only: 仅显示有影响角色能力的技能效果
   user-set-title: 参数数值设定
@@ -84,13 +93,30 @@ skill-build:
   formula-text:
     target_def: 目标防御
     target_level: 目标等级
+  apply-skill-level-tips:
+    - 此次调整技能等级尚未储存。
+    - 更新技能的等级时，系统将自动更新同一技能树上相关联技能的技能等级。若确定要更改请按下上方的确认按钮。
+  effected-skills-title: 受影响的技能
   no-any-build-tips: 还没有建立任何配置喔～请先透过左上方的选单进入「技能模拟器」，建立新的技能配置。
+  no-any-skill-tips:
+    - 这个配置目前空空如也0.0
+    - 请点选右侧的按钮来新增技能树。
+  skill-tree-empty-tips: 这个技能树还没有任何技能。
+  export-buile-title: 汇出配置
+  export-text: 汇出文字
+  export-text-caption: 以下为系统自动产生的技能清单，按下按钮可以快速复制。复制后可再依需求自行编辑。
+  export-image: 汇出图片
+  export-image-caption:
+    - 以下为系统自动产生的技能技能图片，按下按钮可以直接进行下载。
+    - 于IOS系统上使用此功能下载图片时，一部分浏览器还不支援「设定档名」的功能，因此下载图片时可能会发生副档名不为PNG的问题。若遇到此问题，请在下载图片后自行将档名改成「XXX.png」，该图片就可以正常显示。
+    - 如果无法透过按钮下载图片，可使用浏览器预设的下载图片的方式进行下载。例如：于电脑上操作时，通常是在图片上点滑鼠右键接着按下储存。
 character-damage:
   title: 伤害计算
   target-options-title: 目标数值设定
   options-base-title: 基本设定
   options-other-title: 其他设定
   armor-break-display: 显示降防时伤害
+  force-critical: 伤害必定爆击
   armor-break: 降防
   element-none: 无设定
   no-result: 伤害公式待更新
@@ -109,6 +135,8 @@ enemy-elements:
   light: 光属性
   dark: 暗属性
 character-stat-detail:
+  show-detail-preview: 显示简化版数值
+  toggle-detail-visibility-caption: 点击任意能力可查看其数值细节。
   base-value: 基础值
   init-value: 初始值
   additional-value: 额外加成
@@ -139,8 +167,13 @@ character-stat-detail:
       dodge: 身体防具｜轻量化
       defense: 身体防具｜重量化
       none: 身体防具｜无装备
+build-common:
+  at-least-one-build-tips: 必须至少留下一个配置。
+  select-build-button: 使用此配置
+  build-selected-message: 目前选取的配置
+  move-tips: 透过拖曳可以调整顺序
 food-build:
-  title: 料理配置
+  title: 料理
   disable-foods: 停用料理
   food-build: 料理配置
   food-build-name: 料理配置名称
@@ -148,11 +181,26 @@ food-build:
   copy-food-build-success-tips: 复制料理配置成功。
   remove-food-build-success-tips: 移除料理配置成功。
   restore-food-build-success-tips: 复原料理配置成功。
-  at-least-one-food-build-tips: 必须至少留下一个配置。
   selected-food-limit-reached: 可选取的料理数量已达上限。
   introduction:
     - 透过点击前方的圆点来选取最多五个料理。
     - 原本是0级的料理在提升等级时会自动选取。
+registlet-build:
+  title: 雷吉斯托环
+  disable-registlet: 停用雷吉斯托环
+  registlet-build: 托环配置
+  edit-registlet: 编辑托环
+  show-detail: 显示详细资讯
+  default-tips: 这里空空如也0.0，请点击上方的「编辑托环」来新增项目。
+  main-tips-1: 目前还是测试版，部分技能的资料可能尚未补齐而导致该托环没有效果。发现有哪些托环漏掉时可以反应给开发团队。
+  main-tips-2: 目前仅支援与数值相关的托环，例如：角色能力加成、技能倍率、技能伤害次数等。部分条件较复杂的托环可能尚未支援。
+potion-build:
+  title: 消耗品
+  disable-potion: 停用消耗品
+  potion: 消耗品
+  potion-build: 消耗品配置
+  edit-potion: 编辑消耗品
+  default-tips: 这里空空如也0.0，请点击上方的「编辑消耗品」来新增项目。
 combo:
   tags:
     consecutive: 连击

@@ -54,14 +54,12 @@ const { device } = useDevice()
             class="absolute -right-1.5 -top-1.5 bg-white text-red-60"
           />
         </div>
-        <div class="grow pt-0.5">
-          <div class="mr-5 flex flex-wrap items-center pt-1">
-            <EquipmentBrowseTitle :equipment="equipment" />
-          </div>
-          <CharacterEquipmentLabels :equipment="equipment" class="mt-0.5 px-1 py-1.5" />
+        <div class="grow">
+          <EquipmentBrowseTitle :equipment="equipment" class="mr-5" />
+          <CharacterEquipmentLabels :equipment="equipment" class="px-1 pb-0.5" />
         </div>
       </div>
-      <div v-if="selected && device.isMobile" class="pb-2.5 pl-6 pr-4 pt-2.5">
+      <div v-if="selected && device.isMobile" class="pb-3 pl-6 pr-4">
         <div>
           <ShowStat v-for="stat in equipment.stats" :key="stat.statId" :stat="stat" />
         </div>

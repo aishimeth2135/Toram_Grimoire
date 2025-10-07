@@ -2,19 +2,16 @@ import { type ComputedRef, type Ref, computed, ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import {
-  Character,
-  CharacterBaseStatTypes,
-  CharacterStat,
-  type CharacterStatResult,
-  EquipmentFieldTypes,
-} from '@/lib/Character/Character'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { Character, CharacterStat, type CharacterStatResult } from '@/lib/Character/Character'
 import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
-import { checkStatRestriction, getCharacterElement } from '../utils'
-import type { CharacterBuildsContext, CharacterPureStatsResult } from './context'
+import { checkStatRestriction } from '../utils'
+import {
+  type CharacterBuildsContext,
+  type CharacterPureStatsResult,
+  useCharacterStatsBaseVars,
+} from './context'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { type SkillResult, setupCharacterSkills } from './setupCharacterSkills'
 import { getSkillStatContainerValid, mergeStats } from './utils'
@@ -61,202 +58,7 @@ export function prepareSetupCharacter() {
       return [...stats.values()]
     })
 
-    const equipmentElement = computed(() =>
-      character.value ? getCharacterElement(character.value) : {}
-    )
-
-    const skill_Conversion = computed(() => {
-      const stc = Grimoire.Skill.skillRoot.skillTreeCategorys.find(_stc => _stc.id === 4)
-      const st = stc?.skillTrees.find(_st => _st.id === 1)
-      return st?.skills.find(_skill => _skill.id === 1) ?? null
-    })
-
-    const getSkillLevel = (skillId: string) => {
-      const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
-      if (!skill) {
-        return 0
-      }
-      return buildsContext.value.skillBuild?.getSkillLevel(skill) ?? 0
-    }
-
-    const computedVarsBase = computed(() => {
-      const chara = character.value!
-
-      const isDualSword =
-        chara.checkFieldEquipmentType(
-          EquipmentFieldTypes.MainWeapon,
-          EquipmentTypes.OneHandSword
-        ) &&
-        chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
-
-      const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
-      const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon)
-      const bodyField = chara.fieldEquipment(EquipmentFieldTypes.BodyArmor)
-      const additionalField = chara.fieldEquipment(EquipmentFieldTypes.Additional)
-      const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special)
-      return {
-        value: {
-          '@clv': chara.level,
-          '@str': chara.baseStatValue(CharacterBaseStatTypes.STR),
-          '@dex': chara.baseStatValue(CharacterBaseStatTypes.DEX),
-          '@int': chara.baseStatValue(CharacterBaseStatTypes.INT),
-          '@agi': chara.baseStatValue(CharacterBaseStatTypes.AGI),
-          '@vit': chara.baseStatValue(CharacterBaseStatTypes.VIT),
-          '@tec': chara.baseStatValue(CharacterBaseStatTypes.TEC),
-          '@men': chara.baseStatValue(CharacterBaseStatTypes.MEN),
-          '@crt': chara.baseStatValue(CharacterBaseStatTypes.CRT),
-          '@luk': chara.baseStatValue(CharacterBaseStatTypes.LUK),
-          '@main': mainField
-            ? {
-                atk: mainField.basicValue,
-                refining: mainField.refining,
-                stability: mainField.stability,
-              }
-            : {
-                atk: 0,
-                refining: 0,
-                stability: 0,
-              },
-          '@sub': subField
-            ? {
-                atk: subField.basicValue,
-                def: subField.basicValue,
-                refining: subField.refining,
-                stability: subField.stability,
-              }
-            : {
-                atk: 0,
-                def: 0,
-                refining: 0,
-                stability: 0,
-              },
-          '@armor': bodyField
-            ? {
-                def: bodyField.basicValue,
-                refining: bodyField.refining,
-              }
-            : {
-                def: 0,
-                refining: 0,
-              },
-          '@additional': additionalField
-            ? {
-                def: additionalField.basicValue,
-                refining: additionalField.refining,
-              }
-            : {
-                def: 0,
-                refining: 0,
-              },
-          '@special': specialField ? { def: specialField.basicValue } : { def: 0 },
-          '@shield': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.SubWeapon,
-            EquipmentTypes.Shield
-          )
-            ? { refining: subField!.refining, def: subField!.basicValue }
-            : { refining: 0, def: 0 },
-          '@arrow': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.SubWeapon,
-            EquipmentTypes.Arrow
-          )
-            ? { stability: subField!.stability, atk: subField!.basicValue }
-            : { stability: 0, atk: 0 },
-          '@element': equipmentElement.value,
-          '@skill': {
-            Conversion: skill_Conversion.value
-              ? (buildsContext.value.skillBuild?.getSkillLevel(skill_Conversion.value) ?? 0)
-              : 0,
-          },
-        },
-        conditional: {
-          '@1h_sword':
-            !isDualSword &&
-            chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.MainWeapon,
-              EquipmentTypes.OneHandSword
-            ),
-          '@2h_sword': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.TwoHandSword
-          ),
-          '@bow': chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow),
-          '@bowgun': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Bowgun
-          ),
-          '@staff': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Staff
-          ),
-          '@magic_device': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.MagicDevice
-          ),
-          '@knuckle': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Knuckle
-          ),
-          '@dual_sword': isDualSword,
-          '@halberd': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Halberd
-          ),
-          '@katana': chara.checkFieldEquipmentType(
-            EquipmentFieldTypes.MainWeapon,
-            EquipmentTypes.Katana
-          ),
-          '@main': {
-            none: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.MainWeapon,
-              EquipmentTypes.Empty
-            ),
-          },
-          '@sub': {
-            arrow: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.SubWeapon,
-              EquipmentTypes.Arrow
-            ),
-            shield: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.SubWeapon,
-              EquipmentTypes.Shield
-            ),
-            dagger: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.SubWeapon,
-              EquipmentTypes.Dagger
-            ),
-            knuckle: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.SubWeapon,
-              EquipmentTypes.Knuckle
-            ),
-            magic_device: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.SubWeapon,
-              EquipmentTypes.MagicDevice
-            ),
-          },
-          '@armor': {
-            normal: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.BodyArmor,
-              EquipmentTypes.BodyNormal
-            ),
-            dodge: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.BodyArmor,
-              EquipmentTypes.BodyDodge
-            ),
-            defense: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.BodyArmor,
-              EquipmentTypes.BodyDefense
-            ),
-            none: chara.checkFieldEquipmentType(
-              EquipmentFieldTypes.BodyArmor,
-              EquipmentTypes.Empty
-            ),
-          },
-        },
-        methods: {
-          getSkillLevel,
-        },
-      }
-    })
+    const { characterStatsBaseVars } = useCharacterStatsBaseVars(character, buildsContext)
 
     const basePureStatsEntries = computed(() => {
       const allStats = new Map<string, StatRecorded>()
@@ -309,7 +111,7 @@ export function prepareSetupCharacter() {
 
         const categoryList = Grimoire.Character.characterStatCategoryList
         const pureStats = [...characterPureStats.value]
-        const vars = CharacterStat.prepareCalcResultVars(computedVarsBase.value)
+        const vars = CharacterStat.prepareCalcResultVars(characterStatsBaseVars.value)
 
         return categoryList
           .map(category => {
