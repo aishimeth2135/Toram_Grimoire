@@ -68,32 +68,43 @@ export function useToggleList<Item>(list: Ref<Item[]>) {
 }
 
 interface ToggleHelper {
-  // Allow to use on native event like `click`
-  (value?: boolean | Event): void
+  /**
+   * Allow to use on native event like `click`
+   * @returns The old value of the boolean ref
+   */
+  (value?: boolean | Event): boolean
 }
 
 export function useToggle(target: Ref<boolean>): ToggleHelper {
   return (value => {
+    const oldValue = target.value
     // ignore `undefined`, `null`, `Event` or others
     target.value = typeof value === 'boolean' ? value : !target.value
+    return oldValue
   }) satisfies ToggleHelper
 }
 
 interface ToggleGroupUtils {
-  after: (callback: AnyFunction) => void
+  and: (callback: AnyFunction) => void
 }
 type ToggleGroupHandler = (value: boolean) => ToggleGroupUtils
 
 export function useToggleGroup(helpers: ToggleHelper[]): ToggleGroupHandler {
   return (value: boolean) => {
+    const oldValues: Map<ToggleHelper, boolean> = new Map()
+
     helpers.forEach(helper => {
-      helper(value)
+      oldValues.set(helper, helper(value))
     })
 
     return {
-      after: (callback: AnyFunction) => {
+      and: (toggleHelper: ToggleHelper) => {
         // call the callback after all toggles
-        callback()
+        if (oldValues.has(toggleHelper)) {
+          toggleHelper(!oldValues.get(toggleHelper))
+        } else {
+          // Do nothing. Should not call `and` with the helper who is not a group member.
+        }
       },
     }
   }

@@ -30,7 +30,7 @@
       <template #default>
         <div
           class="flex cursor-pointer items-center justify-end px-3 py-0.5"
-          @click="toggleMainContents(false).after(toggleResultDetailVisible)"
+          @click="toggleMainContents(false).and(toggleResultDetailVisible)"
         >
           <cy-icon
             :icon="
@@ -79,7 +79,7 @@
           color="cyan"
           float
           toggle
-          @click="toggleMainContents(false).after(toggleCompareVisible)"
+          @click="toggleMainContents(false).and(toggleCompareVisible)"
         />
         <cy-button-circle
           icon="ic:outline-calculate"
@@ -87,7 +87,7 @@
           color="orange"
           float
           toggle
-          @click="toggleMainContents(false).after(toggleCalcModeDetailVisible)"
+          @click="toggleMainContents(false).and(toggleCalcModeDetailVisible)"
         />
         <cy-button-circle
           icon="ant-design:build-outlined"
@@ -95,120 +95,118 @@
           color="bright"
           float
           toggle
-          @click="toggleMainContents(false).after(toggleMainMenuVisible)"
+          @click="toggleMainContents(false).and(toggleMainMenuVisible)"
         />
       </template>
       <template #side-contents>
-        <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="mainMenuVisible" class="p-3">
-            <div class="flex items-center">
-              <cy-title-input
-                v-model:value="currentCalculation.name"
-                icon="ant-design:build-outlined"
-                class="w-full"
-              />
-              <cy-options
-                :value="store.currentCalculation"
-                :options="
-                  calculationItems.map(item => ({
-                    id: item.index,
-                    value: item.origin,
-                  }))
-                "
-                addable
-                @update:value="store.selectCalculation($event)"
-                @add-item="store.createCalculation()"
-              >
-                <template #title>
-                  <cy-button-circle icon="ant-design:build-outlined" small />
-                </template>
-                <template #item="{ value }">
-                  <cy-icon-text icon="ant-design:build-outlined">
-                    {{ value.name }}
-                  </cy-icon-text>
-                </template>
-              </cy-options>
-            </div>
-            <div class="flex flex-wrap items-center">
-              <div class="mx-2">
-                <cy-button-action icon="bx-bx-copy" @click="copyCurrentCalculation">
-                  {{ t('global.copy') }}
-                </cy-button-action>
-                <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
-                  {{ t('global.export') }}
-                </cy-button-action>
-                <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
-                  {{ t('global.import') }}
-                </cy-button-action>
-                <cy-button-action
-                  icon="ic-baseline-delete-outline"
-                  color="secondary"
-                  @click="removeCurrentCalculation"
-                >
-                  {{ t('global.delete') }}
-                </cy-button-action>
-              </div>
-            </div>
-          </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="compareVisible" class="px-4 py-3">
-            <div>
-              <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
-                {{ t('damage-calculation.compare.title') }}
-              </cy-icon-text>
-            </div>
-            <div class="mb-2">
-              <cy-icon-text
-                icon="bx-bx-info-circle"
-                small
-                text-color="primary-50"
-                align-v="center"
-                class="ml-2"
-              >
-                {{ t('damage-calculation.compare.caption') }}
-              </cy-icon-text>
-            </div>
-            <DamageCalculationCompare />
-          </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="calcModeDetailVisible" class="px-4 py-3">
-            <div>
-              <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
-                {{ t('damage-calculation.calc-mode.title') }}
-              </cy-icon-text>
-            </div>
-            <div>
-              <cy-icon-text
-                icon="bx-bx-info-circle"
-                small
-                text-color="primary-50"
-                align-v="center"
-                class="ml-2"
-              >
-                {{ t('damage-calculation.calc-mode.caption') }}
-              </cy-icon-text>
-            </div>
-            <template v-for="modeItem in calcModeList" :key="modeItem.id">
-              <div
-                class="flex min-w-max cursor-pointer items-center pr-3"
-                @click="selectCalcMode(modeItem.id)"
-              >
-                <cy-button-check :selected="modeItem === calcMode">
-                  {{ t('damage-calculation.calc-mode.modes.' + modeItem.id) }}
-                </cy-button-check>
-              </div>
-              <div>
-                <cy-icon-text
-                  icon="bx-bx-info-circle"
-                  small
-                  text-color="primary-30"
-                  class="ml-6"
-                  align-v="start"
-                >
-                  {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
+        <AppLayoutBottomContent v-if="mainMenuVisible" class="p-3">
+          <div class="flex items-center">
+            <cy-title-input
+              v-model:value="currentCalculation.name"
+              icon="ant-design:build-outlined"
+              class="w-full"
+            />
+            <cy-options
+              :value="store.currentCalculation"
+              :options="
+                calculationItems.map(item => ({
+                  id: item.index,
+                  value: item.origin,
+                }))
+              "
+              addable
+              @update:value="store.selectCalculation($event)"
+              @add-item="store.createCalculation()"
+            >
+              <template #title>
+                <cy-button-circle icon="ant-design:build-outlined" small />
+              </template>
+              <template #item="{ value }">
+                <cy-icon-text icon="ant-design:build-outlined">
+                  {{ value.name }}
                 </cy-icon-text>
-              </div>
-            </template>
-          </AppLayoutBottomContent>
-        </cy-transition>
+              </template>
+            </cy-options>
+          </div>
+          <div class="flex flex-wrap items-center">
+            <div class="mx-2">
+              <cy-button-action icon="bx-bx-copy" @click="copyCurrentCalculation">
+                {{ t('global.copy') }}
+              </cy-button-action>
+              <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
+                {{ t('global.export') }}
+              </cy-button-action>
+              <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
+                {{ t('global.import') }}
+              </cy-button-action>
+              <cy-button-action
+                icon="ic-baseline-delete-outline"
+                color="secondary"
+                @click="removeCurrentCalculation"
+              >
+                {{ t('global.delete') }}
+              </cy-button-action>
+            </div>
+          </div>
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent v-else-if="compareVisible" class="px-4 py-3">
+          <div>
+            <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
+              {{ t('damage-calculation.compare.title') }}
+            </cy-icon-text>
+          </div>
+          <div class="mb-2">
+            <cy-icon-text
+              icon="bx-bx-info-circle"
+              small
+              text-color="primary-50"
+              align-v="center"
+              class="ml-2"
+            >
+              {{ t('damage-calculation.compare.caption') }}
+            </cy-icon-text>
+          </div>
+          <DamageCalculationCompare />
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent v-else-if="calcModeDetailVisible" class="px-4 py-3">
+          <div>
+            <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
+              {{ t('damage-calculation.calc-mode.title') }}
+            </cy-icon-text>
+          </div>
+          <div>
+            <cy-icon-text
+              icon="bx-bx-info-circle"
+              small
+              text-color="primary-50"
+              align-v="center"
+              class="ml-2"
+            >
+              {{ t('damage-calculation.calc-mode.caption') }}
+            </cy-icon-text>
+          </div>
+          <template v-for="modeItem in calcModeList" :key="modeItem.id">
+            <div
+              class="flex min-w-max cursor-pointer items-center pr-3"
+              @click="selectCalcMode(modeItem.id)"
+            >
+              <cy-button-check :selected="modeItem === calcMode">
+                {{ t('damage-calculation.calc-mode.modes.' + modeItem.id) }}
+              </cy-button-check>
+            </div>
+            <div>
+              <cy-icon-text
+                icon="bx-bx-info-circle"
+                small
+                text-color="primary-30"
+                class="ml-6"
+                align-v="start"
+              >
+                {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
+              </cy-icon-text>
+            </div>
+          </template>
+        </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
   </AppLayoutMain>

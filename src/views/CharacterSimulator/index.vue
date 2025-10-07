@@ -38,7 +38,7 @@
           color="orange"
           float
           toggle
-          @click="toggleMainContents(false).after(toggleDamageVisible)"
+          @click="toggleMainContents(false).and(toggleDamageVisible)"
         />
         <cy-button-circle
           :selected="characterStatsVisible"
@@ -46,7 +46,7 @@
           color="bright"
           float
           toggle
-          @click="toggleMainContents(false).after(toggleCharacterStatsVisible)"
+          @click="toggleMainContents(false).and(toggleCharacterStatsVisible)"
         />
         <!-- <cy-button-circle
           v-if="mainStore.devMode"

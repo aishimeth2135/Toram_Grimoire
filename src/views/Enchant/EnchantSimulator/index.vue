@@ -41,7 +41,7 @@
           float
           toggle
           :selected="resultVisible"
-          @click="toggleBottomContents(false).after(toggleResultVisible)"
+          @click="toggleBottomContents(false).and(toggleResultVisible)"
         />
       </template>
       <template #side-buttons>
@@ -51,131 +51,129 @@
           float
           toggle
           :selected="topVisible"
-          @click="toggleBottomContents(false).after(toggleTopVisible)"
+          @click="toggleBottomContents(false).and(toggleTopVisible)"
         />
       </template>
       <template #side-contents>
-        <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="resultVisible" class="p-3">
-            <EnchantResult :equipment="currentEquipment" />
-          </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="topVisible" class="p-3">
-            <div class="flex items-center">
-              <cy-title-input
-                v-model:value="currentBuild.name"
-                icon="ant-design:build-outlined"
-                class="w-full"
-              />
-              <cy-options
-                :value="store.currentBuild"
-                :options="
-                  buildDatas.map(item => ({
-                    id: item.id,
-                    value: item.origin,
-                  }))
-                "
-                addable
-                @update:value="store.setCurrentBuild($event)"
-                @add-item="createBuild"
+        <AppLayoutBottomContent v-if="resultVisible" class="p-3">
+          <EnchantResult :equipment="currentEquipment" />
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent v-else-if="topVisible" class="p-3">
+          <div class="flex items-center">
+            <cy-title-input
+              v-model:value="currentBuild.name"
+              icon="ant-design:build-outlined"
+              class="w-full"
+            />
+            <cy-options
+              :value="store.currentBuild"
+              :options="
+                buildDatas.map(item => ({
+                  id: item.id,
+                  value: item.origin,
+                }))
+              "
+              addable
+              @update:value="store.setCurrentBuild($event)"
+              @add-item="createBuild"
+            >
+              <template #title>
+                <cy-button-circle icon="ant-design:build-outlined" small />
+              </template>
+              <template #item="{ value }">
+                <cy-icon-text icon="ant-design:build-outlined">
+                  {{ value.name }}
+                </cy-icon-text>
+              </template>
+            </cy-options>
+          </div>
+          <div class="flex flex-wrap items-center">
+            <div class="mx-2">
+              <cy-button-action icon="bx-bx-copy" @click="copyBuild">
+                {{ t('global.copy') }}
+              </cy-button-action>
+              <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
+                {{ t('global.export') }}
+              </cy-button-action>
+              <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
+                {{ t('global.import') }}
+              </cy-button-action>
+              <cy-button-action
+                icon="ic-baseline-delete-outline"
+                color="secondary"
+                @click="removeBuild"
               >
-                <template #title>
-                  <cy-button-circle icon="ant-design:build-outlined" small />
-                </template>
-                <template #item="{ value }">
-                  <cy-icon-text icon="ant-design:build-outlined">
-                    {{ value.name }}
-                  </cy-icon-text>
-                </template>
-              </cy-options>
+                {{ t('global.delete') }}
+              </cy-button-action>
             </div>
-            <div class="flex flex-wrap items-center">
-              <div class="mx-2">
-                <cy-button-action icon="bx-bx-copy" @click="copyBuild">
-                  {{ t('global.copy') }}
-                </cy-button-action>
-                <cy-button-action icon="mdi-export" color="cyan" @click="exportBuild">
-                  {{ t('global.export') }}
-                </cy-button-action>
-                <cy-button-action icon="mdi-import" color="cyan" @click="importBuild">
-                  {{ t('global.import') }}
-                </cy-button-action>
-                <cy-button-action
-                  icon="ic-baseline-delete-outline"
-                  color="secondary"
-                  @click="removeBuild"
-                >
-                  {{ t('global.delete') }}
-                </cy-button-action>
-              </div>
+          </div>
+          <div class="mt-4 px-2">
+            <div class="text-sm text-gray-50">
+              {{ t('enchant-simulator.base-options') }}
             </div>
-            <div class="mt-4 px-2">
+            <div class="mr-2 flex flex-wrap items-center py-2">
+              <cy-input-counter
+                v-model:value="currentEquipment.originalPotential"
+                :title="t('enchant-simulator.equipment-original-potential')"
+              />
+              <cy-button-icon
+                icon="jam-hammer"
+                class="my-2 ml-2"
+                icon-color="blue-30"
+                icon-color-hover="blue"
+                :selected="extraOptionsVisible"
+                @click="toggleExtraOptionsVisible"
+              />
+            </div>
+          </div>
+          <cy-transition>
+            <div v-if="extraOptionsVisible" class="mt-2 pl-2">
               <div class="text-sm text-gray-50">
-                {{ t('enchant-simulator.base-options') }}
+                {{ t('enchant-simulator.advanced-options') }}
               </div>
-              <div class="mr-2 flex flex-wrap items-center py-2">
+              <div class="py-2">
                 <cy-input-counter
-                  v-model:value="currentEquipment.originalPotential"
-                  :title="t('enchant-simulator.equipment-original-potential')"
-                />
-                <cy-button-icon
-                  icon="jam-hammer"
-                  class="my-2 ml-2"
-                  icon-color="blue-30"
-                  icon-color-hover="blue"
-                  :selected="extraOptionsVisible"
-                  @click="toggleExtraOptionsVisible"
+                  v-model:value="currentEquipment.basePotential"
+                  :title="t('enchant-simulator.equipment-base-potential')"
                 />
               </div>
+              <EnchantCommonSetting class="mt-2" />
             </div>
-            <cy-transition>
-              <div v-if="extraOptionsVisible" class="mt-2 pl-2">
-                <div class="text-sm text-gray-50">
-                  {{ t('enchant-simulator.advanced-options') }}
-                </div>
-                <div class="py-2">
-                  <cy-input-counter
-                    v-model:value="currentEquipment.basePotential"
-                    :title="t('enchant-simulator.equipment-base-potential')"
-                  />
-                </div>
-                <EnchantCommonSetting class="mt-2" />
-              </div>
-            </cy-transition>
+          </cy-transition>
+          <cy-icon-text small text-color="fuchsia-60" class="mt-3">
+            {{ t('enchant-simulator.equipment-type') }}
+          </cy-icon-text>
+          <div class="px-2 py-0.5">
+            <cy-button-check
+              v-for="option in equipmentTypeOptions"
+              :key="option.id"
+              :selected="currentEquipmentType === option.id"
+              @click="currentEquipmentType = option.id"
+            >
+              {{ option.text }}
+            </cy-button-check>
+          </div>
+          <div class="mt-2 border-t border-primary-30 pt-2">
             <cy-icon-text small text-color="fuchsia-60" class="mt-3">
-              {{ t('enchant-simulator.equipment-type') }}
+              {{ t('enchant-simulator.stat-display-mode.title') }}
             </cy-icon-text>
             <div class="px-2 py-0.5">
               <cy-button-check
-                v-for="option in equipmentTypeOptions"
-                :key="option.id"
-                :selected="currentEquipmentType === option.id"
-                @click="currentEquipmentType = option.id"
+                :selected="state.statDisplayMode === 0"
+                @update:selected="state.statDisplayMode = 0"
               >
-                {{ option.text }}
+                {{ t('enchant-simulator.stat-display-mode.potential-cost') }}
+              </cy-button-check>
+              <cy-button-check
+                :selected="state.statDisplayMode === 1"
+                main-color="blue-60"
+                @update:selected="state.statDisplayMode = 1"
+              >
+                {{ t('enchant-simulator.stat-display-mode.material-point') }}
               </cy-button-check>
             </div>
-            <div class="mt-2 border-t border-primary-30 pt-2">
-              <cy-icon-text small text-color="fuchsia-60" class="mt-3">
-                {{ t('enchant-simulator.stat-display-mode.title') }}
-              </cy-icon-text>
-              <div class="px-2 py-0.5">
-                <cy-button-check
-                  :selected="state.statDisplayMode === 0"
-                  @update:selected="state.statDisplayMode = 0"
-                >
-                  {{ t('enchant-simulator.stat-display-mode.potential-cost') }}
-                </cy-button-check>
-                <cy-button-check
-                  :selected="state.statDisplayMode === 1"
-                  main-color="blue-60"
-                  @update:selected="state.statDisplayMode = 1"
-                >
-                  {{ t('enchant-simulator.stat-display-mode.material-point') }}
-                </cy-button-check>
-              </div>
-            </div>
-          </AppLayoutBottomContent>
-        </cy-transition>
+          </div>
+        </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
   </AppLayoutMain>

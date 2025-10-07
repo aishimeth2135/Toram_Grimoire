@@ -34,31 +34,29 @@
         />
       </template>
       <template #side-contents>
-        <cy-transition>
-          <AppLayoutBottomContent v-if="displayModeMenuVisible" class="p-3">
-            <div>
-              <cy-icon-text small text-color="primary-30">
-                {{ t('registlet-query.display-mode.title') }}
-              </cy-icon-text>
-            </div>
-            <div class="mt-1.5 pl-2.5">
-              <cy-button-check
-                :selected="state.displayMode === 'category'"
-                @click="state.displayMode = 'category'"
-              >
-                {{ t('registlet-query.display-mode.category') }}
-              </cy-button-check>
-            </div>
-            <div class="pl-2.5">
-              <cy-button-check
-                :selected="state.displayMode === 'obtain-levels'"
-                @click="state.displayMode = 'obtain-levels'"
-              >
-                {{ t('registlet-query.display-mode.obtain-levels') }}
-              </cy-button-check>
-            </div>
-          </AppLayoutBottomContent>
-        </cy-transition>
+        <AppLayoutBottomContent v-if="displayModeMenuVisible" class="p-3">
+          <div>
+            <cy-icon-text small text-color="primary-30">
+              {{ t('registlet-query.display-mode.title') }}
+            </cy-icon-text>
+          </div>
+          <div class="mt-1.5 pl-2.5">
+            <cy-button-check
+              :selected="state.displayMode === 'category'"
+              @click="state.displayMode = 'category'"
+            >
+              {{ t('registlet-query.display-mode.category') }}
+            </cy-button-check>
+          </div>
+          <div class="pl-2.5">
+            <cy-button-check
+              :selected="state.displayMode === 'obtain-levels'"
+              @click="state.displayMode = 'obtain-levels'"
+            >
+              {{ t('registlet-query.display-mode.obtain-levels') }}
+            </cy-button-check>
+          </div>
+        </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
   </AppLayoutMain>

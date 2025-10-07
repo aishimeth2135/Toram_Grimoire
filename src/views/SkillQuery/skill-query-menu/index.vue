@@ -24,7 +24,7 @@
           :icon="
             advancedMenuVisible ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'
           "
-          @click="toggleContentGroup(false).after(toggleAdvancedMenu)"
+          @click="toggleContentGroup(false).and(toggleAdvancedMenu)"
         />
       </div>
     </template>

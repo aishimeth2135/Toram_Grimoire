@@ -159,7 +159,7 @@
           :selected="sortOptionsVisible"
           float
           toggle
-          @click="toggleOptionContents(false).after(toggleSortOptionsVisible)"
+          @click="toggleOptionContents(false).and(toggleSortOptionsVisible)"
         />
         <cy-button-circle
           icon="mdi:filter"
@@ -167,41 +167,39 @@
           :selected="conditionOptionsVisible"
           float
           toggle
-          @click="toggleOptionContents(false).after(toggleConditionOptionsVisible)"
+          @click="toggleOptionContents(false).and(toggleConditionOptionsVisible)"
         />
       </template>
       <template #side-contents>
-        <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="conditionOptionsVisible">
-            <ItemQueryFilterMenu :equipments="equipments" @filter="validEquipments = $event" />
-          </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="sortOptionsVisible" class="p-3">
+        <AppLayoutBottomContent v-show="conditionOptionsVisible">
+          <ItemQueryFilterMenu :equipments="equipments" @filter="validEquipments = $event" />
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent v-show="sortOptionsVisible" class="p-3">
+          <div>
             <div>
-              <div>
-                <cy-icon-text icon="mdi-sort-variant" color="fuchsia" small>
-                  {{ t('item-query.sort-options.title') }}
-                </cy-icon-text>
-              </div>
-              <cy-button-radio-group
-                v-model:value="sortState.currentSelected"
-                class="px-2 pb-2"
-                :options="consts.sortOptions"
-              />
+              <cy-icon-text icon="mdi-sort-variant" color="fuchsia" small>
+                {{ t('item-query.sort-options.title') }}
+              </cy-icon-text>
             </div>
+            <cy-button-radio-group
+              v-model:value="sortState.currentSelected"
+              class="px-2 pb-2"
+              :options="consts.sortOptions"
+            />
+          </div>
+          <div>
             <div>
-              <div>
-                <cy-icon-text icon="fluent-arrow-sort-24-filled" text-color="fuchsia-60" small>
-                  {{ t('item-query.sort-options.order.title') }}
-                </cy-icon-text>
-              </div>
-              <cy-button-radio-group
-                v-model:value="sortState.currentOrder"
-                class="px-2 pb-2"
-                :options="consts.sortOrderOptions"
-              />
+              <cy-icon-text icon="fluent-arrow-sort-24-filled" text-color="fuchsia-60" small>
+                {{ t('item-query.sort-options.order.title') }}
+              </cy-icon-text>
             </div>
-          </AppLayoutBottomContent>
-        </cy-transition>
+            <cy-button-radio-group
+              v-model:value="sortState.currentOrder"
+              class="px-2 pb-2"
+              :options="consts.sortOrderOptions"
+            />
+          </div>
+        </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
     <cy-modal v-model:visible="selectStatModalVisible" vertical-position="start" footer>
