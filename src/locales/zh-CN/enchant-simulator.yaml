@@ -2,6 +2,8 @@ build: 配置
 base-options: 基本设定
 advanced-options: 进阶设定
 common-options: 共通设定
+skill-level-options: 一般技能等级设定
+material-skill-level-options: 理解素材技能等级设定
 equipment-type: 装备类型
 append-build: 新增配置
 equipment-types:
@@ -26,6 +28,10 @@ material-point-type-list:
   - 布料
   - 药品
   - 魔素
+material-anvil-skill-level-sum: 铁砧技能等级总和
+material-anvil-skill-level-desc: 指除了「自身的铁砧」外，其他减少素材消耗的铁砧类技能的技能等级总和。
+experts-customization-2-skill: 大师级强化技术II
+experts-customization-2-skill-desc: 仅用于实际成功率的计算。
 step:
   insert-step-before: 向前插入步骤
   step-move-up: 上移一格
@@ -43,6 +49,7 @@ result:
   enchant-step-each: 分次附、每次附{stat}、直到{target}
   stats: 最终结果
   materials: 素材耗量
+  materials-skill-levels: 了解素材技能等级
   operation-steps-quantity: 步骤数
   success-rate-detail:
     title: 成功率说明
@@ -64,3 +71,4 @@ tips:
   remove-build-confirm: 确定要移除这个配置吗0.0？
   copy-build-success: 复制配置成功。
   copy-result-text-success: 复制结果成功。
+  first-load-failed-tips: 读档时发生未知的错误。为了避免附魔模拟的存档遗失，系统已暂时关闭的附魔模拟的存档功能。

@@ -4,6 +4,10 @@ select-skill: 选择技能
 close-select-skill: 关闭
 skill-level: 技能等级
 character-level: 角色等级
+registlet-level: 雷吉斯托环等级
+registlet-level-abbreviation: 托环等级
+registlet-info-tip: 关于雷吉斯托环的详细资讯，请查看{link}。
+registlet-max-level-title: 最大等级
 search-tips: 点击这里来搜寻技能
 go-to-skill: 查看
 formula-display-mode:
@@ -32,6 +36,8 @@ branch:
   apply-element: 套用{element}。
   unknown-variable: 未知参数
   dual-element-title: 双重属性
+  current-effect-equipments-prefix: 目前
+  compared-effect-equipments-prefix: 比较
   formula-replaced-text:
     BSTR: 基础STR
     BINT: 基础INT
@@ -39,6 +45,9 @@ branch:
     BVIT: 基础VIT
     BDEX: 基础DEX
     TEC: 基础TEC
+    CRT: 基础CRT
+    LUK: 基础LUK
+    MEN: 基础MEN
     STR: 总STR
     INT: 总INT
     AGI: 总AGI
@@ -110,8 +119,6 @@ branch:
       AOE: 范围
     title:
       normal_attack: 一般攻击的伤害提升
-    frequency:
-      positive: 总伤害拆成$0次
     ailment-caption: 有{chance}机率使目标陷入{name}。
     effective_area:
       circle: 圆形
@@ -153,6 +160,7 @@ branch:
       'false': 距离威力
       long: 恒受远距离威力影响
       short: 恒受近距离威力影响
+      both: 距离威力取近/远距离威力中数值较高者
       none: 未确认是否受距离威力影响
     is_place:
       'true': 设置型技能
@@ -160,7 +168,7 @@ branch:
       'false': 连击威力
     '@custom-base-caption':
       both: 根据((!角色的ATK及MATK的高低))。ATK比MATK高时，取((!有效ATK))；MATK比ATK高时，取((!有效MATK))。
-      dual_sword: 双剑有自己特殊的有效ATK公式，细节请查看#双剑特性说明 。
+      dual_sword: 双剑有自己特殊的有效ATK公式，细节请查看#[双剑特性说明]。
     'effective_area: title': 类型
     'radius: title': 伤害半径
     'move_distance: title': 移动距离
@@ -168,6 +176,7 @@ branch:
     'start_position_offsets: title': 起点位置
     'end_position_offsets: title': 终点位置
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害
+    frequency-caption: 总伤害拆成{frequency}次
   'damage: extra':
     condition-default-value: 此伤害
   proration:
@@ -217,5 +226,9 @@ branch:
       mp: 恢复MP
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒作用一次
     constant-prefix: 固定值
+    effective_area:
+      circle: 圆形
+    'effective_area: title': 类型
+    'radius: title': 作用半径
   reference:
     base-title: 参考连结

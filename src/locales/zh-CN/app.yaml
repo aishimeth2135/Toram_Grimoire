@@ -3,14 +3,16 @@ loading-message:
   CharacterStats: 载入角色模拟器资料
   Items: 载入装备资料
   Skill: 载入技能资料
-  Glossary: 载入标签清单
+  Glossary: 载入名词解释
   Enchant: 载入附魔资料
   DamageCalculation: 载入伤害计算器
   Food: 载入料理资料
   Registlet: 载入雷吉斯托环资料
+  ItemsPotion: 载入消耗品资料
+  Quest: 载入任务资料
   init: 初始化
   bottom-tips:
-    0: 初次载入需要较长的时间，请稍后...
+    0: 初次载入需要较长的时间，请稍候...
     1: 若载入途中发生错误，请先试着重新整理网页。
   init-locale: 载入语言资料
 page-title:
@@ -25,6 +27,7 @@ page-title:
   enchant-simulator: 附魔模拟
   enchant-doll: 附魔布偶
   glossary-query: 名词清单
+  main-quest-calc: 主线任务计算
   book-main: 文章模板
   book-preview: 文章模板预览
   home: 主页
@@ -34,11 +37,13 @@ about:
     title: 作者
     sub-title: 路边的娃娃机随处可见的布偶。
     toram-id: 托兰ID
+    github-message: 有空的话，可以到这里面帮我按一下
   team:
     title: 团队
     sub-title: 感谢整个魔法书制作团队0.0
-    skill-data: 技能资料
-    equipment-data: 装备资料
+    main: 主要成员
+    skill-data: 技能资料协助
+    equipment-data: 装备资料协助
   sponsor:
     title: 赞助
     sub-title: 感谢所有愿意提供赞助的人～
@@ -114,3 +119,5 @@ features:
   copy-to-clipboard-success-tips: 已复制文本至剪贴簿。
   copy-url-to-clipboard-success-tips: 已复制网址至剪贴簿。
   localStorage-inavailable-tips: 此浏览器版本无法使用内建储存功能。
+notices:
+  enchant-refactor: 由于附魔系统的更新，如果遇到错误请到「设定」里进行「清除资料库快取」，资料库重新下载后附魔系统就能正常运作。
