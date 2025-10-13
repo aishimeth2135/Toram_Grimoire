@@ -24,7 +24,7 @@
           :icon="
             advancedMenuVisible ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'
           "
-          @click="toggleContentGroup(false).and(toggleAdvancedMenu)"
+          @click="handlingToggleAdvancedMenu"
         />
       </div>
     </template>
@@ -115,7 +115,7 @@
 import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggle, useToggleGroup } from '@/shared/setup/State'
+import { useToggle } from '@/shared/setup/State'
 
 import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
@@ -167,7 +167,11 @@ const switchEffectVisible = ref(false)
 
 const toggleAdvancedMenu = useToggle(advancedMenuVisible)
 const toggleSwitchEffect = useToggle(switchEffectVisible)
-const toggleContentGroup = useToggleGroup([toggleSwitchEffect])
+
+const handlingToggleAdvancedMenu = () => {
+  toggleAdvancedMenu()
+  toggleSwitchEffect(false)
+}
 
 const { equipmentOptions, getEquipmentText, getEquipmentImagePath, toggleCurrentEquipment } =
   setupEquipmentSelect(skillTree, emit)

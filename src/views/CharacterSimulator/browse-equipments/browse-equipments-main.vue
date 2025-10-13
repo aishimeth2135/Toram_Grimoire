@@ -141,7 +141,7 @@ const toggleDisplayMode = (isListMode: boolean) => {
             @equip-cancel="emit('equip-cancel')"
           />
         </template>
-        <span v-else class="flex h-8 items-center text-sm text-primary-30">
+        <span v-else class="flex h-8 items-center pl-4 text-sm text-primary-30">
           {{ t('character-simulator.browse-equipments.select-equipment-tips') }}
         </span>
       </div>
