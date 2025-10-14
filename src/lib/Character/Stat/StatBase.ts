@@ -110,7 +110,6 @@ class StatBase {
 
   showValue(type: StatTypes, value: StatValue, useDefaultTail = true) {
     const showData = this.getShowData(type, value)
-    value = value ?? showData.realValue
     const prefix = typeof value !== 'number' || value >= 0 ? '+' : ''
     return `${prefix}${value}${useDefaultTail || this.hasMultiplier ? showData.tail : ''}`
   }

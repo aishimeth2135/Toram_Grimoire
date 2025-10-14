@@ -15,9 +15,11 @@ defineProps<Props>()
         {{ text }}
       </span>
     </div>
-    <div class="flex items-center" :class="stat.isBoolStat ? 'text-primary-70' : 'text-stone-70'">
-      {{ stat.base.text }}
-      <span v-if="!stat.isBoolStat" class="text-primary-70">
+    <div class="flex items-center" :class="stat.value > 0 ? 'text-primary-90' : 'text-red-40'">
+      <div>
+        {{ stat.base.text }}
+      </div>
+      <span v-if="!stat.isBoolStat">
         {{ stat.showValue() }}
       </span>
     </div>
