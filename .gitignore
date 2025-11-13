@@ -17,3 +17,6 @@ pnpm-debug.log*
 
 # Editor directories and files
 .vscode
+
+# macOS files
+.DS_Store
