@@ -57,13 +57,20 @@ const expSum = computed(() => {
   return resultRxp
 })
 
+const getRequiredExp = (currentLevel: number) => {
+  return Math.floor(currentLevel ** 4 / 40) + currentLevel * 2
+}
+
 const levelDiff = computed(() => {
-  let remainingExp = expSum.value * diaryRounds.value
+  const startPercentageExp = Math.floor(
+    (getRequiredExp(characterStartLevel.value) * characterStartPercentage.value) / 100
+  )
+  let remainingExp = expSum.value * diaryRounds.value + startPercentageExp
   let requiredExp = 0
   let currentLevel = characterStartLevel.value
 
   while (true) {
-    requiredExp = Math.floor(currentLevel ** 4 / 40) + currentLevel * 2
+    requiredExp = getRequiredExp(currentLevel)
     if (requiredExp > remainingExp) {
       break
     }
