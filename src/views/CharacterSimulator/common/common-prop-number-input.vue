@@ -1,33 +1,19 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import type { Ref } from 'vue'
+import { computed } from 'vue'
 
 import { normalizeInteger, toInt } from '@/shared/utils/number'
 
-import { getPropInputAutoId } from '../character-equipment-details/setup'
+import CommonPropInputBase from './common-prop-input-base.vue'
 
 interface Props {
   title: string
-  value: number
   unit?: string
   range?: string | (number | null)[]
 }
-interface Emits {
-  (evt: 'update:value', value: number): void
-}
 
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
 
-const inputElement: Ref<HTMLInputElement | null> = ref(null)
-const inputId = getPropInputAutoId()
-const focus = ref(false)
-const setInputFocus = (value: boolean) => {
-  focus.value = value
-  if (value) {
-    inputElement.value?.select()
-  }
-}
+const _innerValue = defineModel<number>('value', { required: true })
 
 const parsedRange = computed(() => {
   if (!props.range) {
@@ -51,7 +37,7 @@ const parsedRange = computed(() => {
 
 const innerValue = computed<number>({
   get() {
-    return props.value
+    return _innerValue.value
   },
   set(newValue) {
     let value = newValue
@@ -65,7 +51,7 @@ const innerValue = computed<number>({
     }
     value = num
 
-    emit('update:value', value)
+    _innerValue.value = value
   },
 })
 
@@ -75,30 +61,23 @@ const incValue = (value: number) => {
 </script>
 
 <template>
-  <div class="w-full max-w-[8rem] pt-1">
-    <div class="px-1.5 text-sm text-stone-60">{{ title }}</div>
-    <label
-      class="mt-0.5 flex cursor-text border-b border-primary-20 px-1.5 py-1 duration-150"
-      :class="{ 'border-primary-70': focus }"
-      :for="inputId"
-    >
-      <div class="relative min-w-4" @click.stop>
-        <div class="invisible h-6">{{ innerValue }}</div>
-        <input
-          :id="inputId"
-          ref="inputElement"
-          v-model="innerValue"
-          type="number"
-          class="absolute left-0 top-0 w-full bg-transparent text-primary-70"
-          @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)"
-        />
-      </div>
-      <div v-if="unit" class="pl-1 pr-2 text-primary-40">{{ unit }}</div>
-      <div class="ml-auto flex shrink-0 items-center space-x-1">
-        <cy-button-icon icon="ic-round-remove-circle-outline" @click="incValue(-1)" />
-        <cy-button-icon icon="ic-round-add-circle-outline" @click="incValue(1)" />
-      </div>
-    </label>
-  </div>
+  <CommonPropInputBase :title="title" class="max-w-[8rem]" v-slot="{ inputId, setInputFocus }">
+    <div class="relative min-w-4" @click.stop>
+      <div class="invisible h-6">{{ innerValue }}</div>
+      <input
+        :id="inputId"
+        ref="inputElement"
+        v-model="innerValue"
+        type="number"
+        class="absolute left-0 top-0 w-full bg-transparent text-primary-70"
+        @focus="setInputFocus(true)"
+        @blur="setInputFocus(false)"
+      />
+    </div>
+    <div v-if="unit" class="pl-1 pr-2 text-primary-40">{{ unit }}</div>
+    <div class="ml-auto flex shrink-0 items-center space-x-1">
+      <cy-button-icon icon="ic-round-remove-circle-outline" @click="incValue(-1)" />
+      <cy-button-icon icon="ic-round-add-circle-outline" @click="incValue(1)" />
+    </div>
+  </CommonPropInputBase>
 </template>

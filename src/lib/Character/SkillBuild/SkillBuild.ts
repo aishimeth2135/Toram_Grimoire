@@ -28,7 +28,14 @@ interface SkillBuildSaveData {
 
 interface EffectedSkillResult {
   skill: Skill
+  currentLevel: number
   newLevel: number
+  isFront: boolean
+}
+
+interface SkillLevelSumResult {
+  level: number
+  starGemLevel: number
 }
 
 function skillTreeIdToInteger(skillTreeId: string): number {
@@ -139,59 +146,88 @@ export class SkillBuild implements CharacterBindingBuild {
   //   }
   // }
 
-  checkLevelEffectedSkills(target: Skill, levelSet: number): EffectedSkillResult[] {
-    const frontSkills = new Set<Skill>()
-    const behindSkills = new Set<Skill>()
-
-    if (levelSet < 5) {
-      const stk: Skill[] = [target]
-      while (stk.length !== 0) {
-        const current = stk.pop()!
-        current.parent.skills.forEach(skill => {
-          if (skill.previous === current.id) {
-            stk.push(skill)
-            const state = this.getSkillState(skill)
-            if (state.level > 0) {
-              behindSkills.add(skill)
-            }
-          }
-        })
-      }
-    }
-    if (levelSet > 0) {
-      let current = target
-      while (current.previous !== -1) {
-        const pre = current.parent.skills.find(_skill => _skill.id === current.previous)
-        if (!pre) {
-          break
-        }
-        current = pre
-        const state = this.getSkillState(current)
-        if (state.level < 5) {
-          frontSkills.add(current)
-        }
-      }
-    }
-
+  getLevelEffectedBehindSkills(target: Skill): EffectedSkillResult[] {
     const results: EffectedSkillResult[] = []
 
-    frontSkills.forEach(skill => {
-      results.push({
-        skill,
-        newLevel: 5,
+    const currentSkills = target.parent.skills.slice()
+    const stk: Skill[] = [target]
+    while (stk.length !== 0) {
+      const current = stk.pop()!
+      const removedIdx = currentSkills.findIndex(skill => {
+        if (skill.previous === current.id) {
+          stk.push(skill)
+          const state = this.getSkillState(skill)
+          if (state.level > 0) {
+            results.push({
+              skill,
+              currentLevel: state.level,
+              newLevel: 0,
+              isFront: false,
+            })
+          }
+          return true
+        }
+        return false
       })
-    })
-    behindSkills.forEach(skill => {
-      results.push({
-        skill,
-        newLevel: 0,
-      })
-    })
+      if (removedIdx > -1) {
+        currentSkills.splice(removedIdx, 1)
+      }
+    }
+
+    return [...results.values()]
+  }
+
+  getLevelEffectedFrontSkills(target: Skill): EffectedSkillResult[] {
+    const results: EffectedSkillResult[] = []
+
+    const currentSkills = target.parent.skills.slice()
+    let current = target
+    while (current.previous !== -1) {
+      const preIdx = currentSkills.findIndex(_skill => _skill.id === current.previous)
+      if (preIdx < 0) {
+        break
+      }
+      current = currentSkills[preIdx]
+      const state = this.getSkillState(current)
+      if (state.level < 5) {
+        results.push({
+          skill: current,
+          currentLevel: state.level,
+          newLevel: 5,
+          isFront: true,
+        })
+      }
+      currentSkills.splice(preIdx, 1)
+    }
 
     return results
   }
 
-  getSkillTreePointSum(skillTree: SkillTree) {
+  checkLevelEffectedSkills(target: Skill, levelSet: number): EffectedSkillResult[] {
+    if (levelSet < 5) {
+      return this.getLevelEffectedBehindSkills(target)
+    }
+    if (levelSet > 0) {
+      return this.getLevelEffectedFrontSkills(target)
+    }
+
+    return []
+  }
+
+  getStarGemReducedLevel(skill: Skill, skillState: SkillState): number {
+    if (skillState.starGemLevel === 0) {
+      return 0
+    }
+
+    let reducedLevel = Math.max(skillState.starGemLevel - skillState.level, 0)
+    const effectedSkills = this.getLevelEffectedFrontSkills(skill)
+    effectedSkills.forEach(result => {
+      reducedLevel += Math.max(result.newLevel - result.currentLevel, 0)
+    })
+    return reducedLevel
+  }
+
+  getSkillTreePointSum(skillTree: SkillTree): SkillLevelSumResult {
     if (!this._skillTreesSet.has(skillTree)) {
       return {
         level: 0,
@@ -206,9 +242,26 @@ export class SkillBuild implements CharacterBindingBuild {
       if (this.hasSkill(skill) && !skill.parent.attrs.simulatorFlag) {
         const state = this.getSkillState(skill)
         level += state.level
-        starGemLevel += Math.max(state.starGemLevel - state.level, 0)
+        starGemLevel += this.getStarGemReducedLevel(skill, state)
       }
     })
+
+    return {
+      level,
+      starGemLevel,
+    }
+  }
+
+  getSkillPointSum(): SkillLevelSumResult {
+    let level = 0
+    let starGemLevel = 0
+    for (const [skill, state] of this._skillStatesMap.entries()) {
+      if (skill.parent.attrs.simulatorFlag) {
+        continue
+      }
+      level += state.level
+      starGemLevel += this.getStarGemReducedLevel(skill, state)
+    }
 
     return {
       level,
@@ -245,23 +298,6 @@ export class SkillBuild implements CharacterBindingBuild {
 
   get allSkills(): Skill[] {
     return [...this._skillStatesMap.keys()]
-  }
-
-  get skillPointSum(): { level: number; starGemLevel: number } {
-    let level = 0
-    let starGemLevel = 0
-    for (const [skill, state] of this._skillStatesMap.entries()) {
-      if (skill.parent.attrs.simulatorFlag) {
-        continue
-      }
-      level += state.level
-      starGemLevel += Math.max(state.starGemLevel - state.level, 0)
-    }
-
-    return {
-      level,
-      starGemLevel,
-    }
   }
 
   toggleSkillTreeSelected(skillTree: SkillTree): void {

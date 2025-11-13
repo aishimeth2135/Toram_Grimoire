@@ -44,7 +44,7 @@ const { device } = useDevice()
     >
       <div class="flex px-3.5 py-2.5">
         <div
-          class="relative mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-1"
+          class="relative mr-2.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-1"
           :class="equipped ? 'border-primary-40' : 'border-primary-10'"
         >
           <CommonEquipmentIcon :equipment="equipment" width="1.25rem" />

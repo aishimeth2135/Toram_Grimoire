@@ -71,7 +71,7 @@
                   </div>
                   <div class="flex items-center">
                     <div class="mr-1 text-gray-40">Lv.</div>
-                    <span class="text-gray-50">{{ effected.oldLevel }}</span>
+                    <span class="text-gray-50">{{ effected.currentLevel }}</span>
                     <cy-icon icon="ic:round-arrow-forward" class="mx-1.5 text-primary-20" />
                     <div class="mr-1 text-primary-40">Lv.</div>
                     <span class="text-primary-60">{{ effected.newLevel }}</span>
@@ -123,11 +123,9 @@ const effectedSkills = computed(() => {
 
   return props.skillBuild
     .checkLevelEffectedSkills(props.skill, editedSkillLevel.value)
-    .map(({ skill, newLevel }) => ({
-      skill,
-      icon: getSkillIconPath(skill),
-      oldLevel: props.skillBuild.getSkillState(skill).level,
-      newLevel,
+    .map(result => ({
+      ...result,
+      icon: getSkillIconPath(result.skill),
     }))
 })
 

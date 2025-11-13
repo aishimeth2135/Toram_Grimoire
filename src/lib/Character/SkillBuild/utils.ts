@@ -229,7 +229,7 @@ export async function getSkillBuildImageDataURL(skillBuild: SkillBuild) {
 
     // top info
     {
-      const { level, starGemLevel } = skillBuild.skillPointSum
+      const { level, starGemLevel } = skillBuild.getSkillPointSum()
       const spcs = Grimoire.i18n.t('skill-simulator.export-image.skill-point-sum-caption', {
           sum: level,
         }),
@@ -411,7 +411,7 @@ export function getSkillBuildText(skillBuild: SkillBuild) {
       res
   }
 
-  const { level, starGemLevel } = skillBuild.skillPointSum
+  const { level, starGemLevel } = skillBuild.getSkillPointSum()
   let top =
     '｜' +
     Grimoire.i18n.t('skill-simulator.export-image.skill-point-sum-caption', {
