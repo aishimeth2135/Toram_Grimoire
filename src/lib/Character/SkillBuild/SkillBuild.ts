@@ -153,7 +153,7 @@ export class SkillBuild implements CharacterBindingBuild {
     const stk: Skill[] = [target]
     while (stk.length !== 0) {
       const current = stk.pop()!
-      const removedIdx = currentSkills.findIndex(skill => {
+      currentSkills.forEach(skill => {
         if (skill.previous === current.id) {
           stk.push(skill)
           const state = this.getSkillState(skill)
@@ -165,13 +165,8 @@ export class SkillBuild implements CharacterBindingBuild {
               isFront: false,
             })
           }
-          return true
         }
-        return false
       })
-      if (removedIdx > -1) {
-        currentSkills.splice(removedIdx, 1)
-      }
     }
 
     return [...results.values()]
@@ -204,14 +199,16 @@ export class SkillBuild implements CharacterBindingBuild {
   }
 
   checkLevelEffectedSkills(target: Skill, levelSet: number): EffectedSkillResult[] {
+    const results: EffectedSkillResult[] = []
+
     if (levelSet < 5) {
-      return this.getLevelEffectedBehindSkills(target)
+      results.push(...this.getLevelEffectedBehindSkills(target))
     }
     if (levelSet > 0) {
-      return this.getLevelEffectedFrontSkills(target)
+      results.push(...this.getLevelEffectedFrontSkills(target))
     }
 
-    return []
+    return results
   }
 
   getStarGemReducedLevel(skill: Skill, skillState: SkillState): number {
