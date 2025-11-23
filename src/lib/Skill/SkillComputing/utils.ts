@@ -139,6 +139,8 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
       }
     }
   })
+
+  to._initDatasByProp()
 }
 
 /**

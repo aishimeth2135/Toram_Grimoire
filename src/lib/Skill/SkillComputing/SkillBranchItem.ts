@@ -85,8 +85,8 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
     this.isEmpty = branch.isEmpty
 
-    this.postpone = this._props.get('postpone') === '1'
-    this._props.delete('postpone')
+    this.postpone = false
+    this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
 
@@ -104,6 +104,10 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     }
 
     this._historyRecord = null
+  }
+
+  _initPostponeByProp() {
+    this.postpone = this._props.get('postpone') === '1'
   }
 
   get name(): SkillBranchNames {
@@ -197,8 +201,8 @@ class SkillBranchItem<
 > extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
-  readonly linkedStackIds: number[]
-  readonly stackId: number | null
+  linkedStackIds: number[]
+  stackId: number | null
 
   readonly groupState: BranchGroupState
 
@@ -208,10 +212,9 @@ class SkillBranchItem<
     this.suffixBranches = []
     this.emptySuffixBranches = []
 
-    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
-
-    this.linkedStackIds =
-      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
+    this.stackId = null
+    this.linkedStackIds = []
+    this._initDatasByProp()
 
     this.groupState = reactive({
       size: 0,
@@ -220,6 +223,13 @@ class SkillBranchItem<
       parentExpanded: true,
       isGroupEnd: false,
     })
+  }
+
+  _initDatasByProp() {
+    this._initPostponeByProp()
+    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.linkedStackIds =
+      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
   }
 
   get isGroup(): boolean {
