@@ -1,77 +1,94 @@
-skill-info: Skill info
-historical-record: Change history
-select-skill: Choose skills
-close-select-skill: 關閉
-skill-level: 技能等級
-character-level: 角色等級
-search-tips: 點擊這裡來搜尋技能
-go-to-skill: 查看
+skill-info: Skill Info
+historical-record: History record
+select-skill: Select skill
+close-select-skill: Close
+skill-level: Skill level
+character-level: Character level
+registlet-level: Registlet level
+registlet-level-abbreviation: Registlet level
+registlet-info-tip: For more information about the registlet, please see {link}.
+registlet-max-level-title: Maximum level
+search-tips: Click here to search for skills
+go-to-skill: View
 formula-display-mode:
-  title: 公式顯示模式
-  normal: 一般
-  original-formula: 顯示原始公式
-branch-added: 新增
-branch-removed: 移除
+  title: Formula display mode
+  normal: Normal
+  original-formula: Display original formula
+branch-added: New
+branch-removed: Removed
 no-any-skill-effect-match-message:
-  - 目前選取的技能與裝備不相符。
-  - 請更改裝備類型或是選擇其他技能。
+  - The currently selected skill does not match the equipment.
+  - You can quickly switch equipment types or select other skills through the buttons below.
 equipment:
-  no-select: 無選取
-  none: 通用
-  'main: title': 主手武器
-  'sub: title': 副手裝備
-  'body: title': 身體裝備
+  no-select: Any
+  none: All
+  'main: title': Main weapon
+  'sub: title': Sub weapon
+  'body: title': Body equipment
+tag:
+  no-data-tips: This skill has not been explained yet (_ _)
+skill-buffs:
+  mp_cost_half:
+    title: MP consumption halved
 branch:
-  duration-caption: '持續{duration}秒'
-  ailment-title: 命中成功後
-  apply-element: 套用{element}。
-  unknown-variable: 未知參數
-  dual-element-title: 雙重屬性
-  current-effect-equipments-prefix: 目前
-  compared-effect-equipments-prefix: 比較
+  duration-caption: 'For {duration} seconds'
+  ailment-title: Ailment
+  apply-element: Apply {element}.
+  unknown-variable: Unknown variable
+  dual-element-title: Dual element
+  current-effect-equipments-prefix: Current
+  compared-effect-equipments-prefix: Compare
   formula-replaced-text:
-    BSTR: 基礎STR
-    BINT: 基礎INT
-    BAGI: 基礎AGI
-    BVIT: 基礎VIT
-    BDEX: 基礎DEX
-    TEC: 基礎TEC
-    STR: 總STR
-    INT: 總INT
-    AGI: 總AGI
-    VIT: 總VIT
-    DEX: 總DEX
-    shield_refining: 盾精鍊值
-    dagger_atk: 小刀ATK
-    target_def: 目標DEF
-    target_level: 目標LV
-    guard_power: 阻檔力
+    BSTR: Base STR
+    BINT: Base INT
+    BAGI: Base AGI
+    BVIT: Base VIT
+    BDEX: Base DEX
+    TEC: Base TEC
+    CRT: Base CRT
+    LUK: Base LUK
+    MEN: Base MTL
+    STR: Total STR
+    INT: Total INT
+    AGI: Total AGI
+    VIT: Total VIT
+    DEX: Total DEX
+    shield_refining: Shield Refinement Value
+    dagger_atk: Dagger ATK
+    target_def: Target DEF
+    target_level: Target LV
+    guard_power: Guard power
   skill-area:
-    button-text: 查看技能範圍
-    'point: character': 角色
-    'point: target': 目標
+    button-text: View skill range
+    'point: character': Character
+    'point: target': Target
+  action-frame:
+    title: Motion frame number
+    title-base: When motion frame is 100%
+    title-min: WHen motion frame is 50%
   global-suffix:
     extra:
-      condition-default-value: 額外效果
+      condition-default-value: Skill effects
+      condition-next-default-value: Next skill effects
   basic:
     'mp_cost: title': MP cost
-    'range: title': Cast range
-    'skill_type: title': Skill cast type
+    'range: title': Range
+    'skill_type: title': Skill type
     'in_combo: title': Combo
     'action_time: title': Motion
-    'casting_time: title': 詠唱時間
+    'casting_time: title': Cast time
     mp_cost:
-      0: 無消耗
+      0: No MP consumption
     skill_type:
       instant: Instant
       casting: Cast
       charging: Charge
       passive: Passive
-      extra: EX技能
+      extra: EX skill
     in_combo:
-      '1': Yes
-      '0': No
-      not_lead: Cannot be used as combo opener
+      '1': Available in combo
+      '0': Unavailable in combo
+      not_lead: Unavailable as combo starter
     action_time:
       very_slow: Very slow
       slow: Slow
@@ -82,132 +99,136 @@ branch:
       very_fast: Very fast
     range:
       no_limit: No limit
-      main: '同#施放武器 '
+      main: 'Same as #[施放武器]'
+      magic_device: 'Same as magic device #[施放武器]'
+      katana: 'Same as katana #[施放武器]'
+      knuckle: 'Same as knuckle #[施放武器]'
   damage:
     base-name: Damage
     base:
-      atk: ATK
-      matk: MATK
+      atk: Effective ATK
+      matk: Effective MATK
       '@custom':
-        default: 有效攻擊力
-        both: ATK/MATK
-        dual_sword: Combined dual sword ATK
+        default: Effective attack power
+        both: Effective ATK / Effective MATK
+        dual_sword: Effective Dual sword ATK
     damage_type:
-      physical: Physical
-      magic: Magic
+      physical: Physical damage
+      magic: Magic damage
     type:
       AOE: AOE
     title:
-      normal_attack: 一般攻擊的傷害提升
-    ailment-caption: 有{chance}機率使目標陷入{name}。
+      normal_attack: Normal attack damage increased
+    ailment-caption: There is a {chance} chance of causing the target to fall into {name}.
     effective_area:
-      circle: 圓形
-      line: 直線
-      sector: 扇形
+      circle: Circle
+      line: Straight line
+      sector: Sector
     start_position_offsets:
-      positive: 自身前方{value}m處
-      negative: 自身後方{value}m處
+      positive: Start {value}m in front of itself
+      negative: Start {value}m behind itself
     end_position_offsets:
-      positive: 目標後方{value}m處
-      negative: 目標前方{value}m處
+      positive: Ended {value}m behind target
+      negative: Ended {value}m in front of target
     element:
-      neutral: 無屬性
-      fire: 火屬性
-      water: 水屬性
-      earth: 地屬性
-      wind: 風屬性
-      light: 光屬性
-      dark: 暗屬性
-      one_hand_sword: 單手劍屬性
-      arrow: 箭矢屬性
+      neutral: Neutral
+      fire: Fire element
+      water: Water element
+      earth: Earth element
+      wind: Wind element
+      light: Light element
+      dark: Dark element
+      one_hand_sword: One-Handed Sword element
+      arrow: Arrow element
+      against: Stronger against element
+    dual_element:
+      one_hand_sword: One-Handed Sword
+      arrow: Arrow
+      magic_device: Magic Device
     judgment:
-      common: 每下傷害共用判定
-      separate: 每下傷害分開判定
+      common: Common damage calculation for each hit
+      separate: Separate damage calculation for each hit
     frequency_judgment:
-      single: 限傷時視為單次傷害
-      multiple: 限傷時視為多段傷害
+      single: Treated as single damage when limiting damage
+      multiple: Treated as multiple damage when limiting damage
     unsheathe_damage:
-      'true': 受拔刀傷害影響
-      'false': 不受拔刀傷害影響
-      none: 未確認是否受拔刀傷害影響
+      'true': Unsheathe attack
+      'false': Unsheathe attack
+      none: Unconfirmed whether affected by Unsheathe attack
     range_damage:
-      'true': 受距離威力影響
-      'false': 不受距離威力影響
-      none: 未確認是否受距離威力影響
+      'true': Range damage
+      'false': Range damage
+      long: Always affected by long-range damage
+      short: Always affected by short-range damage
+      both: Take the highest value between long-range and short-range damage
+      none: Unconfirmed whether affected by range damage
     is_place:
-      'true': 設置型技能
+      'true': Skill setting
+    combo_rate:
+      'false': Combo power
     '@custom-base-caption':
-      both: 根據((!角色的ATK及MATK的高低))。ATK比MATK高時，取((!有效ATK))；MATK比ATK高時，取((!有效MATK))。
-      dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。
-    'effective_area: title': 類型
-    'radius: title': 傷害半徑
-    'move_distance: title': 移動距離
-    'angle: title': 作用角度
-    'start_position_offsets: title': 起點位置
-    'end_position_offsets: title': 終點位置
-    duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害。
-    frequency-caption: 總傷害拆成{freqnency}次
-  'damage: proration':
-    'damage: title': 傷害慣性
-    'proration: title': 造成慣性
-    damage:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不受慣性影響
-    proration:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不造成慣性
+      both: According to ![角色的ATK及MATK的高低]. When ATK is higher than MATK，use ![有效ATK]；When MATK is higher than ATK，use ![有效MATK].
+      dual_sword: Dual swords have their own special effective ATK formula, please see#[双剑特性说明]。
+    'effective_area: title': Type
+    'radius: title': Damage radius
+    'move_distance: title': Moving distance
+    'angle: title': Angle of action
+    'start_position_offsets: title': Starting position
+    'end_position_offsets: title': End position
+    duration-caption-with-cycle: Last for {duration} seconds, and work once every {cycle} seconds
+    frequency-caption: The total damage is divided into {frequency} times
+  'damage: extra':
+    condition-default-value: This damage
   proration:
-    'damage: title': 傷害慣性
-    'proration: title': 造成慣性
+    'damage: title': Uses prorate
+    'proration: title': Deals prorate
     damage:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不受慣性影響
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal attack
+      none: Not affected by prorate
     proration:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不造成慣性
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal attack
+      none: Do not cause prorate
   stack:
-    base-name: 技能層數
+    base-name: Skill level
   effect:
-    base-name: 技能效果
+    base-name: Skill effect
     condition:
-      auto: 施放成功後
-      hit: 命中成功後
-      '@next': 下一招技能
+      auto: After successful casting
+      hit: After successful hit
+      '@next': Next skill
     type:
-      self: 自身增益
-      party: 全隊伍增益
-      aura: 光環
-      circle: 領域
-      target: 單體增益
+      self: Self buff
+      party: Party buff
+      aura: Aura
+      circle: Circle
+      target: Single target
     is_place:
-      'true': 設置型技能
+      'true': Skill setting
     effective_area:
-      circle: 圓形
-    'effective_area: title': 類型
-    'radius: title': 作用半徑
-    'angle: title': 作用角度
+      circle: Circle
+    'effective_area: title': Type
+    'radius: title': Radius
+    'angle: title': Angle
+  next:
+    condition-default-value: Next skill
   passive:
-    base-name: 被動效果
+    base-name: Passive effect
   global:
-    times: 次
+    times: times
   heal:
-    base-name: 恢復效果
+    base-name: Healing effect
     type:
-      hp: 恢復HP
-      mp: 恢復MP
-    duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒作用一次。
-    constant-prefix: 固定值
+      hp: Restore HP
+      mp: Restore MP
+    duration-caption-with-cycle: Lasts for {duration} seconds，and work once every {cycle} seconds
+    constant-prefix: Constant
     effective_area:
-      circle: 圓形
-    'effective_area: title': 類型
-    'radius: title': 作用半徑
+      circle: Circle
+    'effective_area: title': Type
+    'radius: title': Radius
   reference:
-    base-title: 參考連結
+    base-title: Reference

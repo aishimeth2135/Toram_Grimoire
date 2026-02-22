@@ -3,7 +3,7 @@ Equipment:
     main-weapon: Main Weapon
     sub-weapon: Sub Weapon
     sub-armor: Sub Armor(Shield)
-    body-armor: Body Armor
+    body-armor: Armor
     additional: Additional Equipment
     special: Special Equipment
     avatar: Avatar
@@ -25,6 +25,9 @@ Equipment:
     body-normal: Normal Armor
     body-dodge: Light Armor
     body-defense: Heavy Armor
+    additional: Additional Equipment
+    special: Special Equipment
+    avatar: Avatar
     empty: Empty
   stat-restriction:
     event: Event
@@ -32,7 +35,7 @@ Equipment:
     two-hand-sword: Two-Handed Sword
     dual-sword: Dual Sword
     bow: Bow
-    bowgun: Bowgin
+    bowgun: Bowgun
     staff: Staff
     magic-device: Magic Device
     knuckle: Knuckle
@@ -64,12 +67,16 @@ Equipment:
     ex_skill: Ex SKill
 Stat:
   type-total: Total {text}
+Registlet:
+  title: Registlet
 auto-save:
   save-unknown-error-tips: An unknown error occurred while autosaving.
   load-unknown-error-tips: An unknown error occurred while autoloading.
 export-build:
-  save-unknown-error-tips: 產生檔案時發生未知的錯誤。
-  load-success-tips: 產生檔案時發生未知的錯誤。
-  load-unknown-error-tips: 讀取時發生未知的錯誤。
-  load-failed-tips: 解析檔案時發生錯誤，檔案內容的格式可能有誤。
-  load-wrong-file-type-tips: 讀取的檔案必須為文字（.txt）檔。
+  save-unknown-error-tips: An unknown error occurred while generating the file.
+  load-success-tips: File loaded successfully.
+  load-unknown-error-tips: An unknown error occurred while loading the file.
+  load-failed-tips: An error occurred while parsing the file. The file content may be in the wrong format.
+  load-wrong-file-type-tips: Wrong file type (expected .txt)
+tips:
+  view-unknown-error-tips: An unknown error occurred, please click the button below to try to restore the interface.

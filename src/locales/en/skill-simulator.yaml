@@ -1,6 +1,18 @@
 skill-level: Skill Level
-star-gem-level: 星石等級
+star-gem-level: Star Gem level
+skill-level-point: Skill point
+star-gem-level-point: Star Gem point
+star-gem-list: Star Gem list
 increase-level: Increase
 decrease-level: Decrease
-skill-build: Skill Build
-create-build: Add Build
+skill-build: Skill Configuration
+create-build: Add Configuration
+default-tips: No skill trees have been selected yet. Please click the button on the lower right to add skill tree 0.0
+remove-build-tips: Configuration removed successfully.
+export-image:
+  skill-point-sum-caption: Total {sum} skill points used.
+  star-gem-point-sum-caption: Star gems provide a total of {sum} skill points.
+  watermark: 布偶的魔法书 cy-grimoire.netlify.app
+  preview-ios-tips: When using this function to download images on the IOS system, some browsers do not support the "Profile Name" function, so when downloading images, the file extension may not be PNG. If you encounter this problem, please change the file name to "XXX.png" after downloading the image, and the image will be displayed normally.
+  title: Export pictures
+export-text-title: Export text

@@ -1,0 +1,14 @@
+display-mode:
+  title: Display mode
+  category: Category
+  obtain-levels: Obtain levels
+category:
+  stat: Stat
+  skill: Skill
+  special: Function
+detail:
+  obtain-levels: Obtain levels
+  obtain-levels-all: All levels
+  max-level: Max level
+  powder-cost: Required Gem Dust
+  registlet-level: Level

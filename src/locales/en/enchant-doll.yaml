@@ -19,10 +19,12 @@ equipment:
     auto-find-minimum: Automatically find the lowest potential requirement
   set-config:
     title: Click here for other settings
+    character-level-tips: The currently set character level is not the upper level limit for the current version. If you really plan to set a lower character level, you can ignore this reminder.
 select-positives:
   title: Select positive stats.(。-`ω´-)
   caption: Please select positive stats, at least one, up to 8 stats 0.0
   auto-fill: Automatically fill to the maximum value when selected
+  use-shorthand: Add new stats using abbreviations
 select-negatives:
   title: Select negative stats.ヘ(￣ω￣ヘ)
   caption: Please select negative stats, or you can also let the doll automatically select for you 0.0. Statting Doll will try to figure out the highest success rate set of negative stats.
@@ -47,10 +49,12 @@ select-negatives:
     - When the number of negative stats are insufficient, Statting doll may not be able to correctly calculate the set of negative stats with the highest success rate.
   auto-selected: Doll automatic selection
   manually-selected: Manual selection
+  contains-natural-mp-regen-constant: Includes "Natural MP Regen"
 result:
   title: Calculation results ~ (๑＞ω＜)☆
   caption: Calculation result is here 0.0. You can simply copy the results, or exportthe results to the Statting simulator for manual adjustment.
   current-potential-is: Current potential is
+  select-other-result: Select another calculation result
 tips:
   no-stat-selected: You have not chosen any stats...
   stats-reached-upper-limit: 8 stats have been already selected...

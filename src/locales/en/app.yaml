@@ -6,7 +6,10 @@ loading-message:
   Glossary: Loading Glossary List
   Enchant: Loading Statting Information
   DamageCalculation: Loading Damage Calculation
-  Food: Loading Food Buff information
+  Food: Loading Food Buff Information
+  Registlet: Loading Registlet Information
+  ItemsPotion: Loading Consumable Information
+  Quest: Loading Quest Information
   init: Initializing
   bottom-tips:
     '0': It will take extra time for loading the first time.  Please wait...
@@ -17,13 +20,46 @@ page-title:
   character-simulator: Character Simulator
   skill-simulator: Skill Simulator
   skill-query: Skill Info
-  item-query: Item Search
-  crystal-query: Xtal Search
+  item-query: Equipment Search
+  crystal-query: Crysta Search
+  registlet-query: Registlet Search
   damage-calculation: Damage Calculator
   enchant-simulator: Statting Simulator
   enchant-doll: Statting Calculator Doll
+  glossary-query: Glossary List
+  main-quest-calc: Main Quest Calculator
+  book-main: Article Template
+  book-preview: Article Template Preview
   home: Home
   about: About
+about:
+  author:
+    title: Author
+    sub-title: Dolls can be seen everywhere in the claw machine on the roadside.
+    toram-id: Toram ID
+    github-message: If you have time, you can go here and click it for me.
+  team:
+    title: Team
+    sub-title: Thanks to the entire production team 0.0
+    main: Main Members
+    skill-data: Skill Information Assistance
+    equipment-data: Equipment Information Assistance
+  sponsor:
+    title: Sponsor
+    sub-title: Thank you to everyone who is willing to sponsor~
+    group: Guild Sponsorship
+    personal: Personal Sponsorship
+  words:
+    title: Miscellaneous
+    sub-title: Just some irrelevant words w
+    contents: 
+      - If you need to contact the author, you can send a private message to Twitter. You can also send private messages in the game. 本人比较常在信天翁之巢出没。
+      - If you have any comments, questions or suspected bugs, please feel free to contact the author.
+      - If you are willing to assist in the testing, input or translation of the information, or if you are willing to sponsor (in-game resources), you are also welcome to contact the author.
+  partnership:
+    title: Partnership
+    join: Join
+  disclaimer: Toram Online is a game operated by {link}. This website is just a small place to share information.
 settings:
   title: Settings
   update:
@@ -46,7 +82,7 @@ settings:
     tips-1: The adjustable range is 120~200, default value is 160.
   primary-language:
     title: Language settings
-    caption: Language is automatically detected. You can change to another language below.
+    caption: Language is automatically detected. You can change to another language below (English, Traditional Chinese, Japanese, or Simplified Chinese).
     tips-1: After changing the language, the page needs to be refresh for the change to take effect.
     tips-2: Sections that have not been translated will still be displayed in other languages.
     lang-title:
@@ -65,7 +101,6 @@ settings:
     caption: Grimoire takes time to load data from the database. To improve experience, it use cache to store data locally, achieving almost zero loading time. However, there are cases where new data is updated on the database, while the browser is still using old data, which may cause the program to not work correctly. If that happens, click the button below to clear cache and update the newest data.
     tips-1: Under normal circumstances, there is no need to use this function in particular. This feature is only necessary when older database data would prevent the program from functioning properly.
     tips-2: After cache is cleared, data needs to be downloaded again the next time you enter the page. This may take a while, so please be patient.
-    tips-3: After clearing cache, please refresh the page.
     button-text: Clear cache
     success-tips: Cache cleared. Data will be re-downloaded the next time you enter the page.
   storage-backup:
@@ -82,21 +117,7 @@ settings:
     restriction-homepage: In order to avoid unexpected errors, this function can only be used on the home page.
 features:
   copy-to-clipboard-success-tips: Text copied to clipboard.
-  localStorage-inavailable-tips: The built-in storage feature is not available for this browser version.
   copy-url-to-clipboard-success-tips: URL copied to clipboard.
-about:
-  author:
-    sub-title: Doll.
-    title: Author
-    toram-id: Toram ID
-  team:
-    equipment-data: Equipment Datas
-    skill-data: Skill Datas
-    sub-title: Thanks to the entire production team 0.0
-  sponsor:
-    personal: Personal Sponsorship
-    sub-title: Thank you to everyone who is willing to sponsor~
-    group: Guild Sponsor
-  partnership:
-    title: Partnership
-    join: Join
+  localStorage-inavailable-tips: The built-in storage feature is not available for this browser version.
+notices:
+  enchant-refactor: Due to the update of the statting system, if you encounter an error, please go to "Settings" and "Clear cache". After the database is re-downloaded, the enchantment system can operate normally.

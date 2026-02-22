@@ -1,1 +1,77 @@
-build: Build
+build: Configuration
+create-custom-item: New
+result:
+  title: Calculation result
+  modes:
+    expected: Expected damage value
+    stability: Stability
+    stability-with-graze: Stability when Graze
+  modes-caption:
+    expected: The expected damage value calculated including critical hit rate, hit rate and stability.
+    stability: Displays the maximum and minimum numbers that may be played for damage. The maximum value is the maximum damage when a critical hit occurs, and the minimum value is the damage when there is no critical hit and the stability is the lowest.
+    stability-with-graze: Similar to stability, but the minimum value also considers the situation of Graze.
+calc-mode:
+  title: Calculation formula interface
+  caption: Here you can select the calculation formula presented in the interface. The selected formula will only affect the presentation of the interface, but will not affect the items that can be set and the calculation results.
+  modes:
+    common: Basic formula
+    critical: Formula for critical hit
+  modes-caption:
+    common: Basic damage formula. Suitable for most computing situations.
+    critical: The damage formula for a critical hit. It is mainly used to present "Two-Handed" in the calculation formula. The formula only simply shows the damage during a critical hit, and some items are outside the formula.
+compare:
+  title: Configuration comparison
+  caption: Here you can compare the current configuration with multiple other configurations.
+  select-build: Select configurations to compare
+  introduction: Please click the button above to select the configuration 0.0 you want to compare 0.0
+  at-least-two-builds-tips: You must have at least two configurations to use the comparison function 0.0
+tips:
+  at-least-one-build: Keep at least one configuration 0.0
+  removed-build-success: The「{name}」configuration was successfully removed.
+item-base-titles:
+  physical: Physical damage
+  magic: Magic damage
+  atk: ATK
+  matk: MATK
+  atk_rate: ATK rate
+  matk_rate: MATK rate
+  sub_atk: Sub ATK
+  sub_stability: Sub Stability
+  skill_level_two_handed: ((!双手合持)) Level
+  character_level: Character level
+  target_level: Target level
+  target_def: Target DEF
+  target_mdef: Target MDEF
+  physical_pierce: Physical pierce
+  magic_pierce: Magic pierce
+  skill_constant: Skill constant
+  unsheathe_attack_constant: Unsheathe Attack constant
+  other_constant: Other constant
+  skill_multiplier: Skill multiplier
+  critical_damage: Critical damage
+  critical_rate: Critical rate
+  target_critical_rate_resistance: Target critical rate resistance
+  target_critical_rate_resistance_total: Target's total critical hit rate resistance
+  magic_critical_rate_conversion_rate: Magic critical hit rate conversion rate
+  magic_critical_damage_conversion_rate: Magic critical damage conversion rate
+  short_range_damage: Short range damage
+  long_range_damage: Long range damage
+  unsheathe_attack_multiplier: Unsheathe Attack %
+  stronger_against_neutral: Stronger against neutral
+  stronger_against_fire: Stronger against fire
+  stronger_against_water: Stronger against water
+  stronger_against_earth: Stronger against earth
+  stronger_against_wind: Stronger against wind
+  stronger_against_light: Stronger against light
+  stronger_against_dark: Stronger against dark
+  target_physical_resistance: Target physical resistance
+  target_magic_resistance: Target magic resistance
+  proration: Proration
+  stability: Stability
+  target_dodge: Target dodge
+  accuracy: Accuracy
+  skill_real_mp_cost: Actual skill MP consumption
+  promised_accuracy_rate: Guaranteed hit rate
+  skill_level_long_range: ((!远程狙击)) level
+  combo_multiplier: Combo multiplier
+  other_multiplier: Other multiplier
