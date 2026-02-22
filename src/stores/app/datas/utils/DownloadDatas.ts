@@ -6,6 +6,8 @@ import { DataPath, DataPathIds, DataPathLang } from '@/shared/services/DataPath'
 
 type PathItem = DataPathIds | { path: DataPathIds; lang?: boolean }
 type CsvData = string[][]
+
+// [base data, current language data]
 type LangCsvData = [CsvData, CsvData | null, CsvData | null]
 
 export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {

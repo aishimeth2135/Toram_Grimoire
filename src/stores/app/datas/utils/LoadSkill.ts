@@ -88,10 +88,10 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
   let curSkillEffect: SkillEffectBase | void
   let curSkillBranch: SkillBranch | void
 
-  // Handle language data
   HandleLanguageData(datas, {
     [EFFECT_BRANCH_ATTRIBUTE_VALUE]: LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE,
   })
+
   const csvData = datas[0]
 
   const checkNull = <T extends number | string>(value: T, nullValue: T) => {

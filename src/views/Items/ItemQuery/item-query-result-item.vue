@@ -7,7 +7,7 @@
         @click="toggleDetailVisible"
       >
         <div class="flex w-full items-start">
-          <div class="flex w-48 shrink-0 items-center">
+          <div class="mr-2 flex w-48 shrink-0 leading-5">
             <cy-icon
               :icon="
                 !equipment.is(EquipmentKinds.Avatar)
@@ -15,12 +15,14 @@
                   : equipment.categoryIcon
               "
             />
-            <div class="ml-2">{{ equipment.name }}</div>
-            <cy-icon
-              v-if="firstObtain && firstObtain.isDrop"
-              icon="jam-box"
-              class="ml-2 text-orange-60"
-            />
+            <div class="ml-2">
+              {{ equipment.name }}
+              <cy-icon
+                v-if="firstObtain && firstObtain.isDrop"
+                icon="jam-box"
+                class="ml-2 text-orange-60"
+              />
+            </div>
           </div>
           <div
             v-if="
@@ -31,20 +33,13 @@
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <div class="flex items-center">
-                <cy-icon icon="mdi-sword" />
-                <div class="ml-0.5 text-primary-30">ATK</div>
-              </div>
+              <cy-icon icon="mdi-sword" />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
-              <span class="border-l border-blue-30 pl-2 text-blue-50">
-                {{ equipment.stability }}%
-              </span>
+              <div class="h-4 border-l border-gray-20"></div>
+              <span class="text-blue-50"> {{ equipment.stability }}% </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <div class="flex items-center">
-                <cy-icon icon="mdi:shield-outline" />
-                <div class="ml-0.5 text-primary-30">DEF</div>
-              </div>
+              <cy-icon icon="mdi:shield-outline" />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">

@@ -1,3 +1,4 @@
+import { HandleLanguageData } from '@/shared/services/Language'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
@@ -5,10 +6,10 @@ import ItemsSystem from '@/lib/Items'
 import { BagEquipment, BagItemRecipeMaterial } from '@/lib/Items/BagItem'
 import type { BagItemExtra, BagItemObtain, BagItemRecipe } from '@/lib/Items/BagItem'
 
-import type { CsvData } from './DownloadDatas'
+import type { LangCsvData } from './DownloadDatas'
 import { parseItemStatData } from './utils'
 
-export default function (root: ItemsSystem, csvData: CsvData): void {
+export default function (root: ItemsSystem, datas: LangCsvData): void {
   const NAME = 0,
     CATEGORY = 1,
     BASE_VALUE = 2,
@@ -36,7 +37,10 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
       身體裝備: 300,
       追加裝備: 400,
       特殊裝備: 500,
-    } as Record<string, number>
+    } as Record<string, number>,
+    LANG_DATA = {
+      NAME: 0,
+    }
 
   const processMaterails = (str: string) => {
     const materials: BagItemRecipeMaterial[] = []
@@ -51,6 +55,12 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
     })
     return materials
   }
+
+  HandleLanguageData(datas, {
+    [NAME]: LANG_DATA.NAME,
+  })
+
+  const csvData = datas[0]
 
   let currentEquipment: BagEquipment
   let currentObtain: BagItemObtain

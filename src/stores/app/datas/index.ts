@@ -116,9 +116,12 @@ export const useDatasStore = defineStore('app-datas', () => {
     switch (dataId) {
       case DataStoreIds.Items: {
         const itemSystem = initItemsInstance()
-        const datas = await DownloadDatas(DataPathIds.Equipment, DataPathIds.Crystal)
+        const datas = await DownloadDatas(
+          { path: DataPathIds.Equipment, lang: true },
+          DataPathIds.Crystal
+        )
         return async () => {
-          loadEquipments(itemSystem, datas[0][0])
+          loadEquipments(itemSystem, datas[0])
           loadCrystals(itemSystem, datas[1][0])
 
           await InitCrystalIcons()
