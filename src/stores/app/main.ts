@@ -3,7 +3,7 @@ import { computed, readonly, ref, shallowReactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { useLanguageStore } from './language'
+import { useLocaleStore } from './locale'
 
 const version = '5.1.9'
 
@@ -33,7 +33,7 @@ export const useMainStore = defineStore('app-main', () => {
     }
   }
 
-  const languageStore = useLanguageStore()
+  const languageStore = useLocaleStore()
 
   const updateTitle = (titleId: string | null = null) => {
     setTitleId(titleId)

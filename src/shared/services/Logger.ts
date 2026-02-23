@@ -59,6 +59,12 @@ class CommonLogger {
     console.log(...contents, ...datas)
   }
 
+  static track(data: unknown) {
+    console.log('==================')
+    console.log(data)
+    console.log('==================')
+  }
+
   static start(scope: string, desc: string, collapsed: boolean = true) {
     const handler = collapsed ? console.groupCollapsed : console.group
     const contents = CommonLogger._handleLoggerContent(scope, desc, 'info')
@@ -71,6 +77,10 @@ class CommonLogger {
       },
       warn: (...datas: any[]) => {
         console.warn(...datas)
+        return item
+      },
+      track: (data: unknown) => {
+        CommonLogger.track(data)
         return item
       },
       end: console.groupEnd as () => void,

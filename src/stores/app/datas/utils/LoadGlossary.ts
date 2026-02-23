@@ -1,46 +1,46 @@
-import { HandleLanguageData } from '@/shared/services/Language'
+import { getLanguageDataResult } from '@/shared/services/Locale'
 
 import GlossarySystem from '@/lib/Glossary'
 import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
 
-import { type LangCsvData } from './DownloadDatas'
+import { type LocaleCsvDatas } from './DownloadDatas'
+import { getCsvDataRowGetterHelper } from './utils'
 
-export default function loadGlossaryTagData(root: GlossarySystem, datas: LangCsvData) {
-  const // TAG_NAME = 0,
-    FRAME_NAME = 1,
-    // FRAME_VALUE = 2,
-    INDEX = {
-      TAG_NAME: 0,
-      FRAME_NAME: 1,
-      FRAME_VALUE: 2,
-    },
-    LANG_DATA = {
-      TAG_NAME: 0,
-      FRAME_VALUE: 1,
-    }
-
-  HandleLanguageData(datas, {
-    [INDEX.TAG_NAME]: LANG_DATA.TAG_NAME,
-    [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
+export function LoadGlossaryTag(root: GlossarySystem, datas: LocaleCsvDatas) {
+  const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
+    'tag/name': 0,
+    'frame/name': 1,
+    'frame/value': 2,
   })
-  const data = datas[0]
+
+  const data = getLanguageDataResult(
+    datas,
+    createLocaleMapping({
+      'tag/name': 0,
+      'frame/value': 1,
+    })
+  )
+
   let curTag: GlossaryTag
   let curRow: GlossaryTagRow
-  data.forEach((row, idx) => {
+  data.forEach((rowData, idx) => {
     if (idx === 0) {
       return
     }
+
+    const { row } = createRowGetter(rowData)
+
     try {
-      const name = row[INDEX.TAG_NAME]
-      if (name !== '') {
-        curTag = root.appendTag(name)
+      const tagName = row('tag/name')
+      if (tagName !== '') {
+        curTag = root.appendTag(tagName)
       }
-      const fn = row[FRAME_NAME],
-        fv = row[INDEX.FRAME_VALUE]
-      if (fn !== '') {
-        curRow = curTag.appendRow(fn, fv)
+      const frameName = row('frame/name'),
+        frameValue = row('frame/value')
+      if (frameName !== '') {
+        curRow = curTag.appendRow(frameName, frameValue)
       } else {
-        curRow?.appendValue(fv)
+        curRow?.appendValue(frameValue)
       }
     } catch (err) {
       console.warn('[LoadTag] unknown error')

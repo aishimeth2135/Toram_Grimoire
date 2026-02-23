@@ -10,12 +10,6 @@ import { toInt } from '@/shared/utils/number'
 import { I18nStore } from './I18nStore'
 import { LocaleGlobalNamespaces, type LocaleNamespaces, LocaleViewNamespaces } from './enums'
 
-interface LangData {
-  [key: string]: LangData | string
-}
-
-type LangInjectData = Record<string, LangData | (() => LangData)>
-
 export const DEFAULT_LOCALE = 'zh-TW'
 const LOCALE_LIST = ['en', 'zh-TW', 'ja', 'zh-CN']
 const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
@@ -24,7 +18,7 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
   LocaleGlobalNamespaces.Global,
 ]
 
-export const useLanguageStore = defineStore('app-language', () => {
+export const useLocaleStore = defineStore('app-locale', () => {
   const primaryLang = ref(0)
   const secondaryLang = ref(0)
   const i18nMessageLoaded = ref(false)
@@ -51,7 +45,7 @@ export const useLanguageStore = defineStore('app-language', () => {
       'ja': 2,
       'zh-cn': 3,
     }
-    primaryLang.value = list[lang as string] ?? 0
+    primaryLang.value = list[lang] ?? 0
   }
 
   const initLocale = () => {
@@ -159,5 +153,3 @@ export const useLanguageStore = defineStore('app-language', () => {
     updateLocaleGlobalMessages,
   }
 })
-
-export type { LangInjectData }

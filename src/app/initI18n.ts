@@ -1,10 +1,10 @@
 import type { App } from 'vue'
 import { createI18n } from 'vue-i18n'
 
-import { DEFAULT_LOCALE, useLanguageStore } from '@/stores/app/language'
+import { DEFAULT_LOCALE, useLocaleStore } from '@/stores/app/locale'
 
 export default function (app: App<Element>) {
-  const languageStore = useLanguageStore()
+  const languageStore = useLocaleStore()
   languageStore.initLocale()
   const primaryLocale = languageStore.primaryLocale
   const fallbackLocales = [languageStore.fallbackLocale]

@@ -1,48 +1,56 @@
-import { HandleLanguageData } from '@/shared/services/Language'
+import { getLanguageDataResult } from '@/shared/services/Locale'
 import { toInt } from '@/shared/utils/number'
 
 import CharacterSystem from '@/lib/Character'
 
-import type { LangCsvData } from './DownloadDatas'
+import type { LocaleCsvDatas } from './DownloadDatas'
+import { getCsvDataRowGetterHelper } from './utils'
 
-export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
-  const BASE_NAME = 0,
-    CAPTION = 1,
-    CONSTANT_FORMULA = 2,
-    HAS_MULTIPLIER = 3,
-    ORDER = 4,
-    HIDDEN = 5,
-    LANG_DATA = {
-      CAPTION: 0,
-      CONSTANT_FORMULA: 1,
-    }
-
-  const csvData = datas[0]
-
-  HandleLanguageData(datas, {
-    [CAPTION]: LANG_DATA.CAPTION,
-    [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA,
+export function LoadStats(characterSystem: CharacterSystem, datas: LocaleCsvDatas) {
+  const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
+    'base-name': 0,
+    'caption': 1,
+    'constant-formula': 2,
+    'has-multiplier': 3,
+    'order': 4,
+    'hidden': 5,
   })
 
-  csvData.forEach((row, index) => {
-    if (index === 0 || characterSystem.findStatBase(row[BASE_NAME])) {
+  const csvData = getLanguageDataResult(
+    datas,
+    createLocaleMapping({
+      'caption': 0,
+      'constant-formula': 1,
+    })
+  )
+
+  csvData.forEach((rowData, index) => {
+    if (index === 0) {
       return
     }
-    if (row[BASE_NAME] === '') {
+
+    const { row } = createRowGetter(rowData)
+
+    // Duplicate check
+    if (characterSystem.findStatBase(row('base-name'))) {
+      return
+    }
+
+    if (row('base-name') === '') {
       return
     }
     try {
       const stat = characterSystem.appendStatBase(
-        row[BASE_NAME],
-        row[CAPTION],
-        row[HAS_MULTIPLIER] !== '無',
-        toInt(row[ORDER]) ?? 999
+        row('base-name'),
+        row('caption'),
+        row('has-multiplier') !== '無',
+        toInt(row('order')) ?? 999
       )
-      if (row[CONSTANT_FORMULA]) {
-        stat.constantDisplayFormat = row[CONSTANT_FORMULA]
+      if (row('constant-formula')) {
+        stat.constantDisplayFormat = row('constant-formula')
       }
-      stat.hidden = row[HIDDEN] === '1'
-      stat.devOnly = row[HIDDEN] === 'dev'
+      stat.hidden = row('hidden') === '1'
+      stat.devOnly = row('hidden') === 'dev'
     } catch (err) {
       console.warn('[LoadStats] unknown error')
       console.error(err)

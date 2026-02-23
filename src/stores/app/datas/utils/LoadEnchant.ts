@@ -9,28 +9,38 @@ import {
 } from '@/lib/Enchant/Enchant'
 
 import type { CsvData } from './DownloadDatas'
+import { getCsvDataRowGetterHelper } from './utils'
 
-export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
-  const STAT_ID = 0,
-    CONDITION = 1,
-    CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
-    POTENTIAL_CONSTANT = 2,
-    LIMIT_CONSTANT = 3,
-    EXTRA_LIMIT_CONSTANT = 4,
-    POTENTIAL_MULTIPLIER = 5,
-    LIMIT_MULTIPLIER = 6,
-    EXTRA_LIMIT_MULTIPLIER = 7,
-    UNIT_VALUE_CONSTANT = 8,
-    UNIT_VALUE_MULTIPLIER = 9,
-    MATERIAL_POINT_TYPE = 10,
-    MATERIAL_POINT_TYPE_LIST = ['金屬', '獸品', '木材', '布料', '藥品', '魔素'],
-    MATERIAL_POINT_VALUE_CONSTANT = 11,
-    MATERIAL_POINT_VALUE_MULTIPLIER = 12,
-    POTENTIAL_CONVERT_THRESHOLD_CONSTANT = 13,
-    POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER = 14,
-    CHECK = 1,
-    CATEGORY_TITLE = 2,
-    CATEGORY_EXTRA = 3
+export function LoadEnchant(root: EnchantSystem, csvData: CsvData) {
+  const { createRowGetter } = getCsvDataRowGetterHelper({
+    'stat-id': 0,
+    'condition': 1,
+
+    'potential/constant': 2,
+    'limit/constant': 3,
+    'extra-limit/constant': 4,
+    'potential/multiplier': 5,
+    'limit/multiplier': 6,
+    'extra-limit/multiplier': 7,
+
+    'unit-value/constant': 8,
+    'unit-value/multiplier': 9,
+
+    'material-point/type': 10,
+    'material-point/value/constant': 11,
+    'material-point/value/multiplier': 12,
+
+    'potential-convert-threshold/constant': 13,
+    'potential-convert-threshold/multiplier': 14,
+
+    // For category rows
+    'row-type-check': 1,
+    'category/title': 2,
+    'category/extra': 3,
+  })
+
+  const CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
+    MATERIAL_POINT_TYPE_LIST = ['金屬', '獸品', '木材', '布料', '藥品', '魔素']
 
   const handleItemValue = (value: string) => (value !== '' ? parseFloat(value) : null)
 
@@ -61,31 +71,36 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     return [v1, v2]
   }
 
-  const processItemProps = (targetRow: string[]): [number, number] => {
+  const getPotentialParam = (
+    rowGetter: ReturnType<typeof createRowGetter>['row']
+  ): [number, number] => {
     return [
-      handleItemValue(targetRow[POTENTIAL_CONSTANT]) as number,
-      handleItemValue(targetRow[POTENTIAL_MULTIPLIER]) as number,
+      handleItemValue(rowGetter('potential/constant')) as number,
+      handleItemValue(rowGetter('potential/multiplier')) as number,
     ]
   }
 
   let currentCategory: EnchantCategory, currentItem: EnchantItem
-  csvData.forEach((row, idx) => {
+  csvData.forEach((rowData, idx) => {
     if (idx === 0) {
       return
     }
-    if (row[STAT_ID] === '') {
-      const check = row[CHECK]
-      if (check === '') {
+
+    const { row } = createRowGetter(rowData)
+
+    if (row('stat-id') === '') {
+      const rowTypeCheck = row('row-type-check')
+      if (rowTypeCheck === '') {
         return
       }
-      if (check === '0') {
-        currentCategory = root.appendCategory(row[CATEGORY_TITLE])
-        if (row[CATEGORY_EXTRA] === 'weapon-only') {
+      if (rowTypeCheck === '0') {
+        currentCategory = root.appendCategory(row('category/title'))
+        if (row('category/extra') === 'weapon-only') {
           currentCategory.setWeaponOnly()
         }
         return
       }
-      const conditionId = CONDITION_LIST.indexOf(row[CONDITION])
+      const conditionId = CONDITION_LIST.indexOf(row('condition'))
       if (conditionId !== -1) {
         const cond = [
           EnchantItemConditions.MainWeapon,
@@ -93,33 +108,33 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
           EnchantItemConditions.OriginalElement,
         ][conditionId]
         currentItem.appendConditionalProps(cond, {
-          potential: processItemProps(row),
+          potential: getPotentialParam(row),
         })
       }
     } else {
       currentItem = currentCategory.appendItem({
-        baseId: row[STAT_ID],
-        limit: [handleLimit(row[LIMIT_CONSTANT]), handleLimit(row[LIMIT_MULTIPLIER])],
+        baseId: row('stat-id'),
+        limit: [handleLimit(row('limit/constant')), handleLimit(row('limit/multiplier'))],
         extraLimit: [
-          handleExtraLimit(row[EXTRA_LIMIT_CONSTANT]),
-          handleExtraLimit(row[EXTRA_LIMIT_MULTIPLIER]),
+          handleExtraLimit(row('extra-limit/constant')),
+          handleExtraLimit(row('extra-limit/multiplier')),
         ],
         unitValue: [
-          handleUnitValue(row[UNIT_VALUE_CONSTANT]),
-          handleUnitValue(row[UNIT_VALUE_MULTIPLIER]),
+          handleUnitValue(row('unit-value/constant')),
+          handleUnitValue(row('unit-value/multiplier')),
         ],
         materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(
-          row[MATERIAL_POINT_TYPE]
+          row('material-point/type')
         ) as MaterialPointTypeRange,
         materialPointValue: [
-          handleItemValue(row[MATERIAL_POINT_VALUE_CONSTANT]),
-          handleItemValue(row[MATERIAL_POINT_VALUE_MULTIPLIER]),
+          handleItemValue(row('material-point/value/constant')),
+          handleItemValue(row('material-point/value/multiplier')),
         ],
         potentialConvertThreshold: [
-          handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_CONSTANT]),
-          handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]),
+          handleItemValue(row('potential-convert-threshold/constant')),
+          handleItemValue(row('potential-convert-threshold/multiplier')),
         ],
-        potential: processItemProps(row),
+        potential: getPotentialParam(row),
       })
     }
   })

@@ -7,63 +7,70 @@ import {
   CharacterStatFormula,
 } from '@/lib/Character/Character'
 
-import type { LangCsvData } from './DownloadDatas'
+import type { LocaleCsvDatas } from './DownloadDatas'
+import { getCsvDataRowGetterHelper } from './utils'
 
-export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
-  const ID = 0,
-    NAME = 1,
-    DISPLAY_FORMULA = 2,
-    LINK = 3,
-    FORMULA = 5,
-    LIMIT = 6,
-    HIDDEN_OPTION = 7,
-    CAPTION = 8,
-    CONDITIONAL = 3,
-    CONDITIONAL_OPTIONS = 4,
-    CONDITION_VALUE = 5,
-    CONFIRM_CATEGORY = '0',
-    CATEGORY_NAME = 1
+export function LoadCharacterStats(characterSystem: CharacterSystem, datas: LocaleCsvDatas) {
+  const { createRowGetter } = getCsvDataRowGetterHelper({
+    'id': 0,
+    'name': 1,
+    'display-formula': 2,
+    'link': 3,
+    'formula': 5,
+    'limit': 6,
+    'hidden-option': 7,
+    'caption': 8,
 
-  const handleHiddenOption = (value: string) =>
+    'conditional/base': 3,
+    'conditional/options': 4,
+    'conditional/value': 5,
+
+    // 'category/id': 0,
+    'category/name': 1,
+  })
+
+  // Used to check if the row is category
+  const CATEGORY_CHECKING_ID = '0'
+
+  const getHiddenOptionIndex = (value: string) =>
     ['永久', '變數值為0時', '計算結果為0時'].indexOf(value)
 
-  const csvData = datas[0]
+  const csvData = datas.baseData
 
   let curCategory: CharacterStatCategory
   let curStat: CharacterStat
   let curFormula: CharacterStatFormula
-  csvData.forEach((row, index) => {
-    if (index === 0) {
-      return
-    }
-    if (row.every(col => col === '')) {
+  csvData.forEach((rowData, index) => {
+    if (index === 0 || rowData.every(col => col === '')) {
       return
     }
 
-    const id = row[ID]
-    if (id === CONFIRM_CATEGORY) {
-      curCategory = characterSystem.appendCharacterStatCategory(row[CATEGORY_NAME])
+    const { row } = createRowGetter(rowData)
+
+    const id = row('id')
+    if (id === CATEGORY_CHECKING_ID) {
+      curCategory = characterSystem.appendCharacterStatCategory(row('category/name'))
     } else if (id === '') {
       curFormula.appendConditionValue(
-        row[CONDITIONAL],
-        row[CONDITION_VALUE],
-        row[CONDITIONAL_OPTIONS]
+        row('conditional/base'),
+        row('conditional/value'),
+        row('conditional/options')
       )
     } else {
-      const [minStr, maxStr] = row[LIMIT].split('~')
+      const [minStr, maxStr] = row('limit').split('~')
       const min = isNumberString(minStr) ? parseFloat(minStr) : null
       const max = isNumberString(maxStr) ? parseFloat(maxStr) : null
       curStat = curCategory.appendStat({
         id,
-        name: row[NAME],
-        displayFormula: row[DISPLAY_FORMULA],
-        link: row[LINK],
+        name: row('name'),
+        displayFormula: row('display-formula'),
+        link: row('link'),
         max,
         min,
-        caption: row[CAPTION],
-        hiddenOption: handleHiddenOption(row[HIDDEN_OPTION]),
+        caption: row('caption'),
+        hiddenOption: getHiddenOptionIndex(row('hidden-option')),
       })
-      curFormula = curStat.setFormula(row[FORMULA])
+      curFormula = curStat.setFormula(row('formula'))
     }
   })
 }

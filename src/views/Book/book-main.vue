@@ -28,7 +28,7 @@
 import { computed, ref, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { downloadCsv } from '@/stores/app/datas/utils/DownloadDatas'
+import { downloadCsvData } from '@/stores/app/datas/utils/DownloadDatas'
 
 import { copyToClipboard } from '@/shared/utils/Cyteria'
 
@@ -74,7 +74,7 @@ const checkQuery = async () => {
     if (typeof currentRoute.query.latest === 'string' && currentRoute.query.latest === '1') {
       url += '&cytime=' + Date.now()
     }
-    const datas = await downloadCsv(url)
+    const datas = await downloadCsvData(url)
     pages.value = parseBook(datas)
     loading.value = false
   }

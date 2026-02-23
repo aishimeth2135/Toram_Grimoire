@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
 import { DataStoreIds } from '../datas'
-import { useLanguageStore } from '../language'
-import { LocaleViewNamespaces } from '../language/enums'
+import { useLocaleStore } from '../locale'
+import { LocaleViewNamespaces } from '../locale/enums'
 import { InitItemStatus, InitializeStatus } from './enums'
 
 interface InitItem {
@@ -85,7 +85,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     initLocaleNamespaces.value.push(...namespaces)
   }
 
-  const languageStore = useLanguageStore()
+  const languageStore = useLocaleStore()
   const startInitLocale = async () => {
     status.value = InitializeStatus.LocaleLoading
     if (initLocaleNamespaces.value.length > 0) {

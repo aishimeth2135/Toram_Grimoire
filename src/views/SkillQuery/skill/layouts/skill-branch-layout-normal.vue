@@ -58,11 +58,11 @@
         </div>
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
-        <IconCircle icon="ic:outline-share-arrival-time" />
+        <IconCircle icon="fluent:fps-60-24-fillede" />
         <div class="pl-4 pr-2 pt-1">
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
-            <cy-icon class="ml-2 text-blue-30" icon="material-symbols:60fps-select-rounded-sm" />
+            <span class="ml-2 text-gray-30">60F/1s</span>
           </div>
           <div class="flex flex-wrap items-center">
             <div class="mr-5 flex flex-wrap items-center">

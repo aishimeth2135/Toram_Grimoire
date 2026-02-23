@@ -12,7 +12,7 @@ export default {
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { downloadCsv } from '@/stores/app/datas/utils/DownloadDatas'
+import { downloadCsvData } from '@/stores/app/datas/utils/DownloadDatas'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
@@ -26,7 +26,7 @@ const currentUrl = computed(() => {
 })
 
 watch(currentUrl, value => {
-  const data = downloadCsv(value)
+  const data = downloadCsvData(value)
   console.log(data)
 })
 </script>

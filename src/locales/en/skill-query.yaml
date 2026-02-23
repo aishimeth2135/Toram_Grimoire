@@ -1,76 +1,80 @@
 skill-info: Skill info
 historical-record: Change history
 select-skill: Choose skills
-close-select-skill: 關閉
-skill-level: 技能等級
-character-level: 角色等級
-search-tips: 點擊這裡來搜尋技能
-go-to-skill: 查看
+skill-level: Skill Level
+character-level: Character Level
+search-tips: Click here to search skills
+go-to-skill: View
 formula-display-mode:
-  title: 公式顯示模式
-  normal: 一般
-  original-formula: 顯示原始公式
-branch-added: 新增
-branch-removed: 移除
+  title: Display Mode of Formulas
+  normal: Normal
+  original-formula: Original Formula
+branch-added: Added
+branch-removed: Removed
 no-any-skill-effect-match-message:
-  - 目前選取的技能與裝備不相符。
-  - 請更改裝備類型或是選擇其他技能。
+  - The currently selected skill does not match the equipment.
+  - Please change the equipment type or select another skill.
 equipment:
-  no-select: 無選取
-  none: 通用
-  'main: title': 主手武器
-  'sub: title': 副手裝備
-  'body: title': 身體裝備
+  no-select: No selection
+  none: Universal
+  'main: title': Main Hand Weapon
+  'sub: title': Sub Weapon
+  'body: title': Body Equipment
 branch:
-  duration-caption: '持續{duration}秒'
-  ailment-title: 命中成功後
-  apply-element: 套用{element}。
-  unknown-variable: 未知參數
-  dual-element-title: 雙重屬性
-  current-effect-equipments-prefix: 目前
-  compared-effect-equipments-prefix: 比較
+  duration-caption: Lasts for {duration} seconds
+  ailment-title: After successful hit
+  apply-element: Applied {element}。
+  unknown-variable: Unknown variable
+  dual-element-title: Dual Element
+  current-effect-equipments-prefix: Current
+  compared-effect-equipments-prefix: Compared
   formula-replaced-text:
-    BSTR: 基礎STR
-    BINT: 基礎INT
-    BAGI: 基礎AGI
-    BVIT: 基礎VIT
-    BDEX: 基礎DEX
-    TEC: 基礎TEC
-    STR: 總STR
-    INT: 總INT
-    AGI: 總AGI
-    VIT: 總VIT
-    DEX: 總DEX
-    shield_refining: 盾精鍊值
-    dagger_atk: 小刀ATK
-    target_def: 目標DEF
-    target_level: 目標LV
-    guard_power: 阻檔力
+    BSTR: Base STR
+    BINT: Base INT
+    BAGI: Base AGI
+    BVIT: Base VIT
+    BDEX: Base DEX
+    TEC: TEC
+    STR: Total STR
+    INT: Total INT
+    AGI: Total AGI
+    VIT: Total VIT
+    DEX: Total DEX
+    shield_refining: Shield Refining
+    dagger_atk: Dagger ATK
+    target_def: Target DEF
+    target_level: Target Level
+    guard_power: Guard Power
   skill-area:
-    button-text: 查看技能範圍
-    'point: character': 角色
-    'point: target': 目標
+    button-text: Skill Area
+    'point: character': Character
+    'point: target': Target
+  action-frame:
+    title: Action Time Frames
+    title-base: Action time 100%
+    title-min: Action time 50%
   global-suffix:
     extra:
-      condition-default-value: 額外效果
+      condition-default-value: Additional
+      condition-next-default-value: Next skill
   basic:
     'mp_cost: title': MP cost
     'range: title': Cast range
-    'skill_type: title': Skill cast type
+    'skill_type: title': Cast type
     'in_combo: title': Combo
     'action_time: title': Motion
-    'casting_time: title': 詠唱時間
+    'casting_time: title': Casting
     mp_cost:
-      0: 無消耗
+      0: No cost
     skill_type:
       instant: Instant
       casting: Cast
       charging: Charge
       passive: Passive
-      extra: EX技能
+      extra: EX Skill
     in_combo:
-      '1': Yes
-      '0': No
+      '1': 'Yes'
+      '0': 'No'
       not_lead: Cannot be used as combo opener
     action_time:
       very_slow: Very slow
@@ -82,132 +86,132 @@ branch:
       very_fast: Very fast
     range:
       no_limit: No limit
-      main: '同#施放武器 '
+      main: 'Same as #[Weapon Used]'
   damage:
     base-name: Damage
     base:
       atk: ATK
       matk: MATK
       '@custom':
-        default: 有效攻擊力
+        default: Valid ATK/MATK
         both: ATK/MATK
         dual_sword: Combined dual sword ATK
     damage_type:
-      physical: Physical
-      magic: Magic
+      physical: Physical Damage
+      magic: Magic Damage
     type:
       AOE: AOE
     title:
-      normal_attack: 一般攻擊的傷害提升
-    ailment-caption: 有{chance}機率使目標陷入{name}。
+      normal_attack: Normal Attack Damage Boost
+    ailment-caption: Has a {chance} chance to inflict {name} on the target.
     effective_area:
-      circle: 圓形
-      line: 直線
-      sector: 扇形
+      circle: Circle
+      line: Line
+      sector: Sector
     start_position_offsets:
-      positive: 自身前方{value}m處
-      negative: 自身後方{value}m處
+      positive: '{value}m in front of self'
+      negative: '{value}m behind self'
     end_position_offsets:
-      positive: 目標後方{value}m處
-      negative: 目標前方{value}m處
+      positive: '{value}m behind target'
+      negative: '{value}m in front of target'
     element:
-      neutral: 無屬性
-      fire: 火屬性
-      water: 水屬性
-      earth: 地屬性
-      wind: 風屬性
-      light: 光屬性
-      dark: 暗屬性
-      one_hand_sword: 單手劍屬性
-      arrow: 箭矢屬性
+      neutral: Neutral
+      fire: Fire
+      water: Water
+      earth: Earth
+      wind: Wind
+      light: Light
+      dark: Dark
+      one_hand_sword: One-handed Sword Element
+      arrow: Arrow Element
     judgment:
-      common: 每下傷害共用判定
-      separate: 每下傷害分開判定
+      common: Common damage judgment
+      separate: Separate damage judgment
     frequency_judgment:
-      single: 限傷時視為單次傷害
-      multiple: 限傷時視為多段傷害
+      single: Single damage judgment
+      multiple: Multiple damage judgment
     unsheathe_damage:
-      'true': 受拔刀傷害影響
-      'false': 不受拔刀傷害影響
-      none: 未確認是否受拔刀傷害影響
+      'true': Affected by Unsheathe Damage
+      'false': Unaffected by Unsheathe Damage
+      none: Unknown affected/unaffected by Unsheathe Damage
     range_damage:
-      'true': 受距離威力影響
-      'false': 不受距離威力影響
-      none: 未確認是否受距離威力影響
+      'true': Affected by Range Damage
+      'false': Unaffected by Range Damage
+      none: Unknown affected/unaffected by Range Damage
     is_place:
-      'true': 設置型技能
+      'true': In-place skill
     '@custom-base-caption':
-      both: 根據((!角色的ATK及MATK的高低))。ATK比MATK高時，取((!有效ATK))；MATK比ATK高時，取((!有效MATK))。
-      dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。
-    'effective_area: title': 類型
-    'radius: title': 傷害半徑
-    'move_distance: title': 移動距離
-    'angle: title': 作用角度
-    'start_position_offsets: title': 起點位置
-    'end_position_offsets: title': 終點位置
-    duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害。
-    frequency-caption: 總傷害拆成{freqnency}次
+      both: Based on ![Character's ATK/MATK]. When ATK is higher than MATK, use ![Valid ATK]; when MATK is higher than ATK, use ![Valid MATK].
+      dual_sword: 'Dual swords have their own unique Valid ATK formula. Please see #[Dual Swords Characteristics Description] for details.'
+    'effective_area: title': Area type
+    'radius: title': Radius
+    'move_distance: title': Move Distance
+    'angle: title': Angle
+    'start_position_offsets: title': Start Position Offset
+    'end_position_offsets: title': End Position Offset
+    duration-caption-with-cycle: Lasts for {duration} seconds, and applies damage once every {cycle} seconds.
+    frequency-caption: Total damage is split into {frequency} times
   'damage: proration':
-    'damage: title': 傷害慣性
-    'proration: title': 造成慣性
+    'damage: title': Damage Proration
+    'proration: title': Inflicted Proration
     damage:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不受慣性影響
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal Attack
+      none: Not affected by proration
     proration:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不造成慣性
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal Attack
+      none: Does not inflict proration
+  'damage: extra':
+    condition-default-value: This damage
   proration:
-    'damage: title': 傷害慣性
-    'proration: title': 造成慣性
+    'damage: title': Damage Proration
+    'proration: title': Inflicted Proration
     damage:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不受慣性影響
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal Attack
+      none: Not affected by proration
     proration:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻擊
-      none: 不造成慣性
+      physical: Physical
+      magic: Magic
+      normal_attack: Normal Attack
+      none: Does not inflict proration
   stack:
-    base-name: 技能層數
+    base-name: Skill Stack
   effect:
-    base-name: 技能效果
+    base-name: Skill Effect
     condition:
-      auto: 施放成功後
-      hit: 命中成功後
-      '@next': 下一招技能
+      auto: After successful cast
+      hit: After successful hit
+      '@next': Next skill
     type:
-      self: 自身增益
-      party: 全隊伍增益
-      aura: 光環
-      circle: 領域
-      target: 單體增益
+      self: Self Buff
+      party: Party Buff
+      aura: Aura
+      circle: Circle Area
+      target: Single Target Buff
     is_place:
-      'true': 設置型技能
+      'true': In-place skill
     effective_area:
-      circle: 圓形
-    'effective_area: title': 類型
-    'radius: title': 作用半徑
-    'angle: title': 作用角度
+      circle: Circle
+    'effective_area: title': Area type
+    'radius: title': Radius
+    'angle: title': Angle
   passive:
-    base-name: 被動效果
-  global:
-    times: 次
+    base-name: Passive
   heal:
-    base-name: 恢復效果
+    base-name: Healing
     type:
-      hp: 恢復HP
-      mp: 恢復MP
-    duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒作用一次。
-    constant-prefix: 固定值
+      hp: Restore HP
+      mp: Restore MP
+    duration-caption-with-cycle: Lasts for {duration} seconds, and applies once every {cycle} seconds.
+    constant-prefix: Constant Amount
     effective_area:
-      circle: 圓形
-    'effective_area: title': 類型
-    'radius: title': 作用半徑
+      circle: Circle
+    'effective_area: title': Area type
+    'radius: title': Radius
   reference:
-    base-title: 參考連結
+    base-title: Reference Link

@@ -63,12 +63,12 @@
           icon="mdi:creation"
           :title="t('skill-query.branch.ailment-title')"
         >
-          <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
+          <i18n-t keypath="skill-query.branch.damage.ailment-caption" tag="span" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="container.result('ailment_chance')" />
             </template>
             <template #name>
-              <GlossaryTagPopover class="mr-2" :name="container.get('ailment_name')" />
+              <GlossaryTagPopover :name="container.get('ailment_name')" />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -78,12 +78,12 @@
           icon="mdi:creation"
           :title="sufContainer.get('condition')"
         >
-          <i18n-t keypath="skill-query.branch.damage.ailment-caption" scope="global">
+          <i18n-t keypath="skill-query.branch.damage.ailment-caption" tag="span" scope="global">
             <template #chance>
               <SkillBranchPropValue :result="sufContainer.result('ailment_chance')" />
             </template>
             <template #name>
-              <GlossaryTagPopover class="mr-2" :name="sufContainer.get('ailment_name')" />
+              <GlossaryTagPopover :name="sufContainer.get('ailment_name')" />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -138,7 +138,7 @@ const container = computed(() => DamageHandler(props.computing, branchItem.value
 const mainTitie = computed(() => {
   let res = container.value.get('damage_type')
   if (container.value.get('type')) {
-    res = container.value.get('type') + res
+    res = container.value.get('type') + ' ' + res
   }
   return res
 })

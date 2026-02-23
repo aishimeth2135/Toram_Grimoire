@@ -45,11 +45,7 @@
           <AppSettingsWarningText :text="t('app.settings.set-rem.tips-1')" />
         </template>
         <template #actions>
-          <cy-input-counter
-            v-model:value="appRem"
-            :title="t('app.settings.set-rem.rem-title')"
-            :range="[120, 200]"
-          />
+          <cy-button-radio-group v-model:value="appRem" :options="appRemOptions" />
         </template>
       </AppSettingsRow>
       <AppSettingsRow :title="t('app.settings.primary-language.title')">
@@ -157,6 +153,11 @@ defineOptions({
 const { t } = useI18n()
 const { currentRoute } = useRouter()
 const mainStore = useMainStore()
+
+const appRemOptions = [120, 140, 160, 180, 200].map(value => ({
+  text: value.toString(),
+  value,
+}))
 
 const primaryLanguageList = ['auto', '0', '1', '2', '3']
 const fallbackLanguageList = ['0', '1', '2', '3']

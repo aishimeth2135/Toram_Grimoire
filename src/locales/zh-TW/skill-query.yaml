@@ -1,7 +1,6 @@
 skill-info: 技能資訊
 historical-record: 歷史紀錄
 select-skill: 選擇技能
-close-select-skill: 關閉
 skill-level: 技能等級
 character-level: 角色等級
 registlet-level: 雷吉斯托環等級
@@ -25,8 +24,6 @@ equipment:
   'main: title': 主手武器
   'sub: title': 副手裝備
   'body: title': 身體裝備
-tag:
-  no-data-tips: 這個名詞還沒有說明(_ _)
 skill-buffs:
   mp_cost_half:
     title: MP消耗減半
@@ -78,7 +75,7 @@ branch:
     'action_time: title': 動作時間
     'casting_time: title': 詠唱時間
     mp_cost:
-      0: 無消耗
+      '0': 無消耗
     skill_type:
       instant: 瞬發
       casting: 須詠唱
@@ -217,8 +214,6 @@ branch:
     condition-default-value: 下一招技能
   passive:
     base-name: 被動效果
-  global:
-    times: 次
   heal:
     base-name: 恢復效果
     type:

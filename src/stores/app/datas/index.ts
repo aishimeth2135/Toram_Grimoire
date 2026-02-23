@@ -20,17 +20,17 @@ import SkillSystem from '@/lib/Skill'
 
 import { DatasStoreBase } from './DatasStoreBase'
 import { DataStoreIds } from './enums'
-import DownloadDatas from './utils/DownloadDatas'
-import loadCharacterStats from './utils/LoadCharacterStat'
-import loadCrystals from './utils/LoadCrystals'
-import loadEnchant from './utils/LoadEnchant'
-import loadEquipments from './utils/LoadEquipments'
-import loadGlossaryTagData from './utils/LoadGlossary'
-import LoadPotions from './utils/LoadPotions'
-import LoadQuests from './utils/LoadQuests'
-import loadRegistlet from './utils/LoadRegistlet'
-import { loadSkill, loadSkillMain } from './utils/LoadSkill'
-import loadStats from './utils/LoadStats'
+import { DownloadDatas } from './utils/DownloadDatas'
+import { LoadCharacterStats } from './utils/LoadCharacterStat'
+import { LoadCrystals } from './utils/LoadCrystals'
+import { LoadEnchant } from './utils/LoadEnchant'
+import { LoadEquipments } from './utils/LoadEquipments'
+import { LoadGlossaryTag } from './utils/LoadGlossary'
+import { LoadPotions } from './utils/LoadPotions'
+import { LoadQuests } from './utils/LoadQuests'
+import { LoadRegistlet } from './utils/LoadRegistlet'
+import { LoadSkill, LoadSkillMain } from './utils/LoadSkill'
+import { LoadStats } from './utils/LoadStats'
 
 export { DataStoreIds } from './enums'
 
@@ -51,6 +51,7 @@ export const useDatasStore = defineStore('app-datas', () => {
       waitLoadedTicks.value.get(id)!.push(resolve)
     })
   }
+
   const loadFinished = (id: DataStoreIds) => {
     loaded.value.set(id, true)
     waitLoadedTicks.value.get(id)?.forEach(ticks => ticks(true))
@@ -116,57 +117,56 @@ export const useDatasStore = defineStore('app-datas', () => {
     switch (dataId) {
       case DataStoreIds.Items: {
         const itemSystem = initItemsInstance()
-        const datas = await DownloadDatas(
+        const [equipmentData, crystalData] = await DownloadDatas(
           { path: DataPathIds.Equipment, lang: true },
           DataPathIds.Crystal
         )
         return async () => {
-          loadEquipments(itemSystem, datas[0])
-          loadCrystals(itemSystem, datas[1][0])
-
+          LoadEquipments(itemSystem, equipmentData)
+          LoadCrystals(itemSystem, crystalData.baseData)
           await InitCrystalIcons()
         }
       }
       case DataStoreIds.Stats: {
         const characterSystem = initCharacterInstance()
-        const datas = await DownloadDatas({
+        const [statsData] = await DownloadDatas({
           path: DataPathIds.Stats,
           lang: true,
         })
         return async () => {
-          loadStats(characterSystem, datas[0])
+          LoadStats(characterSystem, statsData)
           await InitEquipmentIcons()
         }
       }
       case DataStoreIds.CharacterStats: {
         const characterSystem = initCharacterInstance()
-        const datas = await DownloadDatas({
+        const [characterStatsData] = await DownloadDatas({
           path: DataPathIds.CharacterStats,
           lang: true,
         })
         return async () => {
-          loadCharacterStats(characterSystem, datas[0])
+          LoadCharacterStats(characterSystem, characterStatsData)
         }
       }
       case DataStoreIds.Glossary: {
         const glossarySystem = initGlossaryInstance()
-        const datas = await DownloadDatas({
+        const [glossaryData] = await DownloadDatas({
           path: DataPathIds.Glossary,
           lang: true,
         })
         return async () => {
-          loadGlossaryTagData(glossarySystem, datas[0])
+          LoadGlossaryTag(glossarySystem, glossaryData)
         }
       }
       case DataStoreIds.Skill: {
         const skillSystem = initSkillInstance()
-        const datas = await DownloadDatas(
+        const [skillData, skillMainData] = await DownloadDatas(
           { path: DataPathIds.Skill, lang: true },
           { path: DataPathIds.SkillMain, lang: true }
         )
         return async () => {
-          loadSkill(skillSystem, datas[0])
-          loadSkillMain(skillSystem, datas[1])
+          LoadSkill(skillSystem, skillData)
+          LoadSkillMain(skillSystem, skillMainData)
           const skillStore = useCharacterSkillStore()
           skillStore.initSkillRoot(skillSystem.skillRoot)
 
@@ -181,13 +181,13 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
       case DataStoreIds.Enchant: {
         const enchantSystem = initEnchantInstance()
-        const datas = await DownloadDatas(DataPathIds.Enchant)
-        if (!datas[0][0][0][4].startsWith('額外上限')) {
+        const [enchantData] = await DownloadDatas(DataPathIds.Enchant)
+        if (!enchantData.baseData[0][4].startsWith('額外上限')) {
           const { notify } = Notify()
           notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
         }
         return async () => {
-          loadEnchant(enchantSystem, datas[0][0])
+          LoadEnchant(enchantSystem, enchantData.baseData)
         }
       }
       case DataStoreIds.DamageCalculation: {
@@ -196,23 +196,23 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
       case DataStoreIds.Registlet: {
         const registSystem = initRegistletInstance()
-        const datas = await DownloadDatas(DataPathIds.Registlet)
+        const [registletData] = await DownloadDatas(DataPathIds.Registlet)
         return async () => {
-          loadRegistlet(registSystem, datas[0][0])
+          LoadRegistlet(registSystem, registletData.baseData)
         }
       }
       case DataStoreIds.ItemsPotion: {
         const itemsSystem = initItemsInstance()
-        const datas = await DownloadDatas(DataPathIds.Potion)
+        const [potionData] = await DownloadDatas(DataPathIds.Potion)
         return async () => {
-          LoadPotions(itemsSystem.potionsRoot, datas[0][0])
+          LoadPotions(itemsSystem.potionsRoot, potionData.baseData)
         }
       }
       case DataStoreIds.Quest: {
         const questSystem = initQuestInstance()
-        const mainQuestDatas = await DownloadDatas(DataPathIds.Quest)
+        const [mainQuestData] = await DownloadDatas(DataPathIds.Quest)
         return async () => {
-          LoadQuests(questSystem, mainQuestDatas[0][0])
+          LoadQuests(questSystem, mainQuestData.baseData)
         }
       }
     }

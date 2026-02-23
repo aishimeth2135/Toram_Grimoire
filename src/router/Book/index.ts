@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas'
-import { LocaleViewNamespaces } from '@/stores/app/language/enums'
+import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
 import { PrepareLocaleInit, ViewInit, ViewInitSlient } from '@/shared/services/ViewInit'
 

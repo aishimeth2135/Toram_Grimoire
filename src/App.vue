@@ -42,7 +42,7 @@
 import { onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useLanguageStore } from '@/stores/app/language'
+import { useLocaleStore } from '@/stores/app/locale'
 import { useMainStore } from '@/stores/app/main'
 
 import { debounce } from '@/shared/utils/function'
@@ -117,7 +117,7 @@ onMounted(() => {
   }
 })
 
-const languageStore = useLanguageStore()
+const languageStore = useLocaleStore()
 
 const mainStore = useMainStore()
 

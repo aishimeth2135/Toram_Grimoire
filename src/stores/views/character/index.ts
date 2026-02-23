@@ -304,7 +304,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       reset()
       createCharacter()
       closeAutoSave()
-      logger.addTitle('loadCharacterSimulator').start('Unexpected error occurs.').log(error).end()
+      logger.addTitle('loadCharacterSimulator').start('Unexpected error occurs.').track(error).end()
       throw error
     }
   }
@@ -323,7 +323,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       } as CharacterSimulatorSaveDataRoot
       window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, JSON.stringify(payload))
     } catch (err) {
-      logger.addTitle('saveCharacterSimulator').start('Unexpected error occurs.').log(err).end()
+      logger.addTitle('saveCharacterSimulator').start('Unexpected error occurs.').track(err).end()
       window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, originalData)
     }
   }

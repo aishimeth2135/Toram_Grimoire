@@ -16,20 +16,24 @@ import {
 import { Skill } from '@/lib/Skill/Skill'
 
 import type { CsvData } from './DownloadDatas'
+import { getCsvDataRowGetterHelper } from './utils'
 
-export default function (root: RegistletSystem, csvData: CsvData) {
-  const ID = 0,
-    NAME = 1,
-    OBTAIN_LEVELS = 2,
-    MAX_LEVEL = 3,
-    POWDER_COST = 4,
-    POWDER_COST_ADDITIONAL = 5,
-    LINK = 6,
-    ROW_TYPE = 7,
-    ROW_VALUE = 8,
-    CATEGORY = {
-      ID: 0,
-    }
+export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
+  const { createRowGetter } = getCsvDataRowGetterHelper({
+    'id': 0,
+    'name': 1,
+    'obtain-levels': 2,
+    'max-level': 3,
+    'powder-cost/base': 4,
+    'powder-cost/additional': 5,
+    'link': 6,
+    'type': 7,
+    'value': 8,
+
+    // category
+    'category/id': 0,
+  })
+
   const categoryIdList: string[] = [
     RegistletCategoryIds.Skill,
     RegistletCategoryIds.Special,
@@ -41,9 +45,11 @@ export default function (root: RegistletSystem, csvData: CsvData) {
   let currentItem: RegistletItemBase | null = null
   let idPrefix = ''
 
-  csvData.forEach(row => {
-    if (row[CATEGORY.ID] && row[CATEGORY.ID].startsWith('@')) {
-      const categoryId = row[CATEGORY.ID].slice(1)
+  csvData.forEach(rowData => {
+    const { row } = createRowGetter(rowData)
+
+    if (row('category/id') && row('category/id').startsWith('@')) {
+      const categoryId = row('category/id').slice(1)
       if (isCategoryId(categoryId)) {
         if (categoryId === RegistletCategoryIds.Skill) {
           currentCategory = root.skillCategory
@@ -60,23 +66,24 @@ export default function (root: RegistletSystem, csvData: CsvData) {
 
     const handleIntegerData = (data: string) => toInt(data) ?? 0
 
-    if (row[ID] && row[NAME]) {
-      const powderCost = handleIntegerData(row[POWDER_COST])
+    if (row('id') && row('name')) {
+      const powderCost = handleIntegerData(row('powder-cost/base'))
       const infos: RegistletInfos = {
-        id: row[ID],
-        name: row[NAME],
-        obtainLevels: row[OBTAIN_LEVELS].split(/\s*,\s*/)
+        id: row('id'),
+        name: row('name'),
+        obtainLevels: row('obtain-levels')
+          .split(/\s*,\s*/)
           .map(item => toInt(item))
           .filter(item => item !== null) as number[],
-        maxLevel: handleIntegerData(row[MAX_LEVEL]),
+        maxLevel: handleIntegerData(row('max-level')),
         powderCost,
-        powderCostAdditional: row[POWDER_COST_ADDITIONAL]
-          ? handleIntegerData(row[POWDER_COST_ADDITIONAL])
+        powderCostAdditional: row('powder-cost/additional')
+          ? handleIntegerData(row('powder-cost/additional'))
           : powderCost * 10,
       }
 
       if (currentCategory.id === RegistletCategoryIds.Stat) {
-        const statBase = Grimoire.Character.findStatBase(row[LINK])
+        const statBase = Grimoire.Character.findStatBase(row('link'))
         if (statBase) {
           const newItem = new RegistletItemBaseStat(
             currentCategory as RegistletCategory<RegistletItemBaseStat>,
@@ -87,7 +94,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
           currentItem = newItem
         }
       } else if (currentCategory.id === RegistletCategoryIds.Skill) {
-        const skills = splitComma(row[LINK])
+        const skills = splitComma(row('link'))
           .map(item => Grimoire.Skill.skillRoot.findSkillById(item))
           .filter(item => item) as Skill[]
         infos.id = `-${idPrefix}-${infos.id}`
@@ -106,8 +113,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
         currentCategory.appendItem(newItem)
         currentItem = newItem
       }
-    } else if (row[ID]) {
-      idPrefix = row[ID]
+    } else if (row('id')) {
+      idPrefix = row('id')
     }
 
     if (!currentItem) {
@@ -118,8 +125,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
     if (currentItem instanceof RegistletItemBaseStat) {
       defaultRowType = 'value'
     }
-    const rowType = row[ROW_TYPE] || defaultRowType
-    const itemRow = new RegistletItemRow(rowType, row[ROW_VALUE])
+    const rowType = row('type') || defaultRowType
+    const itemRow = new RegistletItemRow(rowType, row('value'))
     currentItem.rows.push(itemRow)
   })
 }

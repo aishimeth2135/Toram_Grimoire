@@ -2,11 +2,14 @@ loading-message:
   Stats: Loading Character's Stats List
   CharacterStats: Loading Character Simulator
   Items: Loading Item List
-  Skill: Loading Skill Information
+  Skill: Loading Skill List
   Glossary: Loading Glossary List
   Enchant: Loading Statting Information
   DamageCalculation: Loading Damage Calculation
-  Food: Loading Food Buff information
+  Food: Loading Food Buff List
+  Registlet: Loading Registlet List
+  ItemsPotion: Loading Potion List
+  Quest: Loading Quest List
   init: Initializing
   bottom-tips:
     '0': It will take extra time for loading the first time.  Please wait...

@@ -1,7 +1,6 @@
 skill-info: 技能资讯
 historical-record: 历史纪录
 select-skill: 选择技能
-close-select-skill: 关闭
 skill-level: 技能等级
 character-level: 角色等级
 registlet-level: 雷吉斯托环等级
@@ -25,8 +24,6 @@ equipment:
   'main: title': 主手武器
   'sub: title': 副手装备
   'body: title': 身体装备
-tag:
-  no-data-tips: 这个名词还没有说明(_ _)
 skill-buffs:
   mp_cost_half:
     title: MP消耗减半

@@ -1,5 +1,5 @@
 import { DatasStoreBase } from '@/stores/app/datas/DatasStoreBase'
-import { I18nStore } from '@/stores/app/language/I18nStore'
+import { I18nStore } from '@/stores/app/locale/I18nStore'
 
 const Grimoire = {
   get Character() {

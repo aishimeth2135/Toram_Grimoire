@@ -1,4 +1,4 @@
-import { HandleLanguageData } from '@/shared/services/Language'
+import { getLanguageDataResult } from '@/shared/services/Locale'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
@@ -6,43 +6,44 @@ import ItemsSystem from '@/lib/Items'
 import { BagEquipment, BagItemRecipeMaterial } from '@/lib/Items/BagItem'
 import type { BagItemExtra, BagItemObtain, BagItemRecipe } from '@/lib/Items/BagItem'
 
-import type { LangCsvData } from './DownloadDatas'
-import { parseItemStatData } from './utils'
+import type { LocaleCsvDatas } from './DownloadDatas'
+import { getCsvDataRowGetterHelper, parseStatValueData } from './utils'
 
-export default function (root: ItemsSystem, datas: LangCsvData): void {
-  const NAME = 0,
-    CATEGORY = 1,
-    BASE_VALUE = 2,
-    BASE_STABILITY = 3,
-    ATTRIBUTE_CATEGORY = 4,
-    ATTRIBUTE_NAME = 5,
-    ATTRIBUTE_VALUES = [6, 7],
-    CAPTION = 8,
-    CATEGORY_LIST = {
-      單手劍: 0,
-      雙手劍: 1,
-      弓: 2,
-      弩: 3,
-      法杖: 4,
+export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
+  const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
+    'name': 0,
+    'category': 1,
+    'base-value': 2,
+    'base-stability': 3,
+    'attr/category': 4,
+    'attr/name': 5,
+    'attr/value1': 6,
+    'attr/value2': 7,
+    'caption': 8,
+  })
 
-      魔導具: 5,
-      拳套: 6,
-      旋風槍: 7,
-      拔刀劍: 8,
+  const CATEGORY_LIST = {
+    單手劍: 0,
+    雙手劍: 1,
+    弓: 2,
+    弩: 3,
+    法杖: 4,
 
-      箭矢: 100,
-      小刀: 101,
-      忍術卷軸: 102,
-      盾牌: 200,
-      身體裝備: 300,
-      追加裝備: 400,
-      特殊裝備: 500,
-    } as Record<string, number>,
-    LANG_DATA = {
-      NAME: 0,
-    }
+    魔導具: 5,
+    拳套: 6,
+    旋風槍: 7,
+    拔刀劍: 8,
 
-  const processMaterails = (str: string) => {
+    箭矢: 100,
+    小刀: 101,
+    忍術卷軸: 102,
+    盾牌: 200,
+    身體裝備: 300,
+    追加裝備: 400,
+    特殊裝備: 500,
+  } as Record<string, number>
+
+  const handleMaterials = (str: string) => {
     const materials: BagItemRecipeMaterial[] = []
     const list = splitComma(str)
     list.forEach(item => {
@@ -56,38 +57,42 @@ export default function (root: ItemsSystem, datas: LangCsvData): void {
     return materials
   }
 
-  HandleLanguageData(datas, {
-    [NAME]: LANG_DATA.NAME,
-  })
-
-  const csvData = datas[0]
+  const csvData = getLanguageDataResult(
+    datas,
+    createLocaleMapping({
+      name: 0,
+    })
+  )
 
   let currentEquipment: BagEquipment
   let currentObtain: BagItemObtain
   let currentRecipe: BagItemRecipe
   let currentExtra: BagItemExtra
   let currentCategory: string = ''
-  csvData.forEach((row, index) => {
-    if (!row || index === 0 || row.every(col => col === '')) {
+  csvData.forEach((rowData, index) => {
+    if (index === 0 || rowData.every(col => col === '')) {
       return
     }
+
+    const { row } = createRowGetter(rowData)
+
     try {
-      if (row[NAME] !== '' && row[CATEGORY] !== '') {
-        const category = row[CATEGORY]
+      if (row('name') !== '' && row('category') !== '') {
+        const category = row('category')
         const type = CATEGORY_LIST[category] ?? -1
         currentEquipment = root.appendEquipment(
-          row[NAME],
+          row('name'),
           type,
-          toInt(row[BASE_VALUE]) ?? 0,
-          toInt(row[BASE_STABILITY]) ?? 0,
-          row[CAPTION]
+          toInt(row('base-value')) ?? 0,
+          toInt(row('base-stability')) ?? 0,
+          row('caption')
         )
         if (type === -1) {
-          currentEquipment.unknowCategory = row[CATEGORY]
+          currentEquipment.unknowCategory = row('category')
         }
       }
-      if (row[ATTRIBUTE_CATEGORY] !== '') {
-        currentCategory = row[ATTRIBUTE_CATEGORY]
+      if (row('attr/category') !== '') {
+        currentCategory = row('attr/category')
         switch (currentCategory) {
           case 'obtain':
             currentObtain = currentEquipment.appendObtain()
@@ -99,11 +104,12 @@ export default function (root: ItemsSystem, datas: LangCsvData): void {
             currentExtra = currentEquipment.setExtra()
         }
       }
-      const propName = row[ATTRIBUTE_NAME]
-      const propValue = row[ATTRIBUTE_VALUES[0]]
+
+      const propName = row('attr/name')
+      const propValue = row('attr/value1')
       if (currentCategory === 'stats') {
-        const { value, type } = parseItemStatData(row[ATTRIBUTE_VALUES[0]])
-        currentEquipment.appendStat(propName, value, type, row[ATTRIBUTE_VALUES[1]])
+        const { value, type } = parseStatValueData(row('attr/value1'))
+        currentEquipment.appendStat(propName, value, type, row('attr/value2'))
       } else if (currentCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof BagItemObtain] = propValue
@@ -117,7 +123,7 @@ export default function (root: ItemsSystem, datas: LangCsvData): void {
         if (keys.includes(propName as (typeof keys)[number])) {
           currentRecipe[propName as (typeof keys)[number]] = toInt(propValue) ?? 0
         } else if (propName === 'materials') {
-          currentRecipe.materials = processMaterails(propValue)
+          currentRecipe.materials = handleMaterials(propValue)
         }
       }
     } catch (error) {

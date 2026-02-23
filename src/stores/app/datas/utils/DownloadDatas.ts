@@ -1,25 +1,33 @@
 import Papa from 'papaparse'
 
-import { useLanguageStore } from '@/stores/app/language'
+import { useLocaleStore } from '@/stores/app/locale'
 
 import { DataPath, DataPathIds, DataPathLang } from '@/shared/services/DataPath'
+import { CommonLogger } from '@/shared/services/Logger'
 
 type PathItem = DataPathIds | { path: DataPathIds; lang?: boolean }
 type CsvData = string[][]
 
-// [base data, current language data]
-type LangCsvData = [CsvData, CsvData | null, CsvData | null]
+interface LocaleCsvDatas {
+  baseData: CsvData
+  primaryLocaleData: CsvData | null
+  secondaryLocaleData: CsvData | null
+}
 
-export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
+export async function DownloadDatas(...paths: PathItem[]): Promise<LocaleCsvDatas[]> {
   const isDataPathId = (value: any): value is DataPathIds => typeof value === 'number'
   const promises = paths.map(async pathItem => {
     if (isDataPathId(pathItem)) {
       pathItem = { path: pathItem }
     }
     const { path: pathId, lang = false } = pathItem
-    const results: LangCsvData = lang
-      ? await loadLangDatas(pathId)
-      : [await downloadCsv(DataPath(pathId)), null, null]
+    const results: LocaleCsvDatas = lang
+      ? await downloadLocaleCsvDatas(pathId)
+      : {
+          baseData: await downloadCsvData(DataPath(pathId)),
+          primaryLocaleData: null,
+          secondaryLocaleData: null,
+        }
     return results
   })
   const result = await Promise.all(promises)
@@ -27,7 +35,7 @@ export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
   return result
 }
 
-export async function downloadCsv(path: string): Promise<CsvData> {
+export async function downloadCsvData(path: string): Promise<CsvData> {
   if (path) {
     try {
       const res = await fetch(path)
@@ -35,8 +43,8 @@ export async function downloadCsv(path: string): Promise<CsvData> {
 
       return Papa.parse(csvstr).data as CsvData
     } catch (err) {
-      console.warn(`[DownloadData] load "${path}" failed. Try to use backup...`)
-      console.log(err)
+      CommonLogger.warn('downloadCsvData', `Load "${path}" failed. Try to use backup...`)
+      CommonLogger.track(err)
     }
 
     const orignalPath = path
@@ -51,7 +59,8 @@ export async function downloadCsv(path: string): Promise<CsvData> {
 
       return Papa.parse(csvstr).data as CsvData
     } catch (err) {
-      console.warn(`[DownloadData] load backup of "${path}" failed. path: ${orignalPath}`)
+      CommonLogger.warn('downloadCsvData', `Load backup of "${path}" failed. path: ${orignalPath}`)
+      CommonLogger.track(err)
       throw err
     }
   }
@@ -59,30 +68,35 @@ export async function downloadCsv(path: string): Promise<CsvData> {
 }
 
 const DEFAULT_LANG = 1
-async function loadLangDatas(pathId: DataPathIds): Promise<LangCsvData> {
-  const languageStore = useLanguageStore()
+async function downloadLocaleCsvDatas(pathId: DataPathIds): Promise<LocaleCsvDatas> {
+  const languageStore = useLocaleStore()
 
   const promises: Promise<CsvData>[] = []
   const current = languageStore.primaryLang,
     second = languageStore.secondaryLang
-  const datas: (CsvData | null)[] = Array(3)
+  const dataList: (CsvData | null)[] = Array(3)
 
-  promises.push(downloadCsv(DataPath(pathId)))
+  promises.push(downloadCsvData(DataPath(pathId)))
   if (current !== DEFAULT_LANG) {
     const path = DataPathLang(pathId)
     if (path[current] !== null) {
-      promises.push(downloadCsv(path[current] as string))
+      promises.push(downloadCsvData(path[current] as string))
     }
     if (current !== second && path[second] !== null) {
-      promises.push(downloadCsv(path[second] as string))
+      promises.push(downloadCsvData(path[second] as string))
     }
   }
 
   const results = await Promise.allSettled(promises)
   results.map((item, idx) => {
-    datas[idx] = item.status === 'fulfilled' ? item.value : null
+    dataList[idx] = item.status === 'fulfilled' ? item.value : null
   })
-  return datas as LangCsvData
+
+  return {
+    baseData: dataList[0] ?? [[]],
+    primaryLocaleData: dataList[1],
+    secondaryLocaleData: dataList[2],
+  } satisfies LocaleCsvDatas
 }
 
-export type { CsvData, LangCsvData }
+export type { CsvData, LocaleCsvDatas }

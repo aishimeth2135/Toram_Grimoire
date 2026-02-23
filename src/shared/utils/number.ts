@@ -5,8 +5,6 @@ export function numberToFixed(number: number, digits: number): number {
 
 /**
  * Get random integer between min and max. (include min, not include max)
- * @param min
- * @param max
  */
 export function getRandomInt(min: number, max: number): number {
   min = Math.ceil(min)
