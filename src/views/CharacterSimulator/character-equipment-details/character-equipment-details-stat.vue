@@ -15,8 +15,8 @@ defineProps<Props>()
         {{ text }}
       </span>
     </div>
-    <div class="flex items-center" :class="stat.value > 0 ? 'text-primary-90' : 'text-red-40'">
-      {{ `${stat.base.text}${!stat.isBoolStat ? stat.showValue() : ''}` }}
+    <div :class="stat.value > 0 ? 'text-primary-90' : 'text-red-40'">
+      {{ stat.show() }}
     </div>
   </div>
 </template>
