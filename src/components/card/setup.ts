@@ -5,6 +5,7 @@ import { defineState } from '@/shared/setup/State'
 
 interface CardRowContext {
   item: Ref<any>
+  disabled: Ref<boolean>
 }
 
 const useCardRowState = defineState(() => {
@@ -44,7 +45,7 @@ export function useCardRowContext(context: CardRowContext) {
 export function setupCardRowsDelegation() {
   const { getCardRowContext, CARD_ROW_ID_ATTR_NAME } = useCardRowState()
 
-  const findTargetRowItem = (el: HTMLElement) => {
+  const findTargetRowContext = (el: HTMLElement): CardRowContext | null => {
     if (!el.hasAttribute(CARD_ROW_ID_ATTR_NAME)) {
       el = el.closest(`div[${CARD_ROW_ID_ATTR_NAME}]`)!
     }
@@ -52,8 +53,8 @@ export function setupCardRowsDelegation() {
       return null
     }
     const rowId = getContextIdFromElement(el, CARD_ROW_ID_ATTR_NAME)
-    return getCardRowContext(rowId)!.item.value as any
+    return getCardRowContext(rowId)!
   }
 
-  return { findTargetRowItem }
+  return { findTargetRowContext }
 }

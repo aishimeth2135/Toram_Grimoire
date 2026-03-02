@@ -13,12 +13,11 @@ import {
 } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
 
-import CardRow from '@/components/card/card-row.vue'
 import CardRowsDelegation from '@/components/card/card-rows-delegation.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
-import ShowStat from '@/components/common/show-stat.vue'
 
 import CommonSearchInput from '../common/common-search-input.vue'
+import CharacterEquipmentDetailsSelectCrystalOption from './character-equipment-details-select-crystal-option.vue'
 
 interface Props {
   equipment: CharacterEquipment
@@ -48,6 +47,17 @@ const crystalCategorys = (() => {
   return categorys
 })()
 
+const crystalCategoryAllCrystalEnhancers = new Map<number, Set<string>>()
+crystalCategorys.forEach(category => {
+  const enhancers = new Set<string>()
+  category.crystals.forEach(crystal => {
+    if (crystal.enhancer) {
+      enhancers.add(crystal.enhancer)
+    }
+  })
+  crystalCategoryAllCrystalEnhancers.set(category.id, enhancers)
+})
+
 const availableCrystalCategoryIds = computed(() => {
   if (props.equipment instanceof MainWeapon) {
     return [0, 4]
@@ -64,29 +74,48 @@ const availableCrystalCategoryIds = computed(() => {
   return [4]
 })
 
+const selectedCrystalIds = computed(() => {
+  return props.equipment.crystals.map(crystal => crystal.id)
+})
+const checkCrystalSelected = (crystal: BagCrystal) => {
+  return selectedCrystalIds.value.includes(crystal.id)
+}
+
 interface CategoryItem {
   id: number
   title: string
   crystals: BagCrystal[]
 }
 
+const getCrystalCategoryTitle = (categoryId: number): string => {
+  switch (categoryId) {
+    case 0:
+      return t(`character-simulator.select-crystals.category-title.0`)
+    case 1:
+      return t(`character-simulator.select-crystals.category-title.1`)
+    case 2:
+      return t(`character-simulator.select-crystals.category-title.2`)
+    case 3:
+      return t(`character-simulator.select-crystals.category-title.3`)
+    case 4:
+      return t(`character-simulator.select-crystals.category-title.4`)
+    default:
+      return ''
+  }
+}
+
 const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
   return crystalCategorys
     .filter(category => availableCrystalCategoryIds.value.includes(category.id))
     .map(category => {
-      const text = searchText.value
-
-      const allCategoryCrystalEnhancers = new Set<string>()
-      category.crystals.forEach(crystal => {
-        if (crystal.enhancer) {
-          allCategoryCrystalEnhancers.add(crystal.enhancer)
-        }
-      })
+      const text = searchText.value.toLowerCase()
+      const categoryAllCrystalEnhancers = crystalCategoryAllCrystalEnhancers.get(category.id)!
 
       const crystals = category.crystals.filter(crystal => {
         if (
           onlyshowLastCrystal.value &&
-          (crystal.stats.length <= 1 || allCategoryCrystalEnhancers.has(crystal.name))
+          !checkCrystalSelected(crystal) &&
+          (crystal.stats.length <= 1 || categoryAllCrystalEnhancers.has(crystal.name))
         ) {
           return false
         }
@@ -101,22 +130,18 @@ const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
 
       return {
         id: category.id,
-        title: t(`character-simulator.select-crystals.category-title.${category.id}`),
+        title: getCrystalCategoryTitle(category.id),
         crystals,
       }
     })
     .filter(category => category.crystals.length !== 0)
 })
 
-const selectedCrystalIds = computed(() => {
-  return props.equipment.crystals.map(crystal => crystal.id)
-})
-
 const toggleCrystal = (crystal: BagCrystal | null) => {
   if (!crystal) {
     return
   }
-  if (selectedCrystalIds.value.includes(crystal.id)) {
+  if (checkCrystalSelected(crystal)) {
     props.equipment.removeCrystal(
       props.equipment.crystals.find(_crystal => _crystal.id === crystal.id)!
     )
@@ -129,52 +154,10 @@ const currentEquipmentRelatedCrystals = computed(() => {
   return props.equipment.crystals
     .map(crystal => {
       const data = crystal.origin.getRelatedCrystals(Grimoire.Items.crystals)
-      return [...data.enhancers, ...data.prependeds].map(item => item.name)
+      return [...data.enhancers, ...data.prependeds]
     })
     .flat()
 })
-
-const checkEnchaner = (crystal: BagCrystal) =>
-  !currentEquipmentRelatedCrystals.value.includes(crystal.name)
-
-const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
-  const crystal = attrs.option
-  const selected = selectedCrystalIds.value.includes(crystal.id)
-
-  return (
-    <CardRow
-      class={[
-        { 'opacity-50': !checkEnchaner(crystal) },
-        'flex cursor-pointer items-center px-4 py-2',
-      ]}
-      item={crystal}
-      hover
-    >
-      <div>
-        <div class="flex items-center">
-          <cy-icon
-            icon={selected ? 'ic:round-check-circle' : 'mdi:circle-outline'}
-            class={[{ 'opacity-50': !selected }, 'mr-3']}
-          />
-          <cy-icon icon={crystal.crystalIconPath} class="mr-1.5" />
-          {crystal.name}
-        </div>
-        {showCrystalStats.value ? (
-          <div class="mt-1 pl-8">
-            {crystal.stats.map(stat => (
-              <ShowStat
-                key={stat.statId}
-                stat={stat}
-                negative-value={stat.value < 0}
-                class="text-sm"
-              />
-            ))}
-          </div>
-        ) : null}
-      </div>
-    </CardRow>
-  )
-}
 </script>
 
 <template>
@@ -193,10 +176,10 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
           class="grow"
         />
         <cy-popover
-          class="flex items-center border-b border-l border-primary-5 bg-white px-2"
+          class="flex items-center border-b border-l border-primary-5 bg-white px-1.5"
           placement="bottom-end"
         >
-          <cy-button-icon icon="mdi-filter" />
+          <cy-button-icon icon="mdi-filter" :selected="onlyshowLastCrystal" />
           <template #popper>
             <div class="flex flex-col px-2 py-1">
               <cy-button-check
@@ -216,7 +199,14 @@ const RenderOption = (attrs: { option: BagCrystal; key: string }) => {
         <div v-for="category in currentCrystalCategorys" :key="category.id">
           <div class="pb-2 pl-3 text-sm text-stone-60">{{ category.title }}</div>
           <CardRowsDelegation @row-clicked="toggleCrystal">
-            <RenderOption v-for="option in category.crystals" :key="option.id" :option="option" />
+            <CharacterEquipmentDetailsSelectCrystalOption
+              v-for="option in category.crystals"
+              :key="option.id"
+              :crystal="option"
+              :equipment-related-crystals="currentEquipmentRelatedCrystals"
+              :selected="checkCrystalSelected(option)"
+              :show-crystal-stats="showCrystalStats"
+            />
           </CardRowsDelegation>
         </div>
       </div>

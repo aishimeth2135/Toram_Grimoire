@@ -17,6 +17,7 @@ interface Props {
   selected?: boolean
   hover?: boolean
   item?: any
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const context = {
   item: computed(() => props.item),
+  disabled: computed(() => props.disabled),
 }
 
 const { idBind } = useCardRowContext(context)
@@ -35,7 +37,7 @@ const { idBind } = useCardRowContext(context)
 @reference "@/tailwind.css";
 
 div.cy-card-row {
-  @apply bg-white;
+  background-color: var(--app-white);
 
   &.row-selected + div.cy-card-row {
     border-top: 1px solid var(--app-primary-30);

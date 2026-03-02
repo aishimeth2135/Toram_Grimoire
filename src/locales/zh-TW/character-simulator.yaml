@@ -75,6 +75,7 @@ select-crystals:
     - 追加裝備
     - 特殊裝備
     - 通用
+  equipment-type-not-support-crystal-tips: 此裝備類型不支援鍛晶。
 skill-build:
   title: 技能
   passive-skills: 被動技能

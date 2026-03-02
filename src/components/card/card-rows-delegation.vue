@@ -9,12 +9,12 @@ interface Emits {
 
 const emit = defineEmits<Emits>()
 
-const { findTargetRowItem } = setupCardRowsDelegation()
+const { findTargetRowContext } = setupCardRowsDelegation()
 
 const onClick = (evt: MouseEvent) => {
-  const item = findTargetRowItem(evt.target as HTMLElement)
-  if (item) {
-    emit('row-clicked', item)
+  const context = findTargetRowContext(evt.target as HTMLElement)
+  if (context && !context.disabled.value) {
+    emit('row-clicked', context.item.value)
   }
 }
 </script>
