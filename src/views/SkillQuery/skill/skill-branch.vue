@@ -312,14 +312,15 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute right-1 top-0.5 z-5;
+  @apply z-5 absolute right-1 top-0.5;
 }
 
 .skill-branch-content {
   @apply border-l-0 border-primary-50 pl-0 duration-200;
   transition-property: border-left-width, padding-left;
+
   &.sub-content-active {
-    @apply border-l-2 pb-2 pl-3;
+    @apply border-l-4 pb-2 pl-3;
   }
 }
 .group-end {

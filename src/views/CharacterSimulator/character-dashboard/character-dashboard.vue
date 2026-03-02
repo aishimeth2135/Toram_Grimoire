@@ -47,7 +47,7 @@ const { setCurrentTab } = useCharacterSimulatorState()
 
       <div v-if="validBaseStats.length > 0" class="flex items-center px-8 py-5">
         <div
-          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-1 border-red-50"
+          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-red-50"
         >
           <span class="text-sm text-primary-50">
             {{ primaryBaseStat.name }}
@@ -58,7 +58,7 @@ const { setCurrentTab } = useCharacterSimulatorState()
         </div>
         <div
           v-if="secondaryBaseStat"
-          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-1 border-primary-30"
+          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-primary-30"
         >
           <span class="text-sm text-primary-50">
             {{ secondaryBaseStat.name }}

@@ -24,7 +24,7 @@ const goTab = () => {
   <div class="relative flex w-full items-start p-4 pb-6 pr-8">
     <cy-button-icon icon="mdi:square-edit-outline" class="absolute right-2 top-2" @click="goTab" />
     <div
-      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
+      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-primary-10"
     >
       <cy-icon :icon="icon" width="1.375rem" />
     </div>

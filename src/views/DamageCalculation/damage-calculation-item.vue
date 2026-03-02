@@ -91,7 +91,7 @@
   <div
     v-else
     class="border-primary-50/70 relative px-2 py-3"
-    :class="{ 'border-l-2': !root, 'border': !root }"
+    :class="{ 'border-l-4': !root, 'border': !root }"
     style="margin-left: -0.2rem"
   >
     <div v-if="!!(typeof calcStructItem !== 'string')">

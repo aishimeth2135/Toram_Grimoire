@@ -82,7 +82,7 @@ const moveMode = ref(false)
         <div class="px-1 py-1.5 text-right text-sm text-primary-30">
           {{ t('character-simulator.build-common.move-tips') }}
         </div>
-        <Draggable v-model="builds" item-key="id" class="rounded-sm border-1 border-primary-20">
+        <Draggable v-model="builds" item-key="id" class="rounded-sm border-2 border-primary-20">
           <template #item="{ element }">
             <div class="flex cursor-move items-center px-4 py-2.5">
               <cy-icon icon="ic:baseline-drag-indicator" class="mr-2" />

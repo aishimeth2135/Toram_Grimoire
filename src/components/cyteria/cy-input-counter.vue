@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter outline-hidden border border-l-2 bg-white duration-300"
+      class="cy--input-counter outline-hidden border border-l-4 bg-white duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >

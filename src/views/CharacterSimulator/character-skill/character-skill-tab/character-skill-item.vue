@@ -3,7 +3,7 @@
     <div class="flex h-full items-start">
       <div class="shrink-0 self-stretch pl-2 pr-3">
         <div
-          class="relative flex cursor-pointer rounded-full border-1 bg-white p-1.5 duration-150 hover:border-primary-40"
+          class="relative flex cursor-pointer rounded-full border-2 bg-white p-1.5 duration-150 hover:border-primary-40"
           :class="invalid ? 'border-gray-20' : enabled ? 'border-primary-50' : 'border-primary-20'"
           @click="enabled = !enabled"
         >

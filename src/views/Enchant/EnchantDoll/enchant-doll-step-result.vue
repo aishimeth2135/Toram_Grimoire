@@ -36,7 +36,7 @@
       </cy-icon-text>
     </div>
     <div class="mb-4 mt-6 flex justify-center">
-      <div class="rounded-lg border-1 border-fuchsia-60 bg-white pb-5 pl-4 pr-6 pt-3">
+      <div class="rounded-lg border-2 border-fuchsia-60 bg-white pb-5 pl-4 pr-6 pt-3">
         <EnchantResult :equipment="resultEquipment" />
       </div>
     </div>
@@ -68,7 +68,7 @@
         v-else
         icon="ic-round-open-in-new"
         color="cyan"
-        @click="$router.replace('/enchant')"
+        @click="router.replace({ name: AppRouteNames.EnchantSimulator })"
       >
         {{ t('enchant-doll.export-result.redirect-to-enchant-simulator') }}
       </cy-button-action>
@@ -101,6 +101,7 @@
 <script lang="ts" setup>
 import { inject, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
@@ -110,6 +111,7 @@ import { EnchantBuild } from '@/lib/Enchant/Enchant'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
+import { AppRouteNames } from '@/router/enums'
 
 import EnchantResult from '../EnchantSimulator/enchant-result.vue'
 import EnchantDollResultItem from './enchant-doll-result-item.vue'
@@ -118,6 +120,7 @@ import EnchantDollStepWrapper from './enchant-doll-step-wrapper.vue'
 import { EnchantDollInjectionKey } from './injection-keys'
 import { AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT, StepIds } from './setup'
 
+const router = useRouter()
 const store = useEnchantStore()
 const selectOtherResults = ref(false)
 

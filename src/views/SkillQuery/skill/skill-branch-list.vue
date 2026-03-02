@@ -58,7 +58,7 @@ const isTips = computed(() => {
   }
 
   &.is-mark {
-    @apply border-1 border-primary-50 py-3;
+    @apply border-2 border-primary-50 py-3;
   }
 }
 </style>

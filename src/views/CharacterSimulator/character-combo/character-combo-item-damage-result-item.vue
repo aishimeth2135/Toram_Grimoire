@@ -42,7 +42,7 @@
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
-    <div v-if="detailVisible" class="mt-2 border-1 border-primary-30 bg-white px-3 py-2 text-sm">
+    <div v-if="detailVisible" class="mt-2 border-2 border-primary-30 bg-white px-3 py-2 text-sm">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"

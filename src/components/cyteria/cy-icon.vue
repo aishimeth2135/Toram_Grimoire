@@ -23,7 +23,7 @@ const iconStyle = computed(() => {
 })
 
 const iconClass = computed(() => {
-  const baseClass = ['cy-icon-base']
+  const baseClass = []
 
   if (props.small) {
     baseClass.push('cy-icon-sm')

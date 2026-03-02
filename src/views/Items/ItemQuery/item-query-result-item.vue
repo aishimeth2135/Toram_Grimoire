@@ -1,6 +1,6 @@
 <template>
   <CardRow :selected="detailVisible">
-    <div class="sticky top-0 z-1 min-w-max">
+    <div class="z-1 sticky top-0 min-w-max">
       <div
         class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': detailVisible }"
@@ -263,7 +263,7 @@
       </div>
       <div
         v-else-if="state.currentMode === SearchModes.Dye"
-        class="mb-3 ml-4 border-l-2 border-solid border-primary-30 pl-2"
+        class="mb-3 ml-4 border-l-4 border-solid border-primary-30 pl-2"
       >
         <div class="divide-y divide-primary-20">
           <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
@@ -385,7 +385,7 @@ const dyeObtains = computed(() => {
 }
 
 .row-attr {
-  @apply mb-1 mr-2.5 inline-flex border-1 border-primary-20 px-3 py-1 text-sm;
+  @apply mb-1 mr-2.5 inline-flex border-2 border-primary-20 px-3 py-1 text-sm;
 
   & > span:first-child {
     @apply text-gray-50;

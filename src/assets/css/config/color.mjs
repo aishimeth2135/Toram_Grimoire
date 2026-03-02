@@ -1,11 +1,15 @@
-// @ts-check
-const path = require('path')
-const fs = require('fs/promises')
-const Color = require('tinycolor2')
-const tcColors = require('tailwindcss/colors')
+import { formatHex, parse } from 'culori'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import tcColors from 'tailwindcss/colors'
+import Color from 'tinycolor2'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 /**
- * @type Record<string, Record<string, string>>
+ * @type {Record<string, Record<string, string>>}
  */
 const baseColors = {
   // 'purple': '#c026d3',
@@ -78,7 +82,7 @@ const primary = {
 }
 
 /**
- * @type Record<string, Record<string, string>>
+ * @type {Record<string, Record<string, string>>}
  */
 const colors = {
   ...baseColors,
@@ -86,7 +90,7 @@ const colors = {
 }
 
 /**
- * @type Record<string, string>
+ * @type {Record<string, string>}
  */
 const color = {
   white: '#ffffff',
@@ -95,21 +99,24 @@ const color = {
 const colorOrders = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
 
 /**
- * @type Record<string, string>
+ * @type {Record<string, string>}
  */
 const dark = {
   white: '#171717',
   black: '#ffffff',
 }
 
+const oklabToHex = colorStr => formatHex(parse(colorStr.replace('oklab', 'lab')))
+
 Object.entries(colors).map(([key, value]) => {
   colorOrders.forEach((num, idx) => {
     const subkey = num.slice(0, -1)
 
-    color[`${key}-${subkey}`] = value[num]
+    color[`${key}-${subkey}`] = oklabToHex(value[num])
 
     const reversedIdx = 9 - idx
-    const darkColor = Color(value[colorOrders[reversedIdx]])
+    const hexColor = oklabToHex(value[colorOrders[reversedIdx]])
+    const darkColor = Color(hexColor)
     const darkColorHsl = darkColor.toHsl()
     const fixedIdx = (reversedIdx + 11) / 2
 
@@ -132,26 +139,9 @@ Object.entries(colors).map(([key, value]) => {
 /**
  * @param {Record<string, string>} data
  */
-const toRgbData = data => {
-  /**
-   * @type Record<string, string>
-   */
-  const colorsRgb = {}
-
-  Object.entries(data).map(([key, value]) => {
-    const rgbItem = Color(value).toRgb()
-    colorsRgb[key] = `${rgbItem.r}, ${rgbItem.g}, ${rgbItem.b}`
-  })
-
-  return colorsRgb
-}
-
-/**
- * @param {Record<string, string>} data
- */
 const toDesignTokenData = data => {
   /**
-   * @type Record<string, { value: string }>
+   * @type {Record<string, { value: string }>}
    */
   const designTokenData = {}
 
@@ -162,16 +152,69 @@ const toDesignTokenData = data => {
   return designTokenData
 }
 
+/**
+ * @param {Record<string, string>} data
+ * @param {string} title
+ * @param {string} prefix
+ */
+const getColorVarsMarkdown = (data, title, prefix) => {
+  /**
+   * @type {Record<string, string>}
+   */
+  const baseData = {}
+
+  Object.entries(data).map(([key, value]) => {
+    baseData[key] = value
+  })
+
+  prefix = prefix ? `${prefix}-` : ''
+
+  let raw = `## ${title}\n` + '```css\n' + `.${prefix}-theme {\n`
+  Object.entries(baseData).map(([key, value]) => {
+    raw += `  --app-${key}: ${value};\n`
+  })
+  raw += '}\n```\n'
+
+  return raw
+}
+
+/**
+ * @param {Record<string, string>} data
+ */
+const getTailwindThemeMarkdown = data => {
+  /**
+   * @type {Record<string, string>}
+   */
+  const baseData = {}
+
+  Object.entries(data).map(([key, value]) => {
+    baseData[key] = value
+  })
+
+  let raw = '## Tailwind Theme\n```css\n.theme {\n'
+  raw += '  --color-*: initial;\n'
+  Object.keys(baseData).map(key => {
+    raw += `  --color-${key}: var(--app-${key});\n`
+  })
+  raw += '}\n```\n'
+
+  return raw
+}
+
 async function start() {
   console.log('start...')
   const data = {
     'color': toDesignTokenData(color),
     'color-dark': toDesignTokenData(dark),
-    'color-rgb': toDesignTokenData(toRgbData(color)),
-    'color-dark-rgb': toDesignTokenData(toRgbData(dark)),
   }
 
   await fs.writeFile(path.join(__dirname, 'color.json'), JSON.stringify(data, null, 2))
+  await fs.writeFile(
+    path.join(__dirname, 'color.md'),
+    getColorVarsMarkdown(color, 'Base', '') +
+      getColorVarsMarkdown(dark, 'Dark Mode', 'dark') +
+      getTailwindThemeMarkdown(color)
+  )
   console.log('done.')
 }
 

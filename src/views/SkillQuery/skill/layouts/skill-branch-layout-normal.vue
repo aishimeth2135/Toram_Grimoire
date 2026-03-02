@@ -1,6 +1,6 @@
 <template>
   <div class="skill-branch-layout-normal rounded-sm bg-white">
-    <div class="rounded-sm border-1 border-l-2 border-red-30 bg-white pb-2">
+    <div class="rounded-sm border-2 border-l-4 border-red-30 bg-white pb-2">
       <div class="mb-3 flex items-center border-b border-red-20 py-1.5 pl-4">
         <cy-icon :icon="nameIcon" class="text-red-30" />
         <div class="ml-2 text-red-40">{{ container.get('name') }}</div>
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
-        <IconCircle icon="fluent:fps-60-24-fillede" />
+        <IconCircle icon="ic:outline-share-arrival-time" />
         <div class="pl-4 pr-2 pt-1">
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
@@ -102,8 +102,8 @@
       </div>
     </div>
     <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
-      <div class="ml-7 h-3 border-l-1 border-primary-20" />
-      <div class="rounded-sm border-1 border-primary-20 bg-white pb-2 pt-2.5">
+      <div class="ml-7 h-3 border-l-2 border-primary-20" />
+      <div class="rounded-sm border-2 border-primary-20 bg-white pb-2 pt-2.5">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"

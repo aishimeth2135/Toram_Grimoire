@@ -2,7 +2,7 @@
   <CardRow class="px-1 py-3">
     <div class="flex h-full items-center">
       <div class="shrink-0 self-stretch pl-2 pr-3">
-        <div class="flex rounded-full border-1 border-primary-30 bg-white p-1.5">
+        <div class="flex rounded-full border-2 border-primary-30 bg-white p-1.5">
           <cy-icon :icon="getSkillIconPath(skill)" width="1.5rem" />
         </div>
       </div>
@@ -61,7 +61,7 @@
                 class="flex items-center py-2"
               >
                 <div class="shrink-0 self-stretch pr-3">
-                  <div class="flex rounded-full border-1 border-primary-20 bg-white p-1.5">
+                  <div class="flex rounded-full border-2 border-primary-20 bg-white p-1.5">
                     <cy-icon :icon="effected.icon" width="1.5rem" />
                   </div>
                 </div>

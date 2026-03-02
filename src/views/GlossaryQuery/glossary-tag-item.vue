@@ -17,7 +17,7 @@
       <div v-if="detailVisible" class="bg-white pb-4 pl-3.5 pr-2">
         <GlossaryTagContentRows class="py-2 pl-6 pr-4" :tag="tag" />
         <div v-if="includedTags.length > 0">
-          <CardRows class="border-l-2 border-primary-30">
+          <CardRows class="border-l-4 border-primary-30">
             <GlossaryTagItem
               v-for="otherTag in includedTags"
               :key="otherTag.name"

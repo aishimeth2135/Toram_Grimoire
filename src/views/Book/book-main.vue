@@ -1,7 +1,7 @@
 <template>
   <AppLayoutMain class="py-6">
     <div v-if="!hasQuery">
-      <div class="shadow-xs border-1 border-primary-30 bg-white px-4 py-3">
+      <div class="shadow-xs border-2 border-primary-30 bg-white px-4 py-3">
         <textarea
           v-model="urlText"
           class="outline-hidden w-full resize-none border-0 bg-transparent"

@@ -5,10 +5,7 @@
       <div class="home-title-sub text-4xl text-primary-70">Cy's Grimoire</div>
       <div class="home-title-sub mt-2 text-xl text-primary-40">布偶的魔法書</div>
     </div>
-    <div class="home-title-author">
-      <cy-icon icon="@potum" width="1.5rem" class="text-blue-30" />
-      <div class="ml-2.5 text-xl text-blue-50">Cyteria</div>
-    </div>
+    <div class="home-title-author text-xl text-blue-50">By. Cyteria</div>
   </div>
 </template>
 

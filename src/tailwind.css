@@ -1,8 +1,122 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source(none);
 
-@config "../tailwind.config.ts";
+@source "../src";
+@source "./index.html";
 
 @source inline("{text,bg,border,}-{primary,fuchsia,violet,blue,cyan,orange,emerald,red,gray,stone,}-{5,{10..90..10}}");
+
+@theme {
+  --font-mono:
+    'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', var(--app-main-font), monospace;
+
+  --breakpoint-wd: 50rem;
+  --breakpoint-wd-lg: 70rem;
+
+  --color-*: initial;
+  --color-white: var(--app-white);
+  --color-black: var(--app-black);
+  --color-fuchsia-5: var(--app-fuchsia-5);
+  --color-fuchsia-10: var(--app-fuchsia-10);
+  --color-fuchsia-20: var(--app-fuchsia-20);
+  --color-fuchsia-30: var(--app-fuchsia-30);
+  --color-fuchsia-40: var(--app-fuchsia-40);
+  --color-fuchsia-50: var(--app-fuchsia-50);
+  --color-fuchsia-60: var(--app-fuchsia-60);
+  --color-fuchsia-70: var(--app-fuchsia-70);
+  --color-fuchsia-80: var(--app-fuchsia-80);
+  --color-fuchsia-90: var(--app-fuchsia-90);
+  --color-violet-5: var(--app-violet-5);
+  --color-violet-10: var(--app-violet-10);
+  --color-violet-20: var(--app-violet-20);
+  --color-violet-30: var(--app-violet-30);
+  --color-violet-40: var(--app-violet-40);
+  --color-violet-50: var(--app-violet-50);
+  --color-violet-60: var(--app-violet-60);
+  --color-violet-70: var(--app-violet-70);
+  --color-violet-80: var(--app-violet-80);
+  --color-violet-90: var(--app-violet-90);
+  --color-blue-5: var(--app-blue-5);
+  --color-blue-10: var(--app-blue-10);
+  --color-blue-20: var(--app-blue-20);
+  --color-blue-30: var(--app-blue-30);
+  --color-blue-40: var(--app-blue-40);
+  --color-blue-50: var(--app-blue-50);
+  --color-blue-60: var(--app-blue-60);
+  --color-blue-70: var(--app-blue-70);
+  --color-blue-80: var(--app-blue-80);
+  --color-blue-90: var(--app-blue-90);
+  --color-cyan-5: var(--app-cyan-5);
+  --color-cyan-10: var(--app-cyan-10);
+  --color-cyan-20: var(--app-cyan-20);
+  --color-cyan-30: var(--app-cyan-30);
+  --color-cyan-40: var(--app-cyan-40);
+  --color-cyan-50: var(--app-cyan-50);
+  --color-cyan-60: var(--app-cyan-60);
+  --color-cyan-70: var(--app-cyan-70);
+  --color-cyan-80: var(--app-cyan-80);
+  --color-cyan-90: var(--app-cyan-90);
+  --color-orange-5: var(--app-orange-5);
+  --color-orange-10: var(--app-orange-10);
+  --color-orange-20: var(--app-orange-20);
+  --color-orange-30: var(--app-orange-30);
+  --color-orange-40: var(--app-orange-40);
+  --color-orange-50: var(--app-orange-50);
+  --color-orange-60: var(--app-orange-60);
+  --color-orange-70: var(--app-orange-70);
+  --color-orange-80: var(--app-orange-80);
+  --color-orange-90: var(--app-orange-90);
+  --color-emerald-5: var(--app-emerald-5);
+  --color-emerald-10: var(--app-emerald-10);
+  --color-emerald-20: var(--app-emerald-20);
+  --color-emerald-30: var(--app-emerald-30);
+  --color-emerald-40: var(--app-emerald-40);
+  --color-emerald-50: var(--app-emerald-50);
+  --color-emerald-60: var(--app-emerald-60);
+  --color-emerald-70: var(--app-emerald-70);
+  --color-emerald-80: var(--app-emerald-80);
+  --color-emerald-90: var(--app-emerald-90);
+  --color-red-5: var(--app-red-5);
+  --color-red-10: var(--app-red-10);
+  --color-red-20: var(--app-red-20);
+  --color-red-30: var(--app-red-30);
+  --color-red-40: var(--app-red-40);
+  --color-red-50: var(--app-red-50);
+  --color-red-60: var(--app-red-60);
+  --color-red-70: var(--app-red-70);
+  --color-red-80: var(--app-red-80);
+  --color-red-90: var(--app-red-90);
+  --color-gray-5: var(--app-gray-5);
+  --color-gray-10: var(--app-gray-10);
+  --color-gray-20: var(--app-gray-20);
+  --color-gray-30: var(--app-gray-30);
+  --color-gray-40: var(--app-gray-40);
+  --color-gray-50: var(--app-gray-50);
+  --color-gray-60: var(--app-gray-60);
+  --color-gray-70: var(--app-gray-70);
+  --color-gray-80: var(--app-gray-80);
+  --color-gray-90: var(--app-gray-90);
+  --color-stone-5: var(--app-stone-5);
+  --color-stone-10: var(--app-stone-10);
+  --color-stone-20: var(--app-stone-20);
+  --color-stone-30: var(--app-stone-30);
+  --color-stone-40: var(--app-stone-40);
+  --color-stone-50: var(--app-stone-50);
+  --color-stone-60: var(--app-stone-60);
+  --color-stone-70: var(--app-stone-70);
+  --color-stone-80: var(--app-stone-80);
+  --color-stone-90: var(--app-stone-90);
+  --color-primary-5: var(--app-primary-5);
+  --color-primary-10: var(--app-primary-10);
+  --color-primary-20: var(--app-primary-20);
+  --color-primary-30: var(--app-primary-30);
+  --color-primary-40: var(--app-primary-40);
+  --color-primary-50: var(--app-primary-50);
+  --color-primary-60: var(--app-primary-60);
+  --color-primary-70: var(--app-primary-70);
+  --color-primary-80: var(--app-primary-80);
+  --color-primary-90: var(--app-primary-90);
+}
 
 @layer base {
   code,
@@ -14,10 +128,11 @@
       'Courier New', var(--app-main-font), monospace;
     font-size: 1em;
   }
-}
 
-@utility cy-icon-base {
-  @apply text-primary-30;
+  svg {
+    color: var(--app-primary-30);
+    fill: currentcolor;
+  }
 }
 
 @utility content-auto {

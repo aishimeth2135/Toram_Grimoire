@@ -16,7 +16,7 @@
         class="ml-auto"
       />
     </div>
-    <div v-if="unfold" class="mx-3 mb-4 mt-0.5 rounded-sm border-1 border-primary-30 p-3">
+    <div v-if="unfold" class="mx-3 mb-4 mt-0.5 rounded-sm border-2 border-primary-30 p-3">
       <EnchantResult :equipment="result" />
     </div>
   </div>

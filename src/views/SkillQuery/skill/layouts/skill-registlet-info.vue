@@ -1,5 +1,5 @@
 <template>
-  <div class="relative rounded-sm border-1 border-l-2 border-emerald-30 bg-white pb-2 pt-2.5">
+  <div class="relative rounded-sm border-2 border-l-4 border-emerald-30 bg-white pb-2 pt-2.5">
     <div class="flex items-start pb-0.5 pl-2.5">
       <IconCircle icon="game-icons:beveled-star" icon-color="emerald-30" />
       <div class="pl-3 pr-2 pt-1">
@@ -30,11 +30,10 @@
             :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
-          <div class="mt-3 inline-flex items-center pl-0.5">
-            <cy-icon-text icon="mdi:arrow-up-bold-outline" color="primary-30" single-color small>
-              {{ t('skill-query.registlet-max-level-title') }}
-            </cy-icon-text>
-            <div class="ml-2 text-sm text-primary-50">
+          <div class="mt-3 flex items-center pl-0.5 text-sm text-primary-30">
+            <cy-icon icon="mdi:arrow-up-bold-outline" class="mr-1 text-inherit" small />
+            {{ t('skill-query.registlet-max-level-title') }}
+            <div class="ml-2 text-primary-50">
               {{ registletItemState.item.maxLevel }}
             </div>
           </div>

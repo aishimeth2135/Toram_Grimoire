@@ -13,7 +13,7 @@ export const useSettingStore = defineStore('app-setting', () => {
 
   const initDocumentElementClassList = () => {
     const rel = document.documentElement
-    rel.classList.add('font-' + appFont.value.toString())
+    rel.classList.add('app-font-' + appFont.value.toString())
     rel.style.fontSize = (appRem.value / 10).toString() + 'px'
     rel.classList.toggle('theme--night-mode', appNightMode.value)
   }
@@ -24,11 +24,11 @@ export const useSettingStore = defineStore('app-setting', () => {
     appFont: computed<number>({
       set(value) {
         if (appFont.value !== 0) {
-          document.documentElement.classList.remove('font-' + appFont.value.toString())
+          document.documentElement.classList.remove('app-font-' + appFont.value.toString())
         }
         appFont.value = value
         if (value !== 0) {
-          document.documentElement.classList.add('font-' + value.toString())
+          document.documentElement.classList.add('app-font-' + value.toString())
         }
         window.localStorage.setItem(APP_STORAGE_KEYS.FONT_FAMILY, value.toString())
       },

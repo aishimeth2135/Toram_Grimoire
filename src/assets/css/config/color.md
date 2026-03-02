@@ -1,19 +1,6 @@
-@reference "@/tailwind.css";
-
-@import './font/font.css' layer(base);
-@import './global.css' layer(components);
-@import './component.css' layer(components);
-
-:root {
-  --app-screen-max-width: 1376px;
-  --app-side-menu-width: 240px;
-  --app-side-menu-minimize-width: 56px;
-  --app-main-content-width: 768px;
-  --app-main-content-padding-x: 32px;
-  --app-favicon-color-main: #ffa4c5;
-  --app-favicon-color-sub: #f7e4eb;
-  --app-body-bg-color: #fefcfd;
-
+## Base
+```css
+.-theme {
   --app-white: #ffffff;
   --app-black: #171717;
   --app-fuchsia-5: #fdf4ff;
@@ -117,19 +104,10 @@
   --app-primary-80: #a91956;
   --app-primary-90: #790f3f;
 }
-
-@media screen and (max-width: 1440px) {
-  :root {
-    --app-side-menu-width: 224px;
-    --app-main-content-padding-x: 24px;
-  }
-}
-
-html.theme--night-mode {
-  --app-favicon-color-main: #ffabbb;
-  --app-favicon-color-sub: #efdae0;
-  --app-body-bg-color: #241f2c;
-
+```
+## Dark Mode
+```css
+.dark--theme {
   --app-white: #171717;
   --app-black: #ffffff;
   --app-fuchsia-5: #4e2650;
@@ -233,115 +211,112 @@ html.theme--night-mode {
   --app-primary-80: #fef7fa;
   --app-primary-90: #fffcfd;
 }
-
-html {
-  background-color: var(--app-white);
-  height: 100%;
-  width: 100%;
-
-  font-family:
-    'Itim',
-    Microsoft JhengHei,
-    sans-serif;
-  --app-main-font: Microsoft JhengHei;
-
-  &.app-font-1 {
-    font-family:
-      'Itim',
-      'naikaifont',
-      Microsoft JhengHei,
-      sans-serif;
-    --app-main-font: 'naikaifont';
-  }
-  &.app-font-2 {
-    font-family:
-      'Itim',
-      'Noto Sans TC',
-      Microsoft JhengHei,
-      sans-serif;
-    --app-main-font: 'Noto Sans TC';
-  }
+```
+## Tailwind Theme
+```css
+.theme {
+  --color-*: initial;
+  --color-white: var(--app-white);
+  --color-black: var(--app-black);
+  --color-fuchsia-5: var(--app-fuchsia-5);
+  --color-fuchsia-10: var(--app-fuchsia-10);
+  --color-fuchsia-20: var(--app-fuchsia-20);
+  --color-fuchsia-30: var(--app-fuchsia-30);
+  --color-fuchsia-40: var(--app-fuchsia-40);
+  --color-fuchsia-50: var(--app-fuchsia-50);
+  --color-fuchsia-60: var(--app-fuchsia-60);
+  --color-fuchsia-70: var(--app-fuchsia-70);
+  --color-fuchsia-80: var(--app-fuchsia-80);
+  --color-fuchsia-90: var(--app-fuchsia-90);
+  --color-violet-5: var(--app-violet-5);
+  --color-violet-10: var(--app-violet-10);
+  --color-violet-20: var(--app-violet-20);
+  --color-violet-30: var(--app-violet-30);
+  --color-violet-40: var(--app-violet-40);
+  --color-violet-50: var(--app-violet-50);
+  --color-violet-60: var(--app-violet-60);
+  --color-violet-70: var(--app-violet-70);
+  --color-violet-80: var(--app-violet-80);
+  --color-violet-90: var(--app-violet-90);
+  --color-blue-5: var(--app-blue-5);
+  --color-blue-10: var(--app-blue-10);
+  --color-blue-20: var(--app-blue-20);
+  --color-blue-30: var(--app-blue-30);
+  --color-blue-40: var(--app-blue-40);
+  --color-blue-50: var(--app-blue-50);
+  --color-blue-60: var(--app-blue-60);
+  --color-blue-70: var(--app-blue-70);
+  --color-blue-80: var(--app-blue-80);
+  --color-blue-90: var(--app-blue-90);
+  --color-cyan-5: var(--app-cyan-5);
+  --color-cyan-10: var(--app-cyan-10);
+  --color-cyan-20: var(--app-cyan-20);
+  --color-cyan-30: var(--app-cyan-30);
+  --color-cyan-40: var(--app-cyan-40);
+  --color-cyan-50: var(--app-cyan-50);
+  --color-cyan-60: var(--app-cyan-60);
+  --color-cyan-70: var(--app-cyan-70);
+  --color-cyan-80: var(--app-cyan-80);
+  --color-cyan-90: var(--app-cyan-90);
+  --color-orange-5: var(--app-orange-5);
+  --color-orange-10: var(--app-orange-10);
+  --color-orange-20: var(--app-orange-20);
+  --color-orange-30: var(--app-orange-30);
+  --color-orange-40: var(--app-orange-40);
+  --color-orange-50: var(--app-orange-50);
+  --color-orange-60: var(--app-orange-60);
+  --color-orange-70: var(--app-orange-70);
+  --color-orange-80: var(--app-orange-80);
+  --color-orange-90: var(--app-orange-90);
+  --color-emerald-5: var(--app-emerald-5);
+  --color-emerald-10: var(--app-emerald-10);
+  --color-emerald-20: var(--app-emerald-20);
+  --color-emerald-30: var(--app-emerald-30);
+  --color-emerald-40: var(--app-emerald-40);
+  --color-emerald-50: var(--app-emerald-50);
+  --color-emerald-60: var(--app-emerald-60);
+  --color-emerald-70: var(--app-emerald-70);
+  --color-emerald-80: var(--app-emerald-80);
+  --color-emerald-90: var(--app-emerald-90);
+  --color-red-5: var(--app-red-5);
+  --color-red-10: var(--app-red-10);
+  --color-red-20: var(--app-red-20);
+  --color-red-30: var(--app-red-30);
+  --color-red-40: var(--app-red-40);
+  --color-red-50: var(--app-red-50);
+  --color-red-60: var(--app-red-60);
+  --color-red-70: var(--app-red-70);
+  --color-red-80: var(--app-red-80);
+  --color-red-90: var(--app-red-90);
+  --color-gray-5: var(--app-gray-5);
+  --color-gray-10: var(--app-gray-10);
+  --color-gray-20: var(--app-gray-20);
+  --color-gray-30: var(--app-gray-30);
+  --color-gray-40: var(--app-gray-40);
+  --color-gray-50: var(--app-gray-50);
+  --color-gray-60: var(--app-gray-60);
+  --color-gray-70: var(--app-gray-70);
+  --color-gray-80: var(--app-gray-80);
+  --color-gray-90: var(--app-gray-90);
+  --color-stone-5: var(--app-stone-5);
+  --color-stone-10: var(--app-stone-10);
+  --color-stone-20: var(--app-stone-20);
+  --color-stone-30: var(--app-stone-30);
+  --color-stone-40: var(--app-stone-40);
+  --color-stone-50: var(--app-stone-50);
+  --color-stone-60: var(--app-stone-60);
+  --color-stone-70: var(--app-stone-70);
+  --color-stone-80: var(--app-stone-80);
+  --color-stone-90: var(--app-stone-90);
+  --color-primary-5: var(--app-primary-5);
+  --color-primary-10: var(--app-primary-10);
+  --color-primary-20: var(--app-primary-20);
+  --color-primary-30: var(--app-primary-30);
+  --color-primary-40: var(--app-primary-40);
+  --color-primary-50: var(--app-primary-50);
+  --color-primary-60: var(--app-primary-60);
+  --color-primary-70: var(--app-primary-70);
+  --color-primary-80: var(--app-primary-80);
+  --color-primary-90: var(--app-primary-90);
 }
-
-* {
-  transition-timing-function: ease;
-}
-
-body {
-  scroll-behavior: smooth;
-  color: var(--app-stone-90);
-  position: relative;
-  /* background-color: var(--app-body-bg-color); */
-  height: 100%;
-  width: 100%;
-}
-
-::placeholder {
-  color: var(--app-primary-5);
-}
-
-input,
-textarea {
-  background-color: var(--app-white);
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
-input:focus {
-  outline: none;
-}
-
-::-webkit-scrollbar {
-  width: 0.375rem;
-  height: 0.375rem;
-}
-
-@media screen and (max-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 0.125rem;
-    height: 0.125rem;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--app-primary-30) !important;
-    border-radius: 0.125rem;
-  }
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary-20 duration-150;
-  border-radius: 0.2rem;
-
-  &:hover {
-    @apply bg-primary-30;
-  }
-}
-
-::-webkit-scrollbar-corner {
-  background-color: var(--app-white);
-}
-
-::-webkit-scrollbar-button {
-  @apply bg-primary-20 duration-150;
-  border-radius: 0.2rem;
-
-  &:hover {
-    @apply bg-primary-30;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 0;
-    height: 0;
-  }
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-primary-10;
-}
+```

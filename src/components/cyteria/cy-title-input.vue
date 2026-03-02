@@ -1,7 +1,7 @@
 <template>
   <span class="mx-1 my-2 flex flex-wrap items-center">
     <div
-      class="flex w-full items-center rounded-3xl border-1 border-solid bg-white py-0.5 pl-3 pr-2 duration-300"
+      class="flex w-full items-center rounded-3xl border-2 border-solid bg-white py-0.5 pl-3 pr-2 duration-300"
       :class="{
         'border-primary-50': inputFocus,
         'border-primary-20': !inputFocus,

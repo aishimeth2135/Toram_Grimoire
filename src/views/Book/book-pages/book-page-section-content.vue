@@ -56,7 +56,7 @@ defineProps<Props>()
   }
 
   blockquote {
-    @apply border-l-2 border-primary-30 px-4 py-1 text-primary-70;
+    @apply border-l-4 border-primary-30 px-4 py-1 text-primary-70;
 
     & > *:last-child {
       @apply mb-0;

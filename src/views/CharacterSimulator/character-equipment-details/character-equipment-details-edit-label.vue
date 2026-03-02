@@ -98,7 +98,7 @@ const closeEditingLabel = () => {
                 <div class="w-full pr-4">
                   <input
                     v-model="label.text"
-                    class="w-full border-1 border-transparent bg-transparent px-1 duration-150 focus:border-b-primary-60 focus:text-primary-90"
+                    class="w-full border-2 border-transparent bg-transparent px-1 duration-150 focus:border-b-primary-60 focus:text-primary-90"
                     :class="`text-${label.color}-60`"
                   />
                 </div>

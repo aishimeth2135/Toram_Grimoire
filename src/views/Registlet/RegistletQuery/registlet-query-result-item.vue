@@ -1,6 +1,6 @@
 <template>
   <CardRow :selected="detailVisible">
-    <div class="sticky top-0 z-1 min-w-max">
+    <div class="z-1 sticky top-0 min-w-max">
       <div
         class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': detailVisible }"
@@ -35,7 +35,7 @@
     </div>
     <cy-transition>
       <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5">
-        <div class="mb-2 mt-1 rounded-sm border border-l-2 border-red-10 px-4 py-3">
+        <div class="mb-2 mt-1 rounded-sm border border-l-4 border-red-10 px-4 py-3">
           <!-- prettier-ignore-attribute v-if -->
           <div v-if="(item.link instanceof StatBase)" class="flex items-center">
             <div>{{ item.link.text }}</div>

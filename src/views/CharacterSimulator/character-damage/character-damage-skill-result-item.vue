@@ -79,7 +79,7 @@
     </div>
     <div
       v-if="detailVisible"
-      class="mt-2 rounded-sm border-1 border-primary-20 bg-white px-3 py-2 text-sm"
+      class="mt-2 rounded-sm border-2 border-primary-20 bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"

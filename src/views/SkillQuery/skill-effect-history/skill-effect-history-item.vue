@@ -175,12 +175,12 @@ const detailVisible = ref(introductionBranchItemDatas.value.length === 0)
 .skill-effect-history-item-wrapper {
   border-top: 1px solid var(--app-primary-30);
   &.detail-active {
-    @apply mb-2 border-l-1 border-primary-30 pb-2;
+    @apply mb-2 border-l-2 border-primary-30 pb-2;
   }
 }
 
 .history-item-compare {
-  @apply border-l-2 border-primary-50 p-2 pl-4;
+  @apply border-l-4 border-primary-50 p-2 pl-4;
 }
 
 .history-item-compare + .history-item-compare {

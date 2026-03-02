@@ -27,7 +27,7 @@ export default function () {
       }
     },
     renderer(token) {
-      return `<span class="border-l-1 border-r-1 border-current mx-2 px-2 text-primary-70">${this.parser.parseInline(
+      return `<span class="border-l-2 border-r-2 border-current mx-2 px-2 text-primary-70">${this.parser.parseInline(
         token.tokens!
       )}</span>`
     },

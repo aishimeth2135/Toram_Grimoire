@@ -70,7 +70,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
       v-model="innerEditMode"
       direction="vertical"
       plain
-      class="relative z-5 w-full border border-primary-20 bg-white py-2"
+      class="z-5 relative w-full border border-primary-20 bg-white py-2"
     >
       <cy-icon
         v-if="equipped"
@@ -99,7 +99,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             </div>
           </div>
           <div
-            class="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-1 border-primary-10"
+            class="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary-10"
           >
             <CommonEquipmentIcon :equipment="equipment" width="1.5rem" />
           </div>

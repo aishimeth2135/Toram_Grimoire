@@ -1,7 +1,7 @@
 <template>
   <div class="divide-y divide-primary-20 bg-white text-sm">
     <div v-for="eft in skill.effects" :key="eft.effectId" class="py-2">
-      <div class="space-y-3 border-l-2 border-primary-50 px-3 py-2">
+      <div class="space-y-3 border-l-4 border-primary-50 px-3 py-2">
         <div>
           <SkillEquipmentButton :equipments="convertEffectEquipment(eft)" />
         </div>
@@ -31,7 +31,7 @@
         <div
           v-for="(history, historyIdx) in eft.historys"
           :key="historyIdx"
-          class="border-l-2 border-t border-l-blue-60 border-t-blue-30 px-3 pb-3 pt-2"
+          class="border-l-4 border-t border-l-blue-60 border-t-blue-30 px-3 pb-3 pt-2"
         >
           <div class="text-blue-60">{{ history.date }}</div>
           <div class="mt-2">

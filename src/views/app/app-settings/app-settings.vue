@@ -1,17 +1,22 @@
 <template>
-  <cy-modal v-model:visible="mainStore.settingVisible" class="main--window" width="wide" footer>
-    <template #title>
-      <div class="flex items-center">
-        <cy-icon-text icon="ic-baseline-settings">
-          {{ t('app.settings.title') }}
-        </cy-icon-text>
-        <span class="ml-auto text-gray-60"> v{{ mainStore.version }} </span>
+  <cy-modal
+    v-model:visible="mainStore.settingVisible"
+    :title="t('app.settings.title')"
+    title-icon="ic-baseline-settings"
+    class="main--window"
+    width="wide"
+    footer
+  >
+    <template #title-end>
+      <div class="ml-auto px-2.5 text-stone-60">
+        {{ 'v' + mainStore.version }}
       </div>
     </template>
     <div v-if="mainStore.serviceWorker.hasUpdate" class="flex items-center justify-center p-4">
-      <cy-icon-text icon="mdi-creation" text-color="fuchsia-60">
+      <div class="flex items-center text-fuchsia-60">
+        <cy-icon icon="mdi-creation" class="mr-2 text-fuchsia-40" />
         {{ t('app.settings.update.new-version-detected') }}
-      </cy-icon-text>
+      </div>
       <div class="pl-4">
         <cy-button-action icon="mdi-coffee-outline" @click="swUpdate">
           {{ t('app.settings.update.force-update') }}

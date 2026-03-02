@@ -87,7 +87,7 @@ const secondCrystalClass = computed(() => handleCrystalClass(props.equipment.cry
 @reference "@/tailwind.css";
 
 .items-root {
-  @apply relative inline-flex cursor-pointer flex-col rounded-sm border-1 border-primary-10 p-2 pb-0.5 duration-150 hover:border-primary-40;
+  @apply relative inline-flex cursor-pointer flex-col rounded-sm border-2 border-primary-10 p-2 pb-0.5 duration-150 hover:border-primary-40;
   height: 4.5rem;
   width: 4.5rem;
 

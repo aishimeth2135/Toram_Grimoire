@@ -30,7 +30,7 @@
     </div>
     <div
       v-if="includedTags.length > 0"
-      class="divide divide-y-1 divide-primary-10 border-t-1 border-primary-20"
+      class="divide divide-y-2 divide-primary-10 border-t-1 border-primary-20"
     >
       <GlossaryTagContent v-for="tag in includedTags" :key="tag.name" :tag="tag" sub />
     </div>

@@ -16,7 +16,7 @@
         <table>
           <tbody>
             <tr v-for="key in displayAttrsKeys" :key="key">
-              <td class="border-r-1 border-primary-20 pr-2 text-right text-stone-50">
+              <td class="border-r-2 border-primary-20 pr-2 text-right text-stone-50">
                 {{ displayContainer.title(key) }}
               </td>
               <td class="pl-2 text-primary-60">

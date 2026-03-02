@@ -65,7 +65,7 @@ useResizeObserver(tabsEl, () => {
     @apply flex-col items-start;
 
     &.not-plain {
-      @apply border-r-1 border-primary-10;
+      @apply border-r-2 border-primary-10;
 
       & > .cy-tab {
         @apply w-full text-left;

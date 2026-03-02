@@ -67,7 +67,7 @@ watch(
 .app--side-menu--menu {
   min-width: 15rem;
 
-  @apply mt-2 rounded-sm border-1 border-primary-30 bg-white shadow-sm;
+  @apply mt-2 rounded-sm border-2 border-primary-30 bg-white shadow-sm;
 
   @media (max-width: 15rem) {
     width: 100%;

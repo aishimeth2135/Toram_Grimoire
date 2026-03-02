@@ -104,7 +104,7 @@
 
     & > .two-columns-column {
       width: 50%;
-      @apply shadow-xs mr-1 h-full overflow-y-auto border-1 border-primary-30;
+      @apply shadow-xs mr-1 h-full overflow-y-auto border-2 border-primary-30;
     }
   }
 }

@@ -10,12 +10,12 @@
             @click.stop="closeModal"
           />
           <div class="modal-container" :class="{ 'h-full': heightFull }" @click.stop>
-            <div v-if="slots['title'] || title" class="px-4 pb-2">
+            <div v-if="slots['title'] || title" class="flex items-center px-4 pb-2 text-primary-70">
               <slot name="title">
-                <cy-icon-text :icon="titleIcon" text-color="primary-70">
-                  {{ title }}
-                </cy-icon-text>
+                <cy-icon :icon="titleIcon" class="mr-1.5" />
+                {{ title }}
               </slot>
+              <slot name="title-end" />
             </div>
             <div class="relative h-full overflow-y-auto overscroll-none p-4 pt-0">
               <slot />
@@ -142,14 +142,14 @@ const { t } = useI18n()
 @reference "@/tailwind.css";
 
 .cy--modal {
-  @apply bg-black/20 fixed left-0 top-0 z-100 flex h-full w-full justify-center;
+  @apply bg-black/20 z-100 fixed left-0 top-0 flex h-full w-full justify-center;
 
   & > .modal-wrapper {
     @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full;
     height: calc(100% - 1.125rem);
 
     & > .modal-container {
-      @apply flex max-h-full w-full flex-col border-1 border-primary-30 bg-white pt-3;
+      @apply flex max-h-full w-full flex-col border-2 border-primary-30 bg-white pt-3;
       min-height: 10rem;
     }
   }

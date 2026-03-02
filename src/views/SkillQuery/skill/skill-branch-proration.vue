@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="flex flex-wrap items-center rounded-sm border-1 border-primary-10 bg-white px-4 py-0.5"
+      class="flex flex-wrap items-center rounded-sm border-2 border-primary-10 bg-white px-4 py-0.5"
     >
       <div class="my-1 flex items-center">
         <cy-icon icon="mdi-sword" />

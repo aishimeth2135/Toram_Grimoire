@@ -75,7 +75,7 @@ branch:
     'action_time: title': 动作时间
     'casting_time: title': 咏唱时间
     mp_cost:
-      0: 无消耗
+      '0': 无消耗
     skill_type:
       instant: 瞬发
       casting: 须咏唱
@@ -214,8 +214,6 @@ branch:
     condition-default-value: 下一招技能
   passive:
     base-name: 被动效果
-  global:
-    times: 次
   heal:
     base-name: 恢复效果
     type:

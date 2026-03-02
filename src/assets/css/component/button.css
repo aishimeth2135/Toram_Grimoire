@@ -140,7 +140,7 @@
 
 /* button dropdown */
 .cy-button-dropdown-wrapper {
-  @apply border-l-2 border-primary-30 duration-200;
+  @apply border-l-4 border-primary-30 duration-200;
 
   &.content-visble {
     @apply border-primary-30;

@@ -29,7 +29,7 @@
       />
       <div class="flex w-28 justify-center">
         <div
-          class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-1 border-primary-30 duration-200 hover:border-primary-50"
+          class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 border-primary-30 duration-200 hover:border-primary-50"
           @click="selectComboSkill(combo.appendSkill())"
         >
           <cy-icon icon="ic-round-add" width="2.25rem" />

@@ -68,7 +68,7 @@ const frequencyVisible = computed(() => {
 @reference "@/tailwind.css";
 
 .divider {
-  @apply mx-2 h-6 border-l-1 border-primary-30;
+  @apply mx-2 h-6 border-l-2 border-primary-30;
 }
 
 .attr-item {

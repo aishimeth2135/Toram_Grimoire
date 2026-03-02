@@ -52,7 +52,7 @@ watch(
 
 @media (max-width: 55rem) {
   .book-preview-textarea {
-    @apply mb-6 h-128;
+    @apply mb-6 h-[32rem];
   }
 }
 </style>

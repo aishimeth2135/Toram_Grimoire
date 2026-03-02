@@ -66,11 +66,11 @@ const rootClassList = computed(() => {
   }
 
   &.is-mark {
-    @apply border-1 border-l-3 border-primary-50 px-4 py-3;
+    @apply border-2 border-l-6 border-primary-50 px-4 py-3;
   }
 
   &.is-group {
-    @apply relative my-2 cursor-pointer border-1 border-primary-30 px-5 py-2 duration-300;
+    @apply relative my-2 cursor-pointer border-2 border-primary-30 px-5 py-2 duration-300;
 
     &.group-active {
       @apply border-primary-50;
