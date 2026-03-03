@@ -12,6 +12,7 @@ import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEqu
 
 import BrowseEquipmentsMain from '../browse-equipments/browse-equipments-main.vue'
 import CharacterEquipmentDetails from '../character-equipment-details/character-equipment-details.vue'
+import CharacterEquipmentsManage from '../character-equipments-manage/character-equipments-manage.vue'
 import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 
 const { t } = useI18n()
@@ -20,6 +21,8 @@ const { device } = useDevice()
 const { currentCharacter } = storeToRefs(useCharacterStore())
 
 const currentField = ref(currentCharacter.value.equipmentFields[0]) as Ref<EquipmentField>
+
+const equipmentsManageVisible = ref(false)
 
 watch(currentCharacter, newValue => {
   currentField.value = newValue.equipmentFields[0]
@@ -58,18 +61,17 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
 }
 </script>
 
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex grow flex-col items-center justify-center">
-    <div class="flex w-full flex-wrap px-2 wd-lg:flex-nowrap">
-      <div class="flex flex-wrap items-start wd:flex-nowrap">
+    <div class="wd-lg:flex-nowrap flex w-full flex-wrap px-2">
+      <div class="wd:flex-nowrap flex flex-wrap items-start">
         <cy-tabs
           v-model="currentField"
           :direction="device.isWide ? 'vertical' : 'horizontal'"
           :class="
             device.isWide
               ? 'bg-primary-5/50 mr-6 rounded-full py-4'
-              : 'mb-4 border-b border-primary-10'
+              : 'border-primary-10 mb-4 border-b'
           "
           plain
         >
@@ -77,7 +79,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             v-for="field in currentCharacter.equipmentFields"
             :key="field.fieldId"
             :value="field"
-            class="px-5 py-3 hover:bg-primary-10"
+            class="hover:bg-primary-10 px-5 py-3"
           >
             <CommonEquipmentIcon
               v-if="field.equipment"
@@ -87,22 +89,18 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             <cy-icon v-else width="1.5rem" :icon="getFieldDefaultIcon(field)" class="opacity-50" />
           </cy-tab>
         </cy-tabs>
-        <div class="px-2 py-4 wd:px-0 wd-lg:pb-0">
+        <div class="wd:px-0 wd-lg:pb-0 px-2 py-4">
           <CharacterEquipmentDetails :equipment="currentField.equipment" equipped />
         </div>
-        <div v-if="!device.isMobile" class="px-2 py-4 wd:px-8 wd-lg:pb-0">
+        <div v-if="!device.isMobile" class="wd:px-8 wd-lg:pb-0 px-2 py-4">
           <CharacterEquipmentDetails
             :equipment="selectedEquipment"
             :equipped="selectedEquipment === currentField.equipment"
           />
         </div>
       </div>
-      <!-- <CharacterEquipmentFieldTab
-      :equipment-field="currentField"
-      @submit="currentField.setEquipment($event)"
-    /> -->
       <div
-        :class="device.isMobile ? 'mt-5 border-t border-primary-10' : 'pl-4'"
+        :class="device.isMobile ? 'border-primary-10 mt-5 border-t' : 'pl-4'"
         class="flex h-[45rem] min-w-[20rem] grow flex-col pt-4"
       >
         <BrowseEquipmentsMain
@@ -113,10 +111,20 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
           @update:selected-equipment="selectEquipment"
           @equip="applySelectedEquipment"
           @equip-cancel="applySelectedEquipment(null)"
-        />
-        <div class="px-4 py-3 text-right text-sm text-gray-40">
+        >
+          <template #additional-actions>
+            <cy-button-circle
+              icon="ic:baseline-more-horiz"
+              color="gray"
+              small
+              @click="equipmentsManageVisible = true"
+            />
+          </template>
+        </BrowseEquipmentsMain>
+        <div class="text-gray-40 px-4 py-3 text-right text-sm">
           {{ t('character-simulator.browse-equipments.double-click-to-select-tips') }}
         </div>
+        <CharacterEquipmentsManage v-model:visible="equipmentsManageVisible" />
       </div>
     </div>
   </div>

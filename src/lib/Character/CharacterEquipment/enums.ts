@@ -74,7 +74,11 @@ export const AllEquipmentTypeCategorys = new Map([
   [EquipmentCategorys.MainWeapon, MainWeaponTypeList],
   [EquipmentCategorys.SubWeapon, SubWeaponTypeList],
   [EquipmentCategorys.SubArmor, SubArmorTypeList],
-  [EquipmentCategorys.BodyArmor, [EquipmentTypes.BodyNormal]],
+  [
+    EquipmentCategorys.BodyArmor,
+    [EquipmentTypes.BodyNormal, EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense],
+  ],
   [EquipmentCategorys.Additional, [EquipmentTypes.Additional]],
   [EquipmentCategorys.Special, [EquipmentTypes.Special]],
+  [EquipmentCategorys.Avatar, [EquipmentTypes.Avatar]],
 ])

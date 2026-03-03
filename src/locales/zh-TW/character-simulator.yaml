@@ -16,6 +16,17 @@ character-basic:
 character-dashboard:
   title: 總覽
   no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
+character-equipments-manage:
+  title: 管理所有裝備
+  mode-selections-title: 選擇檢視模式
+  mode-common: 一般模式
+  mode-common-caption: 此模式下，可以透過拖曳裝備來調整排序。
+  mode-label: 修改標籤模式
+  mode-label-caption: 此模式下，於標籤列表選擇一個標籤後，點擊裝備可以新增/移除該裝備的標籤。
+  batch-sorting-title: 批量排序
+  batch-sorting-by-equipment-type: 以裝備類型排序
+  batch-sorting-by-label: 以標籤排序，有標籤的排前方
+  batch-sorting-by-label-end: 以標籤排序，有標籤的排後方
 browse-equipments:
   append-equipments: 新增裝備
   equip-label: 裝備

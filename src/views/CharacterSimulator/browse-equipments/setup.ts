@@ -99,7 +99,7 @@ export function useEquipmentsForSearch() {
     return searchListMap
   })
 
-  const getEquipmentSearchList = (equipment: CharacterEquipment) => {
+  const getEquipmentSearchList = (equipment: CharacterEquipment): string[] => {
     return equipmentSearchListMap.value.get(equipment.id)!
   }
 
