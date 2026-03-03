@@ -22,7 +22,7 @@ const { t } = useI18n()
           <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
             {{ t('main-quest-calc.select-start-section-title') }}
           </div>
-          <MainQuestChapters @selected-sections-changed="selectedSections = $event" class="mt-4" />
+          <MainQuestChapters class="mt-4" @selected-sections-changed="selectedSections = $event" />
         </div>
       </div>
       <div class="grow px-3 py-4 wd:ml-2">

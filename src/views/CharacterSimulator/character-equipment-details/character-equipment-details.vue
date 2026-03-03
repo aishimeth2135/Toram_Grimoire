@@ -113,7 +113,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             <div v-if="equipment.is(EquipmentKinds.Weapon)" class="text-xs text-primary-30">
               ATK
             </div>
-            <div class="text-xs text-primary-30" v-else>DEF</div>
+            <div v-else class="text-xs text-primary-30">DEF</div>
             <div class="flex w-full items-center text-primary-70">
               {{ equipment.basicValue }}
               <span

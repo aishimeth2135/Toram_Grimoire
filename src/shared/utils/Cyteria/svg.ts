@@ -21,8 +21,8 @@ function create(width = 0, height = 0, attr: Attrs = {}) {
 
 function drawImage(
   path: string,
-  x: number,
-  y: number,
+  x1: number,
+  y1: number,
   width: number,
   height: number,
   attr: Attrs = {}
@@ -30,8 +30,8 @@ function drawImage(
   const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
   attr = Object.assign(
     {
-      x,
-      y,
+      x: x1,
+      y: y1,
       width,
       height,
     },

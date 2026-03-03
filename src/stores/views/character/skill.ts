@@ -8,31 +8,31 @@ import { toInt } from '@/shared/utils/number'
 import { LevelSkillTree, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
 const enum CsvSkillElementTypes {
-  SkillRoot = 'skillRoot',
-  SkillTreeCategory = 'skillTreeCategory',
-  SkillTree = 'skillTree',
-  LevelSkill = 'levelSkill',
+  TypeSkillRoot = 'skillRoot',
+  TypeSkillTreeCategory = 'skillTreeCategory',
+  TypeSkillTree = 'skillTree',
+  TypeLevelSkill = 'levelSkill',
 }
 
 const SAVE_CSV_CONFIG = {
   type: {
-    [CsvSkillElementTypes.SkillRoot]: 0,
-    [CsvSkillElementTypes.SkillTreeCategory]: 1,
-    [CsvSkillElementTypes.SkillTree]: 2,
-    [CsvSkillElementTypes.LevelSkill]: 3,
+    [CsvSkillElementTypes.TypeSkillRoot]: 0,
+    [CsvSkillElementTypes.TypeSkillTreeCategory]: 1,
+    [CsvSkillElementTypes.TypeSkillTree]: 2,
+    [CsvSkillElementTypes.TypeLevelSkill]: 3,
   },
   index: {
     type: 0,
-    [CsvSkillElementTypes.SkillRoot]: {
+    [CsvSkillElementTypes.TypeSkillRoot]: {
       name: 1,
     },
-    [CsvSkillElementTypes.SkillTreeCategory]: {
+    [CsvSkillElementTypes.TypeSkillTreeCategory]: {
       id: 1,
     },
-    [CsvSkillElementTypes.SkillTree]: {
+    [CsvSkillElementTypes.TypeSkillTree]: {
       id: 1,
     },
-    [CsvSkillElementTypes.LevelSkill]: {
+    [CsvSkillElementTypes.TypeLevelSkill]: {
       id: 1,
       level: 2,
       starGemLevel: 3,
@@ -187,7 +187,7 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
         return
       }
 
-      if (currentType === CsvSkillElementTypes.SkillRoot) {
+      if (currentType === CsvSkillElementTypes.TypeSkillRoot) {
         if (!hasInit) {
           resetSkillBuilds()
           cur = createBuild()
@@ -196,15 +196,15 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
           cur = createBuild()
         }
         cur.name = row[index[currentType]['name']]
-      } else if (currentType === CsvSkillElementTypes.SkillTreeCategory) {
+      } else if (currentType === CsvSkillElementTypes.TypeSkillTreeCategory) {
         const id = toInt(row[index[currentType]['id']])
         cur_stc = cur.skillTreeCategoryStates.find(item => item.origin.id === id)!
         cur_stc.visible = true
-      } else if (currentType === CsvSkillElementTypes.SkillTree) {
+      } else if (currentType === CsvSkillElementTypes.TypeSkillTree) {
         const id = toInt(row[index[currentType]['id']])
         cur_st = cur_stc.skillTreeStates.find(item => item.origin.id === id)!
         cur_st.visible = true
-      } else if (currentType === CsvSkillElementTypes.LevelSkill) {
+      } else if (currentType === CsvSkillElementTypes.TypeLevelSkill) {
         const id = toInt(row[index[currentType]['id']])
         const skill = cur_st.levelSkillTree.levelSkills.find(item => item.base.id === id)!
         skill.level(toInt(row[index[currentType]['level']]) ?? 0)

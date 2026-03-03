@@ -4,11 +4,9 @@ import { useDevice } from '@/shared/setup/Device'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import CardRow from '@/components/card/card-row.vue'
-import ShowStat from '@/components/common/show-stat.vue'
 
 import CharacterEquipmentLabels from '../character-equipment-details/character-equipment-labels.vue'
 import CommonEquipmentIconCircle from '../common/common-equipment-icon-circle.vue'
-import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 import BrowseEquipmentInfoSimplified from './browse-equipment-info-simplified.vue'
 import BrowseEquipmentsItemWrapper from './browse-equipments-item-wrapper.vue'
 import EquipmentBrowseActions from './equipment-browse-actions.vue'

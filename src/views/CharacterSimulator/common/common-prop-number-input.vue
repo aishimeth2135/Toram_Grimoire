@@ -71,9 +71,9 @@ const toMax = () => {
 
 <template>
   <CommonPropInputBase
+    v-slot="{ inputId, setInputFocus }"
     :title="title"
     :class="maxButton ? 'max-w-[10rem]' : 'max-w-[8rem]'"
-    v-slot="{ inputId, setInputFocus }"
   >
     <div class="relative min-w-4" @click.stop>
       <div class="invisible h-6">{{ innerValue }}</div>

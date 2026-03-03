@@ -97,8 +97,8 @@
             </div>
           </div>
           <CharacterStatRecordedDetails
-            class="mt-1.5"
             v-if="data.statRecorded"
+            class="mt-1.5"
             :stat="data.statRecorded"
           />
         </div>

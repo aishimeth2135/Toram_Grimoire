@@ -73,14 +73,14 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     SKILL_TREE_CATEGORY_CHECKING_NAME = '0',
     SKILL_TREE_CHECKING_NAME = '1'
 
-  const enum SKillElementType {
-    SkillTreeCategory,
-    SkillTree,
-    Skill,
-    SkillEffect,
+  const enum SkillElementType {
+    TypeSkillTreeCategory,
+    TypeSkillTree,
+    TypeSkill,
+    TypeSkillEffect,
   }
 
-  let curElement: SKillElementType
+  let curElement: SkillElementType
   let curSkillTreeCategory: SkillTreeCategory
   let curSkillTree: SkillTree
   let curSkill: Skill
@@ -128,11 +128,11 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
         if (nameChecking === SKILL_TREE_CATEGORY_CHECKING_NAME) {
           const name = row('skill-tree-category/name')
           curSkillTreeCategory = skillRoot.appendSkillTreeCategory(id, name)
-          curElement = SKillElementType.SkillTreeCategory
+          curElement = SkillElementType.TypeSkillTreeCategory
         } else if (nameChecking === SKILL_TREE_CHECKING_NAME) {
           const name = row('skill-tree/name')
           curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
-          curElement = SKillElementType.SkillTree
+          curElement = SkillElementType.TypeSkillTree
           if (row('skill-tree/simulator-flag')) {
             curSkillTree.attrs.simulatorFlag = true
           }
@@ -140,7 +140,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
           if (nameChecking !== '') {
             const name = nameChecking
             curSkill = curSkillTree.appendSkill(id, name)
-            curElement = SKillElementType.Skill
+            curElement = SkillElementType.TypeSkill
           }
 
           const mainWeapon = MAIN_WEAPON_LIST.indexOf(row('main-weapon')),
@@ -160,7 +160,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
               row('history-effect/date')
             )
           }
-          curElement = SKillElementType.SkillEffect
+          curElement = SkillElementType.TypeSkillEffect
           if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
             if (defaultSelected === 0 || defaultSelected === 2) {
               curSkill.setDefaultEffect(curSkillEffect)
@@ -201,7 +201,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
           return
         }
       }
-      if (curElement !== SKillElementType.SkillEffect || !curSkillEffect) {
+      if (curElement !== SkillElementType.TypeSkillEffect || !curSkillEffect) {
         return
       }
       const branchId = row('effect-branch/id') || null
