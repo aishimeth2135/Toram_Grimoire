@@ -48,11 +48,13 @@
           v-model:value="characterStore.calculationOptions.proration"
           :range="[50, 250]"
           :title="t('damage-calculation.item-base-titles.proration')"
+          unit="%"
         />
         <cy-input-counter
           v-model:value="characterStore.calculationOptions.comboRate"
           :range="[10, 150]"
           :title="t('damage-calculation.item-base-titles.combo_multiplier')"
+          unit="%"
         />
       </div>
       <RenderSectionHeader :title="t('character-simulator.character-damage.options-other-title')" />
@@ -121,8 +123,8 @@
   </SideFloat>
 </template>
 
-<script lang="tsx" setup>
-import { computed, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -136,7 +138,6 @@ import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 
-// import CardContent from '@/components/card/card-content.vue'
 import CharacterDamageSkillItem from './character-damage-skill-item.vue'
 
 interface Props {
@@ -222,11 +223,6 @@ const rangeDamageOptions: {
 ]
 
 const RenderSectionHeader = ({ title }: { title: string }) => {
-  return (
-    <div class="mt-6 flex items-center text-sm text-stone-40">
-      <cy-icon icon="ic:round-format-list-bulleted" color="stone" small class="mr-3" />
-      {title}
-    </div>
-  )
+  return h('div', { class: 'text-stone-40 mt-6 flex items-center text-sm' }, title)
 }
 </script>

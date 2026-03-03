@@ -34,13 +34,11 @@
         />
       </template>
       <template #side-contents>
-        <AppLayoutBottomContent v-if="displayModeMenuVisible" class="p-3">
-          <div>
-            <cy-icon-text small text-color="primary-30">
-              {{ t('registlet-query.display-mode.title') }}
-            </cy-icon-text>
+        <AppLayoutBottomContent v-if="displayModeMenuVisible" class="px-3 py-2">
+          <div class="text-stone-40 text-sm">
+            {{ t('registlet-query.display-mode.title') }}
           </div>
-          <div class="mt-1.5 pl-2.5">
+          <div class="mt-1">
             <cy-button-check
               :selected="state.displayMode === 'category'"
               @click="state.displayMode = 'category'"
@@ -48,7 +46,7 @@
               {{ t('registlet-query.display-mode.category') }}
             </cy-button-check>
           </div>
-          <div class="pl-2.5">
+          <div>
             <cy-button-check
               :selected="state.displayMode === 'obtain-levels'"
               @click="state.displayMode = 'obtain-levels'"

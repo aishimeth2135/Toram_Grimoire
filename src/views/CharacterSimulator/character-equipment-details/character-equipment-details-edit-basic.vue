@@ -26,7 +26,7 @@ const { t } = useI18n()
       />
     </div>
     <div v-if="equipment.customTypeList">
-      <div class="px-1.5 text-sm text-stone-60">
+      <div class="text-stone-60 px-1.5 text-sm">
         {{ t('character-simulator.equipment-basic-editor.equipment-type') }}
       </div>
       <cy-button-radio-group
@@ -58,6 +58,7 @@ const { t } = useI18n()
         v-model:value="equipment.refining"
         :title="t('character-simulator.equipment-info.refining')"
         range="0~15"
+        max-button
       />
     </div>
     <div class="w-full max-w-[20rem]">

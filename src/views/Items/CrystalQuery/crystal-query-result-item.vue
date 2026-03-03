@@ -1,22 +1,21 @@
 <template>
   <CardRow :selected="detailVisible">
     <div
-      class="sticky top-0 z-1 min-w-max"
+      class="z-1 sticky top-0 min-w-max"
       :class="{ 'bg-white': detailVisible }"
       @click="detailVisible = !detailVisible"
     >
       <cy-list-item>
-        <div class="flex w-40 shrink-0 py-0.5">
-          <cy-icon-text
-            :icon="crystal.crystalIconPath"
-            :text-color="detailVisible ? 'orange-60' : 'primary-90'"
-          >
-            {{ crystal.name }}
-          </cy-icon-text>
+        <div
+          class="flex w-40 shrink-0 items-center py-0.5"
+          :class="detailVisible ? 'text-red-70' : 'text-primary-90'"
+        >
+          <cy-icon :icon="crystal.crystalIconPath" class="mr-1.5" />
+          {{ crystal.name }}
         </div>
-        <div v-if="previewMode === 'default'" class="flex items-center text-sm text-cyan-60">
+        <div v-if="previewMode === 'default'" class="text-cyan-60 flex items-center text-sm">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon icon="mdi:arrow-up-bold-outline" small class="mr-2 text-cyan-60" />
+            <cy-icon icon="mdi:arrow-up-bold-outline" small class="text-cyan-60 mr-2" />
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </template>
@@ -39,28 +38,20 @@
           />
         </div>
         <div v-if="crystal.origin.obtains.length > 0" class="mt-3 flex items-center">
-          <cy-icon-text
-            icon="mdi:treasure-chest-outline"
-            small
-            icon-color="gray-60"
-            text-color="primary-30"
-          >
+          <cy-icon class="text-stone-40" icon="mdi:treasure-chest-outline" small />
+          <span class="text-stone-40 ml-1 text-sm">
             {{ t('crystal-query.obtain-prefix') }}
-          </cy-icon-text>
-          <span class="ml-0.5 text-sm text-gray-60">
+          </span>
+          <span class="text-primary-60 ml-2 text-sm">
             {{ crystal.origin.obtains[0].name }}
           </span>
         </div>
         <div v-if="crystal.origin.enhancer" class="mt-3 flex items-center">
-          <cy-icon-text
-            icon="mdi:arrow-up-bold-outline"
-            small
-            icon-color="cyan-60"
-            text-color="primary-30"
-          >
+          <cy-icon class="text-cyan-60" icon="mdi:arrow-up-bold-outline" small />
+          <span class="ml-1 text-sm text-cyan-50">
             {{ t('crystal-query.enhancer-prefix') }}
-          </cy-icon-text>
-          <span class="ml-2 flex items-center text-sm text-cyan-60">
+          </span>
+          <span class="text-cyan-60 ml-2 flex items-center text-sm">
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </span>

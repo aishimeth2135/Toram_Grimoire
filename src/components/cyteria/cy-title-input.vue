@@ -7,10 +7,10 @@
         'border-primary-20': !inputFocus,
       }"
     >
-      <cy-icon-text
+      <cy-icon
         :icon="icon"
         class="mr-2"
-        :icon-color="inputFocus ? 'primary-50' : 'primary-20'"
+        :class="inputFocus ? 'text-primary-50' : 'text-primary-20'"
       />
       <div class="w-full">
         <slot />

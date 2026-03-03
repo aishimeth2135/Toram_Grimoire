@@ -1,4 +1,4 @@
-<script lang="tsx" setup>
+<script lang="ts" setup>
 import { type ComputedRef, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -31,8 +31,8 @@ const searchText = ref('')
 const showCrystalStats = ref(false)
 const onlyshowLastCrystal = ref(true)
 
-const crystalCategorys = (() => {
-  const crystals = Grimoire.Items.crystals
+const allCrystalCategorys = (() => {
+  const allCrystals = Grimoire.Items.crystals
   const categorys = Array(5)
     .fill(0)
     .map((_value, idx) => {
@@ -41,14 +41,14 @@ const crystalCategorys = (() => {
         crystals: [] as BagCrystal[],
       }
     })
-  crystals.forEach(crystal => {
+  allCrystals.forEach(crystal => {
     categorys[crystal.category].crystals.push(crystal)
   })
   return categorys
 })()
 
 const crystalCategoryAllCrystalEnhancers = new Map<number, Set<string>>()
-crystalCategorys.forEach(category => {
+allCrystalCategorys.forEach(category => {
   const enhancers = new Set<string>()
   category.crystals.forEach(crystal => {
     if (crystal.enhancer) {
@@ -105,7 +105,7 @@ const getCrystalCategoryTitle = (categoryId: number): string => {
 }
 
 const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
-  return crystalCategorys
+  return allCrystalCategorys
     .filter(category => availableCrystalCategoryIds.value.includes(category.id))
     .map(category => {
       const text = searchText.value.toLowerCase()
@@ -161,7 +161,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
 </script>
 
 <template>
-  <div class="flex max-h-[24rem] min-h-0 max-w-[20rem] grow flex-col wd-lg:max-h-none">
+  <div class="wd-lg:max-h-none flex max-h-[24rem] min-h-0 max-w-[20rem] grow flex-col">
     <div class="flex justify-end pb-1">
       <cy-button-toggle v-model:selected="showCrystalStats">
         {{ t('character-simulator.select-crystals.show-crystal-stats') }}
@@ -176,7 +176,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
           class="grow"
         />
         <cy-popover
-          class="flex items-center border-b border-l border-primary-5 bg-white px-1.5"
+          class="border-primary-5 flex items-center border-b border-l bg-white px-1.5"
           placement="bottom-end"
         >
           <cy-button-icon icon="mdi-filter" :selected="onlyshowLastCrystal" />
@@ -197,7 +197,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
       </div>
       <div class="grow space-y-3 overflow-y-auto py-2">
         <div v-for="category in currentCrystalCategorys" :key="category.id">
-          <div class="pb-2 pl-3 text-sm text-stone-60">{{ category.title }}</div>
+          <div class="text-stone-60 pb-2 pl-3 text-sm">{{ category.title }}</div>
           <CardRowsDelegation @row-clicked="toggleCrystal">
             <CharacterEquipmentDetailsSelectCrystalOption
               v-for="option in category.crystals"

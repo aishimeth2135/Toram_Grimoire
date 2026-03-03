@@ -140,7 +140,7 @@
 
 /* button dropdown */
 .cy-button-dropdown-wrapper {
-  @apply border-l-4 border-primary-30 duration-200;
+  @apply border-primary-30 border-l-4 duration-200;
 
   &.content-visble {
     @apply border-primary-30;
@@ -159,7 +159,7 @@
 
 /* button icon */
 .cy-button-icon {
-  @apply mx-2 rounded-full duration-200;
+  @apply rounded-full duration-200;
 
   &:focus:not(:active) {
     @apply bg-primary-30/20;
