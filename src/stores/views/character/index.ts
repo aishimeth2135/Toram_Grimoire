@@ -82,7 +82,7 @@ interface CharacterSimulatorSaveDataRoot {
   datas: CharacterSimulatorSaveData
 }
 
-const V2_AUTO_SAVE_STORAGE_KEY = 'app--character-simulator--data-v2--auto'
+export const V2_AUTO_SAVE_STORAGE_KEY = 'app--character-simulator--data-v2--auto'
 
 export const useCharacterStore = defineStore('view-character', () => {
   const characterSimulatorHasInit = ref(false)
