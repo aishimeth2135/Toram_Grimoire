@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import { toInt } from '@/shared/utils/number'
+import { numberToFixed, toInt } from '@/shared/utils/number'
 import { isNumberString, lastChar } from '@/shared/utils/string'
 
 import { StatTypes } from './enums'
@@ -111,7 +111,8 @@ class StatBase {
   showValue(type: StatTypes, value: StatValue, useDefaultTail = true) {
     const showData = this.getShowData(type, value)
     const prefix = typeof value !== 'number' || value >= 0 ? '+' : ''
-    return `${prefix}${value}${useDefaultTail || this.hasMultiplier ? showData.tail : ''}`
+    const displayedValue = typeof value === 'number' && value > 1 ? numberToFixed(value, 3) : value
+    return `${prefix}${displayedValue}${useDefaultTail || this.hasMultiplier ? showData.tail : ''}`
   }
 
   createStat(type: StatTypes, value: number): Stat {
