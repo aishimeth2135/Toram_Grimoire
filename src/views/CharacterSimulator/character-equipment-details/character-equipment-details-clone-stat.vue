@@ -10,9 +10,9 @@ import { StatRestriction } from '@/lib/Character/Stat'
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
+import IconSelection from '@/components/common/icon-selection.vue'
 
 import BrowseEquipmentsMain from '../browse-equipments/browse-equipments-main.vue'
-import CommonSelectionIcon from '../common/common-selection-icon.vue'
 
 interface Props {
   targetEquipment: CharacterEquipment
@@ -69,8 +69,8 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="w-full wd-lg:flex">
-    <div class="shrink-0 px-2 pb-6 pt-2 wd-lg:mr-6 wd-lg:w-[20rem]">
+  <div class="wd-lg:flex w-full">
+    <div class="wd-lg:mr-6 wd-lg:w-[20rem] shrink-0 px-2 pb-6 pt-2">
       <CardRowsWrapper>
         <CardRows v-if="current">
           <CardRow
@@ -80,19 +80,19 @@ const submit = () => {
             hover
             @click="toggleItem(stat)"
           >
-            <CommonSelectionIcon :selected="itemSelected(stat)" />
+            <IconSelection :selected="itemSelected(stat)" class="mr-3.5" />
             {{ stat.show() }}
           </CardRow>
           <CardRow
             v-for="stat in currentPartStats.invalidStats"
             :key="stat.statId"
-            class="flex items-center px-4 py-2 text-gray-60 opacity-50"
+            class="text-gray-60 flex items-center px-4 py-2 opacity-50"
           >
             <cy-icon icon="mdi:ban" class="mr-3" />
             {{ stat.show() }}
           </CardRow>
         </CardRows>
-        <div v-else class="px-6 py-4 text-sm text-primary-40">
+        <div v-else class="text-primary-40 px-6 py-4 text-sm">
           <div class="mb-2">
             {{ t('character-simulator.equipment-basic-editor.clone-stats.caption-1') }}
           </div>

@@ -14,8 +14,7 @@ import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLab
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
-
-import CommonSelectionIcon from '../common/common-selection-icon.vue'
+import IconSelection from '@/components/common/icon-selection.vue'
 
 interface Props {
   selectedLabels: CharacterBuildLabel[]
@@ -87,9 +86,9 @@ const closeEditingLabel = () => {
           <template #item="{ element: label }">
             <CardRow>
               <div class="flex items-center px-4 py-2">
-                <CommonSelectionIcon
+                <IconSelection
                   :selected="currentEquipmentLabelIds.has(label.id)"
-                  class="shrink-0 cursor-pointer"
+                  class="mr-3.5 shrink-0 cursor-pointer"
                   @click="emit('label-click', label)"
                 />
                 <div

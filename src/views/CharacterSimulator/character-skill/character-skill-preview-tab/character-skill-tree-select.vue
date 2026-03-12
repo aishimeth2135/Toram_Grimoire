@@ -5,8 +5,7 @@ import { SkillBuild } from '@/lib/Character/SkillBuild'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'
-
-import CommonSelectionIcon from '../../common/common-selection-icon.vue'
+import IconSelection from '@/components/common/icon-selection.vue'
 
 interface Props {
   skillBuild: SkillBuild
@@ -30,7 +29,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(ca
     <template #popper>
       <div class="px-3 py-2">
         <div v-for="{ category, skillTrees } in allSkillTreeCategorys" :key="category.id">
-          <div class="py-0.5 text-sm text-primary-40">
+          <div class="text-primary-40 py-0.5 text-sm">
             {{ category.name }}
           </div>
           <CardRows class="pb-2">
@@ -41,7 +40,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(ca
               hover
               @click="skillBuild.toggleSkillTreeSelected(skillTree)"
             >
-              <CommonSelectionIcon :selected="skillBuild.hasSkillTree(skillTree)" />
+              <IconSelection :selected="skillBuild.hasSkillTree(skillTree)" class="mr-3.5" />
               {{ skillTree.name }}
             </CardRow>
           </CardRows>

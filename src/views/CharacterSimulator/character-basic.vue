@@ -1,6 +1,6 @@
-<script lang="tsx" setup>
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { type Ref, ref } from 'vue'
+import { type Ref, h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -67,11 +67,15 @@ const addCharacater = () => {
 }
 
 const RenderContentTitie = (attrs: { title: string }) => {
-  return (
-    <div class="mt-6 flex w-full max-w-lg items-center">
-      <div class="flex shrink-0 items-center text-sm text-gray-40">{attrs.title}</div>
-      <div class="ml-2 w-full border-b border-stone-20"></div>
-    </div>
+  return h(
+    'div',
+    {
+      class: 'mt-6 flex w-full max-w-lg items-center',
+    },
+    [
+      h('div', { class: 'flex shrink-0 items-center text-sm text-gray-40' }, attrs.title),
+      h('div', { class: 'ml-2 w-full border-b border-stone-20' }),
+    ]
   )
 }
 </script>

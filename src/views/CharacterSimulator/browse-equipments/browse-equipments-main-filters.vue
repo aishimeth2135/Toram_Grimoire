@@ -10,9 +10,9 @@ import { Items } from '@/lib/common/Items'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'
+import IconSelection from '@/components/common/icon-selection.vue'
 
 import CommonSearchInput from '../common/common-search-input.vue'
-import CommonSelectionIcon from '../common/common-selection-icon.vue'
 import BrowseEquipmentTypeFilter from './browse-equipment-type-filter.vue'
 
 import { setupEquipmentLabelFilter, useEquipmentsForSearch } from './setup'
@@ -93,14 +93,14 @@ watch(
             hover
             @click="labelFilter.toggleLabel(label)"
           >
-            <CommonSelectionIcon :selected="labelFilter.labelSelected(label)" class="shrink-0" />
+            <IconSelection :selected="labelFilter.labelSelected(label)" class="mr-3.5 shrink-0" />
             <div class="mr-2 h-3.5 w-3.5 rounded-sm" :class="`bg-${label.color}-50`" />
             {{ label.text }}
           </CardRow>
         </CardRows>
         <div class="flex justify-end px-4 pb-2 pt-1">
           <span
-            class="cursor-pointer text-sm text-primary-50"
+            class="text-primary-50 cursor-pointer text-sm"
             @click="labelFilter.selectedLabels.value = []"
           >
             {{ t('global.reset') }}

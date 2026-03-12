@@ -26,4 +26,8 @@ export abstract class Items {
   static includes<Item extends CommonItem>(source: Item[], target: Item) {
     return source.some(item => item.id === target.id)
   }
+
+  static equal<Item extends CommonItem | null>(source: Item, target: Item) {
+    return source?.id === target?.id
+  }
 }

@@ -2,8 +2,8 @@
   <Render />
 </template>
 
-<script lang="tsx" setup>
-import { mergeProps, useAttrs } from 'vue'
+<script lang="ts" setup>
+import { h, mergeProps, useAttrs } from 'vue'
 
 import Icons from '@/shared/services/SvgIcons'
 
@@ -26,6 +26,9 @@ const Render = () => {
     tmpAttrs[item.name] = item.value
   })
   const newAttrs = mergeProps(tmpAttrs, attrs)
-  return <svg {...newAttrs} v-html={svgEl.innerHTML}></svg>
+  return h('svg', {
+    ...newAttrs,
+    innerHTML: svgEl.innerHTML,
+  })
 }
 </script>
