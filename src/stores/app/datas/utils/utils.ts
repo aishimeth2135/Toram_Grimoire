@@ -1,4 +1,4 @@
-import { normalizeInteger } from '@/shared/utils/number'
+import { normalizeFloat } from '@/shared/utils/number'
 
 import { StatTypes } from '@/lib/Character/Stat'
 
@@ -14,7 +14,7 @@ export function parseStatValueData(dataValue: string): {
     value = dataValue.slice(0, -1)
   }
 
-  const resultValue = normalizeInteger(value)
+  const resultValue = normalizeFloat(value)
 
   let type = StatTypes.Constant
   if (tail === '%') {

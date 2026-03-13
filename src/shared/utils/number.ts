@@ -43,6 +43,13 @@ export function normalizeInteger(value: string | number): number {
   return Number.isNaN(value) ? 0 : value
 }
 
+export function normalizeFloat(value: string | number): number {
+  if (typeof value !== 'number') {
+    value = parseFloat(value)
+  }
+  return Number.isNaN(value) ? 0 : value
+}
+
 /**
  * Get the number with the commas.
  * example: 1234567 -> 1,234,567
