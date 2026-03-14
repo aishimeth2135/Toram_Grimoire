@@ -1,6 +1,4 @@
 <script lang="ts" setup generic="Item extends { id: any }">
-import { h } from 'vue'
-
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsDelegation from '@/components/card/card-rows-delegation.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
@@ -29,25 +27,14 @@ interface Slots {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const slots = defineSlots<Slots>()
+defineSlots<Slots>()
 
 const itemClicked = (item: Item) => {
   emit('select-item', item)
 }
 
-const RenderItem = ({ item }: { item: Item }) => {
-  const selected = props.selectedItemIds.includes(item.id)
-
-  const itemNode = slots.item({
-    item: item,
-    selected,
-  })
-  const iconNode = h(IconSelection, { selected, class: 'mr-3.5' }, itemNode)
-  return h(
-    CardRow,
-    { item, hover: true, class: 'flex cursor-pointer items-center px-4 py-2' },
-    iconNode
-  )
+const itemSelected = (item: Item) => {
+  return props.selectedItemIds.includes(item.id)
 }
 </script>
 
@@ -62,7 +49,16 @@ const RenderItem = ({ item }: { item: Item }) => {
       />
     </div>
     <CardRowsDelegation class="grow overflow-y-auto py-2" @row-clicked="itemClicked">
-      <RenderItem v-for="item in items" :key="item.id" :item="item" />
+      <CardRow
+        v-for="item in items"
+        :key="item.id"
+        class="flex cursor-pointer items-center px-4 py-2"
+        :item="item"
+        hover
+      >
+        <IconSelection :selected="itemSelected(item)" class="mr-3.5" />
+        <slot name="item" :item="item" :selected="itemSelected(item)" />
+      </CardRow>
     </CardRowsDelegation>
   </CardRowsWrapper>
 </template>
