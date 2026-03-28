@@ -4341,6 +4341,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:8.32.1":
   version: 8.32.1
   resolution: "@typescript-eslint/eslint-plugin@npm:8.32.1"
@@ -6004,10 +6011,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^2.3.10":
-  version: 2.4.5
-  resolution: "dompurify@npm:2.4.5"
-  checksum: 10c0/90d880e04c8476041778777d412eaa3d204448f1be67b9c72f76374f8f113e04552d5abbcee2d76fe36d03db9f9cb97b2cfa48cd7440b20fbcae2e1c7131e9de
+"dompurify@npm:^3.3.2":
+  version: 3.3.3
+  resolution: "dompurify@npm:3.3.3"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/097c14a21a3f6cb95beded9ecd255f7c3512c42767b048390c747b0fe35736f6a71e02320fc50a9ac2be645834b463e4760915d595d502a56452daf339d0ea9c
   languageName: node
   linkType: hard
 
@@ -10615,7 +10627,7 @@ __metadata:
     assert: "npm:^2.0.0"
     chinese-conv: "npm:^1.0.1"
     culori: "npm:^4.0.2"
-    dompurify: "npm:^2.3.10"
+    dompurify: "npm:^3.3.2"
     escape-string-regexp: "npm:^5.0.0"
     eslint: "npm:^9.27.0"
     eslint-import-resolver-alias: "npm:^1.1.2"

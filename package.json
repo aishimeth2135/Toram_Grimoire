@@ -15,7 +15,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.5.3",
     "assert": "^2.0.0",
-    "dompurify": "^2.3.10",
+    "dompurify": "^3.3.2",
     "escape-string-regexp": "^5.0.0",
     "jsep": "^1.0.3",
     "marked": "^4.3.0",
