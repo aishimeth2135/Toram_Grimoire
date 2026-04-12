@@ -206,6 +206,9 @@ abstract class StatElementBase {
   }
 }
 
+/**
+ * The stat with pure numerical value.
+ */
 class Stat extends StatElementBase {
   value: number
 
@@ -224,6 +227,10 @@ class Stat extends StatElementBase {
   }
 }
 
+/**
+ * The stat with string value.
+ * (The string value needs to be converted into numbers through calculation)
+ */
 class StatComputed extends StatElementBase {
   value: string
 
