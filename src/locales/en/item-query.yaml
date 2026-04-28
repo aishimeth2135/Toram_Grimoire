@@ -1,0 +1,45 @@
+modes:
+  normal: Normal
+  stat: Equipment stat
+  item-level: Item level
+  dye: Dye
+no-result-tips: No results found.
+options-normal:
+  title: Search by
+  name: Name
+  material: Crafting material
+  obtain-name: Obtain source
+  map: Map
+options-stat:
+  select-stat:
+    title: Select one or more stats
+    title-multiple: '{num} stats selected'
+    search-placeholder: Search stats
+sort-options:
+  title: Sort by
+  options:
+    default: Default
+    atk: ATK
+    def: DEF
+    stability: Stability
+    name: Name
+    id: Date added
+  order:
+    title: Order
+    up: Ascending
+    down: Descending
+equipment-detail:
+  production-equipment: Craftable equipment
+  equipment-type: Equipment type
+  stability: Stability
+  content-titles:
+    stats: Equipment stats
+    recipe: Crafting recipe
+    obtains: Obtain methods
+  recipe:
+    item-level: Item level
+    item-difficulty: Difficulty
+    base-potential: Base potential
+    spina: Spina
+  no-any-obtain-tips: Obtain method unknown.
+  no-any-stat-tips: This equipment has no stats.

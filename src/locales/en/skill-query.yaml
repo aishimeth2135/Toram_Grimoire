@@ -1,9 +1,16 @@
 skill-info: Skill info
 historical-record: Change history
+historical-record-equipment-type-invalid-tips: No change history for the currently selected equipment type.
 select-skill: Choose skills
+main-menu-title-common: General settings
 skill-level: Skill Level
 character-level: Character Level
+registlet-level: Registlet level
+registlet-level-abbreviation: Reg. level
+registlet-info-tip: For more details about Registlets, see {link}.
+registlet-max-level-title: Max level
 search-tips: Click here to search skills
+quick-switch-equipment-type-caption: You can quickly switch the equipment type of the current skill here.
 go-to-skill: View
 formula-display-mode:
   title: Display Mode of Formulas
@@ -20,6 +27,9 @@ equipment:
   'main: title': Main Hand Weapon
   'sub: title': Sub Weapon
   'body: title': Body Equipment
+skill-buffs:
+  mp_cost_half:
+    title: MP cost halved
 branch:
   duration-caption: Lasts for {duration} seconds
   ailment-title: After successful hit
@@ -35,6 +45,9 @@ branch:
     BVIT: Base VIT
     BDEX: Base DEX
     TEC: TEC
+    CRT: CRT
+    LUK: LUK
+    MEN: MEN
     STR: Total STR
     INT: Total INT
     AGI: Total AGI
@@ -87,6 +100,9 @@ branch:
     range:
       no_limit: No limit
       main: 'Same as #[Weapon Used]'
+      magic_device: 'Same as Magic Device #[Weapon Used]'
+      katana: 'Same as Katana #[Weapon Used]'
+      knuckle: 'Same as Knuckle #[Weapon Used]'
   damage:
     base-name: Damage
     base:
@@ -124,6 +140,11 @@ branch:
       dark: Dark
       one_hand_sword: One-handed Sword Element
       arrow: Arrow Element
+      against: Effective element
+    dual_element:
+      one_hand_sword: One-Handed Sword
+      arrow: Arrow
+      magic_device: Magic Device
     judgment:
       common: Common damage judgment
       separate: Separate damage judgment
@@ -137,7 +158,12 @@ branch:
     range_damage:
       'true': Affected by Range Damage
       'false': Unaffected by Range Damage
+      long: Always affected by Long Range Damage
+      short: Always affected by Short Range Damage
+      both: Takes the higher of Short/Long Range Damage
       none: Unknown affected/unaffected by Range Damage
+    combo_rate:
+      'false': Combo Rate
     is_place:
       'true': In-place skill
     '@custom-base-caption':
@@ -200,6 +226,8 @@ branch:
     'effective_area: title': Area type
     'radius: title': Radius
     'angle: title': Angle
+  next:
+    condition-default-value: Next skill
   passive:
     base-name: Passive
   heal:

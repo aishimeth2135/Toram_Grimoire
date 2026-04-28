@@ -247,34 +247,34 @@
       "value": "#0f172b"
     },
     "primary-5": {
-      "value": "#fff7fa"
+      "value": "#f0f8ff"
     },
     "primary-10": {
-      "value": "#ffe7ef"
+      "value": "#dbeeff"
     },
     "primary-20": {
-      "value": "#ffcbdc"
+      "value": "#bbd9fe"
     },
     "primary-30": {
-      "value": "#ffa3c2"
+      "value": "#90bffb"
     },
     "primary-40": {
-      "value": "#fd7aa6"
+      "value": "#5e9fef"
     },
     "primary-50": {
-      "value": "#f5578c"
+      "value": "#3b82db"
     },
     "primary-60": {
-      "value": "#e83b7f"
+      "value": "#2966c0"
     },
     "primary-70": {
-      "value": "#cf286b"
+      "value": "#1d50a0"
     },
     "primary-80": {
-      "value": "#a91956"
+      "value": "#153d7e"
     },
     "primary-90": {
-      "value": "#790f3f"
+      "value": "#0e2d5e"
     }
   },
   "color-dark": {
@@ -525,34 +525,34 @@
       "value": "#fcfdfd"
     },
     "primary-5": {
-      "value": "#502338"
+      "value": "#0e1a2e"
     },
     "primary-10": {
-      "value": "#843e5c"
+      "value": "#162840"
     },
     "primary-20": {
-      "value": "#ae5d7e"
+      "value": "#1e3d5e"
     },
     "primary-30": {
-      "value": "#cd7f9d"
+      "value": "#2b587e"
     },
     "primary-40": {
-      "value": "#e5a5ba"
+      "value": "#4278a8"
     },
     "primary-50": {
-      "value": "#f4cad8"
+      "value": "#7aaace"
     },
     "primary-60": {
-      "value": "#f9dce6"
+      "value": "#a8c8e4"
     },
     "primary-70": {
-      "value": "#fcedf2"
+      "value": "#c8ddf0"
     },
     "primary-80": {
-      "value": "#fef7fa"
+      "value": "#e0edf8"
     },
     "primary-90": {
-      "value": "#fffcfd"
+      "value": "#f2f7fc"
     }
   }
 }

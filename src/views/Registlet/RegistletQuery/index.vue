@@ -71,6 +71,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import { useContributeHint } from '@/shared/setup/ContributeHint'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
@@ -142,4 +143,6 @@ const currentItems = computed(() => {
     return item.rows.some(row => row.value.toLowerCase().includes(text))
   })
 })
+
+useContributeHint(computed(() => currentItems.value.length === 0 && !!searchText.value))
 </script>

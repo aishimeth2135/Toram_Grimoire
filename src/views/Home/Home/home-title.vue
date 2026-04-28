@@ -3,13 +3,15 @@
     <HomeIconTitle class="home-title-wrapper" :root-el="rootEl" />
     <div class="home-title-title">
       <div class="home-title-sub text-4xl text-primary-70">Cy's Grimoire</div>
-      <div class="home-title-sub mt-2 text-xl text-primary-40">布偶的魔法書</div>
+      <div class="home-title-sub mt-2 text-xl text-primary-40">MiLo's Edition</div>
     </div>
-    <div class="home-title-author text-xl text-blue-50">By. Cyteria</div>
+    <div class="home-title-author text-xl text-blue-50">Fork by MiLo · Based on work by Cyteria</div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+
 import HomeIconTitle from './home-icon-title.vue'
 
 interface Props {
@@ -17,6 +19,8 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const { t } = useI18n()
 </script>
 
 <style>

@@ -39,6 +39,7 @@ import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import type { ComputedRef, WritableComputedRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { useContributeHint } from '@/shared/setup/ContributeHint'
 
 import { Skill } from '@/lib/Skill/Skill'
 
@@ -89,6 +90,8 @@ const selectedSearchResultIdx: WritableComputedRef<number> = computed({
 watch(searchResult, () => {
   selectedSearchResultIdx.value = 0
 })
+
+useContributeHint(computed(() => searchResult.value.length === 0 && searchText.value !== ''))
 
 const selectSkillFromKeyup = () => {
   const skill = searchResult.value[selectedSearchResultIdx.value]

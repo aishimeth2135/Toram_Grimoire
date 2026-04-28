@@ -36,6 +36,7 @@ import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import { useContributeHint } from '@/shared/setup/ContributeHint'
 
 import PageControl from '@/shared/setup/PageControl'
 
@@ -67,6 +68,8 @@ const { currentItems, page, maxPage } = PageControl({
   items: currentTags,
   step: 30,
 })
+
+useContributeHint(computed(() => currentTags.value.length === 0 && !!searchText.value))
 
 const topElement = useTemplateRef('topElement')
 const pageChanged = async () => {

@@ -1,0 +1,422 @@
+{
+  "chapter:1": {
+    "name": "Prologue of Chaos"
+  },
+  "chapter:2": {
+    "name": "The Holy Crystal Incident"
+  },
+  "chapter:3": {
+    "name": "War of the Ancient Gods"
+  },
+  "chapter:4": {
+    "name": "New Shadows"
+  },
+  "chapter:5": {
+    "name": "Storm Sweeping the Darkness"
+  },
+  "chapter:6": {
+    "name": "Two Factions of Tenista"
+  },
+  "chapter:7": {
+    "name": "Turbulent Artiomeia"
+  },
+  "chapter:8": {
+    "name": "Battle Toward Elrodnboom"
+  },
+  "chapter:9": {
+    "name": "Recapture of Elrodnboom"
+  },
+  "chapter:10": {
+    "name": "The Lost Ark of the Gods"
+  },
+  "chapter:11": {
+    "name": "Journey to Toran"
+  },
+  "chapter:12": {
+    "name": "Draganil Sanctuary"
+  },
+  "chapter:13": {
+    "name": "The Water Tribe, Dragons, and the Kuro Symbiont"
+  },
+  "chapter:14": {
+    "name": "Toran Mainland"
+  },
+  "chapter:15": {
+    "name": "Awakening of the Kuro Symbiont"
+  },
+  "section:1:1": {
+    "name": "Unfamiliar Streets and Crowds"
+  },
+  "section:1:2": {
+    "name": "The Strele Siblings"
+  },
+  "section:1:3": {
+    "name": "Golem Uprising"
+  },
+  "section:1:4": {
+    "name": "The Goddess of Wisdom"
+  },
+  "section:1:5": {
+    "name": "Dragon's Lair"
+  },
+  "section:1:6": {
+    "name": "Abandoned Temple"
+  },
+  "section:1:7": {
+    "name": "The First Magic Stone"
+  },
+  "section:1:8": {
+    "name": "Extermination Incense"
+  },
+  "section:1:9": {
+    "name": "Dragon and Black Crystal"
+  },
+  "section:2:1": {
+    "name": "An Uninvited Merchant Girl"
+  },
+  "section:2:2": {
+    "name": "Search for the Holy Crystal"
+  },
+  "section:2:3": {
+    "name": "Mysterious Black Knight"
+  },
+  "section:2:4": {
+    "name": "Trial of the New Moon Palace"
+  },
+  "section:2:5": {
+    "name": "The Moon Mage"
+  },
+  "section:2:6": {
+    "name": "Respect and Resentment"
+  },
+  "section:2:7": {
+    "name": "Mage's Cave"
+  },
+  "section:2:8": {
+    "name": "Star Mage"
+  },
+  "section:3:1": {
+    "name": "The Strongest Rival??"
+  },
+  "section:3:2": {
+    "name": "Ancient Empress"
+  },
+  "section:3:3": {
+    "name": "True Identity of the Attacker"
+  },
+  "section:3:4": {
+    "name": "Fate of the Fortress"
+  },
+  "section:3:5": {
+    "name": "Memories of the Vanished Town"
+  },
+  "section:3:6": {
+    "name": "The Stolen Holy Crystal"
+  },
+  "section:3:7": {
+    "name": "People Living with Dragons"
+  },
+  "section:3:8": {
+    "name": "Invaders from Another World"
+  },
+  "section:4:1": {
+    "name": "The Magic Tribesman Diru"
+  },
+  "section:4:2": {
+    "name": "Wandering for Revival"
+  },
+  "section:4:3": {
+    "name": "The Sacred Gem of Akak"
+  },
+  "section:4:4": {
+    "name": "King Darugan"
+  },
+  "section:4:5": {
+    "name": "Dark Clouds Over the Processing Plant"
+  },
+  "section:4:6": {
+    "name": "Capture the Fake Black Knight!"
+  },
+  "section:4:7": {
+    "name": "First Appearance of Tenista"
+  },
+  "section:4:8": {
+    "name": "Drifting Death Feather"
+  },
+  "section:5:1": {
+    "name": "Within the Unknown Darkness"
+  },
+  "section:5:2": {
+    "name": "Where the Seal Lies"
+  },
+  "section:5:3": {
+    "name": "The Dried Dark Mirror"
+  },
+  "section:5:4": {
+    "name": "Fierce Battle at Shourai Garden"
+  },
+  "section:5:5": {
+    "name": "Light Shining into Darkness"
+  },
+  "section:5:6": {
+    "name": "Monsters in the Dark Mansion"
+  },
+  "section:5:7": {
+    "name": "City of Darkness"
+  },
+  "section:5:8": {
+    "name": "Journey to the World of Mortals"
+  },
+  "section:6:1": {
+    "name": "Demy Machina"
+  },
+  "section:6:2": {
+    "name": "Town of the Peace Faction"
+  },
+  "section:6:3": {
+    "name": "Machines Have Hearts Too"
+  },
+  "section:6:4": {
+    "name": "Radical Faction Black Knight"
+  },
+  "section:6:5": {
+    "name": "Mysterious Relic"
+  },
+  "section:6:6": {
+    "name": "Truth of the Relic"
+  },
+  "section:6:7": {
+    "name": "Price of Betrayal"
+  },
+  "section:6:8": {
+    "name": "Life-Defiling Factory"
+  },
+  "section:6:9": {
+    "name": "Mystery of the Black Knight"
+  },
+  "section:7:1": {
+    "name": "Forest of Monsters"
+  },
+  "section:7:2": {
+    "name": "Guerrilla Underground City"
+  },
+  "section:7:3": {
+    "name": "Elfi Tribe in Radical Territory"
+  },
+  "section:7:4": {
+    "name": "The Mad Laboratory"
+  },
+  "section:7:5": {
+    "name": "Horrors in the Prison"
+  },
+  "section:7:6": {
+    "name": "Tragedy at Doroma Square"
+  },
+  "section:7:7": {
+    "name": "Toward Artiomeia Palace"
+  },
+  "section:7:8": {
+    "name": "Truth of Chaos"
+  },
+  "section:8:1": {
+    "name": "Monster-Infested Mines"
+  },
+  "section:8:2": {
+    "name": "Mysterious Shadow"
+  },
+  "section:8:3": {
+    "name": "New Home of the Diru Tribe"
+  },
+  "section:8:4": {
+    "name": "Site of the Divine Ruins"
+  },
+  "section:8:5": {
+    "name": "Former God of Justice"
+  },
+  "section:8:6": {
+    "name": "The Throne Left in the Temple"
+  },
+  "section:8:7": {
+    "name": "Where the Gods Are"
+  },
+  "section:8:8": {
+    "name": "Awaiting in the Seed Temple"
+  },
+  "section:8:9": {
+    "name": "Guardian in the Snow"
+  },
+  "section:8:10": {
+    "name": "End of the Mountain Range"
+  },
+  "section:9:1": {
+    "name": "Perilous Road to Elrodnboom"
+  },
+  "section:9:2": {
+    "name": "Unexpected Trap"
+  },
+  "section:9:3": {
+    "name": "Ruins of Progress"
+  },
+  "section:9:4": {
+    "name": "Unexpected Familiar Face"
+  },
+  "section:9:5": {
+    "name": "Front Base Activation"
+  },
+  "section:9:6": {
+    "name": "Recapture the Treetop Port"
+  },
+  "section:9:7": {
+    "name": "The Legacy is a Transfer Device"
+  },
+  "section:9:8": {
+    "name": "The Man Seeking Death"
+  },
+  "section:9:9": {
+    "name": "Recapture of Elrodnboom"
+  },
+  "section:9:10": {
+    "name": "New Beginning"
+  },
+  "section:10:1": {
+    "name": "Heading to the Land of Fate"
+  },
+  "section:10:2": {
+    "name": "Occupants Below the Cliff"
+  },
+  "section:10:3": {
+    "name": "Reunion with Nightmare"
+  },
+  "section:10:4": {
+    "name": "Whereabouts of the Missing Monks"
+  },
+  "section:10:5": {
+    "name": "Brave Goddess and Illegal Occupants"
+  },
+  "section:10:6": {
+    "name": "Ark Helmsman"
+  },
+  "section:10:7": {
+    "name": "Witch of the Forest"
+  },
+  "section:10:8": {
+    "name": "Novelle Tila's Duel"
+  },
+  "section:11:1": {
+    "name": "Ark Takes Flight"
+  },
+  "section:11:2": {
+    "name": "On Unknown Land"
+  },
+  "section:11:3": {
+    "name": "Forest Walk"
+  },
+  "section:11:4": {
+    "name": "Forest People Yumano"
+  },
+  "section:11:5": {
+    "name": "The Sprouters"
+  },
+  "section:11:6": {
+    "name": "Those Who Bring Blessings"
+  },
+  "section:11:7": {
+    "name": "Fierce Battle at Kuro Symbiont Fortress"
+  },
+  "section:11:8": {
+    "name": "Shadows in the Smoking Mountain"
+  },
+  "section:11:9": {
+    "name": "Draganil and the Underground World"
+  },
+  "section:12:1": {
+    "name": "Sky with a Ceiling"
+  },
+  "section:12:2": {
+    "name": "Conflict Between Dragon and Draganil"
+  },
+  "section:12:3": {
+    "name": "Draganil Couple with Child"
+  },
+  "section:12:4": {
+    "name": "Draganil Sanctuary"
+  },
+  "section:12:5": {
+    "name": "Battle Inside the Thruster"
+  },
+  "section:12:6": {
+    "name": "Seeking New Technology"
+  },
+  "section:12:7": {
+    "name": "Repairing the Ark"
+  },
+  "section:12:8": {
+    "name": "Draganil Conflict"
+  },
+  "section:12:9": {
+    "name": "Cocoon in the Ice Wall"
+  },
+  "section:13:1": {
+    "name": "Tribe Living Underwater"
+  },
+  "section:13:2": {
+    "name": "Water Dome"
+  },
+  "section:13:3": {
+    "name": "Underwater City"
+  },
+  "section:13:4": {
+    "name": "Lurker in the Abandoned Zone"
+  },
+  "section:13:5": {
+    "name": "Shadow from the Deep Sea"
+  },
+  "section:13:6": {
+    "name": "Cold-hearted Council"
+  },
+  "section:13:7": {
+    "name": "Secret in the Temple"
+  },
+  "section:13:8": {
+    "name": "Underwater Decisive Battle"
+  },
+  "section:14:1": {
+    "name": "Crisis Above the Mainland"
+  },
+  "section:14:2": {
+    "name": "Surviving Yumano Siblings"
+  },
+  "section:14:3": {
+    "name": "Disrupted Battle Situation"
+  },
+  "section:14:4": {
+    "name": "Bitter Truth"
+  },
+  "section:14:5": {
+    "name": "Rough Rana Tribe Prince"
+  },
+  "section:14:6": {
+    "name": "Mutant Kuro Symbiont Village"
+  },
+  "section:14:7": {
+    "name": "Fierce Battle with Mutant Liguxi Tribe"
+  },
+  "section:15:1": {
+    "name": "Ark in Crisis"
+  },
+  "section:15:2": {
+    "name": "Coastal Battle"
+  },
+  "section:15:3": {
+    "name": "Rescue Operation for Uunda"
+  },
+  "section:15:4": {
+    "name": "Uunda Returns"
+  },
+  "section:15:5": {
+    "name": "Boy and Old Tree"
+  },
+  "section:15:6": {
+    "name": "Liguxi's Settlement"
+  }
+}

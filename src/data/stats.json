@@ -1,0 +1,1122 @@
+[
+  {
+    "baseName": "str",
+    "caption": "STR",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "dex",
+    "caption": "DEX",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "int",
+    "caption": "INT",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "agi",
+    "caption": "AGI",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "vit",
+    "caption": "VIT",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "max_hp",
+    "caption": "HP上限",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "max_mp",
+    "caption": "MP上限",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "natural_hp_regen",
+    "caption": "HP自然回復",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "natural_hp_regen_s",
+    "caption": "HP自然回復",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "natural_hp_regen_b",
+    "caption": "戰時HP回復",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "natural_mp_regen",
+    "caption": "MP自然回復",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "natural_mp_regen_s",
+    "caption": "MP自然回復",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "natural_mp_regen_b",
+    "caption": "戰時MP回復",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "attack_mp_recovery",
+    "caption": "攻擊MP回復",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "atk",
+    "caption": "ATK",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "atk_sub",
+    "caption": "(雙劍)副手ATK",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "matk",
+    "caption": "MATK",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "weapon_atk",
+    "caption": "武器ATK",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "weapon_base_atk",
+    "caption": "武器基礎ATK",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "weapon_range",
+    "caption": "武器攻擊距離",
+    "hasMultiplier": false,
+    "order": 1,
+    "hidden": false,
+    "constantFormula": "$t$s$1dm"
+  },
+  {
+    "baseName": "physical_pierce",
+    "caption": "物理貫穿",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "magic_pierce",
+    "caption": "魔法貫穿",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "def",
+    "caption": "DEF",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "mdef",
+    "caption": "MDEF",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stability",
+    "caption": "穩定率",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stability_main",
+    "caption": "穩定率",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stability_magic",
+    "caption": "魔法穩定率",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "physical_resistance",
+    "caption": "物理抗性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "magic_resistance",
+    "caption": "魔法抗性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "accuracy",
+    "caption": "命中",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "dodge",
+    "caption": "迴避",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "aspd",
+    "caption": "攻擊速度",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "cspd",
+    "caption": "詠唱速度",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "critical_rate",
+    "caption": "暴擊率",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "critical_damage",
+    "caption": "暴擊傷害",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "critical_damage_skill",
+    "caption": "暴擊傷害",
+    "hasMultiplier": true,
+    "order": 4,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "motion_speed",
+    "caption": "行動速度",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "movement_speed",
+    "caption": "移動速度",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "unsheathe_attack",
+    "caption": "拔刀攻擊",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "unsheathe_attack_multiplier",
+    "caption": "拔刀攻擊",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "short_range_damage",
+    "caption": "近距離威力",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "long_range_damage",
+    "caption": "遠距離威力",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "total_damage_A",
+    "caption": "總傷害",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": "dev",
+    "constantFormula": ""
+  },
+  {
+    "baseName": "total_damage_B",
+    "caption": "最終傷害",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": "dev",
+    "constantFormula": ""
+  },
+  {
+    "baseName": "ailment_resistance",
+    "caption": "異常抗性",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "guard_rate",
+    "caption": "阻擋率",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "guard_regenerate",
+    "caption": "阻擋回復",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "guard_power",
+    "caption": "阻擋力",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "evasion_rate",
+    "caption": "閃躲率",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "evasion_regenerate",
+    "caption": "閃躲回復",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "evasion_count",
+    "caption": "閃躲次數上限",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": true,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "aggro",
+    "caption": "恨意值",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "revive_time",
+    "caption": "復活時間",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "drop_rate",
+    "caption": "掉寶率",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_neutral",
+    "caption": "對無屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_fire",
+    "caption": "對火屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_water",
+    "caption": "對水屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_earth",
+    "caption": "對地屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_wind",
+    "caption": "對風屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_light",
+    "caption": "對光屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "stronger_against_dark",
+    "caption": "對暗屬性傷害",
+    "hasMultiplier": false,
+    "order": 3,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "neutral_resistance",
+    "caption": "抗無屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "fire_resistance",
+    "caption": "抗火屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "water_resistance",
+    "caption": "抗水屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "earth_resistance",
+    "caption": "抗地屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "wind_resistance",
+    "caption": "抗風屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "light_resistance",
+    "caption": "抗光屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "dark_resistance",
+    "caption": "抗暗屬性",
+    "hasMultiplier": false,
+    "order": 4,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "physical_barrier",
+    "caption": "物理屏障",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "magical_barrier",
+    "caption": "魔法屏障",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "fractional_barrier",
+    "caption": "百分比屏障",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "barrier_cooldown",
+    "caption": "屏障速度",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reflect",
+    "caption": "反彈傷害",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "additional_meele",
+    "caption": "物理追擊",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "additional_magic",
+    "caption": "魔法追擊",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "anticipate",
+    "caption": "看穿",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "guard_break",
+    "caption": "破防",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "flinch_unavailable",
+    "caption": "封印膽怯",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "tumble_unavailable",
+    "caption": "封印翻覆",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "stun_unavailable",
+    "caption": "封印昏厥",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "recoil_damage",
+    "caption": "反作用傷害",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "$t$s$2d$u"
+  },
+  {
+    "baseName": "exp_rate",
+    "caption": "獲得EXP",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "element_fire",
+    "caption": "火屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_water",
+    "caption": "水屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_earth",
+    "caption": "地屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_wind",
+    "caption": "風屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_light",
+    "caption": "光屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_dark",
+    "caption": "暗屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "element_mana",
+    "caption": "魔屬性",
+    "hasMultiplier": false,
+    "order": 2,
+    "hidden": false,
+    "constantFormula": "$t"
+  },
+  {
+    "baseName": "absolute_dodge",
+    "caption": "絕對迴避",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "absolute_accuracy",
+    "caption": "絕對命中",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_floor",
+    "caption": "地面傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_meteor",
+    "caption": "隕石傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_player_epicenter",
+    "caption": "範圍傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_foe_epicenter",
+    "caption": "敵方周圍傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_bowling",
+    "caption": "貼地傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_bullet",
+    "caption": "子彈傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_straight_line",
+    "caption": "直線傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_charge",
+    "caption": "衝撞傷害減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_explosion",
+    "caption": "爆炸減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "reduce_dmg_gravity",
+    "caption": "吸引減輕",
+    "hasMultiplier": false,
+    "order": 8,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "atk_up_str",
+    "caption": "ATK提升 (STR)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK提升(STR$v%)"
+  },
+  {
+    "baseName": "atk_up_dex",
+    "caption": "ATK提升 (DEX)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK提升(DEX$v%)"
+  },
+  {
+    "baseName": "atk_up_int",
+    "caption": "ATK提升 (INT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK提升(INT$v%)"
+  },
+  {
+    "baseName": "atk_up_agi",
+    "caption": "ATK提升 (AGI)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK提升(AGI$v%)"
+  },
+  {
+    "baseName": "atk_up_vit",
+    "caption": "ATK提升 (VIT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK提升(VIT$v%)"
+  },
+  {
+    "baseName": "matk_up_str",
+    "caption": "MATK提升 (STR)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK提升(STR$v%)"
+  },
+  {
+    "baseName": "matk_up_dex",
+    "caption": "MATK提升 (DEX)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK提升(DEX$v%)"
+  },
+  {
+    "baseName": "matk_up_int",
+    "caption": "MATK提升 (INT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK提升(INT$v%)"
+  },
+  {
+    "baseName": "matk_up_agi",
+    "caption": "MATK提升 (AGI)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK提升(AGI$v%)"
+  },
+  {
+    "baseName": "matk_up_vit",
+    "caption": "MATK提升 (VIT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK提升(VIT$v%)"
+  },
+  {
+    "baseName": "atk_down_str",
+    "caption": "ATK下降 (STR)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK下降(STR$v%)"
+  },
+  {
+    "baseName": "atk_down_dex",
+    "caption": "ATK下降 (DEX)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK下降(DEX$v%)"
+  },
+  {
+    "baseName": "atk_down_int",
+    "caption": "ATK下降 (INT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK下降(INT$v%)"
+  },
+  {
+    "baseName": "atk_down_agi",
+    "caption": "ATK下降 (AGI)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK下降(AGI$v%)"
+  },
+  {
+    "baseName": "atk_down_vit",
+    "caption": "ATK下降 (VIT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "ATK下降(VIT$v%)"
+  },
+  {
+    "baseName": "matk_down_str",
+    "caption": "MATK下降 (STR)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK下降(STR$v%)"
+  },
+  {
+    "baseName": "matk_down_dex",
+    "caption": "MATK下降 (DEX)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK下降(DEX$v%)"
+  },
+  {
+    "baseName": "matk_down_int",
+    "caption": "MATK下降 (INT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK下降(INT$v%)"
+  },
+  {
+    "baseName": "matk_down_agi",
+    "caption": "MATK下降 (AGI)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK下降(AGI$v%)"
+  },
+  {
+    "baseName": "matk_down_vit",
+    "caption": "MATK下降 (VIT)",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": false,
+    "constantFormula": "MATK下降(VIT$v%)"
+  },
+  {
+    "baseName": "invincible_aid_sec",
+    "caption": "無敵急救 (s)",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "無敵急救 ($vs)"
+  },
+  {
+    "baseName": "pet_exp",
+    "caption": "寵物獲得EXP",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "item_cooldown",
+    "caption": "道具冷卻",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": false,
+    "constantFormula": "$t-$1d秒::$t+$1d秒"
+  },
+  {
+    "baseName": "skill_constant_extra",
+    "caption": "技能常數",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "magic_crt_percentage",
+    "caption": "法術暴擊轉化率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "magic_cd_percentage",
+    "caption": "法術暴傷轉化率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": false,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "normal_attack_multiplier",
+    "caption": "普通攻擊倍率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "normal_attack_constant",
+    "caption": "普通攻擊常數",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "gempowder_drop_add",
+    "caption": "晶石粉末掉落量",
+    "hasMultiplier": false,
+    "order": 10,
+    "hidden": true,
+    "constantFormula": "$t+$v$u"
+  },
+  {
+    "baseName": "total_skill_multiplier",
+    "caption": "總技能倍率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "skill_multiplier_extra",
+    "caption": "技能倍率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "graze_penalty_mitigation",
+    "caption": "擦傷懲罰緩和",
+    "hasMultiplier": true,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "magic_stronger_against_element",
+    "caption": "法術額外屬性傷害",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "ailment_avoid",
+    "caption": "異常閃躲",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": true,
+    "constantFormula": ""
+  },
+  {
+    "baseName": "base_guard_power",
+    "caption": "阻擋性能基礎值",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": "dev",
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "base_guard_regenerate",
+    "caption": "阻擋回復基礎值",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": "dev",
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "base_evasion_regenerate",
+    "caption": "閃躲回復基礎值",
+    "hasMultiplier": false,
+    "order": 5,
+    "hidden": "dev",
+    "constantFormula": "$t$s$v"
+  },
+  {
+    "baseName": "dual_bringer_efficiency",
+    "caption": "雙重提供技能效率",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": "$t$v$u"
+  },
+  {
+    "baseName": "dual_bringer_penalty",
+    "caption": "雙重提供懲罰係數",
+    "hasMultiplier": false,
+    "order": 11,
+    "hidden": true,
+    "constantFormula": "$t$v$u"
+  }
+]

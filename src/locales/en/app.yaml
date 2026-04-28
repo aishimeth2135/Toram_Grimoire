@@ -16,7 +16,7 @@ loading-message:
     '1': Please refresh the website first if any errors occur.
   init-locale: Loading Locale
 page-title:
-  base: "Cy's Grimoire"
+  base: "Cy's Grimoire — MiLo's Edition"
   character-simulator: Character Simulator
   skill-simulator: Skill Simulator
   skill-query: Skill Info
@@ -25,6 +25,11 @@ page-title:
   damage-calculation: Damage Calculator
   enchant-simulator: Statting Simulator
   enchant-doll: Statting Calculator Doll
+  glossary-query: Glossary
+  registlet-query: Registlet Search
+  main-quest-calc: Main Quest Calculator
+  book-main: Book Template
+  book-preview: Book Template Preview
   home: Home
   about: About
 settings:
@@ -89,19 +94,41 @@ features:
   copy-url-to-clipboard-success-tips: URL copied to clipboard.
 about:
   author:
-    sub-title: Doll.
+    sub-title: MiLo's Edition — fork of Cy's Grimoire by Cyteria
     title: Author
     toram-id: Toram ID
-    grimoire-email: Grimoire Email
-    github-message: If you have time, you can click here to help me
+    grimoire-email: Contact Email
+    github-message: Contribute or report issues on GitHub
   team:
+    title: Team
+    main: Core members
     equipment-data: Equipment Datas
     skill-data: Skill Datas
-    sub-title: Thanks to the entire production team 0.0
+    sub-title: "Contributors to the original Cy's Grimoire by Cyteria — this fork is not affiliated with or endorsed by them."
   sponsor:
+    title: Sponsors
     personal: Personal Sponsorship
-    sub-title: Thank you to everyone who is willing to sponsor~
+    sub-title: "Supporters of the original Cy's Grimoire by Cyteria — this fork is not affiliated with or endorsed by them."
     group: Guild Sponsor
+  contribute:
+    title: Contribute
+    sub-title: Missing data or translations? Help improve the Grimoire — check the guide on GitHub for instructions.
+    github: Contribution Guide (GitHub)
+    email: Contact
+  words:
+    title: Notes
+    sub-title: Just some random thoughts.
+    contents:
+      - If you need to contact the author, send an email to the Grimoire email address at the top of this page. You can also send a private message in game.
+      - Any feedback, questions, or suspected bugs are welcome.
+      - If you are willing to help with data testing, data entry, or translation, or would like to sponsor (in-game resources), feel free to reach out to the author.
+  disclaimer: Toram Online is a game operated by {link}. This website is just a small place to share information.
   partnership:
     title: Partnership
+    sub-title: "Community associated with the original Cy's Grimoire by Cyteria — this fork is not affiliated with or endorsed by them."
     join: Join
+contribute-hint:
+  message: Not finding what you're looking for?
+  button: Contribute
+notices:
+  enchant-refactor: Due to an enchant system update, if you encounter any errors please go to Settings and clear the cache. The enchant system will work correctly after the data is re-downloaded.

@@ -1,0 +1,1199 @@
+{
+  "chapters": [
+    {
+      "id": 1,
+      "name": "混沌的序幕"
+    },
+    {
+      "id": 2,
+      "name": "神聖晶石騷動記"
+    },
+    {
+      "id": 3,
+      "name": "舊神之戰"
+    },
+    {
+      "id": 4,
+      "name": "新的黑影"
+    },
+    {
+      "id": 5,
+      "name": "席捲黑暗的風暴"
+    },
+    {
+      "id": 6,
+      "name": "兩派泰尼斯塔"
+    },
+    {
+      "id": 7,
+      "name": "動亂的阿爾堤玫亞"
+    },
+    {
+      "id": 8,
+      "name": "通往艾路登波姆之戰"
+    },
+    {
+      "id": 9,
+      "name": "艾路登波姆奪還戰"
+    },
+    {
+      "id": 10,
+      "name": "失落的神之舟"
+    },
+    {
+      "id": 11,
+      "name": "前往托蘭"
+    },
+    {
+      "id": 12,
+      "name": "龍人聖域"
+    },
+    {
+      "id": 13,
+      "name": "水之民族、龍、寇珥連生體"
+    },
+    {
+      "id": 14,
+      "name": "托蘭本土"
+    },
+    {
+      "id": 15,
+      "name": "寇珥連生體的覺醒"
+    }
+  ],
+  "sections": [
+    {
+      "chapter": 1,
+      "section": 1,
+      "name": "陌生的街道與人群",
+      "exp": 30,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 2,
+      "name": "斯特列兄妹",
+      "exp": 80,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 3,
+      "name": "魔像暴動",
+      "exp": 730,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 4,
+      "name": "智慧女神",
+      "exp": 2050,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 5,
+      "name": "湧龍穴",
+      "exp": 4700,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 6,
+      "name": "廢棄的寺院",
+      "exp": 9330,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 7,
+      "name": "最初的魔石",
+      "exp": 16700,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 8,
+      "name": "滅帳香",
+      "exp": 27900,
+      "submit": "妖精翅膀#3\n厚鳥啄#3\n植物藤蔓#3",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 1,
+      "section": 9,
+      "name": "龍與黑色結晶",
+      "exp": 43000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 1,
+      "name": "不請自來的商人女孩",
+      "exp": 64000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 2,
+      "name": "尋找神聖晶石",
+      "exp": 92000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 3,
+      "name": "神秘的黑騎士",
+      "exp": 118200,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 4,
+      "name": "新月鬼殿的試煉",
+      "exp": 149000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 5,
+      "name": "月之魔導師",
+      "exp": 172000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 6,
+      "name": "敬之，恨之",
+      "exp": 227000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 7,
+      "name": "魔導士的洞穴",
+      "exp": 240000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 2,
+      "section": 8,
+      "name": "星之魔導士",
+      "exp": 255000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 1,
+      "name": "最強大的勁敵??",
+      "exp": 270000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 2,
+      "name": "上古女帝",
+      "exp": 284000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 3,
+      "name": "襲擊犯的真面目",
+      "exp": 319000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 4,
+      "name": "堡壘的存亡",
+      "exp": 335000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 5,
+      "name": "回憶於消失的城鎮",
+      "exp": 398000,
+      "submit": "鋸齒#10\n薩哈姆水晶#5\n靈氣寶石#1",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 6,
+      "name": "被奪走的聖魔晶石",
+      "exp": 417000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 7,
+      "name": "與龍群居的人民",
+      "exp": 462000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 3,
+      "section": 8,
+      "name": "來自異界的異形",
+      "exp": 540000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 1,
+      "name": "魔法族人迪魯",
+      "exp": 562000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 2,
+      "name": "流離只為再興",
+      "exp": 585000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 3,
+      "name": "阿卡克的聖寶石",
+      "exp": 710000,
+      "submit": "",
+      "reward": "阿卡克之花",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 4,
+      "name": "達魯剛國王",
+      "exp": 740000,
+      "submit": "mob:\n鬱金#30\n小怪#30",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 5,
+      "name": "暗雲湧動的處理廠",
+      "exp": 803000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 6,
+      "name": "捉捕冒牌黑騎士！",
+      "exp": 913000,
+      "submit": "",
+      "reward": "",
+      "caption": "前往鄧肯峽谷"
+    },
+    {
+      "chapter": 4,
+      "section": 7,
+      "name": "泰尼斯塔初現",
+      "exp": 1000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 4,
+      "section": 8,
+      "name": "飄零的死亡之羽",
+      "exp": 1100000,
+      "submit": "mob:\n燭光怪#10\n佛波偲#10",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 1,
+      "name": "未知的黑暗中",
+      "exp": 1150000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 2,
+      "name": "符咒的下落",
+      "exp": 1310000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 3,
+      "name": "乾涸的暗之鏡",
+      "exp": 1370000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 4,
+      "name": "激戰昇華觀園",
+      "exp": 1550000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 5,
+      "name": "照射黑暗之光",
+      "exp": 1750000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 6,
+      "name": "盤據暗之館的怪物",
+      "exp": 1970000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 7,
+      "name": "暗之城",
+      "exp": 2210000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 5,
+      "section": 8,
+      "name": "前往眾生世界",
+      "exp": 2220000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 1,
+      "name": "戴米馬其納",
+      "exp": 2600000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 2,
+      "name": "和平派城鎮",
+      "exp": 2700000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 3,
+      "name": "機關亦有心",
+      "exp": 2800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 4,
+      "name": "激進派黑騎士",
+      "exp": 2820000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 5,
+      "name": "神秘遺物",
+      "exp": 3030000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 6,
+      "name": "遺物真相",
+      "exp": 3099000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 7,
+      "name": "背叛的代價",
+      "exp": 3320000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 8,
+      "name": "褻瀆生命的工廠",
+      "exp": 3640000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 6,
+      "section": 9,
+      "name": "黑騎士之謎",
+      "exp": 4020000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 1,
+      "name": "怪物之森",
+      "exp": 4730000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 2,
+      "name": "游擊隊的地下城市",
+      "exp": 4820000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 3,
+      "name": "激進派領地內的艾路菲族",
+      "exp": 5070000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 4,
+      "name": "瘋狂的研究所",
+      "exp": 5500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 5,
+      "name": "監獄裡的慘況",
+      "exp": 6000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 6,
+      "name": "多洛馬廣場的慘劇",
+      "exp": 6400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 7,
+      "name": "前往阿爾堤玫亞宮殿",
+      "exp": 6900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 7,
+      "section": 8,
+      "name": "混沌真相",
+      "exp": 7400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 1,
+      "name": "怪物棲息的礦道",
+      "exp": 8400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 2,
+      "name": "神秘人影",
+      "exp": 8500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 3,
+      "name": "迪魯族的新國度",
+      "exp": 8600000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 4,
+      "name": "眾神遺跡之處",
+      "exp": 8800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 5,
+      "name": "前代正義之神",
+      "exp": 9100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 6,
+      "name": "留在神殿的寶座",
+      "exp": 9700000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 7,
+      "name": "眾神之所在",
+      "exp": 10400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 8,
+      "name": "種子神殿內的等待者",
+      "exp": 11100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 9,
+      "name": "冰雪中的守衛",
+      "exp": 11800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 8,
+      "section": 10,
+      "name": "山脈中的盡頭",
+      "exp": 12500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 1,
+      "name": "通往艾路登波姆的險路",
+      "exp": 15800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 2,
+      "name": "意外的陷阱",
+      "exp": 17100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 3,
+      "name": "進步的遺跡",
+      "exp": 18200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 4,
+      "name": "意外的熟人",
+      "exp": 19200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 5,
+      "name": "前線基地啟用",
+      "exp": 20300000,
+      "submit": "拉比蘭斯木材#10",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 6,
+      "name": "奪回樹上港口",
+      "exp": 21500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 7,
+      "name": "遺產是轉移裝置",
+      "exp": 22700000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 8,
+      "name": "一心尋死的男人",
+      "exp": 23900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 9,
+      "section": 9,
+      "name": "艾路登波姆奪還戰",
+      "exp": 37500000,
+      "submit": "",
+      "reward": "",
+      "caption": "",
+      "skippable": {
+        "name": "深入中心",
+        "exp": 25000000
+      }
+    },
+    {
+      "chapter": 9,
+      "section": 10,
+      "name": "新的開始",
+      "exp": 13000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 1,
+      "name": "向命運之地進發",
+      "exp": 26000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 2,
+      "name": "山崖下的占領者",
+      "exp": 27400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 3,
+      "name": "與噩夢重逢",
+      "exp": 28800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 4,
+      "name": "消失僧侶的行蹤",
+      "exp": 30200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 5,
+      "name": "勇敢女神與非法佔領之民",
+      "exp": 31600000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 6,
+      "name": "方舟掌舵人",
+      "exp": 33100000,
+      "submit": "",
+      "reward": "",
+      "caption": "",
+      "skippable": {
+        "name": "怪物清剿",
+        "exp": 0
+      }
+    },
+    {
+      "chapter": 10,
+      "section": 7,
+      "name": "森林中的魔女",
+      "exp": 34600000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 10,
+      "section": 8,
+      "name": "諾芙．蒂拉的決鬥",
+      "exp": 36200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 1,
+      "name": "方舟飛行",
+      "exp": 37800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 2,
+      "name": "在未知的土地",
+      "exp": 49000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 3,
+      "name": "林中散步",
+      "exp": 51000000,
+      "submit": "折斷的角#20",
+      "reward": "",
+      "caption": "守護的樹林，任意>中or右>左"
+    },
+    {
+      "chapter": 11,
+      "section": 4,
+      "name": "森之人尤馬諾",
+      "exp": 53400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 5,
+      "name": "發芽者",
+      "exp": 55700000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 6,
+      "name": "帶來恩惠者",
+      "exp": 58100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 7,
+      "name": "寇珥連生體要塞的激鬥",
+      "exp": 60500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 8,
+      "name": "燃煙山中影",
+      "exp": 63000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 11,
+      "section": 9,
+      "name": "龍人與地底世界",
+      "exp": 65500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 1,
+      "name": "有屋頂的天空",
+      "exp": 73400000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 2,
+      "name": "相剋的龍與龍人",
+      "exp": 76300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 3,
+      "name": "帶孩子的龍人夫妻",
+      "exp": 79300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 4,
+      "name": "龍人聖域",
+      "exp": 82300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 5,
+      "name": "推進機中的激戰",
+      "exp": 85300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 6,
+      "name": "為了獲得新技術",
+      "exp": 44200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 7,
+      "name": "修繕方舟",
+      "exp": 92700000,
+      "submit": "生長的礦石#5\n傑巴力石材#5",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 8,
+      "name": "龍人相爭",
+      "exp": 96000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 12,
+      "section": 9,
+      "name": "冰牆中的繭",
+      "exp": 99300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 1,
+      "name": "住在水中的民族",
+      "exp": 112600000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 2,
+      "name": "水之穹頂",
+      "exp": 116500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 3,
+      "name": "水中都市",
+      "exp": 60200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 4,
+      "name": "廢棄區的潛伏者",
+      "exp": 125800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 5,
+      "name": "來自深海的影子",
+      "exp": 129900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 6,
+      "name": "冷酷無情的評議會",
+      "exp": 67000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 7,
+      "name": "神殿中的秘密",
+      "exp": 139900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 13,
+      "section": 8,
+      "name": "水下決戰",
+      "exp": 144200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 1,
+      "name": "本土上空的危機",
+      "exp": 159100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 2,
+      "name": "倖存的尤馬諾兄妹",
+      "exp": 164000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 3,
+      "name": "被擾亂的戰況",
+      "exp": 168900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 4,
+      "name": "苦澀的真相",
+      "exp": 173800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 5,
+      "name": "粗野的拉納族王子",
+      "exp": 178800000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 6,
+      "name": "變異寇珥連生體村",
+      "exp": 183900000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 14,
+      "section": 7,
+      "name": "與變異利古希族的激戰",
+      "exp": 189000000,
+      "submit": "滑膩的厚皮#20\n扭曲糾纏的根蔓#10\n梅納布拉木材#10",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 1,
+      "name": "方舟的危機",
+      "exp": 210500000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 2,
+      "name": "海岸攻防戰",
+      "exp": 216300000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 3,
+      "name": "烏恩達救出作戰",
+      "exp": 222200000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 4,
+      "name": "烏恩達歸來",
+      "exp": 228100000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 5,
+      "name": "少年與老樹",
+      "exp": 234000000,
+      "submit": "沉濁肥料#10",
+      "reward": "",
+      "caption": ""
+    },
+    {
+      "chapter": 15,
+      "section": 6,
+      "name": "利古西的集落",
+      "exp": 240000000,
+      "submit": "",
+      "reward": "",
+      "caption": ""
+    }
+  ]
+}

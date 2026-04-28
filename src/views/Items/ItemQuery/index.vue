@@ -247,6 +247,7 @@ import { useI18n } from 'vue-i18n'
 import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
 
 import Grimoire from '@/shared/Grimoire'
+import { useContributeHint } from '@/shared/setup/ContributeHint'
 import { useToggle, useToggleGroup } from '@/shared/setup/State'
 import { toFloat, toInt } from '@/shared/utils/number'
 
@@ -504,6 +505,22 @@ const searchResult = computed(() => {
   sr.sort(target === 'default' ? sortOptions[mode].default : sortOptions.global[target])
   return sortState.currentOrder === 'down' ? sr.reverse() : sr.slice()
 })
+
+useContributeHint(
+  computed(() => {
+    if (searchResult.value.length > 0) return false
+    switch (state.currentMode) {
+      case SearchModes.Normal:
+        return modes[SearchModes.Normal].searchText !== ''
+      case SearchModes.Stat:
+        return modes[SearchModes.Stat].currentStats.length > 0
+      case SearchModes.Dye:
+        return modes[SearchModes.Dye].searchText !== ''
+      default:
+        return false
+    }
+  })
+)
 
 const selectStat = (stat: StatOption) => {
   const searchStats = modes[SearchModes.Stat].currentStats

@@ -1,0 +1,20 @@
+{
+  "category:0": {
+    "name": "Weapon"
+  },
+  "category:1": {
+    "name": "Buff"
+  },
+  "category:2": {
+    "name": "Assist"
+  },
+  "category:3": {
+    "name": "Produce"
+  },
+  "category:4": {
+    "name": "Skill Book"
+  },
+  "category:5": {
+    "name": "Other"
+  }
+}

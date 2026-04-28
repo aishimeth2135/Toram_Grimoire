@@ -1,0 +1,8969 @@
+{
+  "1周年寶劍": {
+    "name": "1st Anniv Sword"
+  },
+  "1周年寶劍 II": {
+    "name": "1st Anniv Sword II"
+  },
+  "1周年寶劍 III": {
+    "name": "1st Anniv Sword III"
+  },
+  "2周年寶劍": {
+    "name": "2nd Anniv Sword"
+  },
+  "2周年寶劍 II": {
+    "name": "2nd Anniv Sword II"
+  },
+  "2周年寶劍 III": {
+    "name": "2nd Anniv Sword III"
+  },
+  "2周年寶劍 IV": {
+    "name": "2nd Anniv Sword IV"
+  },
+  "2周年寶劍 V": {
+    "name": "2nd Anniv Sword V"
+  },
+  "3周年寶劍": {
+    "name": "3rd Anniv Sword"
+  },
+  "3周年寶劍 II": {
+    "name": "3rd Anniv Sword II"
+  },
+  "3周年寶劍 III": {
+    "name": "3rd Anniv Sword III"
+  },
+  "3周年寶劍 IV": {
+    "name": "3rd Anniv Sword IV"
+  },
+  "3周年寶劍 V": {
+    "name": "3rd Anniv Sword V"
+  },
+  "3周年寶劍 VI": {
+    "name": "3rd Anniv Sword VI"
+  },
+  "3周年寶劍 VII": {
+    "name": "3rd Anniv Sword VII"
+  },
+  "曲折劍": {
+    "name": "Accordion-fold Sword"
+  },
+  "艾狄劍": {
+    "name": "Adel Sword"
+  },
+  "虛狂黑劍": {
+    "name": "Black Sword of Delusion"
+  },
+  "閃雷": {
+    "name": "Blitz Sword"
+  },
+  "蠻龍之劍": {
+    "name": "Brutal Dragon Sword"
+  },
+  "切肉刀": {
+    "name": "Butcher's Knife"
+  },
+  "蛋糕刀": {
+    "name": "Cake Knife"
+  },
+  "鋼紋寶劍": {
+    "name": "Calibur"
+  },
+  "烤雞劍": {
+    "name": "Chicken Sword"
+  },
+  "明晰薔薇": {
+    "name": "Clarity Rose"
+  },
+  "路錐之劍": {
+    "name": "Cone Sword"
+  },
+  "路錐之劍 II": {
+    "name": "Cone Sword II"
+  },
+  "路錐之劍 III": {
+    "name": "Cone Sword III"
+  },
+  "星月斧": {
+    "name": "Crescent Axe"
+  },
+  "暗將佩劍": {
+    "name": "Dark General's Sword"
+  },
+  "春櫻利刃": {
+    "name": "Dia Sword"
+  },
+  "艾路芬戰刃": {
+    "name": "Elfin Sword"
+  },
+  "祭典劍": {
+    "name": "Festival Sword"
+  },
+  "漂漂獸之劍": {
+    "name": "Fluck Sword"
+  },
+  "羅馬短劍": {
+    "name": "Gladius"
+  },
+  "勇者之劍（波姆）": {
+    "name": "Hero Sword (Pom)"
+  },
+  "冰劍格拉斯": {
+    "name": "Icebrand Glacier"
+  },
+  "伊爾文巨劍": {
+    "name": "Ilwoon"
+  },
+  "皇族之劍": {
+    "name": "Imperial Sword"
+  },
+  "靛晶劍": {
+    "name": "Indigo Sword"
+  },
+  "流雲木星劍": {
+    "name": "Jupiter Sword"
+  },
+  "流雲木星劍 II": {
+    "name": "Jupiter Sword II"
+  },
+  "雄獅牙": {
+    "name": "Leve Fang"
+  },
+  "皇女之劍": {
+    "name": "Lil Empress Sword"
+  },
+  "長劍": {
+    "name": "Longsword"
+  },
+  "曼特恩戰刃": {
+    "name": "Maton Saber"
+  },
+  "草質劍": {
+    "name": "Phyto Blade"
+  },
+  "明晰薔薇．原型": {
+    "name": "Proto Clarity Rose"
+  },
+  "刺劍": {
+    "name": "Rapier"
+  },
+  "遺境刀": {
+    "name": "Relic Sword"
+  },
+  "彎刀": {
+    "name": "Sabre"
+  },
+  "聖劍耶誕": {
+    "name": "Sacred Sword Xmas"
+  },
+  "櫻花佩劍": {
+    "name": "Sakura Kodachi"
+  },
+  "櫻花燈劍": {
+    "name": "Sakura Lantern Sword"
+  },
+  "弦月刀": {
+    "name": "Scimitar"
+  },
+  "木劍": {
+    "name": "Wood Sword"
+  },
+  "短劍": {
+    "name": "Shortsword"
+  },
+  "士兵劍": {
+    "name": "Soldier Sword"
+  },
+  "罪人劍": {
+    "name": "Sword of Sin"
+  },
+  "印第安戰斧": {
+    "name": "Tomahawk"
+  },
+  "霹哩啪啦鎚": {
+    "name": "Toy Hammer"
+  },
+  "晴風刺劍": {
+    "name": "Wind Rapier"
+  },
+  "札哈克之劍": {
+    "name": "Zahhak Sword"
+  },
+  "1周年巨劍": {
+    "name": "1st Anniv Greatsword"
+  },
+  "1周年巨劍 III": {
+    "name": "1st Anniv Greatsword III"
+  },
+  "1周年巨劍 II": {
+    "name": "1st Anniv Greatsword II"
+  },
+  "2周年巨劍": {
+    "name": "2nd Anniv Greatsword"
+  },
+  "2周年巨劍 II": {
+    "name": "2nd Anniv Greatsword II"
+  },
+  "2周年巨劍 III": {
+    "name": "2nd Anniv Greatsword III"
+  },
+  "2周年巨劍 IV": {
+    "name": "2nd Anniv Greatsword IV"
+  },
+  "2周年巨劍 V": {
+    "name": "2nd Anniv Greatsword V"
+  },
+  "3周年巨劍": {
+    "name": "3rd Anniv Greatsword"
+  },
+  "3周年巨劍 II": {
+    "name": "3rd Anniv Greatsword II"
+  },
+  "3周年巨劍 III": {
+    "name": "3rd Anniv Greatsword III"
+  },
+  "3周年巨劍 IV": {
+    "name": "3rd Anniv Greatsword IV"
+  },
+  "3周年巨劍 V": {
+    "name": "3rd Anniv Greatsword V"
+  },
+  "3周年巨劍 VI": {
+    "name": "3rd Anniv Greatsword VI"
+  },
+  "3周年巨劍 VII": {
+    "name": "3rd Anniv Greatsword VII"
+  },
+  "翠風之刃": {
+    "name": "Anemos Blade"
+  },
+  "狂暴劍": {
+    "name": "Berserker Blade"
+  },
+  "磐骨刀": {
+    "name": "Bone Blade"
+  },
+  "哥布林老大的劍": {
+    "name": "Boss Gob Sword"
+  },
+  "寶石獸巨劍": {
+    "name": "Carbuncle Edge"
+  },
+  "巧克力香蕉劍": {
+    "name": "Choco Banana Blade"
+  },
+  "巧克力棒": {
+    "name": "Chocolate Eater"
+  },
+  "弧刃巨劍": {
+    "name": "Curved Edge"
+  },
+  "絕望巨闕": {
+    "name": "Deseperanza"
+  },
+  "沙漠之煞": {
+    "name": "Desert Anfel"
+  },
+  "春櫻巨劍": {
+    "name": "Dia Edge"
+  },
+  "曲曲劍": {
+    "name": "Flamberge"
+  },
+  "焰心劍": {
+    "name": "Flame Blade"
+  },
+  "斬首劍": {
+    "name": "Fortis Blade"
+  },
+  "寒冰劍錸牡": {
+    "name": "Frostbrand Rime"
+  },
+  "黃金巨闕": {
+    "name": "Golden Greatsword"
+  },
+  "銀鐵巨劍": {
+    "name": "Great Sword"
+  },
+  "秋鐮": {
+    "name": "Hammerfall"
+  },
+  "燃燒南瓜戰刃": {
+    "name": "Heated Pumpkin Axe"
+  },
+  "重劍": {
+    "name": "Heavy Blade"
+  },
+  "重劍．高潔": {
+    "name": "Integridar"
+  },
+  "鐵劍": {
+    "name": "Iron Blade"
+  },
+  "狂鐵蟹大劍": {
+    "name": "Iron Exoskeleton Sword"
+  },
+  "狂熱之刃": {
+    "name": "Lezvie"
+  },
+  "皇女大劍": {
+    "name": "Lil Empress Greatsword"
+  },
+  "大刀": {
+    "name": "Longblade"
+  },
+  "鬼之鐵棒": {
+    "name": "Oni Iron Club"
+  },
+  "戰令之劍": {
+    "name": "Order Espada"
+  },
+  "櫻花長劍": {
+    "name": "Sakura Edge"
+  },
+  "櫻花燈大劍": {
+    "name": "Sakura Lantern Greatsword"
+  },
+  "封印刃": {
+    "name": "Sealing Blade"
+  },
+  "盟友巨劍": {
+    "name": "Sinergatis"
+  },
+  "焦煌大劍索雷尤": {
+    "name": "Soleil The Heat Sword"
+  },
+  "機鋼大劍": {
+    "name": "Steel Machine Greatsword"
+  },
+  "頑強的鐵槌": {
+    "name": "Stubborn Hammer"
+  },
+  "熔炎刃": {
+    "name": "Volcanic Sword"
+  },
+  "森妖大劍": {
+    "name": "Waldfee"
+  },
+  "白巧克力棒": {
+    "name": "White Chocolate Eater"
+  },
+  "奪風巨闕": {
+    "name": "Wind Plunder"
+  },
+  "齊爾戰刃": {
+    "name": "Zel Blade"
+  },
+  "重裝大劍": {
+    "name": "Zweihander"
+  },
+  "2周年胸章": {
+    "name": "2nd Anniv Brooch"
+  },
+  "2周年帽子": {
+    "name": "2nd Anniv Hat"
+  },
+  "2周年髮帶": {
+    "name": "2nd Anniv Headband"
+  },
+  "3周年帽子": {
+    "name": "3rd Anniv Hat"
+  },
+  "3周年髮帶": {
+    "name": "3rd Anniv Headband"
+  },
+  "貴族披風": {
+    "name": "Adel Cape"
+  },
+  "冒險者帽子": {
+    "name": "Adventurer's Hat"
+  },
+  "冒險家背包": {
+    "name": "Adventurer's Knapsack"
+  },
+  "黑人假髮": {
+    "name": "Afro Wig"
+  },
+  "阿基歐斯的帽子": {
+    "name": "Agios' Hat"
+  },
+  "阿卡克的花": {
+    "name": "Akaku Flower"
+  },
+  "刺客口罩": {
+    "name": "Assassin Mask"
+  },
+  "刺客腰布": {
+    "name": "Assassin Waistcloth"
+  },
+  "水果帽": {
+    "name": "Fruit Cap"
+  },
+  "迷狐耳": {
+    "name": "Aunigma"
+  },
+  "繃帶眼罩": {
+    "name": "Bandage Eyepatch"
+  },
+  "刺刺頭帶": {
+    "name": "Spiky Bandana"
+  },
+  "蝙蝠戰裙": {
+    "name": "Bat Waist Cape"
+  },
+  "利喙面具": {
+    "name": "Beak Mask"
+  },
+  "小熊帽": {
+    "name": "Bear Hat"
+  },
+  "猛獸項圈": {
+    "name": "Beast Collar"
+  },
+  "皮帶眼罩": {
+    "name": "Belt Eyepatch"
+  },
+  "腰包": {
+    "name": "Belt Pouch"
+  },
+  "狂暴面具": {
+    "name": "Berserker Mask"
+  },
+  "連帽披肩": {
+    "name": "Big Boa Hood"
+  },
+  "聖誕蝴蝶結": {
+    "name": "Xmas Ribbon"
+  },
+  "軟帽": {
+    "name": "Bonnet"
+  },
+  "繫腰書帶": {
+    "name": "Book Holder"
+  },
+  "布面鐵盔": {
+    "name": "Brigan Helm"
+  },
+  "蠻龍披風": {
+    "name": "Brutal Dragon Cape"
+  },
+  "蠻龍王冠": {
+    "name": "Brutal Dragon Crown"
+  },
+  "兔耳": {
+    "name": "Bunny Ears"
+  },
+  "兔耳兜帽": {
+    "name": "Bunny Ear Hood"
+  },
+  "蝴蝶髮飾": {
+    "name": "Butterfly Ribbon"
+  },
+  "沉著耳環": {
+    "name": "Calm Earring"
+  },
+  "迷彩圍巾": {
+    "name": "Camouflage Scarf"
+  },
+  "糖果捧花": {
+    "name": "Candy Bouquet"
+  },
+  "糖果髮飾": {
+    "name": "Candy Ears"
+  },
+  "糖果髮夾": {
+    "name": "Candy Hairpin"
+  },
+  "披風": {
+    "name": "Cape"
+  },
+  "卡拉寶冠": {
+    "name": "Cara Tiara"
+  },
+  "卡羅王冠": {
+    "name": "Caro Crown"
+  },
+  "鯉魚帽": {
+    "name": "Carp Streamer Hat"
+  },
+  "貓耳斗篷": {
+    "name": "Cat-Ear Hood"
+  },
+  "貓耳髮箍": {
+    "name": "Cat Hairband"
+  },
+  "貓尾巴": {
+    "name": "Cat Tail"
+  },
+  "亞櫻的髮飾": {
+    "name": "Cersier's Hair Ornament"
+  },
+  "魅力腰帶": {
+    "name": "Charm Belt"
+  },
+  "腮紅": {
+    "name": "Cheek Rouge"
+  },
+  "嘴叼櫻桃": {
+    "name": "Cherries In Mouth"
+  },
+  "巧克力貝蕾帽": {
+    "name": "Chocolate Beret"
+  },
+  "巧克力髮帶": {
+    "name": "Chocolate Headband"
+  },
+  "巧克蝴蝶脆餅": {
+    "name": "Chocolate Pretzel"
+  },
+  "巧克力圍巾": {
+    "name": "Chocolate Scarf"
+  },
+  "秩序環刃": {
+    "name": "Circle of Order"
+  },
+  "珠墜": {
+    "name": "Circlet"
+  },
+  "咖啡杯禮帽": {
+    "name": "Coffee Cup Hat"
+  },
+  "科隆耳環": {
+    "name": "Colon Earrings"
+  },
+  "科隆帽": {
+    "name": "Colon Met"
+  },
+  "路錐頭罩": {
+    "name": "Cone Face"
+  },
+  "路錐小帽": {
+    "name": "Cone Hat"
+  },
+  "烹飪圍裙": {
+    "name": "Cooking Apron"
+  },
+  "水晶頭飾": {
+    "name": "Crystal Cluster"
+  },
+  "水晶耳環": {
+    "name": "Crystal Earrings"
+  },
+  "戀愛波多姆": {
+    "name": "Cupid Potum"
+  },
+  "蜷曲角": {
+    "name": "Curled Horns"
+  },
+  "告死咒衣": {
+    "name": "Cursed Hood of Death"
+  },
+  "陰鬱兜帽": {
+    "name": "Dark Hood"
+  },
+  "破曉之帽": {
+    "name": "Dawn Hat"
+  },
+  "惡魔角冠": {
+    "name": "Devil Circlet"
+  },
+  "惡魔半面具": {
+    "name": "Devil Half Mask"
+  },
+  "魔鬼兜帽": {
+    "name": "Devil Hood"
+  },
+  "狗耳朵": {
+    "name": "Dog Ears"
+  },
+  "龍耳": {
+    "name": "Dragon Ears"
+  },
+  "巨龍角": {
+    "name": "Dragon Horns"
+  },
+  "尖耳飾": {
+    "name": "Ear Cuff"
+  },
+  "耳罩": {
+    "name": "Ear Muff"
+  },
+  "復活節氣球": {
+    "name": "Easter Balloons"
+  },
+  "復活節兔禮帽": {
+    "name": "Easter Bunny"
+  },
+  "復活節鳥蛋": {
+    "name": "Easter Eggs"
+  },
+  "蛋蛋帽": {
+    "name": "Eggshell Hat"
+  },
+  "蛋蛋褲": {
+    "name": "Eggshell Pants"
+  },
+  "精靈耳飾": {
+    "name": "Elven Ear Cuffs"
+  },
+  "探險家帽": {
+    "name": "Explorer's Hat"
+  },
+  "眼罩": {
+    "name": "Eyepatch"
+  },
+  "眼罩（貓）": {
+    "name": "Eyepatch (Cat)"
+  },
+  "妖精小帽": {
+    "name": "Fairy Hat"
+  },
+  "假鬍子": {
+    "name": "Fake Mustache"
+  },
+  "羽毛": {
+    "name": "Feather"
+  },
+  "羽翼斗篷": {
+    "name": "Feather Cape"
+  },
+  "羽帽": {
+    "name": "Feather Hat"
+  },
+  "格鬥家髮髻": {
+    "name": "Fighter Chignon Cap"
+  },
+  "菱紋企鵝帽": {
+    "name": "Finpen Mask"
+  },
+  "大魚帽": {
+    "name": "Fish Head"
+  },
+  "刨冰帽": {
+    "name": "Shaved Ice Hat"
+  },
+  "海上泳圈": {
+    "name": "Float"
+  },
+  "花樣髮圈": {
+    "name": "Flower Headband"
+  },
+  "魅力狐尾": {
+    "name": "Fluffy Tail"
+  },
+  "護額盔": {
+    "name": "Forehead Guard"
+  },
+  "頭具": {
+    "name": "Forehead Protector"
+  },
+  "森狼披風": {
+    "name": "Forest Wolf Cape"
+  },
+  "巧克力泉禮帽": {
+    "name": "Fountain Hat"
+  },
+  "狐耳": {
+    "name": "Fox Ears"
+  },
+  "清新披肩": {
+    "name": "Fresh Scarf"
+  },
+  "繡邊斗篷": {
+    "name": "Frill Cape"
+  },
+  "青蛙帽": {
+    "name": "Frog Hat"
+  },
+  "添福波多姆": {
+    "name": "Fukumasu Potum"
+  },
+  "皮草披風": {
+    "name": "Fur Cape"
+  },
+  "毛皮帽": {
+    "name": "Fur Hat"
+  },
+  "絨毛加侖帽": {
+    "name": "Fur Ten Gallon"
+  },
+  "毛皮背心": {
+    "name": "Fur Vest"
+  },
+  "防塵面具": {
+    "name": "Gas Mask"
+  },
+  "機巧翅膀": {
+    "name": "Gear Wings"
+  },
+  "寶石耳環": {
+    "name": "Gem Earrings"
+  },
+  "劍鬥士頭盔": {
+    "name": "Gladiator's Helm"
+  },
+  "黃金寶劍": {
+    "name": "Golden Fake Greatsword"
+  },
+  "黃金波多姆帽": {
+    "name": "Golden Potum Hat"
+  },
+  "魔像頭盔": {
+    "name": "Golemet"
+  },
+  "護目鏡帽": {
+    "name": "Google Hat"
+  },
+  "哥德禮帽": {
+    "name": "Gothic Hat"
+  },
+  "賞花酒葫蘆": {
+    "name": "Gourd Flash Hanami Wine"
+  },
+  "古利希婭面罩": {
+    "name": "Grecia Mask"
+  },
+  "綠龍外套": {
+    "name": "Green Wyvern Cape"
+  },
+  "防風護目鏡": {
+    "name": "Gust Googles"
+  },
+  "護額": {
+    "name": "Hachigane"
+  },
+  "頭帶": {
+    "name": "Warrior Helm"
+  },
+  "髮帶": {
+    "name": "Hair Band"
+  },
+  "蝴蝶頭巾": {
+    "name": "Hair Turban"
+  },
+  "雙眼罩": {
+    "name": "Half Face Mask"
+  },
+  "賞花提燈": {
+    "name": "Hanami Lanterns"
+  },
+  "髮箍": {
+    "name": "Headband"
+  },
+  "護頭盔": {
+    "name": "Scratched Hachigane"
+  },
+  "愛心耳罩": {
+    "name": "Heart Earmuffs"
+  },
+  "心型眼睛": {
+    "name": "Heart Eyes"
+  },
+  "天羽髮飾": {
+    "name": "Heaven Feather Headband"
+  },
+  "英雄領巾": {
+    "name": "Hero Scarf"
+  },
+  "神聖披風": {
+    "name": "Holy Cape"
+  },
+  "神聖耳環": {
+    "name": "Holy Earrings"
+  },
+  "聖騎士腰鎧": {
+    "name": "Holy Knight Loin Guard"
+  },
+  "聖騎士胸鎧": {
+    "name": "Holy Knight Vest"
+  },
+  "花卉耳飾": {
+    "name": "Flower Earrings"
+  },
+  "蓬鬆披肩": {
+    "name": "Fluffy Cape"
+  },
+  "斗篷": {
+    "name": "Hood"
+  },
+  "角": {
+    "name": "Horns"
+  },
+  "角型假髮": {
+    "name": "Horns Hair Wig"
+  },
+  "獵人帽": {
+    "name": "Hunter's Cap"
+  },
+  "獵人的箭筒": {
+    "name": "Hunter's Quiver"
+  },
+  "嘴叼冰棒": {
+    "name": "Ice Candy"
+  },
+  "篝火角": {
+    "name": "Ignis Horns"
+  },
+  "暗騎披風": {
+    "name": "Inzanio Cape"
+  },
+  "暗騎頭盔": {
+    "name": "Inzanio Helm"
+  },
+  "鐵頭盔": {
+    "name": "Iron Helm"
+  },
+  "鐵面": {
+    "name": "Iron Mask"
+  },
+  "珠光王冠": {
+    "name": "Jewelry Crown"
+  },
+  "珠光冠飾": {
+    "name": "Jewelry Tiara"
+  },
+  "珍愛王冠": {
+    "name": "Darling Crown"
+  },
+  "珍愛寶冠": {
+    "name": "Darling Tiara"
+  },
+  "殭屍帽": {
+    "name": "Jiangshi Hat"
+  },
+  "棒棒糖髮釵": {
+    "name": "Kanzashi Lollipop"
+  },
+  "貓咪禮帽": {
+    "name": "Kitty Hat"
+  },
+  "貓咪口罩": {
+    "name": "Kitty Mask"
+  },
+  "後背包": {
+    "name": "Knapsack"
+  },
+  "佩刀腰帶": {
+    "name": "Knife Belt"
+  },
+  "騎士披風": {
+    "name": "Knight Cape"
+  },
+  "騎士插羽頭盔": {
+    "name": "Knight Feather Helm"
+  },
+  "騎士頭盔": {
+    "name": "Knight Helmet"
+  },
+  "針織圍巾": {
+    "name": "Knitted Scarf"
+  },
+  "大蝴蝶結": {
+    "name": "Large Ribbon"
+  },
+  "月桂冠": {
+    "name": "Laurel Crown"
+  },
+  "樹葉披風": {
+    "name": "Leaf Cape"
+  },
+  "皮帽": {
+    "name": "Leather Cap"
+  },
+  "皮革頭套": {
+    "name": "Leather Helmet"
+  },
+  "小惡魔髮飾": {
+    "name": "Lil Devil Barrette"
+  },
+  "小惡魔角": {
+    "name": "Lil Devil Horn"
+  },
+  "腰布": {
+    "name": "Loincloth"
+  },
+  "垂耳帽": {
+    "name": "Lop Eared Hat"
+  },
+  "愛之圍巾": {
+    "name": "Love Scarf"
+  },
+  "魔術師斗篷": {
+    "name": "Mage Cape"
+  },
+  "魔法師帽": {
+    "name": "Mage Hat"
+  },
+  "魔法圍巾": {
+    "name": "Magic Scarf"
+  },
+  "魔法劍士外套": {
+    "name": "Magic Swordsman's Coat"
+  },
+  "藍海髮箍": {
+    "name": "Marine Headband"
+  },
+  "藍海遮陽帽": {
+    "name": "Marine Visor"
+  },
+  "市場帽子": {
+    "name": "Market Hat"
+  },
+  "婚禮皇冠": {
+    "name": "Marriage Crown"
+  },
+  "婚禮頭冠": {
+    "name": "Marriage Tiara"
+  },
+  "維修員的帽子": {
+    "name": "Mechanic Hat"
+  },
+  "醫藥包": {
+    "name": "Medical Bag"
+  },
+  "人魚耳": {
+    "name": "Mermaid Ears"
+  },
+  "採礦包": {
+    "name": "Mining Bag"
+  },
+  "毛咕嚕帽": {
+    "name": "Mochelo Hat"
+  },
+  "克魯德之眼": {
+    "name": "Mole Eyes"
+  },
+  "單片鏡": {
+    "name": "Monocle"
+  },
+  "磨菇帽": {
+    "name": "Mushroom Cap"
+  },
+  "神祕兜帽": {
+    "name": "Mysterious Hood"
+  },
+  "頸套": {
+    "name": "Neck Warmer"
+  },
+  "死靈法師帽": {
+    "name": "Necromancer Hood"
+  },
+  "針盔": {
+    "name": "Needle Helmet"
+  },
+  "貓耳": {
+    "name": "Nekomimi"
+  },
+  "蘑菇口罩": {
+    "name": "Night Mushroom Mask"
+  },
+  "睡帽": {
+    "name": "Nightcap"
+  },
+  "忍者頭巾": {
+    "name": "Ninja Hat"
+  },
+  "茶筵波多姆": {
+    "name": "Nodate Potum"
+  },
+  "修女帽": {
+    "name": "Nun Hat"
+  },
+  "奴雷德斯面具": {
+    "name": "Nurethoth Mask"
+  },
+  "醜女面具": {
+    "name": "Okame Mask"
+  },
+  "舊披風": {
+    "name": "Old Cloak"
+  },
+  "單眼罩": {
+    "name": "One Eye Mask"
+  },
+  "單翼髮箍": {
+    "name": "One-Winged Headband"
+  },
+  "惡鬼爆炸頭": {
+    "name": "Oni Afro"
+  },
+  "惡鬼犄角": {
+    "name": "Oni Horns"
+  },
+  "波多姆藍鬼面具": {
+    "name": "Blue Oni Potum Mask"
+  },
+  "波多姆紅鬼面具": {
+    "name": "Red Oni Potum Mask"
+  },
+  "鬼瓦腰扣": {
+    "name": "Onigawara Buckle"
+  },
+  "綠液頭罩": {
+    "name": "Ooze Helmet"
+  },
+  "聖賢帽": {
+    "name": "Oracle Hat"
+  },
+  "紙頭盔": {
+    "name": "Origami Kabuto"
+  },
+  "金桂花髮夾": {
+    "name": "Osmanthus Barrette"
+  },
+  "賞月帽": {
+    "name": "Otsukimi Hat"
+  },
+  "半腰裙": {
+    "name": "Overskirt"
+  },
+  "派對蝴蝶領結": {
+    "name": "Party Bow Tie"
+  },
+  "派對眼鏡": {
+    "name": "Party Glasses"
+  },
+  "柿子怪頭": {
+    "name": "Persimmon Coryn Helmet"
+  },
+  "方陣頭盔": {
+    "name": "Phalanx (Helm)"
+  },
+  "光合作用系統": {
+    "name": "Photosynthesis System"
+  },
+  "被派砸面具": {
+    "name": "Pie Face"
+  },
+  "海盜頭巾": {
+    "name": "Pirate Bandana"
+  },
+  "白銀波多姆帽": {
+    "name": "Platinum Potum Hat"
+  },
+  "尖帽子": {
+    "name": "Pointed Hat"
+  },
+  "波姆羊咩髮飾": {
+    "name": "Pom Sheep Ribbon"
+  },
+  "巫婆波姆": {
+    "name": "Pomu the Witch"
+  },
+  "波多姆帽": {
+    "name": "Potum Hat"
+  },
+  "波多姆頭盔": {
+    "name": "Potum Helmet"
+  },
+  "可愛蝴蝶結": {
+    "name": "Pretty Ribbon"
+  },
+  "甜美緞帶（左）": {
+    "name": "Pretty Ribbon L"
+  },
+  "甜美緞帶（右）": {
+    "name": "Pretty Ribbon R"
+  },
+  "可愛蝴蝶結．雙": {
+    "name": "Pretty Ribbon T"
+  },
+  "祭司帽": {
+    "name": "Priest Hat"
+  },
+  "夾鼻眼鏡": {
+    "name": "Prince-nez Classes"
+  },
+  "南瓜頭": {
+    "name": "Pumpkin Mask"
+  },
+  "麋鹿髮箍": {
+    "name": "Reindeer Headband"
+  },
+  "麋鹿頭套": {
+    "name": "Reindeer Mask"
+  },
+  "蝴蝶結": {
+    "name": "Ribbon"
+  },
+  "蝴蝶結髮箍": {
+    "name": "Ribbon Hairband"
+  },
+  "嘴叼玫瑰": {
+    "name": "Rose in Mouth"
+  },
+  "盧迪翁獎章": {
+    "name": "Rugio Medal"
+  },
+  "櫻花枝": {
+    "name": "Sakura Branch Horns"
+  },
+  "彩繪櫻花": {
+    "name": "Sakura Cheek"
+  },
+  "櫻花髮髻": {
+    "name": "Sakura Chignon"
+  },
+  "櫻花腰包": {
+    "name": "Sakura Drawstring Bag"
+  },
+  "櫻扇髮飾": {
+    "name": "Sakura Fan Hair Clip"
+  },
+  "櫻花髮飾": {
+    "name": "Sakura Hair Ornament"
+  },
+  "櫻花蝴蝶結": {
+    "name": "Sakura Ribbon"
+  },
+  "櫻花披肩": {
+    "name": "Sakura Stole"
+  },
+  "輕頭盔": {
+    "name": "Sallet"
+  },
+  "三度笠": {
+    "name": "Sandogasa"
+  },
+  "聖誕老人鬍鬚": {
+    "name": "Santa Beard"
+  },
+  "聖誕帽": {
+    "name": "Santa Hat"
+  },
+  "魔王戰盔": {
+    "name": "Satan Helmet"
+  },
+  "絲巾": {
+    "name": "Scarf"
+  },
+  "學者眼鏡": {
+    "name": "Scholar's Glasses"
+  },
+  "蓋倫船帽": {
+    "name": "Ship Cap"
+  },
+  "罰跪Bemmo小弟": {
+    "name": "Sitting Beemo"
+  },
+  "裙擺腰帶": {
+    "name": "Skirt Belt"
+  },
+  "骷髏披風": {
+    "name": "Skull Cape"
+  },
+  "小妖精之羽": {
+    "name": "Small Fairy Wings"
+  },
+  "雪景球": {
+    "name": "Snow Dome"
+  },
+  "月兔頭飾": {
+    "name": "Snow Rabbit"
+  },
+  "雪花髮箍": {
+    "name": "Snowflake Headband"
+  },
+  "雪人帽子": {
+    "name": "Snowman Head"
+  },
+  "雪人頭飾": {
+    "name": "Snowman on the Head"
+  },
+  "汽水波多姆帽": {
+    "name": "Soda Potum Hat"
+  },
+  "墨西哥帽": {
+    "name": "Sombrero"
+  },
+  "巫術法帽": {
+    "name": "Sorcery Hat"
+  },
+  "妖怪口罩": {
+    "name": "Spooky Mask"
+  },
+  "春鶯": {
+    "name": "Spring Warbler"
+  },
+  "角盔": {
+    "name": "Stier"
+  },
+  "帶刺肩甲": {
+    "name": "Stingy Shoulder Pads"
+  },
+  "草帽": {
+    "name": "Straw Hat"
+  },
+  "太陽眼鏡": {
+    "name": "Sunglasses"
+  },
+  "煎蛋貝蕾帽": {
+    "name": "Sunny Side Beret"
+  },
+  "整人屠斧": {
+    "name": "Surprise Tomahawk"
+  },
+  "點心籃": {
+    "name": "Sweet Basket"
+  },
+  "尾巴毛皮": {
+    "name": "Tail Fur"
+  },
+  "夢獏頭套 ": {
+    "name": "Tapir Hood"
+  },
+  "觸手之靈": {
+    "name": "Tentacle's Roar"
+  },
+  "禮帽": {
+    "name": "Top Hat"
+  },
+  "旅人披風": {
+    "name": "Traveler's Cape"
+  },
+  "船型帽": {
+    "name": "Tricorn"
+  },
+  "環狀耳墜": {
+    "name": "Trinity Earrings"
+  },
+  "雙蝴蝶結": {
+    "name": "Twin Ribbon"
+  },
+  "雙蛇冠": {
+    "name": "Two-Headed Snake Crown"
+  },
+  "暴君悲泣": {
+    "name": "Tyrant Grievance"
+  },
+  "暴君面具": {
+    "name": "Tyrant Mask"
+  },
+  "獨角頭盔": {
+    "name": "Unicorn Helm"
+  },
+  "吸血鬼斗篷": {
+    "name": "Vampire Cape"
+  },
+  "紫堇角": {
+    "name": "Viola Horns"
+  },
+  "龍頭盔": {
+    "name": "War Helmet"
+  },
+  "戰士頭盔": {
+    "name": "Warrior Helm"
+  },
+  "白色織帽": {
+    "name": "White Cap"
+  },
+  "白三葉草髮箍": {
+    "name": "White Clover Headband"
+  },
+  "白色眼罩": {
+    "name": "White Eyepatch"
+  },
+  "白銀石項鍊": {
+    "name": "White Silver Necklace"
+  },
+  "發條把手": {
+    "name": "Wind Up Key"
+  },
+  "飛翼披風": {
+    "name": "Wing Cape"
+  },
+  "蛋寶翅膀背包": {
+    "name": "Wing Egg Bag"
+  },
+  "巫婆帽": {
+    "name": "Witch's Hat"
+  },
+  "巫師帽": {
+    "name": "Wizard Hat"
+  },
+  "狼頭面具": {
+    "name": "Wolf Mask"
+  },
+  "包裝緞帶": {
+    "name": "Wrapping Ribbon"
+  },
+  "八代紅豆背包": {
+    "name": "Yashiro Azuki Knapsack"
+  },
+  "八代紅豆面具": {
+    "name": "Yashiro Azuki Mask"
+  },
+  "八代紅豆媽面具": {
+    "name": "Yashiro Mom Mask"
+  },
+  "八代紅豆妻面具": {
+    "name": "Yashiro Azuki's Wife's Mask"
+  },
+  "八代紅豆爸面具": {
+    "name": "Yashiro Azuki's Dad's Mask"
+  },
+  "八代紅豆大笑面具": {
+    "name": "Yashiro Azuki's Smiley"
+  },
+  "約克墜子": {
+    "name": "York's Pendant"
+  },
+  "樹幹蛋糕布包": {
+    "name": "Yule Log Bag"
+  },
+  "嘴叼雞腿": {
+    "name": "Yummy Chicken"
+  },
+  "欲罷不能餅乾": {
+    "name": "Yummy Cookie"
+  },
+  "嘴叼糰子": {
+    "name": "Yummy Dango"
+  },
+  "干支帽「酉」": {
+    "name": "Zodiac Hat: Rooster"
+  },
+  "干支帽「亥」": {
+    "name": "Zodiac Hat: Boar"
+  },
+  "干支帽「子」": {
+    "name": "Zodiac Hat: Rat"
+  },
+  "干支帽「戌」": {
+    "name": "Zodiac Hat: Dog"
+  },
+  "干支帽子「丑」": {
+    "name": "Zodiac Hat: Ox"
+  },
+  "干支帽「卯」": {
+    "name": "Zodiac Hat: Rabbit"
+  },
+  "干支帽子「辰」": {
+    "name": "Zodiac Hat: Dragon"
+  },
+  "柔艾的法帽": {
+    "name": "Zoe's Hat"
+  },
+  "柔艾假髮": {
+    "name": "Zoe's Wig"
+  },
+  "貫穿箭": {
+    "name": "Arrow of Penetration"
+  },
+  "專家的箭": {
+    "name": "Artisan Arrow"
+  },
+  "刃矢": {
+    "name": "Blade Arrow"
+  },
+  "可可之箭": {
+    "name": "Cacao Arrow"
+  },
+  "拉糖之箭": {
+    "name": "Candy Arrow"
+  },
+  "陶瓷箭": {
+    "name": "Ceramic Arrow"
+  },
+  "水鏡箭矢": {
+    "name": "Aquamirror Arrow"
+  },
+  "合成機械獸的箭矢": {
+    "name": "Chimera Arrow"
+  },
+  "水晶箭矢": {
+    "name": "Crystal Arrow"
+  },
+  "鑽頭箭": {
+    "name": "Drill Bolt"
+  },
+  "魔獸箭矢": {
+    "name": "Evil Beast Arrow"
+  },
+  "火箭": {
+    "name": "Fire Arrow"
+  },
+  "火炎箭": {
+    "name": "Flame Arrow"
+  },
+  "硬木箭": {
+    "name": "Hardwood Arrow"
+  },
+  "厚重螺絲釘": {
+    "name": "Heavy Bolt"
+  },
+  "良木箭": {
+    "name": "High-Quality Wood Arrow"
+  },
+  "獵人箭": {
+    "name": "Hunter's Arrow"
+  },
+  "冰箭": {
+    "name": "Ice Arrow"
+  },
+  "鐵箭": {
+    "name": "Iron Arrow"
+  },
+  "皇女之箭": {
+    "name": "Lil Empress Arrow"
+  },
+  "愛之箭矢": {
+    "name": "Love Arrow"
+  },
+  "秘銀箭": {
+    "name": "Mithril Arrow"
+  },
+  "蘑菇箭": {
+    "name": "Mushroom Arrow"
+  },
+  "尖銳的礦石箭": {
+    "name": "Pointed Ore Arrow"
+  },
+  "櫻雲姬之箭": {
+    "name": "Sakura Princess Arrow"
+  },
+  "尖銳木矢": {
+    "name": "Sharp Wood Arrow"
+  },
+  "流星箭": {
+    "name": "Shooting Star Arrow"
+  },
+  "分裂箭矢": {
+    "name": "Split Arrow"
+  },
+  "暴風箭": {
+    "name": "Tempest Arrow"
+  },
+  "瘦尖箭": {
+    "name": "Thin Sharp Arrow"
+  },
+  "薄暮箭矢": {
+    "name": "Twilight Arrow"
+  },
+  "破風箭": {
+    "name": "Wind Slash Arrow"
+  },
+  "冒險者服裝": {
+    "name": "Adventurer's Garb"
+  },
+  "週年慶裝": {
+    "name": "Anniversary Dress"
+  },
+  "冰晶甲": {
+    "name": "Aqua Garb"
+  },
+  "迷鱗甲": {
+    "name": "Armigma"
+  },
+  "刺客夜行衣": {
+    "name": "Assassin Garb"
+  },
+  "野人服": {
+    "name": "Leather Armor"
+  },
+  "布面鐵甲": {
+    "name": "Brigandine"
+  },
+  "蠻龍鎧甲": {
+    "name": "Brutal Dragon Armor"
+  },
+  "神眼槍手": {
+    "name": "Clyde Luxen"
+  },
+  "涼夏浴衣": {
+    "name": "Cool Summer Yukata"
+  },
+  "求知服飾": {
+    "name": "Curious Dress"
+  },
+  "信天翁之服": {
+    "name": "Diomedea Suit"
+  },
+  "祈願禮服": {
+    "name": "Dress of Wish"
+  },
+  "女帝盔甲": {
+    "name": "Empress Mail"
+  },
+  "告死魔裝": {
+    "name": "Evil Garb of Death"
+  },
+  "道服": {
+    "name": "Fighter Uniform"
+  },
+  "格鬥衣": {
+    "name": "Fightwear"
+  },
+  "菱紋企鵝潛水服": {
+    "name": "Finpen Wet Suit"
+  },
+  "森狼之服": {
+    "name": "Forest Wolf Garb"
+  },
+  "勇士裝": {
+    "name": "Fortistra"
+  },
+  "日用衣裝": {
+    "name": "Fortuita Vestibus"
+  },
+  "劍鬥士服": {
+    "name": "Gladiator Armor"
+  },
+  "綠龍衣": {
+    "name": "Green Dragon Garb"
+  },
+  "萬聖節服裝": {
+    "name": "Halloween Garb"
+  },
+  "萬聖節服裝 II": {
+    "name": "Halloween Garb II"
+  },
+  "天羽淨衣": {
+    "name": "Heaven Feather Garb"
+  },
+  "神聖法袍": {
+    "name": "Holy Robe"
+  },
+  "獵人裝束": {
+    "name": "Hunter's Garb"
+  },
+  "先知盔甲": {
+    "name": "Jeremiah Mail"
+  },
+  "肅殺衣": {
+    "name": "Killer Coat"
+  },
+  "騎士鎧甲": {
+    "name": "Knight Armor"
+  },
+  "皮革軟甲": {
+    "name": "B.B. Garb"
+  },
+  "小惡魔衣": {
+    "name": "Lil Devil Garb"
+  },
+  "皇女之衣": {
+    "name": "Lil Empress Garb"
+  },
+  "瘋人衣": {
+    "name": "Mad Doctor Garb"
+  },
+  "法師袍": {
+    "name": "Mage Robe"
+  },
+  "魔結晶鎧甲": {
+    "name": "Magic Crystal Armor"
+  },
+  "魔法劍士服": {
+    "name": "Magic Swordsman's Garb"
+  },
+  "醫護袍": {
+    "name": "Medic Coat"
+  },
+  "龍獸堅甲": {
+    "name": "Mozt Armor"
+  },
+  "惡鬼衣裝": {
+    "name": "Oni Garb"
+  },
+  "綠液鎧甲": {
+    "name": "Ooze Armor"
+  },
+  "聖賢之袍": {
+    "name": "Oracle Robe"
+  },
+  "賞月服飾": {
+    "name": "Otsukimi Garb"
+  },
+  "異界鎧甲": {
+    "name": "Outerworld Armor"
+  },
+  "方陣鎧甲": {
+    "name": "Phalanx (Armor)"
+  },
+  "銀鐵盔甲": {
+    "name": "Plate Armor"
+  },
+  "命官袍": {
+    "name": "Praetor Suit"
+  },
+  "麋鹿裝": {
+    "name": "Reindeer Suit"
+  },
+  "典禮服飾": {
+    "name": "Ritual Dress"
+  },
+  "聖冰鎧甲": {
+    "name": "Sacred Ice Armor"
+  },
+  "櫻花和服": {
+    "name": "Sakura Kimono"
+  },
+  "櫻花和服 II": {
+    "name": "Sakura Kimono II"
+  },
+  "櫻花和服 III": {
+    "name": "Sakura Kimono III"
+  },
+  "櫻花和服 IV": {
+    "name": "Sakura Kimono IV"
+  },
+  "宵櫻披風": {
+    "name": "Twilight Sakura Cape"
+  },
+  "咲耶姬頭冠": {
+    "name": "Princess Sakuya Crown"
+  },
+  "櫻花學生帽": {
+    "name": "Sakura School Cap"
+  },
+  "聖誕服": {
+    "name": "Santa Suit"
+  },
+  "聖誕服 II": {
+    "name": "Santa Suit II"
+  },
+  "聖誕服 III": {
+    "name": "Santa Suit III"
+  },
+  "聖誕服 IV": {
+    "name": "Santa Suit IV"
+  },
+  "魔王鎧甲": {
+    "name": "Satan Armor"
+  },
+  "龍鱗甲": {
+    "name": "Scale Armor"
+  },
+  "貝殼寶飾": {
+    "name": "Seashell"
+  },
+  "雪人服裝": {
+    "name": "Snowman Garb"
+  },
+  "清涼汽水泳裝": {
+    "name": "Soda Swimsuit"
+  },
+  "士兵鎧甲": {
+    "name": "Soldier Armor"
+  },
+  "巫術法衣": {
+    "name": "Sorcery Dress"
+  },
+  "斯特列裝束": {
+    "name": "Straye Garb"
+  },
+  "薄暮裝": {
+    "name": "Twilight Dress"
+  },
+  "戰士盔甲": {
+    "name": "Warrior Mail"
+  },
+  "1周年獵弓": {
+    "name": "1st Anniv Bow"
+  },
+  "1周年獵弓 II": {
+    "name": "1st Anniv Bow II"
+  },
+  "1周年獵弓 III": {
+    "name": "1st Anniv Bow III"
+  },
+  "2周年獵弓": {
+    "name": "2nd Anniv Bow"
+  },
+  "2周年獵弓 II": {
+    "name": "2nd Anniv Bow II"
+  },
+  "2周年獵弓 III": {
+    "name": "2nd Anniv Bow III"
+  },
+  "2周年獵弓 IV": {
+    "name": "2nd Anniv Bow IV"
+  },
+  "2周年獵弓 V": {
+    "name": "2nd Anniv Bow V"
+  },
+  "3周年獵弓": {
+    "name": "3rd Anniv Bow"
+  },
+  "3周年獵弓 II": {
+    "name": "3rd Anniv Bow II"
+  },
+  "3周年獵弓 III": {
+    "name": "3rd Anniv Bow III"
+  },
+  "3周年獵弓 IV": {
+    "name": "3rd Anniv Bow IV"
+  },
+  "3周年獵弓 V": {
+    "name": "3rd Anniv Bow V"
+  },
+  "3周年獵弓 VI": {
+    "name": "3rd Anniv Bow VI"
+  },
+  "3周年獵弓 VII": {
+    "name": "3rd Anniv Bow VII"
+  },
+  "奧多遺跡弓": {
+    "name": "Alto Ruin Bow"
+  },
+  "狂戰士之風": {
+    "name": "Berserk Wind"
+  },
+  "重創之弓": {
+    "name": "Blaster Bow"
+  },
+  "弓": {
+    "name": "Bow"
+  },
+  "邱比特弓": {
+    "name": "Cupid Bow"
+  },
+  "食喪弓": {
+    "name": "Death Eater"
+  },
+  "沙漠之顎": {
+    "name": "Desert Mentum"
+  },
+  "春櫻戰弓": {
+    "name": "Dia Shooter"
+  },
+  "森狼之角弓": {
+    "name": "Forest Wolf Bow"
+  },
+  "齒輪弓": {
+    "name": "Gear Bow"
+  },
+  "巨角弓": {
+    "name": "Grand Horn Bow"
+  },
+  "硬木弓": {
+    "name": "Hard Wood Bow"
+  },
+  "鋼鐵大弓": {
+    "name": "Huge Steel Bow"
+  },
+  "冰弓格雷爾": {
+    "name": "Icebow Verglas"
+  },
+  "虹彩弧光戰弓": {
+    "name": "Iris Ark Bow"
+  },
+  "鋼鐵弓": {
+    "name": "Iron Bow"
+  },
+  "狂鐵蟹爪弓": {
+    "name": "Iron Exoskeleton Bow"
+  },
+  "雄獅弓": {
+    "name": "Leve Bow"
+  },
+  "皇女之弓": {
+    "name": "Lil Empress Bow"
+  },
+  "紫蝠弓": {
+    "name": "Lilac Bow"
+  },
+  "長弓": {
+    "name": "Long Bow"
+  },
+  "金屬角弓": {
+    "name": "Metal Horn Bow"
+  },
+  "重鎧弓": {
+    "name": "Panzer Bow"
+  },
+  "環弓": {
+    "name": "Ring Bow"
+  },
+  "薔薇巧克弓": {
+    "name": "Rose Choco Bow"
+  },
+  "櫻花燈戰弓": {
+    "name": "Sakura Lantern Bow"
+  },
+  "櫻花弓": {
+    "name": "Sakura Shooter"
+  },
+  "瑟菲德戰弓": {
+    "name": "Sefeed Bow"
+  },
+  "析骨弓": {
+    "name": "Skeleton Bow"
+  },
+  "玻璃葉片弓": {
+    "name": "Steel Leaf Bow"
+  },
+  "牙石弓": {
+    "name": "Stone Bow"
+  },
+  "暗影弓": {
+    "name": "Tenebrosity Bow"
+  },
+  "轟鳴雷電弓": {
+    "name": "Thunderbolt Bow"
+  },
+  "水之守護弓": {
+    "name": "Water Guardian Bow"
+  },
+  "齊爾戰弓": {
+    "name": "Zel Shooter"
+  },
+  "卓諾的短弓": {
+    "name": "Zono's Short Bow"
+  },
+  "1周年弩槍": {
+    "name": "1st Anniv Bowgun"
+  },
+  "1周年弩槍 II": {
+    "name": "1st Anniv Bowgun II"
+  },
+  "1周年弩槍 III": {
+    "name": "1st Anniv Bowgun III"
+  },
+  "2周年弩槍": {
+    "name": "2nd Anniv Bowgun"
+  },
+  "2周年弩槍 II": {
+    "name": "2nd Anniv Bowgun II"
+  },
+  "2周年弩槍 III": {
+    "name": "2nd Anniv Bowgun III"
+  },
+  "2周年弩槍 IV": {
+    "name": "2nd Anniv Bowgun IV"
+  },
+  "2周年弩槍 V": {
+    "name": "2nd Anniv Bowgun V"
+  },
+  "3周年弩槍": {
+    "name": "3rd Anniv Bowgun"
+  },
+  "3周年弩槍 II": {
+    "name": "3rd Anniv Bowgun II"
+  },
+  "3周年弩槍 III": {
+    "name": "3rd Anniv Bowgun III"
+  },
+  "3周年弩槍 IV": {
+    "name": "3rd Anniv Bowgun IV"
+  },
+  "3周年弩槍 V": {
+    "name": "3rd Anniv Bowgun V"
+  },
+  "3周年弩槍 VI": {
+    "name": "3rd Anniv Bowgun VI"
+  },
+  "3周年弩槍 VII": {
+    "name": "3rd Anniv Bowgun VII"
+  },
+  "憎恨弩槍": {
+    "name": "Mad Sniper"
+  },
+  "拱形弩": {
+    "name": "Arched Bowgun"
+  },
+  "突擊槍": {
+    "name": "Assault Barrel"
+  },
+  "蘇克雷槍砲": {
+    "name": "Axe Bowgun"
+  },
+  "劍槍": {
+    "name": "Bayonet"
+  },
+  "魔晶弩砲": {
+    "name": "Bexiz Bowgun"
+  },
+  "弩": {
+    "name": "Bowgun"
+  },
+  "路錐角標": {
+    "name": "Cone Horn"
+  },
+  "路錐角標 II": {
+    "name": "Cone Horn II"
+  },
+  "路錐角標 III": {
+    "name": "Cone Horn III"
+  },
+  "可愛弩槍": {
+    "name": "Cute Bowgun"
+  },
+  "歡樂手槍": {
+    "name": "Delight Gun"
+  },
+  "歡樂手槍 II": {
+    "name": "Delight Gun II"
+  },
+  "春櫻獵弩": {
+    "name": "Dia Bowgun"
+  },
+  "雙管獵槍": {
+    "name": "Double Barrel"
+  },
+  "雙弦連弩": {
+    "name": "Double Strings"
+  },
+  "鋒利弩槍": {
+    "name": "Edged Bowgun"
+  },
+  "凱薩林弩弓": {
+    "name": "Empress Bowgun"
+  },
+  "漂漂獸弩槍": {
+    "name": "Fluck Bowgun"
+  },
+  "燧發叛槍": {
+    "name": "Fusee Trahison"
+  },
+  "獵人弩槍": {
+    "name": "Hunter Bowgun"
+  },
+  "冰弩海爾": {
+    "name": "Ice Gun Hail"
+  },
+  "鐵槍砲": {
+    "name": "Iron Barrel"
+  },
+  "皇女連弩": {
+    "name": "Lil Empress Bowgun"
+  },
+  "魔裝狙擊槍": {
+    "name": "Achti Bowgun"
+  },
+  "魔導弩槍": {
+    "name": "Magic Bowgun"
+  },
+  "曼特恩磁軌砲": {
+    "name": "Maton Railgun"
+  },
+  "鋼鐵戰弩": {
+    "name": "Metal Bowgun"
+  },
+  "電光槍": {
+    "name": "Plasma Gun"
+  },
+  "左輪手槍": {
+    "name": "Revolver"
+  },
+  "滑膛槍": {
+    "name": "Rifled Musket"
+  },
+  "魔喙弩槍": {
+    "name": "Rostrum Bowgun"
+  },
+  "櫻花燈榴彈槍": {
+    "name": "Sakura Lantern Rifle"
+  },
+  "櫻花弩槍": {
+    "name": "Sakura Matchlock"
+  },
+  "魔形機槍": {
+    "name": "Scrader Barrel"
+  },
+  "短槍砲": {
+    "name": "Short Musket"
+  },
+  "連弩劍": {
+    "name": "Sword Bowgun"
+  },
+  "暴龍弩": {
+    "name": "War Bowgun"
+  },
+  "骨董小刀": {
+    "name": "Antique Knife"
+  },
+  "工具刀": {
+    "name": "Army Knife"
+  },
+  "餅乾之刃": {
+    "name": "Biscuit Knife"
+  },
+  "吸血刀": {
+    "name": "Blood Drain Knife"
+  },
+  "開山刀": {
+    "name": "Bush Knife"
+  },
+  "商隊小刀": {
+    "name": "Caravan Dagger"
+  },
+  "混沌之刃": {
+    "name": "Chaos Knife"
+  },
+  "巧克力之刃": {
+    "name": "Chocolate Knife"
+  },
+  "受詛咒的短劍": {
+    "name": "Cursed Dagger"
+  },
+  "小刀": {
+    "name": "Dagger"
+  },
+  "戴米小刀": {
+    "name": "Demi Knife"
+  },
+  "墮天使短刀": {
+    "name": "Fallen Angel Dagger"
+  },
+  "鰭刺刀": {
+    "name": "Fin Knife"
+  },
+  "女神短劍": {
+    "name": "Goddess's Dagger"
+  },
+  "守護短劍": {
+    "name": "Guardian Dagger"
+  },
+  "厚重小刀": {
+    "name": "Heavy Knife"
+  },
+  "神聖短刃": {
+    "name": "Holy Knife"
+  },
+  "殺人小刀": {
+    "name": "Knife Shaft"
+  },
+  "庫克力彎刀": {
+    "name": "Kukri"
+  },
+  "輕質小刀": {
+    "name": "Lightweight Knife"
+  },
+  "皇女短刃": {
+    "name": "Lil Empress Dagger"
+  },
+  "魔法短劍": {
+    "name": "Magic Dagger"
+  },
+  "魔法匕首": {
+    "name": "Magical Dagger"
+  },
+  "異形短刀": {
+    "name": "Odd-Shaped Knife"
+  },
+  "護身小刀": {
+    "name": "Parrying Dagger"
+  },
+  "護身小刀ZC": {
+    "name": "Parrying Dagger ZC"
+  },
+  "威力小刀": {
+    "name": "Power Knife"
+  },
+  "鼠輩尖刀": {
+    "name": "Rat Knife"
+  },
+  "岩牙短劍": {
+    "name": "Rock Fang Dagger"
+  },
+  "航海員短劍": {
+    "name": "Sailor's Dagger"
+  },
+  "櫻雲姬的護身刀": {
+    "name": "Sakura Princess Dagger"
+  },
+  "暴風短劍": {
+    "name": "Storm Dagger"
+  },
+  "刺刀": {
+    "name": "Thorny Twig"
+  },
+  "投擲小刀": {
+    "name": "Throwing Knife"
+  },
+  "薄暮短刀": {
+    "name": "Twilight Dagger"
+  },
+  "1周年拳套": {
+    "name": "1st Anniv Knuckles"
+  },
+  "1周年拳套 II": {
+    "name": "1st Anniv Knuckles II"
+  },
+  "1周年拳套 III": {
+    "name": "1st Anniv Knuckles III"
+  },
+  "2周年拳套": {
+    "name": "2nd Anniv Knuckles"
+  },
+  "2周年拳套 II": {
+    "name": "2nd Anniv Knuckles II"
+  },
+  "2周年拳套 III": {
+    "name": "2nd Anniv Knuckles III"
+  },
+  "2周年拳套 IV": {
+    "name": "2nd Anniv Knuckles IV"
+  },
+  "2周年拳套 V": {
+    "name": "2nd Anniv Knuckles V"
+  },
+  "3周年拳套": {
+    "name": "3rd Anniv Knuckles"
+  },
+  "3周年拳套 II": {
+    "name": "3rd Anniv Knuckles II"
+  },
+  "3周年拳套 III": {
+    "name": "3rd Anniv Knuckles III"
+  },
+  "3周年拳套 IV": {
+    "name": "3rd Anniv Knuckles IV"
+  },
+  "3周年拳套 V": {
+    "name": "3rd Anniv Knuckles V"
+  },
+  "3周年拳套 VI": {
+    "name": "3rd Anniv Knuckles VI"
+  },
+  "3周年拳套 VII": {
+    "name": "3rd Anniv Knuckles VII"
+  },
+  "啤酒杯": {
+    "name": "Beer Mugs"
+  },
+  "狂暴拳": {
+    "name": "Berserker Cestuses"
+  },
+  "貓拳": {
+    "name": "Cat Paws"
+  },
+  "環刃": {
+    "name": "Chakrums"
+  },
+  "化學戒指": {
+    "name": "Chemical Ring"
+  },
+  "巧克力之拳": {
+    "name": "Chocolate Gifts"
+  },
+  "巧克力之拳 II": {
+    "name": "Chocolate Gifts II"
+  },
+  "尖爪": {
+    "name": "Claws"
+  },
+  "路錐之拳": {
+    "name": "Cone Knuckles"
+  },
+  "路錐之拳 II": {
+    "name": "Cone Knuckles II"
+  },
+  "路錐之拳 III": {
+    "name": "Cone Knuckles III"
+  },
+  "結晶拳套": {
+    "name": "Crystal Knuckles"
+  },
+  "惡靈爪": {
+    "name": "Devil Claws"
+  },
+  "春櫻拳甲": {
+    "name": "Dia Knuckles"
+  },
+  "巨鑽": {
+    "name": "Drills"
+  },
+  "艾美蒂亞": {
+    "name": "Emeldia"
+  },
+  "艾佩塔刺": {
+    "name": "Epetal"
+  },
+  "衛護拳套": {
+    "name": "Gardien"
+  },
+  "鬼魂傀儡": {
+    "name": "Ghost Puppets"
+  },
+  "魔像手臂": {
+    "name": "Golem Arm"
+  },
+  "硬實拳套": {
+    "name": "Hard Knuckles"
+  },
+  "冰爪史諾": {
+    "name": "Iceclaw Snow"
+  },
+  "鋼鐵熊爪": {
+    "name": "Iron Bear Claw"
+  },
+  "鐵拳套": {
+    "name": "Iron Knuckles"
+  },
+  "驚駭拳套": {
+    "name": "Iron Thorns"
+  },
+  "拳刃": {
+    "name": "Jamadhar"
+  },
+  "鴛鴦刺": {
+    "name": "Katar"
+  },
+  "拳環": {
+    "name": "Knuckle Duster"
+  },
+  "拳套": {
+    "name": "Knuckles"
+  },
+  "皇女拳套": {
+    "name": "Lil Empress Knuckle"
+  },
+  "天狼戰爪": {
+    "name": "Lupus Claws"
+  },
+  "重裝魔拳": {
+    "name": "Mad Palms"
+  },
+  "大師拐棍": {
+    "name": "Master's Tonfa"
+  },
+  "牛王角爪": {
+    "name": "Minotaur Knuckles"
+  },
+  "皮多腕套": {
+    "name": "Piton Wristband"
+  },
+  "聖冰戰爪": {
+    "name": "Sacred Ice Claws"
+  },
+  "櫻花腕套": {
+    "name": "Sakura Gloves"
+  },
+  "櫻花燈拳套": {
+    "name": "Sakura Lantern Knuckles"
+  },
+  "致勝尖爪": {
+    "name": "Tri Claws"
+  },
+  "三球冰淇淋": {
+    "name": "Triple Ice Cream"
+  },
+  "戰鷹雙爪": {
+    "name": "Twin Eagles"
+  },
+  "焰刺爪": {
+    "name": "Volcanic Claws"
+  },
+  "白熊爪": {
+    "name": "White Bear Knuckles"
+  },
+  "偽足拳套": {
+    "name": "Zaif Sadik"
+  },
+  "1周年飛翼": {
+    "name": "1st Anniv Wings"
+  },
+  "1周年飛翼 II": {
+    "name": "1st Anniv Wings II"
+  },
+  "1周年飛翼 III": {
+    "name": "1st Anniv Wings III"
+  },
+  "2周年飛翼": {
+    "name": "2nd Anniv Wings"
+  },
+  "2周年飛翼 II": {
+    "name": "2nd Anniv Wings II"
+  },
+  "2周年飛翼 III": {
+    "name": "2nd Anniv Wings III"
+  },
+  "2周年飛翼 IV": {
+    "name": "2nd Anniv Wings IV"
+  },
+  "2周年飛翼 V": {
+    "name": "2nd Anniv Wings V"
+  },
+  "3周年飛翼": {
+    "name": "3rd Anniv Wings"
+  },
+  "3周年飛翼 II": {
+    "name": "3rd Anniv Wings II"
+  },
+  "3周年飛翼 III": {
+    "name": "3rd Anniv Wings III"
+  },
+  "3周年飛翼 IV": {
+    "name": "3rd Anniv Wings IV"
+  },
+  "3周年飛翼 V": {
+    "name": "3rd Anniv Wings V"
+  },
+  "3周年飛翼 VI": {
+    "name": "3rd Anniv Wings VI"
+  },
+  "3周年飛翼 VII": {
+    "name": "3rd Anniv Wings VII"
+  },
+  "天使環羽": {
+    "name": "Angel Halo"
+  },
+  "紅晶風翼": {
+    "name": "Aranea Ore"
+  },
+  "小熊氣球": {
+    "name": "Bear Balloons"
+  },
+  "透明晶翅": {
+    "name": "Crystal Wing"
+  },
+  "暗懼法陣": {
+    "name": "Dark Fear"
+  },
+  "春櫻幻羽": {
+    "name": "Dia Wings"
+  },
+  "風翼": {
+    "name": "El Vento"
+  },
+  "妖精羽翅": {
+    "name": "Elflame"
+  },
+  "沙漠之翼": {
+    "name": "Elsand"
+  },
+  "女帝之魂": {
+    "name": "Empress Soul"
+  },
+  "妖精仙羽": {
+    "name": "Fairy Peace"
+  },
+  "煙火": {
+    "name": "Fireworks"
+  },
+  "曙光花飾": {
+    "name": "Floral Light"
+  },
+  "霜晶裙擺": {
+    "name": "Frost Skirt"
+  },
+  "萬聖節蝙蝠": {
+    "name": "Halloween Bat"
+  },
+  "冰晶艾黎路": {
+    "name": "Icecrystal Icicle"
+  },
+  "結晶羽翅": {
+    "name": "Irogeon"
+  },
+  "翡翠羽翅": {
+    "name": "Jade Wings"
+  },
+  "雨神翼": {
+    "name": "La Lluvia"
+  },
+  "多重術式系統": {
+    "name": "Layered Magic System"
+  },
+  "皇女魔導具": {
+    "name": "Lil Empress Magic Device"
+  },
+  "魔力催動器": {
+    "name": "Magi Klug"
+  },
+  "魔法羽翼": {
+    "name": "Magi Vein"
+  },
+  "護身胸章": {
+    "name": "Magic Brooch"
+  },
+  "魔力羽毛": {
+    "name": "Magic Feather"
+  },
+  "金屬羽翼": {
+    "name": "Metal Wings"
+  },
+  "植物膀臂": {
+    "name": "Plant Arm"
+  },
+  "稜鏡之環（暗）": {
+    "name": "Prism Ring (Dark)"
+  },
+  "稜鏡之環（地）": {
+    "name": "Prism Ring (Earth)"
+  },
+  "稜鏡之環（火）": {
+    "name": "Prism Ring (Fire)"
+  },
+  "稜鏡之環（光）": {
+    "name": "Prism Ring (Light)"
+  },
+  "稜鏡之環（水）": {
+    "name": "Prism Ring (Water)"
+  },
+  "稜鏡之環（風）": {
+    "name": "Prism Ring (Wind)"
+  },
+  "稜鏡之環": {
+    "name": "Prism Ring"
+  },
+  "魅力蝴蝶結": {
+    "name": "Ribbon Charm"
+  },
+  "櫻花燈翼": {
+    "name": "Sakura Lantern Wings"
+  },
+  "櫻花羽翼": {
+    "name": "Sakura Wings"
+  },
+  "超．孔雀魔裝": {
+    "name": "Super Costero"
+  },
+  "情人心翼": {
+    "name": "Valentia"
+  },
+  "生命之核": {
+    "name": "Vita Cores"
+  },
+  "神樂戰使魔裝": {
+    "name": "Warrior Angel Armor"
+  },
+  "媽媽的視線": {
+    "name": "Watching Mom"
+  },
+  "媽媽的視線 II": {
+    "name": "Watching Mom II"
+  },
+  "媽媽的視線 III": {
+    "name": "Watching Mom III"
+  },
+  "渦輪旋風": {
+    "name": "Whirlwind"
+  },
+  "火神之怒": {
+    "name": "Wrath of Vulcan"
+  },
+  "1周年盾牌": {
+    "name": "1st Anniv Shield"
+  },
+  "1周年盾牌 II": {
+    "name": "1st Anniv Shield II"
+  },
+  "1周年盾牌 III": {
+    "name": "1st Anniv Shield III"
+  },
+  "2周年盾牌": {
+    "name": "2nd Anniv Shield"
+  },
+  "2周年盾牌 II": {
+    "name": "2nd Anniv Shield II"
+  },
+  "2周年盾牌 III": {
+    "name": "2nd Anniv Shield III"
+  },
+  "2周年盾牌 IV": {
+    "name": "2nd Anniv Shield IV"
+  },
+  "2周年盾牌 V": {
+    "name": "2nd Anniv Shield V"
+  },
+  "3周年盾牌": {
+    "name": "3rd Anniv Shield"
+  },
+  "3周年盾牌 II": {
+    "name": "3rd Anniv Shield II"
+  },
+  "3周年盾牌 III": {
+    "name": "3rd Anniv Shield III"
+  },
+  "3周年盾牌 IV": {
+    "name": "3rd Anniv Shield IV"
+  },
+  "3周年盾牌 V": {
+    "name": "3rd Anniv Shield V"
+  },
+  "3周年盾牌 VI": {
+    "name": "3rd Anniv Shield VI"
+  },
+  "3周年盾牌 VII": {
+    "name": "3rd Anniv Shield VII"
+  },
+  "阿爾貝羅盾": {
+    "name": "Albero Shield"
+  },
+  "虛狂黑盾": {
+    "name": "Black Shield of Delusion"
+  },
+  "圓盾": {
+    "name": "Buckler"
+  },
+  "防彈盾牌": {
+    "name": "Bullet Shield"
+  },
+  "蛋糕盾": {
+    "name": "Cake Shield"
+  },
+  "棺材盾": {
+    "name": "Coffin Shield"
+  },
+  "十字盾": {
+    "name": "Cross Shield"
+  },
+  "暗將盾牌": {
+    "name": "Dark General's Shield"
+  },
+  "艾路芬戰盾": {
+    "name": "Elfin Shield"
+  },
+  "誘補盾牌": {
+    "name": "Esca Shield"
+  },
+  "硬盾": {
+    "name": "Hard Buckler"
+  },
+  "勇者之盾（波姆）": {
+    "name": "Hero Shield (Pom)"
+  },
+  "厚重大盾": {
+    "name": "Huge Heavy Shield"
+  },
+  "皇族之盾": {
+    "name": "Imperial Shield"
+  },
+  "藍晶盾": {
+    "name": "Indigo Shield"
+  },
+  "鐵盾": {
+    "name": "Iron Shield"
+  },
+  "朱諾之盾": {
+    "name": "Juno Shield"
+  },
+  "朱諾之盾 II": {
+    "name": "Juno Shield II"
+  },
+  "騎士盾": {
+    "name": "Kite Shield"
+  },
+  "輕質盾": {
+    "name": "Light Shield"
+  },
+  "皇女之盾": {
+    "name": "Lil Empress Shield"
+  },
+  "大理石堅盾": {
+    "name": "Marble Shield"
+  },
+  "曼特恩護盾": {
+    "name": "Maton Shield"
+  },
+  "反光盾": {
+    "name": "Mirror Shield"
+  },
+  "綠液之盾": {
+    "name": "Ooze Shield"
+  },
+  "方陣盾牌": {
+    "name": "Phalanx (Shield)"
+  },
+  "遺境盾": {
+    "name": "Relic Shield"
+  },
+  "圖騰盾": {
+    "name": "Relief Shield"
+  },
+  "龍鱗盾": {
+    "name": "Scale Shield"
+  },
+  "香菇咪玩偶": {
+    "name": "Shampy Doll"
+  },
+  "貝殼圓盾": {
+    "name": "Shell Buckler"
+  },
+  "重甲盾": {
+    "name": "Shell Shield"
+  },
+  "平釘盾": {
+    "name": "Spike Shield"
+  },
+  "精靈之盾納維達": {
+    "name": "Spirit Shield Navida"
+  },
+  "火神盾": {
+    "name": "Vulcan Shield"
+  },
+  "札哈克之盾": {
+    "name": "Zahhak Shield"
+  },
+  "柔艾的魔導書": {
+    "name": "Zoe's Magic Book"
+  },
+  "熟練法師手環": {
+    "name": "Adroit Mage's Bangle"
+  },
+  "熟練戰士手環": {
+    "name": "Adroit Warrior's Bangle"
+  },
+  "屏蔽系統": {
+    "name": "Anti Melee System"
+  },
+  "貴族的戒指": {
+    "name": "Aristocrat Ring"
+  },
+  "芳香手環": {
+    "name": "Aromatic Bangle"
+  },
+  "獸牙護身符": {
+    "name": "Beast Fang Talisman"
+  },
+  "猛獸護符": {
+    "name": "Beast Talisman"
+  },
+  "頂針": {
+    "name": "Bow Thimble"
+  },
+  "頂針ZC": {
+    "name": "Bow Thimble ZC"
+  },
+  "壞掉的懷錶": {
+    "name": "Broken Watch"
+  },
+  "商隊護符": {
+    "name": "Caravan Cord"
+  },
+  "商隊盾牌": {
+    "name": "Caravan Shield"
+  },
+  "巧克力護符": {
+    "name": "Chocolate Charm"
+  },
+  "巧克力護符 II": {
+    "name": "Chocolate Charm II"
+  },
+  "巧克力戒指": {
+    "name": "Chocolate Ring"
+  },
+  "巧克力戒指 II": {
+    "name": "Chocolate Ring II"
+  },
+  "餅乾戒指": {
+    "name": "Cookie Ring"
+  },
+  "餅乾戒指 II": {
+    "name": "Cookie Ring II"
+  },
+  "餅乾護符": {
+    "name": "Cookie Talisman"
+  },
+  "餅乾護符 II": {
+    "name": "Cookie Talisman II"
+  },
+  "暗鬥士手環": {
+    "name": "Dark Fighter Bangle"
+  },
+  "暗騎士護符": {
+    "name": "Dark Knight Amulet"
+  },
+  "技術護符": {
+    "name": "Dexterity Talisman"
+  },
+  "技術護符 II": {
+    "name": "Dexterity Talisman II"
+  },
+  "技術護符 III": {
+    "name": "Dexterity Talisman III"
+  },
+  "技術護符 IV": {
+    "name": "Dexterity Talisman IV"
+  },
+  "覺醒者手環": {
+    "name": "Enlightened Bangle"
+  },
+  "Gapapa!": {
+    "name": "Gapapa!"
+  },
+  "迷彩布": {
+    "name": "Ghilly Sheet"
+  },
+  "誘導燈籠": {
+    "name": "Guidance Lantern"
+  },
+  "幻惑茸香": {
+    "name": "Hallucination Spore"
+  },
+  "沒有針的懷錶": {
+    "name": "Handless Watch"
+  },
+  "幸福護符": {
+    "name": "Happiness Talisman"
+  },
+  "堅固的護手甲": {
+    "name": "Hard Arm Guard"
+  },
+  "硬殼護符": {
+    "name": "Hard Shell Talisman"
+  },
+  "冰結晶戒指": {
+    "name": "Ice Crystal Ring"
+  },
+  "騎士護符": {
+    "name": "Knight's Talisman"
+  },
+  "消失的戒指": {
+    "name": "Lost Ring"
+  },
+  "馬其納戒指": {
+    "name": "Machina Ring"
+  },
+  "魔劍士戒指": {
+    "name": "Magic Swordsman's Ring"
+  },
+  "魔力護符": {
+    "name": "Magic Talisman"
+  },
+  "魔力護符 II": {
+    "name": "Magic Talisman II"
+  },
+  "魔力護符 III": {
+    "name": "Magic Talisman III"
+  },
+  "魔力護符 IV": {
+    "name": "Magic Talisman IV"
+  },
+  "法師手環": {
+    "name": "Magician's Bangle"
+  },
+  "魔術師戒指": {
+    "name": "Magician's Ring"
+  },
+  "編繩": {
+    "name": "Misanga"
+  },
+  "宿木護符": {
+    "name": "Mistletoe Talisman"
+  },
+  "小魔晶吊飾": {
+    "name": "Moxiz Strap"
+  },
+  "力量護符": {
+    "name": "Muscle Talisman"
+  },
+  "力量護符 II": {
+    "name": "Muscle Talisman II"
+  },
+  "力量護符 III": {
+    "name": "Muscle Talisman III"
+  },
+  "力量護符 IV": {
+    "name": "Muscle Talisman IV"
+  },
+  "維納達護符": {
+    "name": "Navida Talisman"
+  },
+  "擺墜": {
+    "name": "Pendulum"
+  },
+  "哲學家戒指": {
+    "name": "Philosopher's Ring"
+  },
+  "波多姆護符": {
+    "name": "Potum Talisman"
+  },
+  "電力齒輪": {
+    "name": "Powered Gear"
+  },
+  "南瓜戒指": {
+    "name": "Pumpkin Ring"
+  },
+  "貪婪者戒指": {
+    "name": "Ring of Greed"
+  },
+  "宇宙戒指": {
+    "name": "Ring of Universe"
+  },
+  "航海士護符": {
+    "name": "Sailor's Talisman"
+  },
+  "沙隱戒指": {
+    "name": "Sand Veil Ring"
+  },
+  "強化盾": {
+    "name": "Shield Plus"
+  },
+  "雪雕波多姆": {
+    "name": "Snow Potum Doll"
+  },
+  "雪國護符": {
+    "name": "Snowland Talisman"
+  },
+  "敏捷護符": {
+    "name": "Speed Talisman"
+  },
+  "敏捷護符 II": {
+    "name": "Speed Talisman II"
+  },
+  "敏捷護符 III": {
+    "name": "Speed Talisman III"
+  },
+  "敏捷護符 IV": {
+    "name": "Speed Talisman IV"
+  },
+  "樹精手環": {
+    "name": "Spirit Tree Bangle"
+  },
+  "隱密護符": {
+    "name": "Spy's Talisman"
+  },
+  "體力護符": {
+    "name": "Stamina Talisman"
+  },
+  "體力護符 II": {
+    "name": "Stamina Talisman II"
+  },
+  "體力護符 III": {
+    "name": "Stamina Talisman III"
+  },
+  "體力護符 IV": {
+    "name": "Stamina Talisman IV"
+  },
+  "蜘蛛人護符": {
+    "name": "Steeplejack Talisman"
+  },
+  "護符": {
+    "name": "Talisman"
+  },
+  "穿越時空的懷錶": {
+    "name": "Time Warp Watch"
+  },
+  "強韌手環": {
+    "name": "Toughness Bangle"
+  },
+  "雙頭龍護符": {
+    "name": "Twin-Head Dragon Talisman"
+  },
+  "拔刀斬擊手環": {
+    "name": "Unsheathe Bangle"
+  },
+  "戰士手環": {
+    "name": "Warrior's Bangle"
+  },
+  "弱化護符": {
+    "name": "Weaken Talisman"
+  },
+  "夜櫻手環": {
+    "name": "Yozakura Bangle"
+  },
+  "1周年法杖": {
+    "name": "1st Anniv Staff"
+  },
+  "1周年法杖 II": {
+    "name": "1st Anniv Staff II"
+  },
+  "1周年法杖 III": {
+    "name": "1st Anniv Staff III"
+  },
+  "2周年法杖": {
+    "name": "2nd Anniv Staff"
+  },
+  "2周年法杖 II": {
+    "name": "2nd Anniv Staff II"
+  },
+  "2周年法杖 III": {
+    "name": "2nd Anniv Staff III"
+  },
+  "2周年法杖 IV": {
+    "name": "2nd Anniv Staff IV"
+  },
+  "2周年法杖 V": {
+    "name": "2nd Anniv Staff V"
+  },
+  "3周年法杖": {
+    "name": "3rd Anniv Staff"
+  },
+  "3周年法杖 II": {
+    "name": "3rd Anniv Staff II"
+  },
+  "3周年法杖 III": {
+    "name": "3rd Anniv Staff III"
+  },
+  "3周年法杖 IV": {
+    "name": "3rd Anniv Staff IV"
+  },
+  "3周年法杖 V": {
+    "name": "3rd Anniv Staff V"
+  },
+  "3周年法杖 VI": {
+    "name": "3rd Anniv Staff VI"
+  },
+  "3周年法杖 VII": {
+    "name": "3rd Anniv Staff VII"
+  },
+  "魔晶杖": {
+    "name": "Bexiz Staff"
+  },
+  "和平之櫻": {
+    "name": "Bloom of Peace"
+  },
+  "蜜糖蘋果杖": {
+    "name": "Candy Coryn Staff"
+  },
+  "光晶法杖": {
+    "name": "Crystal Rod"
+  },
+  "水晶之杖": {
+    "name": "Crystal Wand"
+  },
+  "惡靈魔杖": {
+    "name": "Devil's Staff"
+  },
+  "春櫻法杖": {
+    "name": "Dia Staff"
+  },
+  "輓歌法杖": {
+    "name": "Elegia Staff"
+  },
+  "火焰杖": {
+    "name": "Fire Staff"
+  },
+  "花卉法杖": {
+    "name": "Fleur Rod"
+  },
+  "草龍杖": {
+    "name": "Folium Staff"
+  },
+  "冰杖藍迪": {
+    "name": "Icestaff Frigus"
+  },
+  "月桂法杖": {
+    "name": "Laurel Staff"
+  },
+  "自由之杖": {
+    "name": "Libra"
+  },
+  "皇女之杖": {
+    "name": "Lil Empress Staff"
+  },
+  "糖果杖": {
+    "name": "Lollipop Staff"
+  },
+  "光茸之杖": {
+    "name": "Luminous Mushroom Staff"
+  },
+  "破滅之矛": {
+    "name": "Mace of Destruction"
+  },
+  "魔杖": {
+    "name": "Mage Rod"
+  },
+  "牛王的魔杖": {
+    "name": "Minotaur Staff"
+  },
+  "晨星": {
+    "name": "Morning Star"
+  },
+  "綠液之杖": {
+    "name": "Ooze Staff"
+  },
+  "皮多法杖": {
+    "name": "Piton Staff"
+  },
+  "祭司矛": {
+    "name": "Priest Mace"
+  },
+  "王女杖（波姆）": {
+    "name": "Queen Staff (Potum)"
+  },
+  "金石杖": {
+    "name": "Rock Staff"
+  },
+  "法杖": {
+    "name": "Rod"
+  },
+  "聖冰之杖": {
+    "name": "Sacred Ice Staff"
+  },
+  "繼任法杖": {
+    "name": "Sage Staff"
+  },
+  "櫻花燈杖": {
+    "name": "Sakura Lantern Staff"
+  },
+  "櫻木杖": {
+    "name": "Sakura Staff"
+  },
+  "魔形機矛": {
+    "name": "Scrader Mace"
+  },
+  "靈魂之淚": {
+    "name": "Spirit's Tear"
+  },
+  "暴風杖": {
+    "name": "Storm Staff"
+  },
+  "甜點匙": {
+    "name": "Sweet Spoon"
+  },
+  "火神杖": {
+    "name": "Vulcan Staff"
+  },
+  "水魔杖": {
+    "name": "Water Staff"
+  },
+  "破風杖": {
+    "name": "Wind Staff"
+  },
+  "2周年寶槍": {
+    "name": "2nd Anniv Halberd"
+  },
+  "2周年寶槍 II": {
+    "name": "2nd Anniv Halberd II"
+  },
+  "2周年寶槍 III": {
+    "name": "2nd Anniv Halberd III"
+  },
+  "2周年寶槍 IV": {
+    "name": "2nd Anniv Halberd IV"
+  },
+  "2周年寶槍 V": {
+    "name": "2nd Anniv Halberd V"
+  },
+  "3周年寶槍": {
+    "name": "3rd Anniv Halberd"
+  },
+  "3周年寶槍 II": {
+    "name": "3rd Anniv Halberd II"
+  },
+  "3周年寶槍 III": {
+    "name": "3rd Anniv Halberd III"
+  },
+  "3周年寶槍 IV": {
+    "name": "3rd Anniv Halberd IV"
+  },
+  "3周年寶槍 V": {
+    "name": "3rd Anniv Halberd V"
+  },
+  "3周年寶槍 VI": {
+    "name": "3rd Anniv Halberd VI"
+  },
+  "3周年寶槍 VII": {
+    "name": "3rd Anniv Halberd VII"
+  },
+  "暗魂之嚎": {
+    "name": "Amcrie"
+  },
+  "藍薔薇槍": {
+    "name": "Azure Rose"
+  },
+  "長柄斧": {
+    "name": "Bardiche"
+  },
+  "戰矛": {
+    "name": "Battle Spear"
+  },
+  "BBQ刺槍": {
+    "name": "BBQ Spear"
+  },
+  "利刃槍": {
+    "name": "Blade Lance"
+  },
+  "春櫻魔槍": {
+    "name": "Dia Spear"
+  },
+  "孤寂騎槍": {
+    "name": "Einsamkeit"
+  },
+  "祭典刺槍": {
+    "name": "Festival Spear"
+  },
+  "討海人魚叉": {
+    "name": "Fisherman's Harpoon"
+  },
+  "潛水夫魚槍": {
+    "name": "Diver's Bowgun"
+  },
+  "薇蕨花槍": {
+    "name": "Floral Lance"
+  },
+  "長柄刀": {
+    "name": "Glaive"
+  },
+  "黃金之槍": {
+    "name": "Golden Lance"
+  },
+  "卦莫爾．收割者": {
+    "name": "Gwai Reaper"
+  },
+  "重柄刺槍": {
+    "name": "Heavy Spear"
+  },
+  "冰霜槍格蘭索": {
+    "name": "Ice Spear Glaso"
+  },
+  "入侵巨槍": {
+    "name": "Intruder"
+  },
+  "騎士長槍": {
+    "name": "Knight Lance"
+  },
+  "落雷魔槍": {
+    "name": "Lightning Bolt Spear"
+  },
+  "小惡魔槍": {
+    "name": "Lil Devil Lance"
+  },
+  "皇女之槍": {
+    "name": "Lil Empress Halberd"
+  },
+  "魔結晶長槍": {
+    "name": "Magic Crystal Spear"
+  },
+  "馬維茲棍棒": {
+    "name": "Mauez's Pole"
+  },
+  "雙叉戟": {
+    "name": "Mezraq"
+  },
+  "高貴長刀": {
+    "name": "Noble Glaive"
+  },
+  "聖騎刺槍": {
+    "name": "Paladin Spear"
+  },
+  "巧克洋傘槍": {
+    "name": "Parasol Choco Lance"
+  },
+  "長柄戰斧": {
+    "name": "Pollaxe"
+  },
+  "聖冰長槍": {
+    "name": "Sacred Ice Spear"
+  },
+  "櫻花燈長槍": {
+    "name": "Sakura Lantern Lance"
+  },
+  "落櫻薙刀": {
+    "name": "Sakura Naginata"
+  },
+  "巨劍槍": {
+    "name": "Spada Lance"
+  },
+  "刺槍": {
+    "name": "Spear"
+  },
+  "雷鳴刺槍": {
+    "name": "Thunder Spear"
+  },
+  "戰槍．寛容": {
+    "name": "Tolerancia"
+  },
+  "三叉戟": {
+    "name": "Trident"
+  },
+  "神樂戰使旋槍": {
+    "name": "Warrior Angel Halberd"
+  },
+  "3周年寶刀": {
+    "name": "3rd Anniv Katana"
+  },
+  "3周年寶刀 II": {
+    "name": "3rd Anniv Katana II"
+  },
+  "3周年寶刀 III": {
+    "name": "3rd Anniv Katana III"
+  },
+  "3周年寶刀 IV": {
+    "name": "3rd Anniv Katana IV"
+  },
+  "3周年寶刀 V": {
+    "name": "3rd Anniv Katana V"
+  },
+  "3周年寶刀 VI": {
+    "name": "3rd Anniv Katana VI"
+  },
+  "3周年寶刀 VII": {
+    "name": "3rd Anniv Katana VII"
+  },
+  "綠鳩": {
+    "name": "Aobato"
+  },
+  "喚魔戰刃": {
+    "name": "Caro Tesla"
+  },
+  "巧克力武士刀": {
+    "name": "Chocolate Katana"
+  },
+  "結晶斬劍": {
+    "name": "Crystal Lamina"
+  },
+  "春櫻拔刀劍": {
+    "name": "Dia Lamina"
+  },
+  "偽神戰刃": {
+    "name": "Faldios"
+  },
+  "黃金戰刀": {
+    "name": "Golden Katana"
+  },
+  "冰刃艾斯": {
+    "name": "Ice Katana Ace"
+  },
+  "憎惡血怒": {
+    "name": "Iradium"
+  },
+  "鋼牙": {
+    "name": "Iron Fang"
+  },
+  "枷鎖切": {
+    "name": "Kasakiri"
+  },
+  "綺羅星": {
+    "name": "Kiraboshi"
+  },
+  "黃雅拵": {
+    "name": "Koga Koshirae"
+  },
+  "硬羅切": {
+    "name": "Korakiri"
+  },
+  "玄紅葉": {
+    "name": "Kuro Momiji"
+  },
+  "黑橡": {
+    "name": "Kuro Tsurubami"
+  },
+  "桑蜘蛛": {
+    "name": "Kuwagumo"
+  },
+  "皇女武士刀": {
+    "name": "Lil Empress Katana"
+  },
+  "風魔杖刀": {
+    "name": "Mafu Swordstick"
+  },
+  "牛王之刃": {
+    "name": "Minotaur's Katana"
+  },
+  "拔刀劍．謙遜": {
+    "name": "Modestia"
+  },
+  "杖刀．骸拵": {
+    "name": "Mukuro Koshirae"
+  },
+  "無銘打刀": {
+    "name": "Nameless Uchigatana"
+  },
+  "黏液之劍": {
+    "name": "Ooze Lamina"
+  },
+  "聖冰戰刀": {
+    "name": "Sacred Ice Katana"
+  },
+  "散櫻吹雪刀": {
+    "name": "Sakura Katana"
+  },
+  "櫻花燈戰刀": {
+    "name": "Sakura Lantern Katana"
+  },
+  "青雲": {
+    "name": "Seiun"
+  },
+  "白鞘": {
+    "name": "Shirasaya"
+  },
+  "守羅拵": {
+    "name": "Shura Koshirae"
+  },
+  "堇連棘": {
+    "name": "Sumire Renkyoku"
+  },
+  "立鍔": {
+    "name": "Tatetsuba"
+  },
+  "周年慶禮服": {
+    "name": "Anniversary Festive Garb"
+  },
+  "4周年寶劍": {
+    "name": "4th Anniv Sword"
+  },
+  "4周年寶劍 II": {
+    "name": "4th Anniv Sword II"
+  },
+  "4周年寶劍 III": {
+    "name": "4th Anniv Sword III"
+  },
+  "4周年寶劍 IV": {
+    "name": "4th Anniv Sword IV"
+  },
+  "4周年寶劍 V": {
+    "name": "4th Anniv Sword V"
+  },
+  "4周年寶劍 VI": {
+    "name": "4th Anniv Sword VI"
+  },
+  "4周年寶劍 VII": {
+    "name": "4th Anniv Sword VII"
+  },
+  "4周年寶劍 VIII": {
+    "name": "4th Anniv Sword VIII"
+  },
+  "4周年寶劍 IX": {
+    "name": "4th Anniv Sword IX"
+  },
+  "4周年巨劍": {
+    "name": "4th Anniv Greatsword"
+  },
+  "4周年巨劍 II": {
+    "name": "4th Anniv Greatsword II"
+  },
+  " 4周年巨劍 III": {
+    "name": "4th Anniv Greatsword III"
+  },
+  " 4周年巨劍 IV": {
+    "name": "4th Anniv Greatsword IV"
+  },
+  " 4周年巨劍 V": {
+    "name": "4th Anniv Greatsword V"
+  },
+  "4周年巨劍 VI": {
+    "name": "4th Anniv Greatsword VI"
+  },
+  "4周年巨劍 VII": {
+    "name": "4th Anniv Greatsword VII"
+  },
+  "4周年巨劍 VIII": {
+    "name": "4th Anniv Greatsword VIII"
+  },
+  "4周年巨劍 IX": {
+    "name": "4th Anniv Greatsword IX"
+  },
+  "4周年獵弓": {
+    "name": "4th Anniv Bow"
+  },
+  "4周年獵弓 II": {
+    "name": "4th Anniv Bow II"
+  },
+  "4周年獵弓 III": {
+    "name": "4th Anniv Bow III"
+  },
+  "4周年獵弓 VI": {
+    "name": "4th Anniv Bow VI"
+  },
+  "4周年獵弓 V": {
+    "name": "4th Anniv Bow V"
+  },
+  "4周年獵弓 VII": {
+    "name": "4th Anniv Bow VII"
+  },
+  "4周年獵弓 VIII": {
+    "name": "4th Anniv Bow VIII"
+  },
+  "4周年獵弓 IX": {
+    "name": "4th Anniv Bow IX"
+  },
+  "4周年弩槍": {
+    "name": "4th Anniv Bowgun"
+  },
+  "4周年弩槍 II": {
+    "name": "4th Anniv Bowgun II"
+  },
+  "4周年弩槍 III": {
+    "name": "4th Anniv Bowgun III"
+  },
+  "4周年弩槍 IV": {
+    "name": "4th Anniv Bowgun IV"
+  },
+  "4周年弩槍 V": {
+    "name": "4th Anniv Bowgun V"
+  },
+  "4周年弩槍 VI": {
+    "name": "4th Anniv Bowgun VI"
+  },
+  "4周年弩槍 VII": {
+    "name": "4th Anniv Bowgun VII"
+  },
+  "4周年弩槍 VIII": {
+    "name": "4th Anniv Bowgun VIII"
+  },
+  "4周年弩槍 IX": {
+    "name": "4th Anniv Bowgun IX"
+  },
+  "4周年法杖": {
+    "name": "4th Anniv Staff"
+  },
+  "4周年法杖 II": {
+    "name": "4th Anniv Staff II"
+  },
+  "4周年法杖 III": {
+    "name": "4th Anniv Staff III"
+  },
+  "4周年法杖 IV": {
+    "name": "4th Anniv Staff IV"
+  },
+  "4周年法杖 V": {
+    "name": "4th Anniv Staff V"
+  },
+  "4周年法杖 VI": {
+    "name": "4th Anniv Staff VI"
+  },
+  "4周年法杖 VII": {
+    "name": "4th Anniv Staff VII"
+  },
+  "4周年法杖 VIII": {
+    "name": "4th Anniv Staff VIII"
+  },
+  "4周年法杖 IX": {
+    "name": "4th Anniv Staff IX"
+  },
+  "4周年飛翼": {
+    "name": "4th Anniv Wings"
+  },
+  "4周年飛翼 II": {
+    "name": "4th Anniv Wings II"
+  },
+  "4周年飛翼 III": {
+    "name": "4th Anniv Wings III"
+  },
+  "4周年飛翼 IV": {
+    "name": "4th Anniv Wings IV"
+  },
+  "4周年飛翼 V": {
+    "name": "4th Anniv Wings V"
+  },
+  "4周年飛翼 VI": {
+    "name": "4th Anniv Wings VI"
+  },
+  "4周年飛翼 VII": {
+    "name": "4th Anniv Wings VII"
+  },
+  "4周年飛翼 VIII": {
+    "name": "4th Anniv Wings VIII"
+  },
+  "4周年飛翼 IX": {
+    "name": "4th Anniv Wings IX"
+  },
+  "4周年拳套": {
+    "name": "4th Anniv Knuckles"
+  },
+  "4周年拳套 II": {
+    "name": "4th Anniv Knuckles II"
+  },
+  "4周年拳套III": {
+    "name": "4th Anniv Knuckles III"
+  },
+  "4周年拳套 IV": {
+    "name": "4th Anniv Knuckles IV"
+  },
+  "4周年拳套 V": {
+    "name": "4th Anniv Knuckles V"
+  },
+  "4周年拳套 VI": {
+    "name": "4th Anniv Knuckles VI"
+  },
+  "4周年拳套 VII": {
+    "name": "4th Anniv Knuckles VIII"
+  },
+  "4周年拳套 VIII": {
+    "name": "4th Anniv Knuckles VIII"
+  },
+  "4周年拳套 IX": {
+    "name": "4th Anniv Knuckles IX"
+  },
+  "4周年寶槍": {
+    "name": "4th Anniv Halberd"
+  },
+  "4周年寶槍 II": {
+    "name": "4th Anniv Halberd II"
+  },
+  "4周年寶槍 III": {
+    "name": "4th Anniv Halberd III"
+  },
+  "4周年寶槍 IV": {
+    "name": "4th Anniv Halberd IV"
+  },
+  "4周年寶槍 V": {
+    "name": "4th Anniv Halberd V"
+  },
+  "4周年寶槍 VI": {
+    "name": "4th Anniv Halberd VI"
+  },
+  "4周年寶槍 VII": {
+    "name": "4th Anniv Halberd VII"
+  },
+  "4周年寶槍 VIII": {
+    "name": "4th Anniv Halberd VIII"
+  },
+  "4周年寶槍 IX": {
+    "name": "4th Anniv Halberd IX"
+  },
+  "4周年寶刀": {
+    "name": "4th Anniv Katana"
+  },
+  "4周年寶刀 II": {
+    "name": "4th Anniv Katana II"
+  },
+  "4周年寶刀 III": {
+    "name": "4th Anniv Katana III"
+  },
+  "4周年寶刀 IV": {
+    "name": "4th Anniv Katana IV"
+  },
+  "4周年寶刀 V": {
+    "name": "4th Anniv Katana V"
+  },
+  "4周年寶刀 VI": {
+    "name": "4th Anniv Katana VI"
+  },
+  "4周年寶刀 VII": {
+    "name": "4th Anniv Katana VII"
+  },
+  "4周年寶刀 VIII": {
+    "name": "4th Anniv Katana VIII"
+  },
+  "4周年寶刀 IX": {
+    "name": "4th Anniv Katana IX"
+  },
+  "4周年盾牌": {
+    "name": "4th Anniv Shield"
+  },
+  "4周年盾牌 II": {
+    "name": "4th Anniv Shield II"
+  },
+  "4周年盾牌 III": {
+    "name": "4th Anniv Shield III"
+  },
+  "4周年盾牌 IV": {
+    "name": "4th Anniv Shield IV"
+  },
+  "4周年盾牌 V": {
+    "name": "4th Anniv Shield V"
+  },
+  "4周年盾牌 VI": {
+    "name": "4th Anniv Shield VI"
+  },
+  "4周年盾牌 VII": {
+    "name": "4th Anniv Shield VII"
+  },
+  "4周年盾牌 VIII": {
+    "name": "4th Anniv Shield VIII"
+  },
+  "4周年盾牌 IX": {
+    "name": "4th Anniv Shield IX"
+  },
+  "4周年髮帶": {
+    "name": "4th Anniv Hat"
+  },
+  "4周年帽子": {
+    "name": "4th Anniv Headband"
+  },
+  "5周年髮帶": {
+    "name": "5th Anniv Hat"
+  },
+  "5周年帽子": {
+    "name": "5th Anniv Headband"
+  },
+  "荊棘箭矢": {
+    "name": "Spiky Arrow"
+  },
+  "暗龍牙劍": {
+    "name": "Dark Dragon Fang Sword"
+  },
+  "暗龍爪刀": {
+    "name": "Dragon Claw Katana"
+  },
+  "黑暗護符(力)": {
+    "name": "Dark Talisman (Power)"
+  },
+  "黑暗護符(魔)": {
+    "name": "Dark Talisman (Magic)"
+  },
+  "黑暗護符(閃)": {
+    "name": "Dark Talisman (Flash)"
+  },
+  "黑暗護符(耐)": {
+    "name": "Dark Talisman (Resist)"
+  },
+  "黑暗護符(謎)": {
+    "name": "Dark Talisman (Unknown)"
+  },
+  "地獄死神之劍": {
+    "name": "Hell Reaper (Sword)"
+  },
+  "地獄死神長槍": {
+    "name": "Hell Reaper (Halberd)"
+  },
+  "連身工作服": {
+    "name": "Jumpsuit"
+  },
+  "向日葵": {
+    "name": "Sunflower"
+  },
+  "彈弓": {
+    "name": "Slingshot"
+  },
+  "手持煙火": {
+    "name": "Firework Stick"
+  },
+  "玩具左輪手槍": {
+    "name": "Toy Gun"
+  },
+  "海灘水槍": {
+    "name": "Aqua Shooter"
+  },
+  "木刀": {
+    "name": "Bokuto"
+  },
+  "冰棒": {
+    "name": "Popsicle"
+  },
+  "烤魷魚": {
+    "name": "Grilled Squid"
+  },
+  "章魚燒頭飾": {
+    "name": "Takoyaki Head"
+  },
+  "夏季波姆面具": {
+    "name": "Summer Fest Potum Mask"
+  },
+  "打西瓜蒙眼布": {
+    "name": "Blindfold"
+  },
+  "涼夏浴衣II": {
+    "name": "Cool Summer Yukata II"
+  },
+  "誘捕盾牌": {
+    "name": "Esca Shield"
+  },
+  "艾克翠斯拳劍": {
+    "name": "Mortal Katar"
+  },
+  "和諧盾牌": {
+    "name": "Harmony Shield"
+  },
+  "曲劍": {
+    "name": "Shotel"
+  },
+  "旅行水壺": {
+    "name": "Explorer Canteen"
+  },
+  "偃月刀": {
+    "name": "Crescent Blade"
+  },
+  "豪豬弩弓": {
+    "name": "Porcupine Crossbow"
+  },
+  "豪豬刺盾": {
+    "name": "Porcupine Quills Shield"
+  },
+  "月圓蟹爪": {
+    "name": "Crab Pincers"
+  },
+  "絡腮長鬚": {
+    "name": "Full Beard"
+  },
+  "月光盾": {
+    "name": "Moonlight Shield"
+  },
+  "月光劍": {
+    "name": "Moonlight Sword"
+  },
+  "新月薙刀": {
+    "name": "New Moon Naginata"
+  },
+  "兔尾巴": {
+    "name": "Bunny Tail"
+  },
+  "觀楓": {
+    "name": "Kanpuu"
+  },
+  "咒術師法杖": {
+    "name": "Shaman Staff"
+  },
+  "天然弩槍": {
+    "name": "Natra Bowgun"
+  },
+  "菇群頭飾": {
+    "name": "Mushies Fam"
+  },
+  "魔蝕之光": {
+    "name": "Eroded Strahl"
+  },
+  "懲罰戰弓": {
+    "name": "Punisher Bow"
+  },
+  "魔蝕之叛": {
+    "name": "Eroded Rebellion"
+  },
+  "篝火長柄刀": {
+    "name": "Ignis Glaive"
+  },
+  "迷你巫婆帽": {
+    "name": "Mini Witch Hat"
+  },
+  "銃劍": {
+    "name": "Bayonette"
+  },
+  "鴉羽法袍": {
+    "name": "Crow Robe"
+  },
+  "十字寶劍": {
+    "name": "Cross Espada"
+  },
+  "惡作劇魔導書": {
+    "name": "Mischievous Magic Book"
+  },
+  "救贖之拳": {
+    "name": "Rescue Gloves"
+  },
+  "夜鴉長槍": {
+    "name": "Raven Lance"
+  },
+  "木乃伊披肩": {
+    "name": "Mummy Stole"
+  },
+  "眼珠蝴蝶結": {
+    "name": "Eyeball Ribbon"
+  },
+  "南瓜綠萼": {
+    "name": "Pumpkin Calyx"
+  },
+  "貓咪連帽圍巾": {
+    "name": "Kity Hood Scarf"
+  },
+  "幽靈背飾": {
+    "name": "Ghost Zipper"
+  },
+  "大樹護符": {
+    "name": "Big Tree Talisman"
+  },
+  "搗蛋匕首": {
+    "name": "Trick Dagger"
+  },
+  "給糖箭矢": {
+    "name": "Treat Arrow"
+  },
+  "鬆軟黃豆粉頭飾": {
+    "name": "Fluffy Kinaco on the Head"
+  },
+  "鬆軟黃豆粉服裝": {
+    "name": "Fluffy Kinaco Onesie"
+  },
+  "烈焰十字匕首": {
+    "name": "Burning Cross Dagger"
+  },
+  "烈焰十字匕首II": {
+    "name": "Burning Cross Dagger II"
+  },
+  "烈焰十字匕首III": {
+    "name": "Burning Cross Dagger III"
+  },
+  "超黑金劍": {
+    "name": "Super Niello Sword"
+  },
+  "超黑金劍II": {
+    "name": "Super Niello Sword II"
+  },
+  "超黑金劍III": {
+    "name": "Super Niello Sword III"
+  },
+  "路錐箭矢": {
+    "name": "Cone Bow"
+  },
+  "路錐箭矢II": {
+    "name": "Cone Bow II"
+  },
+  "路錐箭矢III": {
+    "name": "Cone Bow III"
+  },
+  "死魔槍": {
+    "name": "Death Gun"
+  },
+  "死魔槍II": {
+    "name": "Death Gun II"
+  },
+  "死魔槍III": {
+    "name": "Death Gun III"
+  },
+  "魔幻路錐": {
+    "name": "Abracadabra Cone"
+  },
+  "魔幻路錐II": {
+    "name": "Abracadabra Cone II"
+  },
+  "魔幻路錐III": {
+    "name": "Abracadabra Cone III"
+  },
+  "無限路錐": {
+    "name": "Infinity Cone"
+  },
+  "無限路錐II": {
+    "name": "Infinity Cone II"
+  },
+  "無限路錐III": {
+    "name": "Infinity Cone III"
+  },
+  "死銀索命拳": {
+    "name": "Lethal Silver Knuckles"
+  },
+  "死銀索命拳II": {
+    "name": "Lethal Silver Knuckles II"
+  },
+  "死銀索命拳III": {
+    "name": "Lethal Silver Knuckles III"
+  },
+  "旋風路錐刺槍": {
+    "name": "Windblast Cone Spear"
+  },
+  "旋風路錐刺槍II": {
+    "name": "Windblast Cone Spear II"
+  },
+  "旋風路錐刺槍III": {
+    "name": "Windblast Cone Spear III"
+  },
+  "死魔武士刀": {
+    "name": "Death Samurai Sword"
+  },
+  "死魔武士刀II": {
+    "name": "Death Samurai Sword II"
+  },
+  "死魔武士刀III": {
+    "name": "Death Samurai Sword III"
+  },
+  "焦熱的護符": {
+    "name": "Scorching Talisman"
+  },
+  "領巾": {
+    "name": "Neckerchief"
+  },
+  "玫瑰腰飾": {
+    "name": "Rose Charm"
+  },
+  "羅傑拉姆": {
+    "name": "Rozerum"
+  },
+  "天泣之矢": {
+    "name": "Serein Arrow"
+  },
+  "螺絲起子箭": {
+    "name": "Driver Bolt"
+  },
+  "柔光飛翼": {
+    "name": "Flugel"
+  },
+  "魔偵戰刃": {
+    "name": "Indigo Jet Sword"
+  },
+  "魔探光翼": {
+    "name": "Rilevatore"
+  },
+  "火焰頭盔": {
+    "name": "Frame Helmet"
+  },
+  "黯輝小刀": {
+    "name": "Dully Glowing Knife"
+  },
+  "物理追擊之書": {
+    "name": "Additional Melee Book"
+  },
+  "魔法追擊之書": {
+    "name": "Additional Magic Book"
+  },
+  "雙重追擊之書": {
+    "name": "Duo Additional Book"
+  },
+  "圓框眼鏡": {
+    "name": "Round Glasses"
+  },
+  "辮子假髮": {
+    "name": "Braid Extension"
+  },
+  "古代貝殼首飾": {
+    "name": "Ancient Shell Necklace"
+  },
+  "雷鳴戰斧": {
+    "name": "Thunder Axe"
+  },
+  "玄冰之劍": {
+    "name": "Glacial Ice Sword"
+  },
+  "玄冰之弓": {
+    "name": "Glacial Ice Bow"
+  },
+  "玄冰之刀": {
+    "name": "Glacial Ice Katana"
+  },
+  "靈鋒護甲": {
+    "name": "Blancanine Armor"
+  },
+  "力量護符 V": {
+    "name": "Muscle Talisman V"
+  },
+  "魔力護符 V": {
+    "name": "Magic Talisman V"
+  },
+  "體力護符 V": {
+    "name": "Stamina Talisman V"
+  },
+  "敏捷護符 V": {
+    "name": "Speed Talisman V"
+  },
+  "技術護符 V": {
+    "name": "Dexterity Talisman V"
+  },
+  "艾路芬護甲": {
+    "name": "Elfin Armor"
+  },
+  "魔法紋章": {
+    "name": "Magic Emblem"
+  },
+  "樹木護符": {
+    "name": "Tree Talisman"
+  },
+  "昆蟲小刀": {
+    "name": "Insect Knife"
+  },
+  "艾路芬戰弓": {
+    "name": "Elfin Bow"
+  },
+  "革紋鬥拳": {
+    "name": "Katze Gloves"
+  },
+  "皮箱背包": {
+    "name": "Trunk Backpack"
+  },
+  "熱呼呼保暖巾": {
+    "name": "Fur Collar"
+  },
+  "庫斯特面具": {
+    "name": "Kuzto Mask"
+  },
+  "樹人守衛盔甲": {
+    "name": "Bark Mail"
+  },
+  "徽章披風": {
+    "name": "Emblem Cloak"
+  },
+  "滑雪護目鏡": {
+    "name": "Snowboard Googles"
+  },
+  "滑雪板": {
+    "name": "Snowboard"
+  },
+  "滑雪裝": {
+    "name": "Snowwear"
+  },
+  "唐鋤星": {
+    "name": "Orion's Sword"
+  },
+  "虎皮披風": {
+    "name": "Tiger Fur Cape"
+  },
+  "雷太鼓": {
+    "name": "Thunder Drums"
+  },
+  "鬼波多姆": {
+    "name": "Demon Potum"
+  },
+  "心型背包": {
+    "name": "Heart Knapsack"
+  },
+  "甜甜圈耳罩": {
+    "name": "Donut Earmuffs"
+  },
+  "巧克力捲鎚": {
+    "name": "Choco Roll Hammer"
+  },
+  "巧克力百匯杖": {
+    "name": "Choco Parfait Staff"
+  },
+  "樹葉巧克力護符": {
+    "name": "Chocolate Leaf Talisman"
+  },
+  "貝殼巧克力護符": {
+    "name": "Seashell Choco Talisman"
+  },
+  "木頭巧克力匕首": {
+    "name": "Wood Choco Dagger"
+  },
+  "巧克力劍 II": {
+    "name": "Chocolate Eater II"
+  },
+  "情人心翼 II": {
+    "name": "Valentia II"
+  },
+  "包裝緞帶 II": {
+    "name": "Wrapping Ribbon II"
+  },
+  "檎之箭矢": {
+    "name": "Apple Arrow"
+  },
+  "柔軟的戒指": {
+    "name": "Supple Ring"
+  },
+  "恐懼魔刃": {
+    "name": "Ghastly Edge"
+  },
+  "水靈翼": {
+    "name": "Aquarator"
+  },
+  "泡泡盔": {
+    "name": "Bubble Helmet"
+  },
+  "惡魔披風": {
+    "name": "Demon Mantle"
+  },
+  "獵隼頭套": {
+    "name": "Falcon Mask"
+  },
+  "札菲亞護盾": {
+    "name": "Sapphire Shield"
+  },
+  "札菲亞錘矛": {
+    "name": "Sapphire Mace"
+  },
+  "波多姆背包": {
+    "name": "Potum Backpack"
+  },
+  "閃電之焰": {
+    "name": "Lightning Flame"
+  },
+  "駭人圍巾": {
+    "name": "Scary Scarf"
+  },
+  "盜賊的鑰匙串": {
+    "name": "Thief's Keys"
+  },
+  "戰壕式披肩": {
+    "name": "Trench Cape"
+  },
+  "放禮物的背包": {
+    "name": "Sling Bag with Gift"
+  },
+  "玳瑁框眼鏡": {
+    "name": "Tortoiseshell Frame"
+  },
+  "棉花糖短刀": {
+    "name": "Marshmallow Knife"
+  },
+  "馬卡龍塔長槍": {
+    "name": "Macaron Tower Lance"
+  },
+  "牛奶巧克吉拿棒": {
+    "name": "Milk Chocolate Churro"
+  },
+  "甜點匙II": {
+    "name": "Sweet Spoon II"
+  },
+  "邱比特弓II": {
+    "name": "Cupid Bow II"
+  },
+  "玫瑰髮尾假髮": {
+    "name": "Rose Bun Wig"
+  },
+  "牛角": {
+    "name": "Bull Horns"
+  },
+  "毒針(箭矢)": {
+    "name": "Poison Needle"
+  },
+  "神聖之劍": {
+    "name": "Holy Sword"
+  },
+  "虎鉗爪": {
+    "name": "Vise Claws"
+  },
+  "暗夜護符": {
+    "name": "Dark Night Talisman"
+  },
+  "寶飾眼鏡": {
+    "name": "Hexa Glasses"
+  },
+  "裙甲": {
+    "name": "Waist Armor"
+  },
+  "強酸槍": {
+    "name": "Acid Gun"
+  },
+  "滅絕之刃": {
+    "name": "Mortal Lamina"
+  },
+  "毀滅魔板": {
+    "name": "Mortal Slate"
+  },
+  "精靈之杖": {
+    "name": "Spirit Staff"
+  },
+  "兔子眼鏡": {
+    "name": "Rabbit Ear Glasses"
+  },
+  "兔子針織帽": {
+    "name": "Bunny Beanie"
+  },
+  "波姆蛋蛋包": {
+    "name": "Easter Egg Pom Bag"
+  },
+  "宵櫻短刀": {
+    "name": "Twilight Sakura Dagger"
+  },
+  "宵櫻箭矢": {
+    "name": "Twilight Sakura Arrow"
+  },
+  "妖刀朱櫻": {
+    "name": "Scarlet Sakura Fairy Sword"
+  },
+  "夜櫻之翼": {
+    "name": "Yozakura Wings"
+  },
+  "庫維札魔腕": {
+    "name": "Quasar Arm"
+  },
+  "庫維札魔砲": {
+    "name": "Quasar Barrel"
+  },
+  "金法杖": {
+    "name": "Golden Rod"
+  },
+  "金戰弩": {
+    "name": "Golden Barrel"
+  },
+  "紅圓盾": {
+    "name": "Red Steel Buckler"
+  },
+  "紅弧弓": {
+    "name": "Red Steel Arcus"
+  },
+  "紅法棍": {
+    "name": "Red Steel Staff"
+  },
+  "紅拐棍": {
+    "name": "Red Steel Tonfa"
+  },
+  "紅刺劍": {
+    "name": "Red Steel Slayer"
+  },
+  "密封繃帶": {
+    "name": "Sealing Bandage"
+  },
+  "復活的生命之符": {
+    "name": "Ankh of Resurrection"
+  },
+  "羅塞塔石板": {
+    "name": "Rosetta Stone"
+  },
+  "羅塞塔碎片": {
+    "name": "Rosetta Shard"
+  },
+  "東方布袍": {
+    "name": "Oriental Robe"
+  },
+  "懸浮翼": {
+    "name": "Gravitar"
+  },
+  "懸浮長槍": {
+    "name": "Graviton Glaive"
+  },
+  "神聖之盾": {
+    "name": "Holy Shield"
+  },
+  "苦痛頭盔": {
+    "name": "Gladiator Helmet"
+  },
+  "嚼嚼骨": {
+    "name": "Nom Nom Bone"
+  },
+  "精靈之箭": {
+    "name": "Elven Arrow"
+  },
+  "司書帽": {
+    "name": "Librarian Hat"
+  },
+  "金剛": {
+    "name": "Adamantine Katana"
+  },
+  "三角弩槍": {
+    "name": "Triangulum Bowgun"
+  },
+  "木乃伊頭巾": {
+    "name": "Mummy Headscarf"
+  },
+  "法師面罩": {
+    "name": "Warlock Face Cover"
+  },
+  "莫西干假髮": {
+    "name": "Mohawk Wig"
+  },
+  "甜點精的帽子": {
+    "name": "Patissia's Hat"
+  },
+  "楓糖外套": {
+    "name": "Maple Coat"
+  },
+  "指虎刀": {
+    "name": "Trench Knife"
+  },
+  "沙盜團面具": {
+    "name": "Sand Bandit Mask"
+  },
+  "魔晶鷲弓": {
+    "name": "Vulture Shooter"
+  },
+  "魔晶鷲之刃": {
+    "name": "Vulture Blade"
+  },
+  "松鼠尾巴": {
+    "name": "Squirrel Tail"
+  },
+  "弓術師的箭筒": {
+    "name": "Archer Quiver"
+  },
+  "龍騎兵頭盔": {
+    "name": "Dragoon Helm"
+  },
+  "龍騎兵面罩": {
+    "name": "Dragoon Mask"
+  },
+  "龍騎兵盔甲": {
+    "name": "Dragoon Mail"
+  },
+  "5周年寶劍": {
+    "name": "5th Anniv Sword"
+  },
+  "5周年寶劍II": {
+    "name": "5th Anniv Sword II"
+  },
+  "5周年寶劍III": {
+    "name": "5th Anniv Sword III"
+  },
+  "5周年寶劍IV": {
+    "name": "5th Anniv Sword IV"
+  },
+  "5周年寶劍V": {
+    "name": "5th Anniv Sword V"
+  },
+  "5周年寶劍VI": {
+    "name": "5th Anniv Sword VI"
+  },
+  "5周年寶劍VII": {
+    "name": "5th Anniv Sword VII"
+  },
+  "5周年巨劍": {
+    "name": "5th Anniv Greatsword"
+  },
+  "5周年巨劍II": {
+    "name": "5th Anniv Greatsword II"
+  },
+  "5周年巨劍III": {
+    "name": "5th Anniv Greatsword III"
+  },
+  "5周年巨劍IV": {
+    "name": "5th Anniv Greatsword IV"
+  },
+  "5周年巨劍V": {
+    "name": "5th Anniv Greatsword V"
+  },
+  "5周年巨劍VI": {
+    "name": "5th Anniv Greatsword VI"
+  },
+  "5周年巨劍VII": {
+    "name": "5th Anniv Greatsword VII"
+  },
+  "5周年獵弓": {
+    "name": "5th Anniv Bow"
+  },
+  "5周年獵弓II": {
+    "name": "5th Anniv Bow II"
+  },
+  "5周年獵弓III": {
+    "name": "5th Anniv Bow III"
+  },
+  "5周年獵弓IV": {
+    "name": "5th Anniv Bow IV"
+  },
+  "5周年獵弓V": {
+    "name": "5th Anniv Bow V"
+  },
+  "5周年獵弓VI": {
+    "name": "5th Anniv Bow VI"
+  },
+  "5周年獵弓VII": {
+    "name": "5th Anniv Bow VII"
+  },
+  "5周年弩槍": {
+    "name": "5th Anniv Bowgun"
+  },
+  "5周年弩槍II": {
+    "name": "5th Anniv Bowgun II"
+  },
+  "5周年弩槍III": {
+    "name": "5th Anniv Bowgun III"
+  },
+  "5周年弩槍IV": {
+    "name": "5th Anniv Bowgun IV"
+  },
+  "5周年弩槍V": {
+    "name": "5th Anniv Bowgun V"
+  },
+  "5周年弩槍VI": {
+    "name": "5th Anniv Bowgun VII"
+  },
+  "5周年弩槍VII": {
+    "name": "5th Anniv Bowgun VII"
+  },
+  "5周年法杖": {
+    "name": "5th Anniv Staff"
+  },
+  "5周年法杖II": {
+    "name": "5th Anniv Staff II"
+  },
+  "5周年法杖III": {
+    "name": "5th Anniv Staff III"
+  },
+  "5周年法杖IV": {
+    "name": "5th Anniv Staff IV"
+  },
+  "5周年法杖V": {
+    "name": "5th Anniv Staff V"
+  },
+  "5周年法杖VI": {
+    "name": "5th Anniv Staff VI"
+  },
+  "5周年法杖VII": {
+    "name": "5th Anniv Staff VII"
+  },
+  "5周年飛翼": {
+    "name": "5th Anniv Wings"
+  },
+  "5周年飛翼II": {
+    "name": "5th Anniv Wings II"
+  },
+  "5周年飛翼III": {
+    "name": "5th Anniv Wings III"
+  },
+  "5周年飛翼IV": {
+    "name": "5th Anniv Wings IV"
+  },
+  "5周年飛翼V": {
+    "name": "5th Anniv Wings V"
+  },
+  "5周年飛翼VI": {
+    "name": "5th Anniv Wings VI"
+  },
+  "5周年飛翼VII": {
+    "name": "5th Anniv Wings VII"
+  },
+  "5周年拳套": {
+    "name": "5th Anniv Knuckles"
+  },
+  "5周年拳套II": {
+    "name": "5th Anniv Knuckles II"
+  },
+  "5周年拳套III": {
+    "name": "5th Anniv Knuckles III"
+  },
+  "5周年拳套IV": {
+    "name": "5th Anniv Knuckles IV"
+  },
+  "5周年拳套V": {
+    "name": "5th Anniv Knuckles V"
+  },
+  "5周年拳套VI": {
+    "name": "5th Anniv Knuckles VII"
+  },
+  "5周年拳套VII": {
+    "name": "5th Anniv Knuckles VII"
+  },
+  "5周年寶槍": {
+    "name": "5th Anniv Halberd"
+  },
+  "5周年寶槍II": {
+    "name": "5th Anniv Halberd II"
+  },
+  "5周年寶槍III": {
+    "name": "5th Anniv Halberd III"
+  },
+  "5周年寶槍IV": {
+    "name": "5th Anniv Halberd IV"
+  },
+  "5周年寶槍V": {
+    "name": "5th Anniv Halberd V"
+  },
+  "5周年寶槍VI": {
+    "name": "5th Anniv Halberd VI"
+  },
+  "5周年寶槍VII": {
+    "name": "5th Anniv Halberd VII"
+  },
+  "5周年寶刀": {
+    "name": "5th Anniv Katana"
+  },
+  "5周年寶刀II": {
+    "name": "5th Anniv Katana II"
+  },
+  "5周年寶刀III": {
+    "name": "5th Anniv Katana III"
+  },
+  "5周年寶刀IV": {
+    "name": "5th Anniv Katana IV"
+  },
+  "5周年寶刀V": {
+    "name": "5th Anniv Katana V"
+  },
+  "5周年寶刀VI": {
+    "name": "5th Anniv Katana VI"
+  },
+  "5周年寶刀VII": {
+    "name": "5th Anniv Katana VII"
+  },
+  "5周年盾牌": {
+    "name": "5th Anniv Shield"
+  },
+  "5周年盾牌II": {
+    "name": "5th Anniv Shield II"
+  },
+  "5周年盾牌III": {
+    "name": "5th Anniv Shield III"
+  },
+  "5周年盾牌IV": {
+    "name": "5th Anniv Shield IV"
+  },
+  "5周年盾牌V": {
+    "name": "5th Anniv Shield V"
+  },
+  "5周年盾牌VI": {
+    "name": "5th Anniv Shield VI"
+  },
+  "5周年盾牌VII": {
+    "name": "5th Anniv Shield VII"
+  },
+  "周年慶短劍 II": {
+    "name": "Anniv Festive Dagger II"
+  },
+  "周年慶箭矢 II": {
+    "name": "Anniv Festive Arrow II"
+  },
+  "周年慶戒指": {
+    "name": "Anniv Festive Ring"
+  },
+  "周年慶戒指 II": {
+    "name": "Anniv Festive Bangle II"
+  },
+  "周年慶手環": {
+    "name": "Anniv Festive Ring"
+  },
+  "周年慶手環 II": {
+    "name": "Anniv Festive Bangle II"
+  },
+  "海惡魔之盾": {
+    "name": "Seadevil Shield"
+  },
+  "海惡魔之劍": {
+    "name": "Seadevil Sword"
+  },
+  "海惡魔之杖": {
+    "name": "Seadevil Staff"
+  },
+  "海魔之刀": {
+    "name": "Seadevil Katana"
+  },
+  "海洋箭矢": {
+    "name": "Ocean Arrow"
+  },
+  "潛水小刀": {
+    "name": "Dive Knife"
+  },
+  "盛夏襯衫": {
+    "name": "Summer Outfit"
+  },
+  "一片西瓜": {
+    "name": "Watermelon Slice"
+  },
+  "秋刀魚": {
+    "name": "Pacific Saury"
+  },
+  "皇魔脖圍": {
+    "name": "Demon Empress Neck Warmer"
+  },
+  "皇魔披風": {
+    "name": "Demon Empress Cape"
+  },
+  "皇魔之劍": {
+    "name": "Demon Empress Sword"
+  },
+  "皇魔大劍": {
+    "name": "Demon Empress Greatsword"
+  },
+  "皇魔之弓": {
+    "name": "Demon Empress Bow"
+  },
+  "皇魔連弩": {
+    "name": "Demon Empress Bowgun"
+  },
+  "皇魔之杖": {
+    "name": "Demon Empress Staff"
+  },
+  "皇魔的魔導具": {
+    "name": "Demon Empress Magic Device"
+  },
+  "皇魔拳套": {
+    "name": "Demon Empress Knuckles"
+  },
+  "皇魔之槍": {
+    "name": "Demon Empress Spear"
+  },
+  "皇魔之刀": {
+    "name": "Demon Empress Katana"
+  },
+  "皇魔之衣": {
+    "name": "Demon Empress Garb"
+  },
+  "皇魔之盾": {
+    "name": "Demon Empress Shield"
+  },
+  "皇魔短劍": {
+    "name": "Demon Empress Dagger"
+  },
+  "皇魔箭": {
+    "name": "Demon Empress Arrow"
+  },
+  "神學披風": {
+    "name": "Cape of Divinity"
+  },
+  "攻擊面罩": {
+    "name": "Duel Mask"
+  },
+  "讀星提燈": {
+    "name": "Astral Lamp"
+  },
+  "怪盜瑞可塔": {
+    "name": "Phantom Thief Ricotta"
+  },
+  "怪盜韋斯普的手杖": {
+    "name": "Phantom Wisp Staff"
+  },
+  "惡作劇糖果": {
+    "name": "Mischievous Candy"
+  },
+  "南瓜麥格農": {
+    "name": "Pepo Magnum"
+  },
+  "怪刀．南瓜拵": {
+    "name": "Pseudopumpkin Katana"
+  },
+  "糖霜餅乾": {
+    "name": "Sugar Cookie"
+  },
+  "南瓜耳環": {
+    "name": "Pumpkin Earrings"
+  },
+  "魔法甜筒": {
+    "name": "Magic Cone"
+  },
+  "惡靈魚的戰槌": {
+    "name": "Ghoulfish War Hammer"
+  },
+  "惡靈魚的圓盾": {
+    "name": "Ghoulfish Buckler"
+  },
+  "刺身刀": {
+    "name": "Sashimi Knife"
+  },
+  "魔術師披風": {
+    "name": "Magician Mantle"
+  },
+  "陽光護身符": {
+    "name": "Sunshine Talisman"
+  },
+  "魚齒弓": {
+    "name": "Ryba Bow"
+  },
+  "魔法披肩": {
+    "name": "Magical Stole"
+  },
+  "蠻荒盔甲": {
+    "name": "Savage Mail"
+  },
+  "天空寶珠": {
+    "name": "Shell Orb"
+  },
+  "風雅佩劍": {
+    "name": "Windgrace Sword"
+  },
+  "聲調大劍": {
+    "name": "Tone Blade"
+  },
+  "巡之歌": {
+    "name": "Eternal Melody Staff"
+  },
+  "敬拜之弓": {
+    "name": "Latria Bow"
+  },
+  "雙子拳套": {
+    "name": "Duplex Knuckles"
+  },
+  "初音未來的扇子": {
+    "name": "HATSUNE MIKU's Hand Fan"
+  },
+  "初音未來的手鈴": {
+    "name": "HATSUNE MIKU's Handbell"
+  },
+  "音波筒": {
+    "name": "Sonic Megaphone"
+  },
+  "無限長刀": {
+    "name": "Infini Glaive"
+  },
+  "音之主控台": {
+    "name": "Audio Console"
+  },
+  "故鄉之劍": {
+    "name": "Patriot Edge"
+  },
+  "風雅護盾": {
+    "name": "Windgrace Shield"
+  },
+  "翡翠長槍": {
+    "name": "Jade Lance"
+  },
+  "盾之劍": {
+    "name": "Escudo Blade"
+  },
+  "不痛的左臂": {
+    "name": "Painless Left Arm"
+  },
+  "寶河戰弩": {
+    "name": "Riverine Barrel"
+  },
+  "瑪娜緹耶法杖": {
+    "name": "Mana Cascade Staff"
+  },
+  "人魚腰飾": {
+    "name": "Mermaid Waist Ornament"
+  },
+  "巨大念珠頸飾": {
+    "name": "Giant Rosary"
+  },
+  "琥珀鏈飾": {
+    "name": "Amber Charm"
+  },
+  "春風護符": {
+    "name": "Spring Breeze Talisman"
+  },
+  "封印符咒": {
+    "name": "Sealing Talisman"
+  },
+  "卡塔芙尼亞之劍": {
+    "name": "Catafnia Sword"
+  },
+  "無風環刃": {
+    "name": "Wind Slayer Chakram"
+  },
+  "納古瓦之劍": {
+    "name": "Arachnid Sword"
+  },
+  "納古瓦之爪": {
+    "name": "Arachnid Claws"
+  },
+  "凍冰短劍": {
+    "name": "Icy Dagger"
+  },
+  "聖樹之箭": {
+    "name": "Holy Tree Arrow"
+  },
+  "聖誕圍巾": {
+    "name": "Santa Scarf"
+  },
+  "雪人的暖耳罩": {
+    "name": "Snowman Earmuffs"
+  },
+  "聖誕波多姆人偶": {
+    "name": "Santa Potum Plushie"
+  },
+  "雪人兜帽": {
+    "name": "Snowman Hood"
+  },
+  "絨絨暖耳罩": {
+    "name": "Fluffy Earmuffs"
+  },
+  "聖誕服VI": {
+    "name": "Santa Suit VI"
+  },
+  "麋鹿毛線帽": {
+    "name": "Reindeer Beanie"
+  },
+  "彼岸花": {
+    "name": "Red Spider Lily"
+  },
+  "神聖之鐘的護符": {
+    "name": "Sacred Bell Talisman"
+  },
+  "雪人套組": {
+    "name": "Snowman Kit"
+  },
+  "靜冷法杖": {
+    "name": "Staff of Cold Serenity"
+  },
+  "靜冷大劍": {
+    "name": "Sword of Cold Serenity"
+  },
+  "靜冷旋棍": {
+    "name": "Tonfa of Cold Serenity"
+  },
+  "聖誕響鈴鐺": {
+    "name": "Jingle Bells"
+  },
+  "聖誕兜帽": {
+    "name": "Santa Hood"
+  },
+  "聖誕紅髮飾": {
+    "name": "Poinsettia Hair Ornament"
+  },
+  "分類小刀": {
+    "name": "Sorting Knife"
+  },
+  "風牙頭套": {
+    "name": "Zega Head"
+  },
+  "風牙之服": {
+    "name": "Zega Onesie"
+  },
+  "迅勇之劍": {
+    "name": "Fruhschneid"
+  },
+  "巴爾迪佩劍": {
+    "name": "Baldi Saber"
+  },
+  "鋒銳諾瓦(術)": {
+    "name": "Edgy Nova (Magic)"
+  },
+  "鋒銳諾瓦(鬥)": {
+    "name": "Edgy Nova (Combat)"
+  },
+  "鬼角髮箍": {
+    "name": "Oni Horns Headband"
+  },
+  "惠方卷波多姆": {
+    "name": "Lucky Sushi Roll & Potum"
+  },
+  "鬼面具": {
+    "name": "Oni Mask"
+  },
+  "史東迪的戒指III": {
+    "name": "Stoodie's Ring III"
+  },
+  "史東迪的戒指II": {
+    "name": "Stoodie's Ring II"
+  },
+  "史東迪的戒指I": {
+    "name": "Stoodie's Ring I"
+  },
+  "史東迪的法袍": {
+    "name": "Stoodie's Robe"
+  },
+  "蜜蜂的觸覺": {
+    "name": "Honeybee Antennae"
+  },
+  "奇基姆的箭": {
+    "name": "Kijimu's Arrow"
+  },
+  "卷卷盾": {
+    "name": "Swirly Whirly Shield"
+  },
+  "奶油皮可戒指": {
+    "name": "Pico Cream Ring"
+  },
+  "草莓貝蕾帽": {
+    "name": "Strawberry Beret"
+  },
+  "糖果緞帶": {
+    "name": "Candy Hair Bow"
+  },
+  "蕾絲髮箍": {
+    "name": "Lace Headdress"
+  },
+  "餅乾耳環": {
+    "name": "Cookie Earrings"
+  },
+  "泰迪頭套": {
+    "name": "Plush Bear Hat"
+  },
+  "可愛巧克力": {
+    "name": "Lovely Chocolate"
+  },
+  "情人節服裝": {
+    "name": "Valentine's Day Costume"
+  },
+  "可愛魔杖": {
+    "name": "Lovely Wand"
+  },
+  "黑影野太刀": {
+    "name": "Black Shadow Nodachi"
+  },
+  "黑影自動弓": {
+    "name": "Black Shadow Crossbow"
+  },
+  "疼痛的右臂": {
+    "name": "Aching Right Arm"
+  },
+  "美甲片": {
+    "name": "Artificial Nails"
+  },
+  "破損披風": {
+    "name": "Tattered Cloak"
+  },
+  "卡塔芙尼亞護盾": {
+    "name": "Catafnia Shield"
+  },
+  "怨恨之燭": {
+    "name": "Candles of Hatred"
+  },
+  "雪熊劍": {
+    "name": "Snow Bear Sword"
+  },
+  "雪熊玩具槍": {
+    "name": "Snow Bear Toy Gun"
+  },
+  "雪熊傘": {
+    "name": "Snow Bear Parasol"
+  },
+  "雪熊糖果": {
+    "name": "Snow Bear Candy"
+  },
+  "雪熊盾": {
+    "name": "Snow Bear Shield"
+  },
+  "雪絨貓頭鷹": {
+    "name": "Fluffy Snow Owl"
+  },
+  "嗡嗡戒指": {
+    "name": "Buzz Ring"
+  },
+  "稻草人標識": {
+    "name": "Scarecrow Marker"
+  },
+  "花蕾短劍": {
+    "name": "Flower Bud Dagger"
+  },
+  "友之光翼": {
+    "name": "Alfreon"
+  },
+  "黃金糖之劍": {
+    "name": "Golden Candy Sword"
+  },
+  "黃金糖大劍": {
+    "name": "Golden Candy Greatsword"
+  },
+  "愛心餅乾盾": {
+    "name": "Heart Cookie Shield"
+  },
+  "純潔緞帶": {
+    "name": "Purity Ribbon"
+  },
+  "純潔圍巾": {
+    "name": "Purity Stole"
+  },
+  "我是禮物": {
+    "name": "Gift Head"
+  },
+  "鯊魚兜帽": {
+    "name": "Shark Hood"
+  },
+  "水晶角": {
+    "name": "Crystal Horns"
+  },
+  "邪焰咒之大劍": {
+    "name": "Inferno Curse Greatsword"
+  },
+  "邪焰咒之角弓": {
+    "name": "Inferno Curse Bow"
+  },
+  "枕頭北側帽": {
+    "name": "Pillow Kitagawa's Hat"
+  },
+  "薔薇無邊帽": {
+    "name": "Rose Bonnet"
+  },
+  "裙環裙": {
+    "name": "Hoop Skirt"
+  },
+  "菲克遜臂章": {
+    "name": "Fixion Armband"
+  },
+  "泰尼斯塔臂章": {
+    "name": "Technista Armband"
+  },
+  "雷吉斯托臂章": {
+    "name": "Resistle Armband"
+  },
+  "斯特列臂章": {
+    "name": "Straye Armband"
+  },
+  "肩頭阿嬤": {
+    "name": "Granny on Shoulder"
+  },
+  "黃豆粉圍巾": {
+    "name": "Kinaco Scarf"
+  },
+  "三角路錐耳罩": {
+    "name": "Traffic Cone Earmuffs"
+  },
+  "†闇之組織†魔衣": {
+    "name": "†Dark Syndicate† Vilment"
+  },
+  "夜櫻之劍": {
+    "name": "Yozakura Sword"
+  },
+  "夜櫻鉤刀": {
+    "name": "Yozakura Great Machete"
+  },
+  "夜櫻月弓": {
+    "name": "Yozakura Crescent Bow"
+  },
+  "夜櫻手槍": {
+    "name": "Yozakura Handgun"
+  },
+  "夜櫻月杖": {
+    "name": "Yozakura Crescent Staff"
+  },
+  "夜櫻魔具": {
+    "name": "Yozakura Magic Device"
+  },
+  "夜櫻拳套": {
+    "name": "Yozakura Knuckles"
+  },
+  "夜櫻薙刀": {
+    "name": "Yozakura Naginata"
+  },
+  "夜櫻之刀": {
+    "name": "Yozakura Katana"
+  },
+  "櫻花和服 V": {
+    "name": "Sakura Kimono V"
+  },
+  "櫻花守石": {
+    "name": "Sakura Charmstone"
+  },
+  "夜櫻守石": {
+    "name": "Night Sakura Charmstone"
+  },
+  "晝櫻守石": {
+    "name": "Day Sakura Charmstone"
+  },
+  "爛漫守石": {
+    "name": "Full Blossom Charmstone"
+  },
+  "忍者裝束": {
+    "name": "Ninja Costume"
+  },
+  "忍術卷軸．金遁": {
+    "name": "Metal Ninjutsu Scroll"
+  },
+  "忍術卷軸．火遁": {
+    "name": "Fire Ninjutsu Scroll"
+  },
+  "忍術卷軸．雷遁": {
+    "name": "Lightning Ninjutsu Scroll"
+  },
+  "忍術卷軸．水遁": {
+    "name": "Water Ninjutsu Scroll"
+  },
+  "忍術卷軸．土遁": {
+    "name": "Earth Ninjutsu Scroll"
+  },
+  "忍術卷軸．風遁": {
+    "name": "Wind Ninjutsu Scroll"
+  },
+  "忍術卷軸．闇遁": {
+    "name": "Dark Ninjutsu Scroll"
+  },
+  "朱櫻短刀": {
+    "name": "Scarlet Sakura Dagger"
+  },
+  "咲麗弓箭": {
+    "name": "Dreamy Arrow"
+  },
+  "波姆波姆矛(杖)": {
+    "name": "Pom Pom Staff Mace"
+  },
+  "波姆波姆矛(劍)": {
+    "name": "Pom Pom Sword Mace"
+  },
+  "頭頂拉菲": {
+    "name": "Head Plop Raffy"
+  },
+  "黏人拉菲": {
+    "name": "Clingy Raffy"
+  },
+  "頭頂蘋果怪": {
+    "name": "Head Plop Coryn"
+  },
+  "黏人蘋果怪": {
+    "name": "Clingy Coryn"
+  },
+  "頭頂波多姆": {
+    "name": "Head Plop Potum"
+  },
+  "黏人波多姆": {
+    "name": "Clingy Potum"
+  },
+  "波姆波姆光環": {
+    "name": "Pom Pom Halos"
+  },
+  "愛麗絲鎧甲": {
+    "name": "Iris Armor"
+  },
+  "神聖拳刺": {
+    "name": "Holy Katar"
+  },
+  "熱能十字弓": {
+    "name": "Heat Crossbow"
+  },
+  "特普原生素體": {
+    "name": "Specistida"
+  },
+  "索菲斯的護身符II": {
+    "name": "Sofys Talisman II"
+  },
+  "荒漠之劍": {
+    "name": "Desert Blade"
+  },
+  "掠奪者寶珠": {
+    "name": "Luminary Reaver Wings"
+  },
+  "記錄者": {
+    "name": "Recorder"
+  },
+  "鐵球腳鐐": {
+    "name": "Iron Ball Leg Cuff"
+  },
+  "沙塵斗篷": {
+    "name": "Dust Cloud Poncho"
+  },
+  "蕾絲緞帶": {
+    "name": "Lace Ribbon"
+  },
+  "漫遊者能量罐": {
+    "name": "Wanderflasche"
+  },
+  "漫遊者刺槍": {
+    "name": "Wanderer's Spear"
+  },
+  "虹彩弧光法杖": {
+    "name": "Iris Ark Staff"
+  },
+  "晴天娃娃": {
+    "name": "Weather Doll"
+  },
+  "廝守王冠": {
+    "name": "Unity Crown"
+  },
+  "廝守寶冠": {
+    "name": "Unity Tiara"
+  },
+  "奈亞達寶冠": {
+    "name": "Naiata's Tiara"
+  },
+  "星塵護具": {
+    "name": "Stardust Shoulder Guard"
+  },
+  "梅頓": {
+    "name": "Maiden"
+  },
+  "鐵魔女之翼": {
+    "name": "Iron Witch Wings"
+  },
+  "鐵魔女頭冠": {
+    "name": "Iron Witch Veil"
+  },
+  "蜥蜴盾": {
+    "name": "Reptilian Shield"
+  },
+  "野營帽子": {
+    "name": "Safari Hat"
+  },
+  "野餐背包": {
+    "name": "Picnic Bag"
+  },
+  "蜥蜴劍": {
+    "name": "Reptilian Sword"
+  },
+  "便攜酒壺": {
+    "name": "Portable Sake Jug"
+  },
+  "鹿角長刀": {
+    "name": "Antler Glaive"
+  },
+  "結晶之箭": {
+    "name": "Quartz Arrow"
+  },
+  "鑽頭刀": {
+    "name": "Drill Shaft"
+  },
+  "晶瑪之劍": {
+    "name": "Gemma Spada"
+  },
+  "晶瑪戒指": {
+    "name": "Gemma Anello"
+  },
+  "雨林弓": {
+    "name": "Forest Bow"
+  },
+  "6周年寶劍": {
+    "name": "6th Anniv Sword"
+  },
+  "6周年巨劍": {
+    "name": "6th Anniv Greatsword"
+  },
+  "6周年獵弓": {
+    "name": "6th Anniv Bow"
+  },
+  "6周年弩槍": {
+    "name": "6th Anniv Bowgun"
+  },
+  "6周年法杖": {
+    "name": "6th Anniv Staff"
+  },
+  "6周年飛翼": {
+    "name": "6th Anniv Wings"
+  },
+  "6周年拳套": {
+    "name": "6th Anniv Knuckles"
+  },
+  "6周年寶槍": {
+    "name": "6th Anniv Halberd"
+  },
+  "6周年寶刀": {
+    "name": "6th Anniv Katana"
+  },
+  "6周年盾牌": {
+    "name": "6th Anniv Shield"
+  },
+  "6周年寶劍II": {
+    "name": "6th Anniv Sword II"
+  },
+  "6周年巨劍II": {
+    "name": "6th Anniv Greatsword II"
+  },
+  "6周年獵弓II": {
+    "name": "6th Anniv Bow II"
+  },
+  "6周年弩槍II": {
+    "name": "6th Anniv Bowgun II"
+  },
+  "6周年法杖II": {
+    "name": "6th Anniv Staff II"
+  },
+  "6周年飛翼II": {
+    "name": "6th Anniv Wings II"
+  },
+  "6周年拳套II": {
+    "name": "6th Anniv Knuckles II"
+  },
+  "6周年寶槍II": {
+    "name": "6th Anniv Halberd II"
+  },
+  "6周年寶刀II": {
+    "name": "6th Anniv Katana II"
+  },
+  "6周年盾牌II": {
+    "name": "6th Anniv Shield II"
+  },
+  "6周年寶劍III": {
+    "name": "6th Anniv Sword III"
+  },
+  "6周年巨劍III": {
+    "name": "6th Anniv Greatsword III"
+  },
+  "6周年獵弓III": {
+    "name": "6th Anniv Bow III"
+  },
+  "6周年弩槍III": {
+    "name": "6th Anniv Bowgun III"
+  },
+  "6周年法杖III": {
+    "name": "6th Anniv Staff III"
+  },
+  "6周年飛翼III": {
+    "name": "6th Anniv Wings III"
+  },
+  "6周年拳套III": {
+    "name": "6th Anniv Knuckles III"
+  },
+  "6周年寶槍III": {
+    "name": "6th Anniv Halberd III"
+  },
+  "6周年寶刀III": {
+    "name": "6th Anniv Katana III"
+  },
+  "6周年盾牌III": {
+    "name": "6th Anniv Shield III"
+  },
+  "6周年寶劍IV": {
+    "name": "6th Anniv Sword IV"
+  },
+  "6周年巨劍IV": {
+    "name": "6th Anniv Greatsword IV"
+  },
+  "6周年獵弓IV": {
+    "name": "6th Anniv Bow IV"
+  },
+  "6周年弩槍IV": {
+    "name": "6th Anniv Bowgun IV"
+  },
+  "6周年法杖IV": {
+    "name": "6th Anniv Staff IV"
+  },
+  "6周年飛翼IV": {
+    "name": "6th Anniv Wings IV"
+  },
+  "6周年拳套IV": {
+    "name": "6th Anniv Knuckles IV"
+  },
+  "6周年寶槍IV": {
+    "name": "6th Anniv Halberd IV"
+  },
+  "6周年寶刀IV": {
+    "name": "6th Anniv Katana IV"
+  },
+  "6周年盾牌IV": {
+    "name": "6th Anniv Shield IV"
+  },
+  "6周年寶劍V": {
+    "name": "6th Anniv Sword V"
+  },
+  "6周年巨劍V": {
+    "name": "6th Anniv Greatsword V"
+  },
+  "6周年獵弓V": {
+    "name": "6th Anniv Bow V"
+  },
+  "6周年弩槍V": {
+    "name": "6th Anniv Bowgun V"
+  },
+  "6周年法杖V": {
+    "name": "6th Anniv Staff V"
+  },
+  "6周年飛翼V": {
+    "name": "6th Anniv Wings V"
+  },
+  "6周年拳套V": {
+    "name": "6th Anniv Knuckles V"
+  },
+  "6周年寶槍V": {
+    "name": "6th Anniv Halberd V"
+  },
+  "6周年寶刀V": {
+    "name": "6th Anniv Katana V"
+  },
+  "6周年盾牌V": {
+    "name": "6th Anniv Shield V"
+  },
+  "6周年寶劍VI": {
+    "name": "6th Anniv Sword VI"
+  },
+  "6周年巨劍VI": {
+    "name": "6th Anniv Greatsword VI"
+  },
+  "6周年獵弓VI": {
+    "name": "6th Anniv Bow VI"
+  },
+  "6周年弩槍VI": {
+    "name": "6th Anniv Bowgun VI"
+  },
+  "6周年法杖VI": {
+    "name": "6th Anniv Staff VI"
+  },
+  "6周年飛翼VI": {
+    "name": "6th Anniv Wings VI"
+  },
+  "6周年拳套VI": {
+    "name": "6th Anniv Knuckles VI"
+  },
+  "6周年寶槍VI": {
+    "name": "6th Anniv Halberd VI"
+  },
+  "6周年寶刀VI": {
+    "name": "6th Anniv Katana VI"
+  },
+  "6周年盾牌VI": {
+    "name": "6th Anniv Shield VI"
+  },
+  "周年慶箭矢III": {
+    "name": "Anniv Festive Arrow III"
+  },
+  "周年慶短劍III": {
+    "name": "Anniv Festive Dagger III"
+  },
+  "周年慶禮服II": {
+    "name": "Anniversary Festive Garb II"
+  },
+  "6周年帽子": {
+    "name": "6th Anniv Hat"
+  },
+  "6周年緞帶": {
+    "name": "6th Anniv Ribbon"
+  },
+  "海貝盾": {
+    "name": "Seashell Shield"
+  },
+  "閃光的海之護身符": {
+    "name": "Glowing Sea Talisman"
+  },
+  "潛水員的氧氣瓶": {
+    "name": "Scuba Ranger Tank"
+  },
+  "潛水員的衣服": {
+    "name": "Scuba Ranger Suit"
+  },
+  "菱紋企鵝泳圈": {
+    "name": "Finpen Buoy"
+  },
+  "菱紋企鵝背包": {
+    "name": "Finpen Backpack"
+  },
+  "風扇人": {
+    "name": "Mr. Fan"
+  },
+  "哈囉太陽頭": {
+    "name": "Aloha Sun"
+  },
+  "潛水員的頭盔": {
+    "name": "Scuba Ranger Helmet"
+  },
+  "海洋舞者": {
+    "name": "Ocean Dancer"
+  },
+  "生命的枝劍": {
+    "name": "Life Branch Dagger"
+  },
+  "蟲籠": {
+    "name": "Insect Cage"
+  },
+  "森人帽": {
+    "name": "Forester's Hat"
+  },
+  "焰": {
+    "name": "Homura"
+  },
+  "岩龍重盾": {
+    "name": "Rock Dragon Heavy Shield"
+  },
+  "岩龍拳套": {
+    "name": "Rock Dragon Bracers"
+  },
+  "護樹之箭": {
+    "name": "Guardian Forest Arrow"
+  },
+  "誓爾曼法杖": {
+    "name": "Vine Staff"
+  },
+  "高地裙": {
+    "name": "Kilt"
+  },
+  "糰子帽": {
+    "name": "Dango Hat"
+  },
+  "新月頭盔": {
+    "name": "Crescent Moon Helmet"
+  },
+  "兔子燈籠": {
+    "name": "Rabbit Lantern"
+  },
+  "宇宙滅除者": {
+    "name": "Cosmic Sword"
+  },
+  "宇宙接收器": {
+    "name": "Cosmic Spear"
+  },
+  "白露之劍": {
+    "name": "Hakuro Sword"
+  },
+  "白露之劍（雙手）": {
+    "name": "Hakuro Greatsword"
+  },
+  "白露之劍（拔刀）": {
+    "name": "Hakuro Katana"
+  },
+  "紅心女王": {
+    "name": "Queen of Hearts"
+  },
+  "紅心女王（杖）": {
+    "name": "Queen of Hearts Staff"
+  },
+  "貓尾": {
+    "name": "Kitty Tail"
+  },
+  "民族頭巾": {
+    "name": "Tribal Turban"
+  },
+  "醫護帽": {
+    "name": "Medic Hat"
+  },
+  "毛球耳環": {
+    "name": "Furball Earrings"
+  },
+  "街道咩咩護符": {
+    "name": "Road Sheep Talisman"
+  },
+  "面鎧": {
+    "name": "Menpo Mask"
+  },
+  "猛獸的狂爪": {
+    "name": "Ferocious Beast Claws"
+  },
+  "災比歐弩槍": {
+    "name": "Zyvio Bowgun"
+  },
+  "災比歐之劍": {
+    "name": "Zyvio Blade"
+  },
+  "憂鬱南瓜頭": {
+    "name": "Gloomy Pumpkin Head"
+  },
+  "蝙蝠耳帽": {
+    "name": "Bat Ear Hat"
+  },
+  "頭頂魔女貓": {
+    "name": "Witch Cat on the Head"
+  },
+  "科學怪人螺絲": {
+    "name": "Frankenstein Bolt"
+  },
+  "狼耳朵": {
+    "name": "Wolf Ears"
+  },
+  "鬼怪糖": {
+    "name": "Ghost Candy"
+  },
+  "惡作劇懷錶": {
+    "name": "Mischievous Pocket Watch"
+  },
+  "狼爪短劍": {
+    "name": "Dewclaw Dagger"
+  },
+  "背後靈波多姆": {
+    "name": "Potum Ghost Behind U"
+  },
+  "黑翼拳套": {
+    "name": "Black Wing Knuckles"
+  },
+  "幽靈糖法杖": {
+    "name": "Ghost Candy Staff"
+  },
+  "蝙蝠弓": {
+    "name": "Nychterida"
+  },
+  "萬聖節服裝III": {
+    "name": "Halloween Garb III"
+  },
+  "李奧納多博士的槍": {
+    "name": "Dr. Leonardo's Gun"
+  },
+  "菲利浦的麥克風": {
+    "name": "Phillip's Microphone"
+  },
+  "DX炸彈封印": {
+    "name": "DX Bomber Blockers"
+  },
+  "碧風大劍": {
+    "name": "Aeras Blade"
+  },
+  "蒼雨弓": {
+    "name": "Lluvia Bow"
+  },
+  "破布熊": {
+    "name": "Shabby Bear"
+  },
+  "安全帽": {
+    "name": "Safety Helmet"
+  },
+  "殘酷之翼": {
+    "name": "Cruel Wings"
+  },
+  "殘酷之劍": {
+    "name": "Cruel Lamina"
+  },
+  "青湖之盾": {
+    "name": "Laguna Shield"
+  },
+  "傳統頭帶": {
+    "name": "Folklore Headband"
+  },
+  "青湖之劍": {
+    "name": "Laguna Sword"
+  },
+  "維京頭盔": {
+    "name": "Viking Helmet"
+  },
+  "連發弩": {
+    "name": "Repeating Crossbow"
+  },
+  "薑餅盾": {
+    "name": "Gingerbread Man Shield"
+  },
+  "聖誕樹": {
+    "name": "Christmas Tree"
+  },
+  "聖誕波多姆袋": {
+    "name": "Santa Potum Bag"
+  },
+  "派對頭套": {
+    "name": "Party Dino Head"
+  },
+  "派對服裝": {
+    "name": "Party Costume"
+  },
+  "諾耶莉爾護符": {
+    "name": "Noeliel Talisman"
+  },
+  "蛋糕頭": {
+    "name": "Cake Head"
+  },
+  "聖誕裙": {
+    "name": "Santa Skirt"
+  },
+  "聖誕兜帽披風": {
+    "name": "Santa Hooded Cape"
+  },
+  "冰靈劍": {
+    "name": "Ice Spirit Sword"
+  },
+  "冰靈機槍": {
+    "name": "Ice Spirit Gun"
+  },
+  "冰靈槍矛": {
+    "name": "Ice Spirit Spear"
+  },
+  "王獸之劍": {
+    "name": "Beastlord Sword"
+  },
+  "王獸大劍": {
+    "name": "Beastlord Greatsword"
+  },
+  "王獸之弓": {
+    "name": "Beastlord Bow"
+  },
+  "王獸弩槍": {
+    "name": "Beastlord Gun"
+  },
+  "王獸之杖": {
+    "name": "Beastlord Staff"
+  },
+  "王獸魔翼": {
+    "name": "Beastlord Wings"
+  },
+  "王獸拳套": {
+    "name": "Beastlord Knuckles"
+  },
+  "王獸長槍": {
+    "name": "Beastlord Spear"
+  },
+  "王獸之刀": {
+    "name": "Beastlord Katana"
+  },
+  "王獸之盾": {
+    "name": "Beastlord Shield"
+  },
+  "智者之衣": {
+    "name": "Erudite Uniform"
+  },
+  "破魔矢": {
+    "name": "Exorcism Arrow"
+  },
+  "羽毛毽": {
+    "name": "Birdie Wings"
+  },
+  "迎春斧槍": {
+    "name": "Reverdie Halberd"
+  },
+  "虎爪拳": {
+    "name": "Tiger Fists"
+  },
+  "羽子板": {
+    "name": "Hagoita"
+  },
+  "干支帽子「寅」": {
+    "name": "Zodiac Hat: Tiger"
+  },
+  "高尚之劍": {
+    "name": "Evgenis"
+  },
+  "謙虛之弓": {
+    "name": "Metriofron"
+  },
+  "仁慈之弩": {
+    "name": "Generos"
+  },
+  "沉默法杖": {
+    "name": "Reticencia"
+  },
+  "氣質魔導具": {
+    "name": "Temperament"
+  },
+  "威嚴拳套": {
+    "name": "Dignidad"
+  },
+  "頑固之盾": {
+    "name": "Peismataris"
+  },
+  "毒炎龍弓": {
+    "name": "Poison Flame Dragon Bow"
+  },
+  "毒炎龍槍": {
+    "name": "Poison Flame Dragon Halberd"
+  },
+  "火焰頭巾": {
+    "name": "Fire Bandana"
+  },
+  "導火線": {
+    "name": "Fuse"
+  },
+  "多納拳套": {
+    "name": "Douse Knuckles"
+  },
+  "寺槍": {
+    "name": "Temple Spear"
+  },
+  "大自然的護符": {
+    "name": "Great Nature Talisman"
+  },
+  "水晶耳飾": {
+    "name": "Crystal Ear Cuffs"
+  },
+  "陽光冠翼": {
+    "name": "Sunlight Wings"
+  },
+  "郵差包": {
+    "name": "Messenger Bag"
+  },
+  "飛機頭假髮": {
+    "name": "Pompadour Wig"
+  },
+  "愛心貝蕾帽": {
+    "name": "Heart Beret"
+  },
+  "信封帽": {
+    "name": "Love Letter Hat"
+  },
+  "蛋糕陽傘": {
+    "name": "Cake Parasol"
+  },
+  "藍薔薇耳環": {
+    "name": "Blue Rose Earrings"
+  },
+  "邱比特波姆": {
+    "name": "Amoretto Potum"
+  },
+  "女王蜂之箭": {
+    "name": "Queen Bee Arrow"
+  },
+  "女王針": {
+    "name": "Queen Bee Needle"
+  },
+  "女王護腕": {
+    "name": "Queen Bee-races"
+  },
+  "女王翅": {
+    "name": "Queen Bee Wings"
+  },
+  "蜜愛麗帽子": {
+    "name": "Mieli's Hat"
+  },
+  "虎雀精": {
+    "name": "Long-Tailed Tit"
+  },
+  "黏人雪狐": {
+    "name": "Clingy Snow Fox"
+  },
+  "積雪": {
+    "name": "Pile of Snow"
+  },
+  "波姆特毛衣": {
+    "name": "Comfy Pom Knit Sweater"
+  },
+  "波姆特帽子": {
+    "name": "Pom Knit Cap"
+  },
+  "塞源護盾": {
+    "name": "Eradicator Shield"
+  },
+  "塞源刺槍": {
+    "name": "Eradicator Bayonet"
+  },
+  "喙狀小刀": {
+    "name": "Beak Knife"
+  },
+  "旅人腰布": {
+    "name": "Traveler's Waistcloth"
+  },
+  "風詠之杖": {
+    "name": "Windchanter Staff"
+  },
+  "白金": {
+    "name": "Shirogane"
+  },
+  "風鏡披風": {
+    "name": "Goggle Cape"
+  },
+  "圓圈耳環": {
+    "name": "Hoop Earrings"
+  },
+  "蘋果樹枝劍": {
+    "name": "Apple Branch Dagger"
+  },
+  "陽笑蔓環": {
+    "name": "Gleeful Vine Bangle"
+  },
+  "虹色羽毛披風": {
+    "name": "Rainbow Feather Cape"
+  },
+  "怪點心魔法杖(劍)": {
+    "name": "Lolliodd Magic Sword"
+  },
+  "怪點心魔法杖(槍)": {
+    "name": "Lolliodd Magic Halberd"
+  },
+  "邪惡頭冠": {
+    "name": "Evil Tiara"
+  },
+  "馬卡龍耳罩": {
+    "name": "Macaron Earmuffs"
+  },
+  "有領領帶": {
+    "name": "Collar Tie"
+  },
+  "藍心眼鏡": {
+    "name": "Blue Heart Glasses"
+  },
+  "馬卡龍波多姆": {
+    "name": "Macaron Potum"
+  },
+  "糖果頭巾": {
+    "name": "Candy Scarf"
+  },
+  "米特髮箍": {
+    "name": "Clement Headband"
+  },
+  "山谷守護石": {
+    "name": "Valley Guardian Stone"
+  },
+  "鍊金腰帶": {
+    "name": "Alchemy Belt"
+  },
+  "重裝騎士頭盔": {
+    "name": "Heavy Knight Helmet"
+  },
+  "格鬥小刀": {
+    "name": "Combat Knife"
+  },
+  "奧克拉辛拳套": {
+    "name": "Oculasignio Knuckles"
+  },
+  "奧克拉辛扇杖": {
+    "name": "Oculasignio Fan Staff"
+  },
+  "暴發戶的首飾": {
+    "name": "Parvenu Necklace"
+  },
+  "華貴披風": {
+    "name": "Extravagant Cape"
+  },
+  "珠櫻之劍": {
+    "name": "Pearl Sakura Sword"
+  },
+  "珠櫻大劍": {
+    "name": "Pearl Sakura Greatsword"
+  },
+  "珠櫻長弓": {
+    "name": "Pearl Sakura Long Bow"
+  },
+  "珠櫻火槍": {
+    "name": "Pearl Sakura Gun"
+  },
+  "珠櫻法杖": {
+    "name": "Pearl Sakura Staff"
+  },
+  "珠櫻紙人": {
+    "name": "Pearl Sakura Katashiro"
+  },
+  "珠櫻手套": {
+    "name": "Pearl Sakura Gloves"
+  },
+  "珠櫻刀銃": {
+    "name": "Pearl Sakura Halberd"
+  },
+  "珠櫻靈刀": {
+    "name": "Pearl Sakura Mystic Sword"
+  },
+  "珠櫻護身刀": {
+    "name": "Pearl Sakura Dagger"
+  },
+  "珠櫻箭矢": {
+    "name": "Pearl Sakura Arrow"
+  },
+  "剛力守石": {
+    "name": "Robust Charmstone"
+  },
+  "金剛守石": {
+    "name": "Adamantite Charmstone"
+  },
+  "睿智守石": {
+    "name": "Prajna Charmstone"
+  },
+  "丁髷眼罩": {
+    "name": "Chonmage Eyepatch"
+  },
+  "日之光輪": {
+    "name": "Solar Halo"
+  },
+  "榮耀戒指(近接)": {
+    "name": "Glory Ring (Melee)"
+  },
+  "榮耀戒指(間接)": {
+    "name": "Glory Ring (Indirect)"
+  },
+  "榮耀戒指(魔劍)": {
+    "name": "Glory Ring (Magic Sword)"
+  },
+  "榮耀戒指(記憶)": {
+    "name": "Glory Ring (Memory)"
+  },
+  "榮耀戒指(立直)": {
+    "name": "Glory Ring (Restore)"
+  },
+  "貓熊兜帽": {
+    "name": "Panda Hood"
+  },
+  "貓熊服": {
+    "name": "Panda Costume"
+  },
+  "熊貓頭": {
+    "name": "Panda Head"
+  },
+  "單眼瞄準鏡": {
+    "name": "Scoop Eyepatch"
+  },
+  "惡魔之矢": {
+    "name": "Devil's Arrow"
+  },
+  "聖頌之弓": {
+    "name": "Sanctus Bow"
+  },
+  "蘋果貝蕾帽": {
+    "name": "Apple Beret"
+  },
+  "貝格長槍": {
+    "name": "Berg Spear"
+  },
+  "穿山甲殼": {
+    "name": "Pholidota Shield"
+  },
+  "穿山之劍": {
+    "name": "Pholidota Blade"
+  },
+  "龍斬鍥": {
+    "name": "Dragon Slayer"
+  },
+  "風暴雷達": {
+    "name": "Storm Radar"
+  },
+  "有翼眼罩": {
+    "name": "Wing Eyemask"
+  },
+  "拼色圍巾": {
+    "name": "Bicolor Stole"
+  },
+  "莊嚴王冠": {
+    "name": "Seria Crown"
+  },
+  "莊嚴寶冠": {
+    "name": "Seria Tiara"
+  },
+  "靈禽寶衣": {
+    "name": "Legendary Raven Garb"
+  },
+  "八咫烏": {
+    "name": "Yatagarasu"
+  },
+  "聖典之槍": {
+    "name": "Holy Script gun"
+  },
+  "護骨長槍": {
+    "name": "Guard Bone Lance"
+  },
+  "護骨弓": {
+    "name": "Guard Bone Bow"
+  },
+  "榮光之劍": {
+    "name": "Luster Sword"
+  },
+  "戰鬥旋棍": {
+    "name": "Combat Tonfa"
+  },
+  "毛球髮飾": {
+    "name": "Furball Accessories"
+  },
+  "榮光護盾": {
+    "name": "Luster Shield"
+  },
+  "分體式兜帽": {
+    "name": "Clip-On Hood"
+  },
+  "陶笛飾品": {
+    "name": "Ocarina Strap"
+  },
+  "加利普斯盔甲": {
+    "name": "Khalyps Mail"
+  },
+  "7周年寶劍": {
+    "name": "7th Anniv Sword"
+  },
+  "7周年寶劍II": {
+    "name": "7th Anniv Sword II"
+  },
+  "7周年寶劍III": {
+    "name": "7th Anniv Sword III"
+  },
+  "7周年寶劍IV": {
+    "name": "7th Anniv Sword IV"
+  },
+  "7周年寶劍V": {
+    "name": "7th Anniv Sword V"
+  },
+  "7周年寶劍VI": {
+    "name": "7th Anniv Sword VI"
+  },
+  "7周年巨劍": {
+    "name": "7th Anniv Greatsword"
+  },
+  "7周年巨劍II": {
+    "name": "7th Anniv Greatsword II"
+  },
+  "7周年巨劍III": {
+    "name": "7th Anniv Greatsword III"
+  },
+  "7周年巨劍IV": {
+    "name": "7th Anniv Greatsword IV"
+  },
+  "7周年巨劍V": {
+    "name": "7th Anniv Greatsword VI"
+  },
+  "7周年巨劍VI": {
+    "name": "7th Anniv Greatsword VI"
+  },
+  "7周年獵弓": {
+    "name": "7th Anniv Bow"
+  },
+  "7周年獵弓II": {
+    "name": "7th Anniv Bow II"
+  },
+  "7周年獵弓III": {
+    "name": "7th Anniv Bow III"
+  },
+  "7周年獵弓IV": {
+    "name": "7th Anniv Bow IV"
+  },
+  "7周年獵弓V": {
+    "name": "7th Anniv Bow V"
+  },
+  "7周年獵弓VI": {
+    "name": "7th Anniv Bow VI"
+  },
+  "7周年弩槍": {
+    "name": "7th Anniv Bowgun"
+  },
+  "7周年弩槍II": {
+    "name": "7th Anniv Bowgun II"
+  },
+  "7周年弩槍III": {
+    "name": "7th Anniv Bowgun III"
+  },
+  "7周年弩槍IV": {
+    "name": "7th Anniv Bowgun IV"
+  },
+  "7周年弩槍V": {
+    "name": "7th Anniv Bowgun V"
+  },
+  "7周年弩槍VI": {
+    "name": "7th Anniv Bowgun VI"
+  },
+  "7周年法杖": {
+    "name": "7th Anniv Staff"
+  },
+  "7周年法杖II": {
+    "name": "7th Anniv Staff II"
+  },
+  "7周年法杖III": {
+    "name": "7th Anniv Staff III"
+  },
+  "7周年法杖IV": {
+    "name": "7th Anniv Staff IV"
+  },
+  "7周年法杖V": {
+    "name": "7th Anniv Staff V"
+  },
+  "7周年法杖VI": {
+    "name": "7th Anniv Staff VI"
+  },
+  "7周年飛翼": {
+    "name": "7th Anniv Wings"
+  },
+  "7周年飛翼II": {
+    "name": "7th Anniv Wings II"
+  },
+  "7周年飛翼III": {
+    "name": "7th Anniv Wings III"
+  },
+  "7周年飛翼IV": {
+    "name": "7th Anniv Wings IV"
+  },
+  "7周年飛翼V": {
+    "name": "7th Anniv Wings VI"
+  },
+  "7周年飛翼VI": {
+    "name": "7th Anniv Wings VI"
+  },
+  "7周年拳套": {
+    "name": "7th Anniv Knuckles"
+  },
+  "7周年拳套II": {
+    "name": "7th Anniv Knuckles II"
+  },
+  "7周年拳套III": {
+    "name": "7th Anniv Knuckles III"
+  },
+  "7周年拳套IV": {
+    "name": "7th Anniv Knuckles IV"
+  },
+  "7周年拳套V": {
+    "name": "7th Anniv Knuckles V"
+  },
+  "7周年拳套VI": {
+    "name": "7th Anniv Knuckles VI"
+  },
+  "7周年寶槍": {
+    "name": "7th Anniv Halberd"
+  },
+  "7周年寶槍II": {
+    "name": "7th Anniv Halberd II"
+  },
+  "7周年寶槍III": {
+    "name": "7th Anniv Halberd III"
+  },
+  "7周年寶槍IV": {
+    "name": "7th Anniv Halberd IV"
+  },
+  "7周年寶槍V": {
+    "name": "7th Anniv Halberd V"
+  },
+  "7周年寶槍VI": {
+    "name": "7th Anniv Halberd VI"
+  },
+  "7周年寶刀": {
+    "name": "7th Anniv Katana"
+  },
+  "7周年寶刀II": {
+    "name": "7th Anniv Katana II"
+  },
+  "7周年寶刀III": {
+    "name": "7th Anniv Katana III"
+  },
+  "7周年寶刀IV": {
+    "name": "7th Anniv Katana IV"
+  },
+  "7周年寶刀V": {
+    "name": "7th Anniv Katana V"
+  },
+  "7周年寶刀VI": {
+    "name": "7th Anniv Katana VI"
+  },
+  "7周年盾牌": {
+    "name": "7th Anniv Shield"
+  },
+  "7周年盾牌II": {
+    "name": "7th Anniv Shield II"
+  },
+  "7周年盾牌III": {
+    "name": "7th Anniv Shield III"
+  },
+  "7周年盾牌IV": {
+    "name": "7th Anniv Shield IV"
+  },
+  "7周年盾牌V": {
+    "name": "7th Anniv Shield V"
+  },
+  "7周年盾牌VI": {
+    "name": "7th Anniv Shield VI"
+  },
+  "周年慶戒指III": {
+    "name": "Anniv Festive Bangle III"
+  },
+  "周年慶手環III": {
+    "name": "Anniv Festive Bangle III"
+  },
+  "7周年貝蕾帽": {
+    "name": "7th Anniv Beret"
+  },
+  "7周年緞帶": {
+    "name": "7th Anniv Ribbon"
+  },
+  "周年慶禮服III": {
+    "name": "Anniversary Festive Garb III"
+  },
+  "狐狸小面具": {
+    "name": "Small Fox Mask"
+  },
+  "紅蓮頭巾": {
+    "name": "Crimson Hachimaki"
+  },
+  "純真緞帶": {
+    "name": "Pure Ribbon"
+  },
+  "守護者頭套": {
+    "name": "Guardian's Mask"
+  },
+  "神轎轎夫的服裝": {
+    "name": "Palanquin Carrier Garment"
+  },
+  "頭巾章魚": {
+    "name": "Hachimaki Baby Octopus"
+  },
+  "樹樁戰鼓": {
+    "name": "Stump Drum"
+  },
+  "浣熊帽": {
+    "name": "Tanuki Hat"
+  },
+  "神聖兜帽": {
+    "name": "Holy Hood"
+  },
+  "紫電": {
+    "name": "Purple Lightning Sword"
+  },
+  "催動機弩槍": {
+    "name": "Klug Bowgun"
+  },
+  "灼炎直刀": {
+    "name": "Burning Ember Sword"
+  },
+  "灼炎槍砲": {
+    "name": "Burning Ember Gun"
+  },
+  "飛龍斗篷": {
+    "name": "Flying Dragon Cape"
+  },
+  "異國圍裙": {
+    "name": "Exotic Waist Apron"
+  },
+  "榮光法杖": {
+    "name": "Luster Staff"
+  },
+  "月光劍II": {
+    "name": "Moonlight Sword II"
+  },
+  "月光盾II": {
+    "name": "Moonlight Shield II"
+  },
+  "兔兔連帽衫": {
+    "name": "Lovely Bunny Hoodie"
+  },
+  "兔子鈕扣兜帽": {
+    "name": "Bunny Button Hood"
+  },
+  "兔子緞帶兜帽": {
+    "name": "Bunny Ribbon Hood"
+  },
+  "糰子&糰子": {
+    "name": "Dango & Dango"
+  },
+  "鮮花帽": {
+    "name": "Floral Hat"
+  },
+  "龍盔": {
+    "name": "Dragon Helmet"
+  },
+  "欺詐之角": {
+    "name": "Trickster Kerato"
+  },
+  "欺詐之翼": {
+    "name": "Trickster Wings"
+  },
+  "欺詐套裝": {
+    "name": "Trickster Costume"
+  },
+  "赤翼龍弓": {
+    "name": "Red-Winged Dragon Bow"
+  },
+  "漂浮南瓜燈": {
+    "name": "Floating Pumpkin Lanterns"
+  },
+  "幽靈箭": {
+    "name": "Specter Arrow"
+  },
+  "菜刀": {
+    "name": "Kitchen Knife"
+  },
+  "南瓜大劍": {
+    "name": "Squash Blade"
+  },
+  "南瓜錘矛": {
+    "name": "Squash Mace"
+  },
+  "萬聖節帽子": {
+    "name": "Halloween Hat"
+  },
+  "響導幽靈": {
+    "name": "Guide Ghost"
+  },
+  "頭頂幽靈": {
+    "name": "Head Plop Ghost"
+  },
+  "死神兜帽": {
+    "name": "Grim Reaper's Hood"
+  },
+  "妖怪點心籃": {
+    "name": "Ghost's Sweets Basket"
+  },
+  "木乃伊的繃帶衣": {
+    "name": "Mummy Bandage Outfit"
+  },
+  "黑巫女的護身符": {
+    "name": "Dark Shaman Talisman"
+  },
+  "惡作劇圓盾": {
+    "name": "Mischievous Buckler"
+  },
+  "地獄諾瓦": {
+    "name": "Hell Stellar Bow"
+  },
+  "傲世眼鏡": {
+    "name": "Pride Glasses"
+  },
+  "光之劍(單手劍)": {
+    "name": "Sword of Light (OHS)"
+  },
+  "光之劍(雙手劍)": {
+    "name": "Sword of Light (THS)"
+  },
+  "光之劍(拔刀劍)": {
+    "name": "Sword of Light (Katana)"
+  },
+  "傑洛士的法杖": {
+    "name": "Xellos' Staff"
+  },
+  "靈王結魔彈(拳套)": {
+    "name": "Visphalanx (Knuckle)"
+  },
+  "靈王結魔彈(魔導具)": {
+    "name": "Visphalanx (Magic Device)"
+  },
+  "DL紀念勳章": {
+    "name": "DL Memorial Badge"
+  },
+  "蘋果面具": {
+    "name": "Coryn Mask"
+  },
+  "禮物波多姆": {
+    "name": "Gift Potum"
+  },
+  "蘋果紀念盾": {
+    "name": "Coryn Memorial Shield"
+  },
+  "波多姆拉炮": {
+    "name": "Potum Popper"
+  },
+  "波多姆之杖": {
+    "name": "Potum Staff"
+  },
+  "力量護符 VI": {
+    "name": "Muscle Talisman VI"
+  },
+  "魔力護符 VI": {
+    "name": "Magic Talisman VI"
+  },
+  "體力護符 VI": {
+    "name": "Stamina Talisman VI"
+  },
+  "敏捷護符 VI": {
+    "name": "Speed Talisman VI"
+  },
+  "技術護符 VI": {
+    "name": "Dexterity Talisman VI"
+  },
+  "死神之弓": {
+    "name": "Reaper Bow"
+  },
+  "天藍刺槍": {
+    "name": "Azure Spear"
+  },
+  "占卜師面紗": {
+    "name": "Seer's Veil"
+  },
+  "鱗角": {
+    "name": "Scale Horns"
+  },
+  "絲岩比爾之劍": {
+    "name": "Filrocas Sword"
+  },
+  "絲岩比爾之拳": {
+    "name": "Filrocas Arms"
+  },
+  "浸龍之爪劍": {
+    "name": "Corroded Dragon Claw Sword"
+  },
+  "龍環": {
+    "name": "Dragon Ring"
+  },
+  "猛禽面罩": {
+    "name": "Raptor Mask"
+  },
+  "氣流劍": {
+    "name": "Aeria Spada"
+  },
+  "晶石刀": {
+    "name": "Blue Spinel Sword"
+  },
+  "聖誕球耳環": {
+    "name": "Ornament Earrings"
+  },
+  "菱紋企鵝雪人": {
+    "name": "Finpen Snowman"
+  },
+  "聖誕襪": {
+    "name": "Xmas Sock"
+  },
+  "冬季服飾": {
+    "name": "Winter Outfit"
+  },
+  "貓尾帽": {
+    "name": "Cat Tail Hat"
+  },
+  "劃刀": {
+    "name": "Scratch Knife"
+  },
+  "冰雪羽毛頭飾": {
+    "name": "Ice Wing Hair Ornament"
+  },
+  "熱能拳": {
+    "name": "Thermal Fists"
+  },
+  "燈髮飾": {
+    "name": "Zega Mask"
+  },
+  "黑聖領巾": {
+    "name": "Holy Night Scarf"
+  },
+  "黑聖圍巾": {
+    "name": "Holy Night Muffler"
+  },
+  "黑聖旋槍": {
+    "name": "Holy Night Halberd"
+  },
+  "黑聖長槍": {
+    "name": "Holy Night Rifle"
+  },
+  "桂冠套裝": {
+    "name": "Laureate Outfit"
+  },
+  "龍守衛的箭": {
+    "name": "Dragon Guard Arrow"
+  },
+  "報童帽": {
+    "name": "Newsboy Cap"
+  },
+  "翡翠髮飾": {
+    "name": "Aurora Sash"
+  },
+  "炎尾箭矢": {
+    "name": "Blazing Tail Arrow"
+  },
+  "可疑兜帽": {
+    "name": "Shady Hoodie"
+  },
+  "金屬頸圈": {
+    "name": "Iron Choker"
+  },
+  "惡爵之杖": {
+    "name": "Evil Aristo Staff"
+  },
+  "惡爵的防輪": {
+    "name": "Evil Aristo Defense Shackles"
+  },
+  "初音未來的杖型麥克風": {
+    "name": "HATSUNE MIKU Microphone Stick"
+  },
+  "愛心廚師帽": {
+    "name": "Heart Chef Hat"
+  },
+  "情人節圍裙": {
+    "name": "Valentine's Day Apron"
+  },
+  "天使波多姆巧克力": {
+    "name": "Angel Potum Chocolate"
+  },
+  "巧克力戒指III": {
+    "name": "Chocolate Ring III"
+  },
+  "巧克力護符III": {
+    "name": "Chocolate Charm III"
+  },
+  "重型小刀": {
+    "name": "Hefty Knife"
+  },
+  "鬆餅帽": {
+    "name": "Pancake Hat"
+  },
+  "肉球護符": {
+    "name": "Toe Beans Talisman"
+  },
+  "掮客面罩": {
+    "name": "Broker Mask"
+  },
+  "掮客帽子": {
+    "name": "Broker Hat"
+  },
+  "哥布弩槍": {
+    "name": "Goblin Rifle"
+  },
+  "滑雪杖": {
+    "name": "Ski Pole Sword"
+  },
+  "滑雪手套": {
+    "name": "Ski Gloves"
+  },
+  "剷雪杖": {
+    "name": "Shovel Staff"
+  },
+  "剷雪劍": {
+    "name": "Shovel Blade"
+  },
+  "剷雪矛": {
+    "name": "Shovel Lance"
+  },
+  "紅炎之翼": {
+    "name": "Flammarem"
+  },
+  "紅炎大劍": {
+    "name": "Flamma Blade"
+  },
+  "錨弩": {
+    "name": "Anchor Bowgun"
+  },
+  "巫師的護肩": {
+    "name": "Shaman Shoulder Pad"
+  },
+  "小鳥的議事廳": {
+    "name": "Tomtits Gathering Spot"
+  },
+  "岩角獸的手環": {
+    "name": "Rock Horn Beast Bangle"
+  },
+  "羊羊兜帽": {
+    "name": "Sheep Hood"
+  },
+  "太陽之杖": {
+    "name": "Solar Staff"
+  },
+  "彩泡弩弓": {
+    "name": "Savon Bow"
+  },
+  "彩泡寶劍": {
+    "name": "Savon Spada"
+  },
+  "點心紙袋": {
+    "name": "Candy Paper Bag"
+  },
+  "針葉箭": {
+    "name": "Spiny Leaf Arrow"
+  },
+  "酥餅手環": {
+    "name": "Sable Bracelet"
+  },
+  "心形巧克力餅乾": {
+    "name": "Heart Chocolate Biscuit"
+  },
+  "蘋果怪紙杯蛋糕": {
+    "name": "Coryn Cupcake"
+  },
+  "巧克力餅乾泰迪": {
+    "name": "Choco Biscuit Bear"
+  },
+  "白色情人節耳環": {
+    "name": "White Day Earrings"
+  },
+  "怪點心魔法盾": {
+    "name": "Lolliodd Magic Shield"
+  },
+  "桿麵棍（劍）": {
+    "name": "Rolling Pin Sword"
+  },
+  "桿麵棍（杖）": {
+    "name": "Rolling Pin Staff"
+  },
+  "曲奇角": {
+    "name": "Cookie Horns"
+  },
+  "巧酥盤": {
+    "name": "Crust Plate"
+  },
+  "餅乾腰翼": {
+    "name": "Cookie Wings"
+  },
+  "龍披肩": {
+    "name": "Dragon Cape"
+  },
+  "大隻角": {
+    "name": "Big Horns"
+  },
+  "領域護盾": {
+    "name": "Aeria Shield"
+  },
+  "堅定的濃眉": {
+    "name": "Thick Determined Eyebrows"
+  },
+  "休美蝶髮夾": {
+    "name": "Schmet Hairpin"
+  },
+  "屠龍劍": {
+    "name": "Dragon Slasher"
+  },
+  "龍刀．樂": {
+    "name": "Brass Dragon Sword"
+  },
+  "愜意槍": {
+    "name": "Agradable"
+  },
+  "頭頂樹鶯": {
+    "name": "Warbler on the Head"
+  },
+  "髮釵緞帶": {
+    "name": "Ribbon Kanzashi"
+  },
+  "時髦斗笠": {
+    "name": "Stylish Kasa"
+  },
+  "和風頭飾": {
+    "name": "Japanese Style Bucket Hat"
+  },
+  "圓形墨鏡": {
+    "name": "Round Sunglasses"
+  },
+  "櫻花和服VI": {
+    "name": "Sakura Kimono VI"
+  },
+  "春陽麗和之箭": {
+    "name": "Sunny Spring Arrow"
+  },
+  "戰櫻短杖": {
+    "name": "Sakura Warrior Staff"
+  },
+  "戰櫻旋槍": {
+    "name": "Sakura Warrior Halberd"
+  },
+  "寶蓋熊帽子": {
+    "name": "Baavgai Hat"
+  },
+  "熊櫻守石": {
+    "name": "Sakura Bear Charmstone"
+  },
+  "熊戰士腰帶": {
+    "name": "Bear Warrior Obi"
+  },
+  "鮭魚乾護符": {
+    "name": "Salmon Jerky Talisman"
+  },
+  "鮭魚乾雙拳": {
+    "name": "Salmon Jerky Knuckles"
+  },
+  "鮭魚乾大劍": {
+    "name": "Salmon Jerky Greatsword"
+  },
+  "維托斯弩槍": {
+    "name": "Vegitos Bowgun"
+  },
+  "冰花之翼": {
+    "name": "Rime Wing"
+  },
+  "兔兔頭巾": {
+    "name": "Bunny Hood"
+  },
+  "哥德魔女帽": {
+    "name": "Gothic Witch Hat"
+  },
+  "冰鳥護符": {
+    "name": "Ice Bird Talisman"
+  },
+  "淚痕": {
+    "name": "Teardrop"
+  },
+  "維米奧之弓": {
+    "name": "Vermio Bow"
+  },
+  "盧克斯劍": {
+    "name": "Luxurie Sword"
+  },
+  "多米納多之翼": {
+    "name": "Dominantrum"
+  },
+  "多米納多之鐮": {
+    "name": "Dominant Scythespear"
+  },
+  "婚紗禮服": {
+    "name": "Wedding Dress"
+  },
+  "燕尾服": {
+    "name": "Tuxedo"
+  },
+  "奏妖星的槍矛": {
+    "name": "Mystic Star Spear"
+  },
+  "星辰之舟服(近)": {
+    "name": "Stellar Fighter (SRA)"
+  },
+  "星辰之舟服(遠)": {
+    "name": "Stellar Fighter (LRA)"
+  },
+  "星辰之舟服": {
+    "name": "Stellar Fighter"
+  },
+  "天鷹戟": {
+    "name": "Aquila Glaive"
+  },
+  "隱私保護條": {
+    "name": "Censor Bar"
+  },
+  "有領小披風": {
+    "name": "Collared Short Cape"
+  },
+  "桃珊瑚護符": {
+    "name": "Coral Peach Talisman"
+  },
+  "海星手裏劍": {
+    "name": "Starfish Shuriken"
+  },
+  "硬首頭盔": {
+    "name": "Solid Guard Helmet"
+  },
+  "皚蛇": {
+    "name": "White Viper"
+  },
+  "腰環": {
+    "name": "Waistlet"
+  },
+  "貝魯虎爪": {
+    "name": "Sharp Baghnakhs"
+  },
+  "蛙戰士短劍": {
+    "name": "Frog Warrior Dagger"
+  },
+  "水神子的龍角": {
+    "name": "Water Priest Draconic Horns"
+  },
+  "水神子的法衣": {
+    "name": "Water Priest Robe"
+  },
+  "8周年緞帶": {
+    "name": "8th Anniv Ribbon"
+  },
+  "8周年帽子": {
+    "name": "8th Anniv Hat"
+  },
+  "8周年寶劍": {
+    "name": "8th Anniv Sword"
+  },
+  "8周年寶劍II": {
+    "name": "8th Anniv Sword II"
+  },
+  "8周年寶劍III": {
+    "name": "8th Anniv Sword III"
+  },
+  "8周年寶劍IV": {
+    "name": "8th Anniv Sword IV"
+  },
+  "8周年寶劍V": {
+    "name": "8th Anniv Sword V"
+  },
+  "8周年寶劍VI": {
+    "name": "8th Anniv Sword VI"
+  },
+  "8周年巨劍": {
+    "name": "8th Anniv Greatsword"
+  },
+  "8周年巨劍II": {
+    "name": "8th Anniv Greatsword II"
+  },
+  "8周年巨劍III": {
+    "name": "8th Anniv Greatsword III"
+  },
+  "8周年巨劍IV": {
+    "name": "8th Anniv Greatsword IV"
+  },
+  "8周年巨劍V": {
+    "name": "8th Anniv Greatsword V"
+  },
+  "8周年巨劍VI": {
+    "name": "8th Anniv Greatsword VI"
+  },
+  "8周年獵弓": {
+    "name": "8th Anniv Bow"
+  },
+  "8周年獵弓II": {
+    "name": "8th Anniv Bow II"
+  },
+  "8周年獵弓III": {
+    "name": "8th Anniv Bow III"
+  },
+  "8周年獵弓IV": {
+    "name": "8th Anniv Bow IV"
+  },
+  "8周年獵弓V": {
+    "name": "8th Anniv Bow V"
+  },
+  "8周年獵弓VI": {
+    "name": "8th Anniv Bow VI"
+  },
+  "8周年弩槍": {
+    "name": "8th Anniv Bowgun"
+  },
+  "8周年弩槍II": {
+    "name": "8th Anniv Bowgun II"
+  },
+  "8周年弩槍III": {
+    "name": "8th Anniv Bowgun III"
+  },
+  "8周年弩槍IV": {
+    "name": "8th Anniv Bowgun IV"
+  },
+  "8周年弩槍V": {
+    "name": "8th Anniv Bowgun V"
+  },
+  "8周年弩槍VI": {
+    "name": "8th Anniv Bowgun VI"
+  },
+  "8周年法杖": {
+    "name": "8th Anniv Staff"
+  },
+  "8周年法杖II": {
+    "name": "8th Anniv Staff II"
+  },
+  "8周年法杖III": {
+    "name": "8th Anniv Staff III"
+  },
+  "8周年法杖IV": {
+    "name": "8th Anniv Staff IV"
+  },
+  "8周年法杖V": {
+    "name": "8th Anniv Staff V"
+  },
+  "8周年法杖VI": {
+    "name": "8th Anniv Staff VI"
+  },
+  "8周年飛翼": {
+    "name": "8th Anniv Wings"
+  },
+  "8周年飛翼II": {
+    "name": "8th Anniv Wings II"
+  },
+  "8周年飛翼III": {
+    "name": "8th Anniv Wings III"
+  },
+  "8周年飛翼IV": {
+    "name": "8th Anniv Wings IV"
+  },
+  "8周年飛翼V": {
+    "name": "8th Anniv Wings V"
+  },
+  "8周年飛翼VI": {
+    "name": "8th Anniv Wings VI"
+  },
+  "8周年拳套": {
+    "name": "8th Anniv Knuckles"
+  },
+  "8周年拳套II": {
+    "name": "8th Anniv Knuckles II"
+  },
+  "8周年拳套III": {
+    "name": "8th Anniv Knuckles III"
+  },
+  "8周年拳套IV": {
+    "name": "8th Anniv Knuckles IV"
+  },
+  "8周年拳套V": {
+    "name": "8th Anniv Knuckles V"
+  },
+  "8周年拳套VI": {
+    "name": "8th Anniv Knuckles VI"
+  },
+  "8周年寶槍": {
+    "name": "8th Anniv Halberd"
+  },
+  "8周年寶槍II": {
+    "name": "8th Anniv Halberd II"
+  },
+  "8周年寶槍III": {
+    "name": "8th Anniv Halberd III"
+  },
+  "8周年寶槍IV": {
+    "name": "8th Anniv Halberd IV"
+  },
+  "8周年寶槍V": {
+    "name": "8th Anniv Halberd V"
+  },
+  "8周年寶槍VI": {
+    "name": "8th Anniv Halberd VI"
+  },
+  "8周年寶刀": {
+    "name": "8th Anniv Katana"
+  },
+  "8周年寶刀II": {
+    "name": "8th Anniv Katana II"
+  },
+  "8周年寶刀III": {
+    "name": "8th Anniv Katana III"
+  },
+  "8周年寶刀IV": {
+    "name": "8th Anniv Katana IV"
+  },
+  "8周年寶刀V": {
+    "name": "8th Anniv Katana V"
+  },
+  "8周年寶刀VI": {
+    "name": "8th Anniv Katana VI"
+  },
+  "8周年盾牌": {
+    "name": "8th Anniv Shield"
+  },
+  "8周年盾牌II": {
+    "name": "8th Anniv Shield II"
+  },
+  "8周年盾牌III": {
+    "name": "8th Anniv Shield III"
+  },
+  "8周年盾牌IV": {
+    "name": "8th Anniv Shield IV"
+  },
+  "8周年盾牌V": {
+    "name": "8th Anniv Shield V"
+  },
+  "8周年盾牌VI": {
+    "name": "8th Anniv Shield VI"
+  },
+  "周年慶禮服IV": {
+    "name": "Anniversary Festive Garb IV"
+  },
+  "周年慶短劍IV": {
+    "name": "Anniv Festive Dagger IV"
+  },
+  "周年慶箭矢IV": {
+    "name": "Anniv Festive Arrow IV"
+  },
+  "額頭符紙": {
+    "name": "Paper Talisman"
+  },
+  "金魚髮夾": {
+    "name": "Goldfish Hairpin"
+  },
+  "啤酒頭": {
+    "name": "Beer Mug Head"
+  },
+  "西瓜盾": {
+    "name": "Watermelon Shield"
+  },
+  "涼爽團扇": {
+    "name": "Cooling Fan"
+  },
+  "懸浮的燈籠": {
+    "name": "Floating Paper Lantern"
+  },
+  "靈魂出竅": {
+    "name": "Wandering Soul"
+  },
+  "海幽劍": {
+    "name": "Ocean Phantom Sword"
+  },
+  "巴勒斯的觸角": {
+    "name": "Falburrows Feelers"
+  },
+  "焦煌大劍索雷尤III": {
+    "name": "Soleil The Heat Sword III"
+  },
+  "被詛咒的金幣": {
+    "name": "Cursed Gold Coin"
+  },
+  "幽靈望遠鏡": {
+    "name": "Ghost Telescope"
+  },
+  "海霧指南針": {
+    "name": "Sea Fog Compass"
+  },
+  "龍宮箭矢": {
+    "name": "Dragon Palace Arrow"
+  },
+  "海洋探尋者": {
+    "name": "Ocean Explorer"
+  },
+  "烤番薯槌": {
+    "name": "Sweet Potato Hammer"
+  },
+  "秋翼": {
+    "name": "Autumn Leaf Wings"
+  },
+  "栗子拳套": {
+    "name": "Chestnut Knuckles"
+  },
+  "鋼葉匕首": {
+    "name": "Steel Leaf Knife"
+  },
+  "秋麗箭矢": {
+    "name": "Lovely Autumn Arrow"
+  },
+  "茄甲": {
+    "name": "Aubergine Armor"
+  },
+  "巴特利鼓": {
+    "name": "Bateria"
+  },
+  "扭曲法杖": {
+    "name": "Twisted Staff"
+  },
+  "冰塊": {
+    "name": "Ice Cube"
+  },
+  "軍帽": {
+    "name": "Shako"
+  },
+  "盧克斯護盾": {
+    "name": "Luxurie Shield"
+  },
+  "漸層圍巾": {
+    "name": "Gradation Scarf"
+  },
+  "海馬手環": {
+    "name": "Seahorse Talisman"
+  },
+  "阿米尼斯法杖": {
+    "name": "Amnis Staff"
+  },
+  "阿米尼斯刺劍": {
+    "name": "Amnis Rapier"
+  },
+  "繃帶纏滿頭": {
+    "name": "Mummy Head Wrap"
+  },
+  "痞帥狼": {
+    "name": "Dandy Wolf"
+  },
+  "萬聖泰迪熊": {
+    "name": "Halloween Teddy"
+  },
+  "萬聖傘": {
+    "name": "Halloween Umbrella"
+  },
+  "暗夜提燈": {
+    "name": "Dark Night Lantern"
+  },
+  "萬聖節快樂": {
+    "name": "Happy Halloween"
+  },
+  "紅月魔衣": {
+    "name": "Magical Crimson Moon Garb"
+  },
+  "吸血鬼帽": {
+    "name": "Vampire Hat"
+  },
+  "苦南瓜護符": {
+    "name": "Bitter Pumpkin Talisman"
+  },
+  "蝙蝠箭": {
+    "name": "Bat Fang Arrow"
+  },
+  "紅月帽子": {
+    "name": "Crimson Moon Hat"
+  },
+  "紅月外套": {
+    "name": "Crimson Moon Cape"
+  },
+  "紅月魔弓": {
+    "name": "Crimson Moon Mystic Bow"
+  },
+  "紅月魔槍": {
+    "name": "Crimson Mystic Moon Spear"
+  },
+  "鋼頭盔": {
+    "name": "Steel Helm"
+  },
+  "鋼環(力)": {
+    "name": "Steel Ring (Power)"
+  },
+  "鋼環(魔)": {
+    "name": "Steel Ring (Magic)"
+  },
+  "鋼環(耐)": {
+    "name": "Steel Ring (Resist)"
+  },
+  "鋼環(閃)": {
+    "name": "Steel Ring (Flash)"
+  },
+  "鋼盔甲(物)": {
+    "name": "Steel Mail P"
+  },
+  "鋼盔甲(魔)": {
+    "name": "Steel Mail M"
+  },
+  "無法抑制的邪眼": {
+    "name": "Uncontrollable Evil Eye"
+  },
+  "匕首套": {
+    "name": "Knife Holder"
+  },
+  "水獺圍巾": {
+    "name": "Otter Scarf"
+  },
+  "憤怒匕首": {
+    "name": "Anger Knife"
+  },
+  "綺海護符": {
+    "name": "Lovely Ocean Talisman"
+  },
+  "拖把": {
+    "name": "Mop"
+  },
+  "側馬尾": {
+    "name": "Side Ponytail"
+  },
+  "刀劍錘矛": {
+    "name": "Mace Sword"
+  },
+  "東．護盾": {
+    "name": "Don Shield"
+  },
+  "東．拳套": {
+    "name": "Don Knuckles"
+  },
+  "香檳弩": {
+    "name": "Champagne Gun"
+  },
+  "聖誕杖": {
+    "name": "xmas staff"
+  },
+  "聖誕樹披肩": {
+    "name": "Christmas Tree Cape"
+  },
+  "烤火雞盾": {
+    "name": "Roasted Turkey Shield"
+  },
+  "魔視之矢": {
+    "name": "Evil Gaze Arrow"
+  },
+  "花環頭冠": {
+    "name": "Wreath Crown"
+  },
+  "禮物盒耳環": {
+    "name": "Gift Box Earrings"
+  },
+  "噩夢": {
+    "name": "Ephialtes"
+  },
+  "冬季服飾II": {
+    "name": "Winter Outfit II"
+  },
+  "倒聖誕樹紋章": {
+    "name": "Inverted Tree Crest"
+  },
+  "尖刺髮套": {
+    "name": "Spiky WIg"
+  },
+  "秘奇可武器": {
+    "name": "Mysticotelum"
+  },
+  "光之緞帶披肩": {
+    "name": "Light Ribbon Cape"
+  },
+  "風牙兜帽": {
+    "name": "Zega Hood"
+  },
+  "干支帽(辰)": {
+    "name": "Zodiac Hat: Dragon"
+  },
+  "神樂鈴": {
+    "name": "Kagura Bells"
+  },
+  "除魔緞帶": {
+    "name": "Amulet Ribbon"
+  },
+  "黏人赤鬼": {
+    "name": "Clingy Red Oni"
+  },
+  "怖面護身符": {
+    "name": "Scary Face Talisman"
+  },
+  "海螺箭": {
+    "name": "Spiral Shell Arrow"
+  },
+  "海蝦臂甲": {
+    "name": "Camaron Arms"
+  },
+  "深奧之劍": {
+    "name": "Profound Sword"
+  },
+  "深潭法弓": {
+    "name": "Abyss Bow"
+  },
+  "深潭直刀": {
+    "name": "Abyss Katana"
+  },
+  "海藍弩": {
+    "name": "Ocean Bowgun"
+  },
+  "光之三叉戟": {
+    "name": "Light Trident"
+  },
+  "水藍護肩": {
+    "name": "Aqua Shoulder Pads"
+  },
+  "全臉面罩": {
+    "name": "Balaclava"
+  },
+  "鰭耳": {
+    "name": "Fin Ears"
+  },
+  "甜甜圈眼鏡": {
+    "name": "Donut Glasses"
+  },
+  "木靈的行跡": {
+    "name": "Nymon's Presence"
+  },
+  "香草箭": {
+    "name": "Herb Arrow"
+  },
+  "萬寶錘(劍)": {
+    "name": "Miracle Mallet (Sword)"
+  },
+  "萬寶錘(魔)": {
+    "name": "Miracle Mallet (Magic)"
+  },
+  "眾神幣錢袋": {
+    "name": "Spina Bag"
+  },
+  "愛心巧克力氣球": {
+    "name": "Heart Chocolate Balloons"
+  },
+  "迷你佩魯魯": {
+    "name": "Mini Pelulu"
+  },
+  "算盤盾": {
+    "name": "Abacus Shield"
+  },
+  "波多姆學園運動服": {
+    "name": "Potum Academy Tracksuit"
+  },
+  "冰川之翼": {
+    "name": "Glacial Wings"
+  },
+  "深海盾": {
+    "name": "Profound Shield"
+  },
+  "恩惠短劍": {
+    "name": "Dagger of Grace"
+  },
+  "殺手之劍": {
+    "name": "Assassin Blade"
+  },
+  "海蛇弓": {
+    "name": "Seapent Bow"
+  },
+  "尼羅佩劍": {
+    "name": "Nero Saber"
+  },
+  "圓環魔寶球": {
+    "name": "Orbital Mystic Spheres"
+  },
+  "海褶披肩": {
+    "name": "Ocean Frill Cape"
+  },
+  "魅力紅脣": {
+    "name": "Charming Lips"
+  },
+  "三股辮蝴蝶結": {
+    "name": "Braid with Ribbon"
+  },
+  "熱望之劍": {
+    "name": "Avid Blade"
+  },
+  "熱望長刀": {
+    "name": "Avid Glaive"
+  },
+  "白露之劍(雙手)": {
+    "name": "Hakuro Greatsword"
+  },
+  "白露之劍(拔刀)": {
+    "name": "Hakuro Katana"
+  },
+  "紅心女王(杖)": {
+    "name": "Queen of Hearts Staff"
+  },
+  "永恆之弓": {
+    "name": "Eternal Bow"
+  },
+  "時間狙擊手": {
+    "name": "Time Sniper"
+  },
+  "創世劍拳": {
+    "name": "Genesis Katar"
+  },
+  "小魔物的魔杖": {
+    "name": "Mamono-chan Wand"
+  },
+  "白色情人節緞帶": {
+    "name": "White Day Ribbon"
+  },
+  "白色針織帽": {
+    "name": "White Knit Cap"
+  },
+  "餅乾頭套": {
+    "name": "Cookie Head"
+  },
+  "香甜狐爐": {
+    "name": "Fragrant Fox Furnace"
+  },
+  "蜂蜜刺劍": {
+    "name": "Honeybee Sting Dagger"
+  },
+  "哥東拳套": {
+    "name": "Grudom Knuckles"
+  },
+  "獅頭弩": {
+    "name": "Leo Bowgun"
+  },
+  "獅東長刀": {
+    "name": "Leodom Glaive"
+  },
+  "骨董頭盔": {
+    "name": "Antique Helmet"
+  },
+  "掮客之印": {
+    "name": "Broker's Insignia"
+  },
+  "骨董鎧甲": {
+    "name": "Antique Mail"
+  },
+  "珍珠護符": {
+    "name": "Pearl Talisman"
+  },
+  "綠珍珠護符": {
+    "name": "Green Pearl Talisman"
+  },
+  "藍珍珠護符": {
+    "name": "Blue Pearl Talisman"
+  },
+  "紅珍珠護符": {
+    "name": "Red Pearl Talisman"
+  },
+  "紫珍珠護符": {
+    "name": "Purple Pearl Talisman"
+  },
+  "鉛筆斧槍": {
+    "name": "Pencil Halberd"
+  },
+  "風暴頭盔": {
+    "name": "Stroom Helm"
+  },
+  "深沉的護符": {
+    "name": "Talisman of Deep Silence"
+  },
+  "修米達砲筒": {
+    "name": "Humida Barrel"
+  },
+  "修米達之翼": {
+    "name": "Humida Wings"
+  },
+  "寶玉法杖": {
+    "name": "Sphere Staff"
+  },
+  "華美的鬍子": {
+    "name": "Fine Beard"
+  },
+  "馬尾巴": {
+    "name": "Horse Tail"
+  },
+  "折斷的大劍": {
+    "name": "Broken Greatsword"
+  },
+  "木巨人的大槌": {
+    "name": "Wood Giant Sledgehammer"
+  },
+  "木巨人拳套": {
+    "name": "Wood Giant Knuckles"
+  },
+  "佩司博拉多": {
+    "name": "Pezvolador"
+  },
+  "竹弓": {
+    "name": "Bamboo Bow"
+  },
+  "擬態斧": {
+    "name": "Mimic Axe"
+  },
+  "滅火纏": {
+    "name": "Firefighter Flag"
+  },
+  "村雨": {
+    "name": "Murasame"
+  },
+  "挖這裡護符": {
+    "name": "Smart Puppy Talisman"
+  },
+  "櫻樹枝短劍": {
+    "name": "Sakura Branch Dagger"
+  },
+  "紅色半纏": {
+    "name": "Red Hanten"
+  },
+  "背後櫻扇": {
+    "name": "Sakura Fan"
+  },
+  "櫻花盆栽": {
+    "name": "Sakura Bonsai"
+  },
+  "櫻花披肩II": {
+    "name": "Sakura Stole II"
+  },
+  "櫻花護肩": {
+    "name": "Sakura Shoulder Pad"
+  },
+  "櫻花和服VII": {
+    "name": "Sakura Kimono VII"
+  },
+  "蒲櫻魔導甲": {
+    "name": "Weeping Sakura Petals"
+  },
+  "陽光佩劍": {
+    "name": "Sunlight Saber"
+  },
+  "布利塔面具": {
+    "name": "Breeta Mask"
+  },
+  "蘋果拳套": {
+    "name": "Coryn Gloves"
+  },
+  "波多姆大劍": {
+    "name": "Potum Blade"
+  },
+  "祝福的花束": {
+    "name": "Congratulatory Bouquet"
+  },
+  "隕星護符": {
+    "name": "Falling Star Talisman"
+  },
+  "流星劍": {
+    "name": "Meteor Sword"
+  },
+  "穆爾貢兜帽": {
+    "name": "Mulgoon Hood"
+  },
+  "穆爾貢法袍": {
+    "name": "Mulgoon Robe"
+  },
+  "安撫奶嘴": {
+    "name": "Pacifier"
+  },
+  "復古太陽鏡": {
+    "name": "Retro Sunglasses"
+  },
+  "天翼種的光輪": {
+    "name": "Flügel Halo"
+  },
+  "天翼種的翼": {
+    "name": "Flügel Wings"
+  },
+  "吉普莉爾的聖典I": {
+    "name": "Jibril's Diary I"
+  },
+  "吉普莉爾的聖典II": {
+    "name": "Jibril's Diary II"
+  },
+  "吉普莉爾的聖典III": {
+    "name": "Jibril's Diary III"
+  },
+  "安特列王冠": {
+    "name": "Interesse Crown"
+  },
+  "安特列寶冠": {
+    "name": "Interesse Tiara"
+  },
+  "溶解小刀": {
+    "name": "Melting Knife"
+  },
+  "樹葉面具": {
+    "name": "Leaf Mask"
+  },
+  "蜻蛉戒指": {
+    "name": "Dragonfly Ring"
+  },
+  "森林圍巾": {
+    "name": "Sylvan Cowl"
+  },
+  "豎琴樂弓": {
+    "name": "Lyre Bow"
+  },
+  "沉鬱花杖": {
+    "name": "Gloomy Flower Staff"
+  },
+  "沉鬱樹盾": {
+    "name": "Gloomy Tree Shield"
+  },
+  "尤馬諾族的箭矢": {
+    "name": "Eumano Arrow"
+  },
+  "不織布口罩": {
+    "name": "Nonwoven Mask"
+  },
+  "肩章披風": {
+    "name": "Epaulet Cape"
+  },
+  "9周年寶劍I": {
+    "name": "9th Anniv Sword"
+  },
+  "9周年寶劍II": {
+    "name": "9th Anniv Sword II"
+  },
+  "9周年寶劍III": {
+    "name": "9th Anniv Sword III"
+  },
+  "9周年寶劍IV": {
+    "name": "9th Anniv Sword IV"
+  },
+  "9周年寶劍V": {
+    "name": "9th Anniv Sword V"
+  },
+  "9周年寶劍VI": {
+    "name": "9th Anniv Sword VI"
+  },
+  "9周年巨劍I": {
+    "name": "9th Anniv Greatsword"
+  },
+  "9周年巨劍II": {
+    "name": "9th Anniv Greatsword II"
+  },
+  "9周年巨劍III": {
+    "name": "9th Anniv Greatsword III"
+  },
+  "9周年巨劍IV": {
+    "name": "9th Anniv Greatsword IV"
+  },
+  "9周年巨劍V": {
+    "name": "9th Anniv Greatsword V"
+  },
+  "9周年巨劍VI": {
+    "name": "9th Anniv Greatsword VI"
+  },
+  "9周年獵弓I": {
+    "name": "9th Anniv Bow"
+  },
+  "9周年獵弓II": {
+    "name": "9th Anniv Bow II"
+  },
+  "9周年獵弓III": {
+    "name": "9th Anniv Bow III"
+  },
+  "9周年獵弓IV": {
+    "name": "9th Anniv Bow IV"
+  },
+  "9周年獵弓V": {
+    "name": "9th Anniv Bow V"
+  },
+  "9周年獵弓VI": {
+    "name": "9th Anniv Bow VI"
+  },
+  "9周年弩槍I": {
+    "name": "9th Anniv Bowgun"
+  },
+  "9周年弩槍II": {
+    "name": "9th Anniv Bowgun II"
+  },
+  "9周年弩槍III": {
+    "name": "9th Anniv Bowgun III"
+  },
+  "9周年弩槍IV": {
+    "name": "9th Anniv Bowgun IV"
+  },
+  "9周年弩槍V": {
+    "name": "9th Anniv Bowgun VI"
+  },
+  "9周年弩槍VI": {
+    "name": "9th Anniv Bowgun VI"
+  },
+  "9周年法杖I": {
+    "name": "9th Anniv Staff"
+  },
+  "9周年法杖II": {
+    "name": "9th Anniv Staff II"
+  },
+  "9周年法杖III": {
+    "name": "9th Anniv Staff III"
+  },
+  "9周年法杖IV": {
+    "name": "9th Anniv Staff IV"
+  },
+  "9周年法杖V": {
+    "name": "9th Anniv Staff V"
+  },
+  "9周年法杖VI": {
+    "name": "9th Anniv Staff VI"
+  },
+  "9周年飛翼I": {
+    "name": "9th Anniv Wings"
+  },
+  "9周年飛翼II": {
+    "name": "9th Anniv Wings II"
+  },
+  "9周年飛翼III": {
+    "name": "9th Anniv Wings III"
+  },
+  "9周年飛翼IV": {
+    "name": "9th Anniv Wings IV"
+  },
+  "9周年飛翼V": {
+    "name": "9th Anniv Wings V"
+  },
+  "9周年飛翼VI": {
+    "name": "9th Anniv Wings VI"
+  },
+  "9周年拳套I": {
+    "name": "9th Anniv Knuckles"
+  },
+  "9周年拳套II": {
+    "name": "9th Anniv Knuckles II"
+  },
+  "9周年拳套III": {
+    "name": "9th Anniv Knuckles III"
+  },
+  "9周年拳套IV": {
+    "name": "9th Anniv Knuckles IV"
+  },
+  "9周年拳套V": {
+    "name": "9th Anniv Knuckles V"
+  },
+  "9周年拳套VI": {
+    "name": "9th Anniv Knuckles VI"
+  },
+  "9周年寶槍I": {
+    "name": "9th Anniv Halberd"
+  },
+  "9周年寶槍II": {
+    "name": "9th Anniv Halberd II"
+  },
+  "9周年寶槍III": {
+    "name": "9th Anniv Halberd III"
+  },
+  "9周年寶槍IV": {
+    "name": "9th Anniv Halberd IV"
+  },
+  "9周年寶槍V": {
+    "name": "9th Anniv Halberd V"
+  },
+  "9周年寶槍VI": {
+    "name": "9th Anniv Halberd VI"
+  },
+  "9周年寶刀I": {
+    "name": "9th Anniv Katana"
+  },
+  "9周年寶刀II": {
+    "name": "9th Anniv Katana II"
+  },
+  "9周年寶刀III": {
+    "name": "9th Anniv Katana III"
+  },
+  "9周年寶刀IV": {
+    "name": "9th Anniv Katana IV"
+  },
+  "9周年寶刀V": {
+    "name": "9th Anniv Katana V"
+  },
+  "9周年寶刀VI": {
+    "name": "9th Anniv Katana VI"
+  },
+  "9周年盾牌": {
+    "name": "9th Anniv Shield"
+  },
+  "9周年盾牌II": {
+    "name": "9th Anniv Shield II"
+  },
+  "9周年盾牌III": {
+    "name": "9th Anniv Shield III"
+  },
+  "9周年盾牌IV": {
+    "name": "9th Anniv Shield IV"
+  },
+  "9周年盾牌V": {
+    "name": "9th Anniv Shield V"
+  },
+  "9周年盾牌VI": {
+    "name": "9th Anniv Shield VI"
+  },
+  "9周年帽子": {
+    "name": "9th Anniv Hat"
+  },
+  "9周年緞帶": {
+    "name": "9th Anniv Ribbon"
+  },
+  "周年慶禮服V": {
+    "name": "Anniversary Festive Garb V"
+  },
+  "周年慶戒指IV": {
+    "name": "Anniv Festive Bangle IV"
+  },
+  "周年慶手環IV": {
+    "name": "Anniv Festive Bangle IV"
+  },
+  "紅酒杯": {
+    "name": "Wine Glass"
+  },
+  "鯊魚槍": {
+    "name": "Shark Gun"
+  },
+  "沙灘球盾": {
+    "name": "Beach Ball Shield"
+  },
+  "SPA套裝": {
+    "name": "Spa Wear"
+  },
+  "令人在意的河童君": {
+    "name": "Curious Kappa"
+  },
+  "路邊攤炒麵帽子": {
+    "name": "Yakisoba Hat"
+  },
+  "精麗魔導具": {
+    "name": "Viridian Magic Device"
+  },
+  "精麗煌衣": {
+    "name": "Shiny Viridian Garb"
+  },
+  "精麗煌衣(力)": {
+    "name": "Shiny Viridian Garb (Power)"
+  },
+  "精麗煌衣(知)": {
+    "name": "Shiny Viridian Garb (Smart)"
+  },
+  "精麗煌衣(健)": {
+    "name": "Shiny Viridian Garb (Robust)"
+  },
+  "精麗髪飾": {
+    "name": "Shiny Viridian Hair Ornament"
+  },
+  "月光匕首": {
+    "name": "Moonlight Dagger"
+  },
+  "月光箭矢": {
+    "name": "Moonlight Arrow"
+  },
+  "搗麻糬兔": {
+    "name": "Mochi Pounder Rabbit"
+  },
+  "糰子帽(串)": {
+    "name": "Dango Hat (Skewer)"
+  },
+  "輕柔絨絨兜帽": {
+    "name": "Fluffy Rabbit Hood"
+  },
+  "輕柔絨絨兔子服": {
+    "name": "Fluffy Rabbit Garb"
+  },
+  "月景眹夜": {
+    "name": "Tsukikage-Sakuya"
+  },
+  "搗麻糬月兔": {
+    "name": "Moon Mochi Rabbit"
+  },
+  "輝石塊": {
+    "name": "Pyroxene Nugget"
+  },
+  "大王花帽": {
+    "name": "Rafflesia Hat"
+  },
+  "野漠頭巾": {
+    "name": "Yermo Turban"
+  },
+  "艾克索爾之拳": {
+    "name": "Exorcist Fist"
+  },
+  "埃爾德之劍": {
+    "name": "Erde Sword"
+  },
+  "乾枯之矢": {
+    "name": "Dry Water Arrow"
+  },
+  "拉斯格夫之劍": {
+    "name": "Anguish Sword"
+  },
+  "拉斯格夫拳套": {
+    "name": "Anguish Knuckles"
+  },
+  "舞孃裙": {
+    "name": "Dancer Skirt"
+  },
+  "魔鬼頭紗": {
+    "name": "Devil Veil"
+  },
+  "聖宗之斧": {
+    "name": "Sacred Axe"
+  },
+  "卡爾邦之槍": {
+    "name": "Carbon Lance"
+  },
+  "骸骨雙蝴蝶結": {
+    "name": "Skull RIbbons"
+  },
+  "殭屍獎盃": {
+    "name": "Zomby Trophy"
+  },
+  "殭屍兔背包": {
+    "name": "Zombie Bunny Backpack"
+  },
+  "死靈頭紗": {
+    "name": "Dead Soul Veil"
+  },
+  "星錘箭矢": {
+    "name": "Starhammer Arrow"
+  },
+  "面部疤痕": {
+    "name": "Face Scar"
+  },
+  "強化石膏繃帶": {
+    "name": "Booster Cast"
+  },
+  "閃電鍥刀": {
+    "name": "Lightning Machete"
+  },
+  "閃電之劍": {
+    "name": "Lightning Sword"
+  },
+  "雷電": {
+    "name": "Raiden"
+  },
+  "幻影斗篷": {
+    "name": "Phantom Cape"
+  },
+  "幻影鎧甲": {
+    "name": "Phantom Mail"
+  },
+  "醫用刀": {
+    "name": "Medical Messer"
+  },
+  "艾爾德護盾": {
+    "name": "Erde Shield"
+  },
+  "歡快箭矢": {
+    "name": "Joyful Arrow"
+  },
+  "詛咒之槍": {
+    "name": "Cursed Gun"
+  },
+  "配飾雙馬尾": {
+    "name": "Accessory Twin Tails"
+  },
+  "海深大劍": {
+    "name": "Abyssal Greatsword"
+  },
+  "海深刀": {
+    "name": "Abyssal Katana"
+  },
+  "風精靈之弓": {
+    "name": "Sylphid Bow"
+  },
+  "修米達砲管": {
+    "name": "Humida Barrel"
+  },
+  "祈禱之衣": {
+    "name": "Prayer Cross"
+  },
+  "重鐵腰甲": {
+    "name": "Heavy Iron Waist Armor"
+  },
+  "雪人背包": {
+    "name": "Snowman Knapsack"
+  },
+  "薑餅人微笑": {
+    "name": "Smiling Gingerbread Man"
+  },
+  "薑餅人": {
+    "name": "Gingerbread Man"
+  },
+  "猩之護身符": {
+    "name": "Gorilla Talisman"
+  },
+  "白獸的短劍": {
+    "name": "White Beast Dagger"
+  },
+  "小矮人的帽子": {
+    "name": "Dwarf Hat"
+  },
+  "薑餅人眨眼": {
+    "name": "Winking Gingerbread Man"
+  },
+  "冥冰的筆": {
+    "name": "Dark Ice Quill"
+  },
+  "冥冰的旋鐮": {
+    "name": "Dark Ice Scythe"
+  },
+  "禁忌舞者髮型": {
+    "name": "Forbidden Shawle's Hair"
+  },
+  "聖誕薑餅人": {
+    "name": "Gingerbread Man Santa"
+  },
+  "冥冰戒指": {
+    "name": "Dark Ice Ring"
+  },
+  "冥冰戒指(力)": {
+    "name": "Dark Ice Ring (Power)"
+  },
+  "冥冰戒指(魔)": {
+    "name": "Dark Ice Ring (Magic)"
+  },
+  "波姆特家居服": {
+    "name": "Pom Loungewear"
+  },
+  "王獸戒指": {
+    "name": "Beastlord Ring"
+  },
+  "干支帽「巳」": {
+    "name": "Zodiac Hat: Snake"
+  },
+  "薔薇眼罩": {
+    "name": "Rose Eyepatch"
+  },
+  "叛逆匕首": {
+    "name": "Rebellious Dagger"
+  },
+  " 毗奴古爾弓": {
+    "name": "Piscruva Bow"
+  },
+  " 毗奴古爾弩": {
+    "name": "Piscruva Gun"
+  },
+  "穆爾貢外袍": {
+    "name": "Mulgoon Robe"
+  },
+  "情人節披風": {
+    "name": "Valentine's Day Cape"
+  },
+  "天使泰迪": {
+    "name": "Angel Bear"
+  },
+  "真愛巧克力面具": {
+    "name": "Sweetheart Choco Mask"
+  },
+  "啾啾戒指": {
+    "name": "Chirpy Ring"
+  },
+  "生命戒指": {
+    "name": "Life Ring"
+  },
+  "茶匙": {
+    "name": "Teaspoon"
+  },
+  "甜點刀": {
+    "name": "Dessert Knife"
+  },
+  "馬卡龍頭套": {
+    "name": "Macaron Head"
+  },
+  "王之角": {
+    "name": "King Horns"
+  },
+  "星光法袍": {
+    "name": "Starry Robe"
+  },
+  "占星吊墜": {
+    "name": "Astrology Pendant"
+  },
+  "夜之杖": {
+    "name": "Nacht Staff"
+  },
+  "斜陽": {
+    "name": "Sunset Katana"
+  },
+  "魔晶獸的蝕翼": {
+    "name": "Evil Crystal Beast Wings"
+  },
+  "魔晶獸的蝕槍": {
+    "name": "Evil Crystal Beast Spear"
+  },
+  "白色吐息": {
+    "name": "White Breath"
+  },
+  "白熊護臂": {
+    "name": "White Bear Armguards"
+  },
+  "怦然心動": {
+    "name": "Lovestruck Heart"
+  },
+  "巧克力熊耳朵": {
+    "name": "Choco Bear Ears"
+  },
+  "鮮花包": {
+    "name": "Flower Bag"
+  },
+  "藍薔薇之翼": {
+    "name": "Blue Rose Wings"
+  },
+  "楓箭": {
+    "name": "Maple Arrow"
+  },
+  "暖暖護身符": {
+    "name": "Warm Talisman"
+  },
+  "青薔薇手套": {
+    "name": "Blue Rose Gloves"
+  },
+  "青薔薇傘劍": {
+    "name": "Blue Rose Umbrella Sword"
+  },
+  "巨大哥布林帽": {
+    "name": "Big Gob Hat"
+  },
+  "怪物墨水": {
+    "name": "Monster Face Paint"
+  },
+  "卡洛艾藍護盾": {
+    "name": "Cerulean Shield"
+  },
+  "倍斯特獸爪": {
+    "name": "Bestial Claws"
+  },
+  "大地護符": {
+    "name": "Terrestrial Talisman"
+  },
+  "多納之劍": {
+    "name": "Donner Blade"
+  },
+  "盜賊外套": {
+    "name": "Brigand Coat"
+  },
+  "迷你加農炮": {
+    "name": "Mini Cannon"
+  },
+  "赤玄昌項鏈": {
+    "name": "Crimson Onyx Necklace"
+  },
+  "赤玄昌戒指": {
+    "name": "Crimson Onyx Ring"
+  },
+  "赤玄昌拳套": {
+    "name": "Crimson Onyx Knuckles"
+  },
+  "赤玄昌長槍": {
+    "name": "Crimson Onyx Spear"
+  },
+  "赤玄昌大劍": {
+    "name": "Crimson Onyx Greatsword"
+  },
+  "赤玄昌弓": {
+    "name": "Crimson Onyx Bow"
+  },
+  "暗影之劍": {
+    "name": "Shadow Sword"
+  },
+  "暗影之弓": {
+    "name": "Shadow Bow"
+  },
+  "暗影火槍": {
+    "name": "Shadow Pistol"
+  },
+  "暗影護盾": {
+    "name": "Shadow Shield"
+  },
+  "口中苦無鏢": {
+    "name": "Kunai in Mouth"
+  },
+  "巨大忍術卷軸": {
+    "name": "Big Ninjutsu Scroll"
+  },
+  "調音小刀": {
+    "name": "Tuning Knife"
+  },
+  "忍忍頭巾": {
+    "name": "Nin-Ninja Headscarf"
+  },
+  "暗影角飾": {
+    "name": "Shadow Horn"
+  },
+  "暗影戰服": {
+    "name": "Shadow Suit"
+  },
+  "畜生自在的捲軸": {
+    "name": "Beastmaster Scroll"
+  },
+  "鼯忍頭套": {
+    "name": "Squirinja Head"
+  },
+  "櫻嵐·仿製品": {
+    "name": "Fake Sakura Storm"
+  },
+  "旅行包": {
+    "name": "Travel Bag"
+  },
+  "金燦燦的項鏈": {
+    "name": "Superbia Head Chain"
+  },
+  "金碇(杖)": {
+    "name": "Gold Bar (Staff)"
+  },
+  "海深巨劍": {
+    "name": "Abyssal Greatsword"
+  },
+  "蠻荒之弓": {
+    "name": "Savage Bow"
+  },
+  "深淵之岸": {
+    "name": "Abyss Coast Wings"
+  },
+  "爪刃之槍": {
+    "name": "Sharp Edge Spear"
+  },
+  "手臂緞帶": {
+    "name": "Arm Ribbons"
+  },
+  "小花髮飾": {
+    "name": "Hibiscus"
+  },
+  "鱷魚皮吊飾": {
+    "name": "Crocodile Leather Strap"
+  },
+  "魚槍": {
+    "name": "Speargun"
+  },
+  "卡洛艾藍劍": {
+    "name": "Cerulean Sword"
+  },
+  "怪鳥戰劍": {
+    "name": "Eerie Bird Warblade"
+  },
+  "怪鳥羽盾": {
+    "name": "Eerie Bird Feather Shield"
+  },
+  "怪鳥穿雲箭": {
+    "name": "Eerie Bird Piercing Arrow"
+  },
+  "梅普露的盾": {
+    "name": "Maple's Shield"
+  },
+  "莎莉的短劍（拳套）": {
+    "name": "Sally's Dagger (Knuckles)"
+  },
+  "奏的魔方": {
+    "name": "Kanade's Cube"
+  },
+  "霞的武士刀": {
+    "name": "Kasumi's Katana"
+  },
+  "芙蕾德麗卡的法杖": {
+    "name": "Frederica's Staff"
+  },
+  "蜜伊的短杖（單手劍）": {
+    "name": "Mii's Petite Staff (OHS)"
+  },
+  "虹霓": {
+    "name": "Iridescent Sword"
+  },
+  "虹鏡": {
+    "name": "Iridescent Mirror"
+  },
+  "日光戒指": {
+    "name": "Solar Ring"
+  },
+  "翠": {
+    "name": "Blue Jade Katana"
+  },
+  " 夜之杖": {
+    "name": "Nacht Staff"
+  },
+  "毗奴古爾弓": {
+    "name": "Piscruva Bow"
+  },
+  "單色面具": {
+    "name": "Monotone Mask"
+  },
+  "鬥牛士披肩": {
+    "name": "Matador Cape"
+  },
+  "獨角獸短劍": {
+    "name": "Unicorn Dagger"
+  },
+  "蠟燭箭矢（紅炎）": {
+    "name": "Candle Arrow (Red Flame)"
+  },
+  "蠟燭箭矢（藍炎）": {
+    "name": "Candle Arrow (Blue Flame)"
+  },
+  "水之寶珠法杖": {
+    "name": "Aqua Orb Staff"
+  },
+  "螺鈿珍珠拳套": {
+    "name": "Raden Pearl Knuckles"
+  },
+  "螺鈿珍珠法杖": {
+    "name": "Raden Pearl Staff"
+  },
+  "10周年寶劍": {
+    "name": "10th Anniv Sword"
+  },
+  "10周年寶劍II": {
+    "name": "10th Anniv Sword II"
+  },
+  "10周年寶劍III": {
+    "name": "10th Anniv Sword III"
+  },
+  "10周年寶劍IV": {
+    "name": "10th Anniv Sword IV"
+  },
+  "10周年寶劍V": {
+    "name": "10th Anniv Sword V"
+  },
+  "10周年寶劍VI": {
+    "name": "10th Anniv Sword VI"
+  },
+  "10周年巨劍": {
+    "name": "10th Anniv Greatsword"
+  },
+  "10周年巨劍II": {
+    "name": "10th Anniv Greatsword II"
+  },
+  "10周年巨劍III": {
+    "name": "10th Anniv Greatsword III"
+  },
+  "10周年巨劍IV": {
+    "name": "10th Anniv Greatsword IV"
+  },
+  "10周年巨劍V": {
+    "name": "10th Anniv Greatsword V"
+  },
+  "10周年巨劍VI": {
+    "name": "10th Anniv Greatsword VI"
+  },
+  "10周年獵弓": {
+    "name": "10th Anniv Bow"
+  },
+  "10周年獵弓II": {
+    "name": "10th Anniv Bow II"
+  },
+  "10周年獵弓III": {
+    "name": "10th Anniv Bow III"
+  },
+  "10周年獵弓IV": {
+    "name": "10th Anniv Bow IV"
+  },
+  "10周年獵弓V": {
+    "name": "10th Anniv Bow V"
+  },
+  "10周年獵弓VI": {
+    "name": "10th Anniv Bow VI"
+  },
+  "10周年弩槍": {
+    "name": "10th Anniv Bowgun"
+  },
+  "10周年弩槍II": {
+    "name": "10th Anniv Bowgun II"
+  },
+  "10周年弩槍III": {
+    "name": "10th Anniv Bowgun III"
+  },
+  "10周年弩槍IV": {
+    "name": "10th Anniv Bowgun IV"
+  },
+  "10周年弩槍V": {
+    "name": "10th Anniv Bowgun V"
+  },
+  "10周年弩槍VI": {
+    "name": "10th Anniv Bowgun VI"
+  },
+  "10周年法杖": {
+    "name": "10th Anniv Staff"
+  },
+  "10周年法杖II": {
+    "name": "10th Anniv Staff II"
+  },
+  "10周年法杖III": {
+    "name": "10th Anniv Staff III"
+  },
+  "10周年法杖IV": {
+    "name": "10th Anniv Staff IV"
+  },
+  "10周年法杖V": {
+    "name": "10th Anniv Staff V"
+  },
+  "10周年法杖VI": {
+    "name": "10th Anniv Staff VI"
+  },
+  "10周年飛翼": {
+    "name": "10th Anniv Wings"
+  },
+  "10周年飛翼II": {
+    "name": "10th Anniv Wings II"
+  },
+  "10周年飛翼III": {
+    "name": "10th Anniv Wings III"
+  },
+  "10周年飛翼IV": {
+    "name": "10th Anniv Wings IV"
+  },
+  "10周年飛翼V": {
+    "name": "10th Anniv Wings V"
+  },
+  "10周年飛翼VI": {
+    "name": "10th Anniv Wings VI"
+  },
+  "10周年旋棍": {
+    "name": "10th Anniv Tonfa"
+  },
+  "10周年旋棍II": {
+    "name": "10th Anniv Tonfa II"
+  },
+  "10周年旋棍III": {
+    "name": "10th Anniv Tonfa III"
+  },
+  "10周年旋棍IV": {
+    "name": "10th Anniv Tonfa IV"
+  },
+  "10周年旋棍V": {
+    "name": "10th Anniv Tonfa V"
+  },
+  "10周年旋棍VI": {
+    "name": "10th Anniv Tonfa VI"
+  },
+  "10周年寶槍": {
+    "name": "10th Anniv Halberd"
+  },
+  "10周年寶槍II": {
+    "name": "10th Anniv Halberd II"
+  },
+  "10周年寶槍III": {
+    "name": "10th Anniv Halberd III"
+  },
+  "10周年寶槍IV": {
+    "name": "10th Anniv Halberd IV"
+  },
+  "10周年寶槍V": {
+    "name": "10th Anniv Halberd V"
+  },
+  "10周年寶槍VI": {
+    "name": "10th Anniv Halberd VI"
+  },
+  "10周年寶刀": {
+    "name": "10th Anniv Katana"
+  },
+  "10周年寶刀II": {
+    "name": "10th Anniv Katana II"
+  },
+  "10周年寶刀III": {
+    "name": "10th Anniv Katana III"
+  },
+  "10周年寶刀IV": {
+    "name": "10th Anniv Katana IV"
+  },
+  "10周年寶刀V": {
+    "name": "10th Anniv Katana V"
+  },
+  "10周年寶刀VI": {
+    "name": "10th Anniv Katana VI"
+  },
+  "10周年盾牌": {
+    "name": "10th Anniv Shield"
+  },
+  "10周年盾牌II": {
+    "name": "10th Anniv Shield II"
+  },
+  "10周年盾牌III": {
+    "name": "10th Anniv Shield III"
+  },
+  "10周年盾牌IV": {
+    "name": "10th Anniv Shield IV"
+  },
+  "10周年盾牌V": {
+    "name": "10th Anniv Shield V"
+  },
+  "10周年盾牌VI": {
+    "name": "10th Anniv Shield VI"
+  },
+  "周年慶禮服VI": {
+    "name": "Anniversary Festive Garb VI"
+  },
+  "10周年帽子": {
+    "name": "10th Anniv Hat"
+  },
+  "10周年緞帶": {
+    "name": "10th Anniv Ribbon"
+  },
+  "周年慶箭矢V": {
+    "name": "Anniv Festive Arrow V"
+  },
+  "周年慶短劍V": {
+    "name": "Anniv Festive Dagger V"
+  },
+  "飽腹之劍": {
+    "name": "Belly Buster Sword"
+  },
+  "鯊魚旗": {
+    "name": "Shark Flag"
+  },
+  "海盜骷髏帽": {
+    "name": "Pirate Skull Hat"
+  },
+  "西瓜頭": {
+    "name": "Watermelon Head"
+  },
+  "波多姆啤酒機": {
+    "name": "Potum Beer Dispenser"
+  },
+  "波花護符": {
+    "name": "Sea Foam Talisman"
+  },
+  "荒磯之箭": {
+    "name": "Reefy Coast Arrow"
+  },
+  "鯊抱盾": {
+    "name": "Cuddle Shark Shield"
+  },
+  "卡塔拉錨翼": {
+    "name": "Cursed Anchor"
+  },
+  "鯊魚泳裝": {
+    "name": "Shark Swimwear"
+  },
+  "泳鯊尾巴": {
+    "name": "Shark Tail"
+  },
+  "焦煌大劍索雷尤IV": {
+    "name": "Soleil The Heat Sword IV"
+  },
+  "獅尾彎刀": {
+    "name": "Shamshir"
+  },
+  "瑪亞特法杖": {
+    "name": "Maat Staff"
+  },
+  "杜阿特袍": {
+    "name": "Duat Robe"
+  },
+  "杜阿特袍(冥)": {
+    "name": "Duat Robe (Dark)"
+  },
+  "杜阿特袍(審)": {
+    "name": "Duat Robe (Justice)"
+  },
+  "鰹式門劍": {
+    "name": "Katzuobalger"
+  },
+  "牡蠣殼": {
+    "name": "Oyster Shell"
+  },
+  "淡藍腿甲": {
+    "name": "Light Blue Tasset"
+  },
+  "森多爾披肩": {
+    "name": "Fragrant Cape"
+  },
+  "純淨匕首": {
+    "name": "Purity Knife"
+  },
+  "詹西娜巨刃": {
+    "name": "Janthina Blade"
+  },
+  "詹西娜槍": {
+    "name": "Janthina Gun"
+  },
+  "萬聖節服裝 IV": {
+    "name": "Halloween Garb IV"
+  },
+  "小惡魔尾巴": {
+    "name": "Little Devil Tail"
+  },
+  "小惡魔鎖銬": {
+    "name": "Little Devil Manacles"
+  },
+  "狼耳帽子": {
+    "name": "Wolf Ears"
+  },
+  "波多姆鐮刀魔": {
+    "name": "Potum Reaper"
+  },
+  "緋紅戒指": {
+    "name": "Crimson Ring"
+  },
+  "巴拉迪奧之槍": {
+    "name": "Baladio Lance"
+  },
+  "巴拉迪奧魔杖": {
+    "name": "Baladio Staff"
+  },
+  "巴拉迪奧之弓": {
+    "name": "Baladio Bow"
+  },
+  "騎屍披風": {
+    "name": "Devil Cavalier Cape"
+  },
+  "騎屍馬面": {
+    "name": "Cavalier Horse-Face Helm"
+  },
+  "戰鷹雙爪II": {
+    "name": "Twin Eagles II"
+  },
+  "輕緞之翼": {
+    "name": "Schleife Wings"
+  },
+  "波多姆之槍": {
+    "name": "Potum Lance"
+  },
+  "閃電之焰II": {
+    "name": "Lightning Flame"
+  },
+  "波多姆王冠": {
+    "name": "Potum Crown"
+  },
+  "岩碎薙刀": {
+    "name": "Rockbreaker Naginata"
+  },
+  "鐵紺刀": {
+    "name": "Iron Blue Katana"
+  },
+  "雲杉緞帶領結": {
+    "name": "Spruce Ribbon"
+  },
+  "紅銃": {
+    "name": "Burgundy"
+  },
+  "斯維特瓦": {
+    "name": "Svelte Soir"
+  },
+  "彎角之箭": {
+    "name": "Curvy Horn Arrow"
+  },
+  "斯靈翼": {
+    "name": "Seedling Wings"
+  },
+  "斯靈弓": {
+    "name": "Seedling Bow"
+  },
+  "冬季服飾III": {
+    "name": "Winter Outfit III"
+  },
+  "馴鹿角": {
+    "name": "Reindeer Antlers"
+  },
+  "色彩箭": {
+    "name": "Chromatic Arrow"
+  },
+  "樹精短劍": {
+    "name": "Tree Spirit Dagger"
+  },
+  "聖誕披肩": {
+    "name": "Xmas Cape"
+  },
+  "聖詠戒指": {
+    "name": "Gospel Ring"
+  },
+  "鍵盤拳": {
+    "name": "Clavier Fist"
+  },
+  "領主之刃": {
+    "name": "Margrave Blade"
+  },
+  "樂律刺劍": {
+    "name": "Mezuro Rapier"
+  },
+  "戰律短劍": {
+    "name": "Battle Cadence Dagger"
+  },
+  "幻奏之箭": {
+    "name": "Phantom Melody Arrow"
+  },
+  "月懲頸圈": {
+    "name": "Snowflake Earrings"
+  },
+  "文法之書": {
+    "name": "Gramarye Bible"
+  },
+  "王獸之盾II": {
+    "name": "Beastlord Shield II"
+  },
+  "三味線": {
+    "name": "Shamisen"
+  },
+  "三花貓絨絨帽": {
+    "name": "Calico Cat Fluffy Hat"
+  },
+  "伯爵變裝": {
+    "name": "Count Disguise"
+  },
+  "低簷帽": {
+    "name": "Low Brim Hat"
+  },
+  "假面禮帽": {
+    "name": "Masquerade Top Hat"
+  },
+  "傲慢頭鏈": {
+    "name": "Arrogance Head Chain"
+  },
+  "克萊因羽翼": {
+    "name": "Klein Wings"
+  },
+  "冬風斗篷": {
+    "name": "Winter Wind Cape"
+  },
+  "刺刺頸圈": {
+    "name": "Spiky Collar"
+  },
+  "古董腰帶": {
+    "name": "Antique Belt"
+  },
+  "同袍之杖": {
+    "name": "Comrade Staff"
+  },
+  "同袍拳刃": {
+    "name": "Comrade Knuckle Blade"
+  },
+  "哥德風巧克力帽": {
+    "name": "Gothic Chocolate Hat"
+  },
+  "商神杖": {
+    "name": "Caduceus"
+  },
+  "商隊的箭": {
+    "name": "Caravan Arrow"
+  },
+  "圍巾（一圈）": {
+    "name": "Scarf (One Loop)"
+  },
+  "圍巾（後結）": {
+    "name": "Scarf (Back Knot)"
+  },
+  "圓耳朵帽子": {
+    "name": "Round Ear Hat"
+  },
+  "垂耳髮箍": {
+    "name": "Floppy Ear Headband"
+  },
+  "大漁之翼": {
+    "name": "Abundant Catch Wings"
+  },
+  "天蝎之劍": {
+    "name": "Scorpio Sword"
+  },
+  "天蝎之杖": {
+    "name": "Scorpio Staff"
+  },
+  "妖怪斗篷": {
+    "name": "Yokai Cape"
+  },
+  "小魔物髮型": {
+    "name": "Little Monster Hairstyle"
+  },
+  "巧克力玫瑰": {
+    "name": "Chocolate Rose"
+  },
+  "巧克力眼鏡": {
+    "name": "Chocolate Glasses"
+  },
+  "巧克力筆頭飾": {
+    "name": "Chocolate Pen Headpiece"
+  },
+  "布偶的魔法書": {
+    "name": "Doll's Grimoire"
+  },
+  "平釘耳環": {
+    "name": "Flat Stud Earrings"
+  },
+  "庫貝之翼": {
+    "name": "Kube Wings"
+  },
+  "庫貝弓": {
+    "name": "Kube Bow"
+  },
+  "庫貝盾": {
+    "name": "Kube Shield"
+  },
+  "忍櫻披肩": {
+    "name": "Ninja Cherry Blossom Shawl"
+  },
+  "忍櫻護腕": {
+    "name": "Ninja Cherry Blossom Wristguard"
+  },
+  "快樂小花": {
+    "name": "Happy Little Flower"
+  },
+  "怪獸角": {
+    "name": "Monster Horns"
+  },
+  "悲靈質": {
+    "name": "Sorrowful Spirit"
+  },
+  "惠方卷單肩包": {
+    "name": "Ehomaki Shoulder Bag"
+  },
+  "惡作劇之槍": {
+    "name": "Prank Lance"
+  },
+  "惡魔頭飾": {
+    "name": "Demon Headpiece"
+  },
+  "愛心杯頭飾": {
+    "name": "Heart Cup Headpiece"
+  },
+  "扁面蛸帽子": {
+    "name": "Dumbo Octopus Hat"
+  },
+  "旋之翼": {
+    "name": "Spinning Wings"
+  },
+  "旋轉木馬傘": {
+    "name": "Carousel Umbrella"
+  },
+  "星塵耳環": {
+    "name": "Stardust Earrings"
+  },
+  "星屑之箭": {
+    "name": "Stardust Arrow"
+  },
+  "春晝帽子": {
+    "name": "Spring Day Hat"
+  },
+  "春晝頭飾": {
+    "name": "Spring Day Headpiece"
+  },
+  "時尚髮帶": {
+    "name": "Fashionable Headband"
+  },
+  "普通的蘋果": {
+    "name": "Ordinary Apple"
+  },
+  "晴天波姆娃娃": {
+    "name": "Sunny Day Pomut Doll"
+  },
+  "暖冬兜帽": {
+    "name": "Warm Winter Hood"
+  },
+  "暗騎鎧甲": {
+    "name": "Dark Knight Armor"
+  },
+  "暗黑之心蝴蝶結": {
+    "name": "Dark Heart Bow"
+  },
+  "木箭": {
+    "name": "Wooden Arrow"
+  },
+  "木靈護符": {
+    "name": "Wood Spirit Talisman"
+  },
+  "杜阿特面具": {
+    "name": "Duat Mask"
+  },
+  "束腰式長袖": {
+    "name": "Corseted Long Sleeve"
+  },
+  "杯子蛋糕頭飾": {
+    "name": "Cupcake Headpiece"
+  },
+  "格子鬆餅髮飾": {
+    "name": "Waffle Hair Ornament"
+  },
+  "格紋貝蕾帽": {
+    "name": "Plaid Beret"
+  },
+  "棉花糖髮箍": {
+    "name": "Marshmallow Headband"
+  },
+  "極光羽衣": {
+    "name": "Aurora Feather Robe"
+  },
+  "殤的盾牌": {
+    "name": "Shield of Sorrow"
+  },
+  "毛氈帽": {
+    "name": "Felt Hat"
+  },
+  "毛球針織帽": {
+    "name": "Pompom Knit Hat"
+  },
+  "毛絨絨的箭": {
+    "name": "Fluffy Arrow"
+  },
+  "民族項鏈": {
+    "name": "Ethnic Necklace"
+  },
+  "水果刀": {
+    "name": "Fruit Knife"
+  },
+  "波多姆達摩": {
+    "name": "Potoum Daruma"
+  },
+  "波姆特眼罩": {
+    "name": "Pomut Eye Patch"
+  },
+  "浮球拳": {
+    "name": "Floating Ball Knuckle"
+  },
+  "溪流之爪": {
+    "name": "Stream Claw"
+  },
+  "漁夫的寶器": {
+    "name": "Fisherman's Treasure"
+  },
+  "漁師問切刀": {
+    "name": "Fisherman's Inquiry Knife"
+  },
+  "炸雞頭套": {
+    "name": "Fried Chicken Head Cover"
+  },
+  "牽牛花飾": {
+    "name": "Morning Glory Ornament"
+  },
+  "狙擊手單眼鏡": {
+    "name": "Sniper Monocle"
+  },
+  "狛犬髮箍": {
+    "name": "Guardian Dog Hairband"
+  },
+  "王者腰帶": {
+    "name": "King's Belt"
+  },
+  "瑪瑙法杖": {
+    "name": "Agate Staff"
+  },
+  "甜蜜之心(右)": {
+    "name": "Sweet Heart (Right)"
+  },
+  "甜蜜之心(左)": {
+    "name": "Sweet Heart (Left)"
+  },
+  "甜醬油兔糰子": {
+    "name": "Sweet Soy Rabbit Dango"
+  },
+  "甜點師帽子": {
+    "name": "Pastry Chef Hat"
+  },
+  "白狐小包": {
+    "name": "White Fox Pouch"
+  },
+  "皇冠緞帶": {
+    "name": "Crown Ribbon"
+  },
+  "皮革束腰": {
+    "name": "Leather Corset"
+  },
+  "精靈帕克": {
+    "name": "Elf Parka"
+  },
+  "糰子頭飾": {
+    "name": "Dango Headpiece"
+  },
+  "紅弓": {
+    "name": "Red Bow"
+  },
+  "綠松石之劍": {
+    "name": "Turquoise Sword"
+  },
+  "綠松石盾": {
+    "name": "Turquoise Shield"
+  },
+  "老海盜帽": {
+    "name": "Old Pirate Hat"
+  },
+  "聖誕小熊包": {
+    "name": "Christmas Bear Bag"
+  },
+  "聖誕燭火": {
+    "name": "Christmas Candlelight"
+  },
+  "聖誕老人大帽子": {
+    "name": "Santa Big Hat"
+  },
+  "聖誕腕套": {
+    "name": "Christmas Wristband"
+  },
+  "聖誕領帶": {
+    "name": "Christmas Tie"
+  },
+  "肉墊包": {
+    "name": "Paw Pad Bag"
+  },
+  "肥皂泡泡": {
+    "name": "Soap Bubble"
+  },
+  "肩頭鹫鷹": {
+    "name": "Shoulder Griffon"
+  },
+  "腰間袍": {
+    "name": "Waist Robe"
+  },
+  "舞獅頭飾": {
+    "name": "Lion Dance Headpiece"
+  },
+  "苦味戒指": {
+    "name": "Bitter Ring"
+  },
+  "茶杯禮帽": {
+    "name": "Teacup Top Hat"
+  },
+  "草莓鮮奶油": {
+    "name": "Strawberry Whipped Cream"
+  },
+  "荷葉玫瑰": {
+    "name": "Lotus Rose"
+  },
+  "蒸氣龐克帽": {
+    "name": "Steampunk Hat"
+  },
+  "藍玫瑰帽": {
+    "name": "Blue Rose Hat"
+  },
+  "藍玫瑰耳飾": {
+    "name": "Blue Rose Earring"
+  },
+  "藍玫瑰髮圈": {
+    "name": "Blue Rose Hair Tie"
+  },
+  "藍羽頸圈": {
+    "name": "Blue Feather Collar"
+  },
+  "藍花裝飾假領": {
+    "name": "Blue Flower Decorative Collar"
+  },
+  "蘋果年輪蛋糕": {
+    "name": "Apple Baumkuchen"
+  },
+  "虎紋腕套": {
+    "name": "Tiger Stripe Wristband"
+  },
+  "虎紋領巾": {
+    "name": "Tiger Stripe Neckerchief"
+  },
+  "蛙嘴包": {
+    "name": "Frog Mouth Bag"
+  },
+  "蜘蛛斗篷": {
+    "name": "Spider Cape"
+  },
+  "蝙蝠花冠": {
+    "name": "Bat Crown"
+  },
+  "蝴蝶結耳墜": {
+    "name": "Bow Earrings"
+  },
+  "融化巧克力": {
+    "name": "Melting Chocolate"
+  },
+  "融化巧帽": {
+    "name": "Melting Choco Hat"
+  },
+  "蠟燭腦袋": {
+    "name": "Candle Head"
+  },
+  "衣兔護符": {
+    "name": "Rabbit Talisman"
+  },
+  "褶邊帽子": {
+    "name": "Ruffled Hat"
+  },
+  "調色刀": {
+    "name": "Palette Knife"
+  },
+  "貓咪布偶": {
+    "name": "Cat Doll"
+  },
+  "賞花獸的角": {
+    "name": "Flower Viewing Beast Horns"
+  },
+  "金平人蕈帽": {
+    "name": "Konpeito Mushroom Hat"
+  },
+  "金平刀": {
+    "name": "Konpeito Knife"
+  },
+  "金平糖之劍": {
+    "name": "Konpeito Sword"
+  },
+  "金燦燦的太陽鏡": {
+    "name": "Glittering Sunglasses"
+  },
+  "金燦燦的絨毛扇子": {
+    "name": "Glittering Plush Fan"
+  },
+  "鈴兒毛線帽": {
+    "name": "Bell Wool Hat"
+  },
+  "鉚釘手環": {
+    "name": "Rivet Bracelet"
+  },
+  "銀枝角之冠": {
+    "name": "Silver Branch Antler Crown"
+  },
+  "鏡餅頭冠": {
+    "name": "Kagami Mochi Crown"
+  },
+  "閃光螺栓": {
+    "name": "Flash Bolt"
+  },
+  "雙子之劍": {
+    "name": "Gemini Sword"
+  },
+  "雙子之盾": {
+    "name": "Gemini Shield"
+  },
+  "雞肉": {
+    "name": "Chicken"
+  },
+  "雪球頭套": {
+    "name": "Snowball Head Cover"
+  },
+  "雪絨圍巾": {
+    "name": "Snow Fleece Scarf"
+  },
+  "雪絨帽": {
+    "name": "Snow Fleece Hat"
+  },
+  "雲霧罩衣": {
+    "name": "Misty Shroud"
+  },
+  "霍夫面具": {
+    "name": "Hof Mask"
+  },
+  "霓虹儭裙": {
+    "name": "Neon Mini Skirt"
+  },
+  "靈鋒耳": {
+    "name": "Spirit Blade Ears"
+  },
+  "領主變裝": {
+    "name": "Lord Disguise"
+  },
+  "頭頂盆栽": {
+    "name": "Potted Plant on Head"
+  },
+  "頭頂菱紋企鵝": {
+    "name": "Diamond Pattern Penguin on Head"
+  },
+  "頭頂鯊寶寶": {
+    "name": "Baby Shark on Head"
+  },
+  "香菇武士": {
+    "name": "Mushroom Warrior"
+  },
+  "魔法箭": {
+    "name": "Magic Arrow"
+  },
+  "鯛魚燒": {
+    "name": "Taiyaki"
+  },
+  "鯰魚掛飾": {
+    "name": "Catfish Pendant"
+  },
+  "鱗甲頭盔": {
+    "name": "Scale Armor Helmet"
+  },
+  "鳳梨帽": {
+    "name": "Pineapple Hat"
+  },
+  "黃豆粉耳罩": {
+    "name": "Kinako Earmuffs"
+  },
+  "黏人拉比兔": {
+    "name": "Clingy Rabi Rabbit"
+  },
+  "黑戲刀": {
+    "name": "Black Trick Blade"
+  }
+}

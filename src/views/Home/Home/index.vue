@@ -24,7 +24,7 @@
                 </div>
                 <div class="ml-5">
                   <div class="text-primary-80 text-3xl">Cy's Grimoire</div>
-                  <div class="text-primary-50 mt-0.5">布偶的魔法書</div>
+                  <div class="text-primary-50 mt-0.5">{{ t('app.page-title.base') }}</div>
                 </div>
               </div>
             </div>
@@ -51,6 +51,7 @@
 
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'
@@ -78,6 +79,7 @@ if (storageAvailable) {
   usePreviewDetect()
 }
 
+const { t } = useI18n()
 const mainStore = useMainStore()
 const { device } = useDevice()
 

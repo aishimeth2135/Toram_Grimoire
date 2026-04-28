@@ -8482,6 +8482,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lz-string@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "lz-string@npm:1.5.0"
+  bin:
+    lz-string: bin/bin.js
+  checksum: 10c0/36128e4de34791838abe979b19927c26e67201ca5acf00880377af7d765b38d1c60847e01c5ec61b1a260c48029084ab3893a3925fd6e48a04011364b089991b
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.25.0, magic-string@npm:^0.25.7":
   version: 0.25.9
   resolution: "magic-string@npm:0.25.9"
@@ -10624,6 +10633,7 @@ __metadata:
     findit2: "npm:^2.2.3"
     jiti: "npm:^2.4.2"
     jsep: "npm:^1.0.3"
+    lz-string: "npm:^1.5.0"
     marked: "npm:^4.3.0"
     npm-run-all2: "npm:^7.0.2"
     os-browserify: "npm:^0.3.0"

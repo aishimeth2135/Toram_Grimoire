@@ -1,4 +1,14 @@
-exp-sum-title: Sum of EXP
-character-level-diff-title: Character Level
-character-start-level-title: Character Start Level
-diary-rounds: Diary Rounds
+character-start-level-title: Starting character level
+character-start-level-percentage-title: Character EXP percentage
+diary-rounds: Diary rounds
+select-start-section-title: Select starting chapter
+common-settings-title: General settings
+select-skipped-sub-section-title: Select sub-chapters to skip
+calc-result-title: Calculation result
+submit-items-title: Items to submit
+skippable-sub-section-annotation: Skippable
+exp-sum-title: Total EXP
+character-level-diff-title: Character level change
+selected-section-range-title: Selected chapters
+exp-rate-overview-button-title: View chapter EXP distribution
+change-end-section-title: Change ending chapter

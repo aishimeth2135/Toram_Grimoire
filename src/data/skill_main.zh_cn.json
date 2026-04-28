@@ -1,0 +1,122 @@
+{
+  "category:0": {
+    "name": "武器技能"
+  },
+  "tree:0": {
+    "name": "活动技能"
+  },
+  "skill:0": {
+    "name": "火遁术"
+  },
+  "skill:1": {
+    "name": "火遁．爆炎阵"
+  },
+  "skill:2": {
+    "name": "雷遁术"
+  },
+  "skill:3": {
+    "name": "雷遁．紫电一闪"
+  },
+  "skill:15": {
+    "name": "扫堂腿"
+  },
+  "skill:4": {
+    "name": "风遁术"
+  },
+  "skill:16": {
+    "name": "高压威逼"
+  },
+  "skill:5": {
+    "name": "风遁．劈甲"
+  },
+  "skill:6": {
+    "name": "水遁术"
+  },
+  "skill:7": {
+    "name": "土遁术"
+  },
+  "skill:8": {
+    "name": "分身术"
+  },
+  "skill:17": {
+    "name": "激狂怒击"
+  },
+  "skill:9": {
+    "name": "风魔手里剑"
+  },
+  "skill:10": {
+    "name": "苦无飞镖"
+  },
+  "skill:11": {
+    "name": "水遁．急獭涡"
+  },
+  "skill:12": {
+    "name": "急救（宠物）"
+  },
+  "skill:13": {
+    "name": "精神焕发"
+  },
+  "skill:18": {
+    "name": "有眼无珠"
+  },
+  "skill:14": {
+    "name": "疗伤大法"
+  },
+  "skill:19": {
+    "name": "坚不可摧"
+  },
+  "skill:20": {
+    "name": "晕头转向"
+  },
+  "skill:21": {
+    "name": "替罪羔羊"
+  },
+  "skill:22": {
+    "name": "吸收HP"
+  },
+  "skill:23": {
+    "name": "MP高升"
+  },
+  "tree:1": {
+    "name": "宠物技能"
+  },
+  "skill:24": {
+    "name": "破封穿心"
+  },
+  "tree:2": {
+    "name": "忍术表"
+  },
+  "tree:3": {
+    "name": "吟游诗人"
+  },
+  "tree:4": {
+    "name": "徒手战斗"
+  },
+  "tree:5": {
+    "name": "忍者技能"
+  },
+  "tree:6": {
+    "name": "游击队技能"
+  },
+  "tree:7": {
+    "name": "死灵法术"
+  },
+  "tree:8": {
+    "name": "魔像技能"
+  },
+  "category:1": {
+    "name": "强化技能"
+  },
+  "category:2": {
+    "name": "辅助技能"
+  },
+  "category:3": {
+    "name": "生产技能"
+  },
+  "category:4": {
+    "name": "技能书"
+  },
+  "category:5": {
+    "name": "其他"
+  }
+}

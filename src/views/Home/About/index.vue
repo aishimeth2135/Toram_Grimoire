@@ -3,6 +3,7 @@
     <section class="space-y-4 px-3">
       <div
         v-for="column in columns"
+        :id="column.title === 'contribute' ? 'cy--about-contribute' : undefined"
         :key="column.title"
         class="cy--about-column hover:border-primary-30 flex overflow-x-auto rounded-md border-2 border-transparent bg-white p-4 duration-200"
       >
@@ -26,7 +27,32 @@
           <div class="bg-primary-30 mt-0.5 h-1 rounded-full" />
         </div>
         <div class="pl-4 pr-2 pt-2">
-          <template v-if="column.title === 'partnership'">
+          <template v-if="column.title === 'contribute'">
+            <div class="text-gray-60 mb-5 text-sm">
+              {{ t('app.about.contribute.sub-title') }}
+            </div>
+            <div class="flex flex-wrap gap-6">
+              <a
+                href="https://github.com/milo-v/Toram_Grimoire/blob/main/CONTRIBUTING.md"
+                target="_blank"
+                class="text-cyan-60 inline-flex items-center gap-2 opacity-75 duration-150 hover:opacity-100"
+              >
+                <cy-icon icon="mdi:github" width="1.75rem" />
+                {{ t('app.about.contribute.github') }}
+              </a>
+              <a
+                href="mailto:grimoire@milov.anonaddy.com"
+                class="text-fuchsia-60 inline-flex items-center gap-2 opacity-75 duration-150 hover:opacity-100"
+              >
+                <cy-icon icon="ic:baseline-email" width="1.75rem" />
+                {{ t('app.about.contribute.email') }}
+              </a>
+            </div>
+          </template>
+          <template v-else-if="column.title === 'partnership'">
+            <div class="text-gray-60 mb-4 text-sm">
+              {{ t('app.about.partnership.sub-title') }}
+            </div>
             <div class="relative w-96 rounded-b-lg shadow-lg">
               <div
                 class="h-28 bg-cover bg-center bg-no-repeat"
@@ -102,7 +128,7 @@
           </template>
           <div v-if="column.title === 'author'" class="mt-3 px-3">
             <a
-              href="https://github.com/aishimeth2135/Toram_Grimoire"
+              href="https://github.com/milo-v/Toram_Grimoire"
               target="_blank"
               class="text-cyan-60 inline-flex items-center opacity-75 duration-150 hover:opacity-100"
             >
@@ -156,11 +182,11 @@ const columns: {
     list: [
       {
         title: 'toram-id',
-        list: ['Cyteria'],
+        list: ['MiLo (this fork)', 'Cyteria (original)'],
       },
       {
         title: 'grimoire-email',
-        list: ['Cyteria.Grimoire@gmail.com'],
+        list: ['grimoire@milov.anonaddy.com (this fork)', 'Cyteria.Grimoire@gmail.com (original)'],
       },
     ],
   },
@@ -180,6 +206,10 @@ const columns: {
         list: ['真白', '萌月'],
       },
     ],
+  },
+  {
+    title: 'contribute',
+    list: [],
   },
   {
     title: 'partnership',

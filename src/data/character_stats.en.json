@@ -1,0 +1,467 @@
+{
+  "section:能力點數": {
+    "name": "Ability Points"
+  },
+  "section:HP、MP": {
+    "name": "HP / MP"
+  },
+  "section:物理攻擊": {
+    "name": "Physical Attack"
+  },
+  "section:魔法攻擊": {
+    "name": "Magic Attack"
+  },
+  "section:防禦": {
+    "name": "Defense"
+  },
+  "section:命中、迴避、速度": {
+    "name": "Accuracy, Evasion, Speed"
+  },
+  "section:傷害修正項目": {
+    "name": "Damage Modifiers"
+  },
+  "section:特殊加成": {
+    "name": "Special Bonuses"
+  },
+  "section:其他": {
+    "name": "Other"
+  },
+  "section:屬性增傷": {
+    "name": "Element Damage Boost"
+  },
+  "section:屬性、類型減傷": {
+    "name": "Element & Type Damage Reduction"
+  },
+  "stat:str": {
+    "name": "STR"
+  },
+  "stat:dex": {
+    "name": "DEX"
+  },
+  "stat:int": {
+    "name": "INT"
+  },
+  "stat:agi": {
+    "name": "AGI"
+  },
+  "stat:vit": {
+    "name": "VIT"
+  },
+  "stat:tec": {
+    "name": "TEC"
+  },
+  "stat:men": {
+    "name": "MEN"
+  },
+  "stat:crt": {
+    "name": "CRT"
+  },
+  "stat:luk": {
+    "name": "LUK"
+  },
+  "stat:max_hp": {
+    "name": "Max HP"
+  },
+  "stat:max_mp": {
+    "name": "Max MP"
+  },
+  "stat:natural_hp_regen_0": {
+    "name": "Base HP Natural Regen"
+  },
+  "stat:natural_hp_regen": {
+    "name": "HP Natural Regen"
+  },
+  "stat:natural_hp_regen_b": {
+    "name": "HP Regen (In Battle)"
+  },
+  "stat:natural_mp_regen_0": {
+    "name": "Base MP Natural Regen"
+  },
+  "stat:natural_mp_regen": {
+    "name": "MP Natural Regen"
+  },
+  "stat:natural_mp_regen_b": {
+    "name": "MP Regen (In Battle)"
+  },
+  "stat:attack_mp_recovery": {
+    "name": "Attack MP Recovery"
+  },
+  "stat:equivalenthp_physical": {
+    "name": "Effective HP (Physical)"
+  },
+  "stat:equivalenthp_magic": {
+    "name": "Effective HP (Magic)"
+  },
+  "stat:atk": {
+    "name": "ATK"
+  },
+  "stat:atk_0": {
+    "name": "ATK (Calculated)"
+  },
+  "stat:sub_atk": {
+    "name": "Sub ATK"
+  },
+  "stat:sub_stability": {
+    "name": "Sub Stability"
+  },
+  "stat:dual_sword_skill_atk": {
+    "name": "Dual Sword Skill ATK"
+  },
+  "stat:weapon_atk": {
+    "name": "Weapon ATK"
+  },
+  "stat:weapon_base_atk": {
+    "name": "Main Weapon Base ATK"
+  },
+  "stat:sub_weapon_atk": {
+    "name": "Sub Weapon ATK"
+  },
+  "stat:physical_pierce": {
+    "name": "Physical Pierce"
+  },
+  "stat:stability_main": {
+    "name": "Stability (Hidden)"
+  },
+  "stat:stability": {
+    "name": "Stability"
+  },
+  "stat:critical_rate": {
+    "name": "Critical Rate"
+  },
+  "stat:critical_damage_0": {
+    "name": "(Crit Damage Calculation)"
+  },
+  "stat:critical_damage_skill": {
+    "name": "(Crit Damage Unaffected by Decay)"
+  },
+  "stat:critical_damage": {
+    "name": "Critical Damage"
+  },
+  "stat:matk": {
+    "name": "MATK"
+  },
+  "stat:matk_0": {
+    "name": "MATK (Calculated)"
+  },
+  "stat:thunder_matk": {
+    "name": "Thunder MATK"
+  },
+  "stat:magic_pierce": {
+    "name": "Magic Pierce"
+  },
+  "stat:magic_stability": {
+    "name": "Magic Stability"
+  },
+  "stat:magic_random_min": {
+    "name": "Magic Stability Variance Min"
+  },
+  "stat:magic_expect_value": {
+    "name": "Magic Stability Expected Value"
+  },
+  "stat:magic_crt": {
+    "name": "Magic Critical Rate"
+  },
+  "stat:magic_crt_neutral": {
+    "name": "Neutral Magic Critical Rate"
+  },
+  "stat:magic_crt_damage": {
+    "name": "Magic Critical Damage"
+  },
+  "stat:def": {
+    "name": "DEF"
+  },
+  "stat:mdef": {
+    "name": "MDEF"
+  },
+  "stat:physical_resistance": {
+    "name": "Physical Resistance"
+  },
+  "stat:magic_resistance": {
+    "name": "Magic Resistance"
+  },
+  "stat:reduce_dmg_physical": {
+    "name": "Physical Damage Received"
+  },
+  "stat:reduce_dmg_magic": {
+    "name": "Magic Damage Received"
+  },
+  "stat:reduce_dmg_percentage": {
+    "name": "Percentage Damage Received"
+  },
+  "stat:base_guard_power": {
+    "name": "Base Guard Power"
+  },
+  "stat:guard_power": {
+    "name": "Guard Power"
+  },
+  "stat:guard_regenerate": {
+    "name": "Guard Recharge"
+  },
+  "stat:evasion_number": {
+    "name": "Evasion Count"
+  },
+  "stat:evasion_regenerate": {
+    "name": "Evasion Recharge"
+  },
+  "stat:ailment_resistance": {
+    "name": "Ailment Resistance"
+  },
+  "stat:accuracy": {
+    "name": "Accuracy"
+  },
+  "stat:dodge": {
+    "name": "Dodge"
+  },
+  "stat:absolute_accuracy": {
+    "name": "Absolute Accuracy"
+  },
+  "stat:absolute_dodge": {
+    "name": "Absolute Dodge"
+  },
+  "stat:aspd": {
+    "name": "ASPD"
+  },
+  "stat:cspd": {
+    "name": "CSPD"
+  },
+  "stat:motion_time": {
+    "name": "Motion Time"
+  },
+  "stat:cast_time": {
+    "name": "Cast Time"
+  },
+  "stat:unsheathe_attack_multiplier": {
+    "name": "Unsheathe Attack Multiplier"
+  },
+  "stat:unsheathe_attack": {
+    "name": "Unsheathe Attack Constant"
+  },
+  "stat:short_range_damage": {
+    "name": "Short Range Damage"
+  },
+  "stat:long_range_damage": {
+    "name": "Long Range Damage"
+  },
+  "stat:total_multiplier": {
+    "name": "Damage Multiplier"
+  },
+  "stat:aggro": {
+    "name": "Aggro"
+  },
+  "stat:anticipate": {
+    "name": "Anticipate"
+  },
+  "stat:guard_break": {
+    "name": "Guard Break"
+  },
+  "stat:additional_meele": {
+    "name": "Additional Melee"
+  },
+  "stat:additional_magic": {
+    "name": "Additional Magic"
+  },
+  "stat:physical_barrier": {
+    "name": "Physical Barrier"
+  },
+  "stat:magical_barrier": {
+    "name": "Magical Barrier"
+  },
+  "stat:fractional_barrier": {
+    "name": "Fractional Barrier"
+  },
+  "stat:barrier_cooldown": {
+    "name": "Barrier Cooldown"
+  },
+  "stat:reflect": {
+    "name": "Reflect"
+  },
+  "stat:recoil_damage": {
+    "name": "Recoil Damage"
+  },
+  "stat:drop_rate": {
+    "name": "Drop Rate"
+  },
+  "stat:revive_time": {
+    "name": "Revive Time"
+  },
+  "stat:exp_rate": {
+    "name": "EXP Rate"
+  },
+  "stat:pet_exp": {
+    "name": "Pet EXP"
+  },
+  "stat:item_cooldown": {
+    "name": "Item Cooldown"
+  },
+  "stat:invincible_aid_sec": {
+    "name": "Invincible Aid (s)"
+  },
+  "stat:flinch_unavailable": {
+    "name": "Flinch Unavailable"
+  },
+  "stat:tumble_unavailable": {
+    "name": "Tumble Unavailable"
+  },
+  "stat:stun_unavailable": {
+    "name": "Stun Unavailable"
+  },
+  "stat:element_fire": {
+    "name": "Fire Element"
+  },
+  "stat:element_water": {
+    "name": "Water Element"
+  },
+  "stat:element_earth": {
+    "name": "Earth Element"
+  },
+  "stat:element_wind": {
+    "name": "Wind Element"
+  },
+  "stat:element_light": {
+    "name": "Light Element"
+  },
+  "stat:element_dark": {
+    "name": "Dark Element"
+  },
+  "stat:element_mana": {
+    "name": "Mana Element"
+  },
+  "stat:magic_element_against_damage": {
+    "name": "Magic Element Advantage Damage"
+  },
+  "stat:magic_element_extra_damage": {
+    "name": "Magic Extra Element Damage"
+  },
+  "stat:stronger_against_neutral": {
+    "name": "Damage to Neutral"
+  },
+  "stat:stronger_against_fire": {
+    "name": "Damage to Fire"
+  },
+  "stat:stronger_against_water": {
+    "name": "Damage to Water"
+  },
+  "stat:stronger_against_earth": {
+    "name": "Damage to Earth"
+  },
+  "stat:stronger_against_wind": {
+    "name": "Damage to Wind"
+  },
+  "stat:stronger_against_light": {
+    "name": "Damage to Light"
+  },
+  "stat:stronger_against_dark": {
+    "name": "Damage to Dark"
+  },
+  "stat:neutral_resistance": {
+    "name": "Neutral Damage Received"
+  },
+  "stat:fire_resistance": {
+    "name": "Fire Damage Received"
+  },
+  "stat:water_resistance": {
+    "name": "Water Damage Received"
+  },
+  "stat:earth_resistance": {
+    "name": "Earth Damage Received"
+  },
+  "stat:wind_resistance": {
+    "name": "Wind Damage Received"
+  },
+  "stat:light_resistance": {
+    "name": "Light Damage Received"
+  },
+  "stat:dark_resistance": {
+    "name": "Dark Damage Received"
+  },
+  "stat:reduce_player_epicenter": {
+    "name": "Player AoE Damage Reduction"
+  },
+  "stat:reduce_dmg_foe_epicenter": {
+    "name": "Foe AoE Damage Reduction"
+  },
+  "stat:reduce_dmg_straight_line": {
+    "name": "Straight Line Damage Reduction"
+  },
+  "stat:reduce_dmg_charge": {
+    "name": "Charge Damage Reduction"
+  },
+  "stat:reduce_dmg_bowling": {
+    "name": "Bowling Damage Reduction"
+  },
+  "stat:reduce_dmg_bullet": {
+    "name": "Bullet Damage Reduction"
+  },
+  "stat:reduce_dmg_floor": {
+    "name": "Floor Damage Reduction"
+  },
+  "stat:reduce_dmg_meteor": {
+    "name": "Meteor Damage Reduction"
+  },
+  "stat:reduce_dmg_explosion": {
+    "name": "Explosion Damage Reduction"
+  },
+  "stat:reduce_dmg_gravity": {
+    "name": "Gravity Damage Reduction"
+  },
+  "stat:atk_up_str": {
+    "name": "ATK Up (STR)"
+  },
+  "stat:atk_up_dex": {
+    "name": "ATK Up (DEX)"
+  },
+  "stat:atk_up_int": {
+    "name": "ATK Up (INT)"
+  },
+  "stat:atk_up_agi": {
+    "name": "ATK Up (AGI)"
+  },
+  "stat:atk_up_vit": {
+    "name": "ATK Up (VIT)"
+  },
+  "stat:matk_up_str": {
+    "name": "MATK Up (STR)"
+  },
+  "stat:matk_up_dex": {
+    "name": "MATK Up (DEX)"
+  },
+  "stat:matk_up_int": {
+    "name": "MATK Up (INT)"
+  },
+  "stat:matk_up_agi": {
+    "name": "MATK Up (AGI)"
+  },
+  "stat:matk_up_vit": {
+    "name": "MATK Up (VIT)"
+  },
+  "stat:atk_down_str": {
+    "name": "ATK Down (STR)"
+  },
+  "stat:atk_down_dex": {
+    "name": "ATK Down (DEX)"
+  },
+  "stat:atk_down_int": {
+    "name": "ATK Down (INT)"
+  },
+  "stat:atk_down_agi": {
+    "name": "ATK Down (AGI)"
+  },
+  "stat:atk_down_vit": {
+    "name": "ATK Down (VIT)"
+  },
+  "stat:matk_down_str": {
+    "name": "MATK Down (STR)"
+  },
+  "stat:matk_down_dex": {
+    "name": "MATK Down (DEX)"
+  },
+  "stat:matk_down_int": {
+    "name": "MATK Down (INT)"
+  },
+  "stat:matk_down_agi": {
+    "name": "MATK Down (AGI)"
+  },
+  "stat:matk_down_vit": {
+    "name": "MATK Down (VIT)"
+  }
+}

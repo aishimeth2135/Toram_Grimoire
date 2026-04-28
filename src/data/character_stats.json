@@ -1,0 +1,2781 @@
+[
+  {
+    "name": "能力點數",
+    "stats": [
+      {
+        "id": "str",
+        "name": "STR",
+        "displayFormula": "",
+        "link": "str",
+        "limit": "",
+        "formula": "@str",
+        "hiddenOption": "",
+        "caption": "力量",
+        "conditions": []
+      },
+      {
+        "id": "dex",
+        "name": "DEX",
+        "displayFormula": "",
+        "link": "dex",
+        "limit": "",
+        "formula": "@dex",
+        "hiddenOption": "",
+        "caption": "靈巧",
+        "conditions": []
+      },
+      {
+        "id": "int",
+        "name": "INT",
+        "displayFormula": "",
+        "link": "int",
+        "limit": "",
+        "formula": "@int",
+        "hiddenOption": "",
+        "caption": "智力",
+        "conditions": []
+      },
+      {
+        "id": "agi",
+        "name": "AGI",
+        "displayFormula": "",
+        "link": "agi",
+        "limit": "",
+        "formula": "@agi",
+        "hiddenOption": "",
+        "caption": "敏捷",
+        "conditions": []
+      },
+      {
+        "id": "vit",
+        "name": "VIT",
+        "displayFormula": "",
+        "link": "vit",
+        "limit": "",
+        "formula": "@vit",
+        "hiddenOption": "",
+        "caption": "耐力",
+        "conditions": []
+      },
+      {
+        "id": "tec",
+        "name": "TEC",
+        "displayFormula": "",
+        "link": "",
+        "limit": "1~255",
+        "formula": "@tec",
+        "hiddenOption": "計算結果為0時",
+        "caption": "技巧",
+        "conditions": []
+      },
+      {
+        "id": "men",
+        "name": "MEN",
+        "displayFormula": "",
+        "link": "",
+        "limit": "1~255",
+        "formula": "@men",
+        "hiddenOption": "計算結果為0時",
+        "caption": "抗性",
+        "conditions": []
+      },
+      {
+        "id": "crt",
+        "name": "CRT",
+        "displayFormula": "",
+        "link": "",
+        "limit": "1~255",
+        "formula": "@crt",
+        "hiddenOption": "計算結果為0時",
+        "caption": "暴擊",
+        "conditions": []
+      },
+      {
+        "id": "luk",
+        "name": "LUK",
+        "displayFormula": "",
+        "link": "",
+        "limit": "1~255",
+        "formula": "@luk",
+        "hiddenOption": "計算結果為0時",
+        "caption": "幸運",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "HP、MP",
+    "stats": [
+      {
+        "id": "max_hp",
+        "name": "HP上限",
+        "displayFormula": "",
+        "link": "max_hp",
+        "limit": "~99999",
+        "formula": "Math.floor(93+@clv*(127/17+$vit/3))",
+        "hiddenOption": "",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "max_mp",
+        "name": "MP上限",
+        "displayFormula": "",
+        "link": "max_mp",
+        "limit": "0~2000",
+        "formula": "99+@clv+$int/10+@tec",
+        "hiddenOption": "",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "natural_hp_regen_0",
+        "name": "基礎HP自回",
+        "displayFormula": "",
+        "link": "natural_hp_regen",
+        "limit": "",
+        "formula": "10+$max_hp*0.04",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "natural_hp_regen",
+        "name": "HP自然回復",
+        "displayFormula": "",
+        "link": "natural_hp_regen_s",
+        "limit": "",
+        "formula": "$natural_hp_regen_0",
+        "hiddenOption": "",
+        "caption": "未處於戰鬥狀態時，每3秒自動回復的HP。坐下時，總回復量加倍。",
+        "conditions": []
+      },
+      {
+        "id": "natural_hp_regen_b",
+        "name": "戰時HP回復",
+        "displayFormula": "",
+        "link": "natural_hp_regen_b",
+        "limit": "",
+        "formula": "$natural_hp_regen_0",
+        "hiddenOption": "變數值為0時",
+        "caption": "戰鬥時，每3秒自動回復的HP，只有點了相關技能才有此效果。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "(0+#cvalue)/100",
+            "options": "#mul, \"技能加成\""
+          }
+        ]
+      },
+      {
+        "id": "natural_mp_regen_0",
+        "name": "基礎MP自回",
+        "displayFormula": "",
+        "link": "natural_mp_regen",
+        "limit": "",
+        "formula": "1+$max_mp*0.01",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "natural_mp_regen",
+        "name": "MP自然回復",
+        "displayFormula": "",
+        "link": "natural_mp_regen_s",
+        "limit": "",
+        "formula": "$natural_mp_regen_0",
+        "hiddenOption": "",
+        "caption": "未處於戰鬥狀態時，每3秒自動回復的MP。坐下時，總回復量加倍。",
+        "conditions": []
+      },
+      {
+        "id": "natural_mp_regen_b",
+        "name": "戰時MP回復",
+        "displayFormula": "",
+        "link": "natural_mp_regen_b",
+        "limit": "",
+        "formula": "$natural_mp_regen_0",
+        "hiddenOption": "變數值為0時",
+        "caption": "戰鬥時，每3秒自動回復的MP，只有點了相關技能才有此效果。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "(0+#cvalue)/100",
+            "options": "#mul, \"技能加成\""
+          }
+        ]
+      },
+      {
+        "id": "attack_mp_recovery",
+        "name": "攻擊MP回復",
+        "displayFormula": "",
+        "link": "attack_mp_recovery",
+        "limit": "",
+        "formula": "10+Math.floor($max_mp*0.01)",
+        "hiddenOption": "",
+        "caption": "每次普通攻擊回復的MP量。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "100",
+            "options": "#tvalue"
+          }
+        ]
+      },
+      {
+        "id": "equivalenthp_physical",
+        "name": "等效HP(物理)",
+        "displayFormula": "",
+        "link": "",
+        "limit": "",
+        "formula": "$max_hp/resultValue(\"reduce_dmg_physical\")*100",
+        "hiddenOption": "",
+        "caption": "該角色能承受的最大物理傷害值，用以評估角色的物理承傷能力。僅考慮DEF、物理抗性、精鍊減傷。",
+        "conditions": []
+      },
+      {
+        "id": "equivalenthp_magic",
+        "name": "等效HP(魔法)",
+        "displayFormula": "",
+        "link": "",
+        "limit": "",
+        "formula": "$max_hp/resultValue(\"reduce_dmg_magic\")*100",
+        "hiddenOption": "",
+        "caption": "該角色能承受的最大魔法傷害值，用以評估角色的魔法承傷能力。僅考慮MDEF、魔法抗性、精鍊減傷。",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "物理攻擊",
+    "stats": [
+      {
+        "id": "atk",
+        "name": "ATK",
+        "displayFormula": "",
+        "link": "atk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "面板上顯示的ATK。當拔刀劍發動技能「雙手合持」所述的「暴擊傷害提升」時，此項數值變為1.5倍（不顯示於面板）。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$atk_up_str+$atk_up_dex+$atk_up_int+$atk_up_agi+$atk_up_vit-$atk_down_str-$atk_down_dex-$atk_down_int-$atk_down_agi-$atk_down_vit",
+            "options": "\"裝備能力\""
+          },
+          {
+            "base": "@sub.magic_device",
+            "value": "-15",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@1h_sword",
+            "value": "2*$dex+2*$str",
+            "options": "\"STR×2+DEX×2\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$dex+3*$str",
+            "options": "\"STR×3+DEX×1\""
+          },
+          {
+            "base": "@bow",
+            "value": "3*$dex+$str",
+            "options": "\"DEX×3+STR×1\""
+          },
+          {
+            "base": "@bow",
+            "value": "@arrow.atk",
+            "options": "\"箭矢攻擊力\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "4*$dex",
+            "options": "\"DEX×4\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "@arrow.atk/2",
+            "options": "\"箭矢攻擊力\""
+          },
+          {
+            "base": "@staff",
+            "value": "$int+3*$str",
+            "options": "\"STR×3+INT×1\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "2*$int+2*$agi",
+            "options": "\"INT×2+AGI×2\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "0.5*$dex+2*$agi",
+            "options": "\"AGI×2+DEX×0.5\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "2*$dex+$str+$agi",
+            "options": "\"DEX×2+STR+AGI\""
+          },
+          {
+            "base": "@halberd",
+            "value": "1.5*$agi+2.5*$str",
+            "options": "\"STR×2.5+AGI×1.5\""
+          },
+          {
+            "base": "@katana",
+            "value": "2.5*$dex+1.5*$str",
+            "options": "\"DEX×2.5+STR×1.5\""
+          },
+          {
+            "base": "@main.none",
+            "value": "1+$str",
+            "options": "\"1+STR\""
+          },
+          {
+            "base": "#",
+            "value": "$weapon_atk",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "@sub.magic_device",
+            "value": "Math.max(Math.min(Math.max(0,$matk_0-$atk_0)*stat('dual_bringer_efficiency'),1)*(($matk_0-$atk_0)*stat('dual_bringer_efficiency')*stat('dual_bringer_penalty')/10000-$atk_0*(1-stat('dual_bringer_penalty')/100)),0)",
+            "options": "#cvalue, \"雙重提供\""
+          }
+        ]
+      },
+      {
+        "id": "atk_0",
+        "name": "計算用ATK",
+        "displayFormula": "",
+        "link": "atk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "永久",
+        "caption": "魔劍atk計算用",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$atk_up_str+$atk_up_dex+$atk_up_int+$atk_up_agi+$atk_up_vit-$atk_down_str-$atk_down_dex-$atk_down_int-$atk_down_agi-$atk_down_vit",
+            "options": "\"裝備能力\""
+          },
+          {
+            "base": "@sub.magic_device",
+            "value": "-15",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@1h_sword",
+            "value": "2*$dex+2*$str",
+            "options": "\"STR×2+DEX×2\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$dex+3*$str",
+            "options": "\"STR×3+DEX×1\""
+          },
+          {
+            "base": "@bow",
+            "value": "3*$dex+$str",
+            "options": "\"DEX×3+STR×1\""
+          },
+          {
+            "base": "@bow",
+            "value": "@arrow.atk",
+            "options": "\"箭矢攻擊力\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "4*$dex",
+            "options": "\"DEX×4\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "@arrow.atk/2",
+            "options": "\"箭矢攻擊力\""
+          },
+          {
+            "base": "@staff",
+            "value": "$int+3*$str",
+            "options": "\"STR×3+INT×1\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "2*$int+2*$agi",
+            "options": "\"INT×2+AGI×2\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "0.5*$dex+2*$agi",
+            "options": "\"AGI×2+DEX×0.5\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "2*$dex+$str+$agi",
+            "options": "\"DEX×2+STR+AGI\""
+          },
+          {
+            "base": "@halberd",
+            "value": "1.5*$agi+2.5*$str",
+            "options": "\"STR×2.5+AGI×1.5\""
+          },
+          {
+            "base": "@katana",
+            "value": "2.5*$dex+1.5*$str",
+            "options": "\"DEX×2.5+STR×1.5\""
+          },
+          {
+            "base": "@main.none",
+            "value": "1+$str",
+            "options": "\"1+STR\""
+          },
+          {
+            "base": "#",
+            "value": "$weapon_atk",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          }
+        ]
+      },
+      {
+        "id": "sub_atk",
+        "name": "副手ATK",
+        "displayFormula": "",
+        "link": "atk",
+        "limit": "",
+        "formula": "0",
+        "hiddenOption": "計算結果為0時",
+        "caption": "雙劍特有。副手ATK會乘上副手倍率後，加入技能ATK的計算。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "",
+            "options": "#base"
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$sub_weapon_atk",
+            "options": "\"副手武器攻擊力\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "3*$agi+$str",
+            "options": "\"AGI×3+STR×1\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          }
+        ]
+      },
+      {
+        "id": "sub_stability",
+        "name": "副手倍率",
+        "displayFormula": "%",
+        "link": "stability",
+        "limit": "0~100",
+        "formula": "0",
+        "hiddenOption": "計算結果為0時",
+        "caption": "雙劍特有。會影響副手ATK反映到技能ATK的比例。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "",
+            "options": "#base"
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$str*0.06+$agi*0.04",
+            "options": "\"STR×0.06+AGI×0.04\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "@sub.stability/2",
+            "options": "\"副手基礎穩定÷2\""
+          }
+        ]
+      },
+      {
+        "id": "dual_sword_skill_atk",
+        "name": "雙劍技能ATK",
+        "displayFormula": "",
+        "link": "",
+        "limit": "",
+        "formula": "0",
+        "hiddenOption": "計算結果為0時",
+        "caption": "雙劍特有。雙劍技能中的攻擊技能在計算傷害時，公式中的ATK會用此項目進行計算。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "",
+            "options": "#base"
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$atk",
+            "options": "\"主手ATK\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "Math.floor($sub_atk*$sub_stability/100)",
+            "options": "\"副手ATK×副手倍率\""
+          }
+        ]
+      },
+      {
+        "id": "weapon_atk",
+        "name": "武器攻擊力",
+        "displayFormula": "",
+        "link": "weapon_atk",
+        "limit": "0~",
+        "formula": "Math.floor($weapon_base_atk*(100+#mvalue)/100)+Math.floor($weapon_base_atk*(@main.refining*@main.refining)/100)+@main.refining+#cvalue",
+        "hiddenOption": "",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "weapon_base_atk",
+        "name": "主手武器基礎攻擊力",
+        "displayFormula": "",
+        "link": "weapon_base_atk",
+        "limit": "0~",
+        "formula": "@main.atk*(100+Math.min(50,#mvalue))/100+#cvalue",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "sub_weapon_atk",
+        "name": "副手武器攻擊力",
+        "displayFormula": "",
+        "link": "weapon_atk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "永久",
+        "caption": "*主動技能的武器攻擊力加成不影響副手，程式已應對。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "Math.floor(@sub.atk*(100+#mvalue)/100)+Math.floor(@sub.atk*(@sub.refining*@sub.refining)/200)+@sub.refining+#cvalue",
+            "options": ""
+          }
+        ]
+      },
+      {
+        "id": "physical_pierce",
+        "name": "物理貫穿",
+        "displayFormula": "%",
+        "link": "physical_pierce",
+        "limit": "~100",
+        "formula": "#cvalue",
+        "hiddenOption": "變數值為0時",
+        "caption": "可無視對手一定比例的DEF，數值為負時將增加對手防禦。",
+        "conditions": []
+      },
+      {
+        "id": "stability_main",
+        "name": "穩定率(隱藏)",
+        "displayFormula": "%",
+        "link": "stability_main",
+        "limit": "",
+        "formula": "#cvalue",
+        "hiddenOption": "永久",
+        "caption": "計算用能力。",
+        "conditions": []
+      },
+      {
+        "id": "stability",
+        "name": "穩定率",
+        "displayFormula": "%",
+        "link": "stability",
+        "limit": "1~100",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "最終物理傷害將在（100%~穩定%）之間，以1%為間距浮動，超出100%的部分無效。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$stability_main",
+            "options": "#cvalue, \"狂戰士之怒\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$dex*0.075+$str*0.025",
+            "options": "\"DEX×0.075+STR×0.025\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$dex*0.1",
+            "options": "\"DEX×0.1\""
+          },
+          {
+            "base": "@bow",
+            "value": "$dex*0.05+$str*0.05",
+            "options": "\"DEX×0.05+STR×0.05\""
+          },
+          {
+            "base": "@bow",
+            "value": "@arrow.stability",
+            "options": "#cvalue, \"箭矢穩定\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$str*0.05",
+            "options": "\"STR×0.05\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "@arrow.stability/2",
+            "options": "#cvalue, \"箭矢穩定÷2\""
+          },
+          {
+            "base": "@staff",
+            "value": "$str*0.05",
+            "options": "\"STR×0.05\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "$dex*0.1",
+            "options": "\"DEX×0.1\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$dex*0.025",
+            "options": "\"DEX×0.025\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$dex*0.075+$str*0.025",
+            "options": "\"DEX×0.075+STR×0.025\""
+          },
+          {
+            "base": "@halberd",
+            "value": "$dex*0.05+$str*0.05",
+            "options": "\"DEX×0.05+STR×0.05\""
+          },
+          {
+            "base": "@katana",
+            "value": "$dex*0.025+$str*0.075",
+            "options": "\"STR×0.075+DEX×0.025\""
+          },
+          {
+            "base": "@main.none",
+            "value": "$dex/2.85+1",
+            "options": "\"1+DEX÷2.85\""
+          },
+          {
+            "base": "#",
+            "value": "@main.stability",
+            "options": "\"武器基礎穩定\""
+          }
+        ]
+      },
+      {
+        "id": "critical_rate",
+        "name": "暴擊率",
+        "displayFormula": "",
+        "link": "critical_rate",
+        "limit": "0~",
+        "formula": "25+Math.floor(@crt/3.4)",
+        "hiddenOption": "",
+        "caption": "發生暴擊的機率。超過100的部分可抵消部分BOSS的抗暴擊能力。",
+        "conditions": [
+          {
+            "base": "@dual_sword",
+            "value": "-55",
+            "options": "#mvalue"
+          }
+        ]
+      },
+      {
+        "id": "critical_damage_0",
+        "name": "(暴傷計算用)",
+        "displayFormula": "%",
+        "link": "critical_damage",
+        "limit": "0~",
+        "formula": "Math.max(150+$str/5,150+($str+$agi)/10)",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "critical_damage_skill",
+        "name": "(不受衰減影響的暴傷)",
+        "displayFormula": "%",
+        "link": "critical_damage_skill",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "critical_damage",
+        "name": "暴擊傷害",
+        "displayFormula": "%",
+        "link": "critical_damage",
+        "limit": "0~",
+        "formula": "Math.max(150+$str/5,150+($str+$agi)/10)",
+        "hiddenOption": "",
+        "caption": "發生暴擊時的傷害倍率。當暴擊傷害達到300%後，後續增加的暴擊傷害效果將減半，總AGI>STR時，計算公式將納入AGI。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "-Math.max(0,($critical_damage_0-300)/2)",
+            "options": "#cvalue, \"暴傷300以上效果減損\""
+          },
+          {
+            "base": "#",
+            "value": "$critical_damage_skill",
+            "options": "#cvalue, \"特殊技能提供爆傷\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "魔法攻擊",
+    "stats": [
+      {
+        "id": "matk",
+        "name": "MATK",
+        "displayFormula": "",
+        "link": "matk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "面板上顯示的MATK。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$matk_up_str+$matk_up_dex+$matk_up_int+$matk_up_agi+$matk_up_vit-$matk_down_str-$matk_down_dex-$matk_down_int-$matk_down_agi-$matk_down_vit",
+            "options": "\"裝備能力\""
+          },
+          {
+            "base": "@sub.knuckle",
+            "value": "-15",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$int*@skill.Conversion/10",
+            "options": "\"轉化技能效果，額外INT加成\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "$int*@skill.Conversion/10",
+            "options": "\"轉化技能效果，額外INT加成\""
+          },
+          {
+            "base": "@bow",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$int*@skill.Conversion/10",
+            "options": "\"轉化技能效果，額外INT加成\""
+          },
+          {
+            "base": "@staff",
+            "value": "$dex+4*$int",
+            "options": "\"INT×4+DEX×1\""
+          },
+          {
+            "base": "@staff",
+            "value": "$weapon_atk",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "$dex+4*$int",
+            "options": "\"INT×4+DEX×1\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "$weapon_atk",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$dex+4*$int",
+            "options": "\"INT×4+DEX×1\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/200",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$weapon_atk*0.5",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "$int*@skill.Conversion/10",
+            "options": "\"轉化技能效果，額外INT加成\""
+          },
+          {
+            "base": "@halberd",
+            "value": "$dex+2*$int+$agi",
+            "options": "\"INT×2+DEX+AGI\""
+          },
+          {
+            "base": "@katana",
+            "value": "$dex+1.5*$int",
+            "options": "\"INT×1.5+DEX×1\""
+          },
+          {
+            "base": "@main.none",
+            "value": "$dex+3*$int+1",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "@sub.magic_device",
+            "value": "Math.max(Math.min(Math.max(0,$atk_0-$matk_0)*stat('dual_bringer_efficiency'),1)*(($atk_0-$matk_0)*stat('dual_bringer_efficiency')*stat('dual_bringer_penalty')/10000-$matk_0*(1-stat('dual_bringer_penalty')/100)),0)",
+            "options": "#cvalue, \"雙重提供\""
+          }
+        ]
+      },
+      {
+        "id": "matk_0",
+        "name": "計算用MATK",
+        "displayFormula": "",
+        "link": "matk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "永久",
+        "caption": "魔劍matk計算用",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$matk_up_str+$matk_up_dex+$matk_up_int+$matk_up_agi+$matk_up_vit-$matk_down_str-$matk_down_dex-$matk_down_int-$matk_down_agi-$matk_down_vit",
+            "options": "\"裝備能力\""
+          },
+          {
+            "base": "@sub.knuckle",
+            "value": "-15",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$dex+3*$int",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/100",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@staff",
+            "value": "$dex+4*$int",
+            "options": "\"INT×4+DEX×1\""
+          },
+          {
+            "base": "@staff",
+            "value": "$weapon_atk",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$dex+4*$int",
+            "options": "\"INT×4+DEX×1\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$weapon_atk*@skill.Conversion*@skill.Conversion/200",
+            "options": "#cvalue, \"武器攻擊力轉化\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "$weapon_atk*0.5",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "@main.none",
+            "value": "$dex+3*$int+1",
+            "options": "\"INT×3+DEX×1\""
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          }
+        ]
+      },
+      {
+        "id": "thunder_matk",
+        "name": "雷槍MATK",
+        "displayFormula": "",
+        "link": "matk",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "計算結果為0時",
+        "caption": "斧槍技能專用的基礎MATK，只有點了相關技能時才會顯示。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$int*4+$dex+$agi",
+            "options": "\"INT×4+DEX×1+AGI×1\""
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "#",
+            "value": "$weapon_atk*5/8",
+            "options": "\"武器攻擊力\""
+          },
+          {
+            "base": "#",
+            "value": "Math.min(getSkillLevel('0-5-19')+getSkillLevel('0-5-15'),1)*100-100",
+            "options": "#tvalue"
+          }
+        ]
+      },
+      {
+        "id": "magic_pierce",
+        "name": "魔法貫穿",
+        "displayFormula": "%",
+        "link": "magic_pierce",
+        "limit": "~100",
+        "formula": "#cvalue",
+        "hiddenOption": "變數值為0時",
+        "caption": "可無視對手一定比例的MDEF，數值為負時將增加對手防禦。",
+        "conditions": []
+      },
+      {
+        "id": "magic_stability",
+        "name": "魔法穩定率",
+        "displayFormula": "%",
+        "link": "stability_magic",
+        "limit": "1~",
+        "formula": "50",
+        "hiddenOption": "",
+        "caption": "最終魔法傷害將在（魔穩浮動下限%~魔穩浮動上限%）之間，以1%為間距浮動。但當此項超過100%時，浮動上限雖不再增加，卻會提升打出上限值的機率。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$stability/2",
+            "options": "\"物理穩定率÷2\""
+          }
+        ]
+      },
+      {
+        "id": "magic_random_min",
+        "name": "魔穩浮動下限",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "~90",
+        "formula": "$magic_stability",
+        "hiddenOption": "",
+        "caption": "因穩定造成魔法傷害浮動時，傷害可能獲得的倍率修正最小值，此項最大為90%。",
+        "conditions": []
+      },
+      {
+        "id": "magic_expect_value",
+        "name": "魔穩浮動上限",
+        "displayFormula": "%",
+        "link": "stability_magic",
+        "limit": "100~110",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "因穩定造成魔法傷害浮動時，傷害可能獲得的倍率修正最大值，基礎為100%。當魔法穩定率達到90%後，每超出1%將使此數值提升1%，最大為110%或120%。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "Math.floor(Math.max(0,$stability+#cvalue*2-80)/2)",
+            "options": "\"魔法穩定率溢出\""
+          },
+          {
+            "base": "#",
+            "value": "100",
+            "options": "\"基礎值\""
+          }
+        ]
+      },
+      {
+        "id": "magic_expect_value",
+        "name": "魔穩期望值",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "",
+        "formula": "0",
+        "hiddenOption": "計算結果為0時",
+        "caption": "尚未實作。",
+        "conditions": []
+      },
+      {
+        "id": "magic_crt",
+        "name": "魔法暴擊率",
+        "displayFormula": "",
+        "link": "magic_crt_percentage",
+        "limit": "0~",
+        "formula": "$critical_rate",
+        "hiddenOption": "變數值為0時",
+        "caption": "發生魔法暴擊的機率。超過100%的部分可抵消部分BOSS的抗暴擊能力。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "Math.min(1,#cvalue/100)",
+            "options": "#mul, \"法術暴擊轉化率\""
+          }
+        ]
+      },
+      {
+        "id": "magic_crt_neutral",
+        "name": "無屬性魔法暴擊率",
+        "displayFormula": "",
+        "link": "magic_crt_percentage",
+        "limit": "0~",
+        "formula": "$critical_rate",
+        "hiddenOption": "計算結果為0時",
+        "caption": "僅限主手法杖，使用無屬性的魔法攻擊時，可獲得更高的魔法暴擊率。",
+        "conditions": [
+          {
+            "base": "@staff",
+            "value": "Math.min(1,#cvalue/100)+0.25",
+            "options": "#mul, \"法術暴擊轉化率\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@2h_sword",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@bow",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@bowgun",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@magic_device",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@knuckle",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@dual_sword",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@halberd",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@katana",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@main.none",
+            "value": "0",
+            "options": "#mul"
+          }
+        ]
+      },
+      {
+        "id": "magic_crt_damage",
+        "name": "魔法暴擊傷害",
+        "displayFormula": "%",
+        "link": "magic_cd_percentage",
+        "limit": "0~",
+        "formula": "100+($critical_damage-100)*(Math.min(100,#cvalue)+50)/100",
+        "hiddenOption": "變數值為0時",
+        "caption": "發生魔法暴擊時的傷害倍率。",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "防禦",
+    "stats": [
+      {
+        "id": "def",
+        "name": "DEF",
+        "displayFormula": "",
+        "link": "def",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "DEF越高，受到物理傷害時的損傷越輕。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@armor.def+@additional.def+@special.def+@shield.def",
+            "options": "\"裝備防禦\""
+          },
+          {
+            "base": "@armor.normal",
+            "value": "Math.floor(@clv+$vit)",
+            "options": "\"角色等級×1+VIT×1\""
+          },
+          {
+            "base": "@armor.defense",
+            "value": "Math.floor($vit*2+@clv*1.2)",
+            "options": "\"角色等級×1.2+VIT×2\""
+          },
+          {
+            "base": "@armor.dodge",
+            "value": "Math.floor($vit*0.25+@clv*0.8)",
+            "options": "\"角色等級×0.8+VIT÷4\""
+          },
+          {
+            "base": "@armor.none",
+            "value": "Math.floor($vit*0.1+@clv*0.4)",
+            "options": "\"角色等級×0.4+VIT÷10\""
+          },
+          {
+            "base": "@sub.arrow",
+            "value": "-25",
+            "options": "#mvalue"
+          }
+        ]
+      },
+      {
+        "id": "mdef",
+        "name": "MDEF",
+        "displayFormula": "",
+        "link": "mdef",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "MDEF越高，受到魔法傷害時的損傷越輕。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@armor.def+@additional.def+@special.def+@shield.def",
+            "options": "\"裝備防禦\""
+          },
+          {
+            "base": "@armor.normal",
+            "value": "Math.floor(@clv+$int)",
+            "options": "\"角色等級×1+INT×1\""
+          },
+          {
+            "base": "@armor.defense",
+            "value": "Math.floor($int*2+@clv*1.2)",
+            "options": "\"角色等級×1.2+INT×2\""
+          },
+          {
+            "base": "@armor.dodge",
+            "value": "Math.floor($int*0.25+@clv*0.8)",
+            "options": "\"角色等級×0.8+INT÷4\""
+          },
+          {
+            "base": "@armor.none",
+            "value": "Math.floor($int*0.1+@clv*0.4)",
+            "options": "\"角色等級×0.4+INT÷10\""
+          },
+          {
+            "base": "@sub.arrow",
+            "value": "-25",
+            "options": "#mvalue"
+          }
+        ]
+      },
+      {
+        "id": "physical_resistance",
+        "name": "物理抗性",
+        "displayFormula": "%",
+        "link": "physical_resistance",
+        "limit": "",
+        "formula": "#cvalue",
+        "hiddenOption": "",
+        "caption": "物理抗性越高，受到物理傷害時的損傷越輕。物理抗性若超過50%，計算減傷時需先將數值以每50%為單位拆分，再全部相乘。",
+        "conditions": []
+      },
+      {
+        "id": "magic_resistance",
+        "name": "魔法抗性",
+        "displayFormula": "%",
+        "link": "magic_resistance",
+        "limit": "",
+        "formula": "#cvalue",
+        "hiddenOption": "",
+        "caption": "魔法抗性越高，受到魔法傷害時的損傷越輕。魔法抗性若超過50%，計算減傷時需先將數值以每50%為單位拆分，再全部相乘。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_physical",
+        "name": "受到物理傷害",
+        "displayFormula": "$.2v%",
+        "link": "",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "",
+        "caption": "計算DEF、裝備精鍊、與物理抗性作用下，所收到物理傷害的比率（此處顯示到小數後二位，實際精度未知）。注意仍有其他減傷能力會作用，因此並非最終減傷值。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "(100-reduceValue($physical_resistance))/100",
+            "options": "#mul, \"物理抗性\""
+          },
+          {
+            "base": "#",
+            "value": "(100-@armor.refining-@additional.refining-@shield.refining)/100",
+            "options": "#mul, \"精煉值\""
+          },
+          {
+            "base": "#",
+            "value": "(100-Math.floor(Math.min(20,$def*0.08)+Math.max(0,Math.min(10,($def-250)*0.01))+Math.max(0,($def-1250)*0.003)))/100",
+            "options": "#mul, \"DEF\""
+          }
+        ]
+      },
+      {
+        "id": "reduce_dmg_magic",
+        "name": "受到魔法傷害",
+        "displayFormula": "$.2v%",
+        "link": "",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "",
+        "caption": "計算MDEF、裝備精鍊、與魔法抗性作用下，所收到魔法傷害的比率（此處顯示到小數後二位，實際精度未知）。注意仍有其他減傷能力會作用，因此並非最終減傷值。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "(100-reduceValue($magic_resistance))/100",
+            "options": "#mul, \"魔法抗性\""
+          },
+          {
+            "base": "#",
+            "value": "(100-@armor.refining-@additional.refining-@shield.refining)/100",
+            "options": "#mul, \"精煉值\""
+          },
+          {
+            "base": "#",
+            "value": "(100-Math.floor(Math.min(20,$mdef*0.08)+Math.max(0,Math.min(10,($mdef-250)*0.01))+Math.max(0,($mdef-1250)*0.003)))/100",
+            "options": "#mul, \"MDEF\""
+          }
+        ]
+      },
+      {
+        "id": "reduce_dmg_percentage",
+        "name": "受到百分比傷害",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "",
+        "formula": "100-@armor.refining-@additional.refining-@shield.refining",
+        "hiddenOption": "",
+        "caption": "計算裝備精鍊作用下，所收到百分比傷害的比率。注意仍有其他減傷能力會作用，因此並非最終減傷值。",
+        "conditions": [
+          {
+            "base": "@armor.defense",
+            "value": "-@armor.refining",
+            "options": "#cvalue"
+          }
+        ]
+      },
+      {
+        "id": "base_guard_power",
+        "name": "基礎阻擋性能",
+        "displayFormula": "",
+        "link": "base_guard_power",
+        "limit": "0~10000",
+        "formula": "",
+        "hiddenOption": "永久",
+        "caption": "基礎阻擋力不可超過10000",
+        "conditions": [
+          {
+            "base": "@armor.defense",
+            "value": "5000",
+            "options": "#cvalue"
+          },
+          {
+            "base": "@2h_sword",
+            "value": "5000",
+            "options": "#cvalue"
+          },
+          {
+            "base": "@halberd",
+            "value": "2500",
+            "options": "#cvalue"
+          },
+          {
+            "base": "@sub.shield",
+            "value": "7500",
+            "options": "#cvalue"
+          }
+        ]
+      },
+      {
+        "id": "guard_power",
+        "name": "阻擋性能",
+        "displayFormula": "",
+        "link": "guard_power",
+        "limit": "0~",
+        "formula": "#base*(1+#cvalue/100)",
+        "hiddenOption": "計算結果為0時",
+        "caption": "影響阻擋可輕減的傷害量與減傷幅度。阻擋性能越高，進行阻擋時減免的傷害就越多；受到攻擊時，阻擋性能會根據傷害與HP的比例而降低。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "$base_guard_power",
+            "options": "\"基礎阻擋性能\""
+          }
+        ]
+      },
+      {
+        "id": "guard_regenerate",
+        "name": "阻擋回復",
+        "displayFormula": "點/每秒",
+        "link": "guard_regenerate",
+        "limit": "0~",
+        "formula": "#base*(1+#cvalue/100)",
+        "hiddenOption": "計算結果為0時",
+        "caption": "阻擋性能的回復速度，遊戲中會將此值除以阻擋性能，以「% /s」為單位顯示。",
+        "conditions": [
+          {
+            "base": "@armor.defense",
+            "value": "25",
+            "options": ""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "50",
+            "options": ""
+          },
+          {
+            "base": "@halberd",
+            "value": "25",
+            "options": ""
+          },
+          {
+            "base": "@sub.shield",
+            "value": "75",
+            "options": ""
+          },
+          {
+            "base": "#",
+            "value": "stat(\"base_guard_regenerate\")",
+            "options": "\"技能加成\""
+          }
+        ]
+      },
+      {
+        "id": "evasion_number",
+        "name": "閃躲次數",
+        "displayFormula": "",
+        "link": "evasion_count",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "計算結果為0時",
+        "caption": "閃躲次數的上限。閃躲可進行短距離的快速移動以脫離攻擊範圍，且若抓準時機使用可將單體攻擊無效化。閃躲次數會逐漸回復。",
+        "conditions": [
+          {
+            "base": "@armor.dodge",
+            "value": "6",
+            "options": ""
+          },
+          {
+            "base": "@sub.dagger",
+            "value": "4",
+            "options": ""
+          },
+          {
+            "base": "@magic_device || @sub.magic_device",
+            "value": "8",
+            "options": ""
+          },
+          {
+            "base": "@knuckle || @sub.knuckle",
+            "value": "2",
+            "options": ""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "2",
+            "options": ""
+          }
+        ]
+      },
+      {
+        "id": "evasion_regenerate",
+        "name": "閃躲回復",
+        "displayFormula": "$.2v次/每秒",
+        "link": "evasion_regenerate",
+        "limit": "0~1",
+        "formula": "#base*(100+#cvalue)/100",
+        "hiddenOption": "計算結果為0時",
+        "caption": "閃躲次數的回復速度，遊戲內會將此處的計算結果做倒數，以（X秒/回復一次）為單位顯示。當1秒內連續使用閃躲後，閃躲回復數值會下降至最低1(即10秒/次)，可藉由消費MP及普通攻擊回復至原數值。詳細下降規則未知。",
+        "conditions": [
+          {
+            "base": "@armor.dodge",
+            "value": "0.2",
+            "options": ""
+          },
+          {
+            "base": "@sub.dagger",
+            "value": "0.3",
+            "options": ""
+          },
+          {
+            "base": "@magic_device || @sub.magic_device",
+            "value": "0.1",
+            "options": ""
+          },
+          {
+            "base": "@knuckle || @sub.knuckle",
+            "value": "0.4",
+            "options": ""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "0.1",
+            "options": ""
+          },
+          {
+            "base": "#",
+            "value": "stat(\"base_evasion_regenerate\")",
+            "options": "\"技能加成\""
+          }
+        ]
+      },
+      {
+        "id": "ailment_resistance",
+        "name": "異常抗性",
+        "displayFormula": "%",
+        "link": "ailment_resistance",
+        "limit": "~100",
+        "formula": "@men/3.4",
+        "hiddenOption": "計算結果為0時",
+        "caption": "能使異常狀態無效化的機率，對於紅字異常無效。",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "命中、迴避、速度",
+    "stats": [
+      {
+        "id": "accuracy",
+        "name": "命中",
+        "displayFormula": "",
+        "link": "accuracy",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "命中目標的能力，影響攻擊時MISS、擦傷的機率。魔法傷害將無視此數值，必定命中目標。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "#",
+            "value": "$dex",
+            "options": "\"DEX提供\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "-55",
+            "options": "#mvalue"
+          }
+        ]
+      },
+      {
+        "id": "dodge",
+        "name": "迴避",
+        "displayFormula": "",
+        "link": "dodge",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "迴避傷害的能力，影響被攻擊時發生MISS的機率。魔法傷害無法被迴避。",
+        "conditions": [
+          {
+            "base": "@armor.normal",
+            "value": "Math.floor($agi+@clv)",
+            "options": "\"角色等級×1+AGI×1\""
+          },
+          {
+            "base": "@armor.dodge",
+            "value": "Math.floor(30+$agi*1.75+@clv*1.25)",
+            "options": "\"角色等級×1.25+AGI×1.75+30\""
+          },
+          {
+            "base": "@armor.defense",
+            "value": "Math.floor(-15+$agi*0.75+@clv*0.5)",
+            "options": "\"角色等級×0.5+AGI×0.75-15\""
+          },
+          {
+            "base": "@armor.none",
+            "value": "Math.floor(75+$agi*2+@clv*1.5)",
+            "options": "\"角色等級×1.5+AGI×2+75\""
+          }
+        ]
+      },
+      {
+        "id": "absolute_accuracy",
+        "name": "絕對命中",
+        "displayFormula": "%",
+        "link": "absolute_accuracy",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "無視雙方迴避與命中的差距，攻擊時必定使之命中的機率（判定為HIT或Critical）。但無法阻止閃躲的發生。",
+        "conditions": []
+      },
+      {
+        "id": "absolute_dodge",
+        "name": "絕對迴避",
+        "displayFormula": "%",
+        "link": "absolute_dodge",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "無視雙方迴避與命中的差距，被攻擊時必定使之MISS的機率。",
+        "conditions": []
+      },
+      {
+        "id": "aspd",
+        "name": "攻擊速度",
+        "displayFormula": "",
+        "link": "aspd",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "提升攻擊速度，可縮短普通攻擊冷卻時間，達到1100後普通攻擊將沒有間隔。超過1000後會增加行動速度。",
+        "conditions": [
+          {
+            "base": "@sub.shield",
+            "value": "-50",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@armor.defense",
+            "value": "-50",
+            "options": "#mvalue"
+          },
+          {
+            "base": "@armor.dodge",
+            "value": "50",
+            "options": "#mvalue"
+          },
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "100+$agi*4.2+$str*0.2",
+            "options": "\"100+AGI×4.2+STR×0.2\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "50+$agi*2.1+$str*0.2",
+            "options": "\"50+AGI×2.1+STR×0.2\""
+          },
+          {
+            "base": "@bow",
+            "value": "75+$agi*3.1+$dex*0.2",
+            "options": "\"75+AGI×3.1+DEX×0.2\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "30+$agi*2.2+$dex*0.2",
+            "options": "\"30+AGI×2.2+DEX×0.2\""
+          },
+          {
+            "base": "@staff",
+            "value": "60+$agi*1.8+$int*0.2",
+            "options": "\"60+AGI×1.8+INT×0.2\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "90+$agi*4+$int*0.2",
+            "options": "\"90+AGI×4+INT×0.2\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "120+$agi*4.6+$dex*0.1+$str*0.1",
+            "options": "\"120+AGI×4.6+DEX×0.1+STR×0.1\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "100+$agi*4.2+$str*0.2",
+            "options": "\"100+AGI×4.2+STR×0.2\""
+          },
+          {
+            "base": "@halberd",
+            "value": "25+$agi*3.5+$str*0.2",
+            "options": "\"25+AGI×3.5+STR×0.2\""
+          },
+          {
+            "base": "@katana",
+            "value": "200+$agi*3.9+$str*0.3",
+            "options": "\"200+AGI×3.9+STR×0.3\""
+          },
+          {
+            "base": "@main.none",
+            "value": "1000+$agi*9.6",
+            "options": "\"1000+AGI×9.6\""
+          }
+        ]
+      },
+      {
+        "id": "cspd",
+        "name": "詠唱速度",
+        "displayFormula": "",
+        "link": "cspd",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "",
+        "caption": "提升詠唱速度，可縮短蓄力與詠唱時間，對部分技能無效。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@clv",
+            "options": "\"角色等級\""
+          },
+          {
+            "base": "#",
+            "value": "Math.floor($agi*1.16+$dex*2.94)",
+            "options": "\"DEX×2.94+AGI×1.16\""
+          }
+        ]
+      },
+      {
+        "id": "motion_time",
+        "name": "動作時間",
+        "displayFormula": "%",
+        "link": "motion_speed",
+        "limit": "50~100",
+        "formula": "100-#cvalue",
+        "hiddenOption": "",
+        "caption": "進行行動（技能、普通攻擊等）的花費時間，例如50%表示只需一半時間即完成動作，對部分技能無效。另外，此項能力與角色的移動速度沒有任何關係。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "-Math.max(0,Math.floor(($aspd-1000)/180))",
+            "options": "\"攻擊速度轉化\""
+          }
+        ]
+      },
+      {
+        "id": "cast_time",
+        "name": "詠唱時間",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "0~",
+        "formula": "100-#cvalue",
+        "hiddenOption": "",
+        "caption": "蓄力與詠唱時間的最終倍率，對部分技能無效。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "-Math.floor(Math.min(50,$cspd/20)+Math.max(0,($cspd-1000)/180))",
+            "options": "\"詠唱速度轉化\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "傷害修正項目",
+    "stats": [
+      {
+        "id": "unsheathe_attack_multiplier",
+        "name": "拔刀攻擊倍率",
+        "displayFormula": "%",
+        "link": "unsheathe_attack_multiplier",
+        "limit": "",
+        "formula": "100+#cvalue",
+        "hiddenOption": "",
+        "caption": "發生拔刀攻擊時，攻擊傷害將乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "unsheathe_attack",
+        "name": "拔刀攻擊常數",
+        "displayFormula": "",
+        "link": "unsheathe_attack",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "發生拔刀攻擊時，在傷害常數部分得到的加成。",
+        "conditions": []
+      },
+      {
+        "id": "short_range_damage",
+        "name": "近距離威力",
+        "displayFormula": "%",
+        "link": "short_range_damage",
+        "limit": "0~",
+        "formula": "100+#cvalue",
+        "hiddenOption": "",
+        "caption": "在近距離（0~8米未滿）攻擊時，攻擊傷害將乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "long_range_damage",
+        "name": "遠距離威力",
+        "displayFormula": "%",
+        "link": "long_range_damage",
+        "limit": "0~",
+        "formula": "100+#cvalue",
+        "hiddenOption": "",
+        "caption": "在遠距離（8米以上）攻擊時，攻擊傷害將乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "total_multiplier",
+        "name": "傷害倍率",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "",
+        "caption": "用以快速確認當前配置下，所有倍率項的最高效益。計算公式為：「暴擊傷害（計入機率）×近/遠距離威力×拔刀攻擊倍率×對屬性增傷×穩定率期望」，其中近/遠距離威力與屬性增傷將取最高加成者、拔刀倍率高於50%時納入計算公式、角色的MATK大於ATK時，暴擊率、暴擊傷害與穩定率應用魔法計算公式。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "Math.max(Math.min(1,($atk-$matk))*($critical_damage/100-1)*Math.min(100,$critical_rate)/100+1,Math.min(1,($matk-$atk))*($magic_crt_damage/100-1)*Math.min(100,$magic_crt)/100+1)",
+            "options": "#mul, \"暴擊傷害（計入機率）\""
+          },
+          {
+            "base": "#",
+            "value": "Math.max($short_range_damage,$long_range_damage)/100",
+            "options": "#mul, \"距離威力\""
+          },
+          {
+            "base": "#",
+            "value": "($unsheathe_attack_multiplier-($unsheathe_attack_multiplier-100)*Math.max(0,Math.min(1,150-$unsheathe_attack_multiplier)))/100",
+            "options": "#mul, \"拔刀攻擊倍率\""
+          },
+          {
+            "base": "@1h_sword",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@2h_sword",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@bow",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@bowgun",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@knuckle",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@dual_sword",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@halberd",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@katana",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@main.none",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@staff",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_extra_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_extra_damage/100",
+            "options": "#mul, \"屬性增傷\""
+          },
+          {
+            "base": "#",
+            "value": "Math.max(Math.min(1,($atk-$matk))*($stability+100)/200,Math.min(1,($matk-$atk))*($stability/2+150)/200)",
+            "options": "#mul, \"穩定率期望值\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "特殊加成",
+    "stats": [
+      {
+        "id": "aggro",
+        "name": "仇恨值",
+        "displayFormula": "%",
+        "link": "aggro",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "",
+        "caption": "造成的仇恨值將乘上此倍率，對部分技能無效。",
+        "conditions": []
+      },
+      {
+        "id": "anticipate",
+        "name": "看穿",
+        "displayFormula": "%",
+        "link": "anticipate",
+        "limit": "0~100",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "當攻擊被閃躲時，可無效化此次閃躲的機率。",
+        "conditions": []
+      },
+      {
+        "id": "guard_break",
+        "name": "破防",
+        "displayFormula": "%",
+        "link": "guard_break",
+        "limit": "0~100",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "當攻擊被阻擋時，可無效化此次阻擋的機率。",
+        "conditions": []
+      },
+      {
+        "id": "additional_meele",
+        "name": "物理追擊",
+        "displayFormula": "%",
+        "link": "additional_meele",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "發生物理追擊時，追擊的傷害倍率。不影響追擊發生機率。",
+        "conditions": []
+      },
+      {
+        "id": "additional_magic",
+        "name": "魔法追擊",
+        "displayFormula": "%",
+        "link": "additional_magic",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "發生魔法追擊時，追擊的傷害倍率。不影響追擊發生機率。",
+        "conditions": []
+      },
+      {
+        "id": "physical_barrier",
+        "name": "物理屏障",
+        "displayFormula": "",
+        "link": "physical_barrier",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "可減輕一次物理傷害，減輕量等同物理屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。",
+        "conditions": []
+      },
+      {
+        "id": "magical_barrier",
+        "name": "魔法屏障",
+        "displayFormula": "",
+        "link": "magical_barrier",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "可減輕一次魔法傷害，減輕量等同魔法屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。",
+        "conditions": []
+      },
+      {
+        "id": "fractional_barrier",
+        "name": "百分比屏障",
+        "displayFormula": "%",
+        "link": "fractional_barrier",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "可減輕一次百分比傷害，使該次傷害倍率降低百分比屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。",
+        "conditions": []
+      },
+      {
+        "id": "barrier_cooldown",
+        "name": "屏障重生速度",
+        "displayFormula": "秒",
+        "link": "barrier_cooldown",
+        "limit": "0~",
+        "formula": "3000/(100+#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "屏障消失後，需等待多久方可重新展開。",
+        "conditions": []
+      },
+      {
+        "id": "reflect",
+        "name": "反彈傷害",
+        "displayFormula": "%",
+        "link": "reflect",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到傷害時，依據反彈傷害倍率對攻擊者造成傷害。反彈無視防禦、受慣性、抗性影響，單次反彈傷害上限為99999，不會減輕受到的傷害。",
+        "conditions": []
+      },
+      {
+        "id": "recoil_damage",
+        "name": "反作用傷害",
+        "displayFormula": "%",
+        "link": "recoil_damage",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身攻擊造成的傷害，將乘上反作用傷害比例，削減自身HP。",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "其他",
+    "stats": [
+      {
+        "id": "drop_rate",
+        "name": "掉寶率",
+        "displayFormula": "%",
+        "link": "drop_rate",
+        "limit": "0~",
+        "formula": "(100+@luk/5)+#cvalue",
+        "hiddenOption": "",
+        "caption": "掉寶率的加成。",
+        "conditions": []
+      },
+      {
+        "id": "revive_time",
+        "name": "復活時間",
+        "displayFormula": "秒",
+        "link": "revive_time",
+        "limit": "7~",
+        "formula": "Math.max(15,300*((100+#cvalue)/100))*((100+#tvalue)/100)",
+        "hiddenOption": "",
+        "caption": "死亡後重返戰場所需的秒數，基礎值為300秒，復活時間最少為15秒。",
+        "conditions": []
+      },
+      {
+        "id": "exp_rate",
+        "name": "獲得EXP",
+        "displayFormula": "%",
+        "link": "exp_rate",
+        "limit": "0~",
+        "formula": "100+#cvalue",
+        "hiddenOption": "變數值為0時",
+        "caption": "角色獲得的經驗值的加成。",
+        "conditions": []
+      },
+      {
+        "id": "pet_exp",
+        "name": "寵物獲得EXP",
+        "displayFormula": "%",
+        "link": "pet_exp",
+        "limit": "",
+        "formula": "100+#cvalue",
+        "hiddenOption": "變數值為0時",
+        "caption": "自己的寵物的經驗值加成。",
+        "conditions": []
+      },
+      {
+        "id": "item_cooldown",
+        "name": "道具冷卻",
+        "displayFormula": "秒",
+        "link": "item_cooldown",
+        "limit": "0~",
+        "formula": "10+#cvalue",
+        "hiddenOption": "變數值為0時",
+        "caption": "使用道具後的冷卻時間。",
+        "conditions": []
+      },
+      {
+        "id": "invincible_aid_sec",
+        "name": "無敵急救",
+        "displayFormula": "秒",
+        "link": "invincible_aid_sec",
+        "limit": "0~",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "使用急救後，給予自身一定時間的無敵效果。",
+        "conditions": []
+      },
+      {
+        "id": "flinch_unavailable",
+        "name": "封印膽怯",
+        "displayFormula": "",
+        "link": "flinch_unavailable",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "使自身技能造成的膽怯效果無效化，並非使自身免疫敵方的膽怯。",
+        "conditions": []
+      },
+      {
+        "id": "tumble_unavailable",
+        "name": "封印翻覆",
+        "displayFormula": "",
+        "link": "tumble_unavailable",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "使自身技能造成的翻覆效果無效化，並非使自身免疫敵方的翻覆。",
+        "conditions": []
+      },
+      {
+        "id": "stun_unavailable",
+        "name": "封印昏厥",
+        "displayFormula": "",
+        "link": "stun_unavailable",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "使自身技能造成的昏厥效果無效化，並非使自身免疫敵方的昏厥。",
+        "conditions": []
+      }
+    ]
+  },
+  {
+    "name": "屬性增傷",
+    "stats": [
+      {
+        "id": "element_fire",
+        "name": "火屬性",
+        "displayFormula": "",
+        "link": "element_fire",
+        "limit": "",
+        "formula": "#base+@element.fire",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶火屬性，對地屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_water",
+        "name": "水屬性",
+        "displayFormula": "",
+        "link": "element_water",
+        "limit": "",
+        "formula": "#base+@element.water",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶水屬性，對火屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_earth",
+        "name": "地屬性",
+        "displayFormula": "",
+        "link": "element_earth",
+        "limit": "",
+        "formula": "#base+@element.earth",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶地屬性，對風屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_wind",
+        "name": "風屬性",
+        "displayFormula": "",
+        "link": "element_wind",
+        "limit": "",
+        "formula": "#base+@element.wind",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶風屬性，對水屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_light",
+        "name": "光屬性",
+        "displayFormula": "",
+        "link": "element_light",
+        "limit": "",
+        "formula": "#base+@element.light",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶光屬性，對暗屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_dark",
+        "name": "暗屬性",
+        "displayFormula": "",
+        "link": "element_dark",
+        "limit": "",
+        "formula": "#base+@element.dark",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶暗屬性，對光屬性目標傷害提升。部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "element_mana",
+        "name": "魔屬性",
+        "displayFormula": "",
+        "link": "element_mana",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "計算結果為0時",
+        "caption": "攻擊附帶魔屬性，可獲得等同法術剋屬額外傷害的傷害加成，但本身無法造成屬性剋制；部分技能不受屬性影響。",
+        "conditions": []
+      },
+      {
+        "id": "magic_element_against_damage",
+        "name": "法術剋屬額外傷害",
+        "displayFormula": "%",
+        "link": "",
+        "limit": "",
+        "formula": "Math.floor(@int/10)",
+        "hiddenOption": "計算結果為0時",
+        "caption": "僅限傷害類型為魔法的技能，在技能屬性克制目標屬性時，除基礎的25%加成外還可獲得額外的對屬性傷害加成，與其他屬性傷害加成效果為疊加。",
+        "conditions": [
+          {
+            "base": "@staff",
+            "value": "0",
+            "options": "#mul"
+          },
+          {
+            "base": "@magic_device",
+            "value": "0",
+            "options": "#mul"
+          }
+        ]
+      },
+      {
+        "id": "magic_element_extra_damage",
+        "name": "法術額外屬性傷害",
+        "displayFormula": "%",
+        "link": "magic_stronger_against_element",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "計算結果為0時",
+        "caption": "僅限主手杖/魔導具，帶有任意元素屬性（無屬性除外）的魔法攻擊，皆會獲得額外的對屬性傷害，無須屬性克制。與其他屬性傷害加成效果為疊加。",
+        "conditions": [
+          {
+            "base": "@staff",
+            "value": "Math.floor(@int/10)",
+            "options": "#cvalue, \"基礎INT÷10\""
+          },
+          {
+            "base": "@magic_device",
+            "value": "Math.floor(@int/10)",
+            "options": "#cvalue, \"基礎INT÷10\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_neutral",
+        "name": "對無屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_neutral",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對無屬性目標獲得的額外傷害加成。",
+        "conditions": []
+      },
+      {
+        "id": "stronger_against_fire",
+        "name": "對火屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_fire",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對火屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.water*25",
+            "options": "#cvalue, \"水屬性\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_water",
+        "name": "對水屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_water",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對水屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.wind*25",
+            "options": "#cvalue, \"風屬性\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_earth",
+        "name": "對地屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_earth",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對地屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.fire*25",
+            "options": "#cvalue, \"火屬性\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_wind",
+        "name": "對風屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_wind",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對風屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.earth*25",
+            "options": "#cvalue, \"地屬性\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_light",
+        "name": "對光屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_light",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對光屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.dark*25",
+            "options": "#cvalue, \"暗屬性\""
+          }
+        ]
+      },
+      {
+        "id": "stronger_against_dark",
+        "name": "對暗屬性傷害",
+        "displayFormula": "%",
+        "link": "stronger_against_dark",
+        "limit": "0~",
+        "formula": "100",
+        "hiddenOption": "變數值為0時",
+        "caption": "對暗屬性目標獲得的額外傷害加成。",
+        "conditions": [
+          {
+            "base": "#",
+            "value": "@element.light*25",
+            "options": "#cvalue, \"光屬性\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "屬性、類型減傷",
+    "stats": [
+      {
+        "id": "neutral_resistance",
+        "name": "受到無屬性傷害",
+        "displayFormula": "%",
+        "link": "neutral_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到無屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "fire_resistance",
+        "name": "受到火屬性傷害",
+        "displayFormula": "%",
+        "link": "fire_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到火屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "water_resistance",
+        "name": "受到水屬性傷害",
+        "displayFormula": "%",
+        "link": "water_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到水屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "earth_resistance",
+        "name": "受到地屬性傷害",
+        "displayFormula": "%",
+        "link": "earth_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到地屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "wind_resistance",
+        "name": "受到風屬性傷害",
+        "displayFormula": "%",
+        "link": "wind_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到風屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "light_resistance",
+        "name": "受到光屬性傷害",
+        "displayFormula": "%",
+        "link": "light_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到光屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "dark_resistance",
+        "name": "受到暗屬性傷害",
+        "displayFormula": "%",
+        "link": "dark_resistance",
+        "limit": "",
+        "formula": "100-reduceValue(#cvalue)",
+        "hiddenOption": "變數值為0時",
+        "caption": "自身受到暗屬性的傷害時，損傷會乘上此倍率。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_player_epicenter",
+        "name": "範圍傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_player_epicenter",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "範圍傷害：以我方角色為中心的技能，警告範圍為紅色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_foe_epicenter",
+        "name": "敵方周圍傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_foe_epicenter",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "敵方周圍傷害：以敵方為中心的技能，警告範圍為紅色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_straight_line",
+        "name": "直線傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_straight_line",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "直線傷害：自敵方正面發出的直線狀攻擊，警告範圍為紅色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_charge",
+        "name": "衝撞傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_charge",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "衝撞傷害：直線狀且敵方會沿攻擊範圍移動之技能，警告範圍為紅色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_bowling",
+        "name": "貼地傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_bowling",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "貼地傷害：貼地移動之傷害，會受地形阻擋，表現形式通常為劍氣、射刃。警告範圍為藍色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_bullet",
+        "name": "子彈傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_bullet",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "子彈傷害：向我方角色射出球狀投射物之技能，警告範圍為藍色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_floor",
+        "name": "地面傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_floor",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "地面傷害：放置於地面上的固定傷害領域，表現形式為地刺，警告範圍為藍色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_meteor",
+        "name": "隕石傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_meteor",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "隕石傷害：自空中落下之技能，表現形式為隕石，警告範圍為藍色。",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_explosion",
+        "name": "爆炸傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_explosion",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "爆炸傷害：警告範圍為藍色",
+        "conditions": []
+      },
+      {
+        "id": "reduce_dmg_gravity",
+        "name": "吸引傷害減輕",
+        "displayFormula": "%",
+        "link": "reduce_dmg_gravity",
+        "limit": "",
+        "formula": "",
+        "hiddenOption": "變數值為0時",
+        "caption": "吸引傷害：會對範圍內造成持續傷害並把玩家向技能中心拉入的攻擊，表現形式為暴風、漩渦，警告範圍為藍色。",
+        "conditions": []
+      },
+      {
+        "id": "atk_up_str",
+        "name": "ATK提升 (STR)",
+        "displayFormula": "",
+        "link": "atk_up_str",
+        "limit": "",
+        "formula": "#cvalue*@str/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_up_dex",
+        "name": "ATK提升 (DEX)",
+        "displayFormula": "",
+        "link": "atk_up_dex",
+        "limit": "",
+        "formula": "#cvalue*@dex/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_up_int",
+        "name": "ATK提升 (INT)",
+        "displayFormula": "",
+        "link": "atk_up_int",
+        "limit": "",
+        "formula": "#cvalue*@int/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_up_agi",
+        "name": "ATK提升 (AGI)",
+        "displayFormula": "",
+        "link": "atk_up_agi",
+        "limit": "",
+        "formula": "#cvalue*@agi/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_up_vit",
+        "name": "ATK提升 (VIT)",
+        "displayFormula": "",
+        "link": "atk_up_vit",
+        "limit": "",
+        "formula": "#cvalue*@vit/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_up_str",
+        "name": "MATK提升 (STR)",
+        "displayFormula": "",
+        "link": "matk_up_str",
+        "limit": "",
+        "formula": "#cvalue*@str/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_up_dex",
+        "name": "MATK提升 (DEX)",
+        "displayFormula": "",
+        "link": "matk_up_dex",
+        "limit": "",
+        "formula": "#cvalue*@dex/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_up_int",
+        "name": "MATK提升 (INT)",
+        "displayFormula": "",
+        "link": "matk_up_int",
+        "limit": "",
+        "formula": "#cvalue*@int/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_up_agi",
+        "name": "MATK提升 (AGI)",
+        "displayFormula": "",
+        "link": "matk_up_agi",
+        "limit": "",
+        "formula": "#cvalue*@agi/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_up_vit",
+        "name": "MATK提升 (VIT)",
+        "displayFormula": "",
+        "link": "matk_up_vit",
+        "limit": "",
+        "formula": "#cvalue*@vit/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_down_str",
+        "name": "ATK下降 (STR)",
+        "displayFormula": "",
+        "link": "atk_down_str",
+        "limit": "",
+        "formula": "#cvalue*@str/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_down_dex",
+        "name": "ATK下降 (DEX)",
+        "displayFormula": "",
+        "link": "atk_down_dex",
+        "limit": "",
+        "formula": "#cvalue*@dex/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_down_int",
+        "name": "ATK下降 (INT)",
+        "displayFormula": "",
+        "link": "atk_down_int",
+        "limit": "",
+        "formula": "#cvalue*@int/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_down_agi",
+        "name": "ATK下降 (AGI)",
+        "displayFormula": "",
+        "link": "atk_down_agi",
+        "limit": "",
+        "formula": "#cvalue*@agi/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "atk_down_vit",
+        "name": "ATK下降 (VIT)",
+        "displayFormula": "",
+        "link": "atk_down_vit",
+        "limit": "",
+        "formula": "#cvalue*@vit/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_down_str",
+        "name": "MATK下降 (STR)",
+        "displayFormula": "",
+        "link": "matk_down_str",
+        "limit": "",
+        "formula": "#cvalue*@str/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_down_dex",
+        "name": "MATK下降 (DEX)",
+        "displayFormula": "",
+        "link": "matk_down_dex",
+        "limit": "",
+        "formula": "#cvalue*@dex/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_down_int",
+        "name": "MATK下降 (INT)",
+        "displayFormula": "",
+        "link": "matk_down_int",
+        "limit": "",
+        "formula": "#cvalue*@int/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_down_agi",
+        "name": "MATK下降 (AGI)",
+        "displayFormula": "",
+        "link": "matk_down_agi",
+        "limit": "",
+        "formula": "#cvalue*@agi/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      },
+      {
+        "id": "matk_down_vit",
+        "name": "MATK下降 (VIT)",
+        "displayFormula": "",
+        "link": "matk_down_vit",
+        "limit": "",
+        "formula": "#cvalue*@vit/100",
+        "hiddenOption": "永久",
+        "caption": "",
+        "conditions": []
+      }
+    ]
+  }
+]

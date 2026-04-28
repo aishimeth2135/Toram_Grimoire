@@ -2,6 +2,8 @@ build: Stat build
 base-options: Base settings
 advanced-options: Advanced settings
 common-options: Common settings
+skill-level-options: General skill level settings
+material-skill-level-options: Material skill level settings
 equipment-type: Equipment type
 append-build: New stat build
 equipment-types:
@@ -26,6 +28,10 @@ material-point-type-list:
   - Cloth point
   - Medicine point
   - Mana point
+material-anvil-skill-level-sum: Total anvil skill level
+material-anvil-skill-level-desc: The total skill level of all anvil-type skills that reduce material cost, excluding your own anvil skill.
+experts-customization-2-skill: Expert Customization II
+experts-customization-2-skill-desc: Used only for calculating the actual success rate.
 step:
   insert-step-before: Insert a step before this one
   step-move-up: Move this step up
@@ -43,6 +49,8 @@ result:
   enchant-step-each: Split fill, Every time fill {stat}, Until {target}
   stats: Final result
   materials: Material consumption
+  materials-skill-levels: About material skill levels
+  operation-steps-quantity: Steps
   success-rate-detail:
     title: About success rate
     captions:
@@ -67,6 +75,7 @@ stat-display-mode:
   potential-cost: Potential cost
   material-point: Material consumption
 tips:
+  first-load-failed-tips: An unknown error occurred while loading save data. To prevent data loss, auto-save has been temporarily disabled.
   step-stat-repeated: In this step there is already this stat (つд⊂)
   step-empty: This step is still empty (～￣▽￣)~
   stats-reached-upper-limit: This equipment reached the maximum number of stats (´-ω-｀)

@@ -1,0 +1,542 @@
+{
+  "category:0": {
+    "name": "Single Recovery"
+  },
+  "category:1": {
+    "name": "HP Increase"
+  },
+  "category:2": {
+    "name": "HP Regen"
+  },
+  "category:3": {
+    "name": "MP Increase"
+  },
+  "category:4": {
+    "name": "MP Regen"
+  },
+  "category:5": {
+    "name": "ATK"
+  },
+  "category:6": {
+    "name": "MATK"
+  },
+  "category:7": {
+    "name": "Element Buff"
+  },
+  "category:8": {
+    "name": "ASPD"
+  },
+  "category:9": {
+    "name": "CSPD"
+  },
+  "category:10": {
+    "name": "Accuracy"
+  },
+  "category:11": {
+    "name": "Evasion"
+  },
+  "category:12": {
+    "name": "Physical Resistance"
+  },
+  "category:13": {
+    "name": "Magic Resistance"
+  },
+  "category:14": {
+    "name": "Element Resistance"
+  },
+  "category:15": {
+    "name": "Vaccine"
+  },
+  "category:16": {
+    "name": "Prayer"
+  },
+  "obtainCategory:0": {
+    "name": "Synthesis (Normal)"
+  },
+  "obtainCategory:1": {
+    "name": "Synthesis (Event)"
+  },
+  "obtainCategory:2": {
+    "name": "Drop (Normal)"
+  },
+  "obtainCategory:3": {
+    "name": "Drop (Event)"
+  },
+  "potion:回復劑I": {
+    "name": "Heal I"
+  },
+  "potion:回復劑II": {
+    "name": "Heal II"
+  },
+  "potion:回復劑III": {
+    "name": "Heal III"
+  },
+  "potion:回復劑IV": {
+    "name": "Heal IV"
+  },
+  "potion:回復劑V": {
+    "name": "Heal V"
+  },
+  "potion:回復劑VI": {
+    "name": "Heal VI"
+  },
+  "potion:回復劑VII": {
+    "name": "Heal VII"
+  },
+  "potion:回復劑VIII": {
+    "name": "Heal VIII"
+  },
+  "potion:救難食品": {
+    "name": "Emergency Food"
+  },
+  "potion:青蘋果": {
+    "name": "Green Apple"
+  },
+  "potion:波姆餅乾": {
+    "name": "Pomdom Cookie"
+  },
+  "potion:味噌茄子": {
+    "name": "Miso Eggplant"
+  },
+  "potion:茄子田樂燒": {
+    "name": "Dengaku Eggplant"
+  },
+  "potion:蝙蝠糖": {
+    "name": "Bat Candy"
+  },
+  "potion:小鼠餅乾": {
+    "name": "Mouse Cookie"
+  },
+  "potion:波姆波姆燒": {
+    "name": "Pomdom Yaki"
+  },
+  "potion:波姆卡斯特拉蛋糕": {
+    "name": "Pomdom Castella Cake"
+  },
+  "potion:強身藥I": {
+    "name": "Toughness Drug I"
+  },
+  "potion:強身藥II": {
+    "name": "Toughness Drug II"
+  },
+  "potion:強身藥III": {
+    "name": "Toughness Drug III"
+  },
+  "potion:強身藥IV": {
+    "name": "Toughness Drug IV"
+  },
+  "potion:強身藥V": {
+    "name": "Toughness Drug V"
+  },
+  "potion:鬥士紅兜": {
+    "name": "Fighter's Red Helmet"
+  },
+  "potion:鹽烤秋刀魚": {
+    "name": "Salt-grilled Saury"
+  },
+  "potion:油豆皮": {
+    "name": "Fried Tofu Skin"
+  },
+  "potion:帶骨小排": {
+    "name": "Bone-in Ribs"
+  },
+  "potion:過硬的羊肉": {
+    "name": "Tough Mutton"
+  },
+  "potion:基頓肉": {
+    "name": "Kiton Meat"
+  },
+  "potion:水煮龍蝦": {
+    "name": "Boiled Lobster"
+  },
+  "potion:曲莖冰淇淋": {
+    "name": "Curved Stem Ice Cream"
+  },
+  "potion:黑烤沼主": {
+    "name": "Black-grilled Swamp Boss"
+  },
+  "potion:龍肉排": {
+    "name": "Dragon Steak"
+  },
+  "potion:鯊肉排": {
+    "name": "Shark Steak"
+  },
+  "potion:糖霜餅乾": {
+    "name": "Frosted Cookie"
+  },
+  "potion:茄子天婦羅": {
+    "name": "Eggplant Tempura"
+  },
+  "potion:冷掉的雞湯劑": {
+    "name": "Cold Chicken Soup"
+  },
+  "potion:淨手舍": {
+    "name": "Cleansing Shrine"
+  },
+  "potion:魔力藥I": {
+    "name": "Mana Drug I"
+  },
+  "potion:魔力藥II": {
+    "name": "Mana Drug II"
+  },
+  "potion:魔力藥III": {
+    "name": "Mana Drug III"
+  },
+  "potion:魔力藥IV": {
+    "name": "Mana Drug IV"
+  },
+  "potion:魔力藥V": {
+    "name": "Mana Drug V"
+  },
+  "potion:萬眾矚目藥": {
+    "name": "Center of Attention Drug"
+  },
+  "potion:金黃栗子泥": {
+    "name": "Golden Chestnut Paste"
+  },
+  "potion:藍白色果凍": {
+    "name": "Blue-White Jelly"
+  },
+  "potion:嫩煎羅諾戈蝦": {
+    "name": "Pan-fried Ronogo Shrimp"
+  },
+  "potion:波多姆豆": {
+    "name": "Pomdom Bean"
+  },
+  "potion:魔力鮮奶油": {
+    "name": "Mana Fresh Cream"
+  },
+  "potion:靈魂布丁": {
+    "name": "Soul Pudding"
+  },
+  "potion:茄加成": {
+    "name": "Eggplant Plus"
+  },
+  "potion:小鳥提拉米蘇": {
+    "name": "Little Bird Tiramisu"
+  },
+  "potion:神秘藥劑（B）": {
+    "name": "Mystery Potion (B)"
+  },
+  "potion:心型餅乾": {
+    "name": "Heart-shaped Cookie"
+  },
+  "potion:心型餅乾(交易後)": {
+    "name": "Heart-shaped Cookie (Traded)"
+  },
+  "potion:藍色果凍": {
+    "name": "Blue Jelly"
+  },
+  "potion:紅紫色果凍": {
+    "name": "Red-Purple Jelly"
+  },
+  "potion:蒲公英咖啡": {
+    "name": "Dandelion Coffee"
+  },
+  "potion:雪紅酒": {
+    "name": "Snow Wine"
+  },
+  "potion:香檳": {
+    "name": "Champagne"
+  },
+  "potion:冰凍葡萄酒": {
+    "name": "Frozen Wine"
+  },
+  "potion:化學質果凍": {
+    "name": "Chemical Jelly"
+  },
+  "potion:波姆屋的甜酒": {
+    "name": "Pomdom House Sweet Wine"
+  },
+  "potion:大力菇菇": {
+    "name": "Strength Mushroom"
+  },
+  "potion:禁藥精華": {
+    "name": "Forbidden Drug Extract"
+  },
+  "potion:大力神油": {
+    "name": "Hercules Oil"
+  },
+  "potion:猛攻礦油": {
+    "name": "Fierce Attack Mineral Oil"
+  },
+  "potion:怪力糖": {
+    "name": "Monster Strength Candy"
+  },
+  "potion:澎湃藥丸": {
+    "name": "Surge Pill"
+  },
+  "potion:穿甲油": {
+    "name": "Armor Piercing Oil"
+  },
+  "potion:松茸湯": {
+    "name": "Matsutake Soup"
+  },
+  "potion:灼熱草": {
+    "name": "Scorching Herb"
+  },
+  "potion:興奮劑(肌力)": {
+    "name": "Stimulant (Strength)"
+  },
+  "potion:浸炸茄子": {
+    "name": "Deep-fried Eggplant"
+  },
+  "potion:南瓜百匯": {
+    "name": "Pumpkin Parfait"
+  },
+  "potion:波姆屋的烤糰子": {
+    "name": "Pomdom House Grilled Dango"
+  },
+  "potion:晨星軟糖": {
+    "name": "Morning Star Gummy"
+  },
+  "potion:提燈蛋糕": {
+    "name": "Lantern Cake"
+  },
+  "potion:醒腦口香糖": {
+    "name": "Brain-Awakening Gum"
+  },
+  "potion:魔力香木": {
+    "name": "Mana Incense Wood"
+  },
+  "potion:魔導增幅": {
+    "name": "Magic Amplifier"
+  },
+  "potion:怪物壺": {
+    "name": "Monster Jar"
+  },
+  "potion:魔導師的秘藥": {
+    "name": "Mage's Secret Drug"
+  },
+  "potion:障壁解析石板": {
+    "name": "Barrier Analysis Tablet"
+  },
+  "potion:苦澀的明膠": {
+    "name": "Bitter Gelatin"
+  },
+  "potion:幹燥胡桃": {
+    "name": "Dried Walnut"
+  },
+  "potion:樹葉軟糖": {
+    "name": "Leaf Gummy"
+  },
+  "potion:波姆屋的年糕湯": {
+    "name": "Pomdom House New Year's Soup"
+  },
+  "potion:木乃伊捲": {
+    "name": "Mummy Roll"
+  },
+  "potion:閃光糖果": {
+    "name": "Flash Candy"
+  },
+  "potion:變異魟魚湯": {
+    "name": "Mutant Stingray Soup"
+  },
+  "potion:南瓜餅乾": {
+    "name": "Pumpkin Cookie"
+  },
+  "potion:薑餅蛋糕": {
+    "name": "Gingerbread Cake"
+  },
+  "potion:傑克布丁": {
+    "name": "Jack Pudding"
+  },
+  "potion:愛爾蘭水果蛋糕": {
+    "name": "Irish Fruit Cake"
+  },
+  "potion:南瓜糖果": {
+    "name": "Pumpkin Candy"
+  },
+  "potion:殭屍蛋糕": {
+    "name": "Zombie Cake"
+  },
+  "potion:南瓜湯": {
+    "name": "Pumpkin Soup"
+  },
+  "potion:神速飲料": {
+    "name": "Godspeed Drink"
+  },
+  "potion:超神速飲料": {
+    "name": "Super Godspeed Drink"
+  },
+  "potion:無敵神速飲料": {
+    "name": "Ultimate Godspeed Drink"
+  },
+  "potion:神速魔壺": {
+    "name": "Godspeed Magic Jar"
+  },
+  "potion:固體燃料": {
+    "name": "Solid Fuel"
+  },
+  "potion:水梨塔": {
+    "name": "Water Pear Tart"
+  },
+  "potion:殭尸肉": {
+    "name": "Zombie Meat"
+  },
+  "potion:星塵魔法藥": {
+    "name": "Stardust Magic Drug"
+  },
+  "potion:流星魔法藥": {
+    "name": "Meteor Magic Drug"
+  },
+  "potion:星語魔法藥": {
+    "name": "Starlight Magic Drug"
+  },
+  "potion:詠咒耳機": {
+    "name": "Chant Earphones"
+  },
+  "potion:葡萄果凍": {
+    "name": "Grape Jelly"
+  },
+  "potion:神準飲料": {
+    "name": "God Aim Drink"
+  },
+  "potion:妖精的眼淚": {
+    "name": "Fairy Tears"
+  },
+  "potion:名弓箭手的假鬍子": {
+    "name": "Famous Archer's Fake Beard"
+  },
+  "potion:捕捉手套": {
+    "name": "Capture Gloves"
+  },
+  "potion:沾黏丸子": {
+    "name": "Sticky Dango"
+  },
+  "potion:戰靈之環": {
+    "name": "Battle Spirit Ring"
+  },
+  "potion:奶油煎蝸牛": {
+    "name": "Butter-fried Snail"
+  },
+  "potion:葉櫻茶": {
+    "name": "Leaf Cherry Tea"
+  },
+  "potion:蝙蝠鬆餅": {
+    "name": "Bat Waffle"
+  },
+  "potion:黃金波姆酒": {
+    "name": "Golden Pomdom Wine"
+  },
+  "potion:木製果仁糕": {
+    "name": "Wooden Nut Cake"
+  },
+  "potion:銀杏炊飯": {
+    "name": "Ginkgo Rice"
+  },
+  "potion:麻婆茄子": {
+    "name": "Mapo Eggplant"
+  },
+  "potion:神秘藥劑（Y）": {
+    "name": "Mystery Potion (Y)"
+  },
+  "potion:海蝶軟糖": {
+    "name": "Sea Butterfly Gummy"
+  },
+  "potion:神秘藥劑（P）": {
+    "name": "Mystery Potion (P)"
+  },
+  "potion:火護符": {
+    "name": "Fire Talisman"
+  },
+  "potion:水護符": {
+    "name": "Water Talisman"
+  },
+  "potion:風護符": {
+    "name": "Wind Talisman"
+  },
+  "potion:地護符": {
+    "name": "Earth Talisman"
+  },
+  "potion:深色松露": {
+    "name": "Dark Truffle"
+  },
+  "potion:冰淇淋蛋糕": {
+    "name": "Ice Cream Cake"
+  },
+  "potion:起司蛋糕": {
+    "name": "Cheesecake"
+  },
+  "potion:巧克力蛋糕": {
+    "name": "Chocolate Cake"
+  },
+  "potion:水果蛋糕": {
+    "name": "Fruit Cake"
+  },
+  "potion:冰可可": {
+    "name": "Iced Cocoa"
+  },
+  "potion:冰咖啡": {
+    "name": "Iced Coffee"
+  },
+  "potion:阿健章魚燒(醬汁)": {
+    "name": "Aken Takoyaki (Sauce)"
+  },
+  "potion:阿健章魚燒(高湯)": {
+    "name": "Aken Takoyaki (Dashi)"
+  },
+  "potion:阿健章魚燒(蔥花)": {
+    "name": "Aken Takoyaki (Green Onion)"
+  },
+  "potion:阿健章魚燒(醬油)": {
+    "name": "Aken Takoyaki (Soy Sauce)"
+  },
+  "potion:阿健章魚燒(鹽)": {
+    "name": "Aken Takoyaki (Salt)"
+  },
+  "potion:阿健章魚燒(柚子醋)": {
+    "name": "Aken Takoyaki (Ponzu)"
+  },
+  "potion:阿健章魚燒(禮包)": {
+    "name": "Aken Takoyaki (Gift Set)"
+  },
+  "potion:炙烤茄子": {
+    "name": "Grilled Eggplant"
+  },
+  "potion:吉羅康": {
+    "name": "Girocan"
+  },
+  "potion:美樂蜂蛋糕": {
+    "name": "Merle Bee Cake"
+  },
+  "potion:沙拉茄子醬": {
+    "name": "Eggplant Salad Sauce"
+  },
+  "potion:波姆波姆杏仁糖": {
+    "name": "Pomdom Pomdom Almond Candy"
+  },
+  "potion:神秘藥劑（G）": {
+    "name": "Mystery Potion (G)"
+  },
+  "potion:強身健體！": {
+    "name": "Build Up Your Body!"
+  },
+  "potion:專心致志！": {
+    "name": "Focus Your Mind!"
+  },
+  "potion:大紅大紫！": {
+    "name": "Rise to Fame!"
+  },
+  "potion:財運亨通！": {
+    "name": "Financial Fortune!"
+  },
+  "potion:消災解厄！": {
+    "name": "Ward Off Misfortune!"
+  },
+  "potion:人中龍鳳！": {
+    "name": "Outstanding Person!"
+  },
+  "potion:生活穩定！": {
+    "name": "Stable Life!"
+  },
+  "potion:行動敏捷！": {
+    "name": "Nimble Action!"
+  },
+  "potion:口齒清晰！": {
+    "name": "Clear Articulation!"
+  },
+  "potion:累積經驗！": {
+    "name": "Accumulate Experience!"
+  }
+}

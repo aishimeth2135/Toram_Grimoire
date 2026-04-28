@@ -1,0 +1,1649 @@
+{
+  "category:0": {
+    "name": "Weapon Skills"
+  },
+  "tree:0:0": {
+    "name": "Blade Skills"
+  },
+  "skill:0:0:0": {
+    "name": "Power Attack"
+  },
+  "skill:0:0:1": {
+    "name": "Swift Attack"
+  },
+  "skill:0:0:2": {
+    "name": "Smash"
+  },
+  "skill:0:0:3": {
+    "name": "Explosive Slash"
+  },
+  "skill:0:0:4": {
+    "name": "Meteor Breaker"
+  },
+  "skill:0:0:5": {
+    "name": "Sonic Blade"
+  },
+  "skill:0:0:6": {
+    "name": "Vacuum Blade"
+  },
+  "skill:0:0:7": {
+    "name": "Astute"
+  },
+  "skill:0:0:8": {
+    "name": "Sword Break"
+  },
+  "skill:0:0:9": {
+    "name": "Swordsmanship"
+  },
+  "skill:0:0:10": {
+    "name": "Sword Speed Boost"
+  },
+  "skill:0:0:11": {
+    "name": "Swordsmanship Master"
+  },
+  "skill:0:0:12": {
+    "name": "Battle Cry"
+  },
+  "skill:0:0:13": {
+    "name": "Berserker's Rage"
+  },
+  "skill:0:0:14": {
+    "name": "Quick Kick"
+  },
+  "skill:0:0:15": {
+    "name": "Shutout"
+  },
+  "skill:0:0:16": {
+    "name": "Lunar Slash"
+  },
+  "skill:0:0:17": {
+    "name": "Spirit Blade"
+  },
+  "skill:0:0:18": {
+    "name": "Sword Fighter"
+  },
+  "skill:0:0:19": {
+    "name": "Hammer Strike"
+  },
+  "skill:0:0:20": {
+    "name": "Horizontal Cleave"
+  },
+  "skill:0:0:21": {
+    "name": "Storm Flame"
+  },
+  "skill:0:0:22": {
+    "name": "Guardian Blade"
+  },
+  "skill:0:0:23": {
+    "name": "Monster Slash"
+  },
+  "tree:0:1": {
+    "name": "Shot Skills"
+  },
+  "skill:0:1:0": {
+    "name": "Power Shot"
+  },
+  "skill:0:1:1": {
+    "name": "Turbo Shot"
+  },
+  "skill:0:1:2": {
+    "name": "Vital Strike"
+  },
+  "skill:0:1:3": {
+    "name": "Arrow Rain"
+  },
+  "skill:0:1:4": {
+    "name": "Crossfire"
+  },
+  "skill:0:1:5": {
+    "name": "Gunge Shot"
+  },
+  "skill:0:1:6": {
+    "name": "Paralysis Shot"
+  },
+  "skill:0:1:7": {
+    "name": "Smoke Bomb"
+  },
+  "skill:0:1:8": {
+    "name": "Sneaky Steps"
+  },
+  "skill:0:1:9": {
+    "name": "Shooting Mastery"
+  },
+  "skill:0:1:10": {
+    "name": "Camouflage"
+  },
+  "skill:0:1:11": {
+    "name": "Long Range Snipe"
+  },
+  "skill:0:1:12": {
+    "name": "Breathe"
+  },
+  "skill:0:1:13": {
+    "name": "Decoy Shot"
+  },
+  "skill:0:1:14": {
+    "name": "Devastation Charge"
+  },
+  "skill:0:1:15": {
+    "name": "Conqueror"
+  },
+  "skill:0:1:16": {
+    "name": "Dual Storm"
+  },
+  "skill:0:1:17": {
+    "name": "Retreat Shot"
+  },
+  "skill:0:1:18": {
+    "name": "Curve Shot"
+  },
+  "skill:0:1:19": {
+    "name": "Katana Archery"
+  },
+  "skill:0:1:20": {
+    "name": "Quick Load"
+  },
+  "skill:0:1:21": {
+    "name": "Elemental Reach"
+  },
+  "skill:0:1:22": {
+    "name": "Piercing Arrow"
+  },
+  "skill:0:1:23": {
+    "name": "Wide Barrage"
+  },
+  "skill:0:1:24": {
+    "name": "Hunting Pup"
+  },
+  "tree:0:2": {
+    "name": "Magic Skills"
+  },
+  "skill:0:2:0": {
+    "name": "Magic: Arrow"
+  },
+  "skill:0:2:1": {
+    "name": "Magic: Lance"
+  },
+  "skill:0:2:2": {
+    "name": "Magic: Burst"
+  },
+  "skill:0:2:3": {
+    "name": "Magic: Impact"
+  },
+  "skill:0:2:4": {
+    "name": "Magic: Finale"
+  },
+  "skill:0:2:5": {
+    "name": "Magic: Barrier"
+  },
+  "skill:0:2:6": {
+    "name": "Magic: Detonation"
+  },
+  "skill:0:2:7": {
+    "name": "Magic: Storm"
+  },
+  "skill:0:2:8": {
+    "name": "Magic: Blast"
+  },
+  "skill:0:2:9": {
+    "name": "Magic Mastery"
+  },
+  "skill:0:2:10": {
+    "name": "MP Charge"
+  },
+  "skill:0:2:11": {
+    "name": "Spell Accelerate"
+  },
+  "skill:0:2:12": {
+    "name": "Burst Cast"
+  },
+  "skill:0:2:13": {
+    "name": "Mana Conversion"
+  },
+  "skill:0:2:14": {
+    "name": "Magic: Aurora"
+  },
+  "skill:0:2:15": {
+    "name": "Chronos Field"
+  },
+  "skill:0:2:16": {
+    "name": "Magic: Cannon"
+  },
+  "skill:0:2:17": {
+    "name": "Magic: Ruin"
+  },
+  "skill:0:2:18": {
+    "name": "Quick Charge"
+  },
+  "skill:0:2:19": {
+    "name": "Magic Ward"
+  },
+  "skill:0:2:20": {
+    "name": "Magic Knife"
+  },
+  "skill:0:2:21": {
+    "name": "Unbridled Power"
+  },
+  "skill:0:2:22": {
+    "name": "Magic: Laser"
+  },
+  "skill:0:2:23": {
+    "name": "Resonance Tuning"
+  },
+  "tree:0:3": {
+    "name": "Martial Skills"
+  },
+  "skill:0:3:0": {
+    "name": "Heavy Strike"
+  },
+  "skill:0:3:1": {
+    "name": "Painful Strike"
+  },
+  "skill:0:3:2": {
+    "name": "Armor Pierce"
+  },
+  "skill:0:3:3": {
+    "name": "Fierce Aura"
+  },
+  "skill:0:3:4": {
+    "name": "Chariot Impact"
+  },
+  "skill:0:3:5": {
+    "name": "Sonic Wave"
+  },
+  "skill:0:3:6": {
+    "name": "Earth Shaker"
+  },
+  "skill:0:3:7": {
+    "name": "Triple Kick"
+  },
+  "skill:0:3:8": {
+    "name": "Rapid Strike"
+  },
+  "skill:0:3:9": {
+    "name": "Martial Mastery"
+  },
+  "skill:0:3:10": {
+    "name": "Martial Training"
+  },
+  "skill:0:3:11": {
+    "name": "Chakra"
+  },
+  "skill:0:3:12": {
+    "name": "Follow-Up"
+  },
+  "skill:0:3:13": {
+    "name": "Smash Hit"
+  },
+  "skill:0:3:14": {
+    "name": "Slide"
+  },
+  "skill:0:3:15": {
+    "name": "Thousand Hands Image"
+  },
+  "skill:0:3:16": {
+    "name": "Asura Aura"
+  },
+  "skill:0:3:17": {
+    "name": "Shadow Flare"
+  },
+  "skill:0:3:18": {
+    "name": "Redirect"
+  },
+  "skill:0:3:19": {
+    "name": "Sidestep"
+  },
+  "skill:0:3:20": {
+    "name": "Stomp"
+  },
+  "skill:0:3:21": {
+    "name": "Spinning Sweep"
+  },
+  "tree:0:4": {
+    "name": "Dual Sword Skills"
+  },
+  "skill:0:4:0": {
+    "name": "Dual Sword Mastery"
+  },
+  "skill:0:4:1": {
+    "name": "Twin Slash"
+  },
+  "skill:0:4:2": {
+    "name": "Void Slash"
+  },
+  "skill:0:4:3": {
+    "name": "Phantom Slash"
+  },
+  "skill:0:4:4": {
+    "name": "Formation Break"
+  },
+  "skill:0:4:5": {
+    "name": "Explosive Barrage"
+  },
+  "skill:0:4:6": {
+    "name": "Sword Shadow"
+  },
+  "skill:0:4:7": {
+    "name": "Flash Cross"
+  },
+  "skill:0:4:8": {
+    "name": "Step"
+  },
+  "skill:0:4:9": {
+    "name": "Sword Flash"
+  },
+  "skill:0:4:10": {
+    "name": "Wind Harvest"
+  },
+  "skill:0:4:11": {
+    "name": "Dual Sword Training"
+  },
+  "skill:0:4:12": {
+    "name": "Godspeed Trail"
+  },
+  "skill:0:4:13": {
+    "name": "Sword Dance Brilliance"
+  },
+  "skill:0:4:14": {
+    "name": "Void Slash Art"
+  },
+  "skill:0:4:15": {
+    "name": "Moon God's Calamity"
+  },
+  "skill:0:4:16": {
+    "name": "Dual Sword Break"
+  },
+  "skill:0:4:17": {
+    "name": "Arc Light Sword Dance"
+  },
+  "skill:0:4:18": {
+    "name": "Blade Thrust"
+  },
+  "skill:0:4:19": {
+    "name": "Sky Dance Slash"
+  },
+  "skill:0:4:20": {
+    "name": "Horizontal Slash"
+  },
+  "tree:0:5": {
+    "name": "Halberd Skills"
+  },
+  "skill:0:5:0": {
+    "name": "Swift Thrust"
+  },
+  "skill:0:5:1": {
+    "name": "Swan Throw"
+  },
+  "skill:0:5:2": {
+    "name": "Dragon Tail"
+  },
+  "skill:0:5:3": {
+    "name": "Earth Drive"
+  },
+  "skill:0:5:4": {
+    "name": "Dragon Fang"
+  },
+  "skill:0:5:5": {
+    "name": "Death Halberd"
+  },
+  "skill:0:5:6": {
+    "name": "Pierce"
+  },
+  "skill:0:5:7": {
+    "name": "Space-Time Drive"
+  },
+  "skill:0:5:8": {
+    "name": "Judgement Spear"
+  },
+  "skill:0:5:9": {
+    "name": "Halberd Mastery"
+  },
+  "skill:0:5:10": {
+    "name": "Mind Focus"
+  },
+  "skill:0:5:11": {
+    "name": "Wind Break"
+  },
+  "skill:0:5:12": {
+    "name": "Battle Roar"
+  },
+  "skill:0:5:13": {
+    "name": "Swift Mastery"
+  },
+  "skill:0:5:14": {
+    "name": "Destroy Lance"
+  },
+  "skill:0:5:15": {
+    "name": "Dragon Charge"
+  },
+  "skill:0:5:16": {
+    "name": "Limitless"
+  },
+  "skill:0:5:17": {
+    "name": "Hurricane Lance"
+  },
+  "skill:0:5:18": {
+    "name": "Divine Lance Mastery"
+  },
+  "skill:0:5:19": {
+    "name": "Thunder Spear"
+  },
+  "skill:0:5:20": {
+    "name": "Divine Lightning"
+  },
+  "skill:0:5:21": {
+    "name": "Thor's Hammer"
+  },
+  "tree:0:6": {
+    "name": "Katana Skills"
+  },
+  "skill:0:6:0": {
+    "name": "Quick Draw"
+  },
+  "skill:0:6:1": {
+    "name": "Wave Blade"
+  },
+  "skill:0:6:2": {
+    "name": "Triple Thrust"
+  },
+  "skill:0:6:3": {
+    "name": "Eight Phase Break"
+  },
+  "skill:0:6:4": {
+    "name": "Finisher"
+  },
+  "skill:0:6:5": {
+    "name": "Star Scatter"
+  },
+  "skill:0:6:6": {
+    "name": "Hilt Strike"
+  },
+  "skill:0:6:7": {
+    "name": "Calamity Cutter"
+  },
+  "skill:0:6:8": {
+    "name": "Decisive Strike"
+  },
+  "skill:0:6:9": {
+    "name": "Bushido"
+  },
+  "skill:0:6:10": {
+    "name": "Ground Shrink"
+  },
+  "skill:0:6:11": {
+    "name": "Two-Handed Grip"
+  },
+  "skill:0:6:12": {
+    "name": "Clear Mind"
+  },
+  "skill:0:6:13": {
+    "name": "Reckless Might"
+  },
+  "skill:0:6:14": {
+    "name": "Parry"
+  },
+  "skill:0:6:15": {
+    "name": "Four Seasons"
+  },
+  "skill:0:6:16": {
+    "name": "Shadow Blade"
+  },
+  "skill:0:6:17": {
+    "name": "Preemptive Strike"
+  },
+  "skill:0:6:18": {
+    "name": "Indomitable"
+  },
+  "skill:0:6:19": {
+    "name": "Auspicious Wind"
+  },
+  "skill:0:6:20": {
+    "name": "Gust"
+  },
+  "skill:0:6:21": {
+    "name": "Rush"
+  },
+  "skill:0:6:22": {
+    "name": "Gust Kai"
+  },
+  "tree:0:7": {
+    "name": "Crusher Skills"
+  },
+  "skill:0:7:0": {
+    "name": "Straight Punch"
+  },
+  "skill:0:7:1": {
+    "name": "Giant Rend"
+  },
+  "skill:0:7:2": {
+    "name": "God Hand"
+  },
+  "skill:0:7:3": {
+    "name": "Breathing"
+  },
+  "skill:0:7:4": {
+    "name": "Flying Kick"
+  },
+  "skill:0:7:5": {
+    "name": "Combo Punch"
+  },
+  "skill:0:7:6": {
+    "name": "Destroyer"
+  },
+  "skill:0:7:7": {
+    "name": "Iron Body"
+  },
+  "skill:0:7:8": {
+    "name": "Ground Shatter"
+  },
+  "skill:0:7:9": {
+    "name": "Fountain Kick"
+  },
+  "tree:0:8": {
+    "name": "Sprite Skills"
+  },
+  "skill:0:8:0": {
+    "name": "Revive"
+  },
+  "skill:0:8:1": {
+    "name": "Synchro"
+  },
+  "skill:0:8:2": {
+    "name": "Emergency Aid"
+  },
+  "skill:0:8:3": {
+    "name": "Stabilize"
+  },
+  "skill:0:8:4": {
+    "name": "Automaton"
+  },
+  "skill:0:8:5": {
+    "name": "Enhancement"
+  },
+  "skill:0:8:6": {
+    "name": "Counter Force"
+  },
+  "skill:0:8:7": {
+    "name": "Soul Shield"
+  },
+  "skill:0:8:8": {
+    "name": "Heaven's Lance"
+  },
+  "skill:0:8:9": {
+    "name": "Magic Vulcan"
+  },
+  "skill:0:8:10": {
+    "name": "Soul Boost"
+  },
+  "skill:0:8:11": {
+    "name": "Cursed Altar"
+  },
+  "skill:0:8:12": {
+    "name": "Ignite"
+  },
+  "skill:0:8:13": {
+    "name": "Earth Dragon Shot"
+  },
+  "skill:0:8:14": {
+    "name": "Phantom Arms"
+  },
+  "skill:0:8:15": {
+    "name": "Reaper"
+  },
+  "skill:0:8:16": {
+    "name": "Life's Radiance"
+  },
+  "category:1": {
+    "name": "Enhancement Skills"
+  },
+  "tree:1:0": {
+    "name": "Guard Skills"
+  },
+  "skill:1:0:0": {
+    "name": "Heavy Armor Mastery"
+  },
+  "skill:1:0:1": {
+    "name": "Advanced Guard"
+  },
+  "skill:1:0:2": {
+    "name": "Physical Defense"
+  },
+  "skill:1:0:3": {
+    "name": "Light Armor Mastery"
+  },
+  "skill:1:0:4": {
+    "name": "Advanced Evasion"
+  },
+  "skill:1:0:5": {
+    "name": "Mirage"
+  },
+  "tree:1:1": {
+    "name": "Shield Skills"
+  },
+  "skill:1:1:0": {
+    "name": "Shield Mastery"
+  },
+  "skill:1:1:1": {
+    "name": "Shield Bash"
+  },
+  "skill:1:1:2": {
+    "name": "Shield Throw"
+  },
+  "skill:1:1:3": {
+    "name": "Damage Reflection"
+  },
+  "skill:1:1:4": {
+    "name": "Guardian Shield"
+  },
+  "skill:1:1:5": {
+    "name": "Magic Shield"
+  },
+  "skill:1:1:6": {
+    "name": "Defense Limit"
+  },
+  "skill:1:1:7": {
+    "name": "Magic Shelter"
+  },
+  "skill:1:1:8": {
+    "name": "Deflect"
+  },
+  "skill:1:1:9": {
+    "name": "Shield Upper"
+  },
+  "skill:1:1:10": {
+    "name": "Twin Shield"
+  },
+  "skill:1:1:11": {
+    "name": "Shield Repair"
+  },
+  "skill:1:1:12": {
+    "name": "Siege"
+  },
+  "tree:1:2": {
+    "name": "Dagger Skills"
+  },
+  "skill:1:2:0": {
+    "name": "Dagger Throw"
+  },
+  "skill:1:2:1": {
+    "name": "Shadow Pin"
+  },
+  "skill:1:2:2": {
+    "name": "Gatling Knives"
+  },
+  "skill:1:2:3": {
+    "name": "Godly Technique"
+  },
+  "skill:1:2:4": {
+    "name": "Poison Dagger"
+  },
+  "skill:1:2:5": {
+    "name": "Chain Blade"
+  },
+  "skill:1:2:6": {
+    "name": "Shadowless Blade"
+  },
+  "skill:1:2:7": {
+    "name": "Power Boost"
+  },
+  "skill:1:2:8": {
+    "name": "Armor Crush"
+  },
+  "skill:1:2:9": {
+    "name": "Close Combat"
+  },
+  "skill:1:2:10": {
+    "name": "Fear Blade"
+  },
+  "tree:1:3": {
+    "name": "Knight Skills"
+  },
+  "skill:1:3:0": {
+    "name": "Charge"
+  },
+  "skill:1:3:1": {
+    "name": "Disarm"
+  },
+  "skill:1:3:2": {
+    "name": "Perfect Defense"
+  },
+  "skill:1:3:3": {
+    "name": "Heavy Knight Awakening"
+  },
+  "skill:1:3:4": {
+    "name": "Provoke"
+  },
+  "skill:1:3:5": {
+    "name": "Wrathful Strike"
+  },
+  "skill:1:3:6": {
+    "name": "Shadow Bind"
+  },
+  "skill:1:3:7": {
+    "name": "Knight's Resolve"
+  },
+  "skill:1:3:8": {
+    "name": "Sonic Press"
+  },
+  "skill:1:3:9": {
+    "name": "Return"
+  },
+  "skill:1:3:10": {
+    "name": "Knight's Dignity"
+  },
+  "skill:1:3:11": {
+    "name": "Knight's Cure"
+  },
+  "skill:1:3:12": {
+    "name": "Rear Shield"
+  },
+  "skill:1:3:13": {
+    "name": "Twinkling Sword"
+  },
+  "skill:1:3:14": {
+    "name": "Knight's Oath"
+  },
+  "tree:1:4": {
+    "name": "Hunter Skills"
+  },
+  "skill:1:4:0": {
+    "name": "Kick"
+  },
+  "skill:1:4:1": {
+    "name": "Rising Sun Arrow"
+  },
+  "skill:1:4:2": {
+    "name": "Power Arrow"
+  },
+  "skill:1:4:3": {
+    "name": "Falling Star"
+  },
+  "skill:1:4:4": {
+    "name": "Sleep Trap"
+  },
+  "skill:1:4:5": {
+    "name": "Stumble Trap"
+  },
+  "skill:1:4:6": {
+    "name": "Flash Mine"
+  },
+  "skill:1:4:7": {
+    "name": "Lethargy Trap"
+  },
+  "skill:1:4:8": {
+    "name": "Tracking Shot"
+  },
+  "skill:1:4:9": {
+    "name": "Detect"
+  },
+  "skill:1:4:10": {
+    "name": "Cyclone Arrow"
+  },
+  "skill:1:4:11": {
+    "name": "Vertical Air Bullet"
+  },
+  "skill:1:4:12": {
+    "name": "Crossbow Hunter"
+  },
+  "skill:1:4:13": {
+    "name": "Multi Hunt"
+  },
+  "skill:1:4:14": {
+    "name": "Focus"
+  },
+  "skill:1:4:15": {
+    "name": "Disguise"
+  },
+  "skill:1:4:16": {
+    "name": "Hunter's Knowledge"
+  },
+  "tree:1:5": {
+    "name": "Priest Skills"
+  },
+  "skill:1:5:0": {
+    "name": "Holy Fist"
+  },
+  "skill:1:5:1": {
+    "name": "Gloria"
+  },
+  "skill:1:5:2": {
+    "name": "Blessed Enhancement"
+  },
+  "skill:1:5:3": {
+    "name": "Dignified Heal"
+  },
+  "skill:1:5:4": {
+    "name": "Holy Fist Strike"
+  },
+  "skill:1:5:5": {
+    "name": "Holy Radiance"
+  },
+  "skill:1:5:6": {
+    "name": "Divine Barrier"
+  },
+  "skill:1:5:7": {
+    "name": "Prayer"
+  },
+  "skill:1:5:8": {
+    "name": "Staff Strike"
+  },
+  "skill:1:5:9": {
+    "name": "Exorcism"
+  },
+  "skill:1:5:10": {
+    "name": "Holy Book"
+  },
+  "skill:1:5:11": {
+    "name": "Nemesis"
+  },
+  "skill:1:5:12": {
+    "name": "Holy Guidance"
+  },
+  "skill:1:5:13": {
+    "name": "Aspis's Spirit"
+  },
+  "skill:1:5:14": {
+    "name": "Divine Blessing"
+  },
+  "tree:1:6": {
+    "name": "Assassin Skills"
+  },
+  "skill:1:6:0": {
+    "name": "Assassination Stab"
+  },
+  "skill:1:6:1": {
+    "name": "Quick Backstep"
+  },
+  "skill:1:6:2": {
+    "name": "Death Bloom"
+  },
+  "skill:1:6:3": {
+    "name": "Killer Move"
+  },
+  "skill:1:6:4": {
+    "name": "Shadow Evasion"
+  },
+  "skill:1:6:5": {
+    "name": "Serum Injection"
+  },
+  "skill:1:6:6": {
+    "name": "See Through"
+  },
+  "skill:1:6:7": {
+    "name": "Shadow Step"
+  },
+  "skill:1:6:8": {
+    "name": "Venom Injection"
+  },
+  "skill:1:6:9": {
+    "name": "Corrosive Venom"
+  },
+  "skill:1:6:10": {
+    "name": "Venom Snatch"
+  },
+  "skill:1:6:11": {
+    "name": "Death Feast"
+  },
+  "skill:1:6:12": {
+    "name": "Assassination Essence"
+  },
+  "skill:1:6:13": {
+    "name": "Violent Pursuit"
+  },
+  "skill:1:6:14": {
+    "name": "Poisoner"
+  },
+  "tree:1:7": {
+    "name": "Wizard Skills"
+  },
+  "skill:1:7:0": {
+    "name": "Familiar"
+  },
+  "skill:1:7:1": {
+    "name": "Lightning"
+  },
+  "skill:1:7:2": {
+    "name": "Blizzard"
+  },
+  "skill:1:7:3": {
+    "name": "Meteor Shower"
+  },
+  "skill:1:7:4": {
+    "name": "Empress Light"
+  },
+  "skill:1:7:5": {
+    "name": "Mana Crystal"
+  },
+  "skill:1:7:6": {
+    "name": "Stoneize"
+  },
+  "skill:1:7:7": {
+    "name": "High Familiar"
+  },
+  "skill:1:7:8": {
+    "name": "Chant Mastery"
+  },
+  "skill:1:7:9": {
+    "name": "Crystal Laser"
+  },
+  "skill:1:7:10": {
+    "name": "Transcend"
+  },
+  "skill:1:7:11": {
+    "name": "Wizard's Sight"
+  },
+  "skill:1:7:12": {
+    "name": "Wizard's Research"
+  },
+  "skill:1:7:13": {
+    "name": "Cat's Bounty"
+  },
+  "skill:1:7:14": {
+    "name": "Dimension Cross"
+  },
+  "category:2": {
+    "name": "Support Skills"
+  },
+  "tree:2:0": {
+    "name": "Support Skills"
+  },
+  "skill:2:0:0": {
+    "name": "First Aid"
+  },
+  "skill:2:0:1": {
+    "name": "Heal"
+  },
+  "skill:2:0:2": {
+    "name": "Ailment Guard"
+  },
+  "skill:2:0:3": {
+    "name": "Holy Ground"
+  },
+  "skill:2:0:4": {
+    "name": "Regenerate"
+  },
+  "skill:2:0:5": {
+    "name": "Life Energy"
+  },
+  "skill:2:0:6": {
+    "name": "Courage Source"
+  },
+  "skill:2:0:7": {
+    "name": "High-Speed Casting"
+  },
+  "skill:2:0:8": {
+    "name": "High-Speed Action"
+  },
+  "skill:2:0:9": {
+    "name": "Mana Energy"
+  },
+  "skill:2:0:10": {
+    "name": "Magic Protection"
+  },
+  "skill:2:0:11": {
+    "name": "Ailment Protection"
+  },
+  "skill:2:0:12": {
+    "name": "Lightning Reflexes"
+  },
+  "tree:2:1": {
+    "name": "Battle Skills"
+  },
+  "skill:2:1:0": {
+    "name": "Mana Up"
+  },
+  "skill:2:1:1": {
+    "name": "Concentration"
+  },
+  "skill:2:1:2": {
+    "name": "Resolute Will"
+  },
+  "skill:2:1:3": {
+    "name": "Mana Amplify"
+  },
+  "skill:2:1:4": {
+    "name": "Burst"
+  },
+  "skill:2:1:5": {
+    "name": "ATK Up"
+  },
+  "skill:2:1:6": {
+    "name": "Hard Hit"
+  },
+  "skill:2:1:7": {
+    "name": "Critical Up"
+  },
+  "skill:2:1:8": {
+    "name": "Intimidation"
+  },
+  "skill:2:1:9": {
+    "name": "Follow-Up Essence"
+  },
+  "skill:2:1:10": {
+    "name": "DEF Up"
+  },
+  "skill:2:1:11": {
+    "name": "Dodge Up"
+  },
+  "skill:2:1:12": {
+    "name": "Accuracy Up"
+  },
+  "skill:2:1:13": {
+    "name": "Guardian's Trick"
+  },
+  "skill:2:1:14": {
+    "name": "Supreme Mastery"
+  },
+  "tree:2:2": {
+    "name": "Survival Skills"
+  },
+  "skill:2:2:0": {
+    "name": "Play Dead"
+  },
+  "skill:2:2:1": {
+    "name": "EXP Up"
+  },
+  "skill:2:2:2": {
+    "name": "Drop Rate Up"
+  },
+  "skill:2:2:3": {
+    "name": "Peaceful Rest"
+  },
+  "skill:2:2:4": {
+    "name": "HP Breakthrough"
+  },
+  "skill:2:2:5": {
+    "name": "Ease"
+  },
+  "skill:2:2:6": {
+    "name": "Catch Your Breath"
+  },
+  "skill:2:2:7": {
+    "name": "MP Breakthrough"
+  },
+  "skill:2:2:8": {
+    "name": "Composure"
+  },
+  "category:3": {
+    "name": "Production Skills"
+  },
+  "tree:3:0": {
+    "name": "Blacksmith Skill"
+  },
+  "skill:3:0:0": {
+    "name": "Refine Equipment"
+  },
+  "skill:3:0:1": {
+    "name": "Personal Anvil"
+  },
+  "skill:3:0:2": {
+    "name": "Expert Anvil"
+  },
+  "skill:3:0:3": {
+    "name": "Shop Anvil"
+  },
+  "skill:3:0:4": {
+    "name": "Intermediate Refining"
+  },
+  "skill:3:0:5": {
+    "name": "Advanced Refining"
+  },
+  "skill:3:0:6": {
+    "name": "Craft Equipment"
+  },
+  "skill:3:0:7": {
+    "name": "Artisan Crafting"
+  },
+  "skill:3:0:8": {
+    "name": "Reinforce Equipment"
+  },
+  "skill:3:0:9": {
+    "name": "Proper Reinforcement"
+  },
+  "skill:3:0:10": {
+    "name": "Material Processing"
+  },
+  "skill:3:0:11": {
+    "name": "Master Anvil"
+  },
+  "skill:3:0:12": {
+    "name": "Master Refining"
+  },
+  "skill:3:0:13": {
+    "name": "Master Crafting"
+  },
+  "skill:3:0:14": {
+    "name": "Master Reinforcement"
+  },
+  "skill:3:0:15": {
+    "name": "Master Anvil II"
+  },
+  "skill:3:0:16": {
+    "name": "Master Reinforcement II"
+  },
+  "skill:3:0:17": {
+    "name": "Metal Knowledge"
+  },
+  "skill:3:0:18": {
+    "name": "Cloth Knowledge"
+  },
+  "skill:3:0:19": {
+    "name": "Beast Material Knowledge"
+  },
+  "skill:3:0:20": {
+    "name": "Wood Knowledge"
+  },
+  "skill:3:0:21": {
+    "name": "Medicine Knowledge"
+  },
+  "skill:3:0:22": {
+    "name": "Mana Element Knowledge"
+  },
+  "tree:3:1": {
+    "name": "Alchemy Skill"
+  },
+  "skill:3:1:0": {
+    "name": "Synthesize Items"
+  },
+  "skill:3:1:1": {
+    "name": "Beginner's Vial"
+  },
+  "skill:3:1:2": {
+    "name": "Expert's Vial"
+  },
+  "skill:3:1:3": {
+    "name": "Synthesis Shop Vial"
+  },
+  "skill:3:1:4": {
+    "name": "Intermediate Synthesis"
+  },
+  "skill:3:1:5": {
+    "name": "Advanced Synthesis"
+  },
+  "skill:3:1:6": {
+    "name": "Material Processing"
+  },
+  "skill:3:1:7": {
+    "name": "Synthesize Equipment"
+  },
+  "skill:3:1:8": {
+    "name": "Synthesis Enhancement I"
+  },
+  "skill:3:1:9": {
+    "name": "Master's Vial"
+  },
+  "skill:3:1:10": {
+    "name": "Master Synthesis"
+  },
+  "skill:3:1:11": {
+    "name": "Synthesis Enhancement II"
+  },
+  "skill:3:1:12": {
+    "name": "Master's Vial II"
+  },
+  "skill:3:1:13": {
+    "name": "Master Synthesis II"
+  },
+  "skill:3:1:14": {
+    "name": "Synthesis Enhancement III"
+  },
+  "tree:3:2": {
+    "name": "Tamer Skill"
+  },
+  "skill:3:2:0": {
+    "name": "Capture"
+  },
+  "skill:3:2:1": {
+    "name": "Capture Technique I"
+  },
+  "skill:3:2:2": {
+    "name": "Capture Technique II"
+  },
+  "skill:3:2:3": {
+    "name": "Capture Expert"
+  },
+  "skill:3:2:4": {
+    "name": "Careful Capture"
+  },
+  "skill:3:2:5": {
+    "name": "Treat Pet"
+  },
+  "skill:3:2:6": {
+    "name": "Charge Pet"
+  },
+  "category:4": {
+    "name": "Skill Books"
+  },
+  "tree:4:0": {
+    "name": "Dark Power Skills"
+  },
+  "skill:4:0:0": {
+    "name": "Blood Bite"
+  },
+  "skill:4:0:1": {
+    "name": "Dark Spike"
+  },
+  "skill:4:0:2": {
+    "name": "Scarlet Tears"
+  },
+  "skill:4:0:3": {
+    "name": "Sacrifice"
+  },
+  "skill:4:0:4": {
+    "name": "Demon Claw"
+  },
+  "skill:4:0:5": {
+    "name": "Killing Intent"
+  },
+  "skill:4:0:6": {
+    "name": "Soul Hunt"
+  },
+  "skill:4:0:7": {
+    "name": "Eternal Nightmare"
+  },
+  "tree:4:1": {
+    "name": "Magic Blade Skills"
+  },
+  "skill:4:1:0": {
+    "name": "Magic Warrior's Trick"
+  },
+  "skill:4:1:1": {
+    "name": "Conversion"
+  },
+  "skill:4:1:2": {
+    "name": "Mana Resonance"
+  },
+  "skill:4:1:3": {
+    "name": "Ethereal Flame"
+  },
+  "skill:4:1:4": {
+    "name": "Element Slash"
+  },
+  "skill:4:1:5": {
+    "name": "Enchanted Sword Strike"
+  },
+  "skill:4:1:6": {
+    "name": "Enchantment Curse"
+  },
+  "skill:4:1:7": {
+    "name": "Enchantment Burst"
+  },
+  "skill:4:1:8": {
+    "name": "Barrier Flux"
+  },
+  "skill:4:1:9": {
+    "name": "Teleport"
+  },
+  "skill:4:1:10": {
+    "name": "Flux Recall"
+  },
+  "skill:4:1:11": {
+    "name": "Float Dash"
+  },
+  "skill:4:1:12": {
+    "name": "Dual Provision"
+  },
+  "skill:4:1:13": {
+    "name": "Combined Greatsword"
+  },
+  "skill:4:1:14": {
+    "name": "Magic Film"
+  },
+  "tree:4:2": {
+    "name": "Dancer Skills"
+  },
+  "skill:4:2:0": {
+    "name": "Fairy Dance"
+  },
+  "skill:4:2:1": {
+    "name": "Passionate Dance"
+  },
+  "skill:4:2:2": {
+    "name": "Agile Dance"
+  },
+  "skill:4:2:3": {
+    "name": "Enchanting Dance"
+  },
+  "skill:4:2:4": {
+    "name": "Aid Dance"
+  },
+  "skill:4:2:5": {
+    "name": "Elegant Stance"
+  },
+  "skill:4:2:6": {
+    "name": "Ephemeral Dance"
+  },
+  "tree:4:3": {
+    "name": "Minstrel Skills"
+  },
+  "skill:4:3:0": {
+    "name": "Healing Song"
+  },
+  "skill:4:3:1": {
+    "name": "Fairy Song"
+  },
+  "skill:4:3:2": {
+    "name": "Passionate Song"
+  },
+  "skill:4:3:3": {
+    "name": "Song of Wisdom"
+  },
+  "skill:4:3:4": {
+    "name": "Song of Life"
+  },
+  "skill:4:3:5": {
+    "name": "Dream Song"
+  },
+  "skill:4:3:6": {
+    "name": "Improvisation"
+  },
+  "skill:4:3:7": {
+    "name": "Sound Curtain"
+  },
+  "skill:4:3:8": {
+    "name": "Rhythm Bomb"
+  },
+  "skill:4:3:9": {
+    "name": "Battle Rhapsody"
+  },
+  "tree:4:4": {
+    "name": "Barehand Skills"
+  },
+  "skill:4:4:0": {
+    "name": "Barehanded Mastery"
+  },
+  "skill:4:4:1": {
+    "name": "Ki Charge"
+  },
+  "skill:4:4:2": {
+    "name": "Raijin Kick"
+  },
+  "skill:4:4:3": {
+    "name": "Storm Wave"
+  },
+  "skill:4:4:4": {
+    "name": "Recovery Ki"
+  },
+  "skill:4:4:5": {
+    "name": "Raijin Kick Supreme"
+  },
+  "skill:4:4:6": {
+    "name": "Storm Wave Supreme"
+  },
+  "skill:4:4:7": {
+    "name": "Fighting Spirit Crash"
+  },
+  "skill:4:4:8": {
+    "name": "Ki Charge Supreme"
+  },
+  "skill:4:4:9": {
+    "name": "Earth Shattering"
+  },
+  "skill:4:4:10": {
+    "name": "Back from Death"
+  },
+  "skill:4:4:11": {
+    "name": "Self-Restraint"
+  },
+  "tree:4:5": {
+    "name": "Ninja Skills"
+  },
+  "skill:4:5:0": {
+    "name": "Ninjutsu"
+  },
+  "skill:4:5:1": {
+    "name": "Ninja's Path"
+  },
+  "skill:4:5:2": {
+    "name": "Ninjutsu Training I"
+  },
+  "skill:4:5:3": {
+    "name": "Ninjutsu Training II"
+  },
+  "tree:4:6": {
+    "name": "Partisan Skills"
+  },
+  "skill:4:6:0": {
+    "name": "L Boomerang"
+  },
+  "skill:4:6:1": {
+    "name": "L Boomerang II"
+  },
+  "skill:4:6:2": {
+    "name": "L Boomerang III"
+  },
+  "skill:4:6:3": {
+    "name": "N Dragon Fang"
+  },
+  "skill:4:6:4": {
+    "name": "Heal Shot"
+  },
+  "skill:4:6:5": {
+    "name": "Sharpen Arrows"
+  },
+  "skill:4:6:6": {
+    "name": "Survival Instinct"
+  },
+  "skill:4:6:7": {
+    "name": "Frontline Support"
+  },
+  "skill:4:6:8": {
+    "name": "Frontline Support II"
+  },
+  "tree:4:7": {
+    "name": "Necromancer Skills"
+  },
+  "skill:4:7:0": {
+    "name": "Gravedigger"
+  },
+  "skill:4:7:1": {
+    "name": "Phantom Missile"
+  },
+  "skill:4:7:2": {
+    "name": "Blood Drain"
+  },
+  "skill:4:7:3": {
+    "name": "Spirit Bullet"
+  },
+  "skill:4:7:4": {
+    "name": "Skeleton Summon"
+  },
+  "skill:4:7:5": {
+    "name": "Demon Summon"
+  },
+  "skill:4:7:6": {
+    "name": "Quality Production"
+  },
+  "skill:4:7:7": {
+    "name": "Harvest"
+  },
+  "skill:4:7:8": {
+    "name": "Self-Sufficient"
+  },
+  "skill:4:7:9": {
+    "name": "Graveyard"
+  },
+  "skill:4:7:10": {
+    "name": "Skull Crash"
+  },
+  "skill:4:7:11": {
+    "name": "Danger Crash"
+  },
+  "tree:4:8": {
+    "name": "Golem Skills"
+  },
+  "skill:4:8:0": {
+    "name": "Summon Golem"
+  },
+  "skill:4:8:1": {
+    "name": "Lancer Type Modified"
+  },
+  "skill:4:8:2": {
+    "name": "Strengthen Attack"
+  },
+  "skill:4:8:3": {
+    "name": "Shield Type Modified"
+  },
+  "skill:4:8:4": {
+    "name": "Strengthen Shield"
+  },
+  "skill:4:8:5": {
+    "name": "Destroyer Type Modified"
+  },
+  "skill:4:8:6": {
+    "name": "Strengthen Speed"
+  },
+  "skill:4:8:7": {
+    "name": "Magic Grenade"
+  },
+  "skill:4:8:8": {
+    "name": "Freeze Grenade"
+  },
+  "skill:4:8:9": {
+    "name": "Flash Grenade"
+  },
+  "category:5": {
+    "name": "Other"
+  },
+  "tree:5:0": {
+    "name": "Event Skills"
+  },
+  "skill:5:0:0": {
+    "name": "Burst Flame"
+  },
+  "skill:5:0:1": {
+    "name": "Magic Blade Flash"
+  },
+  "skill:5:0:2": {
+    "name": "Meteor Hammer"
+  },
+  "skill:5:0:3": {
+    "name": "Dragon Breaker"
+  },
+  "skill:5:0:4": {
+    "name": "Iron Pipe"
+  },
+  "skill:5:0:5": {
+    "name": "Retro Crossbow"
+  },
+  "skill:5:0:6": {
+    "name": "Magnum"
+  },
+  "tree:5:1": {
+    "name": "Pet Skills"
+  },
+  "skill:5:1:0": {
+    "name": "Destruction Rush"
+  },
+  "skill:5:1:1": {
+    "name": "HP Up"
+  },
+  "skill:5:1:2": {
+    "name": "Absorb MP"
+  },
+  "skill:5:1:3": {
+    "name": "Retreat"
+  },
+  "skill:5:1:4": {
+    "name": "Mana Shot"
+  },
+  "skill:5:1:5": {
+    "name": "Critical Up"
+  },
+  "skill:5:1:6": {
+    "name": "Violent Strike"
+  },
+  "skill:5:1:7": {
+    "name": "Phantom Strike"
+  },
+  "skill:5:1:8": {
+    "name": "Magic Bullet"
+  },
+  "skill:5:1:9": {
+    "name": "Gust Flame"
+  },
+  "skill:5:1:10": {
+    "name": "Ring Heal"
+  },
+  "skill:5:1:11": {
+    "name": "Battle Fortitude"
+  },
+  "skill:5:1:12": {
+    "name": "First Aid (Pet)"
+  },
+  "skill:5:1:13": {
+    "name": "Rejuvenate"
+  },
+  "skill:5:1:14": {
+    "name": "Healing Arts"
+  },
+  "skill:5:1:15": {
+    "name": "Sweep Kick"
+  },
+  "skill:5:1:16": {
+    "name": "Pressure"
+  },
+  "skill:5:1:17": {
+    "name": "Frenzy Strike"
+  },
+  "skill:5:1:18": {
+    "name": "Blind Strike"
+  },
+  "skill:5:1:19": {
+    "name": "Indestructible"
+  },
+  "skill:5:1:20": {
+    "name": "Dizzy"
+  },
+  "skill:5:1:21": {
+    "name": "Scapegoat"
+  },
+  "skill:5:1:22": {
+    "name": "Absorb HP"
+  },
+  "skill:5:1:23": {
+    "name": "MP Up"
+  },
+  "skill:5:1:24": {
+    "name": "Seal Piercer"
+  },
+  "tree:5:2": {
+    "name": "Scroll Skills"
+  },
+  "skill:5:2:0": {
+    "name": "Fire Style"
+  },
+  "skill:5:2:1": {
+    "name": "Fire Style: Explosion Array"
+  },
+  "skill:5:2:2": {
+    "name": "Lightning Style"
+  },
+  "skill:5:2:3": {
+    "name": "Lightning Style: Purple Lightning Flash"
+  },
+  "skill:5:2:4": {
+    "name": "Wind Style"
+  },
+  "skill:5:2:5": {
+    "name": "Wind Style: Armor Break"
+  },
+  "skill:5:2:6": {
+    "name": "Water Style"
+  },
+  "skill:5:2:7": {
+    "name": "Earth Style"
+  },
+  "skill:5:2:8": {
+    "name": "Shadow Clone"
+  },
+  "skill:5:2:9": {
+    "name": "Fuma Shuriken"
+  },
+  "skill:5:2:10": {
+    "name": "Kunai Throw"
+  },
+  "skill:5:2:11": {
+    "name": "Water Style: Rapid Vortex"
+  }
+}

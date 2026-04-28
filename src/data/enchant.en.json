@@ -1,0 +1,35 @@
+{
+  "強化能力數值": {
+    "title": "Ability Stats Enhancement"
+  },
+  "強化HP、MP": {
+    "title": "HP/MP Enhancement"
+  },
+  "強化攻擊力": {
+    "title": "ATK Enhancement"
+  },
+  "強化防禦力": {
+    "title": "DEF Enhancement"
+  },
+  "強化命中": {
+    "title": "Accuracy Enhancement"
+  },
+  "強化迴避": {
+    "title": "Evasion Enhancement"
+  },
+  "強化速度": {
+    "title": "Speed Enhancement"
+  },
+  "強化暴擊": {
+    "title": "Critical Enhancement"
+  },
+  "強化屬性": {
+    "title": "Element Enhancement"
+  },
+  "特殊強化": {
+    "title": "Special Enhancement"
+  },
+  "屬性覺醒": {
+    "title": "Element Awakening"
+  }
+}

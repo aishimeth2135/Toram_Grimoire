@@ -83,16 +83,16 @@
   --app-gray-70: #314158;
   --app-gray-80: #1d293d;
   --app-gray-90: #0f172b;
-  --app-primary-5: #fff7fa;
-  --app-primary-10: #ffe7ef;
-  --app-primary-20: #ffcbdc;
-  --app-primary-30: #ffa3c2;
-  --app-primary-40: #fd7aa6;
-  --app-primary-50: #f5578c;
-  --app-primary-60: #e83b7f;
-  --app-primary-70: #cf286b;
-  --app-primary-80: #a91956;
-  --app-primary-90: #790f3f;
+  --app-primary-5: #f0f8ff;
+  --app-primary-10: #dbeeff;
+  --app-primary-20: #bbd9fe;
+  --app-primary-30: #90bffb;
+  --app-primary-40: #5e9fef;
+  --app-primary-50: #3b82db;
+  --app-primary-60: #2966c0;
+  --app-primary-70: #1d50a0;
+  --app-primary-80: #153d7e;
+  --app-primary-90: #0e2d5e;
 }
 ```
 ## Dark Mode
@@ -180,16 +180,16 @@
   --app-gray-70: #f4f6f7;
   --app-gray-80: #f9fafb;
   --app-gray-90: #fcfdfd;
-  --app-primary-5: #502338;
-  --app-primary-10: #843e5c;
-  --app-primary-20: #ae5d7e;
-  --app-primary-30: #cd7f9d;
-  --app-primary-40: #e5a5ba;
-  --app-primary-50: #f4cad8;
-  --app-primary-60: #f9dce6;
-  --app-primary-70: #fcedf2;
-  --app-primary-80: #fef7fa;
-  --app-primary-90: #fffcfd;
+  --app-primary-5: #0e1a2e;
+  --app-primary-10: #162840;
+  --app-primary-20: #1e3d5e;
+  --app-primary-30: #2b587e;
+  --app-primary-40: #4278a8;
+  --app-primary-50: #7aaace;
+  --app-primary-60: #a8c8e4;
+  --app-primary-70: #c8ddf0;
+  --app-primary-80: #e0edf8;
+  --app-primary-90: #f2f7fc;
 }
 ```
 ## Tailwind Theme

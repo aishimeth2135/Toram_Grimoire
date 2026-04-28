@@ -1,0 +1,3526 @@
+[
+  {
+    "id": "0",
+    "name": "單次回復",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "回復劑I",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑II",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑III",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑IV",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑V",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑VI",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑VII",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "回復劑VIII",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "raid",
+                "name": "七周年ex",
+                "map": "七周年競技場"
+              },
+              {
+                "type": "boss",
+                "name": "黑暗貝莉(地獄)",
+                "map": "璀璨小鎮．中央廣場"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "救難食品",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "",
+                "map": ""
+              }
+            ]
+          },
+          {
+            "name": "青蘋果",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "蘋果",
+                "map": "流浪者平原"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "波姆餅乾",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "勇者波多姆(DL下載活動)",
+                "map": "索菲亞政廳"
+              }
+            ]
+          },
+          {
+            "name": "味噌茄子",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "茄子田樂燒",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "蝙蝠糖",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "窟蝠",
+                "map": "利蘇斯山谷(萬聖節第八章)"
+              }
+            ]
+          },
+          {
+            "name": "小鼠餅乾",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "萬聖樹精",
+                "map": "利蘇斯山谷(萬聖節第八章)"
+              }
+            ]
+          },
+          {
+            "name": "波姆波姆燒",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "正月BOX",
+                "map": "壓歲錢戰鬥"
+              }
+            ]
+          },
+          {
+            "name": "波姆卡斯特拉蛋糕",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "正月BOX",
+                "map": "壓歲錢戰鬥"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "name": "HP增加類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "強身藥I",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "強身藥II",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "強身藥III",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "強身藥IV",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "2000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "強身藥V",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "2500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "鬥士紅兜",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "500",
+                "value2": ""
+              },
+              {
+                "name": "aggro",
+                "value1": "-15%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "鹽烤秋刀魚",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              },
+              {
+                "name": "natural_hp_regen",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              },
+              {
+                "type": "mobs",
+                "name": "柿子怪",
+                "map": "平原地圖"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "油豆皮",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1%",
+                "value2": ""
+              },
+              {
+                "name": "accuracy",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "楓糖狐狸",
+                "map": "費戈莊園"
+              }
+            ]
+          },
+          {
+            "name": "帶骨小排",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "25",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "弗萊德魯加",
+                "map": "恩惠神殿"
+              }
+            ]
+          },
+          {
+            "name": "過硬的羊肉",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "750",
+                "value2": ""
+              },
+              {
+                "name": "str",
+                "value1": "5",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "結晶羊",
+                "map": "戰士的搖籃"
+              }
+            ]
+          },
+          {
+            "name": "基頓肉",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "5000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "基頓",
+                "map": "傑巴力·庫佈瓦"
+              }
+            ]
+          },
+          {
+            "name": "水煮龍蝦",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "5000",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "-100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "龍蝦",
+                "map": "蘇瑪洞窟"
+              }
+            ]
+          },
+          {
+            "name": "曲莖冰淇淋",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "-15%",
+                "value2": ""
+              },
+              {
+                "name": "aggro",
+                "value1": "25",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "吉歐斯",
+                "map": "梅納布拉平原"
+              }
+            ]
+          },
+          {
+            "name": "黑烤沼主",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "4000",
+                "value2": ""
+              },
+              {
+                "name": "atk_up_vit",
+                "value1": "20%",
+                "value2": ""
+              },
+              {
+                "name": "matk_up_vit",
+                "value1": "20%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "內吉木領主",
+                "map": "內吉木沼澤"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "龍肉排",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1500",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "250",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "新郎寶箱"
+              }
+            ]
+          },
+          {
+            "name": "鯊肉排",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "2000",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "200",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "鯊魚波多姆",
+                "map": "海盜據點（夏活）"
+              }
+            ]
+          },
+          {
+            "name": "糖霜餅乾",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1500",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "200",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "拉戈斯"
+              }
+            ]
+          },
+          {
+            "name": "茄子天婦羅",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              },
+              {
+                "name": "exp_rate",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "冷掉的雞湯劑",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              },
+              {
+                "name": "aggro",
+                "value1": "-30%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "蓋格納",
+                "map": "喧囂之塔（聖誕活動）"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "HP回復類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "淨手舍",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "淨手舍",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "MP增加類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "魔力藥I",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔力藥II",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "200",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔力藥III",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "300",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔力藥IV",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "400",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔力藥V",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "萬眾矚目藥",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "aggro",
+                "value1": "20%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "金黃栗子泥",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "200",
+                "value2": ""
+              },
+              {
+                "name": "natural_mp_regen",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              },
+              {
+                "type": "mobs",
+                "name": "柿子怪",
+                "map": "平原地圖"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "藍白色果凍",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "藍色果凍",
+                "map": "寇達象丘"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "嫩煎羅諾戈蝦",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "300",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "250",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "新娘寶箱"
+              }
+            ]
+          },
+          {
+            "name": "波多姆豆",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "500",
+                "value2": ""
+              },
+              {
+                "name": "attack_mp_recovery",
+                "value1": "5",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "DL"
+              }
+            ]
+          },
+          {
+            "name": "魔力鮮奶油",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "600",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "DL"
+              }
+            ]
+          },
+          {
+            "name": "靈魂布丁",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "300",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": ""
+              }
+            ]
+          },
+          {
+            "name": "茄加成",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "drop_rate",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "小鳥提拉米蘇",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "200",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "吉蒂雀",
+                "map": "法爾可瑪森林（情人節）"
+              }
+            ]
+          },
+          {
+            "name": "神秘藥劑（B）",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "-100",
+                "value2": ""
+              },
+              {
+                "name": "motion_speed",
+                "value1": "2%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "MP回復類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "心型餅乾",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "symthesist"
+              }
+            ]
+          },
+          {
+            "name": "心型餅乾(交易後)",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "trade"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "藍色果凍",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "藍色果凍",
+                "map": "索菲亞地下水道,狄帕西水道"
+              }
+            ]
+          },
+          {
+            "name": "紅紫色果凍",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "紫色果凍",
+                "map": "阿爾堤玫亞下水道．東南"
+              }
+            ]
+          },
+          {
+            "name": "蒲公英咖啡",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "尼加納",
+                "map": "席卡斯平原"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "雪紅酒",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "香檳",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "冰凍葡萄酒",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "冰雪桶"
+              }
+            ]
+          },
+          {
+            "name": "化學質果凍",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "化學果凍",
+                "map": "七周年會場ex"
+              }
+            ]
+          },
+          {
+            "name": "波姆屋的甜酒",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "正月BOX",
+                "map": "壓歲錢戰鬥"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "ATK類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "大力菇菇",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "10",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "禁藥精華",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "20",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "2%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "大力神油",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "30",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "3%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "猛攻礦油",
+            "stats": [
+              {
+                "name": "unsheathe_attack_multiplier",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "unsheathe_attack",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "怪力糖",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "40",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "4%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "澎湃藥丸",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "50",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "穿甲油",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "3%",
+                "value2": ""
+              },
+              {
+                "name": "physical_pierce",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "松茸湯",
+            "stats": [
+              {
+                "name": "weapon_atk",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "attack_mp_recovery",
+                "value1": "10",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              },
+              {
+                "type": "mobs",
+                "name": "柿子怪",
+                "map": "平原地圖"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "灼熱草",
+            "stats": [
+              {
+                "name": "weapon_atk",
+                "value1": "9",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_earth",
+                "value1": "2%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "炎柱獸",
+                "map": "灼燒地溝·地面"
+              }
+            ]
+          },
+          {
+            "name": "興奮劑(肌力)",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "str",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "accuracy",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "激斗派拳兵",
+                "map": "多洛馬廣場附近"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "浸炸茄子",
+            "stats": [
+              {
+                "name": "weapon_atk",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "attack_mp_recovery",
+                "value1": "10",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "南瓜百匯",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "6%",
+                "value2": ""
+              },
+              {
+                "name": "ailment_resistance",
+                "value1": "-55%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "卡拉巴利",
+                "map": "利蘇斯山谷(萬聖節第八章)"
+              }
+            ]
+          },
+          {
+            "name": "波姆屋的烤糰子",
+            "stats": [
+              {
+                "name": "weapon_atk",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "physical_pierce",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "正月BOX",
+                "map": "壓歲錢戰鬥"
+              }
+            ]
+          },
+          {
+            "name": "晨星軟糖",
+            "stats": [
+              {
+                "name": "physical_pierce",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "40%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "鬼路燈",
+                "map": "杜薩尼亞實驗室（萬聖節）"
+              }
+            ]
+          },
+          {
+            "name": "提燈蛋糕",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "motion_speed",
+                "value1": "-10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "提燈蝙蝠",
+                "map": "怪盜韋斯普的據點"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "MATK類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "醒腦口香糖",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "10",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔力香木",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "20",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "2%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔導增幅",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "30",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "3%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "怪物壺",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "40",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "4%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "魔導師的秘藥",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "50",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "障壁解析石板",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "3%",
+                "value2": ""
+              },
+              {
+                "name": "magic_pierce",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": [
+          {
+            "name": "苦澀的明膠",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "-4%",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "800",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "果凍",
+                "map": "希克爾深谷"
+              }
+            ]
+          },
+          {
+            "name": "幹燥胡桃",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "1%",
+                "value2": ""
+              },
+              {
+                "name": "dex",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "巨尾鬆鼠",
+                "map": "瑪拉蒂雅"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "樹葉軟糖",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "6%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "萬聖樹精",
+                "map": "利蘇斯山谷(萬聖節第八章)"
+              }
+            ]
+          },
+          {
+            "name": "波姆屋的年糕湯",
+            "stats": [
+              {
+                "name": "weapon_atk",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "magic_pierce",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "正月BOX",
+                "map": "壓歲錢戰鬥"
+              }
+            ]
+          },
+          {
+            "name": "木乃伊捲",
+            "stats": [
+              {
+                "name": "magic_pierce",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "40%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "魔乃伊",
+                "map": "杜薩尼亞實驗室（萬聖節）"
+              }
+            ]
+          },
+          {
+            "name": "閃光糖果",
+            "stats": [
+              {
+                "name": "matk",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "motion_speed",
+                "value1": "-10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "銀河燈",
+                "map": "怪盜韋斯普的據點"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "屬性強化類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "變異魟魚湯",
+            "stats": [
+              {
+                "name": "stronger_against_fire",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_water",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_earth",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_wind",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_light",
+                "value1": "2%",
+                "value2": ""
+              },
+              {
+                "name": "stronger_against_dark",
+                "value1": "2%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "新郎寶箱"
+              }
+            ]
+          },
+          {
+            "name": "南瓜餅乾",
+            "stats": [
+              {
+                "name": "stronger_against_fire",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "火屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "薑餅蛋糕",
+            "stats": [
+              {
+                "name": "stronger_against_water",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "水屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "傑克布丁",
+            "stats": [
+              {
+                "name": "stronger_against_wind",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "風屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "愛爾蘭水果蛋糕",
+            "stats": [
+              {
+                "name": "stronger_against_earth",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "地屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "南瓜糖果",
+            "stats": [
+              {
+                "name": "stronger_against_light",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "光屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "殭屍蛋糕",
+            "stats": [
+              {
+                "name": "stronger_against_dark",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "暗屬性怪物"
+              }
+            ]
+          },
+          {
+            "name": "南瓜湯",
+            "stats": [
+              {
+                "name": "stronger_against_neutral",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "aspd",
+                "value1": "100",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss,mob",
+                "name": "無屬性怪物"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "ASPD類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "神速飲料",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "250",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "超神速飲料",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "無敵神速飲料",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "750",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "神速魔壺",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "1000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "固體燃料",
+            "stats": [
+              {
+                "name": "motion_speed",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "斯魔奇",
+                "map": "控制區域·動力管理區"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "水梨塔",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "500",
+                "value2": ""
+              },
+              {
+                "name": "attack_mp_recovery",
+                "value1": "3",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "殭尸肉",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "-1000",
+                "value2": ""
+              },
+              {
+                "name": "max_hp",
+                "value1": "10000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              },
+              {
+                "type": "mobs",
+                "name": "行走尸",
+                "map": "杜薩尼亞實驗室（萬聖節）"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "CSPD類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "星塵魔法藥",
+            "stats": [
+              {
+                "name": "cspd",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "流星魔法藥",
+            "stats": [
+              {
+                "name": "cspd",
+                "value1": "300",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "星語魔法藥",
+            "stats": [
+              {
+                "name": "cspd",
+                "value1": "500",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "詠咒耳機",
+            "stats": [
+              {
+                "name": "cspd",
+                "value1": "700",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "葡萄果凍",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "300",
+                "value2": ""
+              },
+              {
+                "name": "cspd",
+                "value1": "300",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": []
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "name": "命中類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "神準飲料",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "10",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "妖精的眼淚",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "20",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "名弓箭手的假鬍子",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "30",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "捕捉手套",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "40",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "沾黏丸子",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "50",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "戰靈之環",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "60",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "奶油煎蝸牛",
+            "stats": [
+              {
+                "name": "critical_rate",
+                "value1": "5",
+                "value2": ""
+              },
+              {
+                "name": "accuracy",
+                "value1": "30",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": ""
+              }
+            ]
+          },
+          {
+            "name": "葉櫻茶",
+            "stats": [
+              {
+                "name": "critical_rate",
+                "value1": "6",
+                "value2": ""
+              },
+              {
+                "name": "accuracy",
+                "value1": "12%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "法法菈",
+                "map": "葉櫻村、黑桃山、白桃山"
+              }
+            ]
+          },
+          {
+            "name": "蝙蝠鬆餅",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "long_range_damage",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "窟蝠",
+                "map": "利蘇斯山谷"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "迴避類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "黃金波姆酒",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "50",
+                "value2": ""
+              },
+              {
+                "name": "dodge",
+                "value1": "50",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "DL下載紀念活動",
+                "map": "索菲亞政廳"
+              }
+            ]
+          },
+          {
+            "name": "木製果仁糕",
+            "stats": [
+              {
+                "name": "dodge",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "醫鴞",
+                "map": "法爾可瑪森林"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "物理抗性類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": [
+          {
+            "name": "銀杏炊飯",
+            "stats": [
+              {
+                "name": "physical_resistance",
+                "value1": "25%",
+                "value2": ""
+              },
+              {
+                "name": "magic_resistance",
+                "value1": "25%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              },
+              {
+                "type": "mobs",
+                "name": "柿子怪",
+                "map": "平原地圖"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "麻婆茄子",
+            "stats": [
+              {
+                "name": "physical_resistance",
+                "value1": "25%",
+                "value2": ""
+              },
+              {
+                "name": "magic_resistance",
+                "value1": "25%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "神秘藥劑（Y）",
+            "stats": [
+              {
+                "name": "def",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "atk",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "map": "萬聖節第九章"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "name": "魔法抗性類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "海蝶軟糖",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "1000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "海蝶格瑞斯",
+                "map": "海盜據點（2025夏日活動）"
+              }
+            ]
+          },
+          {
+            "name": "神秘藥劑（P）",
+            "stats": [
+              {
+                "name": "mdef",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "1%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "map": "萬聖節第九章"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "name": "屬性抗性類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": [
+          {
+            "name": "火護符",
+            "stats": [
+              {
+                "name": "fire_resistance",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "def",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "mdef",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "水護符",
+            "stats": [
+              {
+                "name": "water_resistance",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "def",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "mdef",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "風護符",
+            "stats": [
+              {
+                "name": "wind_resistance",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "def",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "mdef",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          },
+          {
+            "name": "地護符",
+            "stats": [
+              {
+                "name": "earth_resistance",
+                "value1": "10%",
+                "value2": ""
+              },
+              {
+                "name": "def",
+                "value1": "5%",
+                "value2": ""
+              },
+              {
+                "name": "mdef",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "synthesist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "深色松露",
+            "stats": [
+              {
+                "name": "water_resistance",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "fire_resistance",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "wind_resistance",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "earth_resistance",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "light_resistance",
+                "value1": "4%",
+                "value2": ""
+              },
+              {
+                "name": "dark_resistance",
+                "value1": "4%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "新娘寶箱"
+              }
+            ]
+          },
+          {
+            "name": "冰淇淋蛋糕",
+            "stats": [
+              {
+                "name": "water_resistance",
+                "value1": "50%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "起司蛋糕",
+            "stats": [
+              {
+                "name": "wind_resistance",
+                "value1": "50%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "巧克力蛋糕",
+            "stats": [
+              {
+                "name": "fire_resistance",
+                "value1": "50%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "水果蛋糕",
+            "stats": [
+              {
+                "name": "earth_resistance",
+                "value1": "50%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "聖誕襪"
+              },
+              {
+                "type": "quest",
+                "name": "冰城"
+              }
+            ]
+          },
+          {
+            "name": "冰可可",
+            "stats": [
+              {
+                "name": "light_resistance",
+                "value1": "25%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "冰雪桶"
+              }
+            ]
+          },
+          {
+            "name": "冰咖啡",
+            "stats": [
+              {
+                "name": "dark_resistance",
+                "value1": "25%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "冰雪桶"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(醬汁)",
+            "stats": [
+              {
+                "name": "fire_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(高湯)",
+            "stats": [
+              {
+                "name": "water_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(蔥花)",
+            "stats": [
+              {
+                "name": "wind_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(醬油)",
+            "stats": [
+              {
+                "name": "earth_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(鹽)",
+            "stats": [
+              {
+                "name": "light_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(柚子醋)",
+            "stats": [
+              {
+                "name": "dark_resistance",
+                "value1": "30%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "阿健章魚燒"
+              },
+              {
+                "type": "boss",
+                "name": "章魚阿健",
+                "map": "沙爾陶海灘．海灘小屋"
+              }
+            ]
+          },
+          {
+            "name": "阿健章魚燒(禮包)",
+            "stats": [],
+            "obtains": [
+              {
+                "type": "symthesist"
+              }
+            ]
+          },
+          {
+            "name": "炙烤茄子",
+            "stats": [
+              {
+                "name": "neutral_resistance",
+                "value1": "20%",
+                "value2": ""
+              },
+              {
+                "name": "critical_rate",
+                "value1": "10",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "吉羅康",
+            "stats": [
+              {
+                "name": "wind_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "dark_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "max_hp",
+                "value1": "3000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "巨斧稻草人",
+                "map": "瑪德蓮平原"
+              }
+            ]
+          },
+          {
+            "name": "美樂蜂蛋糕",
+            "stats": [
+              {
+                "name": "fire_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "light_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "max_hp",
+                "value1": "3000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "芙蘿拉蜜蜂",
+                "map": "瑪德蓮平原"
+              }
+            ]
+          },
+          {
+            "name": "吉羅康",
+            "stats": [
+              {
+                "name": "water_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "wind_resistance",
+                "value1": "15%",
+                "value2": ""
+              },
+              {
+                "name": "max_hp",
+                "value1": "3000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "mobs",
+                "name": "楓糖狐狸",
+                "map": "瑪德蓮平原"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "name": "疫苗類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "沙拉茄子醬",
+            "stats": [
+              {
+                "name": "ailment_resistance",
+                "value1": "5%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "boss",
+                "name": "茄龍歐瓦比昂",
+                "map": "萊卡平原(秋季活動限定)"
+              }
+            ]
+          },
+          {
+            "name": "波姆波姆杏仁糖",
+            "stats": [
+              {
+                "name": "ailment_resistance",
+                "value1": "15",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "map": "DL活動"
+              }
+            ]
+          },
+          {
+            "name": "神秘藥劑（G）",
+            "stats": [
+              {
+                "name": "ailment_resistance",
+                "value1": "-10%",
+                "value2": ""
+              },
+              {
+                "name": "max_mp",
+                "value1": "100",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "map": "萬聖節第九章"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "name": "參拜類",
+    "obtainCategories": [
+      {
+        "id": "0",
+        "name": "合成類(通常)",
+        "potions": []
+      },
+      {
+        "id": "1",
+        "name": "合成類(活動)",
+        "potions": []
+      },
+      {
+        "id": "2",
+        "name": "掉落(通常)",
+        "potions": []
+      },
+      {
+        "id": "3",
+        "name": "掉落(活動)",
+        "potions": [
+          {
+            "name": "強身健體！",
+            "stats": [
+              {
+                "name": "max_hp",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "專心致志！",
+            "stats": [
+              {
+                "name": "max_mp",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "大紅大紫！",
+            "stats": [
+              {
+                "name": "aggro",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "財運亨通！",
+            "stats": [
+              {
+                "name": "accuracy",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "消災解厄！",
+            "stats": [
+              {
+                "name": "dodge",
+                "value1": "100%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "人中龍鳳！",
+            "stats": [
+              {
+                "name": "atk",
+                "value1": "3%",
+                "value2": ""
+              },
+              {
+                "name": "matk",
+                "value1": "3%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "生活穩定！",
+            "stats": [
+              {
+                "name": "stability",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "行動敏捷！",
+            "stats": [
+              {
+                "name": "aspd",
+                "value1": "1000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "口齒清晰！",
+            "stats": [
+              {
+                "name": "cspd",
+                "value1": "1000",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          },
+          {
+            "name": "累積經驗！",
+            "stats": [
+              {
+                "name": "exp_rate",
+                "value1": "10%",
+                "value2": ""
+              }
+            ],
+            "obtains": [
+              {
+                "type": "box",
+                "name": "捐獻箱",
+                "map": "阿梵九蓮神社"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

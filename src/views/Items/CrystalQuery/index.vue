@@ -121,6 +121,7 @@ import { type Ref, computed, reactive, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import { useContributeHint } from '@/shared/setup/ContributeHint'
 import PageControl from '@/shared/setup/PageControl'
 import { useToggle } from '@/shared/setup/State'
 
@@ -262,6 +263,14 @@ const resultCrystals = computed(() => {
   }
   return []
 })
+
+useContributeHint(
+  computed(
+    () =>
+      resultCrystals.value.length === 0 &&
+      (mode.value === 'normal' ? !!modeNormal.searchText : modeStat.statItem !== null)
+  )
+)
 
 // Page control
 const { currentItems, page, maxPage } = PageControl({

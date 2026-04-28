@@ -1,0 +1,479 @@
+{
+  "skill": {
+    "-blade-skills-1": {
+      "name": "Power Attack Enhancement"
+    },
+    "-blade-skills-2": {
+      "name": "Sonic Blade Extension"
+    },
+    "-blade-skills-3": {
+      "name": "Smash Element"
+    },
+    "-blade-skills-4": {
+      "name": "Vacuum Blade Enhancement"
+    },
+    "-blade-skills-5": {
+      "name": "Astute Extension"
+    },
+    "-blade-skills-6": {
+      "name": "Explosive Slash Recovery"
+    },
+    "-blade-skills-7": {
+      "name": "Battle Cry Overcome"
+    },
+    "-blade-skills-8": {
+      "name": "Berserker's Rage Suppress"
+    },
+    "-blade-skills-9": {
+      "name": "Storm Flame Guard Evasion"
+    },
+    "-blade-skills-10": {
+      "name": "Spirit Blade Pressure"
+    },
+    "-blade-skills-11": {
+      "name": "Berserker's Rage Charge"
+    },
+    "-blade-skills-12": {
+      "name": "Lunar Slash Mana Drain"
+    },
+    "-shot-skills-1": {
+      "name": "Power Shot Heavy Hit"
+    },
+    "-shot-skills-2": {
+      "name": "Turbo Shot Enhancement"
+    },
+    "-shot-skills-3": {
+      "name": "Arrow Rain Follow-Up"
+    },
+    "-shot-skills-4": {
+      "name": "Paralysis Shot Extension"
+    },
+    "-shot-skills-5": {
+      "name": "Smoke Bomb Extension"
+    },
+    "-shot-skills-6": {
+      "name": "Decoy Shot Compression"
+    },
+    "-shot-skills-7": {
+      "name": "Camouflage Time Limit"
+    },
+    "-shot-skills-8": {
+      "name": "Curve Shot Identification"
+    },
+    "-magic-skills-1": {
+      "name": "Magic: Arrow Follow-Up"
+    },
+    "-magic-skills-2": {
+      "name": "Magic: Barrier Enhancement"
+    },
+    "-magic-skills-3": {
+      "name": "Magic: Burst Accelerate"
+    },
+    "-magic-skills-4": {
+      "name": "Magic: Detonation Accelerate"
+    },
+    "-magic-skills-5": {
+      "name": "Burst Cast Variation"
+    },
+    "-magic-skills-6": {
+      "name": "Silent Charge"
+    },
+    "-magic-skills-7": {
+      "name": "Magic: Impact Fighting Spirit"
+    },
+    "-magic-skills-8": {
+      "name": "Mana Conversion Switch"
+    },
+    "-magic-skills-9": {
+      "name": "Chronos Field Persistence"
+    },
+    "-magic-skills-10": {
+      "name": "Magic: Ruin Meteor"
+    },
+    "-magic-skills-11": {
+      "name": "Magic: Storm Extension"
+    },
+    "-martial-skills-1": {
+      "name": "Heavy Strike Enhancement"
+    },
+    "-martial-skills-2": {
+      "name": "Sonic Wave Enhancement"
+    },
+    "-martial-skills-3": {
+      "name": "Armor Pierce Enhancement"
+    },
+    "-martial-skills-4": {
+      "name": "Earth Shaker Enhancement"
+    },
+    "-martial-skills-5": {
+      "name": "Fierce Aura Pierce"
+    },
+    "-dual-sword-skills-1": {
+      "name": "Twin Slash Enhancement"
+    },
+    "-dual-sword-skills-2": {
+      "name": "Formation Break Enhancement"
+    },
+    "-dual-sword-skills-3": {
+      "name": "Void Slash Compression"
+    },
+    "-dual-sword-skills-4": {
+      "name": "Phantom Slash Enhancement"
+    },
+    "-dual-sword-skills-5": {
+      "name": "Explosive Barrage Focus"
+    },
+    "-dual-sword-skills-6": {
+      "name": "Arc Light Sword Dance Moon Shadow"
+    },
+    "-dual-sword-skills-7": {
+      "name": "Moon God's Calamity Rush"
+    },
+    "-dual-sword-skills-8": {
+      "name": "Dual Sword Break Ward"
+    },
+    "-halberd-skills-1": {
+      "name": "Swift Thrust Enhancement"
+    },
+    "-halberd-skills-2": {
+      "name": "Swan Throw Hinder"
+    },
+    "-halberd-skills-3": {
+      "name": "Dragon Tail Enhancement"
+    },
+    "-halberd-skills-4": {
+      "name": "Battle Roar Aggro"
+    },
+    "-halberd-skills-5": {
+      "name": "Earth Drive Focus"
+    },
+    "-halberd-skills-6": {
+      "name": "Destroy Lance Long Throw"
+    },
+    "-halberd-skills-7": {
+      "name": "Space-Time Drive Iron Core"
+    },
+    "-mononofu-skills-1": {
+      "name": "Quick Draw Enhancement"
+    },
+    "-mononofu-skills-2": {
+      "name": "Hilt Strike Hinder"
+    },
+    "-mononofu-skills-3": {
+      "name": "Triple Thrust Immovable"
+    },
+    "-mononofu-skills-4": {
+      "name": "Calamity Cutter Exorcism"
+    },
+    "-mononofu-skills-5": {
+      "name": "Clear Mind Routine"
+    },
+    "-mononofu-skills-6": {
+      "name": "Triple Thrust Evasion"
+    },
+    "-mononofu-skills-7": {
+      "name": "Indomitable Undefeated"
+    },
+    "-crusher-skills-1": {
+      "name": "Flying Kick Evasion"
+    },
+    "-crusher-skills-2": {
+      "name": "Breathing Conservation"
+    },
+    "-shield-skills-1": {
+      "name": "Shield Bash Conservation"
+    },
+    "-shield-skills-2": {
+      "name": "Defense Limit Magic Shelter"
+    },
+    "-knight-skills-1": {
+      "name": "Charge Sprint"
+    },
+    "-knight-skills-2": {
+      "name": "Wrathful Strike Enhancement"
+    },
+    "-knight-skills-3": {
+      "name": "Perfect Defense Silence"
+    },
+    "-knight-skills-4": {
+      "name": "Shadow Bind Variation"
+    },
+    "-knight-skills-5": {
+      "name": "Sonic Press Direct Hit"
+    },
+    "-hunter-skills-1": {
+      "name": "Disable Trap Hunter"
+    },
+    "-priest-skills-1": {
+      "name": "Dignified Heal Expand"
+    },
+    "-priest-skills-2": {
+      "name": "Holy Radiance Divine Punishment"
+    },
+    "-assasin-skills-1": {
+      "name": "Shadow Step Illusion"
+    },
+    "-assasin-skills-2": {
+      "name": "Assassination Stab Enhancement"
+    },
+    "-wizard-skills-1": {
+      "name": "Meteor Shower Single Shot"
+    },
+    "-wizard-skills-2": {
+      "name": "Familiar Comrade"
+    },
+    "-wizard-skills-3": {
+      "name": "Mana Crystal Accelerate"
+    },
+    "-support-skills-1": {
+      "name": "Ailment Guard Recovery"
+    },
+    "-support-skills-2": {
+      "name": "Regenerate Conservation"
+    },
+    "-support-skills-3": {
+      "name": "Regenerate Reserve"
+    },
+    "-battle-skills-1": {
+      "name": "Hard Hit Essence"
+    },
+    "-battle-skills-2": {
+      "name": "Concentration Essence"
+    },
+    "-battle-skills-3": {
+      "name": "Follow-Up Essence Enhancement"
+    },
+    "-dark-power-1": {
+      "name": "Blood Bite Enhancement"
+    },
+    "-dark-power-2": {
+      "name": "Demon Claw Focus"
+    },
+    "-magic-blade-1": {
+      "name": "Mana Resonance Firepower"
+    },
+    "-magic-blade-2": {
+      "name": "Mana Resonance Accelerate"
+    },
+    "-magic-blade-3": {
+      "name": "Ethereal Flame Extension"
+    },
+    "-magic-blade-4": {
+      "name": "Mana Resonance Focus"
+    },
+    "-barehand-skills-1": {
+      "name": "Ki Charge Full Power"
+    },
+    "-minstrel-skills-1": {
+      "name": "Guitarist"
+    },
+    "-dancer-skills-1": {
+      "name": "Quick Steps"
+    },
+    "-ninja-skills-1": {
+      "name": "Fuma Shuriken Enhancement"
+    },
+    "-ninja-skills-2": {
+      "name": "Fire Style Dragon Flame"
+    },
+    "-ninja-skills-3": {
+      "name": "Wind Style Draw"
+    },
+    "-ninja-skills-4": {
+      "name": "Water Style Water Mirror"
+    }
+  },
+  "stat": {
+    "1": {
+      "name": "Physical ATK Up"
+    },
+    "2": {
+      "name": "Magic ATK Up"
+    },
+    "3": {
+      "name": "Max HP Up"
+    },
+    "4": {
+      "name": "Max MP Up"
+    },
+    "5": {
+      "name": "Physical DEF Up"
+    },
+    "6": {
+      "name": "Magic DEF Up"
+    },
+    "7": {
+      "name": "Accuracy Up"
+    },
+    "8": {
+      "name": "Evasion Up"
+    },
+    "9": {
+      "name": "ASPD Up"
+    },
+    "10": {
+      "name": "CSPD Up"
+    }
+  },
+  "special": {
+    "1": {
+      "name": "Mitigate Follow-up"
+    },
+    "2": {
+      "name": "Venom Recovery"
+    },
+    "3": {
+      "name": "Burning Spirit"
+    },
+    "4": {
+      "name": "Neural Control"
+    },
+    "5": {
+      "name": "Cat Eye"
+    },
+    "6": {
+      "name": "High Body Temperature"
+    },
+    "7": {
+      "name": "Emergency Repair"
+    },
+    "8": {
+      "name": "Spiked Shoes"
+    },
+    "9": {
+      "name": "Immovable"
+    },
+    "10": {
+      "name": "Fight to the Death"
+    },
+    "11": {
+      "name": "Sleep Deprived"
+    },
+    "12": {
+      "name": "Mana Fire"
+    },
+    "13": {
+      "name": "Monster Hunter"
+    },
+    "14": {
+      "name": "Coffee Time"
+    },
+    "15": {
+      "name": "Ascetic"
+    },
+    "16": {
+      "name": "Attack Pet"
+    },
+    "17": {
+      "name": "Tank Pet"
+    },
+    "18": {
+      "name": "HP Emergency Recovery"
+    },
+    "19": {
+      "name": "MP Emergency Recovery"
+    },
+    "20": {
+      "name": "Mana Punch"
+    },
+    "21": {
+      "name": "Conservation Technique"
+    },
+    "22": {
+      "name": "Last Hero"
+    },
+    "23": {
+      "name": "Lonely"
+    },
+    "24": {
+      "name": "Starting Sprint"
+    },
+    "25": {
+      "name": "Sunbathing"
+    },
+    "26": {
+      "name": "Shared Fate"
+    },
+    "27": {
+      "name": "Last Resistance"
+    },
+    "28": {
+      "name": "Hidden Combo"
+    },
+    "29": {
+      "name": "Empty Stance"
+    },
+    "30": {
+      "name": "Rearguard"
+    },
+    "31": {
+      "name": "Savior"
+    },
+    "32": {
+      "name": "Panic"
+    },
+    "33": {
+      "name": "Transfer"
+    },
+    "34": {
+      "name": "Fire Aptitude"
+    },
+    "35": {
+      "name": "Water Aptitude"
+    },
+    "36": {
+      "name": "Wind Aptitude"
+    },
+    "37": {
+      "name": "Earth Aptitude"
+    },
+    "38": {
+      "name": "Emergency Care"
+    },
+    "39": {
+      "name": "Draw Move Cancel"
+    },
+    "40": {
+      "name": "Light Aptitude"
+    },
+    "41": {
+      "name": "Target Declaration"
+    },
+    "42": {
+      "name": "Off-Duty Report"
+    },
+    "43": {
+      "name": "Instructor"
+    },
+    "44": {
+      "name": "Healing Hands"
+    },
+    "45": {
+      "name": "Iron Fist"
+    },
+    "46": {
+      "name": "Evasion Set"
+    },
+    "47": {
+      "name": "Dark Aptitude"
+    },
+    "48": {
+      "name": "Damage Check"
+    },
+    "49": {
+      "name": "Well Noted"
+    },
+    "50": {
+      "name": "Knight's Intuition"
+    },
+    "51": {
+      "name": "Exclusive Escort"
+    },
+    "52": {
+      "name": "Red Zone Shield"
+    },
+    "53": {
+      "name": "Blue Zone Shield"
+    }
+  }
+}

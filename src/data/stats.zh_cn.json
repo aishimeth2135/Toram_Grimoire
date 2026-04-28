@@ -1,0 +1,455 @@
+{
+  "str": {
+    "caption": "STR"
+  },
+  "dex": {
+    "caption": "DEX"
+  },
+  "int": {
+    "caption": "INT"
+  },
+  "agi": {
+    "caption": "AGI"
+  },
+  "vit": {
+    "caption": "VIT"
+  },
+  "max_hp": {
+    "caption": "HP上限"
+  },
+  "max_mp": {
+    "caption": "MP上限",
+    "constantFormula": "$t$s$v"
+  },
+  "natural_hp_regen": {
+    "caption": "HP自然回复"
+  },
+  "natural_hp_regen_s": {
+    "caption": "HP自然回复"
+  },
+  "natural_hp_regen_b": {
+    "caption": "战时HP回复"
+  },
+  "natural_mp_regen": {
+    "caption": "MP自然回复"
+  },
+  "natural_mp_regen_s": {
+    "caption": "MP自然回复"
+  },
+  "natural_mp_regen_b": {
+    "caption": "战时MP回复"
+  },
+  "attack_mp_recovery": {
+    "caption": "攻击MP回复"
+  },
+  "atk": {
+    "caption": "ATK"
+  },
+  "atk_sub": {
+    "caption": "(双剑)副手ATK"
+  },
+  "matk": {
+    "caption": "MATK"
+  },
+  "weapon_atk": {
+    "caption": "武器ATK"
+  },
+  "weapon_base_atk": {
+    "caption": "武器基础ATK"
+  },
+  "weapon_range": {
+    "caption": "武器攻击距离",
+    "constantFormula": "$t$s$1dm"
+  },
+  "physical_pierce": {
+    "caption": "物理贯穿"
+  },
+  "magic_pierce": {
+    "caption": "魔法贯穿"
+  },
+  "def": {
+    "caption": "DEF"
+  },
+  "mdef": {
+    "caption": "MDEF"
+  },
+  "stability": {
+    "caption": "稳定率"
+  },
+  "stability_main": {
+    "caption": "稳定率"
+  },
+  "stability_magic": {
+    "caption": "魔法稳定率"
+  },
+  "physical_resistance": {
+    "caption": "物理抗性"
+  },
+  "magic_resistance": {
+    "caption": "魔法抗性"
+  },
+  "accuracy": {
+    "caption": "命中"
+  },
+  "dodge": {
+    "caption": "回避"
+  },
+  "aspd": {
+    "caption": "攻击速度"
+  },
+  "cspd": {
+    "caption": "咏唱速度"
+  },
+  "critical_rate": {
+    "caption": "暴击率"
+  },
+  "critical_damage": {
+    "caption": "暴击伤害"
+  },
+  "critical_damage_skill": {
+    "caption": "暴击伤害"
+  },
+  "motion_speed": {
+    "caption": "行动速度"
+  },
+  "movement_speed": {
+    "caption": "移动速度"
+  },
+  "unsheathe_attack": {
+    "caption": "拔刀攻击",
+    "constantFormula": "$t$s$v"
+  },
+  "unsheathe_attack_multiplier": {
+    "caption": "拔刀攻击"
+  },
+  "short_range_damage": {
+    "caption": "近距离威力"
+  },
+  "long_range_damage": {
+    "caption": "远距离威力"
+  },
+  "total_damage_A": {
+    "caption": "总伤害"
+  },
+  "total_damage_B": {
+    "caption": "最终伤害"
+  },
+  "ailment_resistance": {
+    "caption": "异常抗性"
+  },
+  "guard_rate": {
+    "caption": "阻挡率"
+  },
+  "guard_regenerate": {
+    "caption": "阻挡回复"
+  },
+  "guard_power": {
+    "caption": "阻挡力"
+  },
+  "evasion_rate": {
+    "caption": "闪躲率"
+  },
+  "evasion_regenerate": {
+    "caption": "闪躲回复"
+  },
+  "evasion_count": {
+    "caption": "闪躲次数上限",
+    "constantFormula": "$t$s$v"
+  },
+  "aggro": {
+    "caption": "恨意值"
+  },
+  "revive_time": {
+    "caption": "复活时间"
+  },
+  "drop_rate": {
+    "caption": "掉宝率"
+  },
+  "stronger_against_neutral": {
+    "caption": "对无属性伤害"
+  },
+  "stronger_against_fire": {
+    "caption": "对火属性伤害"
+  },
+  "stronger_against_water": {
+    "caption": "对水属性伤害"
+  },
+  "stronger_against_earth": {
+    "caption": "对地属性伤害"
+  },
+  "stronger_against_wind": {
+    "caption": "对风属性伤害"
+  },
+  "stronger_against_light": {
+    "caption": "对光属性伤害"
+  },
+  "stronger_against_dark": {
+    "caption": "对暗属性伤害"
+  },
+  "neutral_resistance": {
+    "caption": "抗无属性"
+  },
+  "fire_resistance": {
+    "caption": "抗火属性"
+  },
+  "water_resistance": {
+    "caption": "抗水属性"
+  },
+  "earth_resistance": {
+    "caption": "抗地属性"
+  },
+  "wind_resistance": {
+    "caption": "抗风属性"
+  },
+  "light_resistance": {
+    "caption": "抗光属性"
+  },
+  "dark_resistance": {
+    "caption": "抗暗属性"
+  },
+  "physical_barrier": {
+    "caption": "物理屏障",
+    "constantFormula": "$t$s$v"
+  },
+  "magical_barrier": {
+    "caption": "魔法屏障",
+    "constantFormula": "$t$s$v"
+  },
+  "fractional_barrier": {
+    "caption": "百分比屏障"
+  },
+  "barrier_cooldown": {
+    "caption": "屏障速度"
+  },
+  "reflect": {
+    "caption": "反弹伤害"
+  },
+  "additional_meele": {
+    "caption": "物理追击",
+    "constantFormula": "$t$v$u"
+  },
+  "additional_magic": {
+    "caption": "魔法追击",
+    "constantFormula": "$t$v$u"
+  },
+  "anticipate": {
+    "caption": "看穿",
+    "constantFormula": "$t$v$u"
+  },
+  "guard_break": {
+    "caption": "破防",
+    "constantFormula": "$t$v$u"
+  },
+  "flinch_unavailable": {
+    "caption": "封印胆怯",
+    "constantFormula": "$t"
+  },
+  "tumble_unavailable": {
+    "caption": "封印翻覆",
+    "constantFormula": "$t"
+  },
+  "stun_unavailable": {
+    "caption": "封印昏厥",
+    "constantFormula": "$t"
+  },
+  "recoil_damage": {
+    "caption": "反作用伤害",
+    "constantFormula": "$t$s$2d$u"
+  },
+  "exp_rate": {
+    "caption": "获得EXP"
+  },
+  "element_fire": {
+    "caption": "火属性"
+  },
+  "element_water": {
+    "caption": "水属性",
+    "constantFormula": "$t"
+  },
+  "element_earth": {
+    "caption": "地属性",
+    "constantFormula": "$t"
+  },
+  "element_wind": {
+    "caption": "风属性",
+    "constantFormula": "$t"
+  },
+  "element_light": {
+    "caption": "光属性",
+    "constantFormula": "$t"
+  },
+  "element_dark": {
+    "caption": "暗属性",
+    "constantFormula": "$t"
+  },
+  "element_mana": {
+    "caption": "魔属性",
+    "constantFormula": "$t"
+  },
+  "absolute_dodge": {
+    "caption": "绝对回避"
+  },
+  "absolute_accuracy": {
+    "caption": "绝对命中"
+  },
+  "reduce_dmg_floor": {
+    "caption": "地面伤害减轻"
+  },
+  "reduce_dmg_meteor": {
+    "caption": "陨石伤害减轻"
+  },
+  "reduce_player_epicenter": {
+    "caption": "范围伤害减轻"
+  },
+  "reduce_dmg_foe_epicenter": {
+    "caption": "敌方周围伤害减轻"
+  },
+  "reduce_dmg_bowling": {
+    "caption": "贴地伤害减轻"
+  },
+  "reduce_dmg_bullet": {
+    "caption": "子弹伤害减轻"
+  },
+  "reduce_dmg_straight_line": {
+    "caption": "直线伤害减轻"
+  },
+  "reduce_dmg_charge": {
+    "caption": "冲撞伤害减轻"
+  },
+  "reduce_dmg_explosion": {
+    "caption": "爆炸减轻"
+  },
+  "reduce_dmg_gravity": {
+    "caption": "吸引减轻"
+  },
+  "atk_up_str": {
+    "caption": "ATK提升 (STR)",
+    "constantFormula": "ATK提升(STR$v%)"
+  },
+  "atk_up_dex": {
+    "caption": "ATK提升 (DEX)",
+    "constantFormula": "ATK提升(DEX$v%)"
+  },
+  "atk_up_int": {
+    "caption": "ATK提升 (INT)",
+    "constantFormula": "ATK提升(INT$v%)"
+  },
+  "atk_up_agi": {
+    "caption": "ATK提升 (AGI)",
+    "constantFormula": "ATK提升(AGI$v%)"
+  },
+  "atk_up_vit": {
+    "caption": "ATK提升 (VIT)",
+    "constantFormula": "ATK提升(VIT$v%)"
+  },
+  "matk_up_str": {
+    "caption": "MATK提升 (STR)",
+    "constantFormula": "MATK提升(STR$v%)"
+  },
+  "matk_up_dex": {
+    "caption": "MATK提升 (DEX)",
+    "constantFormula": "MATK提升(DEX$v%)"
+  },
+  "matk_up_int": {
+    "caption": "MATK提升 (INT)",
+    "constantFormula": "MATK提升(INT$v%)"
+  },
+  "matk_up_agi": {
+    "caption": "MATK提升 (AGI)",
+    "constantFormula": "MATK提升(AGI$v%)"
+  },
+  "matk_up_vit": {
+    "caption": "MATK提升 (VIT)",
+    "constantFormula": "MATK提升(VIT$v%)"
+  },
+  "atk_down_str": {
+    "caption": "ATK下降 (STR)",
+    "constantFormula": "ATK下降(STR$v%)"
+  },
+  "atk_down_dex": {
+    "caption": "ATK下降 (DEX)",
+    "constantFormula": "ATK下降(DEX$v%)"
+  },
+  "atk_down_int": {
+    "caption": "ATK下降 (INT)",
+    "constantFormula": "ATK下降(INT$v%)"
+  },
+  "atk_down_agi": {
+    "caption": "ATK下降 (AGI)",
+    "constantFormula": "ATK下降(AGI$v%)"
+  },
+  "atk_down_vit": {
+    "caption": "ATK下降 (VIT)",
+    "constantFormula": "ATK下降(VIT$v%)"
+  },
+  "matk_down_str": {
+    "caption": "MATK下降 (STR)",
+    "constantFormula": "MATK下降(STR$v%)"
+  },
+  "matk_down_dex": {
+    "caption": "MATK下降 (DEX)"
+  },
+  "matk_down_int": {
+    "caption": "MATK下降 (INT)"
+  },
+  "matk_down_agi": {
+    "caption": "MATK下降 (AGI)"
+  },
+  "matk_down_vit": {
+    "caption": "MATK下降 (VIT)"
+  },
+  "invincible_aid_sec": {
+    "caption": "无敌急救 (s)"
+  },
+  "pet_exp": {
+    "caption": "宠物获得EXP"
+  },
+  "item_cooldown": {
+    "caption": "道具冷却"
+  },
+  "skill_constant_extra": {
+    "caption": "技能常数"
+  },
+  "magic_crt_percentage": {
+    "caption": "法术暴击转化率"
+  },
+  "magic_cd_percentage": {
+    "caption": "法术暴伤转化率"
+  },
+  "normal_attack_multiplier": {
+    "caption": "普通攻击倍率"
+  },
+  "normal_attack_constant": {
+    "caption": "普通攻击常数"
+  },
+  "gempowder_drop_add": {
+    "caption": "晶石粉末掉落量"
+  },
+  "total_skill_multiplier": {
+    "caption": "总技能倍率"
+  },
+  "skill_multiplier_extra": {
+    "caption": "技能倍率"
+  },
+  "graze_penalty_mitigation": {
+    "caption": "擦伤惩罚缓和"
+  },
+  "magic_stronger_against_element": {
+    "caption": "法术额外属性伤害"
+  },
+  "ailment_avoid": {
+    "caption": "异常闪躲"
+  },
+  "base_guard_power": {
+    "caption": "阻挡性能基础值"
+  },
+  "base_guard_regenerate": {
+    "caption": "阻挡回复基础值"
+  },
+  "base_evasion_regenerate": {
+    "caption": "闪躲回复基础值"
+  },
+  "dual_bringer_efficiency": {
+    "caption": "双重提供技能效率"
+  }
+}

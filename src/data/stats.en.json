@@ -1,0 +1,422 @@
+{
+  "str": {
+    "caption": "STR"
+  },
+  "dex": {
+    "caption": "DEX"
+  },
+  "int": {
+    "caption": "INT"
+  },
+  "agi": {
+    "caption": "AGI"
+  },
+  "vit": {
+    "caption": "VIT"
+  },
+  "max_hp": {
+    "caption": "MaxHP"
+  },
+  "max_mp": {
+    "caption": "MaxMP"
+  },
+  "natural_hp_regen": {
+    "caption": "Natural HP Regen"
+  },
+  "natural_hp_regen_s": {
+    "caption": "Natural HP Regen"
+  },
+  "natural_hp_regen_b": {
+    "caption": "HP Regen (In Battle)"
+  },
+  "natural_mp_regen": {
+    "caption": "Natural MP Regen"
+  },
+  "natural_mp_regen_s": {
+    "caption": "Natural MP Regen"
+  },
+  "natural_mp_regen_b": {
+    "caption": "MP Regen (In Battle)"
+  },
+  "attack_mp_recovery": {
+    "caption": "Attack MP Recovery"
+  },
+  "atk": {
+    "caption": "ATK"
+  },
+  "atk_sub": {
+    "caption": "Sub ATK (Dual Sword)"
+  },
+  "matk": {
+    "caption": "MATK"
+  },
+  "weapon_atk": {
+    "caption": "Weapon ATK"
+  },
+  "weapon_base_atk": {
+    "caption": "Weapon Base ATK"
+  },
+  "weapon_range": {
+    "caption": "Weapon Range"
+  },
+  "physical_pierce": {
+    "caption": "Physical Pierce"
+  },
+  "magic_pierce": {
+    "caption": "Magic Pierce"
+  },
+  "def": {
+    "caption": "DEF"
+  },
+  "mdef": {
+    "caption": "MDEF"
+  },
+  "stability": {
+    "caption": "Stability"
+  },
+  "stability_main": {
+    "caption": "Stability"
+  },
+  "stability_magic": {
+    "caption": "Magic Stability"
+  },
+  "physical_resistance": {
+    "caption": "Physical Resistance"
+  },
+  "magic_resistance": {
+    "caption": "Magic Resistance"
+  },
+  "accuracy": {
+    "caption": "Accuracy"
+  },
+  "dodge": {
+    "caption": "Dodge"
+  },
+  "aspd": {
+    "caption": "ASPD"
+  },
+  "cspd": {
+    "caption": "CSPD"
+  },
+  "critical_rate": {
+    "caption": "Critical Rate"
+  },
+  "critical_damage": {
+    "caption": "Critical Damage"
+  },
+  "critical_damage_skill": {
+    "caption": "Critical Damage"
+  },
+  "motion_speed": {
+    "caption": "Motion Speed"
+  },
+  "movement_speed": {
+    "caption": "Movement Speed"
+  },
+  "unsheathe_attack": {
+    "caption": "Unsheathe Attack"
+  },
+  "unsheathe_attack_multiplier": {
+    "caption": "Unsheathe Attack %"
+  },
+  "short_range_damage": {
+    "caption": "Short Range Damage"
+  },
+  "long_range_damage": {
+    "caption": "Long Range Damage"
+  },
+  "total_damage_A": {
+    "caption": "Total Damage (Passive)"
+  },
+  "total_damage_B": {
+    "caption": "Total Damage (Skill)"
+  },
+  "ailment_resistance": {
+    "caption": "Ailment Resistance"
+  },
+  "guard_rate": {
+    "caption": "Guard Rate"
+  },
+  "guard_regenerate": {
+    "caption": "Guard Recharge"
+  },
+  "guard_power": {
+    "caption": "Guard Power"
+  },
+  "evasion_rate": {
+    "caption": "Evasion Rate"
+  },
+  "evasion_regenerate": {
+    "caption": "Evasion Recharge"
+  },
+  "evasion_count": {
+    "caption": "Evasion Count"
+  },
+  "aggro": {
+    "caption": "Aggro"
+  },
+  "revive_time": {
+    "caption": "Revive Time"
+  },
+  "drop_rate": {
+    "caption": "Drop Rate"
+  },
+  "stronger_against_neutral": {
+    "caption": "Stronger Against Neutral"
+  },
+  "stronger_against_fire": {
+    "caption": "Stronger Against Fire"
+  },
+  "stronger_against_water": {
+    "caption": "Stronger Against Water"
+  },
+  "stronger_against_earth": {
+    "caption": "Stronger Against Earth"
+  },
+  "stronger_against_wind": {
+    "caption": "Stronger Against Wind"
+  },
+  "stronger_against_light": {
+    "caption": "Stronger Against Light"
+  },
+  "stronger_against_dark": {
+    "caption": "Stronger Against Dark"
+  },
+  "neutral_resistance": {
+    "caption": "Neutral Resistance"
+  },
+  "fire_resistance": {
+    "caption": "Fire Resistance"
+  },
+  "water_resistance": {
+    "caption": "Water Resistance"
+  },
+  "earth_resistance": {
+    "caption": "Earth Resistance"
+  },
+  "wind_resistance": {
+    "caption": "Wind Resistance"
+  },
+  "light_resistance": {
+    "caption": "Light Resistance"
+  },
+  "dark_resistance": {
+    "caption": "Dark Resistance"
+  },
+  "physical_barrier": {
+    "caption": "Physical Barrier"
+  },
+  "magical_barrier": {
+    "caption": "Magical Barrier"
+  },
+  "fractional_barrier": {
+    "caption": "Fractional Barrier"
+  },
+  "barrier_cooldown": {
+    "caption": "Barrier Cooldown"
+  },
+  "reflect": {
+    "caption": "Reflect"
+  },
+  "additional_meele": {
+    "caption": "Additional Melee"
+  },
+  "additional_magic": {
+    "caption": "Additional Magic"
+  },
+  "anticipate": {
+    "caption": "Anticipate"
+  },
+  "guard_break": {
+    "caption": "Guard Break"
+  },
+  "flinch_unavailable": {
+    "caption": "Flinch Unavailable"
+  },
+  "tumble_unavailable": {
+    "caption": "Tumble Unavailable"
+  },
+  "stun_unavailable": {
+    "caption": "Stun Unavailable"
+  },
+  "recoil_damage": {
+    "caption": "Recoil Damage"
+  },
+  "exp_rate": {
+    "caption": "EXP Rate"
+  },
+  "element_fire": {
+    "caption": "Element Fire"
+  },
+  "element_water": {
+    "caption": "Element Water"
+  },
+  "element_earth": {
+    "caption": "Element Earth"
+  },
+  "element_wind": {
+    "caption": "Element Wind"
+  },
+  "element_light": {
+    "caption": "Element Light"
+  },
+  "element_dark": {
+    "caption": "Element Dark"
+  },
+  "element_mana": {
+    "caption": "Element Mana"
+  },
+  "absolute_dodge": {
+    "caption": "Absolute Dodge"
+  },
+  "absolute_accuracy": {
+    "caption": "Absolute Accuracy"
+  },
+  "reduce_dmg_floor": {
+    "caption": "Reduce DMG (Floor)"
+  },
+  "reduce_dmg_meteor": {
+    "caption": "Reduce DMG (Meteor)"
+  },
+  "reduce_player_epicenter": {
+    "caption": "Reduce DMG (Player AoE)"
+  },
+  "reduce_dmg_foe_epicenter": {
+    "caption": "Reduce DMG (Foe AoE)"
+  },
+  "reduce_dmg_bowling": {
+    "caption": "Reduce DMG (Bowling)"
+  },
+  "reduce_dmg_bullet": {
+    "caption": "Reduce DMG (Bullet)"
+  },
+  "reduce_dmg_straight_line": {
+    "caption": "Reduce DMG (Straight Line)"
+  },
+  "reduce_dmg_charge": {
+    "caption": "Reduce DMG (Charge)"
+  },
+  "reduce_dmg_explosion": {
+    "caption": "Reduce DMG (Explosion)"
+  },
+  "reduce_dmg_gravity": {
+    "caption": "Reduce DMG (Gravity)"
+  },
+  "atk_up_str": {
+    "caption": "ATK up (STR)"
+  },
+  "atk_up_dex": {
+    "caption": "ATK up (DEX)"
+  },
+  "atk_up_int": {
+    "caption": "ATK up (INT)"
+  },
+  "atk_up_agi": {
+    "caption": "ATK up (AGI)"
+  },
+  "atk_up_vit": {
+    "caption": "ATK up (VIT)"
+  },
+  "matk_up_str": {
+    "caption": "MATK up (STR)"
+  },
+  "matk_up_dex": {
+    "caption": "MATK up (DEX)"
+  },
+  "matk_up_int": {
+    "caption": "MATK up (INT)"
+  },
+  "matk_up_agi": {
+    "caption": "MATK up (AGI)"
+  },
+  "matk_up_vit": {
+    "caption": "MATK up (VIT)"
+  },
+  "atk_down_str": {
+    "caption": "ATK down (STR)"
+  },
+  "atk_down_dex": {
+    "caption": "ATK down (DEX)"
+  },
+  "atk_down_int": {
+    "caption": "ATK down (INT)"
+  },
+  "atk_down_agi": {
+    "caption": "ATK down (AGI)"
+  },
+  "atk_down_vit": {
+    "caption": "ATK down (VIT)"
+  },
+  "matk_down_str": {
+    "caption": "MATK down (STR)"
+  },
+  "matk_down_dex": {
+    "caption": "MATK down (DEX)"
+  },
+  "matk_down_int": {
+    "caption": "MATK down (INT)"
+  },
+  "matk_down_agi": {
+    "caption": "MATK down (AGI)"
+  },
+  "matk_down_vit": {
+    "caption": "MATK down (VIT)"
+  },
+  "invincible_aid_sec": {
+    "caption": "Invincible Aid (s)"
+  },
+  "pet_exp": {
+    "caption": "Pet EXP"
+  },
+  "item_cooldown": {
+    "caption": "Item Cooldown"
+  },
+  "skill_constant_extra": {
+    "caption": "Skill Constant"
+  },
+  "magic_crt_percentage": {
+    "caption": "Magic Crit Conversion Rate"
+  },
+  "magic_cd_percentage": {
+    "caption": "Magic Crit Damage Conversion Rate"
+  },
+  "normal_attack_multiplier": {
+    "caption": "Normal Attack Multiplier"
+  },
+  "normal_attack_constant": {
+    "caption": "Normal Attack Constant"
+  },
+  "gempowder_drop_add": {
+    "caption": "Gem Powder Drop"
+  },
+  "total_skill_multiplier": {
+    "caption": "Total Skill Multiplier"
+  },
+  "skill_multiplier_extra": {
+    "caption": "Skill Multiplier"
+  },
+  "graze_penalty_mitigation": {
+    "caption": "Mitigate Graze Penalty"
+  },
+  "magic_stronger_against_element": {
+    "caption": "Magic Extra Element Damage"
+  },
+  "ailment_avoid": {
+    "caption": "Ailment Evasion"
+  },
+  "base_guard_power": {
+    "caption": "Base Guard Power"
+  },
+  "base_guard_regenerate": {
+    "caption": "Base Guard Recharge"
+  },
+  "base_evasion_regenerate": {
+    "caption": "Base Evasion Recharge"
+  },
+  "dual_bringer_efficiency": {
+    "caption": "Dual Bringer Efficiency"
+  },
+  "dual_bringer_penalty": {
+    "caption": "Dual Bringer Penalty"
+  }
+}

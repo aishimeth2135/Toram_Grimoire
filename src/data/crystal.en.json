@@ -1,0 +1,1589 @@
+{
+  "出土魔像": {
+    "name": "Excavated Golem"
+  },
+  "魔像鑄工": {
+    "name": "Builder Golem"
+  },
+  "水母德索": {
+    "name": "Meduso"
+  },
+  "虛假黑騎士": {
+    "name": "Black Knight of Delusion"
+  },
+  "卦莫爾": {
+    "name": "Gwaimol"
+  },
+  "塔利結晶獸": {
+    "name": "Hexter"
+  },
+  "東．普羅芬多": {
+    "name": "Don Profundo"
+  },
+  "多伊": {
+    "name": "Doi"
+  },
+  "魔晶獸": {
+    "name": "Evil Crystal Beast"
+  },
+  "香菇咪": {
+    "name": "Shampy"
+  },
+  "移儡原生素體": {
+    "name": "Irestida"
+  },
+  "巴圖德": {
+    "name": "Vatudo"
+  },
+  "佐魯邦": {
+    "name": "Zolban"
+  },
+  "伏地蛇": {
+    "name": "Repthon"
+  },
+  "樂龍雷多爾基": {
+    "name": "Brass Dragon Reguita"
+  },
+  "豪德威斯": {
+    "name": "Goudvis"
+  },
+  "多雷米納雷爾": {
+    "name": "Doreminador"
+  },
+  "凝態戰將": {
+    "name": "Imitator"
+  },
+  "馬爾杜拉": {
+    "name": "Mardula"
+  },
+  "威琉魔": {
+    "name": "Velum"
+  },
+  "畸弗美斯": {
+    "name": "Deformis"
+  },
+  "凝態古利絲": {
+    "name": "Imitacia"
+  },
+  "暗龍費因斯坦": {
+    "name": "Finstern the Dark Dragon"
+  },
+  "奧克拉辛": {
+    "name": "Oculasignio"
+  },
+  "蔓迪": {
+    "name": "Menti"
+  },
+  "甘瑞夫": {
+    "name": "Ganglef"
+  },
+  "馬其納暴君": {
+    "name": "Tyrant Machina"
+  },
+  "月圓巨蟹": {
+    "name": "Giant Moon Crab"
+  },
+  "魔晶鷲": {
+    "name": "Vulture"
+  },
+  "欺龍米繆加": {
+    "name": "Trickster Dragon Mimyugon"
+  },
+  "爆山": {
+    "name": "Bakuzan"
+  },
+  "惡魔之門": {
+    "name": "Demon's Gate"
+  },
+  "龍獸馬其納": {
+    "name": "Mozto Machina"
+  },
+  "皮斯泰烏魚": {
+    "name": "Pisteus"
+  },
+  "惡龍法奇諾": {
+    "name": "Wicked Dragon Fazzino"
+  },
+  "隆迪奈": {
+    "name": "Rondine"
+  },
+  "石柱魔像": {
+    "name": "Pillar Golem"
+  },
+  "終極馬其納": {
+    "name": "Ultimate Machina"
+  },
+  "炎龍布蘭瑪": {
+    "name": "Vlam the Flame Dragon"
+  },
+  "真·魔晶獸": {
+    "name": "Supreme Evil Crystal Beast"
+  },
+  "札哈克馬其納": {
+    "name": "Zahhak Machina"
+  },
+  "虐爪的鐵魔女": {
+    "name": "Clawed Iron Witch"
+  },
+  "轟龍波比納利": {
+    "name": "Raging Dragon Bovinari"
+  },
+  "女王薔薇蜜": {
+    "name": "Queen Rosemee"
+  },
+  "庫斯特": {
+    "name": "Kuzto"
+  },
+  "春日織夢草": {
+    "name": "Springtime Sakura"
+  },
+  "死星安塔雷斯": {
+    "name": "Mortares"
+  },
+  "奇蹟波多姆": {
+    "name": "Miracle Potum"
+  },
+  "月光波多姆": {
+    "name": "Moonlight Potum"
+  },
+  "死靈科隆": {
+    "name": "Death Colon"
+  },
+  "闇夜波多姆": {
+    "name": "Nightmare Potum"
+  },
+  "死靈魔兔": {
+    "name": "Lapin the Necromancer"
+  },
+  "墮天泡泡": {
+    "name": "Bubble Bogey"
+  },
+  "邪惡魔劍": {
+    "name": "Evil Magic Sword"
+  },
+  "血染結晶": {
+    "name": "Blood Smeared Crystal"
+  },
+  "魔像指揮官": {
+    "name": "Commander Golem"
+  },
+  "寄生甲獸": {
+    "name": "Armasite"
+  },
+  "花蜥": {
+    "name": "Florizard"
+  },
+  "迪亞克": {
+    "name": "Diark"
+  },
+  "樹毒羚": {
+    "name": "Arbogazella"
+  },
+  "多利多蛞蝓": {
+    "name": "Doridodi"
+  },
+  "被詛咒的鍛晶": {
+    "name": "Cursed Crysta"
+  },
+  "白狂牙．靈鋒": {
+    "name": "Blancanine the White Fang"
+  },
+  "愛貓爪護衛喵": {
+    "name": "Cat Claw Guardkissa"
+  },
+  "魔力費雷西亞改": {
+    "name": "Neo Mage Filecia"
+  },
+  "戲龍小丑": {
+    "name": "Drama Clown"
+  },
+  "古利希婭": {
+    "name": "Grecia"
+  },
+  "勇者波多姆": {
+    "name": "Hero Potum"
+  },
+  "勇者波多姆II": {
+    "name": "Hero Potum II"
+  },
+  "勇者波多姆III": {
+    "name": "Hero Potum III"
+  },
+  "勇者波多姆Ⅳ": {
+    "name": "Hero Potum IV"
+  },
+  "榛杜": {
+    "name": "Jeandoux"
+  },
+  "枯木騎士": {
+    "name": "Marchita"
+  },
+  "王者馬奇史東": {
+    "name": "Megiston the Champion"
+  },
+  "王者馬奇史東II": {
+    "name": "Megiston the Champion II"
+  },
+  "王者馬奇史東III": {
+    "name": "Megiston the Champion III"
+  },
+  "王者馬奇史東IV": {
+    "name": "Megiston the Champion IV"
+  },
+  "王者馬奇史東V": {
+    "name": "Megiston the Champion V"
+  },
+  "王者馬奇史東VI": {
+    "name": "Megiston the Champion VI"
+  },
+  "王者馬奇史東VII": {
+    "name": "Megiston the Champion VII"
+  },
+  "王者馬奇史東VIII": {
+    "name": "Megiston the Champion VIII"
+  },
+  "劍型曼特恩改": {
+    "name": "Neo Maton Sword"
+  },
+  "三足怪鳥": {
+    "name": "Pedrio"
+  },
+  "功夫龍波姆": {
+    "name": "Pomie Chan"
+  },
+  "功夫龍波姆II": {
+    "name": "Pomie Chan II"
+  },
+  "功夫龍波姆III": {
+    "name": "Pomie Chan III"
+  },
+  "死靈妖兔": {
+    "name": "Usasama the Necromancer"
+  },
+  "死靈妖兔II": {
+    "name": "Usasama the Necromancer II"
+  },
+  "風牙": {
+    "name": "Zega"
+  },
+  "風牙II": {
+    "name": "Zega II"
+  },
+  "風牙III": {
+    "name": "Zega III"
+  },
+  "風牙IV": {
+    "name": "Zega IV"
+  },
+  "風牙V": {
+    "name": "Zega V"
+  },
+  "風牙VI": {
+    "name": "Zega VI"
+  },
+  "風牙VII": {
+    "name": "Zega VII"
+  },
+  "風牙VIII": {
+    "name": "Zega VIII"
+  },
+  "風牙IX": {
+    "name": "Zega IX"
+  },
+  "風牙X": {
+    "name": "Zega X"
+  },
+  "怪傑童鼠": {
+    "name": "Lil Wonder Rat"
+  },
+  "魔糰子": {
+    "name": "Devil Dango"
+  },
+  "不比兔": {
+    "name": "Fubbit"
+  },
+  "櫻糰子": {
+    "name": "Sakura Dango"
+  },
+  "疾紅的獨眼狼": {
+    "name": "Swift Red One-Eyed Wolf"
+  },
+  "黑衣聖誕公主": {
+    "name": "Black-Clothed Christmas Princess"
+  },
+  "幻奏領主": {
+    "name": "Phantom Music Lord"
+  },
+  "原初之誘月華": {
+    "name": "Primal Moon Temptress"
+  },
+  "究極波多姆": {
+    "name": "Ultimate Pomdom"
+  },
+  "斯圖姆恩": {
+    "name": "Stumune"
+  },
+  "盛夏的熱情": {
+    "name": "Midsummer Passion"
+  },
+  "獠牙王": {
+    "name": "Fang King"
+  },
+  "伊科諾斯": {
+    "name": "Iconos"
+  },
+  "歐勒拉夫": {
+    "name": "Olraf"
+  },
+  "札菲洛加": {
+    "name": "Zafiroga"
+  },
+  "岩龍飛爾尊": {
+    "name": "Rock Dragon Firjun"
+  },
+  "伽拉木瓦": {
+    "name": "Garamuwa"
+  },
+  "巴拉托克": {
+    "name": "Baratock"
+  },
+  "佛雷帝亞": {
+    "name": "Fledia"
+  },
+  "格勞斯": {
+    "name": "Graus"
+  },
+  "翡翠鳥": {
+    "name": "Jade Bird"
+  },
+  "丹德利翁": {
+    "name": "Dandelion"
+  },
+  "地獄三頭犬": {
+    "name": "Cerberus"
+  },
+  "結晶獸": {
+    "name": "Crystal Beast"
+  },
+  "晶瑪體": {
+    "name": "Crystal Maggot"
+  },
+  "合成魔獸": {
+    "name": "Synthetic Beast"
+  },
+  "漂漂媽": {
+    "name": "Floating Mom"
+  },
+  "犰爾達": {
+    "name": "Quiruda"
+  },
+  "比斯奇巴": {
+    "name": "Bisquiba"
+  },
+  "劍型曼特恩": {
+    "name": "Sword-type Mantern"
+  },
+  "魔蝕皮魯茲": {
+    "name": "Magic-Eroded Piruz"
+  },
+  "絲岩比爾": {
+    "name": "Silk Rock Bill"
+  },
+  "瑪里": {
+    "name": "Mari"
+  },
+  "鬱香．MAX": {
+    "name": "Fragrance MAX"
+  },
+  "魔人庫維札": {
+    "name": "Demon Lord Kuwiza"
+  },
+  "魔人之眼": {
+    "name": "Demon's Eye"
+  },
+  "惡靈巨蛛": {
+    "name": "Evil Spirit Giant Spider"
+  },
+  "薩波": {
+    "name": "Sapo"
+  },
+  "普葉特": {
+    "name": "Puyetto"
+  },
+  "穆爾貢之手": {
+    "name": "Mulgon's Hand"
+  },
+  "科隆長官": {
+    "name": "Colon Officer"
+  },
+  "葛雷普斯": {
+    "name": "Grapus"
+  },
+  "湖龜": {
+    "name": "Lake Turtle"
+  },
+  "菱紋企鵝老爹": {
+    "name": "Diamond-Pattern Penguin Dad"
+  },
+  "卡波．普羅芬多": {
+    "name": "Capo Profundo"
+  },
+  "闇針獸": {
+    "name": "Dark Needle Beast"
+  },
+  "彩雲獸": {
+    "name": "Colored Cloud Beast"
+  },
+  "超級病死菇": {
+    "name": "Super Death Mushroom"
+  },
+  "邦衛魔像": {
+    "name": "Guard Golem"
+  },
+  "暴風龍": {
+    "name": "Storm Dragon"
+  },
+  "小丑牙魚": {
+    "name": "Clown Fang Fish"
+  },
+  "骷髏楊": {
+    "name": "Skull Yang"
+  },
+  "死神稻草人": {
+    "name": "Grim Reaper Scarecrow"
+  },
+  "似曜隕石": {
+    "name": "Obsidian-like Meteorite"
+  },
+  "封印獸": {
+    "name": "Sealed Beast"
+  },
+  "滅基亞": {
+    "name": "Mekia"
+  },
+  "咲麗朱櫻": {
+    "name": "Sakuri Zuo Ying"
+  },
+  "寶蓋熊": {
+    "name": "Canopy Bear"
+  },
+  "鼯忍": {
+    "name": "Flying Squirrel Ninja"
+  },
+  "黑桃忍者": {
+    "name": "Spade Ninja"
+  },
+  "歌杜": {
+    "name": "Gado"
+  },
+  "兔吉": {
+    "name": "Rabbit Kichi"
+  },
+  "兔美": {
+    "name": "Rabbit Bi"
+  },
+  "兔麻糬": {
+    "name": "Rabbit Mochi"
+  },
+  "鴉羽大魔女": {
+    "name": "Raven Feather Witch"
+  },
+  "諾耶莉爾": {
+    "name": "Noyeriel"
+  },
+  "諾耶莉爾冰雕": {
+    "name": "Noyeriel Ice Sculpture"
+  },
+  "約爾拉茲": {
+    "name": "Yorlaz"
+  },
+  "蓋格納": {
+    "name": "Gaigna"
+  },
+  "鐵之女帝": {
+    "name": "Iron Empress"
+  },
+  "魅露瑟哈爾": {
+    "name": "Mirusehal"
+  },
+  "鏡像之玄影": {
+    "name": "Mirror Mystic Shadow"
+  },
+  "黑暗貝莉": {
+    "name": "Dark Beri"
+  },
+  "格羅克": {
+    "name": "Grocu"
+  },
+  "怪盜韋斯普": {
+    "name": "Phantom Thief Vesp"
+  },
+  "巧酥獅": {
+    "name": "Cookie Lion"
+  },
+  "巧酥獅II": {
+    "name": "Cookie Lion II"
+  },
+  "波姆波姆博士": {
+    "name": "Dr. Pomdom"
+  },
+  "李奧納多博士": {
+    "name": "Dr. Leonardo"
+  },
+  "李奧納多博士II": {
+    "name": "Dr. Leonardo II"
+  },
+  "DX法伊特": {
+    "name": "DX Faite"
+  },
+  "DX法伊特II": {
+    "name": "DX Faite II"
+  },
+  "茄力": {
+    "name": "Eggli"
+  },
+  "阿魯塔達爾": {
+    "name": "Arutadar"
+  },
+  "席比拉雷斯": {
+    "name": "Sibyrares"
+  },
+  "斃魔斯": {
+    "name": "Bimos"
+  },
+  "獅哥東": {
+    "name": "Lion Brother East"
+  },
+  "加納瑪龜": {
+    "name": "Ganamagu Turtle"
+  },
+  "尤維麗婭": {
+    "name": "Yuveria"
+  },
+  "大管家普羅姆斯": {
+    "name": "Head Butler Promas"
+  },
+  "狂暴龍": {
+    "name": "Berserk Dragon"
+  },
+  "機甲獅將": {
+    "name": "Mech Lion General"
+  },
+  "皮多大王": {
+    "name": "King Pido"
+  },
+  "灼龍伊戈涅烏斯": {
+    "name": "Scorching Dragon Igneus"
+  },
+  "上古女帝": {
+    "name": "Ancient Empress"
+  },
+  "上古女帝Ⅱ": {
+    "name": "Ancient Empress II"
+  },
+  "草龍耶弗": {
+    "name": "Grass Dragon Yef"
+  },
+  "放浪魔輪": {
+    "name": "Wandering Demon Wheel"
+  },
+  "戈爾多": {
+    "name": "Gordo"
+  },
+  "放浪魔輪．改": {
+    "name": "Wandering Demon Wheel Modified"
+  },
+  "薄暮巨龍": {
+    "name": "Dusk Giant Dragon"
+  },
+  "巴瘋魔": {
+    "name": "Ba Fanmo"
+  },
+  "深謀的青影": {
+    "name": "Deep-Scheming Blue Shadow"
+  },
+  "禁忌舞者": {
+    "name": "Forbidden Dancer"
+  },
+  "夏翁": {
+    "name": "Shao"
+  },
+  "畢龍災比歐": {
+    "name": "Bylong Jabi'o"
+  },
+  "古拉": {
+    "name": "Gura"
+  },
+  "黄金骨": {
+    "name": "Golden Bone"
+  },
+  "茲露咪": {
+    "name": "Zurumi"
+  },
+  "賽提羅": {
+    "name": "Setiro"
+  },
+  "鬼熊蟲": {
+    "name": "Demon Bear Bug"
+  },
+  "巨型野豬": {
+    "name": "Giant Wild Boar"
+  },
+  "大綿羊駝": {
+    "name": "Giant Llama"
+  },
+  "自走砲": {
+    "name": "Self-Propelled Cannon"
+  },
+  "梵緹卡": {
+    "name": "Vantica"
+  },
+  "奧布西亞": {
+    "name": "Obushia"
+  },
+  "鏽蝕騎士團長": {
+    "name": "Rusted Knight Commander"
+  },
+  "高貴梁龍": {
+    "name": "Noble Brachiosaurus"
+  },
+  "巨指馬其納": {
+    "name": "Giant Finger Machina"
+  },
+  "擔輪普原生素幼體": {
+    "name": "Danrinpu Protozoa Larva"
+  },
+  "低音犛牛": {
+    "name": "Bass Yak"
+  },
+  "吉瓦": {
+    "name": "Jiwa"
+  },
+  "極闇雷兔": {
+    "name": "Ultimate Dark Thunder Rabbit"
+  },
+  "金拳角獸": {
+    "name": "Golden Fist Horned Beast"
+  },
+  "內吉木之主": {
+    "name": "Lord of Negiwoo"
+  },
+  "陽光波多姆": {
+    "name": "Sunshine Pomdom"
+  },
+  "耀星波多姆": {
+    "name": "Glowing Star Pomdom"
+  },
+  "巧克流漿": {
+    "name": "Chocolate Slime"
+  },
+  "巧克流漿II": {
+    "name": "Chocolate Slime II"
+  },
+  "塞爾多納": {
+    "name": "Seldona"
+  },
+  "凝膠糖精": {
+    "name": "Gel Candy Elf"
+  },
+  "凝膠糖精II": {
+    "name": "Gel Candy Elf II"
+  },
+  "阿瑪爾貢": {
+    "name": "Amargon"
+  },
+  "南瓜王": {
+    "name": "Pumpkin King"
+  },
+  "賈莉若": {
+    "name": "Jariro"
+  },
+  "柔艾": {
+    "name": "Ruai"
+  },
+  "薩斯": {
+    "name": "Sas"
+  },
+  "聖萬狼": {
+    "name": "Sacred Ten Thousand Wolf"
+  },
+  "愛普瑪布": {
+    "name": "Epumabu"
+  },
+  "幽靈兵甲Ⅱ": {
+    "name": "Ghost Armor II"
+  },
+  "黏液諾瓦": {
+    "name": "Slime Nova"
+  },
+  "八代紅豆媽": {
+    "name": "8th Gen Red Bean Mom"
+  },
+  "愛利貝": {
+    "name": "Airibe"
+  },
+  "甜納許": {
+    "name": "Amanatto"
+  },
+  "愛亞克": {
+    "name": "Aiyaku"
+  },
+  "蜜愛麗": {
+    "name": "Honey Airi"
+  },
+  "大尺碼佩魯魯": {
+    "name": "Large Size Peruru"
+  },
+  "手工餅乾": {
+    "name": "Handmade Cookie"
+  },
+  "糖明凰": {
+    "name": "Sugar Phoenix"
+  },
+  "哥布林·祖庫托": {
+    "name": "Goblin Zukuto"
+  },
+  "邪惡雷菲娜": {
+    "name": "Evil Refina"
+  },
+  "金平人蕈": {
+    "name": "Konpeto Mushroom Person"
+  },
+  "海騎士": {
+    "name": "Sea Knight"
+  },
+  "海底遺跡的怪物": {
+    "name": "Underwater Ruins Monster"
+  },
+  "福巴勒斯": {
+    "name": "Fubaresu"
+  },
+  "納露米娜": {
+    "name": "Narumina"
+  },
+  "八代紅豆媽Ⅱ": {
+    "name": "8th Gen Red Bean Mom II"
+  },
+  "八代紅豆爸": {
+    "name": "8th Gen Red Bean Dad"
+  },
+  "†闇王†": {
+    "name": "†Dark King†"
+  },
+  "G伊科諾斯": {
+    "name": "G Iconos"
+  },
+  "幸運蛙": {
+    "name": "Lucky Frog"
+  },
+  "金寶石": {
+    "name": "Golden Gem"
+  },
+  "金大拳": {
+    "name": "Golden Big Fist"
+  },
+  "鬥牛王": {
+    "name": "Bull King"
+  },
+  "枕頭北側": {
+    "name": "Pillow North Side"
+  },
+  "枕頭北側II": {
+    "name": "Pillow North Side II"
+  },
+  "王之鬥牛王": {
+    "name": "King's Bull King"
+  },
+  "王之鬥牛王II": {
+    "name": "King's Bull King II"
+  },
+  "絲岩枕頭": {
+    "name": "Silk Rock Pillow"
+  },
+  "魔力費雷西亞": {
+    "name": "Mana Feresia"
+  },
+  "吉普莉爾I": {
+    "name": "Giplier I"
+  },
+  "吉普莉爾II": {
+    "name": "Giplier II"
+  },
+  "吉普莉爾III": {
+    "name": "Giplier III"
+  },
+  "卡斯蒂莉亞": {
+    "name": "Kastilia"
+  },
+  "魔影騎屍": {
+    "name": "Shadow Demon Corpse Rider"
+  },
+  "巨型波雞": {
+    "name": "Giant Wave Chicken"
+  },
+  "佩羅": {
+    "name": "Pero"
+  },
+  "紅白小野豬": {
+    "name": "Red-White Mini Boar"
+  },
+  "麻糬鼠": {
+    "name": "Mochi Mouse"
+  },
+  "阿牛牛": {
+    "name": "A-Niu-Niu"
+  },
+  "呼嚕咪": {
+    "name": "Purring Cat"
+  },
+  "跳跳兔": {
+    "name": "Jumping Rabbit"
+  },
+  "天籟龍": {
+    "name": "Heavenly Sound Dragon"
+  },
+  "野槌巳蛇": {
+    "name": "Wild Hammer Snake"
+  },
+  "波尼耶": {
+    "name": "Boniye"
+  },
+  "鯊魚波多姆": {
+    "name": "Shark Pomdom"
+  },
+  "詭譎的結晶": {
+    "name": "Treacherous Crystal"
+  },
+  "熱帶夢貘": {
+    "name": "Tropical Dream Tapir"
+  },
+  "神奇結晶": {
+    "name": "Miracle Crystal"
+  },
+  "甜點精": {
+    "name": "Dessert Fairy"
+  },
+  "席卡諾加米": {
+    "name": "Shicanogami"
+  },
+  "黑利古希": {
+    "name": "Black Liguxi"
+  },
+  "黏液怪": {
+    "name": "Slime Monster"
+  },
+  "妖精魔獸拉瓦達": {
+    "name": "Fairy Beast Ravada"
+  },
+  "多米納雷多爾": {
+    "name": "Domina Redor"
+  },
+  "葛瓦": {
+    "name": "Guwa"
+  },
+  "魔晶砲手": {
+    "name": "Crystal Gunner"
+  },
+  "齊爾布茲": {
+    "name": "Zirbuz"
+  },
+  "兵龍達魯巴": {
+    "name": "Soldier Dragon Daruba"
+  },
+  "薇芮娜": {
+    "name": "Verena"
+  },
+  "薇芮娜Ⅱ": {
+    "name": "Verena II"
+  },
+  "修米達": {
+    "name": "Shiumida"
+  },
+  "結晶泰坦": {
+    "name": "Crystal Titan"
+  },
+  "麻吧喞": {
+    "name": "Mabazo"
+  },
+  "澤雷薩烏迦": {
+    "name": "Zeresa Uga"
+  },
+  "澤雷薩烏迦II": {
+    "name": "Zeresa Uga II"
+  },
+  "黑魔菇": {
+    "name": "Black Magic Mushroom"
+  },
+  "塔圖羅基特": {
+    "name": "Taturo Kieto"
+  },
+  "石動魔兵": {
+    "name": "Stone Moving Demon Soldier"
+  },
+  "噬人蠍獅": {
+    "name": "Man-Eating Scorpion Lion"
+  },
+  "小浣熊": {
+    "name": "Little Raccoon"
+  },
+  "閃靈紳士": {
+    "name": "Flash Spirit Gentleman"
+  },
+  "死靈": {
+    "name": "Necro"
+  },
+  "老嫗": {
+    "name": "Old Woman"
+  },
+  "嚴寒雪怪": {
+    "name": "Severe Cold Snow Monster"
+  },
+  "汙濁泥怪": {
+    "name": "Dirty Mud Monster"
+  },
+  "兇暴花魔": {
+    "name": "Ferocious Flower Demon"
+  },
+  "兇暴花魔．G": {
+    "name": "Ferocious Flower Demon G"
+  },
+  "沙盜團首領": {
+    "name": "Sand Bandit Leader"
+  },
+  "伊貢": {
+    "name": "Egon"
+  },
+  "噴出岩": {
+    "name": "Erupting Rock"
+  },
+  "月霞喵": {
+    "name": "Moonlit Haze Cat"
+  },
+  "圖雷茲": {
+    "name": "Turez"
+  },
+  "沃達蕾螈": {
+    "name": "Wodalei Salamander"
+  },
+  "寄生樹": {
+    "name": "Parasitic Tree"
+  },
+  "寄生邪凰": {
+    "name": "Parasitic Evil Phoenix"
+  },
+  "魔融迦姆": {
+    "name": "Magic-Fused Gamu"
+  },
+  "結晶死神": {
+    "name": "Crystal Grim Reaper"
+  },
+  "布利塔": {
+    "name": "Burita"
+  },
+  "龍魔女": {
+    "name": "Dragon Witch"
+  },
+  "微煎明太子": {
+    "name": "Lightly-Fried Mentaiko"
+  },
+  "魔偶": {
+    "name": "Magic Puppet"
+  },
+  "費莉妍": {
+    "name": "Feryan"
+  },
+  "邪惡雷菲娜改": {
+    "name": "Evil Refina Modified"
+  },
+  "告死亡靈": {
+    "name": "Death Announcement Spirit"
+  },
+  "龍．伏爾加": {
+    "name": "Dragon Volga"
+  },
+  "愛德華茲": {
+    "name": "Edwards"
+  },
+  "波多姆特": {
+    "name": "Pomodomut"
+  },
+  "波多姆特II": {
+    "name": "Pomodomut II"
+  },
+  "波多姆特III": {
+    "name": "Pomodomut III"
+  },
+  "暗之魔兵長withB": {
+    "name": "Dark Demon Soldier Commander with B"
+  },
+  "星之魔導士": {
+    "name": "Star Mage"
+  },
+  "幽森的黑巫女": {
+    "name": "Dark Forest Black Sorceress"
+  },
+  "黏液諾瓦II": {
+    "name": "Slime Nova II"
+  },
+  "掮客哥布林": {
+    "name": "Broker Goblin"
+  },
+  "庫貝龍": {
+    "name": "Kubelon"
+  },
+  "茄龍歐瓦比昂": {
+    "name": "Eggplant Dragon Ovabion"
+  },
+  "叫聲的禍影": {
+    "name": "Cry's Bane Shadow"
+  },
+  "海晶龍": {
+    "name": "Sea Crystal Dragon"
+  },
+  "深海晶怪獸": {
+    "name": "Deep Sea Crystal Monster"
+  },
+  "機械神梅普露": {
+    "name": "Mechanical God Mapuru"
+  },
+  "奧羅拜德": {
+    "name": "Orobaid"
+  },
+  "澤普菲爾": {
+    "name": "Zephyr"
+  },
+  "黃金波多姆": {
+    "name": "Golden Pomdom"
+  },
+  "阿喵蝦隊長": {
+    "name": "Captain Meow Shrimp"
+  },
+  "魯札特": {
+    "name": "Ruzatto"
+  },
+  "干支的祝福": {
+    "name": "Zodiac Blessing"
+  },
+  "森林巨狼": {
+    "name": "Forest Giant Wolf"
+  },
+  "哥布林大哥": {
+    "name": "Goblin Big Brother"
+  },
+  "哥布林老大": {
+    "name": "Goblin Boss"
+  },
+  "遺跡魔像": {
+    "name": "Ruins Golem"
+  },
+  "亞思托": {
+    "name": "Asuto"
+  },
+  "科隆老大": {
+    "name": "Colon Boss"
+  },
+  "巨大奇蹟姆": {
+    "name": "Giant Miracle-Mu"
+  },
+  "幽靈兵甲": {
+    "name": "Ghost Armor"
+  },
+  "沙羅曼達": {
+    "name": "Salamander"
+  },
+  "布拉米斯": {
+    "name": "Bulamis"
+  },
+  "米諾陶斯": {
+    "name": "Minotaur"
+  },
+  "迪賽爾蠻龍": {
+    "name": "Diesel Savage Dragon"
+  },
+  "約克": {
+    "name": "York"
+  },
+  "休斯古巨獸": {
+    "name": "Huyuzgu Giant Beast"
+  },
+  "黑影": {
+    "name": "Black Shadow"
+  },
+  "魯托塞薩": {
+    "name": "Rutosesa"
+  },
+  "毛咕嚕": {
+    "name": "Furry Guru"
+  },
+  "焰狼火各": {
+    "name": "Flame Wolf Fioca"
+  },
+  "大克奧爾龍": {
+    "name": "Great Khaor Dragon"
+  },
+  "馬維茲": {
+    "name": "Maviz"
+  },
+  "蒙面戰士": {
+    "name": "Masked Warrior"
+  },
+  "奴雷德斯": {
+    "name": "Nuredos"
+  },
+  "重裝魔偶": {
+    "name": "Heavy-Armor Puppet"
+  },
+  "護衛魔像": {
+    "name": "Guard Golem"
+  },
+  "毗奴古爾迦": {
+    "name": "Vishnukulga"
+  },
+  "奴德雷斯": {
+    "name": "Nuderos"
+  },
+  "魔形機殼": {
+    "name": "Demon Form Shell"
+  },
+  "英薩聶奧": {
+    "name": "Insagnao"
+  },
+  "紅晶魔蛛": {
+    "name": "Red Crystal Demon Spider"
+  },
+  "炎咕嚕": {
+    "name": "Flame Guru"
+  },
+  "布拉瑪": {
+    "name": "Burama"
+  },
+  "佛拉布喇": {
+    "name": "Frabura"
+  },
+  "尉龍魯迪斯": {
+    "name": "Lieutenant Dragon Rudis"
+  },
+  "焦科": {
+    "name": "Zhoke"
+  },
+  "銀色洛爾": {
+    "name": "Silver Lor"
+  },
+  "深紅魔蛙": {
+    "name": "Deep Crimson Demon Frog"
+  },
+  "阿米巴馬其納": {
+    "name": "Amoeba Machina"
+  },
+  "大果怪": {
+    "name": "Giant Fruit Monster"
+  },
+  "熾天馬其納": {
+    "name": "Blazing Sky Machina"
+  },
+  "麗瑪希娜": {
+    "name": "Rimahina"
+  },
+  "霰石拉戈": {
+    "name": "Aragonite Rago"
+  },
+  "巨型兵": {
+    "name": "Giant Soldier"
+  },
+  "無頭惡魔處刑者": {
+    "name": "Headless Demon Executioner"
+  },
+  "拉加布拉索": {
+    "name": "Lagabraso"
+  },
+  "幽靈王": {
+    "name": "Ghost King"
+  },
+  "貝貝蠟": {
+    "name": "Beibei Wax"
+  },
+  "金屬刺蠍": {
+    "name": "Metal Spike Scorpion"
+  },
+  "激進派專業兵長": {
+    "name": "Radical Faction Professional Soldier Commander"
+  },
+  "變異幽靈牛": {
+    "name": "Mutant Ghost Cow"
+  },
+  "枯飛葉": {
+    "name": "Withered Flying Leaf"
+  },
+  "奧狄隆馬其納": {
+    "name": "Odilon Machina"
+  },
+  "壓釘機": {
+    "name": "Nail Press"
+  },
+  "百合冠": {
+    "name": "Lily Crown"
+  },
+  "怪蜥狂信者": {
+    "name": "Monster Lizard Fanatic"
+  },
+  "礦角龍": {
+    "name": "Mine Horn Dragon"
+  },
+  "米斯魯那大山貓": {
+    "name": "Misruna Big Wildcat"
+  },
+  "窟蝠尼亞": {
+    "name": "Cave Bat Nia"
+  },
+  "寶石獸": {
+    "name": "Gem Beast"
+  },
+  "雷諾萊犀": {
+    "name": "Renolei Rhinoceros"
+  },
+  "暴獸利古希": {
+    "name": "Raging Beast Liguxi"
+  },
+  "蓋蜥蠍": {
+    "name": "Covered Lizard Scorpion"
+  },
+  "波多姆大王": {
+    "name": "Pomdom Great King"
+  },
+  "白金波多姆": {
+    "name": "Platinum Pomdom"
+  },
+  "蛋糕波多姆": {
+    "name": "Cake Pomdom"
+  },
+  "馬奇史東": {
+    "name": "Marchistone"
+  },
+  "超級魔菇": {
+    "name": "Super Magic Mushroom"
+  },
+  "製作人化身": {
+    "name": "Producer's Avatar"
+  },
+  "八代紅豆": {
+    "name": "8th Gen Red Bean"
+  },
+  "格爾咪": {
+    "name": "Gerumi"
+  },
+  "強強格爾咪": {
+    "name": "Strong Strong Gerumi"
+  },
+  "舒爾": {
+    "name": "Shul"
+  },
+  "圖塔涅": {
+    "name": "Tutane"
+  },
+  "帕喬斯北枕": {
+    "name": "Pachos North Pillow"
+  },
+  "章魚阿健": {
+    "name": "Octopus Aken"
+  },
+  "彼方殘影": {
+    "name": "Distant Remaining Shadow"
+  },
+  "科隆教父": {
+    "name": "Colon Godfather"
+  },
+  "白蘿蔔怪": {
+    "name": "White Radish Monster"
+  },
+  "茄子怪": {
+    "name": "Eggplant Monster"
+  },
+  "奇露米娜": {
+    "name": "Quirumina"
+  },
+  "燈飾小結者": {
+    "name": "Light Decoration Tyer"
+  },
+  "STR+1": {
+    "name": "STR+1"
+  },
+  "STR+2": {
+    "name": "STR+2"
+  },
+  "STR+3": {
+    "name": "STR+3"
+  },
+  "STR+4": {
+    "name": "STR+4"
+  },
+  "STR+5": {
+    "name": "STR+5"
+  },
+  "STR+6": {
+    "name": "STR+6"
+  },
+  "STR+7": {
+    "name": "STR+7"
+  },
+  "STR+8": {
+    "name": "STR+8"
+  },
+  "INT+1": {
+    "name": "INT+1"
+  },
+  "INT+2": {
+    "name": "INT+2"
+  },
+  "INT+3": {
+    "name": "INT+3"
+  },
+  "INT+4": {
+    "name": "INT+4"
+  },
+  "INT+5": {
+    "name": "INT+5"
+  },
+  "INT+6": {
+    "name": "INT+6"
+  },
+  "INT+7": {
+    "name": "INT+7"
+  },
+  "DEX+1": {
+    "name": "DEX+1"
+  },
+  "DEX+2": {
+    "name": "DEX+2"
+  },
+  "DEX+3": {
+    "name": "DEX+3"
+  },
+  "DEX+4": {
+    "name": "DEX+4"
+  },
+  "DEX+5": {
+    "name": "DEX+5"
+  },
+  "DEX+6": {
+    "name": "DEX+6"
+  },
+  "DEX+7": {
+    "name": "DEX+7"
+  },
+  "DEX+8": {
+    "name": "DEX+8"
+  },
+  "VIT+1": {
+    "name": "VIT+1"
+  },
+  "VIT+2": {
+    "name": "VIT+2"
+  },
+  "VIT+3": {
+    "name": "VIT+3"
+  },
+  "VIT+4": {
+    "name": "VIT+4"
+  },
+  "VIT+5": {
+    "name": "VIT+5"
+  },
+  "VIT+6": {
+    "name": "VIT+6"
+  },
+  "VIT+7": {
+    "name": "VIT+7"
+  },
+  "VIT+8": {
+    "name": "VIT+8"
+  },
+  "VIT+9": {
+    "name": "VIT+9"
+  },
+  "AGI+1": {
+    "name": "AGI+1"
+  },
+  "AGI+2": {
+    "name": "AGI+2"
+  },
+  "AGI+3": {
+    "name": "AGI+3"
+  },
+  "AGI+4": {
+    "name": "AGI+4"
+  },
+  "AGI+5": {
+    "name": "AGI+5"
+  },
+  "AGI+6": {
+    "name": "AGI+6"
+  },
+  "AGI+7": {
+    "name": "AGI+7"
+  },
+  "HP+100": {
+    "name": "HP+100"
+  },
+  "HP+200": {
+    "name": "HP+200"
+  },
+  "HP+300": {
+    "name": "HP+300"
+  },
+  "HP+400": {
+    "name": "HP+400"
+  },
+  "HP+500": {
+    "name": "HP+500"
+  },
+  "HP+600": {
+    "name": "HP+600"
+  },
+  "HP+700": {
+    "name": "HP+700"
+  },
+  "HP+800": {
+    "name": "HP+800"
+  },
+  "MP+50": {
+    "name": "MP+50"
+  },
+  "MP+100": {
+    "name": "MP+100"
+  },
+  "MP+150": {
+    "name": "MP+150"
+  },
+  "MP+200": {
+    "name": "MP+200"
+  },
+  "MP+250": {
+    "name": "MP+250"
+  },
+  "MP+300": {
+    "name": "MP+300"
+  },
+  "MP+350": {
+    "name": "MP+350"
+  },
+  "MP+400": {
+    "name": "MP+400"
+  },
+  "MP+450": {
+    "name": "MP+450"
+  },
+  "CSPD+20": {
+    "name": "CSPD+20"
+  },
+  "CSPD+40": {
+    "name": "CSPD+40"
+  },
+  "CSPD+60": {
+    "name": "CSPD+60"
+  },
+  "CSPD+80": {
+    "name": "CSPD+80"
+  },
+  "CSPD+100": {
+    "name": "CSPD+100"
+  },
+  "CSPD+120": {
+    "name": "CSPD+120"
+  },
+  "CSPD+140": {
+    "name": "CSPD+140"
+  },
+  "ASPD+20": {
+    "name": "ASPD+20"
+  },
+  "ASPD+40": {
+    "name": "ASPD+40"
+  },
+  "ASPD+60": {
+    "name": "ASPD+60"
+  },
+  "ASPD+80": {
+    "name": "ASPD+80"
+  },
+  "ASPD+100": {
+    "name": "ASPD+100"
+  },
+  "ASPD+120": {
+    "name": "ASPD+120"
+  },
+  "ASPD+140": {
+    "name": "ASPD+140"
+  },
+  "ASPD+160": {
+    "name": "ASPD+160"
+  },
+  "命中+2": {
+    "name": "Accuracy+2"
+  },
+  "命中+4": {
+    "name": "Accuracy+4"
+  },
+  "命中+6": {
+    "name": "Accuracy+6"
+  },
+  "命中+8": {
+    "name": "Accuracy+8"
+  },
+  "命中+10": {
+    "name": "Accuracy+10"
+  },
+  "命中+12": {
+    "name": "Accuracy+12"
+  },
+  "命中+14": {
+    "name": "Accuracy+14"
+  },
+  "命中+16": {
+    "name": "Accuracy+16"
+  },
+  "命中+18": {
+    "name": "Accuracy+18"
+  },
+  "迴避+2": {
+    "name": "Dodge+2"
+  },
+  "迴避+4": {
+    "name": "Dodge+4"
+  },
+  "迴避+6": {
+    "name": "Dodge+6"
+  },
+  "迴避+8": {
+    "name": "Dodge+8"
+  },
+  "迴避+10": {
+    "name": "Dodge+10"
+  },
+  "迴避+12": {
+    "name": "Dodge+12"
+  },
+  "迴避+14": {
+    "name": "Dodge+14"
+  },
+  "迴避+16": {
+    "name": "Dodge+16"
+  },
+  "暴擊率+1": {
+    "name": "Critical Rate+1"
+  },
+  "暴擊率+2": {
+    "name": "Critical Rate+2"
+  },
+  "暴擊率+3": {
+    "name": "Critical Rate+3"
+  },
+  "暴擊率+4": {
+    "name": "Critical Rate+4"
+  },
+  "暴擊率+5": {
+    "name": "Critical Rate+5"
+  },
+  " 毗奴古爾迦": {
+    "name": "Vishnukulga (alt)"
+  }
+}

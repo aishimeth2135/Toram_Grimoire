@@ -1,12 +1,19 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
+import Notify from '@/shared/setup/Notify'
+import Cyteria from '@/shared/utils/Cyteria'
+
+import { SkillBuild, decodeSkillBuild, encodeSkillBuild } from '@/lib/Character/SkillBuild'
 import { SkillTypes } from '@/lib/Skill/Skill'
+
+import { CharacterSimulatorRouteNames } from '@/router/Character'
 
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterSkillPreviewTab from './character-skill-preview-tab/character-skill-preview-tab.vue'
@@ -17,6 +24,9 @@ defineOptions({
 })
 
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
+const { notify } = Notify()
 
 const currentTab = ref(2)
 
@@ -35,6 +45,21 @@ const addSkillBuild = () => {
   selectedBuild.value = skillStore.createSkillBuild()
 }
 
+const shareUrl = computed(() => {
+  const encoded = encodeSkillBuild(selectedBuild.value!)
+  const resolved = router.resolve({
+    name: CharacterSimulatorRouteNames.Skill,
+    query: { build: encoded },
+  })
+  return window.location.origin + resolved.href
+})
+
+const copyShareUrl = () => {
+  if (Cyteria.copyToClipboard(shareUrl.value)) {
+    notify(t('character-simulator.skill-build.share-url-copied'))
+  }
+}
+
 const removeSkillBuild = () => {
   if (!selectedBuild.value) {
     return
@@ -42,6 +67,23 @@ const removeSkillBuild = () => {
   const idx = skillStore.removeSkillBuild(selectedBuild.value)
   selectedBuild.value = skillBuilds.value[idx]
 }
+
+onMounted(() => {
+  const encoded = route.query.build
+  if (typeof encoded !== 'string') {
+    return
+  }
+  router.replace({ query: {} })
+  const data = decodeSkillBuild(encoded)
+  if (!data) {
+    notify(t('character-simulator.skill-build.share-url-load-failed'))
+    return
+  }
+  const build = SkillBuild.load(null, data)
+  skillStore.appendSkillBuild(build, false)
+  selectedBuild.value = build
+  notify(t('character-simulator.skill-build.share-url-loaded'))
+})
 </script>
 
 <template>
@@ -56,6 +98,11 @@ const removeSkillBuild = () => {
     @remove-build="removeSkillBuild"
   >
     <template #content>
+      <div class="mb-1">
+        <cy-button-action icon="mdi:link-variant" @click="copyShareUrl">
+          {{ t('character-simulator.skill-build.share-url-button') }}
+        </cy-button-action>
+      </div>
       <cy-tabs :model-value="currentDisplayedTab" @update:model-value="currentTab = $event">
         <cy-tab :value="0" :disabled="!buildMatched">
           {{ t('character-simulator.skill-build.active-skills') }}

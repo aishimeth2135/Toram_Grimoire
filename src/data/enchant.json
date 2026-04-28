@@ -1,0 +1,2957 @@
+[
+  {
+    "title": "強化能力數值",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "str",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 1,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "dex",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "int",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "agi",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 3,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "vit",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      }
+    ]
+  },
+  {
+    "title": "強化HP、MP",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "max_hp",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/30",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            10,
+            160
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "max_mp",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            15,
+            -15
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/20",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            10,
+            10
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "natural_hp_regen",
+        "potential": [
+          5,
+          10
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "natural_mp_regen",
+        "potential": [
+          10,
+          20
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/20",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              20,
+              40
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "強化攻擊力",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "atk",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/20",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 1,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              6,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "matk",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/20",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              6,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "physical_pierce",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/25",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 1,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              40,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "magic_pierce",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/25",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              40,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stability",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/60",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      }
+    ]
+  },
+  {
+    "title": "強化防禦力",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "def",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/30",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            10
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              6,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "mdef",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/30",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            10
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              6,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "physical_resistance",
+        "potential": [
+          10,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              20,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "magic_resistance",
+        "potential": [
+          10,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              20,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_foe_epicenter",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          15,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              12,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_player_epicenter",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 0,
+        "materialPointValue": [
+          15,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              12,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_straight_line",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 1,
+        "materialPointValue": [
+          15,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              12,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_charge",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 1,
+        "materialPointValue": [
+          15,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              12,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_meteor",
+        "potential": [
+          4,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          10,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              8,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_bullet",
+        "potential": [
+          4,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          10,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              8,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_bowling",
+        "potential": [
+          4,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 2,
+        "materialPointValue": [
+          10,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              8,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "reduce_dmg_floor",
+        "potential": [
+          4,
+          null
+        ],
+        "limit": [
+          [
+            0,
+            0
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          10,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              8,
+              null
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "強化命中",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "accuracy",
+        "potential": [
+          10,
+          20
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            "CLv/55",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              20,
+              40
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "強化迴避",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "dodge",
+        "potential": [
+          10,
+          20
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            "CLv/55",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 3,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              20,
+              40
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "強化速度",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "aspd",
+        "potential": [
+          1,
+          1
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            20,
+            -20
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/55",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            16
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 3,
+        "materialPointValue": [
+          1.5,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "cspd",
+        "potential": [
+          1,
+          1
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            20,
+            -20
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            null
+          ],
+          [
+            "CLv/55",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            16
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 4,
+        "materialPointValue": [
+          1.5,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      }
+    ]
+  },
+  {
+    "title": "強化暴擊",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "critical_rate",
+        "potential": [
+          1,
+          1
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            20,
+            -20
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/10",
+            "0"
+          ],
+          [
+            "CLv/10",
+            "0"
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "critical_damage",
+        "potential": [
+          3,
+          10
+        ],
+        "limit": [
+          [
+            20,
+            -20
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            "0"
+          ],
+          [
+            "CLv/55",
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      }
+    ]
+  },
+  {
+    "title": "強化屬性",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "stronger_against_fire",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stronger_against_water",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stronger_against_earth",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stronger_against_wind",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stronger_against_light",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "stronger_against_dark",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/30",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "身體裝備",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "fire_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "water_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "earth_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "wind_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "light_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "dark_resistance",
+        "potential": [
+          5,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/15",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "主手武器",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "特殊強化",
+    "weaponOnly": false,
+    "items": [
+      {
+        "statId": "ailment_resistance",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/55",
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "guard_regenerate",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/55",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "guard_power",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/55",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "evasion_regenerate",
+        "potential": [
+          20,
+          null
+        ],
+        "limit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/55",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": []
+      },
+      {
+        "statId": "aggro",
+        "potential": [
+          6,
+          null
+        ],
+        "limit": [
+          [
+            15,
+            -15
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            "CLv/20",
+            "0"
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          null,
+          null
+        ],
+        "potentialConvertThreshold": [
+          15,
+          null
+        ],
+        "conditionals": []
+      }
+    ]
+  },
+  {
+    "title": "屬性覺醒",
+    "weaponOnly": true,
+    "items": [
+      {
+        "statId": "element_fire",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "element_water",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "element_earth",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "element_wind",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "element_light",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "statId": "element_dark",
+        "potential": [
+          100,
+          null
+        ],
+        "limit": [
+          [
+            1,
+            -1
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "extraLimit": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ],
+        "unitValue": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "materialPointType": 5,
+        "materialPointValue": [
+          150,
+          null
+        ],
+        "potentialConvertThreshold": [
+          null,
+          null
+        ],
+        "conditionals": [
+          {
+            "condition": "原有屬性",
+            "potential": [
+              10,
+              null
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

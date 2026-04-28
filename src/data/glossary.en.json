@@ -1,0 +1,271 @@
+{
+  "有效ATK與有效MATK": {
+    "tagName": "Valid ATK and Valid MATK"
+  },
+  "總傷害與最終傷害": {
+    "tagName": "Total Damage and Final Damage"
+  },
+  "動作時間幀數": {
+    "tagName": "Action Time Frames"
+  },
+  "技能動作": {
+    "tagName": "Skill Action"
+  },
+  "每下傷害共用判定/分開判定": {
+    "tagName": "Common / Separate Damage Judgment"
+  },
+  "與目標距離": {
+    "tagName": "Distance to Target"
+  },
+  "元素屬性判定": {
+    "tagName": "Element Judgment"
+  },
+  "命中等級判定": {
+    "tagName": "Hit Level Judgment"
+  },
+  "傷害慣性/造成慣性": {
+    "tagName": "Damage Proration / Inflicted Proration"
+  },
+  "控制類異常": {
+    "tagName": "Control Ailments"
+  },
+  "膽怯": {
+    "tagName": "Flinch"
+  },
+  "翻覆": {
+    "tagName": "Tumble"
+  },
+  "昏厥": {
+    "tagName": "Stun"
+  },
+  "逼退": {
+    "tagName": "Knock Back"
+  },
+  "睡眠": {
+    "tagName": "Sleep"
+  },
+  "麻痺": {
+    "tagName": "Paralysis"
+  },
+  "遲緩": {
+    "tagName": "Slow"
+  },
+  "停止": {
+    "tagName": "Stop"
+  },
+  "乏力": {
+    "tagName": "Lethargy"
+  },
+  "盲目": {
+    "tagName": "Blind"
+  },
+  "疾病": {
+    "tagName": "Disease"
+  },
+  "眩暈": {
+    "tagName": "Dizzy"
+  },
+  "著火": {
+    "tagName": "Ignite"
+  },
+  "猛毒": {
+    "tagName": "Venom"
+  },
+  "閃光": {
+    "tagName": "Dazzled"
+  },
+  "冰凍": {
+    "tagName": "Freeze"
+  },
+  "降防": {
+    "tagName": "Armor Break"
+  },
+  "畏懼": {
+    "tagName": "Fear"
+  },
+  "出血": {
+    "tagName": "Bleed"
+  },
+  "沉默": {
+    "tagName": "Silence"
+  },
+  "衰弱": {
+    "tagName": "Weaken"
+  },
+  "魔力爆發": {
+    "tagName": "Mana Explosion"
+  },
+  "詛咒": {
+    "tagName": "Curse"
+  },
+  "疲勞": {
+    "tagName": "Fatigue"
+  },
+  "暴走": {
+    "tagName": "Berserk"
+  },
+  "石化": {
+    "tagName": "Petrified"
+  },
+  "反轉": {
+    "tagName": "Reverse"
+  },
+  "無敵": {
+    "tagName": "Invincible"
+  },
+  "異常抗性": {
+    "tagName": "Ailment Resistance"
+  },
+  "連擊": {
+    "tagName": "Consecutive"
+  },
+  "心眼": {
+    "tagName": "Mind's Eye"
+  },
+  "補位": {
+    "tagName": "Save"
+  },
+  "迅速": {
+    "tagName": "Swift"
+  },
+  "增幅": {
+    "tagName": "Smite"
+  },
+  "執著": {
+    "tagName": "Tenacity"
+  },
+  "無敵（連擊效果）": {
+    "tagName": "Invincible"
+  },
+  "吸血": {
+    "tagName": "Bloodsucker"
+  },
+  "強韌": {
+    "tagName": "Tough"
+  },
+  "反射": {
+    "tagName": "Reflection"
+  },
+  "連擊位置": {
+    "tagName": "Combo Position"
+  },
+  "雙劍特性說明": {
+    "tagName": "Dual Swords Characteristics Description"
+  },
+  "吟遊詩人說明": {
+    "tagName": "Bard Description"
+  },
+  "舞者技能說明": {
+    "tagName": "Dancer Skill Description"
+  },
+  "徒手技能說明": {
+    "tagName": "Barehanded Skill Description"
+  },
+  "忍術技能": {
+    "tagName": "Ninjutsu Skills"
+  },
+  "陷阱": {
+    "tagName": "Trap"
+  },
+  "卷軸製作說明": {
+    "tagName": "Scroll Crafting Guide"
+  },
+  "合成裝備的成功率說明": {
+    "tagName": "Equipment Synthesis Success Rate"
+  },
+  "MP消耗減半": {
+    "tagName": "MP cost halves"
+  },
+  "即死": {
+    "tagName": "Immediate Kill"
+  },
+  "保底命中": {
+    "tagName": "Guaranteed Hit"
+  },
+  "Graze": {
+    "tagName": "Graze"
+  },
+  "必定命中": {
+    "tagName": "Perfect Aim",
+    "frames": {
+      "category": [
+        "Effect"
+      ],
+      "caption": [
+        "When the skill with this effect hits a enemy, it will definitely not happen ((!MISS)) and #Graze ."
+      ],
+      "list": [
+        "Evasion and #invincible  will still occur."
+      ]
+    }
+  },
+  "必定暴擊": {
+    "tagName": "Guaranteed Critical"
+  },
+  "雙重屬性": {
+    "tagName": "Dual Element"
+  },
+  "仇恨值/恨意值": {
+    "tagName": "Aggro"
+  },
+  "阻擋（玩家）": {
+    "tagName": "Guard (Player)"
+  },
+  "閃躲（玩家）": {
+    "tagName": "Evasion (Player)"
+  },
+  "阻擋（怪物）": {
+    "tagName": "Guard (Monster)"
+  },
+  "閃躲（怪物）": {
+    "tagName": "Evasion (Monster)"
+  },
+  "怪物攻擊類型": {
+    "tagName": "Monster Attack Type"
+  },
+  "玩家造成傷害的計算": {
+    "tagName": "Player Damage Calculation"
+  },
+  "玩家受傷害計算": {
+    "tagName": "Player Received Damage Calculation"
+  },
+  "穩定率": {
+    "tagName": "Stability"
+  },
+  "魔法穩定率": {
+    "tagName": "Magic Stability"
+  },
+  "追擊": {
+    "tagName": "Follow-up Attack"
+  },
+  "雷吉斯托環": {
+    "tagName": "Registlet"
+  },
+  "納刀移動": {
+    "tagName": "Draw Move"
+  },
+  "隊伍外寵物能力懲罰": {
+    "tagName": "Pet Stat Penalty (Off-Party)"
+  },
+  "技能常數": {
+    "tagName": "Skill Constant"
+  },
+  "技能倍率": {
+    "tagName": "Skill Multiplier"
+  },
+  "限傷時視為單段/多段傷害": {
+    "tagName": "Single / Multiple Damage (DMG Cap)"
+  },
+  "施放武器": {
+    "tagName": "Weapon Used"
+  },
+  "法術暴擊轉化率": {
+    "tagName": "Magic Crit Conversion Rate"
+  },
+  "法術額外屬性傷害/剋屬傷害": {
+    "tagName": "Magic Extra Element Damage / Element Advantage Damage"
+  },
+  "潛力容量": {
+    "tagName": "Potential Capacity"
+  }
+}

@@ -1,0 +1,3268 @@
+{
+  "skillCategory": {
+    "id": "skill",
+    "groups": [
+      {
+        "groupId": "blade-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "威力攻擊．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-0-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「威力攻擊」的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "音速斬切．延長",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-0-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「音速斬切」的蓄勢待發時間延長${Lv}秒。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "横掃千軍．屬性",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「橫掃千軍」的火屬性變為裝備武器的屬性。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "真空刃．強化",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 20,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "0-0-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「真空刃」的技能倍率增加${Lv*2}。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "風暴氣流．延長",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「風暴氣流」的風刃氣旋，攻擊次數增加${Lv}次。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "爆氣斬．回復",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "0-0-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「爆氣斬」失去最終一擊，但可回復${Lv*50}的HP。（無動作時間）"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "戰吼．克服",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-12",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「戰吼」的發動不會受到畏懼的影響。"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "狂戰士之怒．抑制",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-13,0-0-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「狂戰士之怒」的習得技能每高一級，即會有10%的機率不會被解除 爆氣斬 狀態。"
+              }
+            ]
+          },
+          {
+            "id": "9",
+            "name": "風暴烈焰．擋閃",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-21",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「風暴烈焰」動作期間追加阻擋判定，阻擋成功時MP回復效果變為2倍。"
+              }
+            ]
+          },
+          {
+            "id": "10",
+            "name": "靈氣之刃．劍壓",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 8,
+            "powderCost": 125,
+            "powderCostAdditional": 1250,
+            "link": "0-0-17",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當技能「靈氣之刃」的目標怪物超出射程時，釋放衝擊波(單體攻擊)給出${Lv*10}%的傷害"
+              }
+            ]
+          },
+          {
+            "id": "11",
+            "name": "狂戰士之怒·猛進",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 5,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-13",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "在「狂戰士之怒」效果中受到怪物傷害時，狂戰士之怒的負面效果減輕${Lv}%"
+              }
+            ]
+          },
+          {
+            "id": "12",
+            "name": "月弧斬·吸魔",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 10,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-0-16",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "所有的層數都會被消耗，並且會根據消耗層數回復mp"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "shot-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "威力射擊．強擊",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-1-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「威力射擊」成功造成翻覆時，技能倍率增加${Lv*15}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "渦輪射擊．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-1-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「渦輪射擊」的技能倍率(每段)增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "箭雨．追擊",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 2,
+            "powderCost": 100,
+            "powderCostAdditional": 1000,
+            "link": "0-1-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「箭雨」的攻擊次數增加${Lv}次。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "麻痺射擊．延長",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-1-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「麻痺射擊」的強化效果延長${Lv}秒。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "煙霧彈．延長",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "0-1-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「煙霧彈」的強化效果延長${Lv}秒。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "分身射手．壓縮",
+            "obtainLevels": [
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "0-1-13",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「分身射手」的持續時間減半，而技能倍率增加${Lv*10}。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "匿蹤．時限",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-1-10",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「匿蹤」的有效次數變更為秒數。"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "曲線炮·識別",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-1-18",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「曲線砲」將會僅命中戰斗中的怪物，且必定造成暴擊"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "magic-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "法術/飛箭．追擊",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130,
+              220
+            ],
+            "maxLevel": 4,
+            "powderCost": 25,
+            "powderCostAdditional": 250,
+            "link": "0-2-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/飛箭」的攻擊次數增加${Lv}發。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "法術/障壁．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-2-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/障壁」的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "法術/魔法槍．加速",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "0-2-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/魔法槍」的發射間隔縮短${Lv*0.1}秒。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "法術/引爆．加速",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "0-2-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/引爆」的詠唱時間縮短${Lv*0.2}秒。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "強射．變化",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-2-12",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「強射」的射程延長效果消失，但一般攻擊的威力增加${Lv+1}%。\n※增加値因應技能Lv而變動。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "靜默充填",
+            "obtainLevels": [
+              110,
+              230
+            ],
+            "maxLevel": 20,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "0-2-10",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "在沉默狀態下使用「魔力充填」技能，MP回復量増加${Lv*5}%。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "法術/衝擊波．鬥氣",
+            "obtainLevels": [
+              220,
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-2-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "將技能「法術/衝擊波」的慣性類型變更為物理。"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "魔力灌充．切換",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-2-13",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "使用此技能時，若不滿足詠唱時間縮短的條件，此技能自動變更為施展魔力充填。"
+              }
+            ]
+          },
+          {
+            "id": "9",
+            "name": "變時神術．執念",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 5,
+            "powderCost": 200,
+            "powderCostAdditional": 2000,
+            "link": "0-2-15",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「變時神術」在MP不足時可消耗HP發動，不足MP每100點需要HP${60-Lv*10}%。\n※HP消耗可能會導致體力不支倒地。"
+              }
+            ]
+          },
+          {
+            "id": "10",
+            "name": "法術/毀滅．流星",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 5,
+            "powderCost": 200,
+            "powderCostAdditional": 2000,
+            "link": "0-2-17",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/毀滅」的附加異常狀態以及隕石大小會大幅降低，但中彈時間縮短${0.1*(Lv-1)}秒，即使未命中，也會落下所有隕石。"
+              }
+            ]
+          },
+          {
+            "id": "11",
+            "name": "法術/暴風．延長",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 5,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-2-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「法術/暴風」的技能倍率降低50%，但持續時間延長${Lv*1}秒。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "martial-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "重擊．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-3-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "裝備拳套使用技能「重擊」時，技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "音速波動．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-3-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "裝備拳套使用技能「音速波動」時，技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "穿甲．強化",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "0-3-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「穿甲」附加降防的機率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "震地強襲．強化",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-3-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "裝備拳套使用技能「震地強襲」時，技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "猛暴拳．貫穿",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "0-3-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "裝備拳套使用技能「猛爆拳」時，追加物理貫穿${Lv*5}%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "dual-sword-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "雙弧斬．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-4-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「雙弧斬」的暴擊傷害增加${Lv}%。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "禦空破陣．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-4-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「禦空破陣」的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "破空刃．壓縮",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-4-2,0-4-14",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「破空刃」的效果範圍減少,並失去逼退效果，但每段技能倍率增加${Lv*5}、\n技能「破空刃斬」的主傷害技能倍率增加${Lv*20}。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "幻影劍．強化",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 20,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "0-4-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「幻影劍」 的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "猛爆斬．凝心",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-4-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「猛爆斬」的技能倍率減弱${100-Lv*10}，但保證打出暴擊。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "弧光劍舞．月影",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 5,
+            "powderCost": 200,
+            "powderCostAdditional": 2000,
+            "link": "0-4-17",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "在技能「弧光劍舞」發動時，產生的所有恨意-${15*Lv}%。但若自身已是敵人的攻擊目標，則不會發動。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "月神災厄·強襲",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 10,
+            "powderCost": 100,
+            "powderCostAdditional": 1000,
+            "link": "0-4-15",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當獲得「疾風收割」的增益效果時時，技能「月神災厄」從任何距離發動都會判定為近距離攻擊，發動後${15-Lv}秒內無法再次發動"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "雙破壞之刃·辟邪",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 3,
+            "powderCost": 333,
+            "powderCostAdditional": 3333,
+            "link": "0-4-16",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「雙破壞之刃」將依據目標的減益效果數量（最多${Lv}種）而提升威力"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "halberd-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "迅捷刺突．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-5-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「迅捷刺突」的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "鴻鵠一擲．妨害",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "0-5-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「鴻鵠一擲」的第一擊有${Lv*10}%的機率造成異常狀態「膽怯」。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "籠尾．強化",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 20,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "0-5-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「籠尾」第2發的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "逆境怒吼．敵意",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-5-12",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「逆境怒吼」產生的恨意値增加${Lv*30}。（民間單位，見#[仇恨值/恨意值]說明）"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "潛龍撼地．收束",
+            "obtainLevels": [
+              150,
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "0-5-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「潛龍撼地」變為單體攻擊，並使造成的#[閃光]抗性時間縮短${Lv*2}秒。（初始為40秒）"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "破壞矛．遠投",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-5-14",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「破壞矛」的技能倍率增加${Lv*10}，射程與威力衰減的起始距離延長，且固定為遠距離威力。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "時空驅動·鐵芯",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-5-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "將「時空驅動」的附加攻擊效果從魔法攻擊（基於INT）更改為物理攻擊（基於STR）"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "mononofu-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "一閃．強化",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130
+            ],
+            "maxLevel": 20,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "0-6-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「一閃」的第2發的技能倍率增加${Lv*5}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "刀柄打擊．妨害",
+            "obtainLevels": [
+              30,
+              50,
+              70,
+              90,
+              110,
+              130,
+              220
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "0-6-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「刀柄打擊」給予的麻痺效果延長${Lv}秒。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "三段突刺．不動",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-6-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「三段突刺」不產生移動。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "斷禍．除魔",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 6,
+            "powderCost": 33,
+            "powderCostAdditional": 333,
+            "link": "0-6-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「斷禍」的魔法傷害減輕效果增加${Lv*5}%。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "明鏡止水．常套",
+            "obtainLevels": [
+              70,
+              90,
+              110,
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-6-12",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「明鏡止水」狀態期間內施展的技能不再獲得暴擊率加成（仍會降低暴傷），但也不會消耗掉狀態。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "三段突刺．迴避",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "0-6-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "三段突刺期間未受到任何傷害時，回復${Lv*10}MP。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "不撓不屈．不敗",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 3,
+            "powderCost": 333,
+            "powderCostAdditional": 3333,
+            "link": "0-6-18",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「不撓不屈」的計數會快1秒，但受到傷害時計數會減少${12-Lv*3}。\n但若使用Guard或者特定的武士技能防禦傷害，則不會減少。"
+              },
+              {
+                "type": "remark",
+                "value": "目前確認斷禍、斬釘截鐵、霞雪月花、彈刀等技能不會減少計數。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "crusher-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "飛踢．迴避",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-7-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「飛踢」移動期間，獲得最多1秒的無敵狀態。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "呼吸法．節省",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "0-7-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「呼吸法」的消費MP減少100。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "shield-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "重盾擊．節約",
+            "obtainLevels": [
+              170,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "1-1-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "使用技能「重盾擊」致使對方昏厥時，可回復${Lv*10}MP。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "防禦界限．魔法庇護",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-1-6,1-1-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當技能「防禦界限」發動時，已習得之技能「魔法庇護」也會同時啟動。※反之亦然"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "knight-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "突擊．疾行",
+            "obtainLevels": [
+              190,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "1-3-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "刪除技能「突擊」的逼退與遲緩，技能倍率增加${Lv*10}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "憤怒的一擊．強化",
+            "obtainLevels": [
+              190,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "1-3-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「憤怒的一擊」的技能倍率增加${Lv*10}。<br>\n當對方的恨意目標為自己時，給出的恨意值將變為兩倍。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "完善守備．靜音",
+            "obtainLevels": [
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-3-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「完善守備」因成功抵擋傷害所產生的仇恨下降${10*LV}%。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "繫影強襲．變化",
+            "obtainLevels": [
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-3-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "刪除技能「繫影強襲」的停止效果，變更為#[昏厥]效果。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "音速擠壓．直擊",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-3-8",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「音速擠壓」失去迅速效果，但同時獲得閃躲貫穿效果。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "hunter-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "失靈陷阱獵手",
+            "obtainLevels": [
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-4-4,1-4-5,1-4-6,1-4-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "陷阱技能可設置在對象的腳下，但若及時啟動，自身也會受到效果影響。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "priest-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "高貴治癒．擴大",
+            "obtainLevels": [
+              190,
+              230
+            ],
+            "maxLevel": 8,
+            "powderCost": 50,
+            "powderCostAdditional": 500,
+            "link": "1-5-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「高貴治癒」的有效範圍增加${Lv}m，但HP回復量減半。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "神聖光輝．神罰",
+            "obtainLevels": [
+              210,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "1-5-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「神聖光輝」命中時，有1%的機率會發動光屬性的法術/終結，終結的傷害等同技能等級${Lv}。"
+              },
+              {
+                "type": "remark",
+                "value": "法術/終結發動時不消耗MP，亦無技能發動動作，僅有特效傷害顯示。"
+              },
+              {
+                "type": "remark",
+                "value": "神聖之書與附魔之咒所造成的神聖光輝追擊，亦會觸發該效果。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "assasin-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "暗影步伐．幻惑",
+            "obtainLevels": [
+              190,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-6-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「暗影步伐」的追擊不發生慣性。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "暗殺突刺．強化",
+            "obtainLevels": [
+              210,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "1-6-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「暗殺突刺」的倍率提升${LV}%。\n若是背刺的情況，命中率提升${LV*10}%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "wizard-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "流星轟炸．單發",
+            "obtainLevels": [
+              170,
+              220,
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-7-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「流星轟炸」的隕石數量變為1個，也不附加異常狀態，但降落地點不再隨機。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "使魔．戰友",
+            "obtainLevels": [
+              190,
+              220,
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-7-0,1-7-7",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「使魔」的逃跑機率降低1%，高階使魔的行動時間快1秒。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "魔力水晶．加速",
+            "obtainLevels": [
+              210,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "1-7-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「魔力水晶」的MP回復量下降100，但詠唱時間縮短${Lv*10}%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "support-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "異常抗體．回復",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "2-0-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「異常抗體」中追加HP回復效果，回復量相當於已習得治癒術治療量的${Lv*10}%。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "癒合．節約",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "2-0-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「癒合」MP消耗減少100。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "癒合．儲備",
+            "obtainLevels": [
+              210,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "2-0-1,2-0-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「治癒術」、「癒合」的HP回復量減半。\n但每3秒可疊加一次增益，最多累積至${Lv}層。對隊友使用此技能時，可以消耗增益層數代替MP消耗。"
+              },
+              {
+                "type": "remark",
+                "value": "每使用1層數節約100MP，但使用癒合的場合，需累積至3層數一次節約300MP才會發動效果。"
+              },
+              {
+                "type": "remark",
+                "value": "消耗層數發動的技能無須詠唱。"
+              },
+              {
+                "type": "remark",
+                "value": "不影響縮短復活倒數時間的效果量。"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "battle-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "強打．真髓",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "2-1-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「強打」的發動率增加${Lv}%。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "專注．真髓",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "2-1-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「專注」的發動率增加${Lv}%。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "追擊之真髓．強化",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "2-1-9",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "此技能效果觸發率每技能等級增加+1%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "dark-power",
+        "items": [
+          {
+            "id": "1",
+            "name": "血咬．強化",
+            "obtainLevels": [
+              170,
+              190,
+              210
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "4-0-0",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「血咬」的技能倍率增加${Lv*10}。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "惡魔狂爪．收束",
+            "obtainLevels": [
+              210,
+              220,
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "4-0-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「惡魔狂爪」的技能倍率下降100，但會變為單體攻擊。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "magic-blade",
+        "items": [
+          {
+            "id": "1",
+            "name": "魔力共鳴．火力",
+            "obtainLevels": [
+              170,
+              230
+            ],
+            "maxLevel": 9,
+            "powderCost": 50,
+            "powderCostAdditional": 500,
+            "link": "4-1-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「魔力共鳴」的強化效果固定為火力類型，但增加量降低${95-Lv*5}%。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "魔力共鳴．加速",
+            "obtainLevels": [
+              190,
+              250
+            ],
+            "maxLevel": 9,
+            "powderCost": 50,
+            "powderCostAdditional": 500,
+            "link": "4-1-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「魔力共鳴」的強化效果固定為速度類型，但增加量降低${95-Lv*5}%。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "空靈閃焰．延長",
+            "obtainLevels": [
+              170,
+              190,
+              210,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "4-1-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "延長技能「空靈閃焰」的增益效果時間，但攻擊時MP回復效果會降低。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "魔力共鳴．專注",
+            "obtainLevels": [
+              210
+            ],
+            "maxLevel": 9,
+            "powderCost": 50,
+            "powderCostAdditional": 500,
+            "link": "4-1-2",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「魔力共鳴」的強化效果固定為專注類型，但增加量降低${95-Lv*5}%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "barehand-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "聚氣功．全力",
+            "obtainLevels": [
+              170,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "4-4-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當未持有「聚氣功」的氣功纏繞狀態、並一次消費2000MP發動此技能時，可使氣功提升層數增加${Lv*10}%。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "minstrel-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "吉他手",
+            "obtainLevels": [
+              210,
+              220,
+              250
+            ],
+            "maxLevel": 6,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "4-3-0,4-3-1,4-3-2,4-3-3,4-3-4",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "使「即興演出」的演奏重新開始更加順暢，在「即興演出」中成功化解攻擊時，可獲得${Lv}層「節奏衝擊」的堆疊"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "dancer-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "簡短舞步",
+            "obtainLevels": [
+              190,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "4-2-0,4-2-1,4-2-2,4-2-3",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "舞者技能的效果時間縮短5秒。\n※無法適用於應援之舞。"
+              },
+              {
+                "type": "remark",
+                "value": "也就是說，疊層間隔亦縮短5秒。"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "groupId": "ninja-skills",
+        "items": [
+          {
+            "id": "1",
+            "name": "風魔手裏劍．強化",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 2,
+            "powderCost": 200,
+            "powderCostAdditional": 2000,
+            "link": "5-2-9",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「風魔手裏劍」的MP消耗提升+${200/Lv}，作為交換，此技能威力提升次數+1。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "火遁術．龍炎",
+            "obtainLevels": [
+              220,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "5-2-0,5-2-1",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「火遁術」的詠唱時間+1秒，該傷害之魔法貫穿+${Lv*2.5}。當發動的是「火遁．爆炎陣」時，效果翻倍。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "風遁術．拔刀",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 40,
+            "powderCostAdditional": 400,
+            "link": "5-2-4,5-2-5",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「風遁術」的魔法貫穿+${Lv*5}。當發動的是「風遁．劈甲」時，技能傷害追加拔刀屬性。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "水遁術·水鏡",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "5-2-6",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "技能「水遁術」由設置類技能變為增益類技能"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "statCategory": {
+    "id": "stat",
+    "groups": [
+      {
+        "groupId": "",
+        "items": [
+          {
+            "id": "1",
+            "name": "提升物理攻擊",
+            "obtainLevels": [],
+            "maxLevel": 30,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "atk",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "提升魔法攻擊",
+            "obtainLevels": [],
+            "maxLevel": 30,
+            "powderCost": 10,
+            "powderCostAdditional": 100,
+            "link": "matk",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "提升HP上限",
+            "obtainLevels": [],
+            "maxLevel": 100,
+            "powderCost": 1,
+            "powderCostAdditional": 10,
+            "link": "max_hp",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv*10"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "提升MP上限",
+            "obtainLevels": [],
+            "maxLevel": 100,
+            "powderCost": 1,
+            "powderCostAdditional": 10,
+            "link": "max_mp",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "提升物理防禦",
+            "obtainLevels": [],
+            "maxLevel": 50,
+            "powderCost": 2,
+            "powderCostAdditional": 20,
+            "link": "def",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "提升魔法防禦",
+            "obtainLevels": [],
+            "maxLevel": 50,
+            "powderCost": 2,
+            "powderCostAdditional": 20,
+            "link": "mdef",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "提升命中",
+            "obtainLevels": [],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "accuracy",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "提升迴避",
+            "obtainLevels": [],
+            "maxLevel": 10,
+            "powderCost": 20,
+            "powderCostAdditional": 200,
+            "link": "dodge",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "9",
+            "name": "提升攻擊速度",
+            "obtainLevels": [],
+            "maxLevel": 100,
+            "powderCost": 2,
+            "powderCostAdditional": 20,
+            "link": "aspd",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          },
+          {
+            "id": "10",
+            "name": "提升詠唱速度",
+            "obtainLevels": [],
+            "maxLevel": 100,
+            "powderCost": 2,
+            "powderCostAdditional": 20,
+            "link": "cspd",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "Lv"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "specialCategory": {
+    "id": "special",
+    "groups": [
+      {
+        "groupId": "",
+        "items": [
+          {
+            "id": "1",
+            "name": "減輕追擊",
+            "obtainLevels": [
+              150,
+              250
+            ],
+            "maxLevel": 20,
+            "powderCost": 7,
+            "powderCostAdditional": 75,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "陷入膽怯、翻覆或昏厥等無法行動狀態下時，所造成的傷害減少${Lv*1}%。"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "name": "猛毒回復",
+            "obtainLevels": [
+              30,
+              50
+            ],
+            "maxLevel": 30,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "遭受由猛毒造成的傷害時，有${Lv*1}%機率解除猛毒狀態。"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "燃燒的鬥志",
+            "obtainLevels": [
+              150,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "遭受由著火造成的傷害時，可回復自身的攻擊時MP回復量的${Lv*5}%。"
+              },
+              {
+                "type": "remark",
+                "value": "此處為總攻擊回復數值。"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "name": "神經控制",
+            "obtainLevels": [
+              50,
+              70,
+              250
+            ],
+            "maxLevel": 30,
+            "powderCost": 5,
+            "powderCostAdditional": 50,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "麻痺造成的ASPD降低效果減輕${Lv*2}%。"
+              }
+            ]
+          },
+          {
+            "id": "5",
+            "name": "貓眼",
+            "obtainLevels": [
+              30,
+              70,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "盲目狀態時，Miss的攻擊有機率升格為Graze。"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "name": "高體溫",
+            "obtainLevels": [
+              110,
+              230
+            ],
+            "maxLevel": 20,
+            "powderCost": 7,
+            "powderCostAdditional": 75,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "凍結狀態下進行一般攻擊時, 有${Lv*5}%機率解除凍結狀態。"
+              }
+            ]
+          },
+          {
+            "id": "7",
+            "name": "緊急維修",
+            "obtainLevels": [
+              130,
+              250
+            ],
+            "maxLevel": 20,
+            "powderCost": 7,
+            "powderCostAdditional": 75,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "在降防效果中受到的傷害增加時,有${Lv*5}%機率解除降防狀態。"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "name": "釘鞋",
+            "obtainLevels": [
+              110,
+              130
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "遲緩造成的機動速度降低效果減輕${Lv*5}%。"
+              }
+            ]
+          },
+          {
+            "id": "9",
+            "name": "穩如泰山/八風不動",
+            "obtainLevels": [
+              70,
+              90
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "停止狀態下受到傷害時，站立不動則會減輕${Lv*3}%傷害。"
+              }
+            ]
+          },
+          {
+            "id": "10",
+            "name": "浴血奮戰",
+            "obtainLevels": [
+              150
+            ],
+            "maxLevel": 20,
+            "powderCost": 7,
+            "powderCostAdditional": 75,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "出血狀態下，一般攻擊的威力與攻擊時MP回復增加${Lv*5}%。"
+              },
+              {
+                "type": "remark",
+                "value": "此處為總攻擊回復數值。"
+              }
+            ]
+          },
+          {
+            "id": "11",
+            "name": "睡眠不足",
+            "obtainLevels": [
+              90,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "睡眠狀態的持續時間縮短${Lv*10}%。"
+              }
+            ]
+          },
+          {
+            "id": "12",
+            "name": "魔力失火",
+            "obtainLevels": [
+              130,
+              150,
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "發動魔力爆發並倖存時，立即回100MP。"
+              }
+            ]
+          },
+          {
+            "id": "13",
+            "name": "怪物狩獵",
+            "obtainLevels": [
+              150,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "打倒怪物後回復MP100，發動後${30-Lv}秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "14",
+            "name": "咖啡時間",
+            "obtainLevels": [
+              130,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "打倒怪物後回復HP10%，發動後${30-Lv}秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "15",
+            "name": "修行者",
+            "obtainLevels": [
+              10,
+              30,
+              50,
+              70,
+              90
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "獲得的EXP增加10%，但是給予敵人的傷害降低${15-Lv}%。"
+              },
+              {
+                "type": "remark",
+                "value": "此處傷害計算為獨立乘項，該乘項與托環中降低害類型共用傷害乘區。"
+              }
+            ]
+          },
+          {
+            "id": "16",
+            "name": "火力寵物",
+            "obtainLevels": [
+              110,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "主人造成的傷害大幅降低，但是寵物造成的傷害增加${Lv*3}%。"
+              },
+              {
+                "type": "remark",
+                "value": "傷害降低30%。"
+              },
+              {
+                "type": "remark",
+                "value": "此處傷害計算為獨立乘項，該乘項與托環中降低害類型共用傷害乘區。"
+              }
+            ]
+          },
+          {
+            "id": "17",
+            "name": "肉盾寵物",
+            "obtainLevels": [
+              90,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "主人受到的傷害大幅增加，但是寵物受到的傷害降低${Lv*3}%。"
+              }
+            ]
+          },
+          {
+            "id": "18",
+            "name": "HP緊急回復",
+            "obtainLevels": [
+              30,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "受到怪物傷害導致剩餘HP降至25%以下時，立即回復HP${10+Lv}%。\n發動後，60秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "19",
+            "name": "MP緊急回復",
+            "obtainLevels": [
+              50,
+              150
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "MP不足時，立即回復MP${Lv*10}。\n發動後，60秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "20",
+            "name": "魔力暴揍",
+            "obtainLevels": [
+              110,
+              220,
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "失去攻擊MP回復的能力，使普通攻擊的威力增加。"
+              },
+              {
+                "type": "remark",
+                "value": "攻擊MP回復每2，通常攻擊倍率+1%。"
+              }
+            ]
+          },
+          {
+            "id": "21",
+            "name": "節省技巧",
+            "obtainLevels": [
+              110,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "自動道具發動時，將不會消耗該道具，但道具冷卻時間變為2倍。\n發動後，${40-Lv}秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "22",
+            "name": "最後的英雄",
+            "obtainLevels": [
+              90,
+              190
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "除自己以外的隊伍成員全部陣亡時，每1名陣亡隊友，將使自身的HP與MP回復${10+Lv}%。\n發動后，300秒内無法再度發動。"
+              }
+            ]
+          },
+          {
+            "id": "23",
+            "name": "怕寂寞",
+            "obtainLevels": [
+              90,
+              170,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "位於隊伍成員附近時，每10秒回復HP100，但若不位於附近時則會失去HP100。\n※此處HP消耗不會造成陣亡。"
+              },
+              {
+                "type": "remark",
+                "value": "範圍界線為${3+Lv}。"
+              }
+            ]
+          },
+          {
+            "id": "24",
+            "name": "起跑衝刺",
+            "obtainLevels": [
+              170,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "初次獲得目標怪物的恨意時，${Lv+5}秒內，一般攻擊的冷卻時間變為0。\n發動後，60秒內無法再度發動。"
+              },
+              {
+                "type": "remark",
+                "value": "此處所述為ASPD低於1100時，出現的普通攻擊間隔時間。"
+              }
+            ]
+          },
+          {
+            "id": "25",
+            "name": "曬太陽",
+            "obtainLevels": [
+              10,
+              30,
+              50,
+              70,
+              220
+            ],
+            "maxLevel": 4,
+            "powderCost": 37,
+            "powderCostAdditional": 375,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "使用可增加自然回復的情緒時，MP回復量再增加${25*Lv}%。"
+              },
+              {
+                "type": "remark",
+                "value": "此處增加量為獨立乘項，搭配情緒可達4倍自然回復。"
+              }
+            ]
+          },
+          {
+            "id": "26",
+            "name": "命運共同體",
+            "obtainLevels": [
+              70,
+              190,
+              220
+            ],
+            "maxLevel": 2,
+            "powderCost": 75,
+            "powderCostAdditional": 750,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "為自己以外的每位隊伍成員\n增加ATK與MATK各1%,但每當隊伍成員陣亡,將會失去HP${100-Lv}%.\n※此處HP消耗會造成陣亡"
+              },
+              {
+                "type": "remark",
+                "value": "遊戲客戶端內翻譯錯誤，實際效果如下"
+              },
+              {
+                "type": "remark",
+                "value": "除自己外,每有一位隊伍成員,為自己增加ATK與MATK各1%,但每當隊伍成員陣亡,將會失去HP"
+              }
+            ]
+          },
+          {
+            "id": "27",
+            "name": "最後的抵抗",
+            "obtainLevels": [
+              50,
+              170,
+              220
+            ],
+            "maxLevel": 5,
+            "powderCost": 30,
+            "powderCostAdditional": 300,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當你為隊伍最後一名成員時，用盡最後一絲力氣立即復活，但會在${5+Lv}秒後再次陣亡。\n※無法使用急救和復活之露重新再戰"
+              },
+              {
+                "type": "remark",
+                "value": "遊戲內中文敘述為翻譯錯誤。"
+              },
+              {
+                "type": "remark",
+                "value": "當受到致死傷害時，效果立刻生效，並無倒地畫面。"
+              }
+            ]
+          },
+          {
+            "id": "28",
+            "name": "隱匿連擊",
+            "obtainLevels": [
+              170,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "每一連擊可減少${Lv}恨意值，連擊越長，效果越高。"
+              }
+            ]
+          },
+          {
+            "id": "29",
+            "name": "無之架式",
+            "obtainLevels": [
+              170,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 50,
+            "powderCostAdditional": 500,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "不使用連擊發動的技能傷害變為${100+Lv}%。\n※不適用於蓄力技能等部分技能。"
+              },
+              {
+                "type": "remark",
+                "value": "此處傷害計算為獨立乘項。"
+              }
+            ]
+          },
+          {
+            "id": "30",
+            "name": "殿後",
+            "obtainLevels": [
+              130,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "(鏡頭面向)後方受到的傷害減輕${Lv}%，若是正後方則效果更好。"
+              }
+            ]
+          },
+          {
+            "id": "31",
+            "name": "救世主",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "隊伍全滅後復活，將會獲得10秒無敵狀態。"
+              },
+              {
+                "type": "remark",
+                "value": "此處的無敵狀態不會因為發動攻擊而消滅。"
+              },
+              {
+                "type": "remark",
+                "value": "當隊伍只有一個人的時候無法獲得此狀態。(可能為BUG)"
+              }
+            ]
+          },
+          {
+            "id": "32",
+            "name": "恐慌",
+            "obtainLevels": [
+              150,
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "每3秒回復MP${10+Lv}，但當敵人的恨意指向自己時，將會失去所有MP，且此雷吉斯托環效果停止30秒。"
+              }
+            ]
+          },
+          {
+            "id": "33",
+            "name": "轉讓",
+            "obtainLevels": [
+              150,
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 15,
+            "powderCostAdditional": 150,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "MP上限降低${1000/Lv}，但當自己陣亡時，可將剩餘MP分配給隊伍成員。\n※受此效果被回復MP的玩家，180秒内無法接受同樣效果。"
+              }
+            ]
+          },
+          {
+            "id": "34",
+            "name": "火之天賦",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為火屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填、法術/長槍等技能效果變更為著火異常。"
+              }
+            ]
+          },
+          {
+            "id": "35",
+            "name": "水之天賦",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為水屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填、法術/長槍等技能效果變更為冰凍異常。"
+              }
+            ]
+          },
+          {
+            "id": "36",
+            "name": "風之天賦",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為風屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填技能效果變更為停止異常、法術/長槍等技能效果變更為盲目異常。"
+              }
+            ]
+          },
+          {
+            "id": "37",
+            "name": "地之天賦",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為地屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填技能效果變更為猛毒異常、法術/長槍等技能效果變更為遲緩異常。"
+              }
+            ]
+          },
+          {
+            "id": "38",
+            "name": "緊急救治",
+            "obtainLevels": [
+              220
+            ],
+            "maxLevel": 10,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "減少使用急救時所產生的仇恨。"
+              }
+            ]
+          },
+          {
+            "id": "39",
+            "name": "納刀移動．消除",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "不再產生納刀移動。"
+              }
+            ]
+          },
+          {
+            "id": "40",
+            "name": "光之天賦",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為光屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填技能效果變更為盲目異常、法術/長槍等技能效果變更為眩暈異常。"
+              }
+            ]
+          },
+          {
+            "id": "41",
+            "name": "目標申告",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當恨意值轉向自己時，自動在隊伍聊天頻道中報告。※公會團隊戰時則會在一般(SAY)頻道報告。"
+              }
+            ]
+          },
+          {
+            "id": "42",
+            "name": "下班通報",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當體力不支倒地時，自動在隊伍聊天頻道中報告。※公會團隊戰時則會在一般(SAY)頻道報告。"
+              }
+            ]
+          },
+          {
+            "id": "43",
+            "name": "教官",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "自身獲得的EXP降至0，但同時隊伍中等級最低的成員獲得的EXP增加${Lv}%。\n如果存在多個等級最低的成員，則效果會降低。"
+              }
+            ]
+          },
+          {
+            "id": "44",
+            "name": "治癒之手",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 10,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "使治癒相關的雷吉斯托環的回復量降低緩解${10*Lv}%。"
+              }
+            ]
+          },
+          {
+            "id": "45",
+            "name": "鐵拳",
+            "obtainLevels": [
+              230
+            ],
+            "maxLevel": 5,
+            "powderCost": 120,
+            "powderCostAdditional": 1200,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當主手無裝備或是主手裝備拳套時，破防效果發生率增加${Lv}%。\n如果為空手(主副手皆無裝備)時，效果提升3倍。"
+              }
+            ]
+          },
+          {
+            "id": "46",
+            "name": "閃躲套裝",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "即使身穿無法使用Avoid的裝備也可以使用Avoid。"
+              },
+              {
+                "type": "remark",
+                "value": "閃躲次數+2。"
+              }
+            ]
+          },
+          {
+            "id": "47",
+            "name": "暗之天賦",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "依屬性而變化的技能效果被固定為暗屬性之效果。"
+              },
+              {
+                "type": "remark",
+                "value": "例如：龍力充填技能效果變更為詛咒異常、法術/長槍等技能效果變更為畏懼異常。"
+              }
+            ]
+          },
+          {
+            "id": "48",
+            "name": "傷害檢查",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 1,
+            "powderCost": 0,
+            "powderCostAdditional": 0,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "踩到警告區域時，若敵人的攻擊超過當前HP的50%，則會額外顯示警告訊息。"
+              }
+            ]
+          },
+          {
+            "id": "49",
+            "name": "領教領教",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 10,
+            "powderCost": 60,
+            "powderCostAdditional": 600,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "自身對敵人的傷害大幅降低，但同時隊伍成員獲得的EXP增加${Lv}%。"
+              },
+              {
+                "type": "remark",
+                "value": "傷害上限變為目標怪物血量的1%。"
+              },
+              {
+                "type": "remark",
+                "value": "但#燃燒、#中毒等異常傷害不受此影響。"
+              }
+            ]
+          },
+          {
+            "id": "50",
+            "name": "騎士的直覺",
+            "obtainLevels": [
+              250
+            ],
+            "maxLevel": 5,
+            "powderCost": 120,
+            "powderCostAdditional": 1200,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "裝備單手劍時，「看穿」增加${Lv}%。\n如果副手裝備為盾時，效果提升3倍。"
+              }
+            ]
+          },
+          {
+            "id": "51",
+            "name": "專屬護衛官",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 10,
+            "powderCost": 100,
+            "powderCostAdditional": 1000,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "當以坦克定位召喚傭兵/夥伴時，該傭兵/夥伴所受的物理/魔法/比例傷害減輕${Lv*3}%。"
+              }
+            ]
+          },
+          {
+            "id": "52",
+            "name": "紅區護盾",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 10,
+            "powderCost": 100,
+            "powderCostAdditional": 1000,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "受到怪物的紅色警告範圍攻擊傷害減少${Lv}%，但是，單體攻擊的傷害將增加10%（副作用）"
+              }
+            ]
+          },
+          {
+            "id": "53",
+            "name": "藍區護盾",
+            "obtainLevels": [
+              270
+            ],
+            "maxLevel": 10,
+            "powderCost": 100,
+            "powderCostAdditional": 1000,
+            "link": "",
+            "rows": [
+              {
+                "type": "caption",
+                "value": "受到怪物的藍色警告範圍攻擊傷害減少${Lv}%，但是，單體攻擊的傷害將增加10%（副作用）"
+              },
+              {
+                "type": "caption",
+                "value": ""
+              },
+              {
+                "type": "caption",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
