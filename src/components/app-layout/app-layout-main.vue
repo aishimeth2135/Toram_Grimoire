@@ -25,10 +25,6 @@ const { device } = useDevice()
         </div>
       </template>
     </div>
-    <aside v-if="device.hasAside" class="app-layout-main--aside">
-      <div class="bg-white py-4">
-        <slot name="aside"></slot>
-      </div>
-    </aside>
+    <aside v-if="device.hasAside" class="app-layout-main--aside pointer-events-none" />
   </main>
 </template>
