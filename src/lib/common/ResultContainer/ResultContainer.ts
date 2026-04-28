@@ -36,8 +36,18 @@ abstract class ResultContainerBase implements InstanceWithId {
   /** method to modify result */
   abstract handle(handler: ResultHandler): void
 
+  private _isEmpty = false
+
   constructor() {
     this.instanceId = ResultContainerBase._idGenerator.generate()
+  }
+
+  markEmpty() {
+    this._isEmpty = true
+  }
+
+  isEmpty() {
+    return this._isEmpty
   }
 }
 

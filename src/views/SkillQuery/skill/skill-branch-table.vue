@@ -6,7 +6,7 @@
           <th
             v-for="(label, idx) in datas.labels"
             :key="idx"
-            class="border-b-1 border-primary-30 px-3 py-1.5 text-left text-sm font-normal text-primary-30"
+            class="border-b-1 border-primary-30 text-primary-30 px-3 py-1.5 text-left text-sm font-normal"
             :class="{
               'pl-5': idx === 0,
               'pr-5': idx === datas.labels.length - 1,
@@ -21,7 +21,7 @@
           <td
             v-for="num in datas.labels.length"
             :key="num"
-            class="border-b border-primary-30 px-3 py-1.5"
+            class="border-primary-30 border-b px-3 py-1.5"
             :class="{
               'pl-5': num === 1,
               'pr-5': num === datas.labels.length,

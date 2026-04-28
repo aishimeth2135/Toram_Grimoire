@@ -1,12 +1,16 @@
 <template>
-  <span v-if="!!(result instanceof SkillBranchStatResult)" class="inline-flex items-center">
+  <span v-if="!result"></span>
+  <span v-else-if="result.isEmpty()">
+    {{ result.result }}
+  </span>
+  <span v-else-if="!!(result instanceof SkillBranchStatResult)" class="inline-flex items-center">
     <RenderDisplayTitle class="text-primary-90" :title="result.statResultData.title" />
     <span class="text-primary-50">{{ result.statResultData.sign }}</span>
     <span>
       <RenderResult :key="result.instanceId" />
     </span>
   </span>
-  <RenderResult v-else-if="result" :key="result.instanceId" />
+  <RenderResult v-else :key="result.instanceId" />
 </template>
 
 <script lang="ts" setup>
