@@ -83,13 +83,17 @@ function RenderContainerResult(container: SkillBranchResult, displayResult?: str
 function RenderTextParts(parts: SkillBranchTextResultPartValue[]) {
   return parts.map((part): string | VNode => {
     if (typeof part === 'string') {
-      return h('span', { innerHTML: part.replace(/\*/g, '×') })
+      return h('span', part.replace(/\*/g, '×'))
     }
     if (part instanceof TextResultContainerPart) {
+      if (part.type === TextResultContainerPartTypes.BreakLine) {
+        return h('br')
+      }
+
       if (part.type === TextResultContainerPartTypes.Separate) {
         const childs = part.hasMultipleParts
           ? RenderTextParts(part.parts)
-          : h('span', { innerHTML: part.value.replace(/\*/g, '×') })
+          : h('span', part.value.replace(/\*/g, '×'))
         const classNames = ['cy--text-separate']
         if (part.unit) {
           return h('span', { class: 'text-primary-50' }, [
@@ -99,17 +103,23 @@ function RenderTextParts(parts: SkillBranchTextResultPartValue[]) {
         }
         classNames.push('text-primary-50')
         return h('span', { class: classNames }, childs)
-      } else if (part.type === TextResultContainerPartTypes.GlossaryTag) {
+      }
+
+      if (part.type === TextResultContainerPartTypes.GlossaryTag) {
         return h(GlossaryTagPopover, {
           name: part.value,
           displayName: part.metadata.get('display-name'),
         })
-      } else if (part.type === TextResultContainerPartTypes.Other) {
+      }
+
+      if (part.type === TextResultContainerPartTypes.Other) {
         if (part.subType === 'skill') {
           return h(SkillLinkPopover, { name: part.value })
-        } else if (part.subType === 'branch') {
+        }
+        if (part.subType === 'branch') {
           return h(SkillBranchPopover, { branchName: part.value })
-        } else if (part.subType === 'mark') {
+        }
+        if (part.subType === 'mark') {
           return h('span', { class: 'text-primary-50' }, part.value)
         }
       }

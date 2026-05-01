@@ -10,17 +10,18 @@
       <span v-if="container.has('base')" class="attr-item">
         {{ container.get('base') }}
       </span>
-      <cy-icon v-if="container.has('base') && container.has('constant')" icon="ic-round-add" />
-      <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
-      <span v-if="container.has('constant')" class="divider" />
+      <template v-if="container.has('constant')">
+        <cy-icon v-if="container.has('base')" icon="ic-round-add" />
+        <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
+        <span class="divider" />
+      </template>
       <cy-icon icon="ic-round-close" />
       <SkillBranchPropValue class="attr-item" :result="container.result('multiplier')" />
-      <cy-icon v-if="container.has('extra_constant')" icon="ic-round-add" />
-      <SkillBranchPropValue class="attr-item" :result="container.result('extra_constant')" />
-      <span
-        v-if="container.has('extra_constant') && frequencyVisible"
-        class="divider border-orange-60"
-      />
+      <template v-if="container.has('extra_constant')">
+        <cy-icon icon="ic-round-add" />
+        <SkillBranchPropValue class="attr-item" :result="container.result('extra_constant')" />
+        <span v-if="frequencyVisible" class="divider border-orange-60" />
+      </template>
       <cy-icon v-if="frequencyVisible && container.has('frequency')" icon="ic-round-close" />
       <SkillBranchPropValue
         v-if="frequencyVisible"
@@ -28,16 +29,12 @@
         :result="container.result('frequency')"
       />
     </div>
-    <div
-      v-if="container.has('@custom-base-caption')"
-      class="mb-2.5 flex flex-wrap items-center pl-2 text-sm"
-    >
-      <cy-icon small class="text-fuchsia-30" />
-      <span class="ml-1 text-fuchsia-60">
+    <div v-if="container.has('@custom-base-caption')" class="mb-1.5 mt-1 text-sm">
+      <div class="text-orange-60">
         {{ container.get('base') }}
-      </span>
+      </div>
       <SkillBranchPropValue
-        class="pl-3 text-primary-50"
+        class="text-primary-50"
         :result="container.result('@custom-base-caption')"
       />
     </div>
@@ -68,7 +65,7 @@ const frequencyVisible = computed(() => {
 @reference "@/tailwind.css";
 
 .divider {
-  @apply mx-2 h-6 border-l-2 border-primary-30;
+  @apply border-primary-30 mx-2 h-6 border-l-2;
 }
 
 .attr-item {

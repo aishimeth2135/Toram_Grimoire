@@ -6,6 +6,7 @@ export const enum ResultContainerTypes {
 export const enum TextResultContainerPartTypes {
   Separate = 'separate',
   GlossaryTag = 'glossary-tag',
+  BreakLine = 'break-line',
   Other = 'other',
 }
 
@@ -15,4 +16,5 @@ export const enum CommonTextParseItemIds {
   GlossaryTag = 'glossary-tag',
   Mark = 'mark',
   Underline = 'underline',
+  BreakLine = 'break-line',
 }

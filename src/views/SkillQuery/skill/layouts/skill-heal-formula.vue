@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="heal-formula-main inline-flex flex-wrap items-center">
+    <div class="heal-formula-main inline-flex flex-wrap items-center pb-1.5">
       <div class="heal-formula-main-first" />
-      <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
+      <span v-if="isSingleValue" class="attr-item text-primary-30 mr-1 text-sm">
         {{ t('skill-query.branch.heal.constant-prefix') }}
       </span>
-      <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
-      <cy-icon v-if="container.has('constant') && extraTextList.length !== 0" icon="ic-round-add" />
+      <template v-if="container.has('constant')">
+        <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
+        <cy-icon v-if="extraTextList.length !== 0" icon="ic-round-add" />
+      </template>
 
       <template v-for="(text, idx) in extraTextList" :key="text + idx">
         <span class="attr-item space-x-0.5">
@@ -53,7 +55,7 @@ const isSingleValue = computed(() => {
 @reference "@/tailwind.css";
 
 .attr-item {
-  @apply my-1 inline-flex items-center px-1.5 py-0.5;
+  @apply inline-flex items-center px-1.5;
 }
 
 .heal-formula-main > .heal-formula-main-first + .attr-item {

@@ -121,12 +121,14 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
       return
     }
 
-    let defaultRowType = 'caption'
-    if (currentItem instanceof RegistletItemBaseStat) {
-      defaultRowType = 'value'
+    if (row('value')) {
+      let defaultRowType = 'caption'
+      if (currentItem instanceof RegistletItemBaseStat) {
+        defaultRowType = 'value'
+      }
+      const rowType = row('type') || defaultRowType
+      const itemRow = new RegistletItemRow(rowType, row('value'))
+      currentItem.rows.push(itemRow)
     }
-    const rowType = row('type') || defaultRowType
-    const itemRow = new RegistletItemRow(rowType, row('value'))
-    currentItem.rows.push(itemRow)
   })
 }

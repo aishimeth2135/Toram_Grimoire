@@ -199,6 +199,14 @@ const useTextResultBaseParseItems = defineState(() => {
     },
   }
 
+  const breakLineHandler = getCommonTextParseItemHandler(CommonTextParseItemIds.BreakLine)
+  const breakLineItem: TextParseItem = {
+    ...getCommonTextParseItemBase(CommonTextParseItemIds.BreakLine),
+    handler(context) {
+      return SkillBranchTextResultPart.from(breakLineHandler(context))
+    },
+  }
+
   const getSkillQueryMarkHandler = (typeForSkillResultDipslay: string) =>
     (context => {
       const newPart = new SkillBranchTextResultPart(
@@ -226,7 +234,15 @@ const useTextResultBaseParseItems = defineState(() => {
   }
 
   const getParseItems = (valueParseItem: TextParseItem): TextParseItem[] => {
-    return [glossaryTagItem, valueParseItem, separateItem, skillMark, skillBranchMark, simpleMark]
+    return [
+      glossaryTagItem,
+      valueParseItem,
+      separateItem,
+      skillMark,
+      skillBranchMark,
+      simpleMark,
+      breakLineItem,
+    ]
   }
 
   return { getParseItems }

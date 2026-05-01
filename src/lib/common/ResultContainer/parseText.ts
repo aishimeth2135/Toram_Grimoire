@@ -220,6 +220,11 @@ export function getCommonTextParseItemBase(
         id: CommonTextParseItemIds.Underline,
         pattern: /\(\(_((?:(?!\(\().)+)\)\)/,
       }
+    case CommonTextParseItemIds.BreakLine:
+      return {
+        id: CommonTextParseItemIds.Underline,
+        pattern: /((?:<br>)|\n)/,
+      }
   }
 }
 
@@ -229,6 +234,7 @@ type CommonTextParseItemHandlerTypeMap = {
   [CommonTextParseItemIds.GlossaryTag]: TextParseHandler<TextResultContainerPart>
   [CommonTextParseItemIds.Mark]: TextParseHandler<TextResultContainerPart>
   [CommonTextParseItemIds.Underline]: TextParseHandler<TextResultContainerPart>
+  [CommonTextParseItemIds.BreakLine]: TextParseHandler<TextResultContainerPart>
 }
 
 export function getCommonTextParseItemHandler<Id extends CommonTextParseItemIds>(
@@ -273,6 +279,11 @@ export function getCommonTextParseItemHandler<Id extends CommonTextParseItemIds>
         const [value] = context.values
         const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
         newPart.subType = 'underline'
+        return newPart
+      }) as CommonTextParseItemHandlerTypeMap[Id]
+    case CommonTextParseItemIds.BreakLine:
+      return (_context => {
+        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.BreakLine, '')
         return newPart
       }) as CommonTextParseItemHandlerTypeMap[Id]
   }

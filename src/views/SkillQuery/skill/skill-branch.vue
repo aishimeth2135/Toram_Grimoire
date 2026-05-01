@@ -198,6 +198,9 @@ const paddingBottomClass = computed(() => {
 
   const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next)
 
+  if (curBch.isGroup && curBch.groupState.expanded) {
+    return 'pb-1'
+  }
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
@@ -212,6 +215,7 @@ const paddingBottomClass = computed(() => {
       return 'pb-0'
     }
   }
+
   if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
     return 'pb-2'
   }

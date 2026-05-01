@@ -8,7 +8,7 @@
     >
       <SkillBranchPropValue
         v-if="container.has('caption')"
-        class="inline-block pl-2 pr-1"
+        class="inline-block pb-2 pr-1"
         :result="container.result('caption')"
       />
       <SkillBranchStats

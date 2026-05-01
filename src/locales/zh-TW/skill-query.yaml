@@ -140,7 +140,7 @@ branch:
       dark: 暗屬性
       one_hand_sword: 單手劍屬性
       arrow: 箭矢屬性
-      against: 有利屬性
+      against: 弱點屬性
     dual_element:
       one_hand_sword: 單手劍
       arrow: 箭矢
@@ -197,7 +197,7 @@ branch:
   effect:
     base-name: 技能效果
     condition:
-      auto: 施放成功後
+      auto: 狀態期間
       hit: 命中成功後
       '@next': 下一招技能
     type:

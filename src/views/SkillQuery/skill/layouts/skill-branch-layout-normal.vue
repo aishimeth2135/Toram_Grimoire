@@ -1,9 +1,9 @@
 <template>
   <div class="skill-branch-layout-normal rounded-sm bg-white">
     <div class="border-red-30 rounded-sm border-2 border-l-4 bg-white pb-2">
-      <div class="border-red-20 mb-3 flex items-center border-b py-1.5 pl-4">
+      <div class="border-red-20 mb-2.5 flex items-center border-b py-1.5 pl-2.5">
         <cy-icon :icon="nameIcon" class="text-red-30" />
-        <div class="text-red-40 ml-2">{{ container.get('name') }}</div>
+        <div class="text-red-40 ml-1.5">{{ container.get('name') }}</div>
       </div>
       <div class="flex items-start">
         <div class="shrink-0 pl-2.5">
@@ -11,10 +11,10 @@
             <cy-icon :icon="mainIcon" class="text-red-30" />
           </div>
         </div>
-        <div class="pl-4 pr-2 pt-1">
+        <div class="pl-3.5 pr-2 pt-1">
           <div v-if="mainTitle" class="flex items-center">
             <div class="text-primary-80" v-html="mainTitle"></div>
-            <div v-if="nameProps" class="text-emerald-60 flex space-x-2 pl-4 text-sm">
+            <div v-if="nameProps" class="text-emerald-60 flex space-x-2 pl-3 text-sm">
               <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
                 {{ nameProp }}
               </span>
@@ -30,7 +30,7 @@
         class="flex items-start py-1.5 pl-2.5"
       >
         <IconCircle icon="mdi:help" />
-        <div class="border-y border-transparent pl-4 pr-2 pt-1">
+        <div class="border-y border-transparent pl-3.5 pr-2 pt-1">
           <span
             v-for="contentData in subContentDatas"
             :key="contentData.key"
@@ -59,7 +59,7 @@
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
         <IconCircle icon="ic:outline-share-arrival-time" />
-        <div class="pl-4 pr-2 pt-1">
+        <div class="pl-3.5 pr-2 pt-1">
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
             <span class="text-gray-30 ml-2">60F/1s</span>

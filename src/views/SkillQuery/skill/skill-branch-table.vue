@@ -1,6 +1,6 @@
 <template>
   <div class="w-full overflow-x-auto px-2">
-    <table class="border-0" :style="{ 'min-width': `${10 * datas.labels.length}rem` }">
+    <table class="border-0" :style="{ 'min-width': `${8 * datas.labels.length}rem` }">
       <thead>
         <tr>
           <th

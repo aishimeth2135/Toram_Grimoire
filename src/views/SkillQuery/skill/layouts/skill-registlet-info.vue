@@ -1,18 +1,18 @@
 <template>
-  <div class="relative rounded-sm border-2 border-l-4 border-emerald-30 bg-white pb-2 pt-2.5">
-    <div class="flex items-start pb-0.5 pl-2.5">
+  <div class="border-emerald-30 relative rounded-sm border-2 border-l-4 bg-white pt-2.5">
+    <div class="flex items-start pb-3 pl-2.5">
       <IconCircle icon="game-icons:beveled-star" icon-color="emerald-30" />
       <div class="pl-3 pr-2 pt-1">
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>
-          <div class="ml-3 text-sm text-emerald-30">
+          <div class="text-emerald-30 ml-3 text-sm">
             {{ t('common.Registlet.title') }}
           </div>
         </div>
-        <div class="flex flex-wrap items-center space-y-2" style="min-height: 2rem">
+        <div class="mt-1 flex flex-wrap items-center space-y-2" style="min-height: 2rem">
           <template v-for="row in item.rows" :key="row.type + row.value">
             <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
-            <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
+            <div v-else-if="row.type === 'remark'" class="text-primary-40 text-sm">
               {{ row.value }}
             </div>
           </template>
@@ -20,20 +20,17 @@
       </div>
     </div>
     <cy-transition>
-      <div
-        v-show="registletItemState.enabled"
-        class="mt-2 border-t border-emerald-20 px-4 pb-2 pt-4"
-      >
+      <div v-show="registletItemState.enabled" class="border-emerald-20 border-t px-4 pb-3 pt-4">
         <div>
           <cy-input-counter
             v-model:value="registletItemState.level /* eslint-disable-line vue/no-mutating-props */"
             :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
-          <div class="mt-3 flex items-center pl-0.5 text-sm text-primary-30">
+          <div class="text-primary-30 mt-3 flex items-center pl-0.5 text-sm">
             <cy-icon icon="mdi:arrow-up-bold-outline" class="mr-1 text-inherit" small />
             {{ t('skill-query.registlet-max-level-title') }}
-            <div class="ml-2 text-primary-50">
+            <div class="text-primary-50 ml-2">
               {{ registletItemState.item.maxLevel }}
             </div>
           </div>

@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
-import { splitComma } from '@/shared/utils/string'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing/compute'
@@ -47,7 +47,8 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
       .forEach((item, idx) => {
         const key = `@extra_value[${idx}]`
         props.set(key, item)
-        valuePropsMap.set(key, { toPersentage: true })
+        const keepFormat = isNumberString(item) && parseFloat(item) >= 10
+        valuePropsMap.set(key, { toPersentage: !keepFormat })
       })
     const texts = splitComma(props.get('extra_text')!)
     extraTextList.push(...texts)
