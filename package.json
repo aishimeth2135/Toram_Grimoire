@@ -78,5 +78,5 @@
     "not ie <= 11",
     "not dead"
   ],
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.14.1"
 }
