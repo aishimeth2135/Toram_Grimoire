@@ -5,12 +5,9 @@
         v-model:value="stackValue"
         :range="stackValueRange"
         :input-width="container.getCustomData('stackInputWidth')"
+        :step="stackStep"
+        :title="container.get('name')"
       >
-        <template #title>
-          <cy-icon-text icon="ion-leaf">
-            {{ container.get('name') }}
-          </cy-icon-text>
-        </template>
         <template v-if="container.get('unit')" #unit>
           <span class="text-primary-50">{{ container.get('unit') }}</span>
         </template>
@@ -72,5 +69,12 @@ const stackValueRange = computed(() => {
   const max = toInt(stackValueRangeOrigin.value[1])
   const min = toInt(stackValueRangeOrigin.value[0])
   return [min, max]
+})
+
+const stackStep = computed(() => {
+  if (container.value.has('step')) {
+    return toInt(container.value.get('step')) ?? 1
+  }
+  return 1
 })
 </script>
