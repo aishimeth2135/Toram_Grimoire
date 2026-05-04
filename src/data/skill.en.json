@@ -6,16 +6,16 @@
     "name": "Blade Skills"
   },
   "skill:0:0:0": {
-    "name": "Power Attack"
+    "name": "Hard Hit"
   },
   "skill:0:0:1": {
-    "name": "Swift Attack"
+    "name": "Astute"
   },
   "skill:0:0:2": {
-    "name": "Smash"
+    "name": "Trigger Slash"
   },
   "skill:0:0:3": {
-    "name": "Explosive Slash"
+    "name": "Rampage"
   },
   "skill:0:0:4": {
     "name": "Meteor Breaker"
@@ -24,58 +24,58 @@
     "name": "Sonic Blade"
   },
   "skill:0:0:6": {
-    "name": "Vacuum Blade"
+    "name": "Spiral Air"
   },
   "skill:0:0:7": {
-    "name": "Astute"
+    "name": "Sword Tempest"
   },
   "skill:0:0:8": {
-    "name": "Sword Break"
+    "name": "Buster Blade"
   },
   "skill:0:0:9": {
-    "name": "Swordsmanship"
+    "name": "Sword Mastery"
   },
   "skill:0:0:10": {
-    "name": "Sword Speed Boost"
+    "name": "Quick Slash"
   },
   "skill:0:0:11": {
-    "name": "Swordsmanship Master"
+    "name": "Sword Technique"
   },
   "skill:0:0:12": {
-    "name": "Battle Cry"
+    "name": "War Cry"
   },
   "skill:0:0:13": {
-    "name": "Berserker's Rage"
+    "name": "Berserk"
   },
   "skill:0:0:14": {
-    "name": "Quick Kick"
+    "name": "Swift Attack"
   },
   "skill:0:0:15": {
-    "name": "Shutout"
+    "name": "Shut-Out"
   },
   "skill:0:0:16": {
     "name": "Lunar Slash"
   },
   "skill:0:0:17": {
-    "name": "Spirit Blade"
+    "name": "Aura Blade"
   },
   "skill:0:0:18": {
-    "name": "Sword Fighter"
+    "name": "Gladiate"
   },
   "skill:0:0:19": {
-    "name": "Hammer Strike"
+    "name": "Hammer Slam"
   },
   "skill:0:0:20": {
-    "name": "Horizontal Cleave"
+    "name": "Cleaving Attack"
   },
   "skill:0:0:21": {
-    "name": "Storm Flame"
+    "name": "Storm Blaze"
   },
   "skill:0:0:22": {
-    "name": "Guardian Blade"
+    "name": "Garde Blade"
   },
   "skill:0:0:23": {
-    "name": "Monster Slash"
+    "name": "Ogre Slash"
   },
   "tree:0:1": {
     "name": "Shot Skills"
