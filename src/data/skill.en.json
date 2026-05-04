@@ -95,10 +95,10 @@
     "name": "Power Shot"
   },
   "skill:0:1:1": {
-    "name": "Turbo Shot"
+    "name": "Bullseye"
   },
   "skill:0:1:2": {
-    "name": "Vital Strike"
+    "name": "Snipe"
   },
   "skill:0:1:3": {
     "name": "Arrow Rain"
@@ -107,64 +107,64 @@
     "name": "Crossfire"
   },
   "skill:0:1:5": {
-    "name": "Gunge Shot"
+    "name": "Moeba Shot"
   },
   "skill:0:1:6": {
     "name": "Paralysis Shot"
   },
   "skill:0:1:7": {
-    "name": "Smoke Bomb"
+    "name": "Smoke Dust"
   },
   "skill:0:1:8": {
-    "name": "Sneaky Steps"
+    "name": "Arm Break"
   },
   "skill:0:1:9": {
-    "name": "Shooting Mastery"
+    "name": "Shot Mastery"
   },
   "skill:0:1:10": {
-    "name": "Camouflage"
+    "name": "Sneak Attack"
   },
   "skill:0:1:11": {
-    "name": "Long Range Snipe"
+    "name": "Long Range"
   },
   "skill:0:1:12": {
-    "name": "Breathe"
+    "name": "Quick Draw"
   },
   "skill:0:1:13": {
     "name": "Decoy Shot"
   },
   "skill:0:1:14": {
-    "name": "Devastation Charge"
+    "name": "Fatal Shot"
   },
   "skill:0:1:15": {
-    "name": "Conqueror"
+    "name": "Vanquisher"
   },
   "skill:0:1:16": {
-    "name": "Dual Storm"
+    "name": "Twin Storm"
   },
   "skill:0:1:17": {
-    "name": "Retreat Shot"
+    "name": "Retrograde Shot"
   },
   "skill:0:1:18": {
-    "name": "Curve Shot"
+    "name": "Parabola Cannon"
   },
   "skill:0:1:19": {
-    "name": "Katana Archery"
+    "name": "Samurai Archery"
   },
   "skill:0:1:20": {
-    "name": "Quick Load"
+    "name": "Quick Loader"
   },
   "skill:0:1:21": {
-    "name": "Elemental Reach"
+    "name": "Element Starter"
   },
   "skill:0:1:22": {
-    "name": "Piercing Arrow"
+    "name": "Piercing Shot"
   },
   "skill:0:1:23": {
-    "name": "Wide Barrage"
+    "name": "Spread Shot"
   },
   "skill:0:1:24": {
-    "name": "Hunting Pup"
+    "name": "Hunter's Buddy"
   },
   "tree:0:2": {
     "name": "Magic Skills"
