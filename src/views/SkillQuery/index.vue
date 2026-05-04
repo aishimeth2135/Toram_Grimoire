@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { type ComputedRef, computed, nextTick, ref, useTemplateRef } from 'vue'
+import { type ComputedRef, computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -92,6 +92,7 @@ import Grimoire from '@/shared/Grimoire'
 import { useToggle } from '@/shared/setup/State'
 import { toInt } from '@/shared/utils/number'
 
+import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
@@ -204,4 +205,22 @@ if (route.params.skillId) {
 }
 
 const { computingContainer, currentSkillItem } = setupSkillQueryComputingContainer(currentSkill)
+
+watch(
+  currentSkillItem,
+  item => {
+    if (!item) return
+    const seen = new Map<string, EquipmentRestrictions>()
+    item.effectItems
+      .flatMap(effect => effect.equipments)
+      .forEach(eq => {
+        const id = (['main', 'sub', 'body'] as const).map(k => eq[k] ?? 'none').join('|')
+        if (!seen.has(id)) seen.set(id, eq)
+      })
+    if (seen.size === 1) {
+      currentEquipment.value = [...seen.values()][0]
+    }
+  },
+  { immediate: true }
+)
 </script>
