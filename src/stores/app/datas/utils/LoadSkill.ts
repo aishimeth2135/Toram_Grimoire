@@ -47,9 +47,13 @@ export function LoadSkill(skillSystem: SkillSystem, data: SkillData, locale?: Sk
           skillEntry.name
         const skill = tree.appendSkill(skillEntry.id, skillName)
 
-        skillEntry.effects.forEach(effectEntry => {
+        const skillLocale = locale?.[`skill:${catEntry.id}:${treeEntry.id}:${skillEntry.id}`]
+
+        skillEntry.effects.forEach((effectEntry, effectIdx) => {
           const defaultSelected = DEFAULT_SET_LIST.indexOf(effectEntry.defaultSet)
           if (defaultSelected === -1) return
+
+          const effectLocale = skillLocale?.effects?.[effectIdx]
 
           let effect: SkillEffect | SkillEffectHistory
           if (defaultSelected === 4) {
@@ -86,17 +90,19 @@ export function LoadSkill(skillSystem: SkillSystem, data: SkillData, locale?: Sk
             effect.basicProps.castingTime = checkNull(effectEntry.castingTime, '')
           }
 
-          effectEntry.branches.forEach(branchEntry => {
+          effectEntry.branches.forEach((branchEntry, branchIdx) => {
+            const branchLocale = effectLocale?.branches?.[branchIdx]
             const branch = effect.appendSkillBranch(
               branchEntry.id,
               branchEntry.name as SkillBranchNames
             )
             branchEntry.attrs.forEach(attr => {
               if (!attr.name) return
+              const value = branchLocale?.attrs?.[attr.name] ?? attr.value
               if (!Grimoire.Character.findStatBase(attr.name)) {
-                branch.appendProp(attr.name, attr.value, attr.extra)
+                branch.appendProp(attr.name, value, attr.extra)
               } else {
-                branch.appendStat(attr.name, attr.value, attr.extra)
+                branch.appendStat(attr.name, value, attr.extra)
               }
             })
           })

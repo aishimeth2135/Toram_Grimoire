@@ -67,9 +67,21 @@ export interface SkillMainLocale {
   }
 }
 
+export interface SkillBranchLocale {
+  /** Translated values keyed by attr name (e.g. "name", "condition", "caption", "text") */
+  attrs?: Record<string, string>
+}
+
+export interface SkillEffectLocale {
+  /** Positional — use null to skip an effect that needs no translation */
+  branches?: (SkillBranchLocale | null)[]
+}
+
 /** keyed by "category:catId", "tree:catId:treeId", or "skill:catId:treeId:skillId" */
 export interface SkillLocale {
   [key: string]: {
     name?: string
+    /** Positional over all effects in the skill entry */
+    effects?: (SkillEffectLocale | null)[]
   }
 }

@@ -63,7 +63,18 @@
     "name": "Gladiate"
   },
   "skill:0:0:19": {
-    "name": "Hammer Slam"
+    "name": "Hammer Slam",
+    "effects": [
+      {
+        "branches": [
+          null,
+          { "attrs": { "name": "Hammer Slam" } },
+          { "attrs": { "condition": "Against targets with #[Control Ailments]", "caption": "This hit is a #[Guaranteed Critical]." } },
+          { "attrs": { "condition": "When this skill is used consecutively", "caption": "MP cost becomes 0, inertia type changes to Normal Attack, and this skill cannot be placed at the start of a combo." } },
+          { "attrs": { "text": "Using any skill will end the 0 MP cost state." } }
+        ]
+      }
+    ]
   },
   "skill:0:0:20": {
     "name": "Cleaving Attack"
