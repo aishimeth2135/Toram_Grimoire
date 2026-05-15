@@ -170,13 +170,13 @@
     "name": "Magic Skills"
   },
   "skill:0:2:0": {
-    "name": "Magic: Arrow"
+    "name": "Magic: Arrows"
   },
   "skill:0:2:1": {
-    "name": "Magic: Lance"
+    "name": "Magic: Javelin"
   },
   "skill:0:2:2": {
-    "name": "Magic: Burst"
+    "name": "Magic: Lances"
   },
   "skill:0:2:3": {
     "name": "Magic: Impact"
@@ -185,16 +185,16 @@
     "name": "Magic: Finale"
   },
   "skill:0:2:5": {
-    "name": "Magic: Barrier"
+    "name": "Magic: Wall"
   },
   "skill:0:2:6": {
-    "name": "Magic: Detonation"
+    "name": "Magic: Blast"
   },
   "skill:0:2:7": {
     "name": "Magic: Storm"
   },
   "skill:0:2:8": {
-    "name": "Magic: Blast"
+    "name": "Magic: Burst"
   },
   "skill:0:2:9": {
     "name": "Magic Mastery"
@@ -203,112 +203,112 @@
     "name": "MP Charge"
   },
   "skill:0:2:11": {
-    "name": "Spell Accelerate"
+    "name": "Chain Cast"
   },
   "skill:0:2:12": {
-    "name": "Burst Cast"
+    "name": "Power Wave"
   },
   "skill:0:2:13": {
-    "name": "Mana Conversion"
+    "name": "Maximizer"
   },
   "skill:0:2:14": {
-    "name": "Magic: Aurora"
+    "name": "Magic: Guardian Beam"
   },
   "skill:0:2:15": {
-    "name": "Chronos Field"
+    "name": "Chronos Shift"
   },
   "skill:0:2:16": {
-    "name": "Magic: Cannon"
+    "name": "Magic: Magic Cannon"
   },
   "skill:0:2:17": {
-    "name": "Magic: Ruin"
+    "name": "Magic: Crash"
   },
   "skill:0:2:18": {
-    "name": "Quick Charge"
+    "name": "Rapid Charge"
   },
   "skill:0:2:19": {
-    "name": "Magic Ward"
+    "name": "Enchanted Barrier"
   },
   "skill:0:2:20": {
     "name": "Magic Knife"
   },
   "skill:0:2:21": {
-    "name": "Unbridled Power"
+    "name": "Qadal"
   },
   "skill:0:2:22": {
     "name": "Magic: Laser"
   },
   "skill:0:2:23": {
-    "name": "Resonance Tuning"
+    "name": "Spell Calibration"
   },
   "tree:0:3": {
     "name": "Martial Skills"
   },
   "skill:0:3:0": {
-    "name": "Heavy Strike"
+    "name": "Smash"
   },
   "skill:0:3:1": {
-    "name": "Painful Strike"
+    "name": "Bash"
   },
   "skill:0:3:2": {
-    "name": "Armor Pierce"
+    "name": "Shell Break"
   },
   "skill:0:3:3": {
-    "name": "Fierce Aura"
+    "name": "Heavy Smash"
   },
   "skill:0:3:4": {
-    "name": "Chariot Impact"
+    "name": "Chariot"
   },
   "skill:0:3:5": {
     "name": "Sonic Wave"
   },
   "skill:0:3:6": {
-    "name": "Earth Shaker"
+    "name": "Earthbind"
   },
   "skill:0:3:7": {
     "name": "Triple Kick"
   },
   "skill:0:3:8": {
-    "name": "Rapid Strike"
+    "name": "Rush"
   },
   "skill:0:3:9": {
     "name": "Martial Mastery"
   },
   "skill:0:3:10": {
-    "name": "Martial Training"
+    "name": "Martial Discipline"
   },
   "skill:0:3:11": {
     "name": "Chakra"
   },
   "skill:0:3:12": {
-    "name": "Follow-Up"
+    "name": "Aggravate"
   },
   "skill:0:3:13": {
-    "name": "Smash Hit"
+    "name": "Strong Chase Attack"
   },
   "skill:0:3:14": {
     "name": "Slide"
   },
   "skill:0:3:15": {
-    "name": "Thousand Hands Image"
+    "name": "Abstract Arms"
   },
   "skill:0:3:16": {
     "name": "Asura Aura"
   },
   "skill:0:3:17": {
-    "name": "Shadow Flare"
+    "name": "Flash Blink"
   },
   "skill:0:3:18": {
-    "name": "Redirect"
+    "name": "Energy Control"
   },
   "skill:0:3:19": {
-    "name": "Sidestep"
+    "name": "Mountain Press"
   },
   "skill:0:3:20": {
-    "name": "Stomp"
+    "name": "Seismic Stomp"
   },
   "skill:0:3:21": {
-    "name": "Spinning Sweep"
+    "name": "Spin Sweep"
   },
   "tree:0:4": {
     "name": "Dual Sword Skills"
