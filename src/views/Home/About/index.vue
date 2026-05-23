@@ -88,9 +88,7 @@
                       </span>
                       <span v-else class="inline-flex flex-wrap items-center">
                         <span>{{ value.main }}</span>
-                        <span
-                          class="border-blue-60 text-blue-60 ml-2 border-l border-r border-solid px-2"
-                        >
+                        <span class="text-blue-40 ml-2 text-sm">
                           {{ value.sub }}
                         </span>
                       </span>
@@ -191,6 +189,11 @@ const columns: {
       {
         title: 'group',
         list: [
+          {
+            main: '藤邸',
+            sub: '眾神幣',
+          },
+          '@line',
           {
             main: '曼珠沙華',
             sub: '眾神幣',
@@ -305,7 +308,7 @@ const fetchDiscordData = async () => {
         : '',
       loaded: true,
     }
-  } catch (err) {
+  } catch (_error) {
     //
   }
 }
