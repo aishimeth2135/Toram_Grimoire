@@ -167,7 +167,7 @@ export const useCharacterStore = defineStore('view-character', () => {
         skillBuildId: state.skillBuild?.id ?? null,
         foodBuildId: state.foodBuild?.id ?? null,
         registletBuildId: state.registletBuild?.id ?? null,
-        potionBuildId: state.registletBuild?.id ?? null,
+        potionBuildId: state.potionBuild?.id ?? null,
       }
     })
 
