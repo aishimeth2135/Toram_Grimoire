@@ -80,6 +80,12 @@ export function setupCharacters() {
         previou.registletBuild ?? (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
     }
     registletBuildStore.setCurrentRegistletBuild(current.registletBuild)
+
+    if (current.potionBuild === null) {
+      current.potionBuild =
+        previou.potionBuild ?? (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
+    }
+    potionBuildStore.setCurrentPotionBuild(current.potionBuild)
   }
 
   const setCharacterSkillBuild = (build: SkillBuild) => {
