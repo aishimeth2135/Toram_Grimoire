@@ -101,7 +101,7 @@ const selectStatOption = (option: StatOption) => {
         <div class="flex w-full max-w-sm items-center self-end">
           <div class="flex grow items-center">
             <div
-              class="flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-10 pl-3 pr-2 duration-150 hover:bg-primary-10"
+              class="border-primary-10 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pl-3 pr-2 duration-150"
               @click="
                 currentMode =
                   currentMode === EquipmentSearchMode.Normal
@@ -111,13 +111,13 @@ const selectStatOption = (option: StatOption) => {
             >
               <cy-icon icon="mdi:exchange" />
             </div>
-            <div class="grow rounded-r-full border border-primary-10">
+            <div class="border-primary-10 grow rounded-r-full border">
               <div v-if="currentMode === EquipmentSearchMode.Normal">
                 <CommonSearchInput v-model="normalSearchText" behind />
               </div>
               <cy-popover
                 v-else-if="currentMode === EquipmentSearchMode.Stat"
-                class="mr-2 flex grow cursor-pointer items-center text-ellipsis py-1.5 pl-3 pr-2 text-sm leading-6 text-primary-30"
+                class="text-primary-30 mr-2 flex grow cursor-pointer items-center text-ellipsis py-1.5 pl-3 pr-2 text-sm leading-6"
                 custom
               >
                 <template v-if="!selectedStatOption">
@@ -127,7 +127,7 @@ const selectStatOption = (option: StatOption) => {
                   <div class="mr-2.5">
                     {{ t('character-simulator.append-equipments.current-selected-stat') }}
                   </div>
-                  <div class="text-base text-primary-80">
+                  <div class="text-primary-80 text-base">
                     {{ selectedStatOption.text }}
                   </div>
                 </template>
@@ -162,8 +162,8 @@ const selectStatOption = (option: StatOption) => {
             />
           </div>
         </div>
-        <CardRowsWrapper class="mt-3 max-h-96 grow overflow-x-auto wd:max-h-none">
-          <div class="h-full min-w-min overflow-y-auto">
+        <CardRowsWrapper class="wd:max-h-none mt-3 flex max-h-96 grow flex-col overflow-x-auto">
+          <div class="h-full min-h-0 min-w-min grow overflow-y-auto">
             <div ref="topElement"></div>
             <CardRows v-if="currentItems.length > 0">
               <CharacterEquipmentAppendItem
@@ -211,7 +211,7 @@ const selectStatOption = (option: StatOption) => {
               </div>
             </CardRow>
           </CardRows>
-          <div v-else class="px-6 py-4 text-sm text-primary-40">
+          <div v-else class="text-primary-40 px-6 py-4 text-sm">
             {{ t('character-simulator.append-equipments.selected-equipments-default-tips') }}
           </div>
         </CardRowsWrapper>
