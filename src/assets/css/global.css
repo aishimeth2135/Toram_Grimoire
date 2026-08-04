@@ -1,6 +1,11 @@
 .cy--text-separate {
-  @apply mx-1.5 inline-block border-x-1 border-primary-20 px-1.5;
+  @apply border-x-1 border-primary-20 mx-1.5 inline-block px-1.5;
 }
+
+.text-sm .cy--text-separate {
+  @apply mx-1 px-1;
+}
+
 .cy--text-underline {
   @apply relative mb-1 mr-3 inline-block border-b border-current px-2;
 

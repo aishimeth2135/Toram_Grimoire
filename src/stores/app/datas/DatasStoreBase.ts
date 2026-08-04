@@ -3,6 +3,7 @@ import { shallowReactive } from 'vue'
 import type CharacterSystem from '@/lib/Character'
 import type DamageCalculationSystem from '@/lib/Damage'
 import type EnchantSystem from '@/lib/Enchant'
+import type EquipmentTraitSystem from '@/lib/EquipmentTrait'
 import type GlossarySystem from '@/lib/Glossary'
 import type ItemsSystem from '@/lib/Items'
 import QuestSystem from '@/lib/Quest'
@@ -18,6 +19,7 @@ export const DatasStoreBase: {
   DamageCalculation: DamageCalculationSystem | null
   Registlet: RegistletSystem | null
   Quest: QuestSystem | null
+  EquipmentTrait: EquipmentTraitSystem | null
 } = shallowReactive({
   Items: null,
   Character: null,
@@ -27,4 +29,5 @@ export const DatasStoreBase: {
   DamageCalculation: null,
   Registlet: null,
   Quest: null,
+  EquipmentTrait: null,
 })

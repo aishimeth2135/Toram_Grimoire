@@ -10,7 +10,7 @@
     <div class="ml-2 inline-block text-ellipsis" style="max-width: 12rem">
       {{ equipment.name }}
     </div>
-    <span v-if="equipment.hasRefining && equipment.refining !== 0" class="ml-1 text-blue-60">
+    <span v-if="equipment.supportRefining && equipment.refining !== 0" class="text-blue-60 ml-1">
       +{{ equipment.refining }}
     </span>
   </div>

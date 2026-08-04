@@ -5,35 +5,30 @@ const Grimoire = {
   get Character() {
     return DatasStoreBase.Character!
   },
-
   get Items() {
     return DatasStoreBase.Items!
   },
-
   get Skill() {
     return DatasStoreBase.Skill!
   },
-
   get Glossary() {
     return DatasStoreBase.Glossary!
   },
-
   get Enchant() {
     return DatasStoreBase.Enchant!
   },
-
   get DamageCalculation() {
     return DatasStoreBase.DamageCalculation!
   },
-
   get Registlet() {
     return DatasStoreBase.Registlet!
   },
-
   get Quest() {
     return DatasStoreBase.Quest!
   },
-
+  get EquipmentTrait() {
+    return DatasStoreBase.EquipmentTrait!
+  },
   get i18n() {
     return I18nStore.i18n!
   },

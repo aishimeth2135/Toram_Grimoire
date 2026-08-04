@@ -1,6 +1,8 @@
 skill-info: 技能资讯
 historical-record: 历史纪录
+historical-record-equipment-type-invalid-tips: 目前选取的装备类型没有历史纪录。
 select-skill: 选择技能
+main-menu-title-common: 基本设定
 skill-level: 技能等级
 character-level: 角色等级
 registlet-level: 雷吉斯托环等级
@@ -8,6 +10,7 @@ registlet-level-abbreviation: 托环等级
 registlet-info-tip: 关于雷吉斯托环的详细资讯，请查看{link}。
 registlet-max-level-title: 最大等级
 search-tips: 点击这里来搜寻技能
+quick-switch-equipment-type-caption: 这里可以快速切换目前技能的装备类型。
 go-to-skill: 查看
 formula-display-mode:
   title: 公式显示模式
@@ -137,7 +140,7 @@ branch:
       dark: 暗属性
       one_hand_sword: 单手剑属性
       arrow: 箭矢属性
-      against: 有利属性
+      against: 弱点属性
     dual_element:
       one_hand_sword: 单手剑
       arrow: 箭矢
@@ -194,7 +197,7 @@ branch:
   effect:
     base-name: 技能效果
     condition:
-      auto: 施放成功后
+      auto: 状态期间
       hit: 命中成功后
       '@next': 下一招技能
     type:

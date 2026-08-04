@@ -6,10 +6,10 @@ import { StatTypes } from './enums'
 
 type StatValue = number | string
 
-interface StatShowData {
+export interface StatShowData<V extends StatValue> {
   result: string
   title: string
-  realValue: StatValue
+  originalValue: V
   value: string
   tail: string
 }
@@ -84,7 +84,7 @@ class StatBase {
     }
   }
 
-  getShowData(type: StatTypes, value: StatValue): StatShowData {
+  getShowData<V extends StatValue>(type: StatTypes, value: V): StatShowData<V> {
     let title = '',
       tail = ''
     if (type === StatTypes.Constant) {
@@ -102,7 +102,7 @@ class StatBase {
     return {
       result: this.show(type, value),
       title,
-      realValue: value,
+      originalValue: value,
       value: typeof value === 'number' ? value.toString() : value,
       tail,
     }
@@ -159,6 +159,7 @@ abstract class StatElementBase {
 
   abstract value: StatValue
 
+  abstract getShowData(): StatShowData<StatValue>
   abstract clone(): StatElementBase
 
   constructor(base: StatBase, type: StatTypes) {
@@ -188,10 +189,6 @@ abstract class StatElementBase {
     return this.base.showValue(this.type, value ?? this.value)
   }
 
-  getShowData() {
-    return this.base.getShowData(this.type, this.value)
-  }
-
   /**
    * If baseId and type are equal, return true.
    * (value do not have to be equal)
@@ -206,6 +203,9 @@ abstract class StatElementBase {
   }
 }
 
+/**
+ * The stat with pure numerical value.
+ */
 class Stat extends StatElementBase {
   value: number
 
@@ -219,11 +219,19 @@ class Stat extends StatElementBase {
     return this.value
   }
 
+  getShowData(): StatShowData<number> {
+    return this.base.getShowData(this.type, this.value)
+  }
+
   clone(): Stat {
     return this.base.createStat(this.type, this.value)
   }
 }
 
+/**
+ * The stat with string value.
+ * (The string value needs to be converted into numbers through calculation)
+ */
 class StatComputed extends StatElementBase {
   value: string
 
@@ -234,6 +242,10 @@ class StatComputed extends StatElementBase {
 
   clone(): StatComputed {
     return this.base.createStatComputed(this.type, this.value)
+  }
+
+  getShowData(): StatShowData<string> {
+    return this.base.getShowData(this.type, this.value)
   }
 
   toStat(value: number): Stat {

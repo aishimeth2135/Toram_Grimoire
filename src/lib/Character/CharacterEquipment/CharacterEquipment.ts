@@ -5,15 +5,21 @@ import {
   InstanceIdGenerator,
   type InstanceWithId,
 } from '@/shared/services/InstanceId'
+import { CommonLogger } from '@/shared/services/Logger'
 import { normalizeInteger } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
+import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
 import type { BagCrystal, BagEquipment } from '@/lib/Items/BagItem'
 
 import { CharacterBuildLabel } from '../Character/CharacterBuildLabel'
 import { StatRecorded } from '../Stat/StatRecorded'
 import { StatRestriction, type StatRestrictionSaveData } from '../Stat/StatRestriction'
 import { StatValueSourceTypes } from '../Stat/enums'
+import {
+  CharacterEquipmentTrait,
+  type CharacterEquipmentTraitSaveData,
+} from './CharacterEquipmentTrait'
 import {
   BodyArmorTypeList,
   EquipmentKinds,
@@ -38,10 +44,20 @@ interface EquipmentSaveData {
   refining?: number
   crystals?: string[]
   labels?: number[]
+  trait?: CharacterEquipmentTraitSaveData
 }
 
 abstract class CharacterEquipment implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
+
+  private static ELEMENT_STAT_ID_LIST = [
+    'element_fire',
+    'element_water',
+    'element_earth',
+    'element_wind',
+    'element_light',
+    'element_dark',
+  ]
 
   abstract type: EquipmentTypes
 
@@ -59,6 +75,8 @@ abstract class CharacterEquipment implements InstanceWithId {
 
   labels: CharacterBuildLabel[]
 
+  trait: CharacterEquipmentTrait | null
+
   readonly customTypeList?: EquipmentTypes[]
 
   constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
@@ -75,21 +93,23 @@ abstract class CharacterEquipment implements InstanceWithId {
     this.stability = 0
 
     this.labels = []
+
+    this.trait = null
   }
 
   // TODO: remove getter to support lagacy
-  get id() {
+  get id(): number {
     return this.instanceId
   }
 
-  get name() {
+  get name(): string {
     return this._name ? this._name : this.origin ? this.origin.name : ''
   }
   set name(value: string) {
     this._name = value
   }
 
-  is(kind: EquipmentKinds) {
+  is(kind: EquipmentKinds): boolean {
     if (this instanceof Weapon) {
       return kind === EquipmentKinds.Weapon
     }
@@ -102,26 +122,31 @@ abstract class CharacterEquipment implements InstanceWithId {
     return kind === EquipmentKinds.Other
   }
 
-  get hasRefining() {
+  get supportRefining(): boolean {
     return false
   }
-  get hasCrystal() {
+  get supportCrystal(): boolean {
     return false
   }
-  get hasStability() {
+  get supportStability(): boolean {
     return false
   }
-  get hasElement() {
+  get supportElement(): boolean {
     return false
   }
-  get creatable() {
+  get supportTrait(): boolean {
     return false
   }
-  get elementStat() {
-    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
+  get creatable(): boolean {
+    return false
   }
 
-  get typeText() {
+  get elementStat(): StatRestriction | null {
+    return (
+      this.stats.find(stat => CharacterEquipment.ELEMENT_STAT_ID_LIST.includes(stat.baseId)) ?? null
+    )
+  }
+  get typeText(): string {
     return CharacterEquipment.getTypeText(this.type)
   }
   get categoryIcon(): string {
@@ -158,7 +183,7 @@ abstract class CharacterEquipment implements InstanceWithId {
     return Images.equipmentIcons.get(type + (fieldId <= 0 ? '' : `-${fieldId}`))
   }
 
-  static getTypeText(type: EquipmentTypes) {
+  static getTypeText(type: EquipmentTypes): string {
     return Grimoire.i18n.t('common.Equipment.category.' + type)
   }
 
@@ -170,7 +195,7 @@ abstract class CharacterEquipment implements InstanceWithId {
       }
       return StatRecorded.from(newStat, this, StatValueSourceTypes.Equipment)
     })
-    if (this.hasCrystal) {
+    if (this.supportCrystal) {
       this.crystals.forEach(crystal => {
         crystal.stats.forEach(crystalStat => {
           const find = allStats.find(stat => stat.equals(crystalStat))
@@ -196,7 +221,7 @@ abstract class CharacterEquipment implements InstanceWithId {
   /**
    * @param [type] - If not give, it will toggle type to next index
    */
-  setCustomType(type?: EquipmentTypes) {
+  setCustomType(type?: EquipmentTypes): void {
     if (type) {
       this.type = type
     } else if (this.customTypeList) {
@@ -209,19 +234,19 @@ abstract class CharacterEquipment implements InstanceWithId {
     }
   }
 
-  findStat(baseId: string, type: string) {
-    return this.stats.find(stat => stat.baseId === baseId && stat.type === type)
+  findStat(baseId: string, type: string): StatRestriction | null {
+    return this.stats.find(stat => stat.baseId === baseId && stat.type === type) ?? null
   }
 
-  removeStat(stat: StatRestriction) {
+  removeStat(stat: StatRestriction): void {
     const idx = this.stats.indexOf(stat)
     if (idx > -1) {
       this.stats.splice(idx, 1)
     }
   }
 
-  appendCrystal(origin: BagCrystal) {
-    if (this.hasCrystal) {
+  appendCrystal(origin: BagCrystal): void {
+    if (this.supportCrystal) {
       const crystals = this.crystals
       if (crystals.length < 2) {
         crystals.push(new EquipmentCrystal(origin))
@@ -229,12 +254,21 @@ abstract class CharacterEquipment implements InstanceWithId {
     }
   }
 
-  removeCrystal(crystal: EquipmentCrystal) {
-    if (this.hasCrystal) {
+  removeCrystal(crystal: EquipmentCrystal): void {
+    if (this.supportCrystal) {
       const crystals = this.crystals
       const idx = crystals.indexOf(crystal)
       crystals.splice(idx, 1)
     }
+  }
+
+  setTrait(item: EquipmentTraitItem, level?: number): void {
+    level = typeof level === 'number' ? level : item.maxLevel
+    this.trait = new CharacterEquipmentTrait(item, level)
+  }
+
+  removeTrait(): void {
+    this.trait = null
   }
 
   clone(): CharacterEquipment {
@@ -271,13 +305,13 @@ abstract class CharacterEquipment implements InstanceWithId {
 
     eq.basicValue = this.basicValue
 
-    if (this.hasRefining) {
+    if (this.supportRefining) {
       eq.refining = this.refining
     }
-    if (this.hasStability) {
+    if (this.supportStability) {
       eq.stability = this.stability
     }
-    if (this.hasCrystal) {
+    if (this.supportCrystal) {
       eq.crystals = this.crystals.map(crystal => crystal.clone())
     }
 
@@ -320,13 +354,13 @@ abstract class CharacterEquipment implements InstanceWithId {
 
     // [other]
     data.name = this.name
-    if (this.hasStability) {
+    if (this.supportStability) {
       data.stability = this.stability
     }
-    if (this.hasRefining) {
+    if (this.supportRefining) {
       data.refining = this.refining
     }
-    if (this.hasCrystal) {
+    if (this.supportCrystal) {
       data.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.name)
     }
 
@@ -338,17 +372,13 @@ abstract class CharacterEquipment implements InstanceWithId {
       data.labels = this.labels.map(label => label.id)
     }
 
+    // [trait]
+    if (this.trait) {
+      data.trait = this.trait.save()
+    }
+
     return data
   }
-
-  static elementStatIds = [
-    'element_fire',
-    'element_water',
-    'element_earth',
-    'element_wind',
-    'element_light',
-    'element_dark',
-  ]
 
   static loadEquipment(
     loadCategory: string,
@@ -367,6 +397,7 @@ abstract class CharacterEquipment implements InstanceWithId {
         def,
         crystals,
         labels,
+        trait,
       } = data
       const stats = data.stats
         .map(stat => StatRestriction.load(stat))
@@ -409,17 +440,17 @@ abstract class CharacterEquipment implements InstanceWithId {
         eq = new Avatar(null, name, stats)
       }
 
-      if (eq.hasRefining) {
+      if (eq.supportRefining) {
         eq.refining = refining
       }
-      if (eq.hasCrystal && crystals) {
+      if (eq.supportCrystal && crystals) {
         eq.crystals = crystals
           .map(crystalName => {
             const crystal = Grimoire.Items.crystals.find(_crystal => _crystal.name === crystalName)
             if (crystal) {
               return new EquipmentCrystal(crystal)
             }
-            console.warn('[CharacterEquipment.load] Can not find crystal: ' + crystalName)
+            CommonLogger.warn('CharacterEquipment.load', 'Can not find crystal: ' + crystalName)
             return null
           })
           .filter(crystal => crystal) as EquipmentCrystal[]
@@ -435,10 +466,16 @@ abstract class CharacterEquipment implements InstanceWithId {
           .filter(item => item) as CharacterBuildLabel[]
       }
 
+      if (trait) {
+        const newTrait = CharacterEquipmentTrait.fromLoad(trait)
+        if (newTrait) {
+          eq.trait = newTrait
+        }
+      }
+
       return eq
     } catch (err) {
-      console.warn('[CharacterEquipment.load] Unexpected error.')
-      console.warn(err)
+      CommonLogger.start('CharacterEquipment.load', 'Unexpected error').warn(err).end()
       return null
     }
   }
@@ -548,7 +585,7 @@ abstract class Weapon extends CharacterEquipment {
     this.stability = stability
   }
 
-  override get hasStability() {
+  override get supportStability() {
     return true
   }
 }
@@ -573,13 +610,16 @@ class MainWeapon extends Weapon {
     this.refining = 0
   }
 
-  override get hasRefining() {
+  override get supportRefining() {
     return true
   }
-  override get hasCrystal() {
+  override get supportCrystal() {
     return true
   }
-  override get hasElement() {
+  override get supportElement() {
+    return true
+  }
+  override get supportTrait() {
     return true
   }
   override get creatable() {
@@ -603,7 +643,7 @@ class SubWeapon extends Weapon {
     this.type = type
   }
 
-  override get hasElement() {
+  override get supportElement() {
     return this.type === EquipmentTypes.Arrow
   }
 }
@@ -638,7 +678,7 @@ class SubArmor extends Armor {
     this.refining = 0
   }
 
-  override get hasRefining() {
+  override get supportRefining() {
     return true
   }
 }
@@ -670,14 +710,15 @@ class BodyArmor extends Armor {
     this.type = type
   }
 
-  override get hasRefining() {
+  override get supportRefining() {
     return true
   }
-
-  override get hasCrystal() {
+  override get supportCrystal() {
     return true
   }
-
+  override get supportTrait() {
+    return true
+  }
   override get creatable() {
     return true
   }
@@ -702,11 +743,11 @@ class AdditionalGear extends Armor {
     this.type = EquipmentTypes.Additional
   }
 
-  override get hasRefining() {
+  override get supportRefining() {
     return true
   }
 
-  override get hasCrystal() {
+  override get supportCrystal() {
     return true
   }
 }
@@ -728,7 +769,7 @@ class SpecialGear extends Armor {
     this.type = EquipmentTypes.Special
   }
 
-  override get hasCrystal() {
+  override get supportCrystal() {
     return true
   }
 }

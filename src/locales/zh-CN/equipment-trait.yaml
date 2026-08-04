@@ -1,0 +1,16 @@
+trait-level: 特性等级
+trait-var-texts:
+  STR: 总STR
+  DEX: 总DEX
+  INT: 总INT
+  AGI: 总AGI
+  VIT: 总VIT
+  TEC: TEC
+  CRT: CRT
+  LUK: LUL
+  MEN: MEN
+  BSTR: 基础STR
+  BDEX: 基础DEX
+  BINT: 基础INT
+  BAGI: 基础AGI
+  BVIT: 基础VIT

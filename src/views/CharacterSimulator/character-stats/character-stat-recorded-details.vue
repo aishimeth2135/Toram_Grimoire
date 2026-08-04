@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
+import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment/CharacterEquipmentTrait'
 import { StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { BagPotion } from '@/lib/Items/BagItem'
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
@@ -54,7 +55,7 @@ const { t } = useI18n()
         {{ t('character-simulator.character-stat-detail.food') }}
       </div>
       <template v-else-if="src.type === StatValueSourceTypes.Registlet">
-        <div class="text-blue-40">
+        <div class="text-emerald-40">
           {{ t('common.Registlet.title') }}
         </div>
         <div>{{ (src.src as RegistletItemBase).name }}</div>
@@ -64,6 +65,12 @@ const { t } = useI18n()
           {{ t('character-simulator.potion-build.potion') }}
         </div>
         <div>{{ (src.src as BagPotion).name }}</div>
+      </template>
+      <template v-else-if="src.type === StatValueSourceTypes.Trait">
+        <div class="text-blue-40">
+          {{ t('character-simulator.character-stat-detail.trait') }}
+        </div>
+        <div>{{ (src.src as CharacterEquipmentTrait).base.name }}</div>
       </template>
       <div class="text-primary-50">
         {{ stat.showValue(src.value) }}

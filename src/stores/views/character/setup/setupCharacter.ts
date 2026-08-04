@@ -1,9 +1,15 @@
 import { type ComputedRef, type Ref, computed, ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { computeFormula } from '@/shared/utils/data'
 
-import { Character, CharacterStat, type CharacterStatResult } from '@/lib/Character/Character'
-import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
+import {
+  Character,
+  CharacterBaseStatTypes,
+  CharacterStat,
+  type CharacterStatResult,
+} from '@/lib/Character/Character'
+import { StatRecorded, StatRestriction, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
 import { checkStatRestriction } from '../utils'
@@ -14,7 +20,7 @@ import {
 } from './context'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { type SkillResult, setupCharacterSkills } from './setupCharacterSkills'
-import { getSkillStatContainerValid, mergeStats } from './utils'
+import { getSkillStatContainerValid, mergeStatRecordeds } from './utils'
 
 interface CharacterSetupOptions {
   handleFood: boolean
@@ -52,7 +58,7 @@ export function prepareSetupCharacter() {
       const stats: Map<string, StatRecorded> = new Map()
       character.value.equipmentFields.forEach(field => {
         if (!field.isEmpty && !field.statsDisabled()) {
-          mergeStats(stats, field.equipment!.getAllStats(_checkStatRestriction))
+          mergeStatRecordeds(stats, field.equipment!.getAllStats(_checkStatRestriction))
         }
       })
       return [...stats.values()]
@@ -62,16 +68,16 @@ export function prepareSetupCharacter() {
 
     const basePureStatsEntries = computed(() => {
       const allStats = new Map<string, StatRecorded>()
-      mergeStats(allStats, allEquipmentStats.value)
-      mergeStats(allStats, statsResult.skillStats.value)
+      mergeStatRecordeds(allStats, allEquipmentStats.value)
+      mergeStatRecordeds(allStats, statsResult.skillStats.value)
       if (setupOptions.value.handleFood) {
-        mergeStats(allStats, statsResult.foodStats.value)
+        mergeStatRecordeds(allStats, statsResult.foodStats.value)
       }
       if (setupOptions.value.handleRegistlet) {
-        mergeStats(allStats, statsResult.registletStats.value)
+        mergeStatRecordeds(allStats, statsResult.registletStats.value)
       }
       if (setupOptions.value.handlePotion) {
-        mergeStats(allStats, statsResult.potionStats.value)
+        mergeStatRecordeds(allStats, statsResult.potionStats.value)
       }
       return [...allStats]
     })
@@ -82,21 +88,21 @@ export function prepareSetupCharacter() {
     }
 
     const setupResults = (
-      postponeStats?: Ref<StatRecorded[]>,
+      additionalStats?: Ref<StatRecorded[]>,
       resultsCache?: CharacterStatSetupResults
     ): CharacterStatSetupResults => {
       const characterPureStats = computed(() => {
         if (!character.value) {
           return []
         }
-        if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
+        if (additionalStats && additionalStats.value.length === 0 && resultsCache) {
           return resultsCache.characterPureStats.value
         }
         const allStats = new Map<string, StatRecorded>(
           basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()])
         )
-        if (postponeStats) {
-          mergeStats(allStats, postponeStats.value)
+        if (additionalStats) {
+          mergeStatRecordeds(allStats, additionalStats.value)
         }
         return [...allStats.values()]
       })
@@ -105,7 +111,7 @@ export function prepareSetupCharacter() {
         if (!character.value) {
           return []
         }
-        if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
+        if (additionalStats && additionalStats.value.length === 0 && resultsCache) {
           return resultsCache.categoryResults.value
         }
 
@@ -170,6 +176,62 @@ export function prepareSetupCharacter() {
       { immediate: true }
     )
 
+    const traitPureStats = computed<StatRecorded[]>(() => {
+      if (!character.value) {
+        return []
+      }
+      const vars = {
+        STR: baseCharacterStatCategoryResultsMap.value.get('str'),
+        DEX: baseCharacterStatCategoryResultsMap.value.get('dex'),
+        INT: baseCharacterStatCategoryResultsMap.value.get('int'),
+        AGI: baseCharacterStatCategoryResultsMap.value.get('agi'),
+        VIT: baseCharacterStatCategoryResultsMap.value.get('vit'),
+        BSTR: character.value.baseStatValue(CharacterBaseStatTypes.STR),
+        BDEX: character.value.baseStatValue(CharacterBaseStatTypes.DEX),
+        BINT: character.value.baseStatValue(CharacterBaseStatTypes.INT),
+        BAGI: character.value.baseStatValue(CharacterBaseStatTypes.AGI),
+        BVIT: character.value.baseStatValue(CharacterBaseStatTypes.VIT),
+        TEC: character.value.baseStatValue(CharacterBaseStatTypes.TEC),
+        CRT: character.value.baseStatValue(CharacterBaseStatTypes.CRT),
+        MEN: character.value.baseStatValue(CharacterBaseStatTypes.MEN),
+        LUK: character.value.baseStatValue(CharacterBaseStatTypes.LUK),
+      }
+      const stats = new Map<string, StatRecorded>()
+      character.value.equipmentFields.forEach(field => {
+        if (field.isEmpty || field.statsDisabled()) {
+          return
+        }
+        const equip = field.equipment!
+        if (!equip.supportTrait || !equip.trait) {
+          return false
+        }
+        const equipTrait = equip.trait!
+        const traitStats: StatRecorded[] = []
+        equipTrait.base.stats.forEach(traitStat => {
+          const newVars = {
+            Lv: equipTrait.level,
+            ...vars,
+          }
+          const value = computeFormula(traitStat.value, newVars) as number
+          if (typeof value === 'number') {
+            const resultValue = value * equipTrait.currentStack
+            traitStats.push(
+              new StatRecorded(
+                traitStat.base,
+                traitStat.type,
+                resultValue,
+                equipTrait,
+                StatValueSourceTypes.Trait
+              )
+            )
+          }
+        })
+
+        mergeStatRecordeds(stats, traitStats)
+      })
+      return [...stats.values()]
+    })
+
     const {
       skillPureStats: postponedSkillPureStats,
       skillConditionalStatContainers,
@@ -180,9 +242,17 @@ export function prepareSetupCharacter() {
       getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
       getCharacterPureStatValue: id => baseCharacterPureStats.value.get(id) ?? 0,
     })
-    const finalResults = setupResults(postponedSkillPureStats, baseResults)
+
+    const allPostponedPureStats = computed(() => {
+      const tmpMap = new Map<string, StatRecorded>()
+      mergeStatRecordeds(tmpMap, traitPureStats.value)
+      mergeStatRecordeds(tmpMap, postponedSkillPureStats.value)
+      return [...tmpMap.values()]
+    })
+    const finalResults = setupResults(allPostponedPureStats, baseResults)
     const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
+    // Pass the additional stats and compute character-stat-category results (for damage-calc currently)
     const setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended = (
       otherStats,
       skillResult
@@ -199,7 +269,7 @@ export function prepareSetupCharacter() {
           }
         })
         const statsMap = new Map<string, StatRecorded>()
-        mergeStats(statsMap, stats)
+        mergeStatRecordeds(statsMap, stats)
         return [...statsMap.values()]
       })
       const stats = computed(() => {
@@ -207,9 +277,9 @@ export function prepareSetupCharacter() {
           return []
         }
         const allStats = new Map<string, StatRecorded>()
-        mergeStats(allStats, otherStats.value)
-        mergeStats(allStats, postponedSkillPureStats.value)
-        mergeStats(allStats, conditionalStats.value)
+        mergeStatRecordeds(allStats, otherStats.value)
+        mergeStatRecordeds(allStats, postponedSkillPureStats.value)
+        mergeStatRecordeds(allStats, conditionalStats.value)
         return [...allStats.values()]
       })
       return setupResults(stats, finalResults)

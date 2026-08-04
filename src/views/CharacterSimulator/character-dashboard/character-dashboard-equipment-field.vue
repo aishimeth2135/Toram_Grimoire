@@ -5,6 +5,7 @@ import { EquipmentField } from '@/lib/Character/Character'
 
 import ShowStat from '@/components/common/show-stat.vue'
 
+import CharacterEquipmentTraitTitle from '../character-equipment-details/character-equipment-trait-title.vue'
 import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 
 interface Props {
@@ -25,20 +26,23 @@ const equipment = computed(() => props.equipmentField.equipment)
       <div>
         {{ equipment.name }}
         <span
-          v-if="equipment.hasRefining && equipment.refining > 0"
-          class="text ml-2 inline-flex items-center text-blue-70"
+          v-if="equipment.supportRefining && equipment.refining > 0"
+          class="text text-blue-70 ml-2 inline-flex items-center"
         >
-          <span class="mr-0.5 text-primary-60">{{ equipment.basicValue }}</span>
+          <span class="text-primary-60 mr-0.5">{{ equipment.basicValue }}</span>
           {{ `+${equipment.refiningText}` }}
         </span>
       </div>
       <div v-if="equipment.stats.length > 0" class="mt-2">
         <ShowStat v-for="stat in equipment.stats" :key="stat.statId" :stat="stat" />
       </div>
-      <div v-if="equipment.crystals.length > 0" class="mt-3 flex flex-wrap items-center">
+      <div v-if="equipment.trait" class="mt-2">
+        <CharacterEquipmentTraitTitle :equipment-trait="equipment.trait" />
+      </div>
+      <div v-if="equipment.crystals.length > 0" class="mt-2 flex flex-wrap items-center">
         <div v-for="crystal in equipment.crystals" :key="crystal.id" class="mr-3 flex items-center">
           <cy-icon :icon="crystal.crystalIconPath" />
-          <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
+          <span class="text-cyan-60 ml-1 text-sm">{{ crystal.name }}</span>
         </div>
       </div>
     </div>

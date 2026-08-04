@@ -10,6 +10,7 @@ const enum DataStoreIds {
   Registlet = 'Registlet',
   ItemsPotion = 'ItemsPotion',
   Quest = 'Quest',
+  EquipmentTrait = 'EquipmentTrait',
 }
 
 export { DataStoreIds }

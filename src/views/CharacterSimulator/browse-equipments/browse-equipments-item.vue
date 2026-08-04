@@ -66,7 +66,10 @@ const secondCrystalClass = computed(() => handleCrystalClass(props.equipment.cry
     />
     <div class="mt-auto flex w-full items-center text-sm">
       <span class="text-primary-70">{{ equipment.basicValue }}</span>
-      <span v-if="equipment.hasRefining && equipment.refining !== 0" class="text-blue-60 ml-0.5">
+      <span
+        v-if="equipment.supportRefining && equipment.refining !== 0"
+        class="text-blue-60 ml-0.5"
+      >
         {{ `+${equipment.refiningText}` }}
       </span>
     </div>

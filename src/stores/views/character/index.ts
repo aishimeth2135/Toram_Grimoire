@@ -384,24 +384,25 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupOptions
   )
 
-  const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
-    const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(
-      comparedCharacter,
-      currentCharacterSkillBuild
-    )
+  // Not supported for current UI
+  // const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
+  //   const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(
+  //     comparedCharacter,
+  //     currentCharacterSkillBuild
+  //   )
 
-    const { characterStatCategoryResults: comparedCharacterStatCategoryResults } =
-      setupCharacterStats(
-        comparedCharacter,
-        currentCharacterBuildsContext,
-        allPureStatsResult,
-        _skillItemStates,
-        setupOptions
-      )
-    return {
-      comparedCharacterStatCategoryResults,
-    }
-  }
+  //   const { characterStatCategoryResults: comparedCharacterStatCategoryResults } =
+  //     setupCharacterStats(
+  //       comparedCharacter,
+  //       currentCharacterBuildsContext,
+  //       allPureStatsResult,
+  //       _skillItemStates,
+  //       setupOptions
+  //     )
+  //   return {
+  //     comparedCharacterStatCategoryResults,
+  //   }
+  // }
 
   const targetProperties: Ref<TargetProperties> = ref({
     physicalResistance: 0,
@@ -470,7 +471,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     characterSimulatorInitFinished,
 
     characterStatCategoryResults,
-    setupCharacterComparedStatCategoryResults,
+    // setupCharacterComparedStatCategoryResults,
 
     skillItemStates: skillItemStates,
 

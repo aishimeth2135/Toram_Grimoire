@@ -12,6 +12,7 @@ import Notify from '@/shared/setup/Notify'
 import CharacterSystem from '@/lib/Character'
 import DamageCalculationSystem from '@/lib/Damage'
 import EnchantSystem from '@/lib/Enchant'
+import EquipmentTraitSystem from '@/lib/EquipmentTrait'
 import GlossarySystem from '@/lib/Glossary'
 import ItemsSystem from '@/lib/Items'
 import QuestSystem from '@/lib/Quest'
@@ -24,6 +25,7 @@ import { DownloadDatas } from './utils/DownloadDatas'
 import { LoadCharacterStats } from './utils/LoadCharacterStat'
 import { LoadCrystals } from './utils/LoadCrystals'
 import { LoadEnchant } from './utils/LoadEnchant'
+import { LoadEquipmentTraits } from './utils/LoadEquipmentTrait'
 import { LoadEquipments } from './utils/LoadEquipments'
 import { LoadGlossaryTag } from './utils/LoadGlossary'
 import { LoadPotions } from './utils/LoadPotions'
@@ -111,6 +113,13 @@ export const useDatasStore = defineStore('app-datas', () => {
       DatasStoreBase.Quest = new QuestSystem()
     }
     return DatasStoreBase.Quest
+  }
+
+  const initEquipmentTraitInstance = () => {
+    if (DatasStoreBase.EquipmentTrait === null) {
+      DatasStoreBase.EquipmentTrait = new EquipmentTraitSystem()
+    }
+    return DatasStoreBase.EquipmentTrait
   }
 
   const prepareDataStore = async (dataId: DataStoreIds): Promise<() => Promise<void>> => {
@@ -213,6 +222,13 @@ export const useDatasStore = defineStore('app-datas', () => {
         const [mainQuestData] = await DownloadDatas(DataPathIds.Quest)
         return async () => {
           LoadQuests(questSystem, mainQuestData.baseData)
+        }
+      }
+      case DataStoreIds.EquipmentTrait: {
+        const equipmentTraitSystem = initEquipmentTraitInstance()
+        const [equipmentTraitData] = await DownloadDatas(DataPathIds.EquipmentTrait)
+        return async () => {
+          LoadEquipmentTraits(equipmentTraitSystem, equipmentTraitData.baseData)
         }
       }
     }

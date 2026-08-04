@@ -30,7 +30,8 @@ export default {
       LocaleViewNamespaces.SkillSimulator,
       LocaleViewNamespaces.SkillQuery,
       LocaleViewNamespaces.DamageCalculation,
-      LocaleViewNamespaces.RegistletQuery
+      LocaleViewNamespaces.RegistletQuery,
+      LocaleViewNamespaces.EquipmentTrait
     )
     ViewInit(
       DataStoreIds.Stats,
@@ -41,6 +42,7 @@ export default {
       DataStoreIds.DamageCalculation,
       DataStoreIds.Registlet,
       DataStoreIds.ItemsPotion,
+      DataStoreIds.EquipmentTrait,
       DataStoreIds.Glossary
     ).then(next)
   },

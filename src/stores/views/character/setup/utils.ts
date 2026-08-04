@@ -94,7 +94,10 @@ function getWeaponBaseRange(main: EquipmentTypes): number {
   return mapping[main] ?? 0
 }
 
-export function mergeStats(allStats: Map<string, StatRecorded>, stats: StatRecorded[]): void {
+export function mergeStatRecordeds(
+  allStats: Map<string, StatRecorded>,
+  stats: StatRecorded[]
+): void {
   stats.forEach(stat => {
     if (allStats.has(stat.statId)) {
       allStats.get(stat.statId)!.addStat(stat)

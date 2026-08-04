@@ -17,4 +17,5 @@ export const enum CharacterEquipmentEditModes {
   Basic,
   Stat,
   Crystal,
+  Trait,
 }

@@ -4,7 +4,8 @@ import type { BagPotion } from '@/lib/Items/BagItem'
 import type { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 import type { SkillBranch } from '@/lib/Skill/Skill'
 
-import { Stat, StatBase, StatElementBase } from './StatBase'
+import type { CharacterEquipmentTrait } from '../CharacterEquipment/CharacterEquipmentTrait'
+import { Stat, StatBase, StatElementBase, type StatShowData } from './StatBase'
 import { StatTypes, StatValueSourceTypes } from './enums'
 
 type StatValueSourceDetails =
@@ -14,6 +15,7 @@ type StatValueSourceDetails =
   | Food
   | RegistletItemBase
   | BagPotion
+  | CharacterEquipmentTrait
   | null
 
 class StatValueSource {
@@ -102,6 +104,10 @@ class StatRecorded extends StatElementBase {
     newStat._value = sources.reduce((cur, src) => cur + src.value, 0)
     newStat.sources = sources
     return newStat
+  }
+
+  getShowData(): StatShowData<number> {
+    return this.base.getShowData(this.type, this.value)
   }
 
   clone(): StatRecorded {

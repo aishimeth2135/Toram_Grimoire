@@ -2,8 +2,8 @@ import { normalizeFloat } from '@/shared/utils/number'
 
 import { StatTypes } from '@/lib/Character/Stat'
 
-export function parseStatValueData(dataValue: string): {
-  value: number
+export function parseStatValueDataRaw(dataValue: string): {
+  value: string
   type: StatTypes
 } {
   let tail = dataValue.slice(-1),
@@ -14,8 +14,6 @@ export function parseStatValueData(dataValue: string): {
     value = dataValue.slice(0, -1)
   }
 
-  const resultValue = normalizeFloat(value)
-
   let type = StatTypes.Constant
   if (tail === '%') {
     type = StatTypes.Multiplier
@@ -23,7 +21,16 @@ export function parseStatValueData(dataValue: string): {
     type = StatTypes.Total
   }
 
-  return { value: resultValue, type }
+  return { value, type }
+}
+
+export function parseStatValueData(dataValue: string): {
+  value: number
+  type: StatTypes
+} {
+  const data = parseStatValueDataRaw(dataValue)
+
+  return { value: normalizeFloat(data.value), type: data.type }
 }
 
 type RowGetterMapping = Record<string, number>

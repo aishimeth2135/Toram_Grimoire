@@ -10,6 +10,7 @@ loading-message:
   Registlet: 載入雷吉斯托環資料
   ItemsPotion: 載入消耗品資料
   Quest: 載入任務資料
+  EquipmentTrait: 載入裝備特效資料
   init: 初始化
   bottom-tips:
     0: 初次載入需要較長的時間，請稍候...

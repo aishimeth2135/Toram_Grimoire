@@ -16,6 +16,23 @@ character-basic:
 character-dashboard:
   title: 总览
   no--any-equipment-tips: 还没有装备任何装备。点击右侧的按钮来编辑装备。
+character-equipments-manage:
+  title: 管理所有装备
+  mode-selections-title: 选择检视模式
+  mode-common: 一般模式
+  mode-common-caption: 此模式下，可以透过拖曳装备来调整排序。
+  mode-batch-move: 多选移动模式
+  mode-batch-move-caption: 此模式下分成两个步骤。第一步为勾选要移动的装备，可复选；第二步选择勾选的装备要移动的位置。
+  mode-batch-move-steps:
+    step-select-caption: 请选择要移动的装备。
+    move-to-head-caption: 请选择要移动的位置。目前没有选择，会移动至最前方。
+    move-to-equipment-behind-caption: 请选择要移动的位置。目前为移动至{name}后面。
+  mode-label: 修改标签模式
+  mode-label-caption: 此模式下，于标签列表选择一个标签后，点击装备可以新增/移除该装备的标签。
+  batch-sorting-title: 批量排序
+  batch-sorting-by-equipment-type: 以装备类型排序
+  batch-sorting-by-label: 以标签排序，有标签的排前方
+  batch-sorting-by-label-end: 以标签排序，有标签的排后方
 browse-equipments:
   append-equipments: 新增装备
   equip-label: 装备
@@ -50,6 +67,7 @@ equipment-info:
   refining: 精炼值
   stat-empty: 此装备没有能力
   crystal-empty: 此装备没有缎晶
+  trait-empty: 此装备没有装备特性
 equipment-basic-editor:
   title: 装备设定
   select-equipment-to-edit-tips: 选择要编辑的装备
@@ -76,6 +94,9 @@ select-crystals:
     - 特殊装备
     - 通用
   equipment-type-not-support-crystal-tips: 此装备类型不支援锻晶。
+select-trait:
+  trait-stack: 层数
+  equipment-type-not-support-trait-tips: 此装备类型不支援装备特性。
 skill-build:
   title: 技能
   passive-skills: 被动技能
@@ -144,6 +165,7 @@ character-stat-detail:
   equipped-with-text: 装备为{equip}时
   crystal: 锻晶
   food: 料理
+  trait: 装备特性
   equipment-restriction-text:
     1h_sword: 主手｜单手剑
     2h_sword: 双手剑

@@ -9,13 +9,13 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="flex h-9 items-center text-primary-80">
+  <div class="text-primary-80 flex h-9 items-center">
     {{ equipment.name }}
     <span
-      v-if="equipment.hasRefining && equipment.refining > 0"
-      class="text ml-2 inline-flex items-center text-blue-70"
+      v-if="equipment.supportRefining && equipment.refining > 0"
+      class="text text-blue-70 ml-2 inline-flex items-center"
     >
-      <span class="mr-0.5 text-primary-60">
+      <span class="text-primary-60 mr-0.5">
         {{ equipment.basicValue }}
       </span>
       {{ `+${equipment.refiningText}` }}

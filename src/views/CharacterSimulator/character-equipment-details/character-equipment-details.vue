@@ -12,6 +12,7 @@ import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 import CharacterEquipmentDetailsSelection from './character-equipment-details-selection.vue'
 import CharacterEquipmentDetailsStat from './character-equipment-details-stat.vue'
 import CharacterEquipmentLabels from './character-equipment-labels.vue'
+import CharacterEquipmentTraitTitle from './character-equipment-trait-title.vue'
 
 import { useCharacterSimulatorState } from '../setup'
 import { CharacterEquipmentEditModes } from './setup'
@@ -46,7 +47,7 @@ const isSub = computed(() => props.isSub)
 
 const refiningAdditionAmount = computed(() => {
   const eq = props.equipment
-  if (!eq || !eq.is(EquipmentKinds.Weapon) || !eq.hasRefining || eq.refining <= 0) {
+  if (!eq || !eq.is(EquipmentKinds.Weapon) || !eq.supportRefining || eq.refining <= 0) {
     return 0
   }
   if (isSub.value && eq.type === EquipmentTypes.OneHandSword) {
@@ -88,7 +89,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             <div class="text-primary-80 flex items-center">
               {{ equipment.name }}
               <span
-                v-if="equipment.hasRefining && equipment.refining > 0"
+                v-if="equipment.supportRefining && equipment.refining > 0"
                 class="text-blue-70 ml-2"
               >
                 {{ `+${equipment.refiningText}` }}
@@ -122,7 +123,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
               >
                 +{{ refiningAdditionAmount }}
               </span>
-              <span v-if="equipment.hasStability" class="text-cyan-70 ml-auto text-sm">
+              <span v-if="equipment.supportStability" class="text-cyan-70 ml-auto text-sm">
                 {{ `${equipment.stability}%` }}
               </span>
             </div>
@@ -146,7 +147,18 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
         </div>
       </CharacterEquipmentDetailsSelection>
       <CharacterEquipmentDetailsSelection
-        v-if="equipment.hasCrystal"
+        v-if="equipment.supportTrait"
+        :mode="CharacterEquipmentEditModes.Trait"
+        class="px-4 py-1.5"
+        @edit="goEdit"
+      >
+        <CharacterEquipmentTraitTitle v-if="equipment.trait" :equipment-trait="equipment.trait" />
+        <div v-else class="text-primary-30 text-sm">
+          {{ t('character-simulator.equipment-info.trait-empty') }}
+        </div>
+      </CharacterEquipmentDetailsSelection>
+      <CharacterEquipmentDetailsSelection
+        v-if="equipment.supportCrystal"
         :mode="CharacterEquipmentEditModes.Crystal"
         class="space-y-1.5 px-2 py-1.5"
         @edit="goEdit"

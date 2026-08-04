@@ -418,7 +418,7 @@ function computeFormula(
   }
   try {
     return handle(vars) as unknown
-  } catch (err) {
+  } catch (_err: unknown) {
     return defaultValue
   }
 }

@@ -21,7 +21,7 @@ const isEditing = ref(props.equipment.crystals.length === 0)
 
 <template>
   <div class="flex h-full w-full flex-col py-2">
-    <template v-if="equipment.hasCrystal">
+    <template v-if="equipment.supportCrystal">
       <div class="mb-3 flex justify-end">
         <CommonEditModeButton v-model:is-editing="isEditing" />
       </div>
@@ -35,7 +35,7 @@ const isEditing = ref(props.equipment.crystals.length === 0)
       </div>
       <CharacterEquipmentDetailsSelectCrystal v-else :equipment="equipment" />
     </template>
-    <div v-else class="text-sm text-primary-60">
+    <div v-else class="text-primary-60 text-sm">
       {{ t('character-simulator.select-crystals.equipment-type-not-support-crystal-tips') }}
     </div>
   </div>
