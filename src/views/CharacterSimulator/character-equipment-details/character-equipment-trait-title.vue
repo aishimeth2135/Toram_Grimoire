@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment/CharacterEquipmentTrait'
-import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait/enums'
 
 interface Props {
   equipmentTrait: CharacterEquipmentTrait
@@ -29,19 +28,14 @@ const titleData = computed<TitleData>(() => {
       'mdi:number-9-circle-outline',
     ].at(props.equipmentTrait.level - 1) ?? ''
 
-  if (props.equipmentTrait.base.category === EquipmentTraitCategory.Special) {
-    const color =
-      ['text-gray-60', 'text-emerald-60', 'text-blue-60', 'text-violet-60', 'text-orange-60'].at(
-        props.equipmentTrait.level - 1
-      ) ?? ''
-    return {
-      color,
-      icon,
-    }
-  }
+  const colorMap = ['text-gray-60', 'text-emerald-60', 'text-blue-60', 'text-violet-60']
+  const color =
+    props.equipmentTrait.level > 4
+      ? 'text-orange-60'
+      : (colorMap.at(props.equipmentTrait.level - 1) ?? '')
 
   return {
-    color: 'text-gray-60',
+    color,
     icon,
   }
 })
