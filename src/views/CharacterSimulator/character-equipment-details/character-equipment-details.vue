@@ -147,17 +147,6 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
         </div>
       </CharacterEquipmentDetailsSelection>
       <CharacterEquipmentDetailsSelection
-        v-if="equipment.supportTrait"
-        :mode="CharacterEquipmentEditModes.Trait"
-        class="px-4 py-1.5"
-        @edit="goEdit"
-      >
-        <CharacterEquipmentTraitTitle v-if="equipment.trait" :equipment-trait="equipment.trait" />
-        <div v-else class="text-primary-30 text-sm">
-          {{ t('character-simulator.equipment-info.trait-empty') }}
-        </div>
-      </CharacterEquipmentDetailsSelection>
-      <CharacterEquipmentDetailsSelection
         v-if="equipment.supportCrystal"
         :mode="CharacterEquipmentEditModes.Crystal"
         class="space-y-1.5 px-2 py-1.5"
@@ -175,6 +164,17 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
         </template>
         <div v-else class="text-primary-30 px-2 text-sm">
           {{ t('character-simulator.equipment-info.crystal-empty') }}
+        </div>
+      </CharacterEquipmentDetailsSelection>
+      <CharacterEquipmentDetailsSelection
+        v-if="equipment.supportTrait"
+        :mode="CharacterEquipmentEditModes.Trait"
+        class="px-4 py-1.5"
+        @edit="goEdit"
+      >
+        <CharacterEquipmentTraitTitle v-if="equipment.trait" :equipment-trait="equipment.trait" />
+        <div v-else class="text-primary-30 text-sm">
+          {{ t('character-simulator.equipment-info.trait-empty') }}
         </div>
       </CharacterEquipmentDetailsSelection>
       <CharacterEquipmentLabels

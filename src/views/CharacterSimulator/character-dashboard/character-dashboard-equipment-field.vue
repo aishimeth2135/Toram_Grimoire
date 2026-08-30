@@ -36,14 +36,14 @@ const equipment = computed(() => props.equipmentField.equipment)
       <div v-if="equipment.stats.length > 0" class="mt-2">
         <ShowStat v-for="stat in equipment.stats" :key="stat.statId" :stat="stat" />
       </div>
-      <div v-if="equipment.trait" class="mt-2">
-        <CharacterEquipmentTraitTitle :equipment-trait="equipment.trait" />
-      </div>
       <div v-if="equipment.crystals.length > 0" class="mt-2 flex flex-wrap items-center">
         <div v-for="crystal in equipment.crystals" :key="crystal.id" class="mr-3 flex items-center">
           <cy-icon :icon="crystal.crystalIconPath" />
           <span class="text-cyan-60 ml-1 text-sm">{{ crystal.name }}</span>
         </div>
+      </div>
+      <div v-if="equipment.trait" class="mt-2">
+        <CharacterEquipmentTraitTitle :equipment-trait="equipment.trait" />
       </div>
     </div>
   </div>
