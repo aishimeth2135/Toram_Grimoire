@@ -22,7 +22,6 @@ export interface ButtonBaseProps {
   color?: string
   selected?: boolean
   disabled?: boolean
-  link?: boolean
 }
 
 export function useButtonBaseBinds(props: ButtonBaseProps) {
@@ -31,7 +30,6 @@ export function useButtonBaseBinds(props: ButtonBaseProps) {
       color: props.color,
       selected: props.selected,
       disabled: props.disabled,
-      link: props.link,
     }
   })
 }

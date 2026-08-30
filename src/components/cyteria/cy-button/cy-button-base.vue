@@ -18,12 +18,7 @@ const classList = computed(() => {
 </script>
 
 <template>
-  <component
-    :is="link ? 'a' : 'button'"
-    class="cy-button-base"
-    :class="classList"
-    :disabled="disabled"
-  >
+  <button class="cy-button-base" type="button" :class="classList" :disabled="disabled">
     <slot icon-class="cy-button-base-icon" />
-  </component>
+  </button>
 </template>

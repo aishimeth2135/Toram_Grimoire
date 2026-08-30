@@ -247,6 +247,11 @@ html {
   transition-timing-function: ease;
 }
 
+html,
+body {
+  overscroll-behavior-y: contain;
+}
+
 body {
   scroll-behavior: smooth;
   color: var(--app-gray-90);
