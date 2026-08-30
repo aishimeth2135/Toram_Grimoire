@@ -23,17 +23,14 @@ app.use(createPinia())
 const router = createAppRouter()
 app.use(router)
 
-initGtag(app, router)
+initGtag(router)
 
 registGlobalComponents(app)
 registerServiceWorker()
 initPackages()
 initI18n(app)
 
-{
-  const settingStore = useSettingStore()
-  settingStore.initDocumentElementClassList()
-}
+useSettingStore().initDocumentElementClassList()
 
 // custom pulgins
 app.use(Notify).use(Confirm)

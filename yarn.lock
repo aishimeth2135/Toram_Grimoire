@@ -10643,7 +10643,7 @@ __metadata:
     vite-plugin-pwa: "npm:^1.0.0"
     vite-plugin-vue-devtools: "npm:^7.7.6"
     vue: "npm:^3.5.22"
-    vue-gtag: "npm:^2.0.1"
+    vue-gtag: "npm:^3.7.1"
     vue-i18n: "npm:^9.13.1"
     vue-router: "npm:^4.5.0"
     vue-tsc: "npm:^2.0.21"
@@ -11237,12 +11237,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-gtag@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "vue-gtag@npm:2.0.1"
+"vue-gtag@npm:^3.7.1":
+  version: 3.7.1
+  resolution: "vue-gtag@npm:3.7.1"
   peerDependencies:
-    vue: ^3.0.0
-  checksum: 10c0/beda4e9ed4710f5b18834163278fcb4342d53c8b4d6df76d78c36cc85634fd815bf32a4e0db90d883e14e794549570e4f1337718f80ce90822f00318499d9166
+    vue: ^3.5.13
+    vue-router: ^4.5.0 || ^5.0.0
+  peerDependenciesMeta:
+    vue-router:
+      optional: true
+  checksum: 10c0/1f9c0c21ca5097c7c248cec3ea7afb6fe65d42a284e1203fd1091f5e2bc0d9dcbb3a4c2ae0d829712089a66ee00fb4b986f93f55c079182318ca91c01e015768
   languageName: node
   linkType: hard
 
