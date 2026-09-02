@@ -2,21 +2,16 @@
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { type RouteHandler, setCacheNameDetails } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
-import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst, Strategy, StrategyHandler, type StrategyOptions } from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope
 
-googleAnalyticsInitialize()
-
 setCacheNameDetails({
   prefix: 'toram-grimoire',
   suffix: 'v2',
 })
-
-// const devMode = true
 
 class StaleWhileRevalidateThrottled extends Strategy {
   _expirationTime: number // seconds
@@ -40,35 +35,18 @@ class StaleWhileRevalidateThrottled extends Strategy {
     }
     const now = Date.now()
     const remainTime = this._expirationTime * 1000 - (now - headerTime)
-    const isFresh = remainTime > 0
-    // if (devMode) {
-    //   logs.push(`It's ${Math.floor(remainTime / 1000)} seconds before cache expires...`, {
-    //     expirationTime: this._expirationTime,
-    //     now,
-    //     headerTime,
-    //   })
-    // }
-    return isFresh
+    return remainTime > 0
   }
 
   override async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
-    // const logs: any[] = []
     let response = await handler.cacheMatch(request)
     if (!response) {
-      // logs.push('No response found in cache. Will wait for the network response.')
       response = await handler.fetchAndCachePut(request)
     } else if (!this._responseIsFresh(response)) {
-      // logs.push('Found a cached response but cache is expire. Will respond with a cache and update with the network response in the background...')
       handler.fetchAndCachePut(request).catch(() => {
         /* ignore error */
       })
     }
-    // if (devMode) {
-    //   console.groupCollapsed(`[workbox] Using StaleWhileRevalidateThrottled to respond to ${request.url}`)
-    //   logs.forEach(log => console.log(log))
-    //   console.log(response)
-    //   console.groupEnd()
-    // }
     return response
   }
 }
@@ -173,7 +151,7 @@ registerRoute(
   const handler: RouteHandler = async params => {
     try {
       return await strategy.handle(params)
-    } catch (error) {
+    } catch (_error) {
       const url = params.url.href
       let path = encodeURIComponent(url)
       path =
