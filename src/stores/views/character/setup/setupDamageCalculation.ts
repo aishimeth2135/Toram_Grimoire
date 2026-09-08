@@ -425,9 +425,9 @@ export function setupDamageCalculation(
     }
 
     const containerCurrentItemMap = computed(() => {
-      let damageType = CalculationItemIds.Physical
-      let targetDefType = CalculationItemIds.TargetDef
-      let targetResistanceType = CalculationItemIds.TargetPhysicalResistance
+      let damageType: CalculationItemIds = CalculationItemIds.Physical
+      let targetDefType: CalculationItemIds = CalculationItemIds.TargetDef
+      let targetResistanceType: CalculationItemIds = CalculationItemIds.TargetPhysicalResistance
 
       if (container.value.getOrigin('damage_type') === 'magic') {
         damageType = CalculationItemIds.Magic
@@ -466,7 +466,7 @@ export function setupDamageCalculation(
             : CalculationItemIds.LongRangeDamage
       }
 
-      const resultMap = new Map([
+      const resultMap = new Map<CalculationContainerIds, CalculationItemIds>([
         [CalculationContainerIds.DamageType, damageType],
         [CalculationContainerIds.TargetDefBase, targetDefType],
         [CalculationContainerIds.TargetResistance, targetResistanceType],
@@ -492,7 +492,7 @@ export function setupDamageCalculation(
 
       const mainType = character.value?.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
 
-      return new Map([
+      return new Map<CalculationContainerIds, boolean>([
         [CalculationContainerIds.BaseAtk, baseNone || baseOrigin === 'matk'],
         [
           CalculationContainerIds.BaseMatk,

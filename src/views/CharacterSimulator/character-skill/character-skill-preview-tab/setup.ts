@@ -6,10 +6,11 @@ import { defineViewState } from '@/shared/setup/State'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill } from '@/lib/Skill/Skill'
 
-export const enum SkillLevelMode {
-  Level,
-  StarGem,
-}
+export const SkillLevelMode = {
+  Level: 0,
+  StarGem: 1,
+} as const
+export type SkillLevelMode = (typeof SkillLevelMode)[keyof typeof SkillLevelMode]
 
 export const useSkillTreeLevelOptions = defineViewState(ViewNames.CharacterSimulator, () => {
   const skillLevelIncreaseSign = ref(1)

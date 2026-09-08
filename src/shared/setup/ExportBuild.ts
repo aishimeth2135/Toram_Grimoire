@@ -24,7 +24,7 @@ export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
         })
       }
       save(handleSave)
-    } catch (error) {
+    } catch (_error) {
       notify(t('common.export-build.save-unknown-error-tips'))
       return
     }
@@ -36,7 +36,7 @@ export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
         try {
           loaded(res)
           notify(t('common.export-build.load-success-tips'))
-        } catch (error) {
+        } catch (_error) {
           notify(t('common.export-build.load-failed-tips'))
         }
       },

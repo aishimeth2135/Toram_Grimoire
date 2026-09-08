@@ -14,7 +14,7 @@ export function parseStatValueDataRaw(dataValue: string): {
     value = dataValue.slice(0, -1)
   }
 
-  let type = StatTypes.Constant
+  let type: StatTypes = StatTypes.Constant
   if (tail === '%') {
     type = StatTypes.Multiplier
   } else if (tail === '~') {

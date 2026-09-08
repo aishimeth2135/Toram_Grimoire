@@ -13,7 +13,7 @@ import {
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 
-export const NORMAL_LAYOUT_BRANCH_NAMES = [
+export const NORMAL_LAYOUT_BRANCH_NAMES: SkillBranchNames[] = [
   SkillBranchNames.Damage,
   SkillBranchNames.Effect,
   SkillBranchNames.Heal,

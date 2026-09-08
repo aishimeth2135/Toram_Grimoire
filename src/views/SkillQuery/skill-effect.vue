@@ -108,10 +108,11 @@ const registletItemStates = computed(() => {
 
 const { t } = useI18n()
 
-const enum ContentTabs {
-  Info,
-  History,
-}
+const ContentTabs = {
+  Info: 0,
+  History: 1,
+} as const
+export type ContentTabs = (typeof ContentTabs)[keyof typeof ContentTabs]
 
 const currentTab = ref<ContentTabs>(ContentTabs.Info)
 

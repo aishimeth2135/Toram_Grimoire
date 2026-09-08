@@ -108,7 +108,7 @@ AutoSave({
 })
 
 const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
-const currentStep = ref(StepIds.Equipment)
+const currentStep = ref<StepIds>(StepIds.Equipment)
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
 const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> = ref(null)
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
@@ -267,7 +267,7 @@ const nextStep = async () => {
   if (currentStep.value === StepIds.SelectPositiveStat) {
     const physicals = ['atk', 'physical_pierce']
     const magic = ['matk', 'magic_pierce']
-    let current = EnchantDollBaseTypes.None
+    let current: EnchantDollBaseTypes = EnchantDollBaseTypes.None
     if (doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))) {
       current = EnchantDollBaseTypes.Physical
     }

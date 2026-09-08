@@ -22,10 +22,11 @@ const { device } = useDevice()
 
 const visible = ref(false)
 
-const enum ExportMode {
-  Text,
-  Image,
-}
+const ExportMode = {
+  Text: 0,
+  Image: 1,
+} as const
+export type ExportMode = (typeof ExportMode)[keyof typeof ExportMode]
 
 const currentExportMode = ref<ExportMode>(ExportMode.Text)
 const eportedTextContent = useTemplateRef('eportedTextContent')

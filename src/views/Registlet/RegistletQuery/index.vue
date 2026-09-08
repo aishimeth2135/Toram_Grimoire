@@ -112,7 +112,7 @@ const toggleDisplayModeMenuVisible = useToggle(displayModeMenuVisible)
 const searchText = ref('')
 const searchObtainLevel = ref(SEARCH_OBTAIN_LEVEL_NONE)
 
-const { state } = useRegistletQueryState()
+const { registletQueryState: state } = useRegistletQueryState()
 
 const currentModeItems = computed(() => {
   if (state.displayMode === DisplayMode.ObtainLevel) {

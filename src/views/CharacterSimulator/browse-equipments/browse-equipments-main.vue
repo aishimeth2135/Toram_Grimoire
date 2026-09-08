@@ -88,12 +88,13 @@ watch(currentEquipmentValid, value => {
   emit('state-changed', { selectedEquipmentValid: value })
 })
 
-const enum DisplayModes {
-  Grid,
-  List,
-}
+const DisplayModes = {
+  Grid: 0,
+  List: 1,
+} as const
+export type DisplayModes = (typeof DisplayModes)[keyof typeof DisplayModes]
 
-const displayMode = ref(DisplayModes.List)
+const displayMode = ref<DisplayModes>(DisplayModes.List)
 
 const toggleDisplayMode = (isListMode: boolean) => {
   displayMode.value = isListMode ? DisplayModes.List : DisplayModes.Grid

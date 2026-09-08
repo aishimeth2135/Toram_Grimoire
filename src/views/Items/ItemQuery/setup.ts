@@ -69,12 +69,13 @@ export function handleOptions<V>(option: V[]): CommonOption<V>[] {
   }))
 }
 
-export const enum SearchModes {
-  Normal = 'normal',
-  Stat = 'stat',
-  ItemLevel = 'item-level',
-  Dye = 'dye',
-}
+export const SearchModes = {
+  Normal: 'normal',
+  Stat: 'stat',
+  ItemLevel: 'item-level',
+  Dye: 'dye',
+} as const
+export type SearchModes = (typeof SearchModes)[keyof typeof SearchModes]
 
 const state: {
   currentMode: SearchModes
@@ -126,7 +127,7 @@ const modes = reactive({
     currentStats: StatOption[]
   }
   [SearchModes.ItemLevel]: {
-    id: SearchModes.ItemLevel
+    id: typeof SearchModes.ItemLevel
     icon: string
     min: number
     max: number

@@ -61,7 +61,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
       SkillBranchNames.Next,
       SkillBranchNames.Passive,
       SkillBranchNames.Heal,
-    ].includes(mainBranch.name)
+    ].some(name => name === mainBranch.name)
   ) {
     filters.set('caption', value => !!value)
     textPropsMap.append('caption', 'condition')

@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, readonly, ref } from 'vue'
 
-export const enum BookmarkTypes {
-  Item = 'item',
-  Skill = 'skill',
-}
+export const BookmarkTypes = {
+  Item: 'item',
+  Skill: 'skill',
+} as const
+export type BookmarkTypes = (typeof BookmarkTypes)[keyof typeof BookmarkTypes]
 
 export interface BookmarkItem {
   type: BookmarkTypes
@@ -21,7 +22,7 @@ export const useBookmarkStore = defineStore('app-bookmark', () => {
       const datas = window.localStorage.getItem(SAVE_STORAGE_KEY)
       try {
         _items.value = (datas !== null ? JSON.parse(datas) : []) as BookmarkItem[]
-      } catch (err) {
+      } catch (_err) {
         window.localStorage.setItem(SAVE_STORAGE_KEY + '-tmp', datas!)
         _items.value = []
       }

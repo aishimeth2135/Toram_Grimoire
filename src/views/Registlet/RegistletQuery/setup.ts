@@ -16,12 +16,12 @@ export const DisplayMode = {
 export type DisplayMode = (typeof DisplayMode)[keyof typeof DisplayMode]
 
 export const useRegistletQueryState = defineViewState(ViewNames.RegistletQuery, () => {
-  const state = reactive({
+  const registletQueryState = reactive({
     itemDefaultVisible: false,
     displayMode: DisplayMode.Category as DisplayMode,
   })
 
-  return { state }
+  return { registletQueryState }
 })
 
 export function getRegistletCaptionRender(handleValue: (value: string) => string) {

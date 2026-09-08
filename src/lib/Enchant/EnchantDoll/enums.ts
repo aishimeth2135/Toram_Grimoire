@@ -1,12 +1,14 @@
-const enum EnchantDollBaseTypes {
-  Physical = 'physical',
-  Magic = 'magic',
-  None = 'none',
-}
+const EnchantDollBaseTypes = {
+  Physical: 'physical',
+  Magic: 'magic',
+  None: 'none',
+} as const
+type EnchantDollBaseTypes = (typeof EnchantDollBaseTypes)[keyof typeof EnchantDollBaseTypes]
 
-const enum AutoFindNegaitveStatsTypes {
-  SuccessRate = 'success-rate',
-  Material = 'material',
-}
+const AutoFindNegaitveStatsTypes = {
+  SuccessRate: 'success-rate',
+  Material: 'material',
+} as const
+type AutoFindNegaitveStatsTypes = (typeof AutoFindNegaitveStatsTypes)[keyof typeof AutoFindNegaitveStatsTypes]
 
 export { EnchantDollBaseTypes, AutoFindNegaitveStatsTypes }

@@ -1,50 +1,53 @@
-export const enum EquipmentTypes {
-  OneHandSword = 'one-hand-sword',
-  TwoHandSword = 'two-hand-sword',
-  Bow = 'bow',
-  Bowgun = 'bowgun',
-  Staff = 'staff',
-  MagicDevice = 'magic-device',
-  Knuckle = 'knuckle',
-  Halberd = 'halberd',
-  Katana = 'katana',
-  DualSword = 'dual-sword',
+export const EquipmentTypes = {
+  OneHandSword: 'one-hand-sword',
+  TwoHandSword: 'two-hand-sword',
+  Bow: 'bow',
+  Bowgun: 'bowgun',
+  Staff: 'staff',
+  MagicDevice: 'magic-device',
+  Knuckle: 'knuckle',
+  Halberd: 'halberd',
+  Katana: 'katana',
+  DualSword: 'dual-sword',
 
-  Arrow = 'arrow',
-  Dagger = 'dagger',
-  NinjutsuScroll = 'ninjutsu-scroll',
+  Arrow: 'arrow',
+  Dagger: 'dagger',
+  NinjutsuScroll: 'ninjutsu-scroll',
 
-  Shield = 'shield',
+  Shield: 'shield',
 
-  BodyNormal = 'body-normal',
-  BodyDodge = 'body-dodge',
-  BodyDefense = 'body-defense',
+  BodyNormal: 'body-normal',
+  BodyDodge: 'body-dodge',
+  BodyDefense: 'body-defense',
 
-  Additional = 'additional',
-  Special = 'special',
-  Avatar = 'avatar',
+  Additional: 'additional',
+  Special: 'special',
+  Avatar: 'avatar',
 
-  Empty = 'empty',
-}
+  Empty: 'empty',
+} as const
+export type EquipmentTypes = (typeof EquipmentTypes)[keyof typeof EquipmentTypes]
 
-export const enum EquipmentCategorys {
-  MainWeapon = 'main-weapon',
-  SubWeapon = 'sub-weapon',
-  SubArmor = 'sub-armor',
-  BodyArmor = 'body-armor',
-  Additional = 'additional',
-  Special = 'special',
-  Avatar = 'avatar',
-}
+export const EquipmentCategorys = {
+  MainWeapon: 'main-weapon',
+  SubWeapon: 'sub-weapon',
+  SubArmor: 'sub-armor',
+  BodyArmor: 'body-armor',
+  Additional: 'additional',
+  Special: 'special',
+  Avatar: 'avatar',
+} as const
+export type EquipmentCategorys = (typeof EquipmentCategorys)[keyof typeof EquipmentCategorys]
 
-export const enum EquipmentKinds {
-  Weapon = 'weapon',
-  Armor = 'armor',
-  Avatar = 'avatar',
-  Other = 'other',
-}
+export const EquipmentKinds = {
+  Weapon: 'weapon',
+  Armor: 'armor',
+  Avatar: 'avatar',
+  Other: 'other',
+} as const
+export type EquipmentKinds = (typeof EquipmentKinds)[keyof typeof EquipmentKinds]
 
-export const MainWeaponTypeList = [
+export const MainWeaponTypeList: EquipmentTypes[] = [
   EquipmentTypes.OneHandSword,
   EquipmentTypes.TwoHandSword,
   EquipmentTypes.Bow,
@@ -56,21 +59,21 @@ export const MainWeaponTypeList = [
   EquipmentTypes.Katana,
 ]
 
-export const SubWeaponTypeList = [
+export const SubWeaponTypeList: EquipmentTypes[] = [
   EquipmentTypes.Arrow,
   EquipmentTypes.Dagger,
   EquipmentTypes.NinjutsuScroll,
 ]
 
-export const SubArmorTypeList = [EquipmentTypes.Shield]
+export const SubArmorTypeList: EquipmentTypes[] = [EquipmentTypes.Shield]
 
-export const BodyArmorTypeList = [
+export const BodyArmorTypeList: EquipmentTypes[] = [
   EquipmentTypes.BodyNormal,
   EquipmentTypes.BodyDodge,
   EquipmentTypes.BodyDefense,
 ]
 
-export const AllEquipmentTypeCategorys = new Map([
+export const AllEquipmentTypeCategorys = new Map<EquipmentCategorys, EquipmentTypes[]>([
   [EquipmentCategorys.MainWeapon, MainWeaponTypeList],
   [EquipmentCategorys.SubWeapon, SubWeaponTypeList],
   [EquipmentCategorys.SubArmor, SubArmorTypeList],

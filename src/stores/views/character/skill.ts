@@ -7,12 +7,13 @@ import { toInt } from '@/shared/utils/number'
 
 import { LevelSkillTree, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
-const enum CsvSkillElementTypes {
-  TypeSkillRoot = 'skillRoot',
-  TypeSkillTreeCategory = 'skillTreeCategory',
-  TypeSkillTree = 'skillTree',
-  TypeLevelSkill = 'levelSkill',
-}
+const CsvSkillElementTypes = {
+  TypeSkillRoot: 'skillRoot',
+  TypeSkillTreeCategory: 'skillTreeCategory',
+  TypeSkillTree: 'skillTree',
+  TypeLevelSkill: 'levelSkill',
+} as const
+export type CsvSkillElementTypes = (typeof CsvSkillElementTypes)[keyof typeof CsvSkillElementTypes]
 
 const SAVE_CSV_CONFIG = {
   type: {

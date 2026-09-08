@@ -108,12 +108,13 @@ interface ExportDataInnerItem<T extends DataAlly> {
   id: number
   origin: T
 }
-const enum ExportDataItemIds {
-  Characters = 'characters',
-  Equipments = 'equipments',
-  SkillBuilds = 'skillBuilds',
-  FoodBuilds = 'foodBuilds',
-}
+const ExportDataItemIds = {
+  Characters: 'characters',
+  Equipments: 'equipments',
+  SkillBuilds: 'skillBuilds',
+  FoodBuilds: 'foodBuilds',
+} as const
+export type ExportDataItemIds = (typeof ExportDataItemIds)[keyof typeof ExportDataItemIds]
 const exportDataItemCharacters: ExportDataItem<CharacterSaveData> = reactive({
   id: ExportDataItemIds.Characters,
   title: t('character-simulator.character-basic.title'),

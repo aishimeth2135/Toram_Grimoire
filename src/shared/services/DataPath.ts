@@ -1,17 +1,18 @@
-export const enum DataPathIds {
-  Skill = 0,
-  SkillMain = 1,
-  Stats = 2,
-  CharacterStats = 3,
-  Glossary = 4,
-  Equipment = 5,
-  Crystal = 6,
-  Enchant = 7,
-  Registlet = 8,
-  Potion = 9,
-  Quest = 10,
-  EquipmentTrait = 11,
-}
+export const DataPathIds = {
+  Skill: 0,
+  SkillMain: 1,
+  Stats: 2,
+  CharacterStats: 3,
+  Glossary: 4,
+  Equipment: 5,
+  Crystal: 6,
+  Enchant: 7,
+  Registlet: 8,
+  Potion: 9,
+  Quest: 10,
+  EquipmentTrait: 11,
+} as const
+export type DataPathIds = (typeof DataPathIds)[keyof typeof DataPathIds]
 
 function DataPath(id: DataPathIds): string {
   switch (id) {

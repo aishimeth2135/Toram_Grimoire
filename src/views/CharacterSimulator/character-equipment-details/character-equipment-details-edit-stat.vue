@@ -30,10 +30,11 @@ watch(
 
 const getStatKey = (stat: StatRestriction) => stat.statId
 
-// const enum SelectStatTab {
-//   Common,
-//   Clone,
-// }
+// const SelectStatTab = {
+//   Common: 0,
+//   Clone: 1,
+// } as const
+// type SelectStatTab = (typeof SelectStatTab)[keyof typeof SelectStatTab]
 
 // const currentSelectStatTab = ref<SelectStatTab>(SelectStatTab.Common)
 

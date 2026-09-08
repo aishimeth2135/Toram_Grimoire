@@ -1,41 +1,42 @@
-export const enum AppRouteNames {
-  Base = 'Base',
+export const AppRouteNames = {
+  Base: 'Base',
 
-  Home = 'Home',
-  About = 'About',
+  Home: 'Home',
+  About: 'About',
 
-  Skill = 'Skill',
-  SkillQuery = 'SkillQuery',
+  Skill: 'Skill',
+  SkillQuery: 'SkillQuery',
 
-  Items = 'items',
-  ItemQuery = 'ItemQuery',
-  CrystalQuery = 'CrystalQuery',
+  Items: 'items',
+  ItemQuery: 'ItemQuery',
+  CrystalQuery: 'CrystalQuery',
 
-  Enchant = 'Enchant',
-  EnchantSimulator = 'EnchantSimulator',
-  EnchantDoll = 'EnchantDoll',
+  Enchant: 'Enchant',
+  EnchantSimulator: 'EnchantSimulator',
+  EnchantDoll: 'EnchantDoll',
 
-  Character = 'Character',
-  CharacterSimulator = 'CharacterSimulator',
-  // SkillSimulator = 'SkillSimulator',
+  Character: 'Character',
+  CharacterSimulator: 'CharacterSimulator',
+  // SkillSimulator: 'SkillSimulator',
 
-  DamageCalculationBase = 'DamageCalculationBase',
-  DamageCalculation = 'DamageCalculation',
+  DamageCalculationBase: 'DamageCalculationBase',
+  DamageCalculation: 'DamageCalculation',
 
-  Glossary = 'Glossary',
-  GlossaryQuery = 'GlossaryQuery',
+  Glossary: 'Glossary',
+  GlossaryQuery: 'GlossaryQuery',
 
-  Registlet = 'Registlet',
-  RegistletQuery = 'RegistletQuery',
+  Registlet: 'Registlet',
+  RegistletQuery: 'RegistletQuery',
 
-  Quest = 'Quest',
-  MainQuestCalc = 'MainQuestCalc',
+  Quest: 'Quest',
+  MainQuestCalc: 'MainQuestCalc',
 
-  Book = 'Book',
-  BookView = 'BookView',
-  BookPreview = 'BookPreview',
+  Book: 'Book',
+  BookView: 'BookView',
+  BookPreview: 'BookPreview',
 
-  Bubble = 'Bubble',
+  Bubble: 'Bubble',
 
-  UnrecognizedPath = 'UnrecognizedPath',
-}
+  UnrecognizedPath: 'UnrecognizedPath',
+} as const
+export type AppRouteNames = (typeof AppRouteNames)[keyof typeof AppRouteNames]

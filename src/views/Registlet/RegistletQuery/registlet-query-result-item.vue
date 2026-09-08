@@ -14,11 +14,14 @@
             {{ item.name }}
           </cy-icon-text>
         </div>
-        <div v-if="registletQueryState.displayMode === 'category'" class="text-primary-40">
+        <div
+          v-if="registletQueryState.displayMode === DisplayMode.Category"
+          class="text-primary-40 text-sm"
+        >
           {{ t(`registlet-query.category.${item.category.id}`) }}
         </div>
-        <template v-else-if="registletQueryState.displayMode === 'obtain-levels'">
-          <div v-if="item.obtainLevels.length > 0" class="flex items-center space-x-2">
+        <template v-else-if="registletQueryState.displayMode === DisplayMode.ObtainLevel">
+          <div v-if="item.obtainLevels.length > 0" class="flex items-center space-x-2 text-sm">
             <div
               v-for="level in item.obtainLevels"
               :key="level"
@@ -36,8 +39,7 @@
     <cy-transition>
       <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5">
         <div class="border-red-10 mb-2 mt-1 rounded-sm border border-l-4 px-4 py-3">
-          <!-- prettier-ignore-attribute v-if -->
-          <div v-if="(item.link instanceof StatBase)" class="flex items-center">
+          <div v-if="item.link instanceof StatBase" class="flex items-center">
             <div>{{ item.link.text }}</div>
             <div>+</div>
             <div class="border-primary-20 text-primary-60 ml-2 border-x px-2">
@@ -111,7 +113,7 @@ import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import CardRow from '@/components/card/card-row.vue'
 
-import { getRegistletCaptionRender, useRegistletQueryState } from './setup'
+import { DisplayMode, getRegistletCaptionRender, useRegistletQueryState } from './setup'
 
 interface Props {
   item: RegistletItemBase
@@ -120,7 +122,7 @@ interface Props {
 defineProps<Props>()
 
 const { t } = useI18n()
-const registletQueryState = useRegistletQueryState()
+const { registletQueryState } = useRegistletQueryState()
 
 const detailVisible = ref(registletQueryState.itemDefaultVisible)
 

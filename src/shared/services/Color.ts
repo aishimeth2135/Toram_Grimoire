@@ -43,14 +43,15 @@ export default class Color {
   }
 }
 
-export const enum AppColors {
-  Primary = 'primary',
-  Fuchsia = 'fuchsia',
-  Violet = 'violet',
-  Blue = 'blue',
-  Cyan = 'cyan',
-  Orange = 'orange',
-  Emerald = 'emerald',
-  Red = 'red',
-  Gray = 'gray',
-}
+export const AppColors = {
+  Primary: 'primary',
+  Fuchsia: 'fuchsia',
+  Violet: 'violet',
+  Blue: 'blue',
+  Cyan: 'cyan',
+  Orange: 'orange',
+  Emerald: 'emerald',
+  Red: 'red',
+  Gray: 'gray',
+} as const
+export type AppColors = (typeof AppColors)[keyof typeof AppColors]

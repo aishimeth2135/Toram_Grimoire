@@ -92,7 +92,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
           try {
             const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
             resultData = dataModule.default ?? {}
-          } catch (err) {
+          } catch (_err) {
             count += 1
           }
         }

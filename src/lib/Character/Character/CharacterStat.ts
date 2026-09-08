@@ -363,7 +363,7 @@ class CharacterStatFormula {
     }
 
     const getStat = (query: string): StatRecorded | null => {
-      let statType = StatTypes.Constant
+      let statType: StatTypes = StatTypes.Constant
       if (query.endsWith('%')) {
         query = query.slice(0, -1)
         statType = StatTypes.Multiplier

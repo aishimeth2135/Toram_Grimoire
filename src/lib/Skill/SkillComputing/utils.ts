@@ -254,7 +254,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
     })
   }
 
-  const mainBranchNameList = [
+  const mainBranchNameList: SkillBranchNames[] = [
     SkillBranchNames.Damage,
     SkillBranchNames.Effect,
     SkillBranchNames.Proration,
@@ -271,7 +271,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
   ]
   const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.includes(_bch.name)
 
-  const auxiliaryBranchNameList = [SkillBranchNames.Equipment]
+  const auxiliaryBranchNameList: SkillBranchNames[] = [SkillBranchNames.Equipment]
   const isAuxiliaryBranch = (_bch: SkillBranchItem) => auxiliaryBranchNameList.includes(_bch.name)
 
   const resBranches: SkillBranchItem[] = []

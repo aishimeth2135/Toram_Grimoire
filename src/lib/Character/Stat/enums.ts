@@ -1,17 +1,19 @@
-export const enum StatTypes {
-  Constant = 'constant',
-  Multiplier = 'multiplier',
-  Total = 'total',
-}
+export const StatTypes = {
+  Constant: 'constant',
+  Multiplier: 'multiplier',
+  Total: 'total',
+} as const
+export type StatTypes = (typeof StatTypes)[keyof typeof StatTypes]
 
-export type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier
+export type StatNormalTypes = typeof StatTypes.Constant | typeof StatTypes.Multiplier
 
-export const enum StatValueSourceTypes {
-  Skill = 'skill',
-  Equipment = 'equipment',
-  Crystal = 'crystal',
-  Food = 'food',
-  Registlet = 'registlet',
-  Potion = 'potion',
-  Trait = 'trait',
-}
+export const StatValueSourceTypes = {
+  Skill: 'skill',
+  Equipment: 'equipment',
+  Crystal: 'crystal',
+  Food: 'food',
+  Registlet: 'registlet',
+  Potion: 'potion',
+  Trait: 'trait',
+} as const
+export type StatValueSourceTypes = (typeof StatValueSourceTypes)[keyof typeof StatValueSourceTypes]

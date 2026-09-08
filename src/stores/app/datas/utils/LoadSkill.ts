@@ -73,12 +73,13 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     SKILL_TREE_CATEGORY_CHECKING_NAME = '0',
     SKILL_TREE_CHECKING_NAME = '1'
 
-  const enum SkillElementType {
-    TypeSkillTreeCategory,
-    TypeSkillTree,
-    TypeSkill,
-    TypeSkillEffect,
-  }
+  const SkillElementType = {
+    TypeSkillTreeCategory: 0,
+    TypeSkillTree: 1,
+    TypeSkill: 2,
+    TypeSkillEffect: 3,
+  } as const
+  type SkillElementType = (typeof SkillElementType)[keyof typeof SkillElementType]
 
   let curElement: SkillElementType
   let curSkillTreeCategory: SkillTreeCategory

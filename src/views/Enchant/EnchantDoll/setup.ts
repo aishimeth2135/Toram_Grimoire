@@ -6,18 +6,20 @@ import { toInt } from '@/shared/utils/number'
 import { StatBase, type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
 
-export const enum StepIds {
-  Equipment = 0,
-  SelectPositiveStat = 1,
-  SelectNegativeStat = 2,
-  Result = 3,
-}
+export const StepIds = {
+  Equipment: 0,
+  SelectPositiveStat: 1,
+  SelectNegativeStat: 2,
+  Result: 3,
+} as const
+export type StepIds = (typeof StepIds)[keyof typeof StepIds]
 
-export const enum SelectItemModes {
-  Positive = 'positive',
-  Negative = 'negative',
-  None = 'none',
-}
+export const SelectItemModes = {
+  Positive: 'positive',
+  Negative: 'negative',
+  None: 'none',
+} as const
+export type SelectItemModes = (typeof SelectItemModes)[keyof typeof SelectItemModes]
 
 export const AUTO_FIND_POTENTIAL_MIMUMUM_UPPER_LIMIT = 150
 

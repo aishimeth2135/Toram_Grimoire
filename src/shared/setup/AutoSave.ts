@@ -14,7 +14,7 @@ export default function ({ save, loadFirst }: AutoSaveOptions): void {
 
   try {
     loadFirst()
-  } catch (error) {
+  } catch (_error) {
     notify(t('common.auto-save.load-unknown-error-tips'))
     return
   }

@@ -28,20 +28,22 @@ const { equipments } = storeToRefs(useCharacterStore())
 const { buildLabels } = storeToRefs(useCharacterBuildLabelStore())
 
 // Base
-const enum ManageMode {
-  Common,
-  BatchMove,
-  Label,
-}
+const ManageMode = {
+  Common: 0,
+  BatchMove: 1,
+  Label: 2,
+} as const
+export type ManageMode = (typeof ManageMode)[keyof typeof ManageMode]
 
 const currentEditedMode = ref<ManageMode>(ManageMode.Common)
 const selectedEquipment = shallowRef<CharacterEquipment | null>(null)
 
 // Mode: Batch Move
-const enum BatchMoveStep {
-  Select,
-  Confirm,
-}
+const BatchMoveStep = {
+  Select: 0,
+  Confirm: 1,
+} as const
+export type BatchMoveStep = (typeof BatchMoveStep)[keyof typeof BatchMoveStep]
 const batchMoveState = reactive({
   currentStep: BatchMoveStep.Select,
   selectedEquipments: [],
@@ -101,11 +103,12 @@ const toggleSelectedLabel = (label: CharacterBuildLabel) => {
 }
 
 // Batch sorting
-const enum BatchSortMode {
-  EquipmentType,
-  Label,
-  LabelEnd,
-}
+const BatchSortMode = {
+  EquipmentType: 0,
+  Label: 1,
+  LabelEnd: 2,
+} as const
+export type BatchSortMode = (typeof BatchSortMode)[keyof typeof BatchSortMode]
 
 const currentBatchSortMode = ref<BatchSortMode>(BatchSortMode.EquipmentType)
 const batchSortEquipmentsBackup = shallowRef<CharacterEquipment[] | null>(null)

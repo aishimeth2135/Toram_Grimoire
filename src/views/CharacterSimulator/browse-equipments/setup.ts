@@ -21,7 +21,7 @@ import {
 import { BagCrystal } from '@/lib/Items/BagItem'
 
 export const useEquipmentsDisplayedItems = defineViewState(ViewNames.CharacterSimulator, () => {
-  const displayedItems = new Map([
+  const displayedItems = new Map<string, EquipmentTypes[]>([
     ['main', MainWeaponTypeList],
     ['sub', [...SubWeaponTypeList, ...SubArmorTypeList]],
     ['body', [EquipmentTypes.BodyNormal, EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense]],
@@ -47,7 +47,7 @@ export function getCrystalPureColor(crystal: BagCrystal) {
 }
 
 export function getEquipmentFieldFilterOptions() {
-  return new Map([
+  return new Map<EquipmentFieldTypes, EquipmentTypes[]>([
     [EquipmentFieldTypes.MainWeapon, MainWeaponTypeList],
     [
       EquipmentFieldTypes.SubWeapon,

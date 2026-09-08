@@ -108,7 +108,7 @@ const importSaveData = () => {
         const data = JSON.parse(res) as CharacterSimulatorSaveData
         store.loadCharacterSimulatorSaveData(data)
         notify(t('common.export-build.load-success-tips'))
-      } catch (error) {
+      } catch (_error) {
         notify(t('common.export-build.load-failed-tips'))
       }
     },

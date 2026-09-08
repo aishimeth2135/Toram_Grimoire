@@ -49,10 +49,11 @@ const updateCurrentMode = (value: CharacterEquipmentEditModes | null) => {
   currentMode.value = value
 }
 
-const enum BrowseMode {
-  Equipped,
-  All,
-}
+const BrowseMode = {
+  Equipped: 0,
+  All: 1,
+} as const
+export type BrowseMode = (typeof BrowseMode)[keyof typeof BrowseMode]
 
 const browseMode = ref(BrowseMode.Equipped)
 </script>

@@ -1,11 +1,12 @@
-const enum EquipmentFieldTypes {
-  MainWeapon = 'main-weapon',
-  SubWeapon = 'sub-weapon',
-  BodyArmor = 'body-armor',
-  Additional = 'additional',
-  Special = 'special',
-  Avatar = 'avatar',
-}
+const EquipmentFieldTypes = {
+  MainWeapon: 'main-weapon',
+  SubWeapon: 'sub-weapon',
+  BodyArmor: 'body-armor',
+  Additional: 'additional',
+  Special: 'special',
+  Avatar: 'avatar',
+} as const
+type EquipmentFieldTypes = (typeof EquipmentFieldTypes)[keyof typeof EquipmentFieldTypes]
 
 enum CharacterBaseStatTypes {
   STR = 'STR',

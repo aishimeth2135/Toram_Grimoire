@@ -8,10 +8,11 @@ import { StatBase, StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 import { BagEquipment } from '@/lib/Items/BagItem'
 
-export const enum EquipmentSearchMode {
-  Normal,
-  Stat,
-}
+export const EquipmentSearchMode = {
+  Normal: 0,
+  Stat: 1,
+} as const
+export type EquipmentSearchMode = (typeof EquipmentSearchMode)[keyof typeof EquipmentSearchMode]
 
 export interface StatOption {
   id: string
