@@ -13,14 +13,17 @@
           <cy-icon :icon="crystal.crystalIconPath" class="mr-1.5" />
           {{ crystal.name }}
         </div>
-        <div v-if="previewMode === 'default'" class="text-cyan-60 flex items-center text-sm">
+        <div
+          v-if="previewMode === PreviewMode.Default"
+          class="text-cyan-60 flex items-center text-sm"
+        >
           <template v-if="crystal.origin.enhancer">
             <cy-icon icon="mdi:arrow-up-bold-outline" small class="text-cyan-60 mr-2" />
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </template>
         </div>
-        <div v-if="previewMode === 'mode' && previewStats.length > 0">
+        <div v-if="previewMode === PreviewMode.CurrentMode && previewStats.length > 0">
           <div v-for="stat in previewStats" :key="stat.statId">
             <ShowStat :stat="stat" :negative-value="stat.value < 0" type="preview" />
           </div>
@@ -62,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
@@ -70,13 +73,13 @@ import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import type { StatOptionItem } from './setup'
+import { PreviewMode, type StatOptionItem } from './setup'
 
 interface Props {
   crystal: EquipmentCrystal
   detailVisibleDefault: boolean
   previewStat: StatOptionItem | null
-  previewMode: 'default' | 'mode'
+  previewMode: PreviewMode
 }
 
 const props = defineProps<Props>()
@@ -95,11 +98,7 @@ const previewStats = computed(() => {
     .sort((stat1, stat2) => stat2.value - stat1.value)
 })
 
-watch(
-  computed(() => props.detailVisibleDefault),
-  value => {
-    detailVisible.value = value
-  },
-  { immediate: true }
-)
+watchEffect(() => {
+  detailVisible.value = props.detailVisibleDefault
+})
 </script>

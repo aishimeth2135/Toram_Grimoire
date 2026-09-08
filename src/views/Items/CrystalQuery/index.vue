@@ -11,7 +11,7 @@
                 :key="crystal.id"
                 :crystal="crystal"
                 :detail-visible-default="resultItemsDetailVisibleDefault"
-                :preview-stat="mode === 'stat' ? modeStat.statItem : null"
+                :preview-stat="mode === SearchMode.Stat ? modeStat.statItem : null"
                 :preview-mode="resultItemPreviewMode"
               />
             </CardRows>
@@ -42,7 +42,7 @@
         </cy-options>
       </template>
       <template #default>
-        <div v-if="mode === 'normal'" class="flex w-full items-center">
+        <div v-if="mode === SearchMode.Normal" class="flex w-full items-center">
           <cy-icon icon="ic-outline-search" class="shrink-0" />
           <input
             v-model="modeNormal.searchText"
@@ -60,7 +60,7 @@
           />
         </div>
         <cy-button-plain
-          v-else-if="mode === 'stat'"
+          v-else-if="mode === SearchMode.Stat"
           icon="mdi-rhombus-outline"
           :color="modeStat.statItem ? 'primary' : 'red'"
           @click="toggleSelectedStatVisible"
@@ -70,10 +70,15 @@
       </template>
       <template #side-buttons>
         <cy-button-circle
-          v-if="mode === 'stat'"
+          v-if="mode === SearchMode.Stat"
           icon="ci:list-checklist-alt"
           color="cyan"
-          @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
+          @click="
+            resultItemPreviewMode =
+              resultItemPreviewMode === PreviewMode.Default
+                ? PreviewMode.CurrentMode
+                : PreviewMode.Default
+          "
         />
         <cy-button-circle
           icon="mdi:arrow-expand"
@@ -136,11 +141,17 @@ import CardRows from '@/components/card/card-rows.vue'
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
 
-import { type StatOptionItem } from './setup'
+import { PreviewMode, type StatOptionItem } from './setup'
 
 defineOptions({
   name: 'CrystalQuery',
 })
+
+const SearchMode = {
+  Normal: 0,
+  Stat: 1,
+} as const
+type SearchMode = (typeof SearchMode)[keyof typeof SearchMode]
 
 const { t } = useI18n()
 
@@ -156,23 +167,23 @@ const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(
 const resultItemsDetailVisibleDefault = ref(false)
 const topElement = useTemplateRef('top-element')
 
-// ----- mode
-const mode: Ref<'normal' | 'stat'> = ref('normal')
+// Mode
+const mode: Ref<SearchMode> = ref(SearchMode.Normal)
 const modes: {
-  id: 'normal' | 'stat'
+  id: SearchMode
   icon: string
 }[] = [
   {
-    id: 'normal',
+    id: SearchMode.Normal,
     icon: 'ic:baseline-search',
   },
   {
-    id: 'stat',
+    id: SearchMode.Stat,
     icon: 'mdi:script-outline',
   },
 ]
 
-const resultItemPreviewMode: Ref<'default' | 'mode'> = ref('default')
+const resultItemPreviewMode: Ref<PreviewMode> = ref(PreviewMode.Default)
 
 const modeNormal = reactive({
   searchText: '',
@@ -182,9 +193,10 @@ const modeStat = reactive({
   statItem: null as StatOptionItem | null,
 })
 
-const selectMode = (id: 'normal' | 'stat') => {
+const selectMode = (id: SearchMode) => {
   mode.value = id
-  resultItemPreviewMode.value = id === 'stat' ? 'mode' : 'default'
+  resultItemPreviewMode.value =
+    id === SearchMode.Stat ? PreviewMode.CurrentMode : PreviewMode.Default
 }
 
 // Search filter
@@ -225,7 +237,7 @@ const resultCrystals = computed(() => {
   const filteredCrystals = crystals.filter(crystal =>
     selectedCategories.includes(crystal.origin.category)
   )
-  if (mode.value === 'normal') {
+  if (mode.value === SearchMode.Normal) {
     const text = modeNormal.searchText.toLowerCase()
     return filteredCrystals.filter(crystal => {
       if (crystal.name.toLowerCase().includes(text)) {
@@ -240,7 +252,7 @@ const resultCrystals = computed(() => {
       return false
     })
   }
-  if (mode.value === 'stat') {
+  if (mode.value === SearchMode.Stat) {
     if (!modeStat.statItem) {
       return []
     }

@@ -40,14 +40,14 @@
           </div>
           <div class="mt-1 flex">
             <cy-button-radio
-              :selected="state.displayMode === 'category'"
-              @click="state.displayMode = 'category'"
+              :selected="state.displayMode === DisplayMode.Category"
+              @click="state.displayMode = DisplayMode.Category"
             >
               {{ t('registlet-query.display-mode.category') }}
             </cy-button-radio>
             <cy-button-radio
-              :selected="state.displayMode === 'obtain-levels'"
-              @click="state.displayMode = 'obtain-levels'"
+              :selected="state.displayMode === DisplayMode.ObtainLevel"
+              @click="state.displayMode = DisplayMode.ObtainLevel"
             >
               {{ t('registlet-query.display-mode.obtain-levels') }}
             </cy-button-radio>
@@ -71,7 +71,8 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
-import { useToggle } from '@/shared/setup/State'
+import { ViewNames } from '@/shared/consts/view.ts'
+import { registViewStatesCleaning, useToggle } from '@/shared/setup/State'
 import { fuzzySearch, prepareFuzzySearch } from '@/shared/utils/data/dataCommon.ts'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
@@ -82,7 +83,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import RegistletQueryResult from './registlet-query-result.vue'
 
-import { useRegistletQueryState } from './setup'
+import { DisplayMode, useRegistletQueryState } from './setup'
 
 defineOptions({
   name: 'RegistletQuery',
@@ -111,10 +112,10 @@ const toggleDisplayModeMenuVisible = useToggle(displayModeMenuVisible)
 const searchText = ref('')
 const searchObtainLevel = ref(SEARCH_OBTAIN_LEVEL_NONE)
 
-const state = useRegistletQueryState()
+const { state } = useRegistletQueryState()
 
 const currentModeItems = computed(() => {
-  if (state.displayMode === 'obtain-levels') {
+  if (state.displayMode === DisplayMode.ObtainLevel) {
     return registletItems.slice().sort((item1, item2) => {
       const lv1 = item1.obtainLevels[0]
       const lv2 = item2.obtainLevels[0]
@@ -161,4 +162,6 @@ const currentItems = computed(() => {
     return item.rows.some(row => fuzzySearch(text, row.value))
   })
 })
+
+registViewStatesCleaning(ViewNames.RegistletQuery)
 </script>

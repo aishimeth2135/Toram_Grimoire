@@ -6,3 +6,9 @@ export interface StatOptionItem {
   type: StatTypes
   text: string
 }
+
+export const PreviewMode = {
+  Default: 0,
+  CurrentMode: 1,
+} as const
+export type PreviewMode = (typeof PreviewMode)[keyof typeof PreviewMode]
