@@ -270,8 +270,8 @@ type HandleFormulaOptions = {
   defaultValue?: PureValue | null
 }
 
-const HANDLE_FORMULA_EXTRA_PATTERN_1 = /^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
-const HANDLE_FORMULA_EXTRA_PATTERN_2 = /([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
+const HANDLE_FORMULA_EXTRA_PATTERN = /\*(-?\d+(?:\.\d+)?(?:[*/]-?\d+(?:\.\d+)?)+)/g
+const HANDLE_FORMULA_EXTRA_TERM_PATTERN = /([*/])(-?\d+(?:\.\d+)?)/g
 
 function handleFormula(
   formulaStr: string,
@@ -361,26 +361,21 @@ function handleFormula(
     }
   }
 
-  /**
-   * extra handling
-   * ex: convert "角色STR*6/2" to "角色STR*3"
-   */
-  formulaStr = formulaStr
-    .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, left, operator, right) => {
-      left = parseFloat(left)
-      right = parseFloat(right)
-      return calcNumberBinaryExpression(left, operator, right).toString()
+  if (formulaStr.includes('*') || formulaStr.includes('/')) {
+    /**
+     * extra handling
+     * ex: convert "角色STR*6/2" to "角色STR*3"
+     */
+    formulaStr = formulaStr.replace(HANDLE_FORMULA_EXTRA_PATTERN, (_match, chain: string) => {
+      let value = parseFloat(chain)
+
+      for (const term of chain.matchAll(HANDLE_FORMULA_EXTRA_TERM_PATTERN)) {
+        value = calcNumberBinaryExpression(value, term[1], parseFloat(term[2]))
+      }
+
+      return `*${value}`
     })
-    .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, pre, left, operator, right) => {
-      left = parseFloat(left)
-      right = parseFloat(right)
-      return pre + calcNumberBinaryExpression(left, operator, right).toString()
-    })
-  // .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
-  //   left = parseFloat(left);
-  //   right = parseFloat(right);
-  //   return calcNumberBinaryExpression(left, operator, right).toString();
-  // });
+  }
 
   if (toNumber && typeof formulaStr === 'string') {
     const num = parseFloat(formulaStr)
