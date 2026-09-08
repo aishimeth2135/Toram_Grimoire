@@ -106,9 +106,14 @@ function parseFormula(
 
   const _options = options
   const unknowSnippet = (value: unknown) => typeof value === 'string'
-  const handleArray = (ary: jsep.Expression[], parentNode: jsep.Expression): unknown[] => {
+  const handleArray = (ary: (jsep.Expression | null)[], parentNode: jsep.Expression): unknown[] => {
     return ary
-      .map(arg => handle(arg, parentNode))
+      .map(arg => {
+        if (arg === null) {
+          return '0'
+        }
+        return handle(arg, parentNode)
+      })
       .map(el => (typeof el === 'string' && isNumberString(el) ? parseFloat(el) : el))
   }
   function handle(
