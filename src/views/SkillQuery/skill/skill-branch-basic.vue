@@ -2,12 +2,15 @@
   <div class="pl-3">
     <table class="align-middle">
       <tr v-for="{ key, icon, title, result } in attrDatas" :key="key">
-        <td class="border-r border-primary-30 pr-2">
+        <td class="border-primary-30 border-r pr-2">
           <div class="flex">
-            <cy-icon-text :icon="icon">{{ title }}</cy-icon-text>
+            <div class="gap-icon text-primary-90 inline-flex items-center">
+              <cy-icon :icon="icon" class="text-primary-30" />
+              {{ title }}
+            </div>
           </div>
         </td>
-        <td class="pl-2 text-primary-60">
+        <td class="text-primary-60 pl-2">
           <SkillBranchPropValue
             :result="result"
             :parse-glossary-tag="

@@ -1,31 +1,24 @@
 <template>
   <cy-modal :visible="visible" footer @close="$emit('close')">
     <template #title>
-      <cy-icon-text
-        v-if="once"
-        icon="fluent-list-16-filled"
-        text-color="blue-60"
-        icon-color="blue-60"
-      >
+      <div v-if="once" class="gap-icon text-blue-60 inline-flex items-center">
+        <cy-icon icon="fluent-list-16-filled" class="text-blue-60" />
         {{ t('enchant-simulator.step.select-one-stat-item') }}
-      </cy-icon-text>
-      <cy-icon-text
-        v-else
-        icon="fluent-list-16-filled"
-        text-color="orange-60"
-        icon-color="orange-60"
-      >
+      </div>
+      <div v-else class="gap-icon text-orange-60 inline-flex items-center">
+        <cy-icon icon="fluent-list-16-filled" class="text-orange-60" />
         {{ t('enchant-simulator.step.select-multiple-stat-items') }}
-      </cy-icon-text>
+      </div>
     </template>
     <div v-for="category in validCategorys" :key="category.origin.title" class="relative mb-2 p-1">
       <div
         v-if="category.origin.weaponOnly && !isWeapon"
         class="z-1 absolute left-0 top-0 h-full w-full cursor-not-allowed bg-white opacity-50"
       />
-      <cy-icon-text class="w-full" small text-color="fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex w-full items-center text-sm">
+        <cy-icon small class="text-primary-30" />
         {{ category.origin.title }}
-      </cy-icon-text>
+      </div>
       <div>
         <cy-button-check
           v-for="item in category.items"

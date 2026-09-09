@@ -100,12 +100,14 @@ const addFoodBuild = () => {
     <template #content>
       <div>
         <div class="mt-1 pl-2">
-          <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mr-2">
+          <div class="gap-icon text-primary-50 mr-2 inline-flex items-center text-sm">
+            <cy-icon icon="ic-outline-info" small class="text-primary-30" />
             {{ t('character-simulator.food-build.introduction.0') }}
-          </cy-icon-text>
-          <cy-icon-text icon="ic-outline-info" text-color="primary-50" small>
+          </div>
+          <div class="gap-icon text-primary-50 inline-flex items-center text-sm">
+            <cy-icon icon="ic-outline-info" small class="text-primary-30" />
             {{ t('character-simulator.food-build.introduction.1') }}
-          </cy-icon-text>
+          </div>
         </div>
       </div>
       <CardRowsWrapper v-if="selectedBuild" class="mt-3 max-w-xl">

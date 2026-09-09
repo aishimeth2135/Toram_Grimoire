@@ -3,16 +3,22 @@
     <template v-if="comparedStatsDatas.length != 0">
       <div v-for="data in comparedStatsDatas" :key="data.id" class="flex items-center">
         <template v-if="!data.isBoolStat">
-          <cy-icon-text small>
+          <div class="gap-icon text-primary-90 inline-flex items-center text-sm">
+            <cy-icon small class="text-primary-30" />
             {{ data.text }}
-          </cy-icon-text>
-          <span class="ml-1 text-sm text-primary-50" :class="{ 'text-gray': data.negative }">
+          </div>
+          <span class="text-primary-50 ml-1 text-sm" :class="{ 'text-gray': data.negative }">
             {{ data.displayValue }}
           </span>
         </template>
-        <cy-icon-text v-else small :text-color="data.negative ? 'gray-60' : 'primary-50'">
+        <div
+          v-else
+          class="gap-icon inline-flex items-center text-sm"
+          :class="data.negative ? 'text-gray-60' : 'text-primary-50'"
+        >
+          <cy-icon small class="text-primary-30" />
           {{ data.text }}
-        </cy-icon-text>
+        </div>
       </div>
     </template>
     <cy-default-tips v-else icon="mdi-ghost">

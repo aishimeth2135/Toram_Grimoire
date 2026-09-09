@@ -10,7 +10,6 @@ import CyButtonRadio from '@/components/cyteria/cy-button/cy-button-radio.vue'
 import CyButtonToggle from '@/components/cyteria/cy-button/cy-button-toggle.vue'
 import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
-import CyIconText from '@/components/cyteria/cy-icon-text.vue'
 import CyIcon from '@/components/cyteria/cy-icon.vue'
 import CyInputCounter from '@/components/cyteria/cy-input-counter.vue'
 import CyListItem from '@/components/cyteria/cy-list-item.vue'
@@ -36,7 +35,6 @@ declare module '@vue/runtime-core' {
     CyInputCounter: typeof CyInputCounter
     CyListItem: typeof CyListItem
     CyIcon: typeof CyIcon
-    CyIconText: typeof CyIconText
     CyTitleInput: typeof CyTitleInput
     CyOptions: typeof CyOptions
     CyPopover: typeof CyPopover

@@ -2,12 +2,13 @@
   <div class="skill-effect-history-item-wrapper" :class="{ 'detail-active': detailVisible }">
     <cy-list-item @click="detailVisible = !detailVisible">
       <div class="flex w-full items-center py-1">
-        <cy-icon-text
-          icon="ic:round-history"
-          :text-color="detailVisible ? 'primary-50' : 'primary-90'"
+        <div
+          class="gap-icon inline-flex items-center"
+          :class="detailVisible ? 'text-primary-50' : 'text-primary-90'"
         >
+          <cy-icon icon="ic:round-history" class="text-primary-30" />
           {{ historyItem.date }}
-        </cy-icon-text>
+        </div>
         <cy-icon
           :icon="detailVisible ? 'ic:round-keyboard-arrow-up' : 'ic:round-keyboard-arrow-down'"
           class="ml-auto"
@@ -54,9 +55,10 @@
           <SkillBranch :skill-branch-item="next" :computing="computing" sub />
         </div>
         <div v-else class="history-item-compare-empty">
-          <cy-icon-text icon="mdi:book-remove-outline">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
+            <cy-icon icon="mdi:book-remove-outline" class="text-primary-30" />
             {{ t('skill-query.branch-removed') }}
-          </cy-icon-text>
+          </div>
         </div>
       </div>
       <div
@@ -65,9 +67,10 @@
         class="history-item-compare"
       >
         <div class="history-item-compare-empty">
-          <cy-icon-text icon="mdi:book-plus-outline">{{
-            t('skill-query.branch-added')
-          }}</cy-icon-text>
+          <div class="gap-icon text-primary-90 inline-flex items-center">
+            <cy-icon icon="mdi:book-plus-outline" class="text-primary-30" />
+            {{ t('skill-query.branch-added') }}
+          </div>
         </div>
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
@@ -88,9 +91,10 @@
           <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
         </div>
         <div class="history-item-compare-empty">
-          <cy-icon-text icon="mdi:book-remove-outline">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
+            <cy-icon icon="mdi:book-remove-outline" class="text-primary-30" />
             {{ t('skill-query.branch-removed') }}
-          </cy-icon-text>
+          </div>
         </div>
       </div>
     </div>
@@ -174,24 +178,35 @@ const detailVisible = ref(introductionBranchItemDatas.value.length === 0)
 @reference "@/tailwind.css";
 
 .skill-effect-history-item-wrapper {
-  @apply border-1 border-primary-10;
+  border-width: 1px;
+  border-color: var(--color-primary-10);
 
   &.detail-active {
-    @apply border-primary-30;
+    border-color: var(--color-primary-30);
   }
 }
 
 .history-item-compare {
-  @apply border-primary-50 border-l-4 p-2 pl-4;
+  border-left-width: 4px;
+  border-color: var(--color-primary-50);
+  padding: --spacing(2);
+  padding-left: --spacing(4);
 }
 
 .history-item-compare + .history-item-compare {
-  @apply mt-4;
+  margin-top: --spacing(4);
 }
 .history-item-compare-arrow-wrapper {
-  @apply flex w-full justify-center py-2;
+  display: flex;
+  justify-content: center;
+  padding-block: --spacing(2);
+  width: 100%;
 }
 .history-item-compare-empty {
-  @apply border-primary-30 flex justify-center border p-4;
+  display: flex;
+  justify-content: center;
+  border-width: 1px;
+  border-color: var(--color-primary-30);
+  padding: --spacing(4);
 }
 </style>

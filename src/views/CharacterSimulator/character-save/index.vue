@@ -5,9 +5,10 @@
         {{ t('character-simulator.save-load-control.export-save-data-caption') }}
       </div>
       <div class="py-2">
-        <cy-icon-text small icon="ic:outline-info" text-color="primary-50">
+        <div class="gap-icon text-primary-50 inline-flex items-center text-sm">
+          <cy-icon icon="ic:outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.export-save-data-tips[0]') }}
-        </cy-icon-text>
+        </div>
       </div>
       <div class="flex items-center py-2">
         <cy-button-action icon="mdi:export" @click="toggleExportSaveDataVisible(true)">
@@ -36,19 +37,22 @@
         {{ t('character-simulator.save-load-control.deleta-all-data-caption.0') }}
       </div>
       <div class="py-2">
-        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
+        <div class="gap-icon text-primary-50 mt-2 inline-flex items-center text-sm">
+          <cy-icon icon="ic-outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.1') }}
-        </cy-icon-text>
-        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
+        </div>
+        <div class="gap-icon text-primary-50 mt-2 inline-flex items-center text-sm">
+          <cy-icon icon="ic-outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.2') }}
-        </cy-icon-text>
+        </div>
       </div>
       <div class="py-2">
         <cy-input-counter v-model:value="deleteCounter">
           <template #title>
-            <cy-icon-text icon="ic-round-delete">
+            <div class="gap-icon text-primary-90 inline-flex items-center">
+              <cy-icon icon="ic-round-delete" class="text-primary-30" />
               {{ t('character-simulator.save-load-control.deleta-all-data-counter-title') }}
-            </cy-icon-text>
+            </div>
           </template>
         </cy-input-counter>
         <div class="mt-2">

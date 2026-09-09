@@ -35,9 +35,10 @@
             <cy-button-circle icon="heroicons-solid:switch-vertical" color="blue" />
           </template>
           <template #item="{ value }">
-            <cy-icon-text :icon="value.icon">
+            <div class="gap-icon text-primary-90 inline-flex items-center">
+              <cy-icon :icon="value.icon" class="text-primary-30" />
               {{ t('crystal-query.modes.' + value.id) }}
-            </cy-icon-text>
+            </div>
           </template>
         </cy-options>
       </template>

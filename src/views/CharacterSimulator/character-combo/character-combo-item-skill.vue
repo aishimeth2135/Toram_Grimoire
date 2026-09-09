@@ -40,9 +40,10 @@
             />
           </template>
           <template #item="{ id, value }">
-            <cy-icon-text :icon="getTagIcon(value)">{{
-              t('character-simulator.combo.tags.' + id)
-            }}</cy-icon-text>
+            <div class="gap-icon text-primary-90 inline-flex items-center">
+              <cy-icon :icon="getTagIcon(value)" class="text-primary-30" />
+              {{ t('character-simulator.combo.tags.' + id) }}
+            </div>
           </template>
         </cy-options>
       </div>
@@ -111,14 +112,28 @@ const { selectComboSkill } = useCharacterSimulatorState()
 @reference "@/tailwind.css";
 
 .combo-skill-circle {
-  @apply flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-primary-30 bg-white duration-200 hover:border-primary-50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-duration: 200ms;
+  cursor: pointer;
+  border-width: 2px;
+  border-color: var(--color-primary-30);
+  border-radius: calc(infinity * 1px);
+  background-color: var(--color-white);
+  width: --spacing(12);
+  height: --spacing(12);
+
+  &:hover {
+    border-color: var(--color-primary-50);
+  }
 
   &.has-skill:not(.combo-skill-invalid) {
     background: linear-gradient(to bottom, #fff, #ffd1ea, #ff9ed3);
   }
 
   &.combo-skill-invalid {
-    @apply bg-white;
+    background-color: var(--color-white);
   }
 }
 </style>

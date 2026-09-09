@@ -165,19 +165,25 @@ defineExpose({
 @reference "@/tailwind.css";
 
 .cy--popper {
+  position: fixed;
+  z-index: 100;
   min-width: 15rem;
-  @apply fixed z-100 overflow-y-auto;
+  overflow-y: auto;
 
   &.theme-common {
-    @apply shadow-md;
+    box-shadow: var(--shadow-md);
     & > .popper-content {
-      @apply rounded-sm border border-primary-40 bg-white p-0.5;
+      border-width: 1px;
+      border-color: var(--color-primary-40);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-white);
+      padding: --spacing(0.5);
     }
   }
 
   @media screen and (max-width: 15rem) {
-    min-width: auto;
     width: 100%;
+    min-width: auto;
   }
 }
 </style>

@@ -44,13 +44,17 @@ const isTips = computed(() => {
 @reference "@/tailwind.css";
 
 .list-text-content {
-  @apply flex w-full items-start px-3 py-0.5;
+  display: flex;
+  align-items: flex-start;
+  padding-inline: --spacing(3);
+  padding-block: --spacing(0.5);
+  width: 100%;
 
   &.tips {
-    @apply pl-5 text-sm;
-
-    /* APPLY text-primary-50 */
+    padding-left: --spacing(5);
     color: var(--app-primary-50);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
 
     & :deep(.text-primary-50) {
       color: var(--app-fuchsia-60);
@@ -58,7 +62,9 @@ const isTips = computed(() => {
   }
 
   &.is-mark {
-    @apply border-2 border-primary-50 py-3;
+    border-width: 2px;
+    border-color: var(--color-primary-50);
+    padding-block: --spacing(3);
   }
 }
 </style>

@@ -11,6 +11,14 @@ import BrowseEquipmentsItemWrapper from './browse-equipments-item-wrapper.vue'
 
 import { getCrystalPureColor } from './setup'
 
+const crystalBackgroundClassMap = {
+  red: 'bg-red-40',
+  emerald: 'bg-emerald-40',
+  orange: 'bg-orange-40',
+  fuchsia: 'bg-fuchsia-40',
+  blue: 'bg-blue-40',
+} as const
+
 interface Props {
   equipment: CharacterEquipment
   selected?: boolean
@@ -28,7 +36,7 @@ const handleCrystalClass = (crystal: EquipmentCrystal | undefined) => {
   if (!crystal) {
     return null
   }
-  const res = [`bg-${getCrystalPureColor(crystal.origin)}-40`]
+  const res: string[] = [crystalBackgroundClassMap[getCrystalPureColor(crystal.origin)]]
   if (crystal.origin.enhancer) {
     res.push('item-enhancer')
   }
@@ -90,26 +98,50 @@ const secondCrystalClass = computed(() => handleCrystalClass(props.equipment.cry
 @reference "@/tailwind.css";
 
 .items-root {
-  @apply border-primary-10 hover:border-primary-40 relative inline-flex cursor-pointer flex-col rounded-sm border-2 p-2 pb-0.5 duration-150;
-  height: 4.5rem;
+  display: inline-flex;
+  position: relative;
+  flex-direction: column;
+  transition-duration: 150ms;
+  cursor: pointer;
+  border-width: 2px;
+  border-color: var(--color-primary-10);
+  border-radius: var(--radius-sm);
+  padding: --spacing(2);
+  padding-bottom: --spacing(0.5);
   width: 4.5rem;
+  height: 4.5rem;
+
+  &:hover {
+    border-color: var(--color-primary-40);
+  }
 
   &.selected {
-    @apply border-primary-50;
+    border-color: var(--color-primary-50);
   }
 
   &.equipped {
-    @apply border-red-50;
+    border-color: var(--color-red-50);
   }
 
   &.invalid {
-    @apply border-gray-10 bg-gray-10 hover:border-gray-40;
+    border-color: var(--color-gray-10);
+    background-color: var(--color-gray-10);
+
+    &:hover {
+      border-color: var(--color-gray-40);
+    }
   }
 }
 
 .item-enhancer::before {
-  @apply absolute right-0 top-0 block h-3 w-1.5 bg-gray-50;
-  content: '';
+  display: block;
+  position: absolute;
+  top: --spacing(0);
+  right: --spacing(0);
   border-radius: 0 0.75rem 0.75rem 0;
+  background-color: var(--color-gray-50);
+  width: --spacing(1.5);
+  height: --spacing(3);
+  content: '';
 }
 </style>

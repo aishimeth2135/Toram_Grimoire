@@ -1,9 +1,10 @@
 <template>
   <EnchantDollStepWrapper :step-id="StepIds.SelectPositiveStat">
     <div>
-      <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
+        <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.select-positives.title') }}
-      </cy-icon-text>
+      </div>
     </div>
     <div class="mt-1 pl-4 text-sm">
       {{ t('enchant-doll.select-positives.caption') }}
@@ -12,9 +13,13 @@
       <div class="border-fuchsia-60 mt-2 max-w-xs border">
         <template v-if="doll.positiveStats.length !== 0">
           <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
-            <cy-icon-text :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'" class="w-full">
+            <div
+              class="gap-icon inline-flex w-full items-center"
+              :class="stat.value >= 0 ? 'text-primary-90' : 'text-orange-60'"
+            >
+              <cy-icon class="text-primary-30" />
               {{ stat.showAmount() }}
-            </cy-icon-text>
+            </div>
             <div class="mt-1 flex w-full items-center">
               <cy-input-counter
                 v-model:value="stat.value"
@@ -25,8 +30,7 @@
               />
               <cy-button-icon
                 icon="jam-close-circle"
-                icon-color="gray-60"
-                class="ml-auto"
+                class="text-gray-60 ml-auto"
                 @click="doll.removePositiveStat(stat)"
               />
             </div>

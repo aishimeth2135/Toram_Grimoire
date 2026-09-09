@@ -3,7 +3,7 @@
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
         <div
-          class="cy--options-item cy--options-title flex items-center border border-primary-30 bg-white duration-200 hover:border-primary-50"
+          class="cy--options-item cy--options-title border-primary-30 hover:border-primary-50 flex items-center border bg-white duration-200"
         >
           <slot v-if="value !== undefined && value !== null" name="item" :value="value" />
           <div v-else class="flex w-full justify-center py-0.5">
@@ -28,7 +28,7 @@
           </div>
           <div
             v-if="addable"
-            class="cy--options-item sticky bottom-0 justify-center border-t border-primary-30 bg-white"
+            class="cy--options-item border-primary-30 sticky bottom-0 justify-center border-t bg-white"
             @click="(emit('add-item'), hide())"
           >
             <div class="flex py-0.5">
@@ -73,8 +73,8 @@ const emit = defineEmits<Emits>()
 
 .cy--options-title,
 .cy--options-items-wrapper {
-  max-width: 20rem;
   width: 100%;
+  max-width: 20rem;
 }
 
 .cy--options-items-wrapper {
@@ -83,11 +83,15 @@ const emit = defineEmits<Emits>()
 }
 
 .cy--options-item {
-  @apply flex cursor-pointer px-2 py-1.5 duration-200;
+  display: flex;
+  transition-duration: 200ms;
+  cursor: pointer;
+  padding-inline: --spacing(2);
+  padding-block: --spacing(1.5);
 
   &:hover,
   &.cy--options-item-selected {
-    @apply bg-primary-5;
+    background-color: var(--color-primary-5);
   }
 }
 </style>

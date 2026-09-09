@@ -1,13 +1,14 @@
 <template>
   <cy-modal :visible="visible" footer @close="emit('close')">
     <template #title>
-      <cy-icon-text icon="mdi:export">
+      <div class="gap-icon text-primary-90 inline-flex items-center">
+        <cy-icon icon="mdi:export" class="text-primary-30" />
         {{ t('character-simulator.save-load-control.export-save-data-title') }}
-      </cy-icon-text>
+      </div>
     </template>
     <template #default>
       <template v-for="datasItem in exportDatasDisplay" :key="datasItem.id">
-        <div class="sticky top-0 z-1 flex items-center bg-white">
+        <div class="z-1 sticky top-0 flex items-center bg-white">
           <cy-button-check
             :selected="datasItem.items.size === datasItem.originalItems.length"
             color="orange"

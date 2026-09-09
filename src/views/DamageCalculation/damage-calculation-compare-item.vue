@@ -1,11 +1,12 @@
 <template>
-  <div class="border-t border-primary-30 p-2">
-    <div class="mb-1 text-sm text-fuchsia-60">{{ calculation.name }}</div>
+  <div class="border-primary-30 border-t p-2">
+    <div class="text-fuchsia-60 mb-1 text-sm">{{ calculation.name }}</div>
     <div class="flex items-center">
-      <cy-icon-text icon="ant-design:star-outlined">
+      <div class="gap-icon text-primary-90 inline-flex items-center">
+        <cy-icon icon="ant-design:star-outlined" class="text-primary-30" />
         {{ t('damage-calculation.result.modes.expected') }}
-      </cy-icon-text>
-      <span class="ml-2 mr-4 text-primary-50">{{ expectedResult }}</span>
+      </div>
+      <span class="text-primary-50 ml-2 mr-4">{{ expectedResult }}</span>
       <div :class="calculationResultDifferenceRate >= 0 ? 'text-blue-60' : 'text-red-60'">
         {{ calculationResultDifferenceRateDisplay }}
       </div>
@@ -16,11 +17,16 @@
         :key="comparedItem.item.base.id"
         class="flex items-center"
       >
-        <cy-icon-text class="mr-2" small>
-          <span
-            v-html="markText(t('damage-calculation.item-base-titles.' + comparedItem.item.base.id))"
-          ></span>
-        </cy-icon-text>
+        <div class="gap-icon text-primary-90 mr-2 inline-flex items-center text-sm">
+          <cy-icon small class="text-primary-30" />
+          <span>
+            <span
+              v-html="
+                markText(t('damage-calculation.item-base-titles.' + comparedItem.item.base.id))
+              "
+            ></span>
+          </span>
+        </div>
         <span :class="comparedItem.value >= 0 ? 'text-blue-60' : 'text-red-60'" class="text-sm">
           {{
             (comparedItem.value > 0 ? '+' : '') + comparedItem.value + comparedItem.item.base.unit

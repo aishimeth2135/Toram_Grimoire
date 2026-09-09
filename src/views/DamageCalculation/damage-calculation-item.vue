@@ -6,7 +6,7 @@
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="bg-primary-10/50 w-20 rounded-md p-2 text-center text-primary-80"
+      class="bg-primary-10/50 text-primary-80 w-20 rounded-md p-2 text-center"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -77,12 +77,13 @@
           </div>
           <div
             v-if="container.customItemAddable"
-            class="flex w-64 cursor-pointer items-center justify-center border border-primary-50 bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
+            class="border-primary-50 flex w-64 cursor-pointer items-center justify-center border bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
             @click="createCustomItem"
           >
-            <cy-icon-text icon="ic:round-add-circle-outline" text-color="primary-50">
+            <div class="gap-icon text-primary-50 inline-flex items-center">
+              <cy-icon icon="ic:round-add-circle-outline" class="text-primary-30" />
               {{ t('damage-calculation.create-custom-item') }}
-            </cy-icon-text>
+            </div>
           </div>
         </div>
       </div>
@@ -184,8 +185,8 @@ const editableContainers = computed(() => {
     return []
   }
   if (currentContainer.value.base.isVirtual) {
-    return currentContainer.value.base.references.map(
-      reference => currentContainer.value!.belongCalculation.containers.get(reference)!
+    return currentContainer.value.base.references.map(reference =>
+      currentContainer.value!.belongCalculation.containers.get(reference)!
     )
   }
   return [currentContainer.value]

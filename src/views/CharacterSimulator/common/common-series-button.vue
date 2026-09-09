@@ -16,18 +16,29 @@ defineProps<Props>()
 @reference "@/tailwind.css";
 
 .common-series-button {
-  @apply inline-flex cursor-pointer rounded-sm border-2 border-current bg-white px-2 py-1.5 text-primary-20 duration-150;
+  display: inline-flex;
+  transition-duration: 150ms;
+  cursor: pointer;
+  border-width: 2px;
+  border-color: currentcolor;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  padding-inline: --spacing(2);
+  padding-block: --spacing(1.5);
+  color: var(--color-primary-20);
 }
 
 .common-series-button.button-selected {
-  @apply z-1 text-primary-50;
+  z-index: 1;
+  color: var(--color-primary-50);
 }
 
 .common-series-button:hover {
-  @apply z-1 text-primary-40;
+  z-index: 1;
+  color: var(--color-primary-40);
 }
 
 .common-series-button + .common-series-button {
-  @apply -ml-0.5;
+  margin-left: --spacing(-0.5);
 }
 </style>

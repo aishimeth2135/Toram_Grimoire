@@ -13,7 +13,6 @@
   --app-favicon-color-main: #ffa4c5;
   --app-favicon-color-sub: #f7e4eb;
   --app-body-bg-color: #fefcfd;
-
   --app-white: #ffffff;
   --app-black: #171717;
   --app-fuchsia-5: #fdf4ff;
@@ -119,7 +118,6 @@ html.theme--night-mode {
   --app-favicon-color-main: #ffabbb;
   --app-favicon-color-sub: #efdae0;
   --app-body-bg-color: #241f2c;
-
   --app-white: #171717;
   --app-black: #ffffff;
   --app-fuchsia-5: #4e2650;
@@ -216,9 +214,8 @@ html.theme--night-mode {
 
 html {
   background-color: var(--app-white);
-  height: 100%;
   width: 100%;
-
+  height: 100%;
   font-family:
     'Itim',
     Microsoft JhengHei,
@@ -253,11 +250,11 @@ body {
 }
 
 body {
+  position: relative;
+  width: 100%;
+  height: 100%;
   scroll-behavior: smooth;
   color: var(--app-gray-90);
-  position: relative;
-  height: 100%;
-  width: 100%;
 }
 
 ::placeholder {
@@ -294,17 +291,18 @@ input:focus {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--app-primary-30) !important;
     border-radius: 0.125rem;
+    background-color: var(--app-primary-30) !important;
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-20 duration-150;
+  transition-duration: 150ms;
   border-radius: 0.2rem;
+  background-color: var(--color-primary-20);
 
   &:hover {
-    @apply bg-primary-30;
+    background-color: var(--color-primary-30);
   }
 }
 
@@ -313,11 +311,12 @@ input:focus {
 }
 
 ::-webkit-scrollbar-button {
-  @apply bg-primary-20 duration-150;
+  transition-duration: 150ms;
   border-radius: 0.2rem;
+  background-color: var(--color-primary-20);
 
   &:hover {
-    @apply bg-primary-30;
+    background-color: var(--color-primary-30);
   }
 
   @media screen and (max-width: 768px) {
@@ -327,5 +326,5 @@ input:focus {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-primary-10;
+  background-color: var(--color-primary-10);
 }

@@ -1,21 +1,35 @@
 .cy--text-separate {
-  @apply border-x-1 border-primary-20 mx-1.5 inline-block px-1.5;
+  display: inline-block;
+  margin-inline: --spacing(1.5);
+  border-color: var(--color-primary-20);
+  border-inline-width: 1px;
+  padding-inline: --spacing(1.5);
 }
 
 .text-sm .cy--text-separate {
-  @apply mx-1 px-1;
+  margin-inline: --spacing(1);
+  padding-inline: --spacing(1);
 }
 
 .cy--text-underline {
-  @apply relative mb-1 mr-3 inline-block border-b border-current px-2;
+  display: inline-block;
+  position: relative;
+  margin-right: --spacing(3);
+  margin-bottom: --spacing(1);
+  border-bottom-width: 1px;
+  border-color: currentcolor;
+  padding-inline: --spacing(2);
 
   &::before {
-    content: '';
     display: inline-block;
-    background-color: currentcolor;
     position: absolute;
-
-    @apply -bottom-1 -right-1 h-2 w-2 rounded-full;
+    right: --spacing(-1);
+    bottom: --spacing(-1);
+    border-radius: calc(infinity * 1px);
+    background-color: currentcolor;
+    width: --spacing(2);
+    height: --spacing(2);
+    content: '';
   }
 }
 .scrollbar-hide {

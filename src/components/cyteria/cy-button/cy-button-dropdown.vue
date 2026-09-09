@@ -6,7 +6,7 @@ import { useToggle } from '@/shared/setup/State'
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'
 
-import { type ButtonBaseProps, type ButtonIconProps, useButtonBaseBinds } from './setup'
+import { type ButtonBaseProps, type ButtonIconProps } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {
   contentDefaultVisible?: boolean
@@ -19,11 +19,10 @@ const props = withDefaults(defineProps<Props>(), {
 const contentVisible = ref(props.contentDefaultVisible)
 const toggleContentVisible = useToggle(contentVisible)
 
-const baseButtonBaseBinds = useButtonBaseBinds(props)
-
 const buttonBaseBinds = computed(() => {
   return {
-    ...baseButtonBaseBinds.value,
+    color: props.color,
+    disabled: props.disabled,
     selected: contentVisible.value,
   }
 })
@@ -32,13 +31,12 @@ const buttonBaseBinds = computed(() => {
 <template>
   <div class="cy-button-dropdown-wrapper" :class="{ 'content-visble': contentVisible }">
     <CyButtonBase
-      v-slot="{ iconClass }"
       v-bind="buttonBaseBinds"
-      class="cy-button-dropdown-main w-full"
+      class="cy-button-dropdown-main gap-icon w-full"
       @click="toggleContentVisible"
     >
-      <ButtonIcon :icon="icon" :class="iconClass" />
-      <span class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
+      <ButtonIcon :icon="props.icon" class="cy-button-base-icon" />
+      <span class="mr-1">
         <slot />
       </span>
     </CyButtonBase>

@@ -3,9 +3,28 @@
 @source "../src";
 @source "./index.html";
 
-@source inline("{text,bg,border,}-{primary,fuchsia,violet,blue,cyan,orange,emerald,red,gray,}-{5,{10..90..10}}");
-
 @theme {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+
+  --spacing-icon-tight: 0.25rem;
+  --spacing-icon: 0.375rem;
+  --spacing-icon-loose: 0.75rem;
+
   --font-mono:
     'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', var(--app-main-font), monospace;
@@ -109,6 +128,10 @@
 }
 
 @layer base {
+  body {
+    --text-line-height: var(--text-base--line-height);
+  }
+
   code,
   kbd,
   samp,
@@ -125,27 +148,45 @@
   }
 }
 
+@layer utilities {
+  .text-xs {
+    --text-line-height: var(--text-xs--line-height);
+  }
+
+  .text-sm {
+    --text-line-height: var(--text-sm--line-height);
+  }
+
+  .text-base {
+    --text-line-height: var(--text-base--line-height);
+  }
+
+  .text-lg {
+    --text-line-height: var(--text-lg--line-height);
+  }
+
+  .text-xl {
+    --text-line-height: var(--text-xl--line-height);
+  }
+
+  .text-2xl {
+    --text-line-height: var(--text-2xl--line-height);
+  }
+
+  .text-3xl {
+    --text-line-height: var(--text-3xl--line-height);
+  }
+
+  .text-4xl {
+    --text-line-height: var(--text-4xl--line-height);
+  }
+}
+
 @utility content-auto {
   content-visibility: auto;
 }
 
-/**
-  * The height utilities that map the height to the line-heigth for align.
-  * example:
-  * ```
-  * <div class="flex">
-  *   <div class="h-text-sm">
-  *     <some-icon />
-  *   </div>
-  *   <div class="flex items-center flex-wrap text-sm">
-  *     some multiple lines content...
-  *   </div>
-  * </div>
-  * ```
-  */
-@utility h-text-sm {
-  height: 1.25rem;
-}
-@utility h-text-base {
-  height: 1.5rem;
+@utility icon-first-line {
+  align-self: flex-start;
+  margin-block-start: calc((var(--text-line-height) - var(--icon-size)) / 2);
 }

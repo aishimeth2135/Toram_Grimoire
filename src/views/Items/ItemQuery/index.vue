@@ -138,9 +138,10 @@
             <cy-button-circle icon="ic:baseline-settings" color="blue" />
           </template>
           <template #item="{ value }">
-            <cy-icon-text :icon="value.icon">
+            <div class="gap-icon text-primary-90 inline-flex items-center">
+              <cy-icon :icon="value.icon" class="text-primary-30" />
               {{ t('item-query.modes.' + value.id) }}
-            </cy-icon-text>
+            </div>
           </template>
         </cy-options>
       </template>
@@ -194,9 +195,10 @@
     </AppLayoutBottom>
     <cy-modal v-model:visible="selectStatModalVisible" vertical-position="start" footer>
       <template #title>
-        <cy-icon-text icon="mdi-rhombus-outline">
+        <div class="gap-icon text-primary-90 inline-flex items-center">
+          <cy-icon icon="mdi-rhombus-outline" class="text-primary-30" />
           {{ t('item-query.options-stat.select-stat.title') }}
-        </cy-icon-text>
+        </div>
       </template>
       <template #default>
         <div class="sticky top-0 bg-white">

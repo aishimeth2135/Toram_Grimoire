@@ -17,6 +17,7 @@ import Page404 from './Page404'
 import Quest from './Quest'
 import Registlet from './Registlet'
 import Skill from './Skill'
+import Trait from './Trait'
 
 export default function createAppRouter() {
   const routes: RouteRecordRaw[] = [
@@ -32,6 +33,7 @@ export default function createAppRouter() {
     Bubble,
     DamageCalculation,
     Registlet,
+    Trait,
     Quest,
   ]
 

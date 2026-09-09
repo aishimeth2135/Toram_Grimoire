@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { type ButtonBaseProps } from './setup'
+import { type ButtonBaseProps, ButtonTheme } from './setup'
 
 type Props = ButtonBaseProps
 
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classList = computed(() => {
   return {
-    [`theme-${props.color}`]: true,
+    [ButtonTheme[props.color]]: true,
     'button-selected': props.selected,
   }
 })
@@ -19,6 +19,6 @@ const classList = computed(() => {
 
 <template>
   <button class="cy-button-base" type="button" :class="classList" :disabled="disabled">
-    <slot icon-class="cy-button-base-icon" />
+    <slot />
   </button>
 </template>

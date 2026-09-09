@@ -1,0 +1,149 @@
+# AGENTS.md
+
+## 專案概述
+
+Toram Grimoire（Cy's Grimoire）是 Toram Online 的網頁工具，
+提供技能查詢、角色模擬、傷害計算、附魔與裝備相關功能。
+
+主要技術：
+
+- Vue 3、TypeScript、Vite
+- Pinia、Vue Router、Vue I18n
+- Tailwind CSS 4
+- PWA（vite-plugin-pwa）
+
+## 溝通原則
+
+- 使用繁體中文說明工作內容。
+- 保留程式識別字與現有領域術語。
+- 完成後說明修改內容、驗證結果，以及尚未解決的問題。
+- 未執行的檢查須明確註明，不得宣稱已通過。
+
+## 環境與指令
+
+- Node.js 版本以 `.node-version` 為準，目前為 22.17.0。
+- 使用 Yarn，版本以 `package.json` 的 `packageManager` 為準。
+- 保留 `yarn.lock`，不要新增 npm 或 pnpm 的 lockfile。
+
+常用指令：
+
+```sh
+yarn install --immutable
+yarn dev
+yarn type-check
+yarn build
+yarn preview
+```
+
+開發伺服器預設連接埠為 9039；若被占用，以終端輸出為準。
+
+檢查指定檔案：
+
+```sh
+yarn exec eslint <file>
+yarn exec prettier --check <file>
+```
+
+注意：
+
+- `yarn lint` 會執行 `eslint . --fix`，可能修改整個專案。
+- `yarn pretty` 與 `yarn format` 會格式化 src。
+- 一般任務優先檢查或格式化本次修改的檔案。
+- `yarn build` 不包含型別檢查，需另執行 `yarn type-check`。
+
+## 目錄分工
+
+- `src/views/`：頁面與功能專用元件。
+- `src/components/`：共用 UI 元件。
+- `src/lib/`：遊戲領域模型、公式與計算邏輯。
+- `src/stores/`：Pinia 狀態、資料載入與功能狀態管理。
+- `src/router/`：路由設定。
+- `src/shared/`：共用常數、服務、組合邏輯與工具。
+- `src/locales/`：en、ja、zh-CN、zh-TW 翻譯資源。
+- `src/assets/`：樣式與其他資源。
+- `src/dev/`：開發輔助工具。
+- `src/sw.ts`：Service Worker。
+- `public/`：公開靜態資源。
+
+新增程式前，先尋找相同功能的現有實作並沿用其組織方式。
+
+## 修改原則
+
+- 開始前查看 `git status`，保留使用者尚未提交的修改。
+- 將變更限制在任務所需範圍，避免無關重構與整批格式化。
+- 不要手動修改 `node_modules/` 或建置產物。
+- 非任務必要，不更換套件、不升級依賴、不修改建置設定。
+- 不要為了通過檢查而停用規則或刪除必要邏輯。
+
+## 程式風格
+
+- 任何格式化皆可完全交由 prettier 及 eslint 的現有工具處理，不需要自己處理。
+- `@/` 對應 `src/`，跨目錄引用沿用現有 alias 慣例。
+- 新增 Vue 元件時，沿用鄰近元件的 API、命名與區塊順序。
+- 優先使用明確型別；需要寬鬆型別時，將影響限制在必要範圍。
+- 共用計算邏輯放在適當的領域模組，避免在 UI 元件中重複公式。
+
+如果撰寫程式時需要知道此專案的程式格式風格，可參考以下幾點：
+
+- 遵守 `.prettierrc.yaml` 與 `eslint.config.ts`。
+- 使用兩個空白縮排、單引號、不加分號。
+- 現有的格式化工具會處理 import 與 Tailwind class 排序。
+
+## 錯誤處理
+
+- 因為值可能不合法而需要錯誤處理時，優先考慮給定預設值，throw error 為最後手段。
+
+## 遊戲公式與資料
+
+- 牽涉到遊戲資料流處理及公式處理的相關流程，應以不更動到邏輯為優先。
+
+## 遊戲名詞解釋
+
+此處列出專案內用到的遊戲專有名詞及其中文名稱，在理解專案程式結構時可作為參考。
+
+- Character(角色)
+- Skill(技能)、Skill Tree(技能樹)、Skill Tree Category(技能樹類別)
+- Equipment(裝備)
+- Crystal(鍛晶，綁定在裝備上)
+- Potion(藥劑/消耗品)
+- Enchant(裝備附魔)
+- Trait(特性)
+- Food(料理)
+- Registlet(雷吉斯托環，簡稱托環)
+- Stat(能力，由裝備、技能、料理等各方面的配置提供)
+- Character Stat(角色面板能力，為各方面的 Stat 數值加總後，再經由固定的公式，最後計算出來實際運用於角色身上的能力)
+- Damage(傷害值，為角色發動攻擊時會對敵人造成的傷害數值)
+- Quest(任務)、Main Quest(主線任務)
+- Glossary(遊戲專用名詞，其結構包含名詞的詳細解釋)
+
+## 元件
+
+- 優先重用現有元件、樣式與互動模式。
+- `<script>`內考慮可讀性，需要將部分邏輯分離出去時，於元件同目錄下建立`setup.ts`檔案。
+- 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的`defineState`，`inject`為最後手段。
+
+## 多語系
+
+用於顯示給使用者閱讀的文字，遵循現有 i18n 機制。
+
+新增翻譯 key 時，按照下列原則處理：
+
+1. 以`zh-tw`語系為主，其他語系在開發時皆可忽略。
+2. 優先搜尋`global.yaml`有沒有可用的字串。
+3. 一些專案特有的名詞存放在`common.yaml`內。
+4. 需要新增字串時，直接進入`zh-tw`語系資料夾，於該頁面對應的檔案內新增字串，字串 ID 命名及結構可參考其他字串檔。
+5. 新增字串時，`zh-tw`以外的語系皆可忽略。
+
+## 測試
+
+- 目前專案未導入任何 unit test 機制，一律忽略並且不要嘗試新增。
+
+## 驗證與交付
+
+依修改性質選擇驗證：
+
+- 文件變更：檢查內容與指令是否符合專案現況。
+- Vue／TypeScript 變更：執行相關檔案的 ESLint 與型別檢查。
+- 影響打包、資源或執行行為的變更：執行建置。
+- 計算邏輯變更：驗證具體輸入與預期結果。
+- 不需要嘗試運行 dev server 或 build，功能皆採用人工確認。

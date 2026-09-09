@@ -4,9 +4,13 @@
       class="hover:bg-primary-5 flex cursor-pointer items-center px-3.5 py-2.5 duration-150"
       @click="detailVisible = !detailVisible"
     >
-      <cy-icon-text icon="mdi:tag-outline" :text-color="!sub ? 'primary-80' : 'orange-60'">
+      <div
+        class="gap-icon inline-flex items-center"
+        :class="!sub ? 'text-primary-80' : 'text-orange-60'"
+      >
+        <cy-icon icon="mdi:tag-outline" class="text-primary-30" />
         {{ tag.name }}
-      </cy-icon-text>
+      </div>
       <div class="text-primary-30 ml-3 flex items-center space-x-1.5 text-sm">
         <div v-for="row in categoryRows" :key="row.value.join(',')">
           {{ row.value[0] }}

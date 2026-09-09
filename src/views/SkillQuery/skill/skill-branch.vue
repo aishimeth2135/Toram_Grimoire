@@ -266,73 +266,104 @@ const subButtonAvailable = computed(() => {
 
 .skill-branch-wrapper {
   & :deep(.history-compare--mark) {
-    @apply bg-violet-60/10;
+    background-color: --alpha(var(--color-violet-60) / 10%);
   }
 
   & :deep(.skill-formula-function-wrapper) {
-    @apply mx-0.5 inline-flex items-center rounded-md pl-1.5 pr-1;
+    display: inline-flex;
+    align-items: center;
+    margin-inline: --spacing(0.5);
+    border-radius: var(--radius-md);
+    padding-right: --spacing(1);
+    padding-left: --spacing(1.5);
 
     &.key--floor {
-      @apply bg-primary-30;
+      background-color: var(--color-primary-30);
       & > .name {
-        @apply text-primary-60;
+        color: var(--color-primary-60);
       }
       & > .value > .param-separate {
-        @apply border-primary-30;
+        border-color: var(--color-primary-30);
       }
     }
     &.key--min {
-      @apply bg-blue-30/50;
+      background-color: --alpha(var(--color-blue-30) / 50%);
       & > .name {
-        @apply text-blue-60;
+        color: var(--color-blue-60);
       }
       & > .value > .param-separate {
-        @apply border-blue-30;
+        border-color: var(--color-blue-30);
       }
     }
     &.key--max {
-      @apply bg-cyan-30/50;
+      background-color: --alpha(var(--color-cyan-30) / 50%);
       & > .name {
-        @apply text-cyan-60;
+        color: var(--color-cyan-60);
       }
       & > .value > .param-separate {
-        @apply border-cyan-30;
+        border-color: var(--color-cyan-30);
       }
     }
 
     & > .name {
-      @apply text-sm;
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
     }
     & > .value {
-      @apply ml-1.5 mr-1 inline-flex items-center bg-white/75 px-2 text-sm;
+      display: inline-flex;
+      align-items: center;
+      margin-right: --spacing(1);
+      margin-left: --spacing(1.5);
+      background-color: --alpha(var(--color-white) / 75%);
+      padding-inline: --spacing(2);
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
 
       & > .param-separate {
-        @apply mx-2 mt-0.5 inline-block h-4 bg-transparent;
-
+        display: inline-block;
+        margin-inline: --spacing(2);
+        margin-top: --spacing(0.5);
         border-left-width: 0.1875rem;
+        background-color: transparent;
+        height: --spacing(4);
       }
     }
   }
 }
 
 .toggle-sub-button {
-  @apply z-5 absolute right-1 top-0.5;
+  position: absolute;
+  top: --spacing(0.5);
+  right: --spacing(1);
+  z-index: 5;
 }
 
 .skill-branch-content {
-  @apply border-primary-50 border-l-0 pl-0 duration-200;
+  transition-duration: 200ms;
   transition-property: border-left-width, padding-left;
+  border-left-width: 0;
+  border-color: var(--color-primary-50);
+  padding-left: --spacing(0);
 
   &.sub-content-active {
-    @apply border-l-4 pb-2 pl-3;
+    border-left-width: 4px;
+    padding-bottom: --spacing(2);
+    padding-left: --spacing(3);
   }
 }
 .group-end {
-  @apply border-t-1 border-primary-50 relative;
+  position: relative;
+  border-top-width: 1px;
+  border-color: var(--color-primary-50);
 
   &::before {
+    position: absolute;
+    top: --spacing(-2);
+    right: --spacing(-2);
+    background-color: var(--color-primary-50);
+    width: --spacing(4);
+    height: --spacing(4);
     content: '';
-    @apply bg-primary-50 absolute -right-2 -top-2 h-4 w-4;
   }
 }
 </style>

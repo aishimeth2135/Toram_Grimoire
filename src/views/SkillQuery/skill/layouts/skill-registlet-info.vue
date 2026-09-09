@@ -1,7 +1,7 @@
 <template>
   <div class="border-emerald-30 relative rounded-sm border-2 border-l-4 bg-white pt-2.5">
     <div class="flex items-start pb-3 pl-2.5">
-      <IconCircle icon="game-icons:beveled-star" icon-color="emerald-30" />
+      <IconCircle icon="game-icons:beveled-star" color="emerald" />
       <div class="pl-3 pr-2 pt-1">
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>

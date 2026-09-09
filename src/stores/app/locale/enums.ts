@@ -16,6 +16,7 @@ export const LocaleViewNamespaces = {
   CrystalQuery: 'crystal-query',
   ItemQuery: 'item-query',
   RegistletQuery: 'registlet-query',
+  TraitQuery: 'trait-query',
   MainQuestCalc: 'main-quest-calc',
   EquipmentTrait: 'equipment-trait',
   BookTemplate: 'book-template',

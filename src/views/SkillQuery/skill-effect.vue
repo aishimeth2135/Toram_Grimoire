@@ -23,18 +23,21 @@
             :registlet-item-state="registletItemState"
           />
           <div class="px-4 py-2 text-sm">
-            <cy-icon-text icon="ic:outline-tips-and-updates" class="mr-2 mt-0.5">
-              <i18n-t
-                tag="span"
-                class="text-primary-50"
-                keypath="skill-query.registlet-info-tip"
-                scope="global"
-              >
-                <template #link>
-                  <GlossaryTagPopover :name="t('common.Registlet.title')" />
-                </template>
-              </i18n-t>
-            </cy-icon-text>
+            <div class="gap-icon text-primary-90 mr-2 mt-0.5 inline-flex items-center">
+              <cy-icon icon="ic:outline-tips-and-updates" class="text-primary-30" />
+              <span>
+                <i18n-t
+                  tag="span"
+                  class="text-primary-50"
+                  keypath="skill-query.registlet-info-tip"
+                  scope="global"
+                >
+                  <template #link>
+                    <GlossaryTagPopover :name="t('common.Registlet.title')" />
+                  </template>
+                </i18n-t>
+              </span>
+            </div>
           </div>
         </div>
       </div>

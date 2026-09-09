@@ -205,33 +205,35 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@reference "@/tailwind.css";
-
 .title-icon {
-  @apply pointer-events-none;
+  pointer-events: none;
 
   &.title-icon-touched {
+    position: fixed;
+    z-index: 200;
     animation: none;
     transition: 0.2s;
-    z-index: 200;
-    position: fixed;
     margin-right: 0;
   }
 }
 
 .icon-touched-text {
-  @apply pointer-events-none fixed z-5 text-primary-50 opacity-0;
+  position: fixed;
+  opacity: 0;
+  z-index: 5;
   animation: app-icon-touched-text 2.5s linear;
+  pointer-events: none;
+  color: var(--color-primary-50);
 }
 
 @keyframes app-icon-touched-text {
   0% {
-    opacity: 1;
     transform: translate(0, 0);
+    opacity: 1;
   }
   100% {
-    opacity: 0;
     transform: translate(0, -200%);
+    opacity: 0;
   }
 }
 </style>

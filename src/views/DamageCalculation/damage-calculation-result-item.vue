@@ -1,17 +1,18 @@
 <template>
   <div class="inline-flex cursor-pointer items-center">
-    <cy-icon-text :icon="resultItem.icon">
+    <div class="gap-icon text-primary-90 inline-flex items-center">
+      <cy-icon :icon="resultItem.icon" class="text-primary-30" />
       {{ t('damage-calculation.result.modes.' + resultItem.id) }}
-    </cy-icon-text>
+    </div>
     <span
       v-if="typeof resultItem.value === 'object'"
-      class="ml-2 inline-flex items-center text-primary-50"
+      class="text-primary-50 ml-2 inline-flex items-center"
     >
       <span>{{ resultItem.value.min }}</span>
       <cy-icon icon="mdi:tilde" class="mx-1" />
       <span>{{ resultItem.value.max }}</span>
     </span>
-    <span v-else class="ml-2 text-primary-50">{{ resultItem.value }}</span>
+    <span v-else class="text-primary-50 ml-2">{{ resultItem.value }}</span>
   </div>
 </template>
 

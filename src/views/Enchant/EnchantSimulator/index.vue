@@ -26,9 +26,10 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex items-center justify-end px-1 py-0.5">
-          <cy-icon-text icon="bx-bx-star" class="mr-3">
+          <div class="gap-icon text-primary-90 mr-3 inline-flex items-center">
+            <cy-icon icon="bx-bx-star" class="text-primary-30" />
             {{ t('enchant-simulator.success-rate') }}
-          </cy-icon-text>
+          </div>
           <span class="text-primary-60">
             {{ successRate }}
           </span>
@@ -81,9 +82,10 @@
                 <cy-button-circle icon="ant-design:build-outlined" small />
               </template>
               <template #item="{ value }">
-                <cy-icon-text icon="ant-design:build-outlined">
+                <div class="gap-icon text-primary-90 inline-flex items-center">
+                  <cy-icon icon="ant-design:build-outlined" class="text-primary-30" />
                   {{ value.name }}
-                </cy-icon-text>
+                </div>
               </template>
             </cy-options>
           </div>
@@ -119,8 +121,7 @@
               <cy-button-icon
                 icon="jam-hammer"
                 class="my-2 ml-2"
-                icon-color="blue-30"
-                icon-color-hover="blue"
+                color="blue"
                 :selected="extraOptionsVisible"
                 @click="toggleExtraOptionsVisible"
               />
@@ -435,14 +436,13 @@ div.steps-content-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
-  @apply py-4;
+  padding-block: --spacing(4);
 
   & > .steps-content {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-    flex-wrap: wrap;
     width: calc(46rem + 5px);
 
     @media screen and (max-width: 50rem) {
@@ -450,8 +450,9 @@ div.steps-content-container {
     }
 
     & > .step-container {
+      margin: --spacing(1.5);
       width: 22rem;
-      @apply m-1.5 max-w-full;
+      max-width: 100%;
     }
   }
 }

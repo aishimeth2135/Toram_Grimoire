@@ -42,7 +42,7 @@ useResizeObserver(tabsEl, () => {
     :class="[direction === 'horizontal' ? 'cy-tabs-h' : 'cy-tabs-v', { 'not-plain': !plain }]"
   >
     <slot />
-    <div class="absolute rounded-full bg-primary-40 ease-linear" :style="sliderStyle" />
+    <div class="bg-primary-40 absolute rounded-full ease-linear" :style="sliderStyle" />
   </div>
 </template>
 
@@ -50,31 +50,45 @@ useResizeObserver(tabsEl, () => {
 @reference "@/tailwind.css";
 
 .cy-tabs {
-  @apply relative flex flex-wrap items-start;
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  align-items: flex-start;
 
   &.cy-tabs-h.not-plain {
-    @apply border-b-1 border-primary-10;
+    border-bottom-width: 1px;
+    border-color: var(--color-primary-10);
 
     & > .cy-tab {
-      @apply text-center;
       min-width: 6rem;
+      text-align: center;
     }
   }
 
   &.cy-tabs-v {
-    @apply flex-col items-start;
+    flex-direction: column;
+    align-items: flex-start;
 
     &.not-plain {
-      @apply border-r-2 border-primary-10;
+      border-right-width: 2px;
+      border-color: var(--color-primary-10);
 
       & > .cy-tab {
-        @apply w-full text-left;
+        width: 100%;
+        text-align: left;
       }
     }
   }
 
   &.not-plain > .cy-tab {
-    @apply hover:bg-primary-10/50 mt-1 rounded-sm px-6 py-2;
+    margin-top: --spacing(1);
+    border-radius: var(--radius-sm);
+    padding-inline: --spacing(6);
+    padding-block: --spacing(2);
+
+    &:hover {
+      background-color: --alpha(var(--color-primary-10) / 50%);
+    }
   }
 }
 </style>

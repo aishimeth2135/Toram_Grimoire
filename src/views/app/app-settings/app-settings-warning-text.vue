@@ -7,9 +7,9 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="flex">
-    <cy-icon class="h-text-sm" small icon="bx-bx-error-circle" />
-    <div class="ml-1.5 text-sm text-primary-60">
+  <div class="gap-icon flex items-start text-sm">
+    <cy-icon class="icon-first-line" small icon="bx-bx-error-circle" />
+    <div class="text-primary-60">
       {{ text }}
     </div>
   </div>

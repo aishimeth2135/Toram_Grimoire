@@ -1,9 +1,10 @@
 <template>
   <AppLayoutMain>
     <cy-top-header class="cursor-pointer" @click="toggleSearchVisible">
-      <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
+      <div v-if="currentSkill" class="gap-icon text-primary-90 inline-flex items-center">
+        <cy-icon icon="bx:bxs-book-bookmark" class="text-primary-30" />
         {{ currentSkill.name }}
-      </cy-icon-text>
+      </div>
       <div v-else class="text-primary-30 ml-2">
         {{ t('skill-query.search-tips') }}
       </div>

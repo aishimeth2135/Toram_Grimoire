@@ -1,22 +1,24 @@
 <template>
   <div>
     <div
-      class="flex cursor-pointer items-center py-1.5 pl-1 pr-3 duration-200 hover:bg-primary-5"
+      class="hover:bg-primary-5 flex cursor-pointer items-center py-1.5 pl-1 pr-3 duration-200"
       @click="unfold = !unfold"
     >
       <cy-button-radio :selected="isCurrent" @click.stop="emit('select-result', result)" />
-      <cy-icon-text icon="ant-design:star-outlined" color="blue" class="ml-4">
+      <div class="gap-icon text-blue-60 ml-4 inline-flex items-center">
+        <cy-icon icon="ant-design:star-outlined" class="text-blue-30" />
         {{ getSuccessRateDisplay(result) }}
-      </cy-icon-text>
-      <cy-icon-text icon="ic:round-numbers" color="blue-fuchsia-60" class="ml-4">
+      </div>
+      <div class="gap-icon text-blue-fuchsia-60 ml-4 inline-flex items-center">
+        <cy-icon icon="ic:round-numbers" class="text-blue-fuchsia-30" />
         {{ result.operationStepsQuantity }}
-      </cy-icon-text>
+      </div>
       <cy-icon
         :icon="unfold ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
         class="ml-auto"
       />
     </div>
-    <div v-if="unfold" class="mx-3 mb-4 mt-0.5 rounded-sm border-2 border-primary-30 p-3">
+    <div v-if="unfold" class="border-primary-30 mx-3 mb-4 mt-0.5 rounded-sm border-2 p-3">
       <EnchantResult :equipment="result" />
     </div>
   </div>

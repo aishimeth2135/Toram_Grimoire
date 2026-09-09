@@ -79,10 +79,27 @@ const iconDatas = computed(() => {
 @reference "@/tailwind.css";
 
 .skill-equipment-button {
-  @apply inline-flex cursor-pointer items-center space-x-2 border-b-1 border-transparent px-3 hover:border-primary-30;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  border-bottom-width: 1px;
+  border-color: transparent;
+  padding-inline: --spacing(3);
+
+  & > :not(:last-child) {
+    margin-inline-end: --spacing(2);
+  }
+
+  &:hover {
+    border-color: var(--color-primary-30);
+  }
 
   &.selected {
-    @apply border-primary-60 hover:border-primary-60;
+    border-color: var(--color-primary-60);
+
+    &:hover {
+      border-color: var(--color-primary-60);
+    }
   }
 }
 </style>

@@ -12,7 +12,6 @@ import CyButtonRadio from '@/components/cyteria/cy-button/cy-button-radio.vue'
 import CyButtonToggle from '@/components/cyteria/cy-button/cy-button-toggle.vue'
 import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
-import CyIconText from '@/components/cyteria/cy-icon-text.vue'
 import CyIcon from '@/components/cyteria/cy-icon.vue'
 import CyInputCounter from '@/components/cyteria/cy-input-counter.vue'
 import CyListItem from '@/components/cyteria/cy-list-item.vue'
@@ -32,7 +31,6 @@ export default function (app: App<Element>) {
   app.component('cy-default-tips', CyDefaultTips)
   app.component('cy-hr', CyHr)
   app.component('cy-icon', CyIcon)
-  app.component('cy-icon-text', CyIconText)
   app.component('cy-input-counter', CyInputCounter)
   app.component('cy-list-item', CyListItem)
   app.component('cy-modal', CyModal)

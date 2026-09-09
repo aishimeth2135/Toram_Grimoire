@@ -7,12 +7,13 @@
         @click="detailVisible = !detailVisible"
       >
         <div class="flex w-60 shrink-0">
-          <cy-icon-text
-            icon="mdi:book-outline"
-            :text-color="detailVisible ? 'red-70' : 'primary-90'"
+          <div
+            class="gap-icon inline-flex items-center"
+            :class="detailVisible ? 'text-red-70' : 'text-primary-90'"
           >
+            <cy-icon icon="mdi:book-outline" class="text-primary-30" />
             {{ item.name }}
-          </cy-icon-text>
+          </div>
         </div>
         <div
           v-if="registletQueryState.displayMode === DisplayMode.Category"

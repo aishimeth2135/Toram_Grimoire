@@ -15,6 +15,7 @@ import IconSelection from '@/components/common/icon-selection.vue'
 import CommonSearchInput from '../common/common-search-input.vue'
 import BrowseEquipmentTypeFilter from './browse-equipment-type-filter.vue'
 
+import { getEquipmentLabelColorClasses } from '../common/equipment-label-colors'
 import { setupEquipmentLabelFilter, useEquipmentsForSearch } from './setup'
 
 interface Props {
@@ -89,12 +90,15 @@ watch(
             v-for="label in labelFilter.labelOptions"
             :key="label.id"
             class="flex cursor-pointer flex-wrap items-center px-3 py-2"
-            :class="`text-${label.color}-60`"
+            :class="getEquipmentLabelColorClasses(label.color).text"
             hover
             @click="labelFilter.toggleLabel(label)"
           >
             <IconSelection :selected="labelFilter.labelSelected(label)" class="mr-3.5 shrink-0" />
-            <div class="mr-2 h-3.5 w-3.5 rounded-sm" :class="`bg-${label.color}-50`" />
+            <div
+              class="mr-2 h-3.5 w-3.5 rounded-sm"
+              :class="getEquipmentLabelColorClasses(label.color).background"
+            />
             {{ label.text }}
           </CardRow>
         </CardRows>

@@ -43,57 +43,68 @@ const minimize = computed(() => layout.twoColumns || layout.wide)
 
 .app-left-menu--wrapper {
   --app-left-menu-padding-right: 32px;
-
-  @apply fixed left-0 top-0 z-50 h-full overflow-x-hidden opacity-100;
+  position: fixed;
+  top: --spacing(0);
+  left: --spacing(0);
+  opacity: 100%;
+  z-index: 50;
   background-color: var(--app-body-bg-color);
   padding-left: calc((100% - var(--app-screen-max-width)) / 2);
   width: calc((100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width));
+  height: 100%;
+  overflow-x: hidden;
 
   & > .content-container {
-    @apply h-full border-r border-primary-10;
+    border-right-width: 1px;
+    border-color: var(--color-primary-10);
     width: var(--app-side-menu-width);
+    height: 100%;
   }
 }
 
 @media (min-width: 1376px) {
   .app-left-menu--wrapper.wrapper-minimize {
-    @apply w-14 border-r border-primary-10 duration-300;
-    padding-left: 0;
+    transition-duration: 300ms;
+    border-right-width: 1px;
+    border-color: var(--color-primary-10);
     padding-right: 0;
+    padding-left: 0;
+    width: --spacing(14);
 
     &:hover {
-      @apply border-primary-30;
-
+      border-color: var(--color-primary-30);
       width: var(--app-side-menu-width);
     }
 
     & > .content-container {
-      @apply border-none;
+      border-style: none;
     }
   }
 }
 
 @media (min-width: 880px) and (max-width: 1376px) {
   .app-left-menu--wrapper {
-    @apply w-14 border-r border-primary-10 duration-300;
-    padding-left: 0;
+    transition-duration: 300ms;
+    border-right-width: 1px;
+    border-color: var(--color-primary-10);
     padding-right: 0;
+    padding-left: 0;
+    width: --spacing(14);
 
     &:hover {
-      @apply border-primary-30;
-
+      border-color: var(--color-primary-30);
       width: var(--app-side-menu-width);
     }
 
     & > .content-container {
-      @apply border-none;
+      border-style: none;
     }
   }
 }
 
 @media (max-width: 880px) {
   .app-left-menu--wrapper {
-    @apply hidden;
+    display: none;
   }
 }
 </style>

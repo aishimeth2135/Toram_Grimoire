@@ -207,10 +207,8 @@ const actionFrameData = computed(() => {
 </script>
 
 <style scoped>
-@reference "@/tailwind.css";
-
 .prop-value-wrapper :deep(.text-primary-50) {
-  @apply text-fuchsia-60;
+  color: var(--color-fuchsia-60);
 }
 
 .skill-branch-layout-normal {

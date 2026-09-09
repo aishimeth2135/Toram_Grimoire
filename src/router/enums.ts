@@ -25,6 +25,9 @@ export const AppRouteNames = {
   Glossary: 'Glossary',
   GlossaryQuery: 'GlossaryQuery',
 
+  Trait: 'Trait',
+  TraitQuery: 'TraitQuery',
+
   Registlet: 'Registlet',
   RegistletQuery: 'RegistletQuery',
 
