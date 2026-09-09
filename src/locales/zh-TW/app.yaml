@@ -17,6 +17,7 @@ loading-message:
     1: 若載入途中發生錯誤，請先試著重新整理網頁。
   init-locale: 載入語言資料
 page-title:
+  trait-query: 特性查詢
   base: 布偶的魔法書
   character-simulator: 角色模擬
   skill-simulator: 技能模擬

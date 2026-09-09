@@ -57,6 +57,11 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
     pathName: AppRouteNames.DamageCalculation,
   },
   {
+    name: 'trait-query',
+    icon: 'mdi:book-outline',
+    pathName: AppRouteNames.TraitQuery,
+  },
+  {
     name: 'registlet-query',
     icon: 'mdi:book-outline',
     pathName: AppRouteNames.RegistletQuery,

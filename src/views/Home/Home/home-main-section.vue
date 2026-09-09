@@ -1,6 +1,6 @@
 <template>
   <section class="flex flex-col">
-    <div class="relative z-5 my-auto space-y-3 py-2" :class="{ 'pt-8': device.isMobile }">
+    <div class="z-5 relative my-auto space-y-3 py-2" :class="{ 'pt-8': device.isMobile }">
       <HomeLinkGroup v-for="(group, idx) in groups" v-bind="groupDatas[idx]" :key="group.id">
         <HomeLinkButton
           v-for="data in group.links"
@@ -39,6 +39,7 @@ const groups = (() => {
         AppRouteNames.ItemQuery,
         AppRouteNames.CrystalQuery,
         AppRouteNames.RegistletQuery,
+        AppRouteNames.TraitQuery,
       ]),
     },
     {
