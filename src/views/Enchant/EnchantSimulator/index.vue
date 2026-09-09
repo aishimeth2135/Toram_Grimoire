@@ -26,9 +26,10 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex items-center justify-end px-1 py-0.5">
-          <cy-icon-text icon="bx-bx-star" class="mr-3">
+          <div class="gap-icon text-primary-90 mr-3 inline-flex items-center">
+            <cy-icon icon="bx-bx-star" class="text-primary-30" />
             {{ t('enchant-simulator.success-rate') }}
-          </cy-icon-text>
+          </div>
           <span class="text-primary-60">
             {{ successRate }}
           </span>
@@ -81,9 +82,10 @@
                 <cy-button-circle icon="ant-design:build-outlined" small />
               </template>
               <template #item="{ value }">
-                <cy-icon-text icon="ant-design:build-outlined">
+                <div class="gap-icon text-primary-90 inline-flex items-center">
+                  <cy-icon icon="ant-design:build-outlined" class="text-primary-30" />
                   {{ value.name }}
-                </cy-icon-text>
+                </div>
               </template>
             </cy-options>
           </div>

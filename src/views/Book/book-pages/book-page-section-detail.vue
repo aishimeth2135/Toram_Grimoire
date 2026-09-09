@@ -1,17 +1,19 @@
 <template>
   <div class="flex items-center space-x-5 px-1 py-3">
     <div v-if="cellMap.has('latest_update')" class="flex items-center space-x-2">
-      <cy-icon-text icon="ic:round-access-time" color="primary-30" single-color>
+      <div class="gap-icon text-primary-30 inline-flex items-center">
+        <cy-icon icon="ic:round-access-time" class="text-primary-30" />
         {{ t('book-template.page-sections.detail.latest-update') }}
-      </cy-icon-text>
+      </div>
       <div class="text-primary-60">
         {{ cellMap.get('latest_update') }}
       </div>
     </div>
     <div v-if="cellMap.has('author')" class="flex items-center space-x-2">
-      <cy-icon-text icon="ic:round-menu-book" color="primary-30" single-color>
+      <div class="gap-icon text-primary-30 inline-flex items-center">
+        <cy-icon icon="ic:round-menu-book" class="text-primary-30" />
         {{ t('book-template.page-sections.detail.author') }}
-      </cy-icon-text>
+      </div>
       <div class="text-primary-60">
         {{ cellMap.get('author') }}
       </div>

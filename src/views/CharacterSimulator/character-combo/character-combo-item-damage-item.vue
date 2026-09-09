@@ -2,9 +2,10 @@
   <div class="px-0.5 py-2">
     <div class="flex items-center">
       <div class="mr-3 flex shrink-0" style="min-width: 10rem">
-        <cy-icon-text :icon="skillIconPath" color="fuchsia">
+        <div class="gap-icon text-fuchsia-60 inline-flex items-center">
+          <cy-icon :icon="skillIconPath" class="text-fuchsia-30" />
           {{ skillResultsState.skill.name }}
-        </cy-icon-text>
+        </div>
       </div>
       <div v-if="skillResultsState.hasOptions" class="ml-auto inline-flex">
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
@@ -27,9 +28,10 @@
       </div>
     </div>
     <div v-if="previousSkillNextResultsState" class="pt-1">
-      <cy-icon-text text-color="primary-30" small>
+      <div class="gap-icon text-primary-30 inline-flex items-center text-sm">
+        <cy-icon small class="text-primary-30" />
         {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
-      </cy-icon-text>
+      </div>
       <div class="pl-5">
         <CharacterComboItemResultItem
           v-for="result in previousSkillNextResultsState.results"

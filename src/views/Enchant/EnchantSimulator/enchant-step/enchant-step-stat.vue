@@ -2,26 +2,29 @@
 <template>
   <div class="pb-1 pt-1">
     <div class="flex flex-wrap items-center py-0.5" :class="{ 'opacity-50': !stat.valid }">
-      <cy-icon-text
-        :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
-        :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'"
+      <div
+        class="gap-icon inline-flex items-center"
+        :class="stat.value >= 0 ? 'text-primary-90' : 'text-orange-60'"
       >
+        <cy-icon
+          :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'"
+          class="text-primary-30"
+        />
         {{ stat.showBase() }}
-      </cy-icon-text>
-      <cy-icon-text
+      </div>
+      <div
         v-if="rootState.statDisplayMode === 0"
-        icon="mdi-creation"
-        class="ml-auto mr-2"
-        small
-        text-color="fuchsia-60"
+        class="gap-icon text-fuchsia-60 ml-auto mr-2 inline-flex items-center text-sm"
       >
+        <cy-icon icon="mdi-creation" small class="text-primary-30" />
         {{ potentialEffect }}
-      </cy-icon-text>
+      </div>
       <div v-else class="ml-auto inline-flex items-center">
-        <cy-icon-text icon="mdi-cube-outline" small icon-color="blue-30">
+        <div class="gap-icon text-primary-90 inline-flex items-center text-sm">
+          <cy-icon icon="mdi-cube-outline" small class="text-blue-30" />
           {{ materialPoint.title }}
-        </cy-icon-text>
-        <span class="ml-2 text-sm text-blue-60">
+        </div>
+        <span class="text-blue-60 ml-2 text-sm">
           {{ materialPoint.value }}
         </span>
       </div>

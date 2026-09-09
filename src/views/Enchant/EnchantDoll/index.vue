@@ -10,7 +10,7 @@
     <cy-transition @after-enter="stepAfterEnter">
       <EnchantDollStepResult v-if="currentStep >= StepIds.Result" />
     </cy-transition>
-    <div class="relative mt-12 flex items-center justify-center border-t border-fuchsia-60 pt-4">
+    <div class="border-fuchsia-60 relative mt-12 flex items-center justify-center border-t pt-4">
       <cy-button-action
         v-if="currentStep !== StepIds.Result"
         icon="mdi-leaf"
@@ -35,15 +35,18 @@
       v-if="equipmentState.autoFindPotentialMinimum && currentStep === StepIds.SelectNegativeStat"
       class="my-2 flex justify-center"
     >
-      <cy-icon-text icon="ic-outline-info" small text-color="blue-60" icon-color="blue-30">
-        <!-- prettier-ignore -->
-        {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum') }}
-      </cy-icon-text>
+      <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
+        <cy-icon icon="ic-outline-info" small class="text-blue-30" />
+        <span>
+          <!-- prettier-ignore -->
+          {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum') }}
+        </span>
+      </div>
     </div>
     <div
       v-if="currentStep === StepIds.Equipment"
       ref="top"
-      class="space-y-2 px-8 py-8 text-center text-sm text-primary-50"
+      class="text-primary-50 space-y-2 px-8 py-8 text-center text-sm"
     >
       <div>{{ t('enchant-doll.top-caption.0') }}</div>
       <div>{{ t('enchant-doll.top-caption.1') }}</div>

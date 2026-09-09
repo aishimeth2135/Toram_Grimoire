@@ -23,9 +23,10 @@
       @close="toggleSelectCalculationVisible(false)"
     >
       <template #title>
-        <cy-icon-text icon="bx:bx-git-compare">
+        <div class="gap-icon text-primary-90 inline-flex items-center">
+          <cy-icon icon="bx:bx-git-compare" class="text-primary-30" />
           {{ t('damage-calculation.compare.select-build') }}
-        </cy-icon-text>
+        </div>
       </template>
       <cy-list-item
         v-for="item in calculationItems"

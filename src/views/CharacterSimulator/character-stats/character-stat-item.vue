@@ -52,25 +52,29 @@
         class="stat-detail-caption border-primary-10 border-b px-3 py-2 text-sm text-gray-50"
         v-html="statDetailCaption"
       />
-      <cy-icon-text v-if="showStatDetailDatas.conditionalBase" icon="mdi-sword">
-        <CharacterStatDetailEquipments
-          :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments"
-        />
-      </cy-icon-text>
+      <div
+        v-if="showStatDetailDatas.conditionalBase"
+        class="gap-icon text-primary-90 inline-flex items-center"
+      >
+        <cy-icon icon="mdi-sword" class="text-primary-30" />
+        <span>
+          <CharacterStatDetailEquipments
+            :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments"
+          />
+        </span>
+      </div>
       <div class="max-w-full space-y-2 overflow-x-auto px-3 py-3 text-sm">
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
           <div class="text-primary-70 flex items-center">
             <cy-icon icon="mdi:label-outline" class="text-primary-20 mr-2" />
-            <span>{{ data.title.text }}</span>
+            {{ data.title.text }}
             <span v-if="data.title.value !== null" class="text-primary-50 ml-2">
               {{ data.title.value }}
             </span>
           </div>
           <div v-if="data.lines.length !== 0" class="mt-1.5 space-y-0.5 pb-1 pl-2">
-            <div v-for="line in data.lines" :key="'line-' + line.iid" class="flex">
-              <div class="h-text-sm flex items-center">
-                <cy-icon icon="ic-round-add" small class="mr-1" />
-              </div>
+            <div v-for="line in data.lines" :key="'line-' + line.iid" class="gap-icon-tight flex">
+              <cy-icon icon="ic-round-add" small class="icon-first-line" />
               <div class="flex flex-wrap items-center">
                 <template v-if="typeof line.title === 'string'">
                   <span class="mr-2">

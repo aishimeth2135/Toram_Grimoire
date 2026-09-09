@@ -104,14 +104,16 @@ const addRegistletBuild = () => {
       </CardRowsWrapper>
       <div class="space-y-1 pb-2 pt-6">
         <div>
-          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
+          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
+            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
             {{ t('character-simulator.registlet-build.main-tips-1') }}
-          </cy-icon-text>
+          </div>
         </div>
         <div>
-          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
+          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
+            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
             {{ t('character-simulator.registlet-build.main-tips-2') }}
-          </cy-icon-text>
+          </div>
         </div>
       </div>
     </template>

@@ -5,9 +5,10 @@
       :key="skill.skillId"
       @click="emit('submit', skill)"
     >
-      <cy-icon-text :icon="getSkillIconPath(skill)">
+      <div class="gap-icon text-primary-90 inline-flex items-center">
+        <cy-icon :icon="getSkillIconPath(skill)" class="text-primary-30" />
         {{ skill.name }}
-      </cy-icon-text>
+      </div>
     </cy-list-item>
   </cy-modal>
 </template>

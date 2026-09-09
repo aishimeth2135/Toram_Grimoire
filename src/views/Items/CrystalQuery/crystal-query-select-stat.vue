@@ -14,9 +14,10 @@
         "
         @click="selectStat(option)"
       >
-        <cy-icon-text icon="mdi-rhombus-outline">
+        <div class="gap-icon text-primary-90 inline-flex items-center">
+          <cy-icon icon="mdi-rhombus-outline" class="text-primary-30" />
           {{ option.text }}
-        </cy-icon-text>
+        </div>
       </cy-list-item>
     </div>
   </cy-modal>
