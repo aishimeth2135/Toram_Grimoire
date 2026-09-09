@@ -58,7 +58,7 @@ export const ROUTE_LINK_DATAS: RouteLinkData[] = [
   },
   {
     name: 'trait-query',
-    icon: 'mdi:book-outline',
+    icon: 'ic:outline-pentagon',
     pathName: AppRouteNames.TraitQuery,
   },
   {

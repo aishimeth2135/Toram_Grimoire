@@ -16,7 +16,6 @@
 import { ROUTE_LINK_DATAS, type RouteLinkData } from '@/shared/consts/route'
 import { useDevice } from '@/shared/setup/Device'
 
-import { CharacterSimulatorRouteNames } from '@/router/Character'
 import { AppRouteNames } from '@/router/enums'
 
 import HomeLinkButton from './home-link-button.vue'
@@ -33,7 +32,15 @@ const groups = (() => {
   const _handle = (items: string[]) => items.map(item => linkMap.get(item)!)
   return [
     {
-      id: 'query',
+      id: 'main',
+      links: _handle([
+        AppRouteNames.CharacterSimulator,
+        AppRouteNames.EnchantDoll,
+        AppRouteNames.MainQuestCalc,
+      ]),
+    },
+    {
+      id: 'search',
       links: _handle([
         AppRouteNames.SkillQuery,
         AppRouteNames.ItemQuery,
@@ -43,37 +50,24 @@ const groups = (() => {
       ]),
     },
     {
-      id: 'character',
-      links: _handle([
-        AppRouteNames.CharacterSimulator,
-        AppRouteNames.DamageCalculation,
-        CharacterSimulatorRouteNames.Skill,
-        AppRouteNames.MainQuestCalc,
-      ]),
-    },
-    {
-      id: 'enchant',
-      links: _handle([AppRouteNames.EnchantSimulator, AppRouteNames.EnchantDoll]),
-    },
-    {
       id: 'other',
-      links: _handle([AppRouteNames.GlossaryQuery]),
+      links: _handle([
+        AppRouteNames.EnchantSimulator,
+        AppRouteNames.GlossaryQuery,
+        AppRouteNames.DamageCalculation,
+      ]),
     },
   ]
 })()
 
 const groupDatas = [
   {
-    icon: 'ic:round-search',
-    color: 'emerald',
-  },
-  {
-    icon: 'ant-design:build-outlined',
+    icon: 'ic:round-star-outline',
     color: 'fuchsia',
   },
   {
-    icon: 'mdi-cube-scan',
-    color: 'cyan',
+    icon: 'ic:round-search',
+    color: 'emerald',
   },
   {
     icon: 'icon-park-outline:other',
