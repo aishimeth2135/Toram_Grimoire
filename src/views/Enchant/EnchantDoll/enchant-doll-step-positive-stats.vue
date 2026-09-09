@@ -30,8 +30,7 @@
               />
               <cy-button-icon
                 icon="jam-close-circle"
-                icon-color="gray-60"
-                class="ml-auto"
+                class="text-gray-60 ml-auto"
                 @click="doll.removePositiveStat(stat)"
               />
             </div>

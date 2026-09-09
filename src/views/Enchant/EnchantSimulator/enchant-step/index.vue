@@ -48,15 +48,10 @@
         <cy-button-icon
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"
-          :icon-color="step.hidden ? 'orange-60' : 'red-30'"
+          :class="step.hidden ? 'text-orange-60' : 'text-red-30'"
           @click="step.hidden = !step.hidden /* eslint-disable-line vue/no-mutating-props */"
         />
-        <cy-button-icon
-          icon="jam-close-circle"
-          class="p-0"
-          icon-color="gray-60"
-          @click="step.remove()"
-        />
+        <cy-button-icon icon="jam-close-circle" class="text-gray-60 p-0" @click="step.remove()" />
       </div>
     </div>
     <div class="p-1">
@@ -112,7 +107,7 @@
           <cy-input-counter
             v-model:value="step.step /* eslint-disable-line vue/no-mutating-props */"
             inline
-            main-color="cyan-60"
+            color="cyan"
           >
             <template #title>
               <div class="gap-icon text-primary-90 inline-flex items-center">
@@ -126,24 +121,24 @@
       <div class="flex items-center py-0.5">
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          icon-color="blue-60"
+          class="text-blue-60"
           @click="openSelectItem('step', step, true)"
         />
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          icon-color="orange-60"
+          class="text-orange-60"
           @click="openSelectItem('step', step)"
         />
         <cy-button-icon
           :icon="typeIcon"
-          :icon-color="isTypeEach ? 'emerald-60' : 'emerald-30'"
-          icon-color-hover="emerald-60"
+          color="emerald"
+          :selected="isTypeEach"
           @click="toggleStepType"
         />
         <cy-button-icon
           v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           icon="ant-design:star-outlined"
-          icon-color="orange-60"
+          class="text-orange-60"
           @click="step.autoFill()"
         />
         <div class="gap-icon text-fuchsia-60 ml-auto mr-2 inline-flex items-center">

@@ -3,8 +3,6 @@
 @source "../src";
 @source "./index.html";
 
-@source inline("{text,bg,border,}-{primary,fuchsia,violet,blue,cyan,orange,emerald,red,gray,}-{5,{10..90..10}}");
-
 @theme {
   --text-xs: 0.75rem;
   --text-xs--line-height: 1rem;

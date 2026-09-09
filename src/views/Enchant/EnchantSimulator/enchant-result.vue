@@ -3,8 +3,7 @@
     <div class="flex items-start">
       <cy-button-icon
         :icon="resultStatsVisible ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
-        class="shrink-0"
-        icon-color="orange-60"
+        class="text-orange-60 shrink-0"
         :selected="resultStatsVisible"
         @click="toggleResultStatsVisible"
       />

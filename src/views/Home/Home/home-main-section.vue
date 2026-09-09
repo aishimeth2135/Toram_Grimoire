@@ -73,5 +73,5 @@ const groupDatas = [
     icon: 'icon-park-outline:other',
     color: 'gray',
   },
-]
+] as const
 </script>

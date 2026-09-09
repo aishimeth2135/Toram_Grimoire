@@ -97,6 +97,25 @@ yarn exec prettier --check <file>
 
 - 牽涉到遊戲資料流處理及公式處理的相關流程，應以不更動到邏輯為優先。
 
+## 遊戲名詞解釋
+
+此處列出專案內用到的遊戲專有名詞及其中文名稱，在理解專案程式結構時可作為參考。
+
+- Character(角色)
+- Skill(技能)、Skill Tree(技能樹)、Skill Tree Category(技能樹類別)
+- Equipment(裝備)
+- Crystal(鍛晶，綁定在裝備上)
+- Potion(藥劑/消耗品)
+- Enchant(裝備附魔)
+- Trait(特性)
+- Food(料理)
+- Registlet(雷吉斯托環，簡稱托環)
+- Stat(能力，由裝備、技能、料理等各方面的配置提供)
+- Character Stat(角色面板能力，為各方面的 Stat 數值加總後，再經由固定的公式，最後計算出來實際運用於角色身上的能力)
+- Damage(傷害值，為角色發動攻擊時會對敵人造成的傷害數值)
+- Quest(任務)、Main Quest(主線任務)
+- Glossary(遊戲專用名詞，其結構包含名詞的詳細解釋)
+
 ## 元件
 
 - 優先重用現有元件、樣式與互動模式。

@@ -8,7 +8,7 @@
   --button-color-border: var(--button-color-main-light);
   --button-color-border-hover: var(--button-color-main);
 
-  --button-icon-width: 1.25rem;
+  --button-icon-size: 1.25rem;
 
   color: var(--button-color-text);
   border-color: var(--button-color-border);
@@ -16,10 +16,11 @@
   @apply inline-flex shrink-0 cursor-pointer items-center border-0 text-base duration-200;
 
   & .cy-button-base-icon {
+    --icon-size: var(--button-icon-size);
     @apply shrink-0 duration-200;
     color: var(--button-color-icon);
-    width: var(--button-icon-width);
-    height: var(--button-icon-width);
+    width: var(--icon-size);
+    height: var(--icon-size);
   }
 
   &:hover,
@@ -121,7 +122,7 @@
 /* button circle */
 .cy-button-circle {
   @apply h-11 w-11 justify-center rounded-full border bg-white;
-  --button-icon-width: 1.25rem;
+  --button-icon-size: 1.25rem;
   box-shadow:
     1px 3px 1px -2px rgba(0, 0, 0, 0.1),
     1px 2px 2px 0 rgba(0, 0, 0, 0.07),
@@ -130,7 +131,7 @@
   &.button-small {
     @apply h-9 w-9;
 
-    --button-icon-width: 1rem;
+    --button-icon-size: 1rem;
   }
 
   &.button-float {
@@ -159,7 +160,21 @@
 
 /* button icon */
 .cy-button-icon {
+  color: var(--button-color-icon);
   @apply rounded-full duration-200;
+
+  & .cy-button-base-icon {
+    color: currentcolor;
+  }
+
+  &:hover,
+  &.button-selected {
+    color: var(--button-color-icon-hover);
+
+    & .cy-button-base-icon {
+      color: currentcolor;
+    }
+  }
 
   &:focus:not(:active) {
     @apply bg-primary-30/20;
@@ -199,7 +214,7 @@
 .cy-button-toggle {
   @apply rounded-full duration-200;
 
-  --button-icon-width: 2rem;
+  --button-icon-size: 2rem;
 
   &:focus:not(:active) {
     @apply bg-primary-30/20;

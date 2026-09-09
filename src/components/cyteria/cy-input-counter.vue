@@ -5,7 +5,7 @@
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title'] || title" class="mr-3 inline-flex items-center text-primary-80">
+      <div v-if="$slots['title'] || title" class="text-primary-80 mr-3 inline-flex items-center">
         <slot name="title">
           {{ title }}
         </slot>
@@ -14,34 +14,14 @@
         <cy-button-icon
           v-if="minButton && range[0] !== null"
           icon="akar-icons:circle-chevron-left"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[0]!)"
         />
-        <cy-button-icon
-          icon="ic-round-remove-circle-outline"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value - step)"
-        />
-        <input
-          v-model.number.lazy="inputValue"
-          type="number"
-          @click="selectInput($event)"
-          @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)"
-        />
-        <cy-button-icon
-          icon="ic-round-add-circle-outline"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value + step)"
-        />
+        <cy-button-icon icon="ic-round-remove-circle-outline" @click="setValue(value - step)" />
+        <input v-model.number.lazy="inputValue" type="number" @click="selectInput($event)" />
+        <cy-button-icon icon="ic-round-add-circle-outline" @click="setValue(value + step)" />
         <cy-button-icon
           v-if="maxButton && range[1] !== null"
           icon="akar-icons:circle-chevron-right"
-          :icon-color="mainColor"
-          :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[1]!)"
         />
         <span v-if="$slots['unit'] || unit" class="ml-1 text-sm">
@@ -55,14 +35,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
-import Color from '@/shared/services/Color'
 import { normalizeInteger } from '@/shared/utils/number'
 
 defineOptions({
   name: 'CyInputCounter',
 })
+
+type InputCounterColor = 'primary' | 'cyan'
 
 interface Props {
   value: number
@@ -72,7 +53,7 @@ interface Props {
   disabled?: boolean
   maxButton?: boolean
   minButton?: boolean
-  mainColor?: string
+  color?: InputCounterColor
   inputWidth?: string | null
   title?: string
   titleIcon?: string
@@ -89,23 +70,21 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   maxButton: false,
   minButton: false,
-  mainColor: 'primary-30',
+  color: 'primary',
   inputWidth: null,
 })
 const emit = defineEmits<Emits>()
 
-const focus = ref(false)
-
-const mainColorInstance = computed(() => new Color(props.mainColor))
+const themeClassMap = {
+  primary: 'theme-primary',
+  cyan: 'theme-cyan',
+} satisfies Record<InputCounterColor, string>
 
 const rootClassList = computed(() => {
-  return {
-    inline: props.inline,
-    ['border-' + props.mainColor]: !focus.value,
-    disabled: props.disabled,
-    ['border-' + mainColorInstance.value.darken]: !props.inline && focus.value,
-    ['shadow-xs']: !props.inline,
-  } as Record<string, boolean>
+  return [
+    themeClassMap[props.color],
+    { 'inline': props.inline, 'disabled': props.disabled, 'shadow-xs': !props.inline },
+  ]
 })
 
 const rootStyle = computed(() => {
@@ -139,9 +118,6 @@ const inputValue = computed<number>({
   },
 })
 
-const setInputFocus = (value: boolean) => {
-  focus.value = value
-}
 const selectInput = (evt: MouseEvent) => {
   ;(evt.target as HTMLInputElement).select()
 }
@@ -157,7 +133,27 @@ const setValue = (value: number) => {
   padding: 0.25rem 0.75rem 0.25rem 1rem;
   transition: border-color 0.3s;
   position: relative;
+  border-color: var(--input-counter-color);
   --input-width: 2.125rem;
+
+  &.theme-primary {
+    --input-counter-color: var(--app-primary-30);
+    --input-counter-color-active: var(--app-primary-60);
+  }
+
+  &.theme-cyan {
+    --input-counter-color: var(--app-cyan-60);
+    --input-counter-color-active: var(--app-cyan-90);
+  }
+
+  &:focus-within:not(.inline) {
+    border-color: var(--input-counter-color-active);
+  }
+
+  & .cy-button-icon {
+    --button-color-icon: var(--input-counter-color);
+    --button-color-icon-hover: var(--input-counter-color-active);
+  }
 
   &.inline {
     display: inline-flex;

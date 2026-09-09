@@ -7,14 +7,17 @@ import Draggable from 'vuedraggable'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
-import { AppColors } from '@/shared/services/Color'
-
 import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 import IconSelection from '@/components/common/icon-selection.vue'
+
+import {
+  equipmentLabelColors,
+  getEquipmentLabelColorClasses,
+} from '../common/equipment-label-colors'
 
 interface Props {
   selectedLabels: CharacterBuildLabel[]
@@ -49,17 +52,6 @@ const toggleCurrentEditedLabel = (label: CharacterBuildLabel) => {
   }
 }
 
-const allColors = [
-  AppColors.Red,
-  AppColors.Blue,
-  AppColors.Cyan,
-  AppColors.Emerald,
-  AppColors.Fuchsia,
-  AppColors.Gray,
-  AppColors.Orange,
-  AppColors.Violet,
-]
-
 const removeLabel = (label: CharacterBuildLabel) => {
   currentEditedLabel.value = null
   removeBuildLabel(label, equipments.value)
@@ -80,7 +72,7 @@ const closeEditingLabel = () => {
         @click="createBuildLabel"
       />
     </div>
-    <CardRowsWrapper class="wd-lg:max-h-none max-h-[24rem] overflow-y-auto">
+    <CardRowsWrapper class="wd-lg:max-h-none max-h-96 overflow-y-auto">
       <CardRows v-if="buildLabels.length > 0">
         <Draggable v-model="buildLabels" item-key="id" handle=".drag-handle">
           <template #item="{ element: label }">
@@ -93,14 +85,14 @@ const closeEditingLabel = () => {
                 />
                 <div
                   class="mr-2 h-3.5 w-3.5 shrink-0 cursor-pointer rounded-sm"
-                  :class="`bg-${label.color}-50`"
+                  :class="getEquipmentLabelColorClasses(label.color).background"
                   @click="toggleCurrentEditedLabel(label)"
                 />
                 <div class="w-full pr-4">
                   <input
                     v-model="label.text"
                     class="focus:border-b-primary-60 focus:text-primary-90 w-full border-2 border-transparent bg-transparent px-1 duration-150"
-                    :class="`text-${label.color}-60`"
+                    :class="getEquipmentLabelColorClasses(label.color).text"
                   />
                 </div>
                 <cy-icon
@@ -114,13 +106,16 @@ const closeEditingLabel = () => {
               >
                 <cy-tabs v-model="label.color" plain>
                   <cy-tab
-                    v-for="color in allColors"
+                    v-for="color in equipmentLabelColors"
                     :key="color"
                     :value="color"
                     class="flex justify-center p-2"
                     @click="closeEditingLabel"
                   >
-                    <div class="h-3.5 w-3.5 shrink-0 rounded-sm" :class="`bg-${color}-50`" />
+                    <div
+                      class="h-3.5 w-3.5 shrink-0 rounded-sm"
+                      :class="getEquipmentLabelColorClasses(color).background"
+                    />
                   </cy-tab>
                 </cy-tabs>
                 <div class="mt-3 text-right">

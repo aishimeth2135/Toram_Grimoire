@@ -121,8 +121,7 @@
               <cy-button-icon
                 icon="jam-hammer"
                 class="my-2 ml-2"
-                icon-color="blue-30"
-                icon-color-hover="blue"
+                color="blue"
                 :selected="extraOptionsVisible"
                 @click="toggleExtraOptionsVisible"
               />

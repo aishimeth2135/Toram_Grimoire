@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
+import { getEquipmentLabelColorClasses } from '../common/equipment-label-colors'
+
 interface Props {
   equipment: CharacterEquipment
 }
@@ -14,9 +16,12 @@ defineProps<Props>()
       v-for="label in equipment.labels"
       :key="label.id"
       class="mr-2.5 flex items-center"
-      :class="`text-${label.color}-60`"
+      :class="getEquipmentLabelColorClasses(label.color).text"
     >
-      <div class="shadow-xs mr-1 h-2.5 w-2.5" :class="`bg-${label.color}-50`" />
+      <div
+        class="shadow-xs mr-1 h-2.5 w-2.5"
+        :class="getEquipmentLabelColorClasses(label.color).background"
+      />
       <div class="px-0.5">
         {{ label.text }}
       </div>

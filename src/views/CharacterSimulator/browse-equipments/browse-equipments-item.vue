@@ -11,6 +11,14 @@ import BrowseEquipmentsItemWrapper from './browse-equipments-item-wrapper.vue'
 
 import { getCrystalPureColor } from './setup'
 
+const crystalBackgroundClassMap = {
+  red: 'bg-red-40',
+  emerald: 'bg-emerald-40',
+  orange: 'bg-orange-40',
+  fuchsia: 'bg-fuchsia-40',
+  blue: 'bg-blue-40',
+} as const
+
 interface Props {
   equipment: CharacterEquipment
   selected?: boolean
@@ -28,7 +36,7 @@ const handleCrystalClass = (crystal: EquipmentCrystal | undefined) => {
   if (!crystal) {
     return null
   }
-  const res = [`bg-${getCrystalPureColor(crystal.origin)}-40`]
+  const res: string[] = [crystalBackgroundClassMap[getCrystalPureColor(crystal.origin)]]
   if (crystal.origin.enhancer) {
     res.push('item-enhancer')
   }

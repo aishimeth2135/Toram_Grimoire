@@ -38,12 +38,7 @@
         :range="[stat.limit.min, stat.limit.max]"
         :disabled="!stat.valid"
       />
-      <cy-button-icon
-        icon="jam-close-circle"
-        class="ml-auto"
-        icon-color="gray-60"
-        @click="stat.remove()"
-      />
+      <cy-button-icon icon="jam-close-circle" class="text-gray-60 ml-auto" @click="stat.remove()" />
     </div>
   </div>
 </template>
