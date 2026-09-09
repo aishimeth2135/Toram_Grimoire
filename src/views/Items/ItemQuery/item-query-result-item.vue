@@ -391,10 +391,18 @@ const dyeObtains = computed(() => {
 }
 
 .row-attr {
-  @apply border-primary-20 mb-1 mr-2.5 inline-flex border-2 px-3 py-1 text-sm;
+  display: inline-flex;
+  margin-right: --spacing(2.5);
+  margin-bottom: --spacing(1);
+  border-width: 2px;
+  border-color: var(--color-primary-20);
+  padding-inline: --spacing(3);
+  padding-block: --spacing(1);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
 
   & > span:first-child {
-    @apply text-gray-50;
+    color: var(--color-gray-50);
   }
 }
 </style>

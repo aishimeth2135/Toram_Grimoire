@@ -436,14 +436,13 @@ div.steps-content-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
-  @apply py-4;
+  padding-block: --spacing(4);
 
   & > .steps-content {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-    flex-wrap: wrap;
     width: calc(46rem + 5px);
 
     @media screen and (max-width: 50rem) {
@@ -451,8 +450,9 @@ div.steps-content-container {
     }
 
     & > .step-container {
+      margin: --spacing(1.5);
       width: 22rem;
-      @apply m-1.5 max-w-full;
+      max-width: 100%;
     }
   }
 }

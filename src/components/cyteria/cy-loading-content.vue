@@ -25,15 +25,29 @@ defineProps<Props>()
 @reference "@/tailwind.css";
 
 .cy-loading-wrapper {
-  @apply flex h-full w-full items-center justify-center rounded-lg bg-primary-5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary-5);
+  width: 100%;
+  height: 100%;
   min-height: 15rem;
 
   & > .dots-wrapper {
-    @apply flex items-center space-x-6;
+    display: flex;
+    align-items: center;
+
+    & > :not(:last-child) {
+      margin-inline-end: --spacing(6);
+    }
 
     & > .dot {
-      @apply h-5 w-5 rounded-full bg-primary-30;
       animation: dot 3.5s linear infinite;
+      border-radius: calc(infinity * 1px);
+      background-color: var(--color-primary-30);
+      width: --spacing(5);
+      height: --spacing(5);
     }
 
     & > .dot-2 {

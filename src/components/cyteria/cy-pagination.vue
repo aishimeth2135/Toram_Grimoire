@@ -33,7 +33,7 @@
         @click="inputValue = maxPage"
       />
     </div>
-    <div class="flex items-center space-x-0.5 text-sm text-primary-30">
+    <div class="text-primary-30 flex items-center space-x-0.5 text-sm">
       <span>{{ value }}</span>
       <cy-icon icon="mdi:slash-forward" small />
       <span>{{ maxPage }}</span>
@@ -79,18 +79,18 @@ const selectInput = (evt: MouseEvent) => {
 </script>
 
 <style>
-@reference "@/tailwind.css";
-
 .cy--pagination-wrapper {
   --input-width: 2.125rem;
-
-  @apply flex w-full flex-wrap justify-center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 .cy--pagination-input {
-  width: var(--input-width);
-  border: 0;
   outline: 0;
-  text-align: center;
+  border: 0;
+  width: var(--input-width);
   font-size: 1rem;
+  text-align: center;
 }
 </style>

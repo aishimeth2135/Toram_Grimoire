@@ -334,19 +334,23 @@ const copyEnchantResultText = () => {
 @reference "@/tailwind.css";
 
 .stat-scope {
-  border-bottom-width: 1px;
   display: inline-block;
   position: relative;
-
-  @apply my-1 mr-3 px-2;
+  margin-block: --spacing(1);
+  margin-right: --spacing(3);
+  border-bottom-width: 1px;
+  padding-inline: --spacing(2);
 
   &::before {
-    content: '';
     display: inline-block;
-    background-color: currentcolor;
     position: absolute;
-
-    @apply -bottom-1 -right-1 h-2 w-2 rounded-full;
+    right: --spacing(-1);
+    bottom: --spacing(-1);
+    border-radius: calc(infinity * 1px);
+    background-color: currentcolor;
+    width: --spacing(2);
+    height: --spacing(2);
+    content: '';
   }
 }
 </style>

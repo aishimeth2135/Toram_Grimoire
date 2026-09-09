@@ -10,7 +10,7 @@
             @click.stop="closeModal"
           />
           <div class="modal-container" :class="{ 'h-full': heightFull }" @click.stop>
-            <div v-if="slots['title'] || title" class="flex items-center px-4 pb-2 text-primary-70">
+            <div v-if="slots['title'] || title" class="text-primary-70 flex items-center px-4 pb-2">
               <slot name="title">
                 <cy-icon :icon="titleIcon" class="mr-1.5" />
                 {{ title }}
@@ -142,15 +142,35 @@ const { t } = useI18n()
 @reference "@/tailwind.css";
 
 .cy--modal {
-  @apply bg-black/20 z-100 fixed left-0 top-0 flex h-full w-full justify-center;
+  display: flex;
+  position: fixed;
+  top: --spacing(0);
+  left: --spacing(0);
+  justify-content: center;
+  z-index: 100;
+  background-color: --alpha(var(--color-black) / 20%);
+  width: 100%;
+  height: 100%;
 
   & > .modal-wrapper {
-    @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full;
+    display: inline-block;
+    position: relative;
+    margin-inline: --spacing(2);
+    margin-top: --spacing(2.5);
+    margin-bottom: --spacing(2);
+    max-width: 100%;
     height: calc(100% - 1.125rem);
 
     & > .modal-container {
-      @apply flex max-h-full w-full flex-col border-2 border-primary-30 bg-white pt-3;
+      display: flex;
+      flex-direction: column;
+      border-width: 2px;
+      border-color: var(--color-primary-30);
+      background-color: var(--color-white);
+      padding-top: --spacing(3);
+      width: 100%;
       min-height: 10rem;
+      max-height: 100%;
     }
   }
 
@@ -170,8 +190,16 @@ const { t } = useI18n()
 }
 
 .modal-extra-wrapper {
-  @apply absolute mx-2 my-4 flex h-full w-80 max-w-full items-center duration-300;
+  display: flex;
+  position: absolute;
   left: calc(50% + 13rem);
+  align-items: center;
+  transition-duration: 300ms;
+  margin-inline: --spacing(2);
+  margin-block: --spacing(4);
+  width: --spacing(80);
+  max-width: 100%;
+  height: 100%;
 
   @media screen and (max-width: 32rem) {
     left: calc(50% + 40vw);
@@ -179,12 +207,18 @@ const { t } = useI18n()
 }
 
 .modal-extra-container {
-  @apply relative flex w-full flex-col;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
   max-height: calc(100% - 12rem);
 }
 
 .modal-extra {
-  @apply h-full w-full overflow-y-auto pr-2;
+  padding-right: --spacing(2);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
   overscroll-behavior: none;
 }
 
@@ -196,12 +230,12 @@ const { t } = useI18n()
   padding: 0;
 
   &::before {
-    content: '';
     position: absolute;
     top: 0.3rem;
     left: 0.3rem;
     width: 0.8rem;
     height: 0.8rem;
+    content: '';
   }
 }
 </style>

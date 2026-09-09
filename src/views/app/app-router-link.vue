@@ -51,14 +51,19 @@ const attrs = useAttrs()
 @reference "@/tailwind.css";
 
 .app-router-link {
-  @apply flex w-full cursor-pointer items-center px-4 py-2.5;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-inline: --spacing(4);
+  padding-block: --spacing(2.5);
+  width: 100%;
 
   &:hover {
-    @apply bg-primary-5/50;
+    background-color: --alpha(var(--color-primary-5) / 50%);
   }
 
   &.selected {
-    @apply bg-primary-5;
+    background-color: var(--color-primary-5);
   }
 }
 </style>

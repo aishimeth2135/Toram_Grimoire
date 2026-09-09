@@ -44,7 +44,13 @@ watch(
 @reference "@/tailwind.css";
 
 .app--side-menu {
-  @apply fixed right-3 top-3 z-40 flex flex-col items-end;
+  display: flex;
+  position: fixed;
+  top: --spacing(3);
+  right: --spacing(3);
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 40;
 
   @media (min-width: 880px) {
     display: none !important;
@@ -52,7 +58,7 @@ watch(
 
   &.slide-enter-from,
   &.slide-leave-to {
-    @apply -top-16;
+    top: --spacing(-16);
   }
   &.slide-enter-active,
   &.slide-leave-active {
@@ -60,14 +66,18 @@ watch(
   }
   &.slide-enter-to,
   &.slide-leave-from {
-    @apply top-3;
+    top: --spacing(3);
   }
 }
 
 .app--side-menu--menu {
+  margin-top: --spacing(2);
+  box-shadow: var(--shadow-sm);
+  border-width: 2px;
+  border-color: var(--color-primary-30);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
   min-width: 15rem;
-
-  @apply mt-2 rounded-sm border-2 border-primary-30 bg-white shadow-sm;
 
   @media (max-width: 15rem) {
     width: 100%;
@@ -75,14 +85,17 @@ watch(
 }
 
 .app--side-menu--link-button {
-  @apply w-full cursor-pointer px-4 py-1.5;
+  cursor: pointer;
+  padding-inline: --spacing(4);
+  padding-block: --spacing(1.5);
+  width: 100%;
 
   &:hover {
-    @apply bg-primary-30/10;
+    background-color: --alpha(var(--color-primary-30) / 10%);
   }
 
   &.selected {
-    @apply bg-primary-30/30;
+    background-color: --alpha(var(--color-primary-30) / 30%);
   }
 }
 </style>

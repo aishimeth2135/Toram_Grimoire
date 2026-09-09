@@ -1,26 +1,30 @@
 .cy-button-base {
   --button-color-main: var(--app-primary-60);
   --button-color-main-light: var(--app-primary-30);
-
   --button-color-text: var(--button-color-main);
   --button-color-icon: var(--button-color-main-light);
   --button-color-icon-hover: var(--button-color-main);
   --button-color-border: var(--button-color-main-light);
   --button-color-border-hover: var(--button-color-main);
-
   --button-icon-size: 1.25rem;
-
-  color: var(--button-color-text);
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  transition-duration: 200ms;
+  cursor: pointer;
+  border-width: 0;
   border-color: var(--button-color-border);
-
-  @apply inline-flex shrink-0 cursor-pointer items-center border-0 text-base duration-200;
+  color: var(--button-color-text);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
 
   & .cy-button-base-icon {
     --icon-size: var(--button-icon-size);
-    @apply shrink-0 duration-200;
-    color: var(--button-color-icon);
+    flex-shrink: 0;
+    transition-duration: 200ms;
     width: var(--icon-size);
     height: var(--icon-size);
+    color: var(--button-color-icon);
   }
 
   &:hover,
@@ -33,16 +37,16 @@
   }
 
   &:active {
-    @apply opacity-75;
+    opacity: 75%;
   }
 
   &:disabled {
-    cursor: not-allowed;
     opacity: 0.5;
+    cursor: not-allowed;
   }
 
   &:focus-visible {
-    @apply outline-primary-30;
+    outline-color: var(--color-primary-30);
   }
 
   &.theme-primary {
@@ -102,8 +106,13 @@
 
 /* button action */
 .cy-button-action {
-  @apply relative rounded-sm border bg-white px-4 py-1.5;
+  position: relative;
   box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
+  border-width: 1px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  padding-inline: --spacing(4);
+  padding-block: --spacing(1.5);
 
   &.button-selected {
     box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main);
@@ -112,16 +121,22 @@
 
 /* button check */
 .cy-button-check {
-  @apply rounded-full duration-200;
+  transition-duration: 200ms;
+  border-radius: calc(infinity * 1px);
 
   &:focus:not(:active) {
-    @apply bg-primary-30/20;
+    background-color: --alpha(var(--color-primary-30) / 20%);
   }
 }
 
 /* button circle */
 .cy-button-circle {
-  @apply h-11 w-11 justify-center rounded-full border bg-white;
+  justify-content: center;
+  border-width: 1px;
+  border-radius: calc(infinity * 1px);
+  background-color: var(--color-white);
+  width: --spacing(11);
+  height: --spacing(11);
   --button-icon-size: 1.25rem;
   box-shadow:
     1px 3px 1px -2px rgba(0, 0, 0, 0.1),
@@ -129,39 +144,47 @@
     1px 1px 5px 0 rgba(0, 0, 0, 0.06);
 
   &.button-small {
-    @apply h-9 w-9;
-
+    width: --spacing(9);
+    height: --spacing(9);
     --button-icon-size: 1rem;
   }
 
   &.button-float {
-    @apply shadow-md;
+    box-shadow: var(--shadow-md);
   }
 }
 
 /* button dropdown */
 .cy-button-dropdown-wrapper {
-  @apply border-primary-30 border-l-4 duration-200;
+  transition-duration: 200ms;
+  border-left-width: 4px;
+  border-color: var(--color-primary-30);
 
   &.content-visble {
-    @apply border-primary-30;
+    border-color: var(--color-primary-30);
   }
 }
 
 .cy-button-dropdown-main {
-  @apply px-3 py-2;
+  padding-inline: --spacing(3);
+  padding-block: --spacing(2);
 }
 
 /* button icon-action */
 .cy-button-icon-action {
-  @apply relative rounded-sm border bg-white p-2.5;
+  position: relative;
   box-shadow: 0.125rem 0.125rem 0 0 var(--button-color-main-light);
+  border-width: 1px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  padding: --spacing(2.5);
 }
 
 /* button icon */
 .cy-button-icon {
+  transition-duration: 200ms;
+  border-radius: calc(infinity * 1px);
   color: var(--button-color-icon);
-  @apply rounded-full duration-200;
 
   & .cy-button-base-icon {
     color: currentcolor;
@@ -177,7 +200,7 @@
   }
 
   &:focus:not(:active) {
-    @apply bg-primary-30/20;
+    background-color: --alpha(var(--color-primary-30) / 20%);
   }
 }
 
@@ -192,7 +215,7 @@
   }
 
   &.button-width-full {
-    @apply w-full;
+    width: 100%;
   }
 
   &.theme-secondary {
@@ -203,24 +226,25 @@
 
 /* button radio */
 .cy-button-radio {
-  @apply rounded-full duration-200;
+  transition-duration: 200ms;
+  border-radius: calc(infinity * 1px);
 
   &:focus:not(:active) {
-    @apply bg-primary-30/20;
+    background-color: --alpha(var(--color-primary-30) / 20%);
   }
 }
 
 /* button toggle */
 .cy-button-toggle {
-  @apply rounded-full duration-200;
-
+  transition-duration: 200ms;
+  border-radius: calc(infinity * 1px);
   --button-icon-size: 2rem;
 
   &:focus:not(:active) {
-    @apply bg-primary-30/20;
+    background-color: --alpha(var(--color-primary-30) / 20%);
   }
 
   & > .cy-button-toggle-icon {
-    @apply -my-3;
+    margin-block: --spacing(-3);
   }
 }

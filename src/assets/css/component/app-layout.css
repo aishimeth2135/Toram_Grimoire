@@ -1,9 +1,13 @@
 #app {
-  @apply relative h-full w-full;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .app-background {
-  @apply absolute left-0 top-0;
+  position: absolute;
+  top: --spacing(0);
+  left: --spacing(0);
   background: linear-gradient(
     to bottom right,
     transparent 0%,
@@ -14,8 +18,9 @@
   height: 100%;
 
   &::before {
-    @apply absolute;
-    content: '';
+    position: absolute;
+    top: -65vw;
+    left: 0;
     background: radial-gradient(
       circle at 0% 0%,
       var(--app-blue-20) 0%,
@@ -23,15 +28,15 @@
       transparent 70%,
       transparent 100%
     );
-    top: -65vw;
-    left: 0;
     width: 100vw;
     height: 100vw;
+    content: '';
   }
 
   &::after {
-    @apply absolute;
-    content: '';
+    position: absolute;
+    top: -32vw;
+    right: 0vw;
     background: radial-gradient(
       circle at 100% 0%,
       var(--app-blue-20) 0%,
@@ -39,15 +44,17 @@
       transparent 50%,
       transparent 100%
     );
-    top: -32vw;
-    right: 0vw;
     width: 100vw;
     height: 100vw;
+    content: '';
   }
 }
 
 #app-top-sticky {
-  @apply sticky z-10 w-full duration-150;
+  position: sticky;
+  z-index: 10;
+  transition-duration: 150ms;
+  width: 100%;
 }
 
 #app-root .app-layout-horizontal-container {
@@ -55,133 +62,182 @@
 }
 
 #app-root .app-layout-container-root {
-  @apply flex w-full justify-center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 #app-root.page-has-aside .app-layout-container-root {
-  padding-left: calc(
-    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
-      var(--app-main-content-padding-x)
-  );
   padding-right: calc(
     100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
       var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
   );
+  padding-left: calc(
+    (100% - var(--app-screen-max-width)) / 2 + var(--app-side-menu-width) +
+      var(--app-main-content-padding-x)
+  );
 }
 
 #app-root.page-wide .app-layout-horizontal-container {
-  @apply w-full;
-  padding-left: var(--app-side-menu-minimize-width);
   padding-right: var(--app-side-menu-minimize-width);
+  padding-left: var(--app-side-menu-minimize-width);
+  width: 100%;
   max-width: var(--app-screen-max-width);
 }
 
 @media (max-width: 880px) {
   #app-root.page-wide .app-layout-horizontal-container {
-    @apply pl-0 pr-0;
+    padding-right: --spacing(0);
+    padding-left: --spacing(0);
   }
 }
 
 @media (max-width: 816px) {
   #app-top-sticky {
-    @apply relative;
+    position: relative;
   }
 
   #app-root .app-layout-horizontal-container {
-    @apply w-full;
+    width: 100%;
   }
 }
 
 .app-layout-main--container {
-  @apply flex shrink-0 flex-col pb-16;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding-bottom: --spacing(16);
 }
 
 @media (min-width: 880px) {
   .app-layout-main--container.page-two-columns {
-    @apply h-full w-full flex-row;
+    flex-direction: row;
     padding-left: var(--app-side-menu-minimize-width);
+    width: 100%;
     max-width: none;
+    height: 100%;
 
     & > .two-columns-column {
+      margin-right: --spacing(1);
+      box-shadow: var(--shadow-xs);
+      border-width: 2px;
+      border-color: var(--color-primary-30);
       width: 50%;
-      @apply shadow-xs border-primary-30 mr-1 h-full overflow-y-auto border-2;
+      height: 100%;
+      overflow-y: auto;
     }
   }
 }
 
 .app-layout-main--aside {
-  @apply fixed h-full overflow-x-hidden overflow-y-scroll;
-
+  position: fixed;
+  top: 0;
+  right: calc(-1 * var(--app-layout-main--aside-scroll-width-extra));
+  padding-right: calc(1rem + var(--app-layout-main--aside-scroll-width-extra));
   width: calc(
     100% - (100% - var(--app-screen-max-width)) / 2 - var(--app-side-menu-width) -
       var(--app-main-content-width) - var(--app-main-content-padding-x) * 2
   );
-  top: 0;
-  right: calc(-1 * var(--app-layout-main--aside-scroll-width-extra));
-  padding-right: calc(1rem + var(--app-layout-main--aside-scroll-width-extra));
-
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
   --app-layout-main--aside-scroll-width-extra: 0.5rem;
 }
 
 /* bottom */
 .app-layout--bottom {
-  @apply wd:fixed pointer-events-none sticky bottom-0 z-20 p-2;
+  position: sticky;
+  bottom: --spacing(0);
+  z-index: 20;
+  padding: --spacing(2);
+  pointer-events: none;
+
+  @variant wd {
+    position: fixed;
+  }
 }
 
 /* float layout */
 .app-layout-float-page-wrapper {
-  @apply pointer-events-none fixed left-0 top-0 h-full;
+  position: fixed;
+  top: --spacing(0);
+  left: --spacing(0);
   z-index: 49;
-  width: 100%;
   background-color: var(--app-body-bg-color);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .app-layout-float-page {
-  @apply pointer-events-auto mx-auto flex h-full flex-col;
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
   width: 100%;
   max-width: var(--app-screen-max-width);
+  height: 100%;
+  pointer-events: auto;
 }
 
 /* ==== container ==== */
 .app-layout-float-page--container {
-  @apply flex h-full min-h-0 w-full;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
 .app-layout-float-page--side {
-  @apply h-full w-full shrink-0 py-4;
+  flex-shrink: 0;
+  padding-block: --spacing(4);
+  width: 100%;
   max-width: var(--app-layout-float-page--side-width, auto);
+  height: 100%;
 }
 
 /* ==== content ==== */
 .app-layout-float-page--content-tabs-wrapper {
-  @apply flex h-full w-full flex-col pl-8;
+  display: flex;
+  flex-direction: column;
+  padding-left: --spacing(8);
+  width: 100%;
+  height: 100%;
 
   & > .app-layout-float-page--content {
-    @apply pl-0 pt-6;
+    padding-top: --spacing(6);
+    padding-left: --spacing(0);
   }
 
   &:first-child {
-    @apply shrink-0;
+    flex-shrink: 0;
   }
 }
 
 .app-layout-float-page--content {
-  @apply flex h-full w-full overflow-y-auto py-4 pl-8;
+  display: flex;
+  padding-block: --spacing(4);
+  padding-left: --spacing(8);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* ==== content/inner ==== */
 .app-layout-float-page--main {
-  @apply h-full w-full shrink-0;
+  flex-shrink: 0;
+  width: 100%;
   max-width: var(--app-layout-float-page--main-width, auto);
+  height: 100%;
 }
 
 .app-layout-float-page--sub {
-  @apply h-full w-full;
+  width: 100%;
   max-width: var(--app-layout-float-page--sub-width, auto);
+  height: 100%;
 }
 
 .app-layout-float-page--content-top {
-  @apply hidden;
+  display: none;
 }
 
 @media (max-width: 93rem) {
@@ -192,26 +248,30 @@
 
 @media (max-width: 55rem) {
   .app-layout-float-page--container {
-    @apply block overflow-y-auto;
+    display: block;
+    overflow-y: auto;
   }
 
   .app-layout-float-page--side,
   .app-layout-float-page--content-tabs-wrapper,
   .app-layout-float-page--content,
   .app-layout-float-page--main {
-    @apply h-auto;
+    height: auto;
   }
 
   .app-layout-float-page--content-top {
-    @apply block h-4;
+    display: block;
+    height: --spacing(4);
   }
 
   .app-layout-float-page--content-tabs-wrapper {
-    @apply pl-0 pt-8;
+    padding-top: --spacing(8);
+    padding-left: --spacing(0);
   }
 
   .app-layout-float-page--content {
-    @apply pl-0 pt-8;
+    padding-top: --spacing(8);
+    padding-left: --spacing(0);
   }
 
   .app-layout-float-page--sub {
@@ -221,24 +281,37 @@
 
 @media (max-width: 30rem) {
   .app-layout-float-page--content {
-    @apply block overflow-y-visible pt-4;
+    display: block;
+    padding-top: --spacing(4);
+    overflow-y: visible;
   }
 
   .app-layout-float-page--main {
-    @apply pb-8;
+    padding-bottom: --spacing(8);
   }
 }
 
 /* side float */
 .app-layout--side-float-wrapper {
-  @apply bg-gray-30/25 fixed left-0 top-0 flex h-full w-full justify-end;
+  display: flex;
+  position: fixed;
+  top: --spacing(0);
+  left: --spacing(0);
+  justify-content: flex-end;
   z-index: 49;
+  background-color: --alpha(var(--color-gray-30) / 25%);
+  width: 100%;
+  height: 100%;
 }
 
 .app-layout--side-float {
-  @apply h-full overflow-y-auto;
   background-color: var(--app-body-bg-color);
   width: 80vw;
+  height: 100%;
+  overflow-y: auto;
 
-  @apply wd:w-full wd:max-w-[40rem];
+  @variant wd {
+    width: 100%;
+    max-width: 40rem;
+  }
 }

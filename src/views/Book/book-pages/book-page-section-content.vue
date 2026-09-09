@@ -18,13 +18,18 @@ defineProps<Props>()
 
 .book-page-section-md-content {
   h1 {
-    @apply border-b text-2xl;
+    border-bottom-width: 1px;
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
   }
   h2 {
-    @apply border-b text-xl;
+    border-bottom-width: 1px;
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
   }
   h3 {
-    @apply text-lg;
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
   }
   h1,
   h2,
@@ -32,7 +37,12 @@ defineProps<Props>()
   h4,
   h5,
   h6 {
-    @apply mb-4 mt-6 border-primary-30 px-0.5 pb-0.5 text-primary-70;
+    margin-top: --spacing(6);
+    margin-bottom: --spacing(4);
+    border-color: var(--color-primary-30);
+    padding-inline: --spacing(0.5);
+    padding-bottom: --spacing(0.5);
+    color: var(--color-primary-70);
   }
 
   p,
@@ -40,89 +50,124 @@ defineProps<Props>()
   dl,
   table,
   pre {
-    @apply mb-4 mt-0;
+    margin-top: --spacing(0);
+    margin-bottom: --spacing(4);
   }
 
   p {
-    @apply px-1;
+    padding-inline: --spacing(1);
   }
 
   strong {
-    @apply font-normal text-primary-60 decoration-primary-60;
+    color: var(--color-primary-60);
+    font-weight: var(--font-weight-normal);
+    text-decoration-color: var(--color-primary-60);
   }
 
   mark {
-    @apply px-0.5;
+    padding-inline: --spacing(0.5);
   }
 
   blockquote {
-    @apply border-l-4 border-primary-30 px-4 py-1 text-primary-70;
+    border-left-width: 4px;
+    border-color: var(--color-primary-30);
+    padding-inline: --spacing(4);
+    padding-block: --spacing(1);
+    color: var(--color-primary-70);
 
     & > *:last-child {
-      @apply mb-0;
+      margin-bottom: --spacing(0);
     }
   }
 
   a {
-    @apply text-primary-50 underline;
+    color: var(--color-primary-50);
+    text-decoration-line: underline;
   }
 
   ul,
   ol {
-    @apply mb-3 py-1 pr-2;
+    margin-bottom: --spacing(3);
+    padding-block: --spacing(1);
+    padding-right: --spacing(2);
   }
   li {
-    @apply items-start;
+    align-items: flex-start;
 
     & > svg {
-      @apply mb-0.5 inline-block;
+      display: inline-block;
+      margin-bottom: --spacing(0.5);
     }
   }
   ul {
-    @apply pl-2.5;
+    padding-left: --spacing(2.5);
   }
   ul > li {
-    @apply relative pb-1 pl-5;
+    position: relative;
+    padding-bottom: --spacing(1);
+    padding-left: --spacing(5);
 
     &::before {
+      position: absolute;
+      top: --spacing(1);
+      left: --spacing(0);
+      border-radius: calc(infinity * 1px);
+      background-color: var(--color-primary-30);
+      width: --spacing(2);
+      height: --spacing(2);
       content: '';
-      @apply absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30;
     }
   }
   ol {
+    padding-left: --spacing(4);
     list-style-type: decimal;
-    @apply pl-4;
   }
   ol > li {
-    @apply ml-2 pb-1 pl-1.5;
+    margin-left: --spacing(2);
+    padding-bottom: --spacing(1);
+    padding-left: --spacing(1.5);
 
     &::marker {
-      @apply text-primary-30;
+      color: var(--color-primary-30);
     }
   }
 
   hr {
+    margin-inline: --spacing(1);
+    margin-block: --spacing(4);
+    border-width: 0;
+    background-color: var(--color-primary-30);
     height: 1px;
-    @apply mx-1 my-4 border-0 bg-primary-30;
   }
 
   code {
-    @apply shadow-xs mx-0.5 bg-primary-5 text-sm;
+    margin-inline: --spacing(0.5);
+    box-shadow: var(--shadow-xs);
+    background-color: var(--color-primary-5);
     padding: 0.125em 0;
     color: inherit !important;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
 
     &::before,
     &::after {
-      letter-spacing: -0.2em;
       content: '\00a0';
+      letter-spacing: -0.2em;
     }
   }
 
   pre {
-    @apply mx-0.5 overflow-x-auto rounded-md bg-primary-5 px-4 py-3;
+    margin-inline: --spacing(0.5);
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary-5);
+    padding-inline: --spacing(4);
+    padding-block: --spacing(3);
+    overflow-x: auto;
 
     code {
-      @apply m-0 bg-transparent p-0;
+      margin: --spacing(0);
+      background-color: transparent;
+      padding: --spacing(0);
 
       &::before,
       &::after {
@@ -134,18 +179,29 @@ defineProps<Props>()
   table > thead > tr,
   table > tbody > tr {
     & > th {
-      @apply border-b-1 border-primary-30 px-3 py-1.5 text-left text-sm font-normal text-primary-30;
+      border-bottom-width: 1px;
+      border-color: var(--color-primary-30);
+      padding-inline: --spacing(3);
+      padding-block: --spacing(1.5);
+      color: var(--color-primary-30);
+      font-weight: var(--font-weight-normal);
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+      text-align: left;
     }
     & > td {
-      @apply border-b border-primary-30 px-3 py-1.5;
+      border-bottom-width: 1px;
+      border-color: var(--color-primary-30);
+      padding-inline: --spacing(3);
+      padding-block: --spacing(1.5);
     }
     & > th:first-child,
     & > td:first-child {
-      @apply pl-5;
+      padding-left: --spacing(5);
     }
     & > th:last-child,
     & > td:last-child {
-      @apply pr-5;
+      padding-right: --spacing(5);
     }
   }
 }

@@ -65,18 +65,25 @@ const frequencyVisible = computed(() => {
 @reference "@/tailwind.css";
 
 .divider {
-  @apply border-primary-30 mx-2 h-6 border-l-2;
+  margin-inline: --spacing(2);
+  border-left-width: 2px;
+  border-color: var(--color-primary-30);
+  height: --spacing(6);
 }
 
 .attr-item {
-  @apply my-1 inline-flex items-center px-1.5 py-0.5;
+  display: inline-flex;
+  align-items: center;
+  margin-block: --spacing(1);
+  padding-inline: --spacing(1.5);
+  padding-block: --spacing(0.5);
 }
 
 .damage-formula-main > .damage-formula-main-first + .divider {
-  @apply ml-0.5;
+  margin-left: --spacing(0.5);
 }
 
 .damage-formula-main > .damage-formula-main-first + .attr-item {
-  @apply pl-0;
+  padding-left: --spacing(0);
 }
 </style>

@@ -117,10 +117,16 @@ const tabClicked = () => {
 @reference "@/tailwind.css";
 
 .cy-tab {
-  @apply cursor-pointer duration-150;
+  transition-duration: 150ms;
+  cursor: pointer;
 
   &.tab-disabled {
-    @apply hover:bg-gray-10/50 text-gray-40 cursor-not-allowed;
+    cursor: not-allowed;
+    color: var(--color-gray-40);
+
+    &:hover {
+      background-color: --alpha(var(--color-gray-10) / 50%);
+    }
   }
 }
 </style>

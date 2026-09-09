@@ -52,13 +52,19 @@ const rootClassList = computed(() => {
 @reference "@/tailwind.css";
 
 .text-content {
-  @apply flex w-full items-start px-3 py-1;
+  display: flex;
+  align-items: flex-start;
+  padding-inline: --spacing(3);
+  padding-block: --spacing(1);
+  width: 100%;
 
   &.is-tips {
-    @apply pl-5 text-sm;
+    padding-left: --spacing(5);
 
     /* APPLY text-primary-50 */
     color: var(--app-primary-50);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
 
     & :deep(.text-primary-50) {
       color: var(--app-fuchsia-60);
@@ -66,41 +72,58 @@ const rootClassList = computed(() => {
   }
 
   &.is-mark {
-    @apply border-l-6 border-primary-50 border-2 px-4 py-3;
+    border-width: 2px;
+    border-left-width: 6px;
+    border-color: var(--color-primary-50);
+    padding-inline: --spacing(4);
+    padding-block: --spacing(3);
   }
 
   &.is-group {
-    @apply border-primary-30 text-primary-80 relative my-2 cursor-pointer border-2 px-5 py-2 duration-300;
+    position: relative;
+    transition-duration: 300ms;
+    cursor: pointer;
+    margin-block: --spacing(2);
+    border-width: 2px;
+    border-color: var(--color-primary-30);
+    padding-inline: --spacing(5);
+    padding-block: --spacing(2);
+    color: var(--color-primary-80);
 
     &.group-active {
-      @apply border-primary-50;
-      border-left-color: transparent;
+      border-color: var(--color-primary-50);
       border-right-color: transparent;
       border-bottom-color: transparent;
+      border-left-color: transparent;
 
       &::after {
-        @apply hidden;
+        display: none;
       }
     }
 
     &:hover {
-      @apply border-primary-60;
+      border-color: var(--color-primary-60);
 
       &::before {
-        @apply bg-primary-60;
+        background-color: var(--color-primary-60);
       }
     }
 
     &::before,
     &::after {
+      position: absolute;
+      background-color: var(--color-primary-50);
+      width: --spacing(4);
+      height: --spacing(4);
       content: '';
-      @apply bg-primary-50 absolute h-4 w-4;
     }
     &::before {
-      @apply -left-2 -top-2;
+      top: --spacing(-2);
+      left: --spacing(-2);
     }
     &::after {
-      @apply -bottom-2 -right-2;
+      right: --spacing(-2);
+      bottom: --spacing(-2);
     }
   }
 }

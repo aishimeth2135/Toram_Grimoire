@@ -55,10 +55,12 @@ const isSingleValue = computed(() => {
 @reference "@/tailwind.css";
 
 .attr-item {
-  @apply inline-flex items-center px-1.5;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: --spacing(1.5);
 }
 
 .heal-formula-main > .heal-formula-main-first + .attr-item {
-  @apply pl-0;
+  padding-left: --spacing(0);
 }
 </style>

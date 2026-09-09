@@ -178,24 +178,35 @@ const detailVisible = ref(introductionBranchItemDatas.value.length === 0)
 @reference "@/tailwind.css";
 
 .skill-effect-history-item-wrapper {
-  @apply border-1 border-primary-10;
+  border-width: 1px;
+  border-color: var(--color-primary-10);
 
   &.detail-active {
-    @apply border-primary-30;
+    border-color: var(--color-primary-30);
   }
 }
 
 .history-item-compare {
-  @apply border-primary-50 border-l-4 p-2 pl-4;
+  border-left-width: 4px;
+  border-color: var(--color-primary-50);
+  padding: --spacing(2);
+  padding-left: --spacing(4);
 }
 
 .history-item-compare + .history-item-compare {
-  @apply mt-4;
+  margin-top: --spacing(4);
 }
 .history-item-compare-arrow-wrapper {
-  @apply flex w-full justify-center py-2;
+  display: flex;
+  justify-content: center;
+  padding-block: --spacing(2);
+  width: 100%;
 }
 .history-item-compare-empty {
-  @apply border-primary-30 flex justify-center border p-4;
+  display: flex;
+  justify-content: center;
+  border-width: 1px;
+  border-color: var(--color-primary-30);
+  padding: --spacing(4);
 }
 </style>
