@@ -15,13 +15,10 @@
             {{ item.name }}
           </div>
         </div>
-        <div
-          v-if="registletQueryState.displayMode === DisplayMode.Category"
-          class="text-primary-40 text-sm"
-        >
+        <div v-if="registletQueryState.displayMode === 'category'" class="text-primary-40 text-sm">
           {{ t(`registlet-query.category.${item.category.id}`) }}
         </div>
-        <template v-else-if="registletQueryState.displayMode === DisplayMode.ObtainLevel">
+        <template v-else-if="registletQueryState.displayMode === 'obtain-level'">
           <div v-if="item.obtainLevels.length > 0" class="flex items-center space-x-2 text-sm">
             <div
               v-for="level in item.obtainLevels"
@@ -40,21 +37,7 @@
     <cy-transition>
       <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-4 pr-3 pt-1.5">
         <div class="border-red-10 mb-2 mt-1 rounded-sm border border-l-4 px-4 py-3">
-          <div v-if="item.link instanceof StatBase" class="flex items-center">
-            <div>{{ item.link.text }}</div>
-            <div>+</div>
-            <div class="border-primary-20 text-primary-60 ml-2 border-x px-2">
-              {{ handleValue(item.rows[0].value) }}
-            </div>
-          </div>
-          <div v-else class="space-y-2">
-            <template v-for="row in item.rows" :key="row.type + row.value">
-              <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
-              <div v-else-if="row.type === 'remark'" class="text-primary-40 text-sm">
-                {{ row.value }}
-              </div>
-            </template>
-          </div>
+          <RegistletCaption :registlet-item="item" rows-class="space-y-2" />
         </div>
         <div>
           <table class="border-separate border-spacing-x-4 border-spacing-y-2">
@@ -109,12 +92,12 @@
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { StatBase } from '@/lib/Character/Stat'
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import CardRow from '@/components/card/card-row.vue'
+import RegistletCaption from '@/components/common/registlet-caption.vue'
 
-import { DisplayMode, getRegistletCaptionRender, useRegistletQueryState } from './setup'
+import { useRegistletQueryState } from './setup'
 
 interface Props {
   item: RegistletItemBase
@@ -133,9 +116,4 @@ watch(
     detailVisible.value = value
   }
 )
-
-const handleValue = (str: string) =>
-  str.replace(/Lv/g, t('registlet-query.detail.registlet-level')).replace(/\*/g, '×')
-
-const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

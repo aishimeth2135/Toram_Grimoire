@@ -11,6 +11,7 @@ interface Props {
   placeholder?: string
   items: Item[]
   selectedItemIds: any[]
+  groupBy?: keyof Item
 }
 interface Emits {
   (evt: 'update:search-text', value: string): void
@@ -23,6 +24,7 @@ interface RenderItemContext {
 }
 interface Slots {
   item(context: RenderItemContext): any
+  group?(context: { item: Item }): any
 }
 
 const props = defineProps<Props>()
@@ -36,10 +38,17 @@ const itemClicked = (item: Item) => {
 const itemSelected = (item: Item) => {
   return props.selectedItemIds.includes(item.id)
 }
+
+const groupStarted = (item: Item, idx: number) => {
+  return (
+    props.groupBy !== undefined &&
+    (idx === 0 || props.items[idx - 1]?.[props.groupBy] !== item[props.groupBy])
+  )
+}
 </script>
 
 <template>
-  <CardRowsWrapper class="wd-lg:max-h-none flex h-full max-h-[24rem] max-w-[20rem] flex-col">
+  <CardRowsWrapper class="wd-lg:max-h-none flex h-full max-h-96 max-w-[20rem] flex-col">
     <div class="pb-1">
       <CommonSearchInput
         :model-value="searchText"
@@ -49,16 +58,19 @@ const itemSelected = (item: Item) => {
       />
     </div>
     <CardRowsDelegation class="grow overflow-y-auto py-2" @row-clicked="itemClicked">
-      <CardRow
-        v-for="item in items"
-        :key="item.id"
-        class="flex cursor-pointer items-center px-4 py-2"
-        :item="item"
-        hover
-      >
-        <IconSelection :selected="itemSelected(item)" class="mr-3.5" />
-        <slot name="item" :item="item" :selected="itemSelected(item)" />
-      </CardRow>
+      <template v-for="(item, idx) in items" :key="item.id">
+        <div
+          v-if="groupStarted(item, idx)"
+          class="text-gray-60 px-3 pb-1 text-sm"
+          :class="{ 'pt-2': idx !== 0 }"
+        >
+          <slot name="group" :item="item" />
+        </div>
+        <CardRow class="flex cursor-pointer items-start px-4 py-2" :item="item" hover>
+          <IconSelection :selected="itemSelected(item)" class="icon-first-line mr-3.5" />
+          <slot name="item" :item="item" :selected="itemSelected(item)" />
+        </CardRow>
+      </template>
     </CardRowsDelegation>
   </CardRowsWrapper>
 </template>

@@ -138,7 +138,7 @@ const selectStatOption = (option: StatOption) => {
                     v-model:search-text="statSearchText"
                     :items="statOptionsSearchResults"
                     :selected-item-ids="selectedStatIds"
-                    class="h-full !max-h-none"
+                    class="max-h-none! h-full"
                     @select-item="(selectStatOption($event), hide())"
                   >
                     <template #item="{ item }">
