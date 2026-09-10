@@ -1,8 +1,16 @@
 import { type Ref, type WritableComputedRef, computed, ref } from 'vue'
 
+import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
+
 import { type CharacterBindingBuild } from '@/lib/Character/Character'
 
-export function useCharacterBindingBuild<Build extends CharacterBindingBuild>() {
+interface AppendBuildOptions {
+  updateIndex?: boolean
+  source?: 'load'
+}
+
+export function useCharacterBindingBuild<Build extends CharacterBindingBuild>(buildLimit?: number) {
   const builds: Ref<Build[]> = ref([])
   const currentBuildIndex = ref(-1)
 
@@ -27,7 +35,15 @@ export function useCharacterBindingBuild<Build extends CharacterBindingBuild>() 
     },
   })
 
-  const appendBuild = (build: Build, updateIndex = true) => {
+  const appendBuild = (build: Build, options: AppendBuildOptions = {}) => {
+    const { updateIndex = true, source } = options
+
+    if (source !== 'load' && buildLimit !== undefined && builds.value.length >= buildLimit) {
+      Notify().notify(
+        Grimoire.i18n.t('character-simulator.build-limit-reached', { num: buildLimit })
+      )
+      return null
+    }
     builds.value.push(build)
     if (updateIndex || currentBuildIndex.value === -1) {
       currentBuildIndex.value = builds.value.length - 1

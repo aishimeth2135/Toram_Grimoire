@@ -78,7 +78,9 @@ const appendBagEquipment = (equip: BagEquipment) => {
 const characterStore = useCharacterStore()
 
 const submitSelectedEquipments = () => {
-  characterStore.appendEquipments(appendedEquipments.value)
+  if (!characterStore.appendEquipments(appendedEquipments.value)) {
+    return
+  }
   appendedEquipments.value = []
   emit('update:visible', false)
 }

@@ -1,5 +1,6 @@
 character-stats: 角色面板
 character: 角色
+build-limit-reached: 此配置數量不可以超過{num}。
 custom-equipment:
   button-title: 自訂裝備
 character-basic:

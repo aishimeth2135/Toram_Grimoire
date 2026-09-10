@@ -50,7 +50,10 @@ const removeSelectedPotionBuild = () => {
 }
 
 const addPotionBuild = () => {
-  selectedBuild.value = potionStore.createPotionBuild()
+  const build = potionStore.createPotionBuild()
+  if (build) {
+    selectedBuild.value = build
+  }
 }
 </script>
 
@@ -61,7 +64,7 @@ const addPotionBuild = () => {
     :current-build="currentPotionBuild"
     @select-build="characterStore.setCharacterPotionBuild"
     @add-build="addPotionBuild"
-    @copy-build="potionStore.appendPotionBuild(selectedBuild!.clone(), false)"
+    @copy-build="potionStore.appendPotionBuild(selectedBuild!.clone(), { updateIndex: false })"
     @remove-build="removeSelectedPotionBuild"
   >
     <template #header>

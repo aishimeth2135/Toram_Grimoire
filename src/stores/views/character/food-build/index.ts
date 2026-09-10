@@ -7,6 +7,7 @@ import Grimoire from '@/shared/Grimoire'
 import { FoodsBase } from '@/lib/Character/Food'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
+import { CHARACTER_SIMULATOR_BUILD_LIMIT } from '../consts'
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterFoodStore = defineStore('view-character-food', () => {
@@ -18,7 +19,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     appendBuild: appendFoodBuild,
     removeBuild: removeFoodBuild,
     resetBuildStore: resetFoodBuildStore,
-  } = useCharacterBindingBuild<FoodsBuild>()
+  } = useCharacterBindingBuild<FoodsBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const foodsBase: Ref<FoodsBase | null> = ref(null)
 
@@ -32,7 +33,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
 
       Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (builds.value.length + 1)
     )
-    return appendFoodBuild(newBuild, false)
+    return appendFoodBuild(newBuild, { updateIndex: false })
   }
 
   return {

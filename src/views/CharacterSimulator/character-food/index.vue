@@ -32,7 +32,9 @@ const copySelectedFoodBuild = () => {
   if (!selectedBuild.value) {
     return
   }
-  foodStore.appendFoodBuild(selectedBuild.value.clone(), false)
+  if (!foodStore.appendFoodBuild(selectedBuild.value.clone(), { updateIndex: false })) {
+    return
+  }
   notify(t('character-simulator.food-build.copy-food-build-success-tips'))
 }
 
@@ -56,7 +58,9 @@ const removeSelectedFoodBuild = () => {
         {
           text: t('global.recovery'),
           click: () => {
-            foodStore.appendFoodBuild(from)
+            if (!foodStore.appendFoodBuild(from)) {
+              return
+            }
             notify(t('character-simulator.food-build.restore-food-build-success-tips'))
           },
           removeMessageAfterClick: true,
@@ -76,7 +80,10 @@ const disableAll = computed<boolean>({
 })
 
 const addFoodBuild = () => {
-  selectedBuild.value = foodStore.createFoodBuild()
+  const build = foodStore.createFoodBuild()
+  if (build) {
+    selectedBuild.value = build
+  }
 }
 </script>
 

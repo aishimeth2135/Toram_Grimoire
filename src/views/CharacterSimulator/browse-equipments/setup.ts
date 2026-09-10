@@ -137,6 +137,10 @@ export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) =
       equipments.value.indexOf(equipment.value) + 1
     )
 
+    if (!appendedEquipment) {
+      return
+    }
+
     notify(
       t('character-simulator.browse-equipments.copy-equipment-tips'),
       'bx:copy-alt',
@@ -166,7 +170,11 @@ export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) =
           {
             text: t('global.recovery'),
             click: () => {
-              equipment.value = characterStore.appendEquipment(eq)
+              const restoredEquipment = characterStore.appendEquipment(eq)
+              if (!restoredEquipment) {
+                return
+              }
+              equipment.value = restoredEquipment
               notify(
                 t('character-simulator.browse-equipments.removed-equipment-restore-tips', {
                   name: eq.name,

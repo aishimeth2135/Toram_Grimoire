@@ -2,6 +2,7 @@ import { ref, shallowReactive } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import Notify from '@/shared/setup/Notify'
 import { lastElement } from '@/shared/utils/array'
 
 import { Character } from '@/lib/Character/Character'
@@ -11,6 +12,7 @@ import { PotionBuild } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 
+import { CHARACTER_SIMULATOR_BUILD_LIMIT, CHARACTER_SIMULATOR_EQUIPMENT_LIMIT } from '../consts'
 import { useCharacterFoodStore } from '../food-build'
 import { useCharacterPotionBuildStore } from '../potion-build'
 import { useCharacterRegistletBuildStore } from '../registlet-build'
@@ -31,7 +33,7 @@ export function setupCharacters() {
     setCurrentBuild: _setCurrentCharacter,
     appendBuild: appendCharacter,
     removeBuild,
-  } = useCharacterBindingBuild<Character>()
+  } = useCharacterBindingBuild<Character>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const currentCharacter = _currentCharacter as ComputedRef<Character>
 
@@ -112,7 +114,9 @@ export function setupCharacters() {
     const newCharacter = new Character(
       Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)
     )
-    appendCharacter(newCharacter, updateIndex)
+    if (!appendCharacter(newCharacter, { updateIndex })) {
+      return null
+    }
     const state = getCharacterState(newCharacter)
     state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
     state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
@@ -123,7 +127,9 @@ export function setupCharacters() {
 
   const cloneCharacter = (character: Character) => {
     const newCharacter = character.clone()
-    appendCharacter(newCharacter, false)
+    if (!appendCharacter(newCharacter, { updateIndex: false })) {
+      return null
+    }
 
     const characterState = getCharacterState(character)
     const newCharacterState = getCharacterState(newCharacter)
@@ -131,6 +137,7 @@ export function setupCharacters() {
     newCharacterState.foodBuild = characterState.foodBuild
     newCharacterState.registletBuild = characterState.registletBuild
     newCharacterState.potionBuild = characterState.potionBuild
+    return newCharacter
   }
 
   const removeCharacter = (character: Character) => {
@@ -161,7 +168,15 @@ export function setupCharacters() {
 export function setupEquipments(currentCharacter: Ref<Character>) {
   const equipments: Ref<CharacterEquipment[]> = ref([])
 
-  const appendEquipment = (equip: CharacterEquipment, index = -1) => {
+  const appendEquipment = (equip: CharacterEquipment, index = -1, checkLimit = true) => {
+    if (checkLimit && equipments.value.length >= CHARACTER_SIMULATOR_EQUIPMENT_LIMIT) {
+      Notify().notify(
+        Grimoire.i18n.t('character-simulator.build-limit-reached', {
+          num: CHARACTER_SIMULATOR_EQUIPMENT_LIMIT,
+        })
+      )
+      return null
+    }
     if (index < 0 || index >= equipments.value.length) {
       equipments.value.push(equip)
       return lastElement(equipments.value)
@@ -170,12 +185,21 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
     return equipments.value[index + 1]
   }
 
-  const appendEquipments = (eqs: CharacterEquipment[], index = -1) => {
+  const appendEquipments = (eqs: CharacterEquipment[], index = -1, checkLimit = true) => {
+    if (checkLimit && equipments.value.length + eqs.length > CHARACTER_SIMULATOR_EQUIPMENT_LIMIT) {
+      Notify().notify(
+        Grimoire.i18n.t('character-simulator.build-limit-reached', {
+          num: CHARACTER_SIMULATOR_EQUIPMENT_LIMIT,
+        })
+      )
+      return false
+    }
     if (index < 0 || index >= equipments.value.length) {
       equipments.value.push(...eqs)
     } else {
       equipments.value.splice(index, 0, ...eqs)
     }
+    return true
   }
 
   const removeEquipment = (equipment: CharacterEquipment) => {

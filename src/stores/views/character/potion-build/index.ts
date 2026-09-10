@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 
+import { CHARACTER_SIMULATOR_BUILD_LIMIT } from '../consts'
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterPotionBuildStore = defineStore('view-character-potion-build', () => {
@@ -16,7 +17,7 @@ export const useCharacterPotionBuildStore = defineStore('view-character-potion-b
     appendBuild: appendPotionBuild,
     removeBuild: removePotionBuild,
     resetBuildStore: resetPotionBuildStore,
-  } = useCharacterBindingBuild<PotionBuild>()
+  } = useCharacterBindingBuild<PotionBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createPotionBuild = () => {
     const newBuild = new PotionBuild(
@@ -24,7 +25,7 @@ export const useCharacterPotionBuildStore = defineStore('view-character-potion-b
         ' ' +
         (builds.value.length + 1).toString()
     )
-    return appendPotionBuild(newBuild, false)
+    return appendPotionBuild(newBuild, { updateIndex: false })
   }
 
   const copyCurrentPotionBuild = () => {

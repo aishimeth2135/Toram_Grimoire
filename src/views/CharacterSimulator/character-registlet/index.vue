@@ -52,7 +52,10 @@ const removeSelectedBuild = () => {
 }
 
 const addRegistletBuild = () => {
-  selectedBuild.value = registletStore.createRegistletBuild()
+  const build = registletStore.createRegistletBuild()
+  if (build) {
+    selectedBuild.value = build
+  }
 }
 </script>
 
@@ -63,7 +66,9 @@ const addRegistletBuild = () => {
     :current-build="currentRegistletBuild"
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
-    @copy-build="registletStore.appendRegistletBuild(selectedBuild!.clone(), false)"
+    @copy-build="
+      registletStore.appendRegistletBuild(selectedBuild!.clone(), { updateIndex: false })
+    "
     @remove-build="removeSelectedBuild"
   >
     <template #header>
@@ -82,7 +87,7 @@ const addRegistletBuild = () => {
           {{ t('character-simulator.registlet-build.registlet-list') }}
         </cy-tab>
       </cy-tabs>
-      <div v-if="selectedBuild" class="min-w-[22.5rem] overflow-x-auto py-4">
+      <div v-if="selectedBuild" class="min-w-90 overflow-x-auto py-4">
         <CharacterRegistletSettings
           v-if="currentTab === 0"
           :registlet-build="selectedBuild"
