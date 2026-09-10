@@ -7,11 +7,10 @@ import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
 
 import Notify from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
 
 import CommonBuildPage from '../common/common-build-page.vue'
-import CharacterPotionCategory from './character-potion-category.vue'
-import CharacterPotionEdit from './character-potion-edit.vue'
+import CharacterPotionList from './character-potion-list.vue'
+import CharacterPotionSettings from './character-potion-settings.vue'
 
 defineOptions({
   name: 'CharacterPotion',
@@ -25,10 +24,7 @@ const currentPotionBuild = computed(() => characterStore.currentCharacterState.p
 
 const { t } = useI18n()
 
-const editingVisible = ref(false)
-const toggleEditingVisible = useToggle(editingVisible)
-
-const itemDetailVisible = ref(true)
+const currentTab = ref(0)
 
 const disableAll = computed<boolean>({
   get() {
@@ -76,37 +72,22 @@ const addPotionBuild = () => {
       </div>
     </template>
     <template #content>
-      <div class="flex items-center space-x-2 py-3">
-        <cy-button-action icon="ic:edit" @click="toggleEditingVisible(true)">
-          {{ t('character-simulator.potion-build.edit-potion') }}
-        </cy-button-action>
-        <cy-button-check v-model:selected="itemDetailVisible">
-          {{ t('character-simulator.registlet-build.show-detail') }}
-        </cy-button-check>
-      </div>
-      <div
-        v-if="selectedBuild && selectedBuild.items.length > 0"
-        class="max-w-2xl space-y-4 pt-2"
-        :class="{ 'opacity-50': disableAll }"
-      >
-        <CharacterPotionCategory
-          v-for="category in selectedBuild.categorys"
-          :key="category.base.id"
-          :category="category"
-          :detail-visible="itemDetailVisible"
+      <cy-tabs v-model="currentTab">
+        <cy-tab :value="0">
+          {{ t('character-simulator.potion-build.potion-settings') }}
+        </cy-tab>
+        <cy-tab :value="1">
+          {{ t('character-simulator.potion-build.potion-list') }}
+        </cy-tab>
+      </cy-tabs>
+      <div v-if="selectedBuild" class="min-w-90 overflow-x-auto py-4">
+        <CharacterPotionSettings
+          v-if="currentTab === 0"
+          :potion-build="selectedBuild"
+          :disabled="disableAll"
         />
+        <CharacterPotionList v-else :potion-build="selectedBuild" />
       </div>
-      <cy-default-tips v-else>
-        {{ t('character-simulator.potion-build.default-tips') }}
-      </cy-default-tips>
-    </template>
-    <template #modals>
-      <CharacterPotionEdit
-        v-if="selectedBuild"
-        :visible="editingVisible"
-        :potion-build="selectedBuild"
-        @close="toggleEditingVisible(false)"
-      />
     </template>
   </CommonBuildPage>
 </template>

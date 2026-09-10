@@ -227,8 +227,9 @@ potion-build:
   disable-potion: 停用消耗品
   potion: 消耗品
   potion-build: 消耗品配置
-  edit-potion: 編輯消耗品
-  default-tips: 這裡空空如也0.0，請點擊上方的「編輯消耗品」來新增項目。
+  potion-settings: 消耗品設定
+  potion-list: 消耗品一覽
+  default-tips: 這裡空空如也0.0，請至「消耗品一覽」新增項目。
 combo:
   tags:
     consecutive: 連擊

@@ -22,7 +22,7 @@ const itemDetailVisible = ref(true)
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 py-3">
+  <div class="flex items-center py-2">
     <cy-button-check v-model:selected="itemDetailVisible">
       {{ t('character-simulator.registlet-build.show-detail') }}
     </cy-button-check>

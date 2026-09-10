@@ -1,19 +1,3 @@
-<template>
-  <CardRowsWrapper>
-    <div class="border-b border-primary-20 bg-white px-3 py-0.5 text-sm text-primary-30">
-      {{ category.base.name }}
-    </div>
-    <CardRows>
-      <CharacterPotionItem
-        v-for="item in category.items"
-        :key="item.base.id"
-        :item="item"
-        :detail-visible="detailVisible"
-      />
-    </CardRows>
-  </CardRowsWrapper>
-</template>
-
 <script lang="ts" setup>
 import type { PotionItemsCategory } from '@/lib/Character/PotionBuild'
 
@@ -31,3 +15,19 @@ withDefaults(defineProps<Props>(), {
   detailVisible: false,
 })
 </script>
+
+<template>
+  <CardRowsWrapper>
+    <div class="border-primary-20 text-primary-30 border-b bg-white px-3 py-0.5 text-sm">
+      {{ category.base.name }}
+    </div>
+    <CardRows class="pb-2.5 pt-1.5">
+      <CharacterPotionItem
+        v-for="item in category.items"
+        :key="item.base.id"
+        :item="item"
+        :detail-visible="detailVisible"
+      />
+    </CardRows>
+  </CardRowsWrapper>
+</template>

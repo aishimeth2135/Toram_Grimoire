@@ -121,6 +121,9 @@ yarn exec prettier --check <file>
 - 優先重用現有元件、樣式與互動模式。
 - `<script>`內考慮可讀性，需要將部分邏輯分離出去時，於元件同目錄下建立`setup.ts`檔案。
 - 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的`defineState`，`inject`為最後手段。
+- 建立新元件時，`<script>`標籤應在最前面，`<template>`及`<style>`在後方。這部分舊有元件則不必特別檢查及更動。
+- 使用`<element ref="xxx">`時，優先使用`useTemplateRef('xxx')`。
+- 需要建立`Ref`時，如果對象為物件，應優先評估使用情境並確認是否能使用`shallowRef`。
 
 ## 多語系
 

@@ -1,5 +1,5 @@
 <template>
-  <CardRow class="relative py-2 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
+  <CardRow class="relative py-1 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
@@ -14,11 +14,11 @@
             item.enabled
           "
         />
-        <div class="ml-1 text-primary-70">{{ item.base.name }}</div>
+        <div class="text-primary-70 ml-1">{{ item.base.name }}</div>
       </div>
     </div>
-    <div v-if="detailVisible" class="px-2 py-1 pl-10">
-      <ShowStat v-for="stat in item.base.stats" :key="stat.statId" :stat="stat" />
+    <div v-if="detailVisible" class="px-2 pl-10 pt-1">
+      <PotionCaption :potion="item.base" />
     </div>
   </CardRow>
 </template>
@@ -27,7 +27,8 @@
 import type { PotionItem } from '@/lib/Character/PotionBuild'
 
 import CardRow from '@/components/card/card-row.vue'
-import ShowStat from '@/components/common/show-stat.vue'
+
+import PotionCaption from './potion-caption.vue'
 
 interface Props {
   item: PotionItem
