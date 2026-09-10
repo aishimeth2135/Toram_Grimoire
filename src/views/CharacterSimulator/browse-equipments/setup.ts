@@ -13,12 +13,12 @@ import { EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
 import {
   CharacterEquipment,
+  EquipmentCrystal,
   EquipmentTypes,
   MainWeaponTypeList,
   SubArmorTypeList,
   SubWeaponTypeList,
 } from '@/lib/Character/CharacterEquipment'
-import { BagCrystal } from '@/lib/Items/BagItem'
 
 export const useEquipmentsDisplayedItems = defineViewState(ViewNames.CharacterSimulator, () => {
   const displayedItems = new Map<string, EquipmentTypes[]>([
@@ -31,19 +31,30 @@ export const useEquipmentsDisplayedItems = defineViewState(ViewNames.CharacterSi
   return { displayedItems }
 })
 
-export function getCrystalPureColor(crystal: BagCrystal) {
-  switch (crystal.category) {
-    case 0:
-      return 'red'
-    case 1:
-      return 'emerald'
-    case 2:
-      return 'orange'
-    case 3:
-      return 'fuchsia'
-    default:
-      return 'blue'
+export function getCrystalClasses(crystal: EquipmentCrystal | undefined) {
+  if (!crystal) {
+    return null
   }
+
+  let backgroundClass: string
+  switch (crystal.origin.category) {
+    case 0:
+      backgroundClass = 'bg-red-40'
+      break
+    case 1:
+      backgroundClass = 'bg-emerald-40'
+      break
+    case 2:
+      backgroundClass = 'bg-orange-40'
+      break
+    case 3:
+      backgroundClass = 'bg-fuchsia-40'
+      break
+    default:
+      backgroundClass = 'bg-blue-40'
+  }
+
+  return crystal.origin.enhancer ? [backgroundClass, 'item-enhancer'] : [backgroundClass]
 }
 
 export function getEquipmentFieldFilterOptions() {
@@ -90,7 +101,7 @@ export function useEquipmentsForSearch() {
 
   const equipmentSearchListMap = computed(() => {
     const searchListMap = new Map<number, string[]>()
-    ;(characterStore.equipments as CharacterEquipment[]).forEach(eq => {
+    characterStore.equipments.forEach(eq => {
       const searchList: string[] = [eq.name]
       searchList.push(...eq.stats.map(stat => stat.title))
       searchList.push(...eq.crystals.map(crystal => crystal.name))
@@ -103,7 +114,7 @@ export function useEquipmentsForSearch() {
     return equipmentSearchListMap.value.get(equipment.id)!
   }
 
-  const allEquipments = computed(() => characterStore.equipments as CharacterEquipment[])
+  const allEquipments = computed(() => characterStore.equipments)
 
   return { allEquipments, getEquipmentSearchList }
 }
