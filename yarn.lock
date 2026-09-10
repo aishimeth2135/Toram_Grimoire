@@ -4380,6 +4380,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/virtual-core@npm:3.17.9":
+  version: 3.17.9
+  resolution: "@tanstack/virtual-core@npm:3.17.9"
+  checksum: 10c0/1ea613b072c910f085989fc71b574ae101b7daad82df248340a45a66e718cedf0d879080c21ab7b5bbbb3c6f6ca477c4e182beb6068a5e3ed4e7ad49714d6742
+  languageName: node
+  linkType: hard
+
+"@tanstack/vue-virtual@npm:^3.13.37":
+  version: 3.13.37
+  resolution: "@tanstack/vue-virtual@npm:3.13.37"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.17.9"
+  peerDependencies:
+    vue: ^2.7.0 || ^3.0.0
+  checksum: 10c0/e8dd4ea14f9a964560f3effca183958cd8aefd8b4362993a5e91d4be0340189854978295914ad4df63ec9129191e6afea096fa9cc92254928425b87611d57f3f
+  languageName: node
+  linkType: hard
+
 "@trickfilm400/rollup-plugin-off-main-thread@npm:^3.0.0-pre1":
   version: 3.0.0-pre1
   resolution: "@trickfilm400/rollup-plugin-off-main-thread@npm:3.0.0-pre1"
@@ -10828,6 +10846,7 @@ __metadata:
     "@iconify/vue": "npm:^5.0.1"
     "@modyfi/vite-plugin-yaml": "npm:^1.1.1"
     "@tailwindcss/vite": "npm:^4.3.3"
+    "@tanstack/vue-virtual": "npm:^3.13.37"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     "@tsconfig/node22": "npm:^22.0.6"
     "@types/culori": "npm:^4"

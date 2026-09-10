@@ -228,33 +228,33 @@ export const useCharacterStore = defineStore('view-character', () => {
         const chara = new Character()
         const loadSuccess = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (loadSuccess) {
-          appendCharacter(chara, false)
+          appendCharacter(chara, { updateIndex: false, source: 'load' })
         }
       })
 
-      appendEquipments(filterNullish(allValidEquipments))
+      appendEquipments(filterNullish(allValidEquipments), -1, false)
 
       saveData.skillBuilds.forEach(buildData => {
         const build = SkillBuild.load(loadedCategory, buildData)
-        skillBuildStore.appendSkillBuild(build, false)
+        skillBuildStore.appendSkillBuild(build, { updateIndex: false, source: 'load' })
       })
 
       saveData.foodBuilds.forEach(data => {
         const build = new FoodsBuild(foodStore.foodsBase as FoodsBase)
         const load = build.load(loadedCategory, data)
         if (!load.error) {
-          foodStore.appendFoodBuild(build, false)
+          foodStore.appendFoodBuild(build, { updateIndex: false, source: 'load' })
         }
       })
 
       saveData.registletBuilds.forEach(data => {
         const build = RegistletBuild.load(loadedCategory, data)
-        registletBuildStore.appendRegistletBuild(build, false)
+        registletBuildStore.appendRegistletBuild(build, { updateIndex: false, source: 'load' })
       })
 
       saveData.potionBuilds.forEach(data => {
         const build = PotionBuild.load(loadedCategory, data)
-        potionBuildStore.appendPotionBuild(build, false)
+        potionBuildStore.appendPotionBuild(build, { updateIndex: false, source: 'load' })
       })
 
       const getMatchedBuild = <Build extends CharacterBindingBuild>(

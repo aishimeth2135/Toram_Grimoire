@@ -9,11 +9,9 @@ import { useDevice } from '@/shared/setup/Device'
 import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
-import CardRows from '@/components/card/card-rows.vue'
-
 import CommonSwitchModeButton from '../common/common-switch-mode-button.vue'
-import BrowseEquipmentsItem from './browse-equipments-item.vue'
-import BrowseEquipmentsListItem from './browse-equipments-list-item.vue'
+import BrowseEquipmentsGrid from './browse-equipments-grid.vue'
+import BrowseEquipmentsList from './browse-equipments-list.vue'
 import BrowseEquipmentsMainFilters from './browse-equipments-main-filters.vue'
 import CharacterEquipmentAppendActions from './character-equipment-append-actions.vue'
 import EquipmentBrowseActions from './equipment-browse-actions.vue'
@@ -102,7 +100,7 @@ const toggleDisplayMode = (isListMode: boolean) => {
 </script>
 
 <template>
-  <div class="flex max-w-[45rem] grow flex-col">
+  <div class="max-w-180 flex grow flex-col">
     <div class="flex w-full shrink-0 flex-wrap items-center justify-end px-2 pb-1">
       <slot name="additional-actions" />
       <CharacterEquipmentAppendActions class="ml-2 mr-5" />
@@ -147,36 +145,27 @@ const toggleDisplayMode = (isListMode: boolean) => {
           {{ t('character-simulator.browse-equipments.select-equipment-tips') }}
         </span>
       </div>
-      <div class="grow overflow-y-auto">
-        <template v-if="filteredEquipments.length > 0">
-          <CardRows v-if="displayMode === DisplayModes.List">
-            <BrowseEquipmentsListItem
-              v-for="equip in filteredEquipments"
-              :key="equip.id"
-              :equipment="equip"
-              :selected="selectedEquipment === equip"
-              :equipped="currentFieldEquipment === equip"
-              :invalid="!checkEquipmentValid(equip)"
-              :allow-equip="allowEquip"
-              @click="handleSelectItem(equip)"
-              @equip="emit('equip', $event)"
-              @equip-cancel="emit('equip-cancel')"
-            />
-          </CardRows>
-          <div v-else class="flex flex-wrap px-1.5">
-            <BrowseEquipmentsItem
-              v-for="equip in filteredEquipments"
-              :key="equip.id"
-              :equipment="equip"
-              :selected="selectedEquipment === equip"
-              :equipped="currentFieldEquipment === equip"
-              :invalid="!checkEquipmentValid(equip)"
-              class="m-1.5"
-              @click="handleSelectItem(equip)"
-            />
-          </div>
-        </template>
-        <div v-else-if="allEquipments.length !== 0" class="text-primary-50 px-8 py-12">
+      <BrowseEquipmentsList
+        v-if="filteredEquipments.length > 0 && displayMode === DisplayModes.List"
+        :equipments="filteredEquipments"
+        :selected-equipment="selectedEquipment"
+        :current-equipment="currentFieldEquipment"
+        :allow-equip="allowEquip"
+        :check-equipment-valid="checkEquipmentValid"
+        @select="handleSelectItem"
+        @equip="emit('equip', $event)"
+        @equip-cancel="emit('equip-cancel')"
+      />
+      <BrowseEquipmentsGrid
+        v-else-if="filteredEquipments.length > 0"
+        :equipments="filteredEquipments"
+        :selected-equipment="selectedEquipment"
+        :current-equipment="currentFieldEquipment"
+        :check-equipment-valid="checkEquipmentValid"
+        @select="handleSelectItem"
+      />
+      <div v-else class="min-h-0 grow overflow-y-auto">
+        <div v-if="allEquipments.length !== 0" class="text-primary-50 px-8 py-12">
           {{ t('character-simulator.browse-equipments.serach-no-equipment-tips') }}
         </div>
         <div v-else class="text-primary-40 px-4 py-3 text-sm">

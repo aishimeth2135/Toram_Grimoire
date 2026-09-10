@@ -78,7 +78,9 @@ const appendBagEquipment = (equip: BagEquipment) => {
 const characterStore = useCharacterStore()
 
 const submitSelectedEquipments = () => {
-  characterStore.appendEquipments(appendedEquipments.value)
+  if (!characterStore.appendEquipments(appendedEquipments.value)) {
+    return
+  }
   appendedEquipments.value = []
   emit('update:visible', false)
 }
@@ -138,7 +140,7 @@ const selectStatOption = (option: StatOption) => {
                     v-model:search-text="statSearchText"
                     :items="statOptionsSearchResults"
                     :selected-item-ids="selectedStatIds"
-                    class="h-full !max-h-none"
+                    class="max-h-none! h-full"
                     @select-item="(selectStatOption($event), hide())"
                   >
                     <template #item="{ item }">

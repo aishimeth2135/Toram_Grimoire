@@ -180,7 +180,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
 </script>
 
 <template>
-  <div class="wd-lg:max-h-none flex max-h-[24rem] min-h-0 max-w-[20rem] grow flex-col">
+  <div class="wd-lg:max-h-none flex max-h-96 min-h-0 max-w-[20rem] grow flex-col">
     <div class="flex justify-end pb-1">
       <cy-button-toggle v-model:selected="showCrystalStats">
         {{ t('character-simulator.select-crystals.show-crystal-stats') }}

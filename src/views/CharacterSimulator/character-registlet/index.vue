@@ -7,16 +7,12 @@ import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 
 import Notify from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
-import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
-import CardRows from '@/components/card/card-rows.vue'
-
 import CommonBuildPage from '../common/common-build-page.vue'
-import CharacterRegistletEdit from './character-registlet-edit.vue'
-import CharacterRegistletItem from './character-registlet-item.vue'
+import CharacterRegistletList from './character-registlet-list.vue'
+import CharacterRegistletSettings from './character-registlet-settings.vue'
 
 defineOptions({
   name: 'CharacterRegistlet',
@@ -28,10 +24,7 @@ const { currentRegistletBuild: selectedBuild, registletBuilds } = storeToRefs(re
 
 const { t } = useI18n()
 
-const editingVisible = ref(false)
-const toggleEditingVisible = useToggle(editingVisible)
-
-const itemDetailVisible = ref(true)
+const currentTab = ref(0)
 
 const currentRegistletBuild = computed(() => characterStore.currentCharacterState.registletBuild)
 
@@ -59,7 +52,10 @@ const removeSelectedBuild = () => {
 }
 
 const addRegistletBuild = () => {
-  selectedBuild.value = registletStore.createRegistletBuild()
+  const build = registletStore.createRegistletBuild()
+  if (build) {
+    selectedBuild.value = build
+  }
 }
 </script>
 
@@ -70,7 +66,9 @@ const addRegistletBuild = () => {
     :current-build="currentRegistletBuild"
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
-    @copy-build="registletStore.appendRegistletBuild(selectedBuild!.clone(), false)"
+    @copy-build="
+      registletStore.appendRegistletBuild(selectedBuild!.clone(), { updateIndex: false })
+    "
     @remove-build="removeSelectedBuild"
   >
     <template #header>
@@ -81,49 +79,22 @@ const addRegistletBuild = () => {
       </div>
     </template>
     <template #content>
-      <div class="flex items-center space-x-2 py-3">
-        <cy-button-action icon="ic:edit" @click="toggleEditingVisible(true)">
-          {{ t('character-simulator.registlet-build.edit-registlet') }}
-        </cy-button-action>
-        <cy-button-check v-model:selected="itemDetailVisible">
-          {{ t('character-simulator.registlet-build.show-detail') }}
-        </cy-button-check>
+      <cy-tabs v-model="currentTab">
+        <cy-tab :value="0">
+          {{ t('character-simulator.registlet-build.registlet-settings') }}
+        </cy-tab>
+        <cy-tab :value="1">
+          {{ t('character-simulator.registlet-build.registlet-list') }}
+        </cy-tab>
+      </cy-tabs>
+      <div v-if="selectedBuild" class="min-w-90 overflow-x-auto py-4">
+        <CharacterRegistletSettings
+          v-if="currentTab === 0"
+          :registlet-build="selectedBuild"
+          :disabled="disableAll"
+        />
+        <CharacterRegistletList v-else :registlet-build="selectedBuild" />
       </div>
-      <CardRowsWrapper v-if="selectedBuild" class="mt-4 max-w-xl">
-        <CardRows v-if="selectedBuild.items.length > 0" :class="{ 'opacity-50': disableAll }">
-          <CharacterRegistletItem
-            v-for="item in selectedBuild.items"
-            :key="item.base.id"
-            :item="item"
-            :detail-visible="itemDetailVisible"
-          />
-        </CardRows>
-        <cy-default-tips v-else>
-          {{ t('character-simulator.registlet-build.default-tips') }}
-        </cy-default-tips>
-      </CardRowsWrapper>
-      <div class="space-y-1 pb-2 pt-6">
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
-            {{ t('character-simulator.registlet-build.main-tips-1') }}
-          </div>
-        </div>
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
-            {{ t('character-simulator.registlet-build.main-tips-2') }}
-          </div>
-        </div>
-      </div>
-    </template>
-    <template #modals>
-      <CharacterRegistletEdit
-        v-if="selectedBuild"
-        :visible="editingVisible"
-        :registlet-build="selectedBuild"
-        @close="toggleEditingVisible(false)"
-      />
     </template>
   </CommonBuildPage>
 </template>

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
+import { CHARACTER_SIMULATOR_BUILD_LIMIT } from '../consts'
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterRegistletBuildStore = defineStore('view-character-registlet-build', () => {
@@ -16,7 +17,7 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
     appendBuild: appendRegistletBuild,
     removeBuild: removeRegistletBuild,
     resetBuildStore: resetRegistletBuildStore,
-  } = useCharacterBindingBuild<RegistletBuild>()
+  } = useCharacterBindingBuild<RegistletBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createRegistletBuild = () => {
     const newBuild = new RegistletBuild(
@@ -24,7 +25,7 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
         ' ' +
         (builds.value.length + 1).toString()
     )
-    return appendRegistletBuild(newBuild, false)
+    return appendRegistletBuild(newBuild, { updateIndex: false })
   }
 
   const removeCurrentRegistletBuild = () => {

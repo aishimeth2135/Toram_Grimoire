@@ -32,7 +32,10 @@ const buildMatched = computed(() => selectedBuild.value === currentSkillBuild.va
 const currentDisplayedTab = computed(() => (buildMatched.value ? currentTab.value : 2))
 
 const addSkillBuild = () => {
-  selectedBuild.value = skillStore.createSkillBuild()
+  const build = skillStore.createSkillBuild()
+  if (build) {
+    selectedBuild.value = build
+  }
 }
 
 const removeSkillBuild = () => {
@@ -52,7 +55,7 @@ const removeSkillBuild = () => {
     :current-build="currentSkillBuild"
     @select-build="characterStore.setCharacterSkillBuild"
     @add-build="addSkillBuild"
-    @copy-build="skillStore.appendSkillBuild(selectedBuild.clone(), false)"
+    @copy-build="skillStore.appendSkillBuild(selectedBuild.clone(), { updateIndex: false })"
     @remove-build="removeSkillBuild"
   >
     <template #content>
@@ -67,7 +70,7 @@ const removeSkillBuild = () => {
           {{ t('character-simulator.skill-build.skills-preview') }}
         </cy-tab>
       </cy-tabs>
-      <div class="min-w-[22.5rem] overflow-x-auto py-4">
+      <div class="min-w-90 overflow-x-auto py-4">
         <CharacterSkillTab
           v-if="currentDisplayedTab !== 2"
           :skill-build="selectedBuild"

@@ -32,7 +32,7 @@ watch(
         <CommonEditModeButton v-model:is-editing="isEditing" />
       </div>
       <template v-if="!isEditing">
-        <div v-if="equipment.crystals.length > 0" class="max-w-[15rem] space-y-5">
+        <div v-if="equipment.crystals.length > 0" class="max-w-60 space-y-5">
           <CharacterEquipmentDetailsCrystal
             v-for="crystal in equipment.crystals"
             :key="crystal.id"

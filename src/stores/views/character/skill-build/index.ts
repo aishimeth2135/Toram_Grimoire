@@ -4,6 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 
+import { CHARACTER_SIMULATOR_BUILD_LIMIT } from '../consts'
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterSkillBuildStore = defineStore('view-character-skill-build', () => {
@@ -15,13 +16,13 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
     appendBuild: appendSkillBuild,
     removeBuild: removeSkillBuild,
     resetBuildStore: resetSkillBuildStore,
-  } = useCharacterBindingBuild<SkillBuild>()
+  } = useCharacterBindingBuild<SkillBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createSkillBuild = () => {
     const newBuild = new SkillBuild(
       Grimoire.i18n.t('skill-simulator.skill-build') + ' ' + (builds.value.length + 1)
     )
-    return appendSkillBuild(newBuild, false)
+    return appendSkillBuild(newBuild, { updateIndex: false })
   }
 
   const saveSkillBuilds = () => {

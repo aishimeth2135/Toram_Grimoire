@@ -6,10 +6,11 @@ import { computeFormula } from '@/shared/utils/data/parseFormula.ts'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
+import EquipmentTraitCaption from '@/components/common/equipment-trait-caption.vue'
+
 import CommonEditModeButton from '../common/common-edit-mode-button.vue'
 import CommonPropNumberInput from '../common/common-prop-number-input.vue'
 import CharacterEquipmentDetailsSelectTrait from './character-equipment-details-select-trait.vue'
-import CharacterEquipmentTraitCaption from './character-equipment-trait-caption.vue'
 import CharacterEquipmentTraitTitle from './character-equipment-trait-title.vue'
 
 interface Props {
@@ -62,7 +63,7 @@ const maxStack = computed(() => {
             />
           </div>
           <div class="mt-2 pl-1.5">
-            <CharacterEquipmentTraitCaption :trait-item="equipment.trait!.base" class="text-sm" />
+            <EquipmentTraitCaption :trait-item="equipment.trait!.base" class="text-sm" />
           </div>
           <div class="mt-6">
             <CommonPropNumberInput

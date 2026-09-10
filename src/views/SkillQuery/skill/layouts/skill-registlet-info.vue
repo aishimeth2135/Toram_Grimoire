@@ -11,7 +11,11 @@
         </div>
         <div class="mt-1 flex flex-wrap items-center space-y-2" style="min-height: 2rem">
           <template v-for="row in item.rows" :key="row.type + row.value">
-            <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
+            <RegistletCaptionValue
+              v-if="row.type === 'caption'"
+              :text="row.value"
+              :handle-value="handleValue"
+            />
             <div v-else-if="row.type === 'remark'" class="text-primary-40 text-sm">
               {{ row.value }}
             </div>
@@ -52,7 +56,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { getRegistletCaptionRender } from '@/views/Registlet/RegistletQuery/setup'
+import RegistletCaptionValue from '@/components/common/registlet-caption-value.vue'
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 
@@ -70,6 +74,4 @@ const { t } = useI18n()
 
 const handleValue = (str: string) =>
   str.replace(/Lv/g, t('skill-query.registlet-level-abbreviation'))
-
-const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

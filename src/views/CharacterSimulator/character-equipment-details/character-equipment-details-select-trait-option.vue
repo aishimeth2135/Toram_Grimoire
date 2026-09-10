@@ -4,8 +4,7 @@ import { ref } from 'vue'
 import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
 
 import CardRow from '@/components/card/card-row.vue'
-
-import CharacterEquipmentTraitCaption from './character-equipment-trait-caption.vue'
+import EquipmentTraitCaption from '@/components/common/equipment-trait-caption.vue'
 
 interface Props {
   traitItem: EquipmentTraitItem
@@ -32,7 +31,7 @@ const showDetail = ref(false)
           @click="showDetail = !showDetail"
         />
       </div>
-      <CharacterEquipmentTraitCaption
+      <EquipmentTraitCaption
         v-if="showDetail"
         :trait-item="traitItem"
         class="text-gray-60 mt-1 pl-7 text-sm"

@@ -48,7 +48,9 @@ const removeSelectedCharacter = () => {
         {
           text: t('global.recovery'),
           click: () => {
-            characterStore.appendCharacter(from)
+            if (!characterStore.appendCharacter(from)) {
+              return
+            }
             notify(
               t('character-simulator.character-basic.restore-character-success', {
                 name: from.name,
@@ -63,7 +65,10 @@ const removeSelectedCharacter = () => {
 }
 
 const addCharacater = () => {
-  selectedCharacter.value = characterStore.createCharacter(false)
+  const character = characterStore.createCharacter(false)
+  if (character) {
+    selectedCharacter.value = character
+  }
 }
 
 const RenderContentTitie = (attrs: { title: string }) => {

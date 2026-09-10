@@ -40,14 +40,14 @@
           </div>
           <div class="mt-1 flex">
             <cy-button-radio
-              :selected="state.displayMode === DisplayMode.Category"
-              @click="state.displayMode = DisplayMode.Category"
+              :selected="state.displayMode === 'category'"
+              @click="state.displayMode = 'category'"
             >
               {{ t('registlet-query.display-mode.category') }}
             </cy-button-radio>
             <cy-button-radio
-              :selected="state.displayMode === DisplayMode.ObtainLevel"
-              @click="state.displayMode = DisplayMode.ObtainLevel"
+              :selected="state.displayMode === 'obtain-level'"
+              @click="state.displayMode = 'obtain-level'"
             >
               {{ t('registlet-query.display-mode.obtain-levels') }}
             </cy-button-radio>
@@ -83,7 +83,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import RegistletQueryResult from './registlet-query-result.vue'
 
-import { DisplayMode, useRegistletQueryState } from './setup'
+import { useRegistletQueryState } from './setup'
 
 defineOptions({
   name: 'RegistletQuery',
@@ -115,7 +115,7 @@ const searchObtainLevel = ref(SEARCH_OBTAIN_LEVEL_NONE)
 const { registletQueryState: state } = useRegistletQueryState()
 
 const currentModeItems = computed(() => {
-  if (state.displayMode === DisplayMode.ObtainLevel) {
+  if (state.displayMode === 'obtain-level') {
     return registletItems.slice().sort((item1, item2) => {
       const lv1 = item1.obtainLevels[0]
       const lv2 = item2.obtainLevels[0]

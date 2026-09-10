@@ -14,7 +14,7 @@
             item.enabled
           "
         />
-        <div class="ml-1 text-primary-80">{{ item.base.name }}</div>
+        <div class="text-primary-80 ml-1">{{ item.base.name }}</div>
       </div>
       <div v-if="item.enabled" class="ml-10 mr-6 flex items-center">
         <span class="text-primary-30">Lv.</span>
@@ -24,38 +24,21 @@
             item.level
           "
           inline
-          class="!flex"
+          class="flex!"
         />
       </div>
     </div>
-    <div v-if="item.enabled && detailVisible" class="p-2 pl-10">
-      <div v-if="!!(item.base.link instanceof StatBase)" class="flex items-center">
-        <div>{{ item.base.link.text }}</div>
-        <div>+</div>
-        <div class="ml-2 border-x border-primary-20 px-2 text-primary-60">
-          {{ handleValue(item.base.rows[0].value) }}
-        </div>
-      </div>
-      <template v-else>
-        <template v-for="row in item.base.rows" :key="row.type + row.value">
-          <RenderCaptionValue v-if="row.type === 'caption'" :text="row.value" />
-          <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
-            {{ row.value }}
-          </div>
-        </template>
-      </template>
+    <div v-if="item.enabled && detailVisible" class="text-gray-60 pl-10 pr-2 pt-1">
+      <RegistletCaption :registlet-item="item.base" />
     </div>
   </CardRow>
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-
 import type { RegistletItem } from '@/lib/Character/RegistletBuild'
-import { StatBase } from '@/lib/Character/Stat'
 
 import CardRow from '@/components/card/card-row.vue'
-import { getRegistletCaptionRender } from '@/views/Registlet/RegistletQuery/setup'
+import RegistletCaption from '@/components/common/registlet-caption.vue'
 
 interface Props {
   item: RegistletItem
@@ -65,11 +48,4 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   detailVisible: false,
 })
-
-const { t } = useI18n()
-
-const handleValue = (str: string) =>
-  str.replace(/Lv/g, t('registlet-query.detail.registlet-level')).replace(/\*/g, '×')
-
-const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>
