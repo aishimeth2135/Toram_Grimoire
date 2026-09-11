@@ -26,9 +26,9 @@
           </div>
           <div
             v-if="
-              state.currentMode === SearchModes.Normal ||
-              state.currentMode === SearchModes.Dye ||
-              state.displayMode === 1
+              state.currentMode === 'normal' ||
+              state.currentMode === 'dye' ||
+              state.displayMode === 'current-mode'
             "
             class="flex items-center space-x-2"
           >
@@ -49,7 +49,7 @@
               </div>
             </template>
           </div>
-          <div v-else-if="state.currentMode === SearchModes.Stat" class="mt-0.5">
+          <div v-else-if="state.currentMode === 'stat'" class="mt-0.5">
             <template v-if="previewStats !== null">
               <ShowStat
                 v-for="previewStat in previewStats"
@@ -61,7 +61,7 @@
             </template>
           </div>
           <div
-            v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe"
+            v-else-if="state.currentMode === 'item-level' && originEquipment.recipe"
             class="flex items-center"
           >
             <div class="gap-icon text-primary-30 inline-flex items-center">
@@ -265,7 +265,7 @@
         </div>
       </div>
       <div
-        v-else-if="state.currentMode === SearchModes.Dye"
+        v-else-if="state.currentMode === 'dye'"
         class="border-primary-30 mb-3 ml-4 border-l-4 border-solid pl-2"
       >
         <div class="divide-primary-20 divide-y">
@@ -314,7 +314,9 @@ import { type BagItemObtain } from '@/lib/Items/BagItem'
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import { SearchModes, findObtainByDye, findStat, useItemQueryModes } from './setup'
+import { useDyeSearchMode } from './modes/dye'
+import { useStatSearchMode } from './modes/stat'
+import { findObtainByDye, findStat, useItemQueryState } from './setup'
 
 interface Props {
   equipment: CharacterEquipment
@@ -322,7 +324,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { state, modes } = useItemQueryModes()
+const { state } = useItemQueryState()
+const statMode = useStatSearchMode()
+const dyeMode = useDyeSearchMode()
 
 const { t } = useI18n()
 
@@ -367,8 +371,8 @@ const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obt
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
 const previewStats = computed(() => {
-  const currentStats = modes[SearchModes.Stat].currentStats
-  if (state.currentMode !== SearchModes.Stat || currentStats.length === 0) {
+  const currentStats = statMode.state.currentStats
+  if (state.currentMode !== 'stat' || currentStats.length === 0) {
     return null
   }
   return currentStats
@@ -377,7 +381,7 @@ const previewStats = computed(() => {
 })
 
 const dyeObtains = computed(() => {
-  const obtain = findObtainByDye(modes[SearchModes.Dye].searchText, props.equipment)
+  const obtain = findObtainByDye(dyeMode.state.searchText, props.equipment)
   return obtainsDataConvert(obtain)
 })
 </script>
