@@ -1,4 +1,4 @@
-import { defineState } from '@/shared/setup/State'
+import { defineState } from '@/shared/composables/State'
 
 const useLocalState = defineState(() => {
   const increasement = { value: -1 }

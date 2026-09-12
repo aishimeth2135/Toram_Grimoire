@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { type CSSProperties, computed } from 'vue'
 
-import { useViewport } from '@/shared/setup/Device'
+import { useViewport } from '@/shared/composables/Device'
 import { createEmptyArray } from '@/shared/utils/array'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
 
@@ -69,15 +69,15 @@ const starStyles = computed(() => {
 
 <style>
 .app-home-decorate-star {
-  border-radius: 999px;
-  background-color: transparent;
-  animation-name: app-home-decorate-star-floating;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
   position: absolute;
   top: -75%;
   left: 0;
   opacity: 0;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-name: app-home-decorate-star-floating;
+  border-radius: 999px;
+  background-color: transparent;
 }
 
 @keyframes app-home-decorate-star-floating {

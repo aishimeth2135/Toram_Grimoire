@@ -3,12 +3,12 @@ import { registerSW } from 'virtual:pwa-register'
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 export default function () {
   if (import.meta.env.PROD) {
     const mainStore = useMainStore()
-    const { notify } = Notify()
+    const notify = useNotify()
     const updateSW = registerSW({
       onNeedRefresh() {
         mainStore.serviceWorkerHasUpdate(updateSW)

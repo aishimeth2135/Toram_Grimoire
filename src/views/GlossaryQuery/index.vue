@@ -37,7 +37,7 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import PageControl from '@/shared/setup/PageControl'
+import { usePageControl } from '@/shared/composables/PageControl'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
@@ -63,7 +63,7 @@ const currentTags = computed(() => {
   })
 })
 
-const { currentItems, page, maxPage } = PageControl({
+const { currentItems, page, maxPage } = usePageControl({
   items: currentTags,
   step: 30,
 })

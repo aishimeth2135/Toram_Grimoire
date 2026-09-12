@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggleList } from '@/shared/setup/State'
+import { useToggleList } from '@/shared/composables/State'
 
 import { EquipmentField } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -90,7 +90,7 @@ watch(
     <cy-button-circle icon="mdi:filter" small />
     <template #popper>
       <div class="p-3">
-        <div class="mb-2 border-b border-primary-10 pb-2">
+        <div class="border-primary-10 mb-2 border-b pb-2">
           <cy-button-check v-model:selected="allTypesSelected">
             <span class="text-primary-30">
               {{ t('global.select-all') }}
@@ -117,7 +117,7 @@ watch(
         </div>
       </div>
       <div class="flex justify-end px-4 pb-2">
-        <span class="cursor-pointer text-sm text-primary-50" @click="resetFieldsFilter">
+        <span class="text-primary-50 cursor-pointer text-sm" @click="resetFieldsFilter">
           {{ t('global.reset') }}
         </span>
       </div>

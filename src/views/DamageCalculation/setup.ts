@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { setupCalculationExpectedResult } from '@/stores/views/damage-calculation/setup'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import {
   CalcItemContainer,
@@ -62,7 +62,7 @@ const setupCalculationStoreState = () => {
 
 const setupCalculationStore = () => {
   const store = useDamageCalculationStore()
-  const { notify } = Notify()
+  const notify = useNotify()
   const { t } = useI18n()
 
   const { calculations, currentCalculation } = setupCalculationStoreState()
@@ -74,18 +74,13 @@ const setupCalculationStore = () => {
     }
     const calculation = currentCalculation.value
     store.removeCalculation(calculation)
-    notify(
+    notify.undo(
       t('damage-calculation.tips.removed-build-success', {
         name: calculation.name,
       }),
       {
-        buttons: [
-          {
-            text: t('global.recovery'),
-            removeMessageAfterClick: true,
-            click: () => store.appendCalculation(calculation),
-          },
-        ],
+        label: t('global.recovery'),
+        onUndo: () => store.appendCalculation(calculation),
       }
     )
   }
@@ -188,8 +183,8 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
       },
     ]
   })
-  const resultMode = computed(
-    () => resultModeList.value.find(item => item.id === resultModeId.value)!
+  const resultMode = computed(() =>
+    resultModeList.value.find(item => item.id === resultModeId.value)!
   )
 
   return {

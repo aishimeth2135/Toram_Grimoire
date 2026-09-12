@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { shallowReactive } from 'vue'
 import { ref } from 'vue'
 
-import { defineState } from '@/shared/setup/State'
+import { defineState } from '@/shared/composables/State'
 
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { type SkillFormulaExtraProps } from '@/lib/Skill/SkillComputing'

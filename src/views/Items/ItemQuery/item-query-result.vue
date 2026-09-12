@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { nextTick, toRef, useTemplateRef } from 'vue'
 
-import PageControl from '@/shared/setup/PageControl'
+import { usePageControl } from '@/shared/composables/PageControl'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
@@ -34,7 +34,7 @@ const props = defineProps<Props>()
 
 const PAGINATION_STEP = 30
 
-const { currentItems, page, maxPage } = PageControl({
+const { currentItems, page, maxPage } = usePageControl({
   items: toRef(() => props.equipments),
   step: PAGINATION_STEP,
 })

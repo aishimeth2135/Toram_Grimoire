@@ -210,9 +210,9 @@ import { useI18n } from 'vue-i18n'
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
 import Grimoire from '@/shared/Grimoire'
-import AutoSave from '@/shared/setup/AutoSave'
-import ExportBuild from '@/shared/setup/ExportBuild'
-import { useToggle, useToggleGroup } from '@/shared/setup/State'
+import { useAutoSave } from '@/shared/composables/AutoSave'
+import { useExportBuild } from '@/shared/composables/ExportBuild'
+import { useToggle, useToggleGroup } from '@/shared/composables/State'
 
 import { type CalculationSaveData } from '@/lib/Damage/DamageCalculation'
 
@@ -238,7 +238,7 @@ defineOptions({
 
 const store = useDamageCalculationStore()
 
-AutoSave({
+useAutoSave({
   save: () => store.save(),
   loadFirst: () => store.load(),
 })
@@ -258,7 +258,7 @@ const { resultMode, resultModeList, selectResultMode } = setupResultMode(current
 
 const { calculationContainerOptions } = setupCalculationCalcOptions(currentCalculation)
 
-const { exportBuild, importBuild } = ExportBuild({
+const { exportBuild, importBuild } = useExportBuild({
   save: handleSave => {
     const fileName = currentCalculation.value.name + '.txt'
     const data = JSON.stringify(currentCalculation.value.save())

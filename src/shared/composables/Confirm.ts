@@ -29,7 +29,7 @@ const _confirm = (item: string | ConfirmItemParam) => {
   })
 }
 
-export default function () {
+export function useConfirm() {
   return {
     confirm: _confirm,
   }

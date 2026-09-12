@@ -85,10 +85,10 @@ import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-bu
 import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
+import { useAppPageActions } from '@/shared/composables/App'
+import { useAutoSave } from '@/shared/composables/AutoSave'
+import { registViewStatesCleaning, useToggle, useToggleGroup } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { useAppPageActions } from '@/shared/setup/App'
-import AutoSave from '@/shared/setup/AutoSave'
-import { registViewStatesCleaning, useToggle, useToggleGroup } from '@/shared/setup/State'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
@@ -188,7 +188,7 @@ const tabDatas = computed(() => {
 //   currentComboSkillState.current = null
 // }
 
-AutoSave({
+useAutoSave({
   save: () => {
     if (!characterStore.autoSaveDisabled) {
       characterStore.saveCharacterSimulator()

@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
+import { useNotify } from '@/shared/composables/Notify'
+import { defineViewState, useToggleList } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import Notify from '@/shared/setup/Notify'
-import { defineViewState, useToggleList } from '@/shared/setup/State'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
@@ -122,7 +122,7 @@ export function useEquipmentsForSearch() {
 export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) => {
   const characterStore = useCharacterStore()
   const { equipments } = storeToRefs(characterStore)
-  const { notify } = Notify()
+  const notify = useNotify()
   const { t } = useI18n()
 
   const copyEquipment = () => {
@@ -141,11 +141,10 @@ export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) =
       return
     }
 
-    notify(
-      t('character-simulator.browse-equipments.copy-equipment-tips'),
-      'bx:copy-alt',
-      'copy-equipment-tips'
-    )
+    notify(t('character-simulator.browse-equipments.copy-equipment-tips'), {
+      icon: 'bx:copy-alt',
+      id: 'copy-equipment-tips',
+    })
 
     equipment.value = appendedEquipment
   }
@@ -159,31 +158,25 @@ export const useEquipmentActions = (equipment: Ref<CharacterEquipment | null>) =
     const newIdx = characterStore.removeEquipment(eq)
     equipment.value = equipments.value[newIdx] ?? null
 
-    notify(
+    notify.undo(
       t('character-simulator.browse-equipments.remove-equipment-tips', {
         name: eq.name,
       }),
-      'ic-baseline-delete-outline',
-      null,
       {
-        buttons: [
-          {
-            text: t('global.recovery'),
-            click: () => {
-              const restoredEquipment = characterStore.appendEquipment(eq)
-              if (!restoredEquipment) {
-                return
-              }
-              equipment.value = restoredEquipment
-              notify(
-                t('character-simulator.browse-equipments.removed-equipment-restore-tips', {
-                  name: eq.name,
-                })
-              )
-            },
-            removeMessageAfterClick: true,
-          },
-        ],
+        icon: 'ic-baseline-delete-outline',
+        label: t('global.recovery'),
+        onUndo: () => {
+          const restoredEquipment = characterStore.appendEquipment(eq)
+          if (!restoredEquipment) {
+            return false
+          }
+          equipment.value = restoredEquipment
+          notify(
+            t('character-simulator.browse-equipments.removed-equipment-restore-tips', {
+              name: eq.name,
+            })
+          )
+        },
       }
     )
   }

@@ -1,7 +1,7 @@
 import { type Ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
-import { defineState } from '@/shared/setup/State'
+import { defineState } from '@/shared/composables/State'
 import { removeElement } from '@/shared/utils/array'
 
 export const useFloatPageClose = defineState(() => {

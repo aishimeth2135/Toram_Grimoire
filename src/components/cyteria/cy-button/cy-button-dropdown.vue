@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 
 import ButtonIcon from './button-icon.vue'
 import CyButtonBase from './cy-button-base.vue'

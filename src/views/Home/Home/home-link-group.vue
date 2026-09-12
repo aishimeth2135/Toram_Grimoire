@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { useDevice } from '@/shared/setup/Device'
+import { useDevice } from '@/shared/composables/Device'
 
 const homeLinkGroupIconClassMap = {
   fuchsia: 'text-fuchsia-30',

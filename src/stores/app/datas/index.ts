@@ -5,9 +5,9 @@ import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
 import Grimoire from '@/shared/Grimoire'
+import { useNotify } from '@/shared/composables/Notify'
 import { DataPathIds } from '@/shared/services/DataPath'
 import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
-import Notify from '@/shared/setup/Notify'
 
 import CharacterSystem from '@/lib/Character'
 import DamageCalculationSystem from '@/lib/Damage'
@@ -192,7 +192,7 @@ export const useDatasStore = defineStore('app-datas', () => {
         const enchantSystem = initEnchantInstance()
         const [enchantData] = await DownloadDatas(DataPathIds.Enchant)
         if (!enchantData.baseData[0][4].startsWith('額外上限')) {
-          const { notify } = Notify()
+          const notify = useNotify()
           notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
         }
         return async () => {

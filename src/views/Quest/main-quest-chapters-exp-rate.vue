@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 import { numberToFixed } from '@/shared/utils/number'
 
 import type { MainQuestSection, MainQuestSectionIndex } from '@/lib/Quest/Quest'
@@ -94,7 +94,7 @@ const displayDatas = computed(() => {
         </div>
         <div class="flex grow items-center">
           <div class="h-3" :class="data.barClass" :style="{ width: `${data.expRate}%` }" />
-          <div class="ml-2 shrink-0 text-primary-50">
+          <div class="text-primary-50 ml-2 shrink-0">
             {{ `${data.expRate}%` }}
           </div>
         </div>

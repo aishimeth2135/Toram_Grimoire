@@ -1,6 +1,6 @@
 import { type Ref, computed, ref, watch } from 'vue'
 
-export default function PageControl<Item = unknown>({
+export function usePageControl<Item = unknown>({
   items,
   step,
 }: {

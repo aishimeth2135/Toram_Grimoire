@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 
 import AppSideMenuContent from './app-side-menu-content.vue'
 

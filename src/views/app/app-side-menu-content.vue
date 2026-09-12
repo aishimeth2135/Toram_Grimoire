@@ -11,7 +11,7 @@
     <div v-if="routeNotHome(currentRoute.name!)" class="mt-0.5 pt-0.5">
       <AppRouterLink v-for="data in routeLinks" :key="data.title" :data="data" :is-main="isMain" />
       <div
-        class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
+        class="hover:bg-primary-5 flex cursor-pointer justify-center py-0.5 duration-200"
         @click.stop="toggleLinksMenu"
       >
         <cy-icon
@@ -33,8 +33,8 @@ import { type RouteRecordName, useRouter } from 'vue-router'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
+import { useToggle } from '@/shared/composables/State'
 import { ROUTE_LINK_DATAS } from '@/shared/consts/route'
-import { useToggle } from '@/shared/setup/State'
 
 import { AppRouteNames } from '@/router/enums'
 

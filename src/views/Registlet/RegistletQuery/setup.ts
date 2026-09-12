@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 
+import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { defineViewState } from '@/shared/setup/State'
 
 export type DisplayMode = 'category' | 'obtain-level'
 

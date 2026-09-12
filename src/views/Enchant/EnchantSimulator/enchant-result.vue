@@ -148,8 +148,8 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import Notify from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
+import { useNotify } from '@/shared/composables/Notify'
+import { useToggle } from '@/shared/composables/State'
 import CY from '@/shared/utils/Cyteria'
 import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'
@@ -173,7 +173,7 @@ const { equipment } = toRefs(props)
 const { t, tm } = useI18n()
 const store = useEnchantStore()
 const { config } = storeToRefs(store)
-const { notify } = Notify()
+const notify = useNotify()
 
 const resultStatsVisible = ref(true)
 const toggleResultStatsVisible = useToggle(resultStatsVisible)

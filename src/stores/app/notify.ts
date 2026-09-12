@@ -1,28 +1,29 @@
 import { defineStore } from 'pinia'
 import { type Ref, readonly, ref } from 'vue'
 
-import type { MessageNotifyButtonItem, MessageNotifyOptions } from '@/shared/setup/Notify'
+import type { MessageNotifyAction, MessageNotifyOptions } from '@/shared/composables/Notify'
 
 interface NotifyMessageItem {
   icon: string
   message: string
   id: string | null
   options: {
-    buttons?: MessageNotifyButtonItemWithId[]
-    afterHide?: () => void
+    actions?: MessageNotifyActionWithId[]
+    onDismiss?: () => void
   }
   counter: number
   removeTime: number
   iid: number
 }
 
-interface MessageNotifyButtonItemWithId extends MessageNotifyButtonItem {
+interface MessageNotifyActionWithId extends MessageNotifyAction {
   iid: number
 }
 
 export const useNotifyStore = defineStore('app-notify', () => {
   const messages: Ref<NotifyMessageItem[]> = ref([])
   const idCounter = ref(0)
+  const timers = new Map<number, ReturnType<typeof setInterval>>()
 
   const appendMessage = (msg: NotifyMessageItem) => {
     messages.value.push(msg)
@@ -33,31 +34,30 @@ export const useNotifyStore = defineStore('app-notify', () => {
     const idx = msgs.indexOf(msg)
     if (idx !== -1) {
       msgs.splice(idx, 1)
+      clearInterval(timers.get(msg.iid))
+      timers.delete(msg.iid)
+      msg.options.onDismiss?.()
     }
   }
 
   const createMessage = ({
-    icon,
     message,
-    id,
-    options,
-  }: {
-    icon: string
-    message: string
-    id: string | null
-    options: MessageNotifyOptions
-  }) => {
+    icon = 'bx-bx-message-rounded-dots',
+    id = null,
+    actions,
+    onDismiss,
+  }: Omit<MessageNotifyOptions, 'id'> & { message: string; id?: string | null }) => {
     const find =
       id !== null ? messages.value.find(item => item.id !== null && item.id === id) : null
     if (!find) {
       const newOptions = {
-        buttons: options.buttons
-          ? (options.buttons.map((item, iid) => ({
+        actions: actions
+          ? (actions.map((item, iid) => ({
               iid,
               ...item,
-            })) as MessageNotifyButtonItemWithId[])
+            })) as MessageNotifyActionWithId[])
           : undefined,
-        afterHide: options.afterHide,
+        onDismiss,
       }
       const msg: NotifyMessageItem = {
         icon,
@@ -73,9 +73,9 @@ export const useNotifyStore = defineStore('app-notify', () => {
         msg.removeTime -= 1
         if (msg.removeTime <= 0) {
           removeMessage(msg)
-          clearInterval(timer)
         }
       }, 1000)
+      timers.set(msg.iid, timer)
 
       appendMessage(msg)
     } else {
@@ -91,4 +91,4 @@ export const useNotifyStore = defineStore('app-notify', () => {
   }
 })
 
-export type { NotifyMessageItem, MessageNotifyButtonItemWithId }
+export type { NotifyMessageItem, MessageNotifyActionWithId }

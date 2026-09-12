@@ -23,7 +23,7 @@ import { computed } from 'vue'
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
 
-import { usePageLayout } from '@/shared/setup/Layout'
+import { usePageLayout } from '@/shared/composables/Layout'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import AppSideMenuContent from './app-side-menu-content.vue'

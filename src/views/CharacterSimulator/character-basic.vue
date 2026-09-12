@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { Character } from '@/lib/Character/Character'
 
@@ -16,7 +16,7 @@ const characterStore = useCharacterStore()
 const { characters, currentCharacter } = storeToRefs(characterStore)
 
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 
 const baseStatRange = [1, 900]
 const optionalBaseStatRange = [0, 255]
@@ -37,29 +37,23 @@ const removeSelectedCharacter = () => {
   const from = selectedCharacter.value!
   const nextIdx = characterStore.removeCharacter(from)
   selectedCharacter.value = characterStore.characters[nextIdx]
-  notify(
+  notify.undo(
     t('character-simulator.character-basic.remove-character-success', {
       name: from.name,
     }),
-    'ic-round-delete',
-    null,
     {
-      buttons: [
-        {
-          text: t('global.recovery'),
-          click: () => {
-            if (!characterStore.appendCharacter(from)) {
-              return
-            }
-            notify(
-              t('character-simulator.character-basic.restore-character-success', {
-                name: from.name,
-              })
-            )
-          },
-          removeMessageAfterClick: true,
-        },
-      ],
+      icon: 'ic-round-delete',
+      label: t('global.recovery'),
+      onUndo: () => {
+        if (!characterStore.appendCharacter(from)) {
+          return false
+        }
+        notify(
+          t('character-simulator.character-basic.restore-character-success', {
+            name: from.name,
+          })
+        )
+      },
     }
   )
 }

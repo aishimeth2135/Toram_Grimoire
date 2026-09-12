@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterPotionList from './character-potion-list.vue'
@@ -35,7 +35,7 @@ const disableAll = computed<boolean>({
   },
 })
 
-const { notify } = Notify()
+const notify = useNotify()
 
 const removeSelectedPotionBuild = () => {
   if (!selectedBuild.value) {

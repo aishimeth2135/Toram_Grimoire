@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
+import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { defineViewState } from '@/shared/setup/State'
 
 import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 

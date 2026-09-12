@@ -2,7 +2,7 @@
 import { type Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggleList } from '@/shared/setup/State'
+import { useToggleList } from '@/shared/composables/State'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'

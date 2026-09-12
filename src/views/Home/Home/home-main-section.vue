@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useDevice } from '@/shared/composables/Device'
 import { ROUTE_LINK_DATAS, type RouteLinkData } from '@/shared/consts/route'
-import { useDevice } from '@/shared/setup/Device'
 
 import { AppRouteNames } from '@/router/enums'
 

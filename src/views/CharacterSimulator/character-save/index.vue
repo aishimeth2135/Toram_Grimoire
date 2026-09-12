@@ -82,8 +82,8 @@ import { useI18n } from 'vue-i18n'
 
 import { type CharacterSimulatorSaveData, useCharacterStore } from '@/stores/views/character'
 
-import Notify from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
+import { useNotify } from '@/shared/composables/Notify'
+import { useToggle } from '@/shared/composables/State'
 import CY from '@/shared/utils/Cyteria'
 import Cyteria from '@/shared/utils/Cyteria'
 
@@ -97,7 +97,7 @@ defineOptions({
 const deleteCounter = ref(0)
 
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 const store = useCharacterStore()
 
 const exportSaveDataVisible = ref(false)

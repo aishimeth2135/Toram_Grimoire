@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends any">
 import { type Ref, type StyleValue, computed, shallowRef, useTemplateRef } from 'vue'
 
-import { useResizeObserver } from '@/shared/setup/ElementObserver'
+import { useResizeObserver } from '@/shared/composables/ElementObserver'
 import { nextFrame } from '@/shared/utils/dom'
 
 import { useTabsContext, useTabsSlider } from './setup'

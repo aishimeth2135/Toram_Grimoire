@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
@@ -37,7 +37,7 @@ const disableAll = computed<boolean>({
   },
 })
 
-const { notify } = Notify()
+const notify = useNotify()
 
 const removeSelectedBuild = () => {
   if (!selectedBuild.value) {

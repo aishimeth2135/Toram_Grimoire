@@ -1,4 +1,4 @@
-import { defineState } from '@/shared/setup/State'
+import { defineState } from '@/shared/composables/State'
 import { toFloat, toInt } from '@/shared/utils/number'
 import { escapeRegExp, splitComma } from '@/shared/utils/string'
 

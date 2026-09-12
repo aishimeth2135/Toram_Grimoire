@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, reactive, readonly, ref } from 'vue'
 import { type Composer } from 'vue-i18n'
 
+import { useNotify } from '@/shared/composables/Notify'
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
-import Notify from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 import { toInt } from '@/shared/utils/number'
 
@@ -121,7 +121,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
     namespaceList.forEach(namespace => i18nLoadedLocaleNamespaces.add(namespace))
 
     if (unknownError) {
-      const { notify } = Notify()
+      const notify = useNotify()
       notify(
         'An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.'
       )

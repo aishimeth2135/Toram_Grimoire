@@ -1,7 +1,7 @@
 import { reactive, ref } from 'vue'
 
+import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { defineViewState } from '@/shared/setup/State'
 import { toInt } from '@/shared/utils/number'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'

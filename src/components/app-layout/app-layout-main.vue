@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useDevice } from '@/shared/setup/Device'
-import { usePageLayout } from '@/shared/setup/Layout'
+import { useDevice } from '@/shared/composables/Device'
+import { usePageLayout } from '@/shared/composables/Layout'
 
 const { layout } = usePageLayout()
 

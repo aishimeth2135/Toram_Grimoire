@@ -1,16 +1,16 @@
 import { onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import Notify from './Notify'
+import { useNotify } from './Notify'
 
 type AutoSaveOptions = {
   readonly save: () => void
   readonly loadFirst: () => void
 }
 
-export default function ({ save, loadFirst }: AutoSaveOptions): void {
+export function useAutoSave({ save, loadFirst }: AutoSaveOptions): void {
   const { t } = useI18n()
-  const { notify } = Notify()
+  const notify = useNotify()
 
   try {
     loadFirst()

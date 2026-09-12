@@ -2,7 +2,7 @@ import { provide, reactive, ref, shallowReadonly, shallowRef, watchEffect } from
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { defineState } from '@/shared/setup/State'
+import { defineState } from '@/shared/composables/State'
 
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'

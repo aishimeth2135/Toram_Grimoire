@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 
 import CY from '@/shared/utils/Cyteria'
 
-import Notify from './Notify'
+import { useNotify } from './Notify'
 
 type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void
 
@@ -11,9 +11,9 @@ type ExportBuildsOptions = {
   readonly loaded: (dataResult: string) => void
 }
 
-export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
+export function useExportBuild({ save, loaded }: ExportBuildsOptions) {
   const { t } = useI18n()
-  const { notify } = Notify()
+  const notify = useNotify()
 
   const exportBuild = () => {
     try {

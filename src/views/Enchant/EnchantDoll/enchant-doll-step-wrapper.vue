@@ -18,7 +18,7 @@
 import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { EnchantDollInjectionKey } from './injection-keys'
 import { StepIds } from './setup'
@@ -32,7 +32,7 @@ defineProps<Props>()
 const { currentStep, backToStep } = inject(EnchantDollInjectionKey)!
 
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 
 const maskClick = () => {
   notify(t('enchant-doll.tips.cannot-directly-modify-previous-step'))
@@ -41,9 +41,9 @@ const maskClick = () => {
 
 <style scoped>
 .step-wrapper-content {
+  position: relative;
   padding: 2rem 1rem;
   min-height: 70vh;
-  position: relative;
 
   & + .content {
     border-top: 1px solid var(--app-fuchsia-60);
@@ -52,12 +52,12 @@ const maskClick = () => {
 
 .step-wrapper-disabled-mask {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   z-index: 5;
-  height: 100%;
-  width: 100%;
   cursor: not-allowed;
   background-color: --alpha(var(--app-white) / 60%);
+  width: 100%;
+  height: 100%;
 }
 </style>
