@@ -29,6 +29,7 @@
     'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', var(--app-main-font), monospace;
 
+  --breakpoint-sm: 30rem;
   --breakpoint-wd: 50rem;
   --breakpoint-wd-lg: 70rem;
 
@@ -136,15 +137,15 @@
   kbd,
   samp,
   pre {
+    font-size: 1em;
     font-family:
       'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
       'Courier New', var(--app-main-font), monospace;
-    font-size: 1em;
   }
 
   svg {
-    color: var(--app-primary-30);
     fill: currentcolor;
+    color: var(--app-primary-30);
   }
 }
 

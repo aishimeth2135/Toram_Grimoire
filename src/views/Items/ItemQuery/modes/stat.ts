@@ -20,7 +20,7 @@ function createStatOptions(): StatOption[] {
       if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
         return
       }
-      stats.push({ origin: stat, text: stat.title(type), type })
+      stats.push({ id: stat.getStatId(type), origin: stat, text: stat.title(type), type })
     })
   })
   return stats

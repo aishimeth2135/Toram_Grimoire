@@ -19,7 +19,7 @@ import CardRows from '@/components/card/card-rows.vue'
 
 import BrowseEquipmentTypeFilter from '../browse-equipments/browse-equipment-type-filter.vue'
 import CommonSearchInput from '../common/common-search-input.vue'
-import CommonSearchableItems from '../common/common-searchable-items.vue'
+import CommonSearchableItemsPopover from '../common/common-searchable-items-popover.vue'
 import CharacterEquipmentAppendItem from './character-equipment-append-item.vue'
 
 import { EquipmentSearchMode, type StatOption, useEquipmentsSearch } from './setup'
@@ -117,38 +117,29 @@ const selectStatOption = (option: StatOption) => {
               <div v-if="currentMode === EquipmentSearchMode.Normal">
                 <CommonSearchInput v-model="normalSearchText" behind />
               </div>
-              <cy-popover
+              <CommonSearchableItemsPopover
                 v-else-if="currentMode === EquipmentSearchMode.Stat"
-                class="text-primary-30 mr-2 flex grow cursor-pointer items-center text-ellipsis py-1.5 pl-3 pr-2 text-sm leading-6"
-                custom
+                v-model:search-text="statSearchText"
+                :items="statOptionsSearchResults"
+                :selected-item-ids="selectedStatIds"
+                close-on-select
+                @select-item="selectStatOption"
               >
-                <template v-if="!selectedStatOption">
+                <div v-if="!selectedStatOption" class="text-primary-30 text-sm">
                   {{ t('character-simulator.append-equipments.search-stat-tips') }}
-                </template>
+                </div>
                 <template v-else>
-                  <div class="mr-2.5">
+                  <div class="text-primary-30 mr-2.5 text-sm">
                     {{ t('character-simulator.append-equipments.current-selected-stat') }}
                   </div>
-                  <div class="text-primary-80 text-base">
+                  <div class="text-primary-80">
                     {{ selectedStatOption.text }}
                   </div>
                 </template>
-                <cy-icon class="ml-auto" icon="ic:round-keyboard-double-arrow-down" />
-                <template #popper="{ hide }">
-                  <CommonSearchableItems
-                    v-if="currentMode === EquipmentSearchMode.Stat"
-                    v-model:search-text="statSearchText"
-                    :items="statOptionsSearchResults"
-                    :selected-item-ids="selectedStatIds"
-                    class="max-h-none! h-full"
-                    @select-item="(selectStatOption($event), hide())"
-                  >
-                    <template #item="{ item }">
-                      {{ item.text }}
-                    </template>
-                  </CommonSearchableItems>
+                <template #item="{ item }">
+                  {{ item.text }}
                 </template>
-              </cy-popover>
+              </CommonSearchableItemsPopover>
             </div>
           </div>
           <div class="ml-2 flex shrink-0 items-center">

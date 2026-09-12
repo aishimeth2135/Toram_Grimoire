@@ -1,4 +1,6 @@
 <script lang="ts" setup generic="Item extends { id: any }">
+import type { VNodeChild } from 'vue'
+
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsDelegation from '@/components/card/card-rows-delegation.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
@@ -23,8 +25,8 @@ interface RenderItemContext {
   selected: boolean
 }
 interface Slots {
-  item(context: RenderItemContext): any
-  group?(context: { item: Item }): any
+  item(context: RenderItemContext): VNodeChild
+  group?(context: { item: Item }): VNodeChild
 }
 
 const props = defineProps<Props>()

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type VNode, ref } from 'vue'
+import { type VNodeChild, ref } from 'vue'
 
 import { getPropInputAutoId } from '../character-equipment-details/setup'
 
@@ -7,7 +7,7 @@ interface Props {
   title: string
 }
 interface Slots {
-  default(props: { inputId: string; setInputFocus: (value: boolean) => void }): VNode[]
+  default(props: { inputId: string; setInputFocus: (value: boolean) => void }): VNodeChild
 }
 
 defineProps<Props>()

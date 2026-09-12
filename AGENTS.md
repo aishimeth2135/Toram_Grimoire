@@ -136,18 +136,37 @@ yarn exec prettier --check <file>
 - 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的`defineState`，`inject`為最後手段。
 - 建立新元件時，`<script>`標籤應在最前面，`<template>`及`<style>`在後方。這部分舊有元件則不必特別檢查及更動。
 
-### 使用`defineProps`定義 props 時
+### Props
+
+#### 使用`defineProps`時
 
 - 一律先宣告一個`interface Props`再傳入。
 - 如果要宣告變數，命名一律為`props`。
 - 要處理預設值一律用`withDefaults`。
-- 若遇到型別為`boolean`的 prop，一律先設定其預設值為`false`，再思考其命名。
-- 取用 prop 時，一律直接存取`props`，非必要情況下一律不要使用`toRefs`。
-
-### 使用`defineEmits`定義 events 時
-
-- 一律先宣告一個`Emits`再傳入，變數命名一律為`emit`。
 - 定義 optional prop 時，若遇到型別為`boolean`的 prop，一律先設定其預設值為`false`，再思考其命名。
+
+#### 存取`props`時
+
+- 取用 prop 時，一律直接存取`props`，非必要情況下一律不要使用`toRefs`。
+- `<template>`內使用`props.xxx`時，省略前面的`props.`。
+
+### Events
+
+- 使用`defineEmits`時，一律先宣告一個`interface Emits`再傳入，變數命名一律為`emit`。
+
+### Slots
+
+- 新增 slot 時，需使用`defineSlots`明確定義。
+- 使用`defineSlots`時，一律先宣告一個`interface Slots`再傳入，如果要宣告變數，命名一律為`slots`。
+- `Slots`內各項的回傳值的型別，應優先使用 vue 提供的`VNodeChild`，避免使用`any`。
+
+### Defines Order
+
+此處明確描述元件中各個 define 的擺放順序。
+
+1. `defineOptions`
+2. 三個 interface，按照順序：`Props`、`Emits`、`Slots`。
+3. 按照順序：`defineProps`、`defineEmits`、`defineSlots`。
 
 ### 建立響應式變數時
 

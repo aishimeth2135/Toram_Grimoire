@@ -30,26 +30,26 @@
               state.currentMode === 'dye' ||
               state.displayMode === 'current-mode'
             "
-            class="flex items-center space-x-2"
+            class="flex items-center space-x-2 text-sm"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon icon="mdi-sword" />
+              <cy-icon icon="mdi-sword" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
               <div class="border-gray-20 h-4 border-l"></div>
               <span class="text-blue-50"> {{ equipment.stability }}% </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon icon="mdi:shield-outline" />
+              <cy-icon icon="mdi:shield-outline" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
               <div class="gap-icon text-primary-30 inline-flex items-center">
-                <cy-icon icon="mdi-ghost" class="text-primary-30" />
+                <cy-icon icon="mdi-ghost" class="text-primary-30" small />
                 {{ originEquipment.unknowCategory }}
               </div>
             </template>
           </div>
-          <div v-else-if="state.currentMode === 'stat'" class="mt-0.5">
+          <div v-else-if="state.currentMode === 'stat'">
             <template v-if="previewStats !== null">
               <ShowStat
                 v-for="previewStat in previewStats"
@@ -62,10 +62,10 @@
           </div>
           <div
             v-else-if="state.currentMode === 'item-level' && originEquipment.recipe"
-            class="flex items-center"
+            class="flex items-center text-sm"
           >
             <div class="gap-icon text-primary-30 inline-flex items-center">
-              <cy-icon icon="jam-hammer" class="text-primary-30" />
+              <cy-icon icon="jam-hammer" class="text-primary-30" small />
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </div>
             <span class="text-blue-60 ml-2">

@@ -9,7 +9,7 @@ import type { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import type { SearchModeHandler } from '../setup'
 
 export const useItemLevelSearchMode = defineViewState(ViewNames.ItemQuery, () => {
-  const state = reactive({ min: 0, max: 300 })
+  const state = reactive({ min: 0, max: 500 })
 
   function search(equipments: CharacterEquipment[]) {
     const min = state.min || 0

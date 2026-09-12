@@ -7,90 +7,8 @@
       {{ t('item-query.no-result-tips') }}
     </cy-default-tips>
     <AppLayoutBottom>
-      <template #default>
-        <div class="flex items-center">
-          <template v-if="state.currentMode === 'normal'">
-            <div class="ml-2 flex w-full items-center">
-              <div class="relative flex w-full items-center">
-                <cy-icon icon="ic-outline-search" class="shrink-0" />
-                <input
-                  v-model="normalMode.state.searchText"
-                  type="text"
-                  class="ml-2 inline-block w-full border-0 p-1"
-                  :placeholder="t('global.search')"
-                />
-              </div>
-              <cy-button-icon
-                :class="{
-                  invisible: normalMode.state.searchText === '',
-                }"
-                class="shrink-0"
-                icon="mdi:close-circle"
-                @click="normalMode.state.searchText = ''"
-              />
-              <cy-button-icon
-                icon="heroicons-solid:menu"
-                @click="normalMode.state.optionsVisible = !normalMode.state.optionsVisible"
-              />
-            </div>
-          </template>
-          <template v-else-if="state.currentMode === 'stat'">
-            <cy-button-plain width-full @click="toggleSelectStatModalVisible">
-              <template v-if="statMode.state.currentStats.length === 0">
-                {{ t('item-query.options-stat.select-stat.title') }}
-              </template>
-              <template v-else-if="statMode.state.currentStats.length === 1">
-                {{ statMode.state.currentStats[0].text }}
-              </template>
-              <template v-else>
-                {{
-                  t('item-query.options-stat.select-stat.title-multiple', {
-                    num: statMode.state.currentStats.length,
-                  })
-                }}
-              </template>
-            </cy-button-plain>
-          </template>
-          <template v-else-if="state.currentMode === 'item-level'">
-            <div class="flex items-center">
-              <cy-icon icon="jam-hammer" class="ml-2" />
-              <input
-                v-model="itemLevelMinimum"
-                type="text"
-                placeholder="0"
-                class="inline-block w-14 border-0 p-1 text-center"
-              />
-              <cy-icon icon="mdi-tilde" />
-              <input
-                v-model="itemLevelMaximum"
-                type="text"
-                placeholder="300"
-                class="inline-block w-14 border-0 p-1 text-center"
-              />
-            </div>
-          </template>
-          <template v-else-if="state.currentMode === 'dye'">
-            <div class="flex w-full items-center">
-              <div class="relative flex w-full items-center">
-                <cy-icon icon="ic-outline-palette" class="ml-2 shrink-0" />
-                <input
-                  v-model="dyeMode.state.searchText"
-                  type="text"
-                  class="ml-2 inline-block w-full border-0 p-1"
-                  :placeholder="t('global.search')"
-                />
-                <cy-button-icon
-                  :class="{
-                    invisible: dyeMode.state.searchText === '',
-                  }"
-                  class="shrink-0"
-                  icon="mdi:close-circle"
-                  @click="dyeMode.state.searchText = ''"
-                />
-              </div>
-            </div>
-          </template>
-        </div>
+      <template #main-custom>
+        <ItemQuerySearch />
       </template>
       <template #main-content>
         <AppLayoutBottomContent
@@ -110,24 +28,6 @@
             </cy-button-check>
           </div>
         </AppLayoutBottomContent>
-      </template>
-      <template #main-start>
-        <cy-options
-          :value="currentModeOption"
-          :options="searchModeOptions.map(item => ({ id: item.id, value: item }))"
-          placement="top-start"
-          @update:value="selectMode($event.id)"
-        >
-          <template #title>
-            <cy-button-circle icon="ic:baseline-settings" color="blue" />
-          </template>
-          <template #item="{ value }">
-            <div class="gap-icon text-primary-90 inline-flex items-center">
-              <cy-icon :icon="value.icon" class="text-primary-30" />
-              {{ t('item-query.modes.' + value.id) }}
-            </div>
-          </template>
-        </cy-options>
       </template>
       <template #side-buttons>
         <cy-button-circle
@@ -172,49 +72,6 @@
         </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
-    <cy-modal v-model:visible="selectStatModalVisible" vertical-position="start" footer>
-      <template #title>
-        <div class="gap-icon text-primary-90 inline-flex items-center">
-          <cy-icon icon="mdi-rhombus-outline" class="text-primary-30" />
-          {{ t('item-query.options-stat.select-stat.title') }}
-        </div>
-      </template>
-      <template #default>
-        <div class="sticky top-0 bg-white">
-          <cy-title-input
-            v-model:value="statMode.state.statSearchText"
-            icon="ic-outline-category"
-            :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
-            clearable
-          />
-        </div>
-        <div v-if="statsSearchResult.length !== 0" class="divide-primary-20 divide-y">
-          <div
-            v-for="stat in statsSearchResult"
-            :key="stat.origin.getStatId(stat.type)"
-            class="hover:bg-primary-30/10 px-2 py-1 duration-200"
-            @click="selectStat(stat)"
-          >
-            <cy-button-check :selected="statMode.state.currentStats.includes(stat)" class="w-full">
-              {{ stat.text }}
-            </cy-button-check>
-          </div>
-        </div>
-        <cy-default-tips v-else icon="bx-bx-message-rounded-x">
-          {{ t('item-query.no-result-tips') }}
-        </cy-default-tips>
-      </template>
-      <template #footer-actions>
-        <cy-button-action
-          color="orange"
-          icon="bx:reset"
-          class="mr-auto"
-          @click="statMode.state.currentStats = []"
-        >
-          {{ t('global.reset') }}
-        </cy-button-action>
-      </template>
-    </cy-modal>
   </AppLayoutMain>
 </template>
 
@@ -235,6 +92,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import ItemQueryFilterMenu from './item-query-filter-menu.vue'
 import ItemQueryResult from './item-query-result.vue'
+import ItemQuerySearch from './item-query-search.vue'
 
 import { useDyeSearchMode } from './modes/dye'
 import { useItemLevelSearchMode } from './modes/item-level'
@@ -244,8 +102,6 @@ import {
   type SearchMode,
   type SearchModeHandler,
   type SortOption,
-  type StatOption,
-  searchModeOptions,
   useItemQueryState,
 } from './setup'
 
@@ -255,8 +111,7 @@ type SortHandler = (item1: CharacterEquipment, item2: CharacterEquipment) => num
 const equipments = Grimoire.Items.equipments.map(equipment =>
   CharacterEquipment.fromOriginEquipment(equipment)
 )
-const { state, sortState, conditionOptionsVisible, sortOptionsVisible, selectStatModalVisible } =
-  useItemQueryState()
+const { state, sortState, conditionOptionsVisible, sortOptionsVisible } = useItemQueryState()
 const normalMode = useNormalSearchMode()
 const statMode = useStatSearchMode()
 const itemLevelMode = useItemLevelSearchMode()
@@ -275,8 +130,6 @@ const toggleOptionContents = useToggleGroup([
   toggleConditionOptionsVisible,
   toggleSortOptionsVisible,
 ])
-const toggleSelectStatModalVisible = useToggle(selectStatModalVisible)
-
 const sortOrderOptions = ['down', 'up'].map(id => ({
   value: id,
   text: t('item-query.sort-options.order.' + id),
@@ -287,27 +140,7 @@ const sortOptions = ['default', 'atk', 'def', 'stability', 'name', 'id'].map(id 
   text: t('item-query.sort-options.options.' + id),
 }))
 
-const currentModeOption = computed(() =>
-  searchModeOptions.find(option => option.id === state.currentMode)
-)
 const currentMode = computed<SearchModeHandler<unknown>>(() => modes[state.currentMode])
-
-const itemLevelMaximum = computed<number>({
-  get: () => itemLevelMode.state.max,
-  set: value => {
-    itemLevelMode.state.max = Math.max(Math.min(500, value), 0)
-  },
-})
-const itemLevelMinimum = computed<number>({
-  get: () => itemLevelMode.state.min,
-  set: value => {
-    itemLevelMode.state.min = Math.max(Math.min(500, value), 0)
-  },
-})
-const statsSearchResult = computed(() => {
-  const searchText = statMode.state.statSearchText.toLowerCase()
-  return statMode.state.stats.filter(stat => stat.text.toLowerCase().includes(searchText))
-})
 
 const validEquipments = shallowRef<CharacterEquipment[]>(equipments.slice())
 const searchResult = computed(() => {
@@ -340,21 +173,6 @@ function getSortHandler(option: SortOption): SortHandler {
     }
   }
   return option === 'name' ? (item1, item2) => item1.name.localeCompare(item2.name) : compareId
-}
-
-function selectStat(stat: StatOption) {
-  const searchStats = statMode.state.currentStats
-  const index = searchStats.indexOf(stat)
-  if (index > -1) {
-    searchStats.splice(index, 1)
-  } else {
-    searchStats.push(stat)
-  }
-}
-
-function selectMode(id: SearchMode) {
-  state.currentMode = id
-  state.displayMode = 'default'
 }
 
 registViewStatesCleaning(ViewNames.ItemQuery)

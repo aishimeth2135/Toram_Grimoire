@@ -15,6 +15,7 @@ export type SortOrder = 'down' | 'up'
 export type NormalSearchTarget = 'name' | 'material' | 'obtain-name' | 'map'
 
 export interface StatOption {
+  id: string
   origin: StatBase
   text: string
   type: StatTypes
@@ -102,13 +103,11 @@ export const useItemQueryState = defineViewState(ViewNames.ItemQuery, () => {
   })
   const conditionOptionsVisible = ref(false)
   const sortOptionsVisible = ref(false)
-  const selectStatModalVisible = ref(false)
 
   return {
     state,
     sortState,
     conditionOptionsVisible,
     sortOptionsVisible,
-    selectStatModalVisible,
   }
 })
