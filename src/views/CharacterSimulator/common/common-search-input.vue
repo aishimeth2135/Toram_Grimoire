@@ -35,7 +35,7 @@ const innerValue = computed<string>({
     <input
       v-model="innerValue"
       type="text"
-      class="w-full border-primary-5 bg-primary-5 px-10 py-1.5 duration-150 focus:border-primary-30 focus:bg-white"
+      class="border-primary-20 bg-primary-5 focus:border-primary-50 w-full px-10 py-1.5 duration-150 focus:bg-white"
       :class="{
         [isHeader ? 'border-b' : 'border']: true,
         [behind ? 'rounded-r-full' : 'rounded-full']: !isHeader,

@@ -26,30 +26,30 @@
           </div>
           <div
             v-if="
-              state.currentMode === SearchModes.Normal ||
-              state.currentMode === SearchModes.Dye ||
-              state.displayMode === 1
+              state.currentMode === 'normal' ||
+              state.currentMode === 'dye' ||
+              state.displayMode === 'current-mode'
             "
-            class="flex items-center space-x-2"
+            class="flex items-center space-x-2 text-sm"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon icon="mdi-sword" />
+              <cy-icon icon="mdi-sword" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
               <div class="border-gray-20 h-4 border-l"></div>
               <span class="text-blue-50"> {{ equipment.stability }}% </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon icon="mdi:shield-outline" />
+              <cy-icon icon="mdi:shield-outline" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
               <div class="gap-icon text-primary-30 inline-flex items-center">
-                <cy-icon icon="mdi-ghost" class="text-primary-30" />
+                <cy-icon icon="mdi-ghost" class="text-primary-30" small />
                 {{ originEquipment.unknowCategory }}
               </div>
             </template>
           </div>
-          <div v-else-if="state.currentMode === SearchModes.Stat" class="mt-0.5">
+          <div v-else-if="state.currentMode === 'stat'">
             <template v-if="previewStats !== null">
               <ShowStat
                 v-for="previewStat in previewStats"
@@ -61,11 +61,11 @@
             </template>
           </div>
           <div
-            v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe"
-            class="flex items-center"
+            v-else-if="state.currentMode === 'item-level' && originEquipment.recipe"
+            class="flex items-center text-sm"
           >
             <div class="gap-icon text-primary-30 inline-flex items-center">
-              <cy-icon icon="jam-hammer" class="text-primary-30" />
+              <cy-icon icon="jam-hammer" class="text-primary-30" small />
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </div>
             <span class="text-blue-60 ml-2">
@@ -238,16 +238,10 @@
                     <cy-icon :icon="data.icon" small class="text-primary-30" />
                     {{ data.type }}
                   </div>
-                  <span class="text-fuchsia-60">{{ data.name }}</span>
+                  <span class="text-primary-90">{{ data.name }}</span>
                 </div>
                 <div v-if="data.dye || data.map" class="mt-1 flex items-center">
-                  <div
-                    v-if="data.dye"
-                    class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm"
-                  >
-                    <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
-                    {{ data.dye }}
-                  </div>
+                  <ItemQueryDyeDisplay v-if="data.dye" :dye="data.dye" />
                   <div
                     v-if="data.map"
                     class="gap-icon ml-3 inline-flex shrink-0 items-center text-sm text-gray-50"
@@ -265,8 +259,8 @@
         </div>
       </div>
       <div
-        v-else-if="state.currentMode === SearchModes.Dye"
-        class="border-primary-30 mb-3 ml-4 border-l-4 border-solid pl-2"
+        v-else-if="state.currentMode === 'dye'"
+        class="border-primary-60 ml-5.5 mb-2 border-l pl-2"
       >
         <div class="divide-primary-20 divide-y">
           <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
@@ -275,21 +269,15 @@
                 <cy-icon :icon="item.icon" small class="text-primary-30" />
                 {{ item.type }}
               </div>
-              <span class="text-fuchsia-60">{{ item.name }}</span>
+              <span class="text-primary-90">{{ item.name }}</span>
             </div>
             <div class="mt-1 flex items-center">
-              <div
-                v-if="item.dye"
-                class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm"
-              >
-                <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
-                {{ item.dye }}
-              </div>
+              <ItemQueryDyeDisplay v-if="item.dye" :dye="item.dye" />
               <div
                 v-if="item.map"
-                class="gap-icon ml-3 inline-flex shrink-0 items-center text-sm text-gray-50"
+                class="text-gray-60 ml-3 inline-flex shrink-0 items-center gap-1 text-sm"
               >
-                <cy-icon icon="ic-outline-map" small class="text-gray-20" />
+                <cy-icon icon="ic-outline-map" small class="text-gray-40" />
                 {{ item.map }}
               </div>
             </div>
@@ -314,7 +302,11 @@ import { type BagItemObtain } from '@/lib/Items/BagItem'
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import { SearchModes, findObtainByDye, findStat, useItemQueryModes } from './setup'
+import ItemQueryDyeDisplay from './item-query-dye-display.vue'
+
+import { useDyeSearchMode } from './modes/dye'
+import { useStatSearchMode } from './modes/stat'
+import { findObtainByDye, findStat, useItemQueryState } from './setup'
 
 interface Props {
   equipment: CharacterEquipment
@@ -322,7 +314,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { state, modes } = useItemQueryModes()
+const { state } = useItemQueryState()
+const statMode = useStatSearchMode()
+const dyeMode = useDyeSearchMode()
 
 const { t } = useI18n()
 
@@ -367,8 +361,8 @@ const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obt
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
 const previewStats = computed(() => {
-  const currentStats = modes[SearchModes.Stat].currentStats
-  if (state.currentMode !== SearchModes.Stat || currentStats.length === 0) {
+  const currentStats = statMode.state.currentStats
+  if (state.currentMode !== 'stat' || currentStats.length === 0) {
     return null
   }
   return currentStats
@@ -377,7 +371,7 @@ const previewStats = computed(() => {
 })
 
 const dyeObtains = computed(() => {
-  const obtain = findObtainByDye(modes[SearchModes.Dye].searchText, props.equipment)
+  const obtain = findObtainByDye(dyeMode.state.searchText, props.equipment)
   return obtainsDataConvert(obtain)
 })
 </script>

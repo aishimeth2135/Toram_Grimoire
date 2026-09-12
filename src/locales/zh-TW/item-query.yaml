@@ -5,7 +5,7 @@ modes:
   dye: 染色
 no-result-tips: 找不到任何結果0.0
 options-normal:
-  title: 搜尋目標
+  title: 這裡可以設定輸入文字的搜尋範圍
   name: 名稱
   material: 製作素材
   obtain-name: 取得來源

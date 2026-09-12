@@ -8,14 +8,14 @@
         </CardRows>
       </div>
     </CardRowsWrapper>
-    <div class="mt-3">
+    <div v-if="equipments.length > PAGINATION_STEP" class="mt-3">
       <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, toRefs, useTemplateRef } from 'vue'
+import { nextTick, toRef, useTemplateRef } from 'vue'
 
 import PageControl from '@/shared/setup/PageControl'
 
@@ -32,11 +32,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { equipments } = toRefs(props)
+const PAGINATION_STEP = 30
 
 const { currentItems, page, maxPage } = PageControl({
-  items: equipments,
-  step: 30,
+  items: toRef(() => props.equipments),
+  step: PAGINATION_STEP,
 })
 
 const topElement = useTemplateRef('topElement')

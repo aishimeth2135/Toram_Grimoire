@@ -1,28 +1,47 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
-import Grimoire from '@/shared/Grimoire'
+import { ViewNames } from '@/shared/consts/view'
+import { defineViewState } from '@/shared/setup/State'
 import { toInt } from '@/shared/utils/number'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { StatBase, StatRestriction } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat'
+import { StatBase, StatRestriction, StatTypes } from '@/lib/Character/Stat'
 import type { BagItemObtain } from '@/lib/Items/BagItem'
 
+export type SearchMode = 'normal' | 'stat' | 'item-level' | 'dye'
+export type DisplayMode = 'default' | 'current-mode'
+export type SortOption = 'default' | 'atk' | 'def' | 'stability' | 'name' | 'id'
+export type SortOrder = 'down' | 'up'
+export type NormalSearchTarget = 'name' | 'material' | 'obtain-name' | 'map'
+
 export interface StatOption {
+  id: string
   origin: StatBase
   text: string
   type: StatTypes
 }
+
 export interface CommonOption<V = unknown> {
   value: V
   selected: boolean
+}
+
+export interface SearchModeHandler<State> {
+  state: State
+  search: (equipments: CharacterEquipment[]) => CharacterEquipment[]
+  sort: (item1: CharacterEquipment, item2: CharacterEquipment) => number
+}
+
+export interface SearchModeOption {
+  id: SearchMode
+  icon: string
 }
 
 export function findStat(target: StatOption, stats: StatRestriction[]) {
   return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
 }
 
-function dyeConvert(value: string): (number | null)[] {
+export function dyeConvert(value: string): (number | null)[] {
   value = value.toLowerCase()
   const categoryMapping = ['a', 'b', 'c']
   const result: (number | null)[] = [null, null, null]
@@ -41,14 +60,9 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): BagItemOb
     return []
   }
   const obtains = eq.origin!.obtains.filter(obtain => obtain['dye'])
-
   const resultValue = toInt(text)
   if (resultValue !== null) {
-    return obtains.filter(obtain => {
-      const dye = obtain['dye']!
-      const data = dyeConvert(dye)
-      return data.some(item => item === resultValue)
-    })
+    return obtains.filter(obtain => dyeConvert(obtain['dye']!).some(item => item === resultValue))
   }
 
   const searchData = dyeConvert(text)
@@ -56,115 +70,50 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): BagItemOb
     return []
   }
   return obtains.filter(obtain => {
-    const dye = obtain['dye']!
-    const data = dyeConvert(dye)
-    return data.every((item, idx) => searchData[idx] === null || item === searchData[idx])
+    const data = dyeConvert(obtain['dye']!)
+    return data.some((item, idx) => {
+      const searchValue = searchData[idx]
+      if (searchValue === null) {
+        return false
+      }
+      return searchValue === 0 ? item !== null : item === searchValue
+    })
   })
 }
 
-export function handleOptions<V>(option: V[]): CommonOption<V>[] {
-  return option.map(value => ({
-    value,
-    selected: true,
-  }))
+export function handleOptions<V>(options: V[]): CommonOption<V>[] {
+  return options.map(value => ({ value, selected: true }))
 }
 
-export const SearchModes = {
-  Normal: 'normal',
-  Stat: 'stat',
-  ItemLevel: 'item-level',
-  Dye: 'dye',
-} as const
-export type SearchModes = (typeof SearchModes)[keyof typeof SearchModes]
-
-const state: {
-  currentMode: SearchModes
-  displayMode: 0 | 1
-} = reactive({
-  currentMode: SearchModes.Normal,
-  displayMode: 0,
-})
-
-const modes = reactive({
-  [SearchModes.Normal]: {
-    id: SearchModes.Normal,
-    icon: 'ic-round-menu-book',
-    targets: handleOptions(['name', 'material', 'obtain-name', 'map']),
-    optionsVisible: false,
-    searchText: '',
-  },
-  [SearchModes.Stat]: {
-    id: SearchModes.Stat,
-    icon: 'mdi-script-outline',
-    stats: [] as StatOption[],
-    statSearchText: '',
-    currentStats: [] as StatOption[],
-  },
-  [SearchModes.ItemLevel]: {
-    id: SearchModes.ItemLevel,
-    icon: 'jam-hammer',
-    min: 0,
-    max: 300,
-  },
-  [SearchModes.Dye]: {
-    id: SearchModes.Dye,
-    icon: 'ic-outline-palette',
-    searchText: '',
-  },
-}) as {
-  [SearchModes.Normal]: {
-    id: SearchModes
-    icon: string
-    targets: CommonOption<string>[]
-    optionsVisible: boolean
-    searchText: string
-  }
-  [SearchModes.Stat]: {
-    id: SearchModes
-    icon: string
-    stats: StatOption[]
-    statSearchText: string
-    currentStats: StatOption[]
-  }
-  [SearchModes.ItemLevel]: {
-    id: typeof SearchModes.ItemLevel
-    icon: string
-    min: number
-    max: number
-  }
-  [SearchModes.Dye]: {
-    id: SearchModes
-    icon: string
-    searchText: string
-  }
+export function compareId(item1: CharacterEquipment, item2: CharacterEquipment) {
+  const id1 = toInt(item1.origin!.id) ?? -1
+  const id2 = toInt(item2.origin!.id) ?? -1
+  return id1 - id2
 }
 
-export function useItemQueryModes() {
-  if (modes[SearchModes.Stat].stats.length === 0) {
-    const stats = (() => {
-      const statTypes = [StatTypes.Constant, StatTypes.Multiplier]
-      const _stats: StatOption[] = []
-      Grimoire.Character.statList.forEach(stat => {
-        if (stat.hidden) {
-          return
-        }
-        statTypes.forEach(type => {
-          if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
-            return
-          }
-          _stats.push({
-            origin: stat,
-            text: stat.title(type),
-            type,
-          })
-        })
-      })
-      return _stats
-    })()
-    modes[SearchModes.Stat].stats = stats
-  }
+export const searchModeOptions: SearchModeOption[] = [
+  { id: 'normal', icon: 'ic-round-menu-book' },
+  { id: 'stat', icon: 'mdi-script-outline' },
+  { id: 'item-level', icon: 'jam-hammer' },
+  { id: 'dye', icon: 'ic-outline-palette' },
+]
+
+export const useItemQueryState = defineViewState(ViewNames.ItemQuery, () => {
+  const state = reactive({
+    currentMode: 'normal' as SearchMode,
+    displayMode: 'default' as DisplayMode,
+  })
+  const sortState = reactive({
+    currentSelected: 'default' as SortOption,
+    currentOrder: 'down' as SortOrder,
+  })
+  const conditionOptionsVisible = ref(false)
+  const sortOptionsVisible = ref(false)
+
   return {
     state,
-    modes,
+    sortState,
+    conditionOptionsVisible,
+    sortOptionsVisible,
   }
-}
+})

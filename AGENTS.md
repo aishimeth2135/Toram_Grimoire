@@ -29,13 +29,8 @@ Toram Grimoire（Cy's Grimoire）是 Toram Online 的網頁工具，
 
 ```sh
 yarn install --immutable
-yarn dev
 yarn type-check
-yarn build
-yarn preview
 ```
-
-開發伺服器預設連接埠為 9039；若被占用，以終端輸出為準。
 
 檢查指定檔案：
 
@@ -49,7 +44,6 @@ yarn exec prettier --check <file>
 - `yarn lint` 會執行 `eslint . --fix`，可能修改整個專案。
 - `yarn pretty` 與 `yarn format` 會格式化 src。
 - 一般任務優先檢查或格式化本次修改的檔案。
-- `yarn build` 不包含型別檢查，需另執行 `yarn type-check`。
 
 ## 目錄分工
 
@@ -89,6 +83,25 @@ yarn exec prettier --check <file>
 - 使用兩個空白縮排、單引號、不加分號。
 - 現有的格式化工具會處理 import 與 Tailwind class 排序。
 
+### 空白行規則
+
+- 只使用單一空白行分隔區塊，不得連續出現兩個以上的空白行。
+- 不在函式、class、interface、type、CSS rule 或 Vue SFC block 的開頭與結尾保留空白行。
+- import 群組及 import 與後續程式碼之間保留一個空白行；import 的排序與分組交由 Prettier 處理。
+- TypeScript 頂層的 type、interface、變數、函式與 class 宣告之間，原則上保留一個空白行。
+- 緊密相關且共同構成同一份 API 的短宣告可以不加空白行，例如 `Props` 與 `Emits`。
+- class 的 constructor、method、getter 與 setter 之間保留一個空白行；用途相同的連續欄位不需逐項加入空白行。
+- 函式內以「處理階段」決定空白行：仍在完成同一件事時保持緊湊，轉入下一個處理階段時加入一個空白行。
+- guard clause 結束後，如果後續開始主要處理流程，加入一個空白行。
+- 資料準備、主要計算、副作用處理與最終結果組裝屬於不同階段時，以一個空白行分隔。
+- 不在連續且用途相同的 assignment、條件判斷、函式呼叫或資料轉換步驟之間加入空白行。
+- 短小且只有單一處理流程的函式不需為了形式刻意加入空白行。
+- Vue SFC 的 `<script>`、`<template>` 與 `<style>` block 之間保留一個空白行。
+- Vue template 內預設不使用空白行分隔節點；只有大型且明確獨立的版面區段才可例外。
+- CSS 的同層 rules、同層 nested selectors 與 `@keyframes` 等區塊之間保留一個空白行。
+- CSS declarations 應保持連續，不依 property 類型插入空白行。
+- CSS declarations 與後續第一個 nested selector 之間保留一個空白行。
+
 ## 錯誤處理
 
 - 因為值可能不合法而需要錯誤處理時，優先考慮給定預設值，throw error 為最後手段。
@@ -122,8 +135,44 @@ yarn exec prettier --check <file>
 - `<script>`內考慮可讀性，需要將部分邏輯分離出去時，於元件同目錄下建立`setup.ts`檔案。
 - 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的`defineState`，`inject`為最後手段。
 - 建立新元件時，`<script>`標籤應在最前面，`<template>`及`<style>`在後方。這部分舊有元件則不必特別檢查及更動。
+
+### Props
+
+#### 使用`defineProps`時
+
+- 一律先宣告一個`interface Props`再傳入。
+- 如果要宣告變數，命名一律為`props`。
+- 要處理預設值一律用`withDefaults`。
+- 定義 optional prop 時，若遇到型別為`boolean`的 prop，一律先設定其預設值為`false`，再思考其命名。
+
+#### 存取`props`時
+
+- 取用 prop 時，一律直接存取`props`，非必要情況下一律不要使用`toRefs`。
+- `<template>`內使用`props.xxx`時，省略前面的`props.`。
+
+### Events
+
+- 使用`defineEmits`時，一律先宣告一個`interface Emits`再傳入，變數命名一律為`emit`。
+
+### Slots
+
+- 新增 slot 時，需使用`defineSlots`明確定義。
+- 使用`defineSlots`時，一律先宣告一個`interface Slots`再傳入，如果要宣告變數，命名一律為`slots`。
+- `Slots`內各項的回傳值的型別，應優先使用 vue 提供的`VNodeChild`，避免使用`any`。
+
+### Defines Order
+
+此處明確描述元件中各個 define 的擺放順序。
+
+1. `defineOptions`
+2. 三個 interface，按照順序：`Props`、`Emits`、`Slots`。
+3. 按照順序：`defineProps`、`defineEmits`、`defineSlots`。
+
+### 建立響應式變數時
+
 - 使用`<element ref="xxx">`時，優先使用`useTemplateRef('xxx')`。
 - 需要建立`Ref`時，如果對象為物件，應優先評估使用情境並確認是否能使用`shallowRef`。
+- 需要建立`Ref`或`ComputedRef`時，如果對象為物件，必須在函數泛型部分指定型別，例如`computed<SomeData>(() => xxx)`。
 
 ## 多語系
 
