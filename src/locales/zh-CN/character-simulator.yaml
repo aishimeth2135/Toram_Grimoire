@@ -1,5 +1,6 @@
 character-stats: 角色面板
 character: 角色
+build-limit-reached: 此配置数量不可以超过{num}。
 custom-equipment:
   button-title: 自订装备
 character-basic:
@@ -216,9 +217,10 @@ registlet-build:
   title: 雷吉斯托环
   disable-registlet: 停用雷吉斯托环
   registlet-build: 托环配置
-  edit-registlet: 编辑托环
+  registlet-settings: 托环设定
+  registlet-list: 托环一览
   show-detail: 显示详细资讯
-  default-tips: 这里空空如也0.0，请点击上方的「编辑托环」来新增项目。
+  default-tips: 这里空空如也0.0，请至「托环一览」新增项目。
   main-tips-1: 目前还是测试版，部分技能的资料可能尚未补齐而导致该托环没有效果。发现有哪些托环漏掉时可以反应给开发团队。
   main-tips-2: 目前仅支援与数值相关的托环，例如：角色能力加成、技能倍率、技能伤害次数等。部分条件较复杂的托环可能尚未支援。
 potion-build:
@@ -226,8 +228,9 @@ potion-build:
   disable-potion: 停用消耗品
   potion: 消耗品
   potion-build: 消耗品配置
-  edit-potion: 编辑消耗品
-  default-tips: 这里空空如也0.0，请点击上方的「编辑消耗品」来新增项目。
+  potion-settings: 消耗品设定
+  potion-list: 消耗品一览
+  default-tips: 这里空空如也0.0，请至「消耗品一览」新增项目。
 combo:
   tags:
     consecutive: 连击

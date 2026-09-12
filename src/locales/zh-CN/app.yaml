@@ -17,6 +17,8 @@ loading-message:
     1: 若载入途中发生错误，请先试着重新整理网页。
   init-locale: 载入语言资料
 page-title:
+  chromatic-trans-simulator: 色彩炼成模拟
+  trait-query: 特性查询
   base: 布偶的魔法书
   character-simulator: 角色模拟
   skill-simulator: 技能模拟
