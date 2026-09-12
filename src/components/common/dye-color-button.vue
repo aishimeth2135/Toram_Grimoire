@@ -13,7 +13,7 @@ const backgroundColor = computed<string>(() => {
   if (props.color === 0) {
     return 'transparent'
   }
-  const colorCode = getColorCode(props.color - 1)
+  const colorCode = getColorCode(props.color)
   return colorCode ?? 'transparent'
 })
 

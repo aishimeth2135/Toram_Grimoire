@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { DYE_COLOR_LIST } from '@/lib/Items/Dye/DyeColors'
+import { getAllColorList } from '@/lib/Items/Dye/DyeColors'
 
 import DyeColorButton from '@/components/common/dye-color-button.vue'
 import CommonSearchableItemsPopover from '@/views/CharacterSimulator/common/common-searchable-items-popover.vue'
@@ -21,6 +21,8 @@ const normalMode = useNormalSearchMode()
 const statMode = useStatSearchMode()
 const itemLevelMode = useItemLevelSearchMode()
 const dyeMode = useDyeSearchMode()
+
+const allColorList = getAllColorList()
 
 const currentModeOption = computed(() =>
   searchModeOptions.find(option => option.id === state.currentMode)
@@ -177,11 +179,11 @@ function selectMode(id: SearchMode) {
               </div>
               <div class="grid grid-cols-5">
                 <DyeColorButton
-                  v-for="(color, index) in DYE_COLOR_LIST"
-                  :key="color + index"
-                  :color="index + 1"
+                  v-for="{ colorNumber } in allColorList"
+                  :key="colorNumber"
+                  :color="colorNumber"
                   class="m-0.5 h-7 w-10"
-                  @click="(dyeMode.selectColor(index + 1), hide())"
+                  @click="(dyeMode.selectColor(colorNumber), hide())"
                 />
               </div>
             </div>

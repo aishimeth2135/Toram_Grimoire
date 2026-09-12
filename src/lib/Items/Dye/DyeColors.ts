@@ -1,4 +1,4 @@
-export const DYE_COLOR_LIST = [
+const DYE_COLOR_LIST = [
   'fefefe',
   'bec0bf',
   '808080',
@@ -86,6 +86,14 @@ export const DYE_COLOR_LIST = [
   '4b0025',
 ]
 
-export function getColorCode(colorNumber: number): string | undefined {
-  return '#' + DYE_COLOR_LIST[colorNumber - 1]
+export function getAllColorList() {
+  return DYE_COLOR_LIST.map((item, idx) => ({
+    colorNumber: idx + 1,
+    colorHex: '#' + item,
+  }))
+}
+
+export function getColorCode(colorNumber: number): string | null {
+  const colorHex = DYE_COLOR_LIST[colorNumber - 1]
+  return colorHex ? '#' + colorHex : null
 }

@@ -181,14 +181,14 @@ watchEffect(() => {
       </div>
       <div class="flex justify-end px-2">
         <span
-          class="mr-3 inline-flex cursor-pointer text-sm text-primary-50"
+          class="text-primary-50 mr-3 inline-flex cursor-pointer text-sm"
           @click="toggleAllEquipmentFilters(true)"
         >
           <cy-icon icon="ic:round-refresh" class="mr-1" />
           {{ t('global.reset') }}
         </span>
         <span
-          class="inline-flex cursor-pointer text-sm text-primary-50"
+          class="text-primary-50 inline-flex cursor-pointer text-sm"
           @click="toggleAllEquipmentFilters(false)"
         >
           <cy-icon icon="ic:round-clear" class="mr-1" />
@@ -196,7 +196,7 @@ watchEffect(() => {
         </span>
       </div>
     </div>
-    <div class="border-t-1 border-primary-10 px-3 py-2.5">
+    <div class="border-primary-10 border-t px-3 py-2.5">
       <div>
         <cy-button-check
           :selected="isAllOptionsSelected(obtainOptions)"
