@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
+import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { defineViewState } from '@/shared/setup/State'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill } from '@/lib/Skill/Skill'

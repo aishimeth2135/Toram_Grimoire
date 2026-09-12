@@ -28,11 +28,11 @@
     </template>
     <div
       v-else
-      class="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-white"
+      class="z-100 fixed left-0 top-0 flex h-full w-full items-center justify-center bg-white"
     >
       <div class="flex flex-wrap justify-center">
         <LoadingAnimation :status="0" />
-        <div class="mt-2 w-full text-center text-xl text-primary-30">Initializing...</div>
+        <div class="text-primary-30 mt-2 w-full text-center text-xl">Initializing...</div>
       </div>
     </div>
   </div>
@@ -57,9 +57,9 @@ import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
-import { useDevice } from './shared/setup/Device'
-import { useResizeObserver } from './shared/setup/ElementObserver'
-import { usePageLayout } from './shared/setup/Layout'
+import { useDevice } from './shared/composables/Device'
+import { useResizeObserver } from './shared/composables/ElementObserver'
+import { usePageLayout } from './shared/composables/Layout'
 
 defineOptions({
   name: 'App',

@@ -90,7 +90,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 import { toInt } from '@/shared/utils/number'
 
 import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'

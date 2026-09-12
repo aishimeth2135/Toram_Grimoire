@@ -127,8 +127,8 @@ import { type Ref, computed, reactive, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
-import PageControl from '@/shared/setup/PageControl'
-import { useToggle } from '@/shared/setup/State'
+import { usePageControl } from '@/shared/composables/PageControl'
+import { useToggle } from '@/shared/composables/State'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import { BagCrystal } from '@/lib/Items/BagItem'
@@ -276,7 +276,7 @@ const resultCrystals = computed(() => {
 })
 
 // Page control
-const { currentItems, page, maxPage } = PageControl({
+const { currentItems, page, maxPage } = usePageControl({
   items: resultCrystals,
   step: 30,
 })

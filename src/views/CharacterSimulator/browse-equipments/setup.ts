@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
+import { useNotify } from '@/shared/composables/Notify'
+import { defineViewState, useToggleList } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { useNotify } from '@/shared/setup/Notify'
-import { defineViewState, useToggleList } from '@/shared/setup/State'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'

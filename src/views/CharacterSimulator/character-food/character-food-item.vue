@@ -16,7 +16,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { Food, FoodsBuild } from '@/lib/Character/FoodBuild'
 

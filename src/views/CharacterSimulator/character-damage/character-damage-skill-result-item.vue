@@ -2,7 +2,7 @@
   <div>
     <div class="flex w-full flex-wrap items-center">
       <cy-icon icon="ic:round-label" />
-      <div class="ml-2 text-primary-70">
+      <div class="text-primary-70 ml-2">
         {{ result.container.get('name') }}
       </div>
       <div class="ml-3 flex items-center space-x-0.5">
@@ -23,9 +23,9 @@
       </div>
       <div
         v-if="valid && characterStore.calculationOptions.armorBreakDisplay"
-        class="ml-3 flex items-baseline border-l border-primary-30 pl-2.5"
+        class="border-primary-30 ml-3 flex items-baseline border-l pl-2.5"
       >
-        <div class="mr-2 text-sm text-blue-30">
+        <div class="text-blue-30 mr-2 text-sm">
           {{ t('character-simulator.character-damage.armor-break') }}
         </div>
         <div class="flex items-center space-x-0.5">
@@ -65,10 +65,10 @@
           :stat-containers="extraContainer.statContainers"
         />
         <div v-else-if="extraContainer.has('dual_element')" class="5 flex items-center py-0 pl-1">
-          <div v-if="extraContainer.has('condition')" class="mr-3 text-sm text-primary-30">
+          <div v-if="extraContainer.has('condition')" class="text-primary-30 mr-3 text-sm">
             {{ extraContainer.get('condition') }}
           </div>
-          <div class="mr-2 text-orange-60">
+          <div class="text-orange-60 mr-2">
             {{ t('skill-query.branch.dual-element-title') }}
           </div>
           <div class="text-violet-60">
@@ -79,7 +79,7 @@
     </div>
     <div
       v-if="detailVisible"
-      class="mt-2 rounded-sm border-2 border-primary-20 bg-white px-3 py-2 text-sm"
+      class="border-primary-20 mt-2 rounded-sm border-2 bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"
@@ -106,7 +106,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
 import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'

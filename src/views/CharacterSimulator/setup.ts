@@ -1,8 +1,8 @@
 import { reactive, shallowReactive, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { defineViewState } from '@/shared/setup/State'
 
 import type { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
 import type { CharacterEquipment } from '@/lib/Character/CharacterEquipment'

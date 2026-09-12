@@ -2,7 +2,7 @@ import { ref, shallowReactive } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 import { lastElement } from '@/shared/utils/array'
 
 import { Character } from '@/lib/Character/Character'

@@ -1,7 +1,11 @@
 import { type Ref, type StyleValue, computed, onUnmounted, watch } from 'vue'
 
-import { type ContextId, getContextIdFromElement, useContext } from '@/shared/setup/ContextState'
-import { defineState } from '@/shared/setup/State'
+import {
+  type ContextId,
+  getContextIdFromElement,
+  useContext,
+} from '@/shared/composables/ContextState'
+import { defineState } from '@/shared/composables/State'
 import { nextFrame } from '@/shared/utils/dom'
 import { toInt } from '@/shared/utils/number'
 

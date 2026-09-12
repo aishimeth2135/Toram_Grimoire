@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'

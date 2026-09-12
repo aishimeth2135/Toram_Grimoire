@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggleList } from '@/shared/setup/State'
+import { useToggleList } from '@/shared/composables/State'
 
 interface Props {
   modelValue: Item[]

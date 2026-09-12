@@ -210,10 +210,10 @@ import {
   EnchantEquipmentTypes,
 } from '@/lib/Enchant/Enchant'
 
-import AutoSave from '@/shared/setup/AutoSave'
-import Confirm from '@/shared/setup/Confirm'
-import ExportBuild from '@/shared/setup/ExportBuild'
-import { useNotify } from '@/shared/setup/Notify'
+import { useAutoSave } from '@/shared/composables/AutoSave'
+import { useConfirm } from '@/shared/composables/Confirm'
+import { useExportBuild } from '@/shared/composables/ExportBuild'
+import { useNotify } from '@/shared/composables/Notify'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -226,7 +226,7 @@ import EnchantStepView from './enchant-step/index.vue'
 import { EnchantSimulatorInjectionKey } from './injection-keys'
 import { type EnchantStatOptionBase } from './setup'
 import EnchantCommonSetting from './enchant-common-setting.vue'
-import { useToggle, useToggleGroup } from '@/shared/setup/State'
+import { useToggle, useToggleGroup } from '@/shared/composables/State'
 
 const selectItemVisible = ref(false)
 const toggleSelectItemVisible = useToggle(selectItemVisible)
@@ -249,7 +249,7 @@ const toggleBottomContents = useToggleGroup([
 const store = useEnchantStore()
 const { t } = useI18n()
 const notify = useNotify()
-const { confirm } = Confirm()
+const { confirm } = useConfirm()
 
 const { enchantBuilds, currentBuild } = (() => {
   const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild } = storeToRefs(store)
@@ -295,7 +295,7 @@ const equipmentTypeOptions = [
   },
 ]
 
-AutoSave({
+useAutoSave({
   save: () => store.save(),
   loadFirst: () => store.init(),
 })
@@ -363,7 +363,7 @@ const copyBuild = () => {
   notify(t('enchant-simulator.tips.copy-build-success'))
 }
 
-const { exportBuild, importBuild } = ExportBuild({
+const { exportBuild, importBuild } = useExportBuild({
   save(handler) {
     const build = currentBuild.value!
     const data = build.save()

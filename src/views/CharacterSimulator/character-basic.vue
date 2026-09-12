@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { Character } from '@/lib/Character/Character'
 

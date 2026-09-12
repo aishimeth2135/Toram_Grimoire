@@ -2,8 +2,8 @@
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useDevice } from '@/shared/setup/Device'
-import { useNotify } from '@/shared/setup/Notify'
+import { useDevice } from '@/shared/composables/Device'
+import { useNotify } from '@/shared/composables/Notify'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'

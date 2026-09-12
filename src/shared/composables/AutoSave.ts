@@ -8,7 +8,7 @@ type AutoSaveOptions = {
   readonly loadFirst: () => void
 }
 
-export default function ({ save, loadFirst }: AutoSaveOptions): void {
+export function useAutoSave({ save, loadFirst }: AutoSaveOptions): void {
   const { t } = useI18n()
   const notify = useNotify()
 

@@ -110,7 +110,7 @@ import { computed, toRefs } from 'vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {

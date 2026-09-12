@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useDevice } from '@/shared/setup/Device'
+import { useDevice } from '@/shared/composables/Device'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 

@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import PageControl from '@/shared/setup/PageControl'
-import { useToggleList } from '@/shared/setup/State'
+import { usePageControl } from '@/shared/composables/PageControl'
+import { useToggleList } from '@/shared/composables/State'
 
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { BagEquipment } from '@/lib/Items/BagItem'
@@ -56,7 +56,7 @@ const selectedStatIds = computed(() => {
   return [selectedStatOption.value.id]
 })
 
-const { currentItems, page, maxPage } = PageControl({
+const { currentItems, page, maxPage } = usePageControl({
   items: searchResults,
   step: 30,
 })

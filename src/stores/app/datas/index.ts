@@ -5,9 +5,9 @@ import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
 import Grimoire from '@/shared/Grimoire'
+import { useNotify } from '@/shared/composables/Notify'
 import { DataPathIds } from '@/shared/services/DataPath'
 import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
-import { useNotify } from '@/shared/setup/Notify'
 
 import CharacterSystem from '@/lib/Character'
 import DamageCalculationSystem from '@/lib/Damage'

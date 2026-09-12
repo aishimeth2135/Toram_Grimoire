@@ -70,10 +70,10 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import AutoSave from '@/shared/setup/AutoSave'
-import Confirm from '@/shared/setup/Confirm'
-import { useLoading, useNotify } from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
+import { useAutoSave } from '@/shared/composables/AutoSave'
+import { useConfirm } from '@/shared/composables/Confirm'
+import { useLoading, useNotify } from '@/shared/composables/Notify'
+import { useToggle } from '@/shared/composables/State'
 
 import { EnchantEquipment, EnchantEquipmentTypes, EnchantStat } from '@/lib/Enchant/Enchant'
 import {
@@ -104,9 +104,9 @@ const store = useEnchantStore()
 const { t } = useI18n()
 const notify = useNotify()
 const loading = useLoading()
-const { confirm } = Confirm()
+const { confirm } = useConfirm()
 
-AutoSave({
+useAutoSave({
   save: () => store.save(),
   loadFirst: () => store.init(),
 })

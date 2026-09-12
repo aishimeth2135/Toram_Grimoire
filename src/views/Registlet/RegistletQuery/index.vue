@@ -71,8 +71,8 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import { registViewStatesCleaning, useToggle } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view.ts'
-import { registViewStatesCleaning, useToggle } from '@/shared/setup/State'
 import { fuzzySearch, prepareFuzzySearch } from '@/shared/utils/data/dataCommon.ts'
 
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'

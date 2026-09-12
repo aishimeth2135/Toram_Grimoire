@@ -80,8 +80,8 @@ import { computed, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
+import { registViewStatesCleaning, useToggle, useToggleGroup } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
-import { registViewStatesCleaning, useToggle, useToggleGroup } from '@/shared/setup/State'
 import { toInt } from '@/shared/utils/number'
 
 import { CharacterEquipment, EquipmentKinds } from '@/lib/Character/CharacterEquipment'

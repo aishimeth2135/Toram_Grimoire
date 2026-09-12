@@ -55,7 +55,7 @@ import { useTemplateRef } from 'vue'
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'
 
-import { useDevice } from '@/shared/setup/Device'
+import { useDevice } from '@/shared/composables/Device'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { AppRouteNames } from '@/router/enums'

@@ -2,8 +2,6 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import '@/assets/css/main.css'
-import Confirm from '@/plugin/Confirm'
-import Notify from '@/plugin/Notify'
 
 import AppView from './App.vue'
 
@@ -31,8 +29,5 @@ initPackages()
 initI18n(app)
 
 useSettingStore().initDocumentElementClassList()
-
-// custom pulgins
-app.use(Notify).use(Confirm)
 
 app.mount('#app')

@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { type Ref, ref, watch } from 'vue'
 
-import { useViewport } from '@/shared/setup/Device'
+import { useViewport } from '@/shared/composables/Device'
 import { debounce } from '@/shared/utils/function'
 
 import RenderSnowWorker from './render-snow?worker'

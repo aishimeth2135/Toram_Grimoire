@@ -1,7 +1,7 @@
 import { type Ref, type WritableComputedRef, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { type CharacterBindingBuild } from '@/lib/Character/Character'
 

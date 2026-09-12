@@ -42,7 +42,7 @@
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
-    <div v-if="detailVisible" class="mt-2 border-2 border-primary-30 bg-white px-3 py-2 text-sm">
+    <div v-if="detailVisible" class="border-primary-30 mt-2 border-2 bg-white px-3 py-2 text-sm">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"
@@ -68,7 +68,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
 import { StatRecorded } from '@/lib/Character/Stat'

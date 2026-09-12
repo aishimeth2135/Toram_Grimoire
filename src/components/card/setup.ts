@@ -1,7 +1,7 @@
 import { type Ref, onUnmounted } from 'vue'
 
-import { getContextIdFromElement, useContext } from '@/shared/setup/ContextState'
-import { defineState } from '@/shared/setup/State'
+import { getContextIdFromElement, useContext } from '@/shared/composables/ContextState'
+import { defineState } from '@/shared/composables/State'
 
 interface CardRowContext {
   item: Ref<any>

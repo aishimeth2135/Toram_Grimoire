@@ -148,8 +148,8 @@ import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import { useNotify } from '@/shared/setup/Notify'
-import { useToggle } from '@/shared/setup/State'
+import { useNotify } from '@/shared/composables/Notify'
+import { useToggle } from '@/shared/composables/State'
 import CY from '@/shared/utils/Cyteria'
 import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'

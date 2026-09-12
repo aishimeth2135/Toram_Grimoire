@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { type Ref, readonly, ref } from 'vue'
 
-import type { MessageNotifyAction, MessageNotifyOptions } from '@/shared/setup/Notify'
+import type { MessageNotifyAction, MessageNotifyOptions } from '@/shared/composables/Notify'
 
 interface NotifyMessageItem {
   icon: string

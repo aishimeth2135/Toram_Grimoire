@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, useTemplateRef } from 'vue'
 
-import PageControl from '@/shared/setup/PageControl'
+import { usePageControl } from '@/shared/composables/PageControl'
 
 import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
 
@@ -38,7 +38,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { currentItems, page, maxPage } = PageControl({
+const { currentItems, page, maxPage } = usePageControl({
   items: computed(() => props.traitItems),
   step: 30,
 })

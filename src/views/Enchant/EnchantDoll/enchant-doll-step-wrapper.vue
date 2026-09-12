@@ -18,7 +18,7 @@
 import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 
 import { EnchantDollInjectionKey } from './injection-keys'
 import { StepIds } from './setup'

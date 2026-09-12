@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, reactive, readonly, ref } from 'vue'
 import { type Composer } from 'vue-i18n'
 
+import { useNotify } from '@/shared/composables/Notify'
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
-import { useNotify } from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 import { toInt } from '@/shared/utils/number'
 

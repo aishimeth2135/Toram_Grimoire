@@ -4,7 +4,7 @@ import { type Ref, computed, ref } from 'vue'
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-import { useNotify } from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/composables/Notify'
 import CY from '@/shared/utils/Cyteria'
 
 import { EnchantBuild, type EnchantBuildSaveData } from '@/lib/Enchant/Enchant'

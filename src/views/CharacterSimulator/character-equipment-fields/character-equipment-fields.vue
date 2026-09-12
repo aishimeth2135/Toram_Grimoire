@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import { useDevice } from '@/shared/setup/Device'
+import { useDevice } from '@/shared/composables/Device'
 
 import { EquipmentField, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'

@@ -132,7 +132,7 @@
 import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useToggle } from '@/shared/setup/State'
+import { useToggle } from '@/shared/composables/State'
 
 import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
