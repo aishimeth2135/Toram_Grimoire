@@ -41,7 +41,7 @@ export function findStat(target: StatOption, stats: StatRestriction[]) {
   return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
 }
 
-function dyeConvert(value: string): (number | null)[] {
+export function dyeConvert(value: string): (number | null)[] {
   value = value.toLowerCase()
   const categoryMapping = ['a', 'b', 'c']
   const result: (number | null)[] = [null, null, null]
@@ -71,7 +71,13 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): BagItemOb
   }
   return obtains.filter(obtain => {
     const data = dyeConvert(obtain['dye']!)
-    return data.every((item, idx) => searchData[idx] === null || item === searchData[idx])
+    return data.some((item, idx) => {
+      const searchValue = searchData[idx]
+      if (searchValue === null) {
+        return false
+      }
+      return searchValue === 0 ? item !== null : item === searchValue
+    })
   })
 }
 

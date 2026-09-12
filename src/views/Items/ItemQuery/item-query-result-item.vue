@@ -238,16 +238,10 @@
                     <cy-icon :icon="data.icon" small class="text-primary-30" />
                     {{ data.type }}
                   </div>
-                  <span class="text-fuchsia-60">{{ data.name }}</span>
+                  <span class="text-primary-90">{{ data.name }}</span>
                 </div>
                 <div v-if="data.dye || data.map" class="mt-1 flex items-center">
-                  <div
-                    v-if="data.dye"
-                    class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm"
-                  >
-                    <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
-                    {{ data.dye }}
-                  </div>
+                  <ItemQueryDyeDisplay v-if="data.dye" :dye="data.dye" />
                   <div
                     v-if="data.map"
                     class="gap-icon ml-3 inline-flex shrink-0 items-center text-sm text-gray-50"
@@ -266,7 +260,7 @@
       </div>
       <div
         v-else-if="state.currentMode === 'dye'"
-        class="border-primary-30 mb-3 ml-4 border-l-4 border-solid pl-2"
+        class="border-primary-60 ml-5.5 mb-2 border-l pl-2"
       >
         <div class="divide-primary-20 divide-y">
           <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
@@ -275,21 +269,15 @@
                 <cy-icon :icon="item.icon" small class="text-primary-30" />
                 {{ item.type }}
               </div>
-              <span class="text-fuchsia-60">{{ item.name }}</span>
+              <span class="text-primary-90">{{ item.name }}</span>
             </div>
             <div class="mt-1 flex items-center">
-              <div
-                v-if="item.dye"
-                class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm"
-              >
-                <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
-                {{ item.dye }}
-              </div>
+              <ItemQueryDyeDisplay v-if="item.dye" :dye="item.dye" />
               <div
                 v-if="item.map"
-                class="gap-icon ml-3 inline-flex shrink-0 items-center text-sm text-gray-50"
+                class="text-gray-60 ml-3 inline-flex shrink-0 items-center gap-1 text-sm"
               >
-                <cy-icon icon="ic-outline-map" small class="text-gray-20" />
+                <cy-icon icon="ic-outline-map" small class="text-gray-40" />
                 {{ item.map }}
               </div>
             </div>
@@ -313,6 +301,8 @@ import { type BagItemObtain } from '@/lib/Items/BagItem'
 
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
+
+import ItemQueryDyeDisplay from './item-query-dye-display.vue'
 
 import { useDyeSearchMode } from './modes/dye'
 import { useStatSearchMode } from './modes/stat'

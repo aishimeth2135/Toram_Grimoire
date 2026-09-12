@@ -2,9 +2,12 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { DYE_COLOR_LIST } from '@/lib/Items/Dye/DyeColors'
+
+import DyeColorButton from '@/components/common/dye-color-button.vue'
 import CommonSearchableItemsPopover from '@/views/CharacterSimulator/common/common-searchable-items-popover.vue'
 
-import { useDyeSearchMode } from './modes/dye'
+import { type DyePart, useDyeSearchMode } from './modes/dye'
 import { useItemLevelSearchMode } from './modes/item-level'
 import { useNormalSearchMode } from './modes/normal'
 import { useStatSearchMode } from './modes/stat'
@@ -39,6 +42,11 @@ const statsSearchResult = computed(() => {
   return statMode.state.stats.filter(stat => stat.text.toLowerCase().includes(searchText))
 })
 const selectedStatIds = computed(() => statMode.state.currentStats.map(stat => stat.id))
+const dyeParts: { id: DyePart; icon: string }[] = [
+  { id: 'A', icon: 'mdi:alpha-a' },
+  { id: 'B', icon: 'mdi:alpha-b' },
+  { id: 'C', icon: 'mdi:alpha-c' },
+]
 
 function selectStat(stat: StatOption) {
   const searchStats = statMode.state.currentStats
@@ -152,22 +160,50 @@ function selectMode(id: SearchMode) {
           />
         </div>
       </template>
-      <div v-else-if="state.currentMode === 'dye'" class="flex w-full items-center pl-2.5 pr-2">
-        <div class="relative flex w-full items-center">
-          <cy-icon icon="ic-outline-search" class="shrink-0" />
-          <input
-            v-model="dyeMode.state.searchText"
-            type="text"
-            class="grow border-0 px-2 py-2"
-            :placeholder="t('global.search')"
-          />
+      <div v-else-if="state.currentMode === 'dye'" class="flex w-full items-center px-2">
+        <cy-popover placement="top-start">
+          <div class="mr-3 flex cursor-pointer items-center py-1.5">
+            <cy-icon icon="ic-outline-palette" class="mr-2 shrink-0" />
+            <DyeColorButton :color="dyeMode.state.color" class="h-7 w-10" />
+          </div>
+          <template #popper="{ hide }">
+            <div class="p-1.5">
+              <div class="m-0.5 mb-1.5">
+                <DyeColorButton
+                  :color="0"
+                  class="h-7 w-10"
+                  @click="(dyeMode.selectColor(0), hide())"
+                />
+              </div>
+              <div class="grid grid-cols-5">
+                <DyeColorButton
+                  v-for="(color, index) in DYE_COLOR_LIST"
+                  :key="color + index"
+                  :color="index + 1"
+                  class="m-0.5 h-7 w-10"
+                  @click="(dyeMode.selectColor(index + 1), hide())"
+                />
+              </div>
+            </div>
+          </template>
+        </cy-popover>
+        <div class="border-primary-20 space-x-1 border-l py-1.5 pl-2">
+          <button
+            v-for="part in dyeParts"
+            :key="part.id"
+            type="button"
+            class="hover:bg-primary-10 border-primary-20 cursor-pointer border px-2"
+            :class="{ 'border-primary-60': dyeMode.state.parts.includes(part.id) }"
+            @click="dyeMode.togglePart(part.id)"
+          >
+            <cy-icon
+              :icon="part.icon"
+              class="text-primary-30"
+              width="1.5rem"
+              :class="{ 'text-primary-60': dyeMode.state.parts.includes(part.id) }"
+            />
+          </button>
         </div>
-        <cy-button-icon
-          :class="{ invisible: dyeMode.state.searchText === '' }"
-          class="shrink-0"
-          icon="mdi:close-circle"
-          @click="dyeMode.state.searchText = ''"
-        />
       </div>
     </div>
   </div>

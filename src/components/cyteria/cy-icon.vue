@@ -17,8 +17,7 @@ const iconStyle = computed(() => {
     return null
   }
   return {
-    width: props.width,
-    height: props.width,
+    '--icon-size': props.width,
   }
 })
 
