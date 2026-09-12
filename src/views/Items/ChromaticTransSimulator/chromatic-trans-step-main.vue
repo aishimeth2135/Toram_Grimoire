@@ -119,6 +119,9 @@ watch(
         <h3 class="text-primary-60 text-sm">{{ t('chromatic-trans-simulator.preview') }}</h3>
         <ChromaticTransColorTable :pool="preview.pool" />
         <ChromaticTransGrayscaleTable v-if="preview.white || preview.black" :pool="preview.pool" />
+        <div v-if="step.lockedColor !== null" class="text-red-60 mt-3 text-sm">
+          {{ t('chromatic-trans-simulator.color-table-lock-tips') }}
+        </div>
         <div class="mt-4">
           <h3 class="text-primary-60 mb-2.5 text-sm">
             {{ t('chromatic-trans-simulator.pool') }}
