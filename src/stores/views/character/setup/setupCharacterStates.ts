@@ -2,7 +2,7 @@ import { ref, shallowReactive } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 import { lastElement } from '@/shared/utils/array'
 
 import { Character } from '@/lib/Character/Character'
@@ -166,11 +166,12 @@ export function setupCharacters() {
 }
 
 export function setupEquipments(currentCharacter: Ref<Character>) {
+  const notify = useNotify()
   const equipments: Ref<CharacterEquipment[]> = ref([])
 
   const appendEquipment = (equip: CharacterEquipment, index = -1, checkLimit = true) => {
     if (checkLimit && equipments.value.length >= CHARACTER_SIMULATOR_EQUIPMENT_LIMIT) {
-      Notify().notify(
+      notify(
         Grimoire.i18n.t('character-simulator.build-limit-reached', {
           num: CHARACTER_SIMULATOR_EQUIPMENT_LIMIT,
         })
@@ -187,7 +188,7 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
 
   const appendEquipments = (eqs: CharacterEquipment[], index = -1, checkLimit = true) => {
     if (checkLimit && equipments.value.length + eqs.length > CHARACTER_SIMULATOR_EQUIPMENT_LIMIT) {
-      Notify().notify(
+      notify(
         Grimoire.i18n.t('character-simulator.build-limit-reached', {
           num: CHARACTER_SIMULATOR_EQUIPMENT_LIMIT,
         })

@@ -1,32 +1,38 @@
 import { useLoadingStore } from '@/stores/app/loading'
 import { useNotifyStore } from '@/stores/app/notify'
 
-interface MessageNotifyButtonItem {
-  text: string
-  click: () => void
-  removeMessageAfterClick: boolean
+interface MessageNotifyAction {
+  label: string
+  onClick: () => boolean | void
+  dismissOnClick?: boolean
 }
 
 interface MessageNotifyOptions {
-  buttons?: MessageNotifyButtonItem[]
-  afterHide?: () => void
+  icon?: string
+  id?: string
+  actions?: MessageNotifyAction[]
+  onDismiss?: () => void
+}
+
+interface MessageNotifyUndoOptions extends Omit<MessageNotifyOptions, 'actions'> {
+  label: string
+  onUndo: () => boolean | void
 }
 
 let notifyStore: ReturnType<typeof useNotifyStore>
-function MessageNotify(
-  message: string,
-  icon: string | MessageNotifyOptions = 'bx-bx-message-rounded-dots',
-  id: string | null = null,
-  options: MessageNotifyOptions = {}
-): void {
+function MessageNotify(message: string, options: MessageNotifyOptions = {}): void {
   if (!notifyStore) {
     notifyStore = useNotifyStore()
   }
-  if (typeof icon === 'object') {
-    options = icon
-    icon = 'bx-bx-message-rounded-dots'
-  }
-  notifyStore.createMessage({ message, icon, id, options })
+  notifyStore.createMessage({ message, ...options })
+}
+
+MessageNotify.undo = (message: string, options: MessageNotifyUndoOptions): void => {
+  const { label, onUndo, ...notifyOptions } = options
+  MessageNotify(message, {
+    ...notifyOptions,
+    actions: [{ label, onClick: onUndo }],
+  })
 }
 
 let loadingStore: ReturnType<typeof useLoadingStore>
@@ -45,11 +51,12 @@ const LoadingHandler = {
   },
 }
 
-export default function () {
-  return {
-    notify: MessageNotify,
-    loading: LoadingHandler,
-  }
+export function useNotify() {
+  return MessageNotify
 }
 
-export type { MessageNotifyButtonItem, MessageNotifyOptions }
+export function useLoading() {
+  return LoadingHandler
+}
+
+export type { MessageNotifyAction, MessageNotifyOptions, MessageNotifyUndoOptions }

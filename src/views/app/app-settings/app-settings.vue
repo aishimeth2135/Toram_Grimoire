@@ -143,7 +143,7 @@ import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts/route'
-import Notify from '@/shared/setup/Notify'
+import { useLoading, useNotify } from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
 import { AppRouteNames } from '@/router/enums'
@@ -193,7 +193,8 @@ const fallbackLanguage = computed<number>({
   },
 })
 
-const { notify, loading } = Notify()
+const notify = useNotify()
+const loading = useLoading()
 
 const swUpdate = async () => {
   loading.show()

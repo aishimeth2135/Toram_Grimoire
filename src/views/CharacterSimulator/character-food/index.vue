@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
@@ -19,7 +19,7 @@ defineOptions({
 })
 
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 
 const characterStore = useCharacterStore()
 const foodStore = useCharacterFoodStore()
@@ -49,25 +49,16 @@ const removeSelectedFoodBuild = () => {
   const from = selectedBuild.value
   const idx = foodStore.removeFoodBuild(from)
   selectedBuild.value = foodBuilds.value[idx]
-  notify(
-    t('character-simulator.food-build.remove-food-build-success-tips'),
-    'ic-round-delete',
-    null,
-    {
-      buttons: [
-        {
-          text: t('global.recovery'),
-          click: () => {
-            if (!foodStore.appendFoodBuild(from)) {
-              return
-            }
-            notify(t('character-simulator.food-build.restore-food-build-success-tips'))
-          },
-          removeMessageAfterClick: true,
-        },
-      ],
-    }
-  )
+  notify.undo(t('character-simulator.food-build.remove-food-build-success-tips'), {
+    icon: 'ic-round-delete',
+    label: t('global.recovery'),
+    onUndo: () => {
+      if (!foodStore.appendFoodBuild(from)) {
+        return false
+      }
+      notify(t('character-simulator.food-build.restore-food-build-success-tips'))
+    },
+  })
 }
 
 const disableAll = computed<boolean>({

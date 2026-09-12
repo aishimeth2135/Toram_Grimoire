@@ -213,7 +213,7 @@ import {
 import AutoSave from '@/shared/setup/AutoSave'
 import Confirm from '@/shared/setup/Confirm'
 import ExportBuild from '@/shared/setup/ExportBuild'
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -248,7 +248,7 @@ const toggleBottomContents = useToggleGroup([
 
 const store = useEnchantStore()
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 const { confirm } = Confirm()
 
 const { enchantBuilds, currentBuild } = (() => {

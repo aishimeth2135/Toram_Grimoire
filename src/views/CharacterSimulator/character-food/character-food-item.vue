@@ -16,7 +16,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 
 import { Food, FoodsBuild } from '@/lib/Character/FoodBuild'
 
@@ -30,7 +30,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 
 const foodLevelRange = [0, 10]
 

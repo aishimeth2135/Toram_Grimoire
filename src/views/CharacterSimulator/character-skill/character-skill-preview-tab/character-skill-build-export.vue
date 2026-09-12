@@ -3,7 +3,7 @@ import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDevice } from '@/shared/setup/Device'
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
@@ -17,7 +17,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const { t } = useI18n()
-const { notify } = Notify()
+const notify = useNotify()
 const { device } = useDevice()
 
 const visible = ref(false)
@@ -72,7 +72,7 @@ const downloadImage = () => {
       v-model:visible="visible"
       :title="t('character-simulator.skill-build.export-buile-title')"
     >
-      <div class="h-full w-full p-4 wd:flex">
+      <div class="wd:flex h-full w-full p-4">
         <cy-tabs
           v-model="currentExportMode"
           :class="device.isWide ? 'mr-6 min-w-[8rem]' : 'mb-6'"
@@ -91,7 +91,7 @@ const downloadImage = () => {
         >
           <div class="mb-4 flex">
             <cy-button-circle icon="mdi:content-copy" small @click="copyText" />
-            <div class="flex min-h-full items-center px-4 text-sm text-primary-50">
+            <div class="text-primary-50 flex min-h-full items-center px-4 text-sm">
               {{ t('character-simulator.skill-build.export-text-caption') }}
             </div>
           </div>
@@ -103,7 +103,7 @@ const downloadImage = () => {
         >
           <div class="mb-4 flex">
             <cy-button-circle icon="mdi:download" small @click="downloadImage" />
-            <div class="space-y-2 px-4 text-sm text-primary-50">
+            <div class="text-primary-50 space-y-2 px-4 text-sm">
               <div>
                 {{ t('character-simulator.skill-build.export-image-caption.0') }}
               </div>

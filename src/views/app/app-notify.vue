@@ -1,30 +1,30 @@
 <template>
   <teleport to="#app-notify">
-    <div class="fixed bottom-14 right-5 z-100 w-80" style="max-width: calc(100vw - 2rem)">
+    <div class="z-100 fixed bottom-14 right-5 w-80" style="max-width: calc(100vw - 2rem)">
       <transition-group name="fade-slide">
         <div
           v-for="msg in store.messages"
           :key="msg.iid"
-          class="relative mt-4 flex w-full flex-wrap items-center rounded-sm bg-primary-90 p-3 text-white duration-300"
+          class="bg-primary-90 relative mt-4 flex w-full flex-wrap items-center rounded-sm p-3 text-white duration-300"
         >
           <span
             v-if="msg.counter > 1"
-            class="absolute -right-4 -top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-solid border-primary-30 bg-primary-90 text-primary-30"
+            class="border-primary-30 bg-primary-90 text-primary-30 absolute -right-4 -top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-solid"
           >
             <span>{{ msg.counter }}</span>
           </span>
           <div class="inline-flex items-center">
-            <cy-icon :icon="msg.icon" class="mr-3 text-primary-5" />
+            <cy-icon :icon="msg.icon" class="text-primary-5 mr-3" />
             {{ msg.message }}
           </div>
-          <div v-if="msg.options.buttons?.length !== 0">
+          <div v-if="msg.options.actions?.length">
             <span
-              v-for="btn in msg.options.buttons"
-              :key="btn.iid"
-              class="ml-3 cursor-pointer text-right text-primary-30 hover:text-primary-30"
-              @click="messageButtonClick(msg, btn)"
+              v-for="action in msg.options.actions"
+              :key="action.iid"
+              class="text-primary-30 hover:text-primary-30 ml-3 cursor-pointer text-right"
+              @click="messageActionClick(msg, action)"
             >
-              {{ btn.text || '|' + btn.iid + '|' }}
+              {{ action.label }}
             </span>
           </div>
         </div>
@@ -35,13 +35,13 @@
 
 <script lang="ts" setup>
 import { useNotifyStore } from '@/stores/app/notify'
-import type { MessageNotifyButtonItemWithId, NotifyMessageItem } from '@/stores/app/notify'
+import type { MessageNotifyActionWithId, NotifyMessageItem } from '@/stores/app/notify'
 
 const store = useNotifyStore()
 
-const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItemWithId) => {
-  btn?.click()
-  if (btn.removeMessageAfterClick) {
+const messageActionClick = (msg: NotifyMessageItem, action: MessageNotifyActionWithId) => {
+  const shouldDismiss = action.onClick() !== false
+  if (shouldDismiss && action.dismissOnClick !== false) {
     store.removeMessage(msg)
   }
 }
@@ -49,11 +49,11 @@ const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItem
 
 <style scoped>
 .fade-slide-enter-from {
-  opacity: 0;
   transform: translateX(-30%);
+  opacity: 0;
 }
 .fade-slide-leave-to {
-  opacity: 0;
   transform: translateX(30%);
+  opacity: 0;
 }
 </style>

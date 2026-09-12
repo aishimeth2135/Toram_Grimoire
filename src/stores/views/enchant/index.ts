@@ -4,7 +4,7 @@ import { type Ref, computed, ref } from 'vue'
 import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
-import Notify from '@/shared/setup/Notify'
+import { useNotify } from '@/shared/setup/Notify'
 import CY from '@/shared/utils/Cyteria'
 
 import { EnchantBuild, type EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
@@ -121,7 +121,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       resetConfig(origin.config)
       if (!hasFirstLoaded) {
         saveDisabled = true
-        const { notify } = Notify()
+        const notify = useNotify()
         notify(Grimoire.i18n.t('enchant-simulator.tips.first-load-failed-tips'))
       }
     }

@@ -72,7 +72,7 @@ import { useEnchantStore } from '@/stores/views/enchant'
 
 import AutoSave from '@/shared/setup/AutoSave'
 import Confirm from '@/shared/setup/Confirm'
-import Notify from '@/shared/setup/Notify'
+import { useLoading, useNotify } from '@/shared/setup/Notify'
 import { useToggle } from '@/shared/setup/State'
 
 import { EnchantEquipment, EnchantEquipmentTypes, EnchantStat } from '@/lib/Enchant/Enchant'
@@ -102,7 +102,8 @@ const selectItemVisible = ref(false)
 const toggleSelectItemVisible = useToggle(selectItemVisible)
 const store = useEnchantStore()
 const { t } = useI18n()
-const { notify, loading } = Notify()
+const notify = useNotify()
+const loading = useLoading()
 const { confirm } = Confirm()
 
 AutoSave({
