@@ -24,6 +24,14 @@ const dyeMode = useDyeSearchMode()
 
 const allColorList = getAllColorList()
 
+const colorList1 = allColorList.filter(color => color.colorNumber <= 5)
+const colorList2 = allColorList
+  .filter(color => color.colorNumber > 5)
+  .sort(
+    (colorA, colorB) =>
+      getDyeColorDisplayOrder(colorA.colorNumber) - getDyeColorDisplayOrder(colorB.colorNumber)
+  )
+
 const currentModeOption = computed(() =>
   searchModeOptions.find(option => option.id === state.currentMode)
 )
@@ -49,6 +57,15 @@ const dyeParts: { id: DyePart; icon: string }[] = [
   { id: 'B', icon: 'mdi:alpha-b' },
   { id: 'C', icon: 'mdi:alpha-c' },
 ]
+
+function getDyeColorDisplayOrder(colorNumber: number): number {
+  if (colorNumber <= 5) {
+    return colorNumber
+  }
+
+  const colorIndex = colorNumber - 6
+  return 6 + (colorIndex % 16) * 5 + Math.floor(colorIndex / 16)
+}
 
 function selectStat(stat: StatOption) {
   const searchStats = statMode.state.currentStats
@@ -170,16 +187,25 @@ function selectMode(id: SearchMode) {
           </div>
           <template #popper="{ hide }">
             <div class="p-1.5">
-              <div class="m-0.5 mb-1.5">
+              <div class="p-0.5">
                 <DyeColorButton
                   :color="0"
                   class="h-7 w-10"
                   @click="(dyeMode.selectColor(0), hide())"
                 />
               </div>
-              <div class="grid grid-cols-5">
+              <div class="mt-1.5 grid grid-cols-5 gap-0.5 px-0.5">
                 <DyeColorButton
-                  v-for="{ colorNumber } in allColorList"
+                  v-for="{ colorNumber } in colorList1"
+                  :key="colorNumber"
+                  :color="colorNumber"
+                  class="h-7 w-10"
+                  @click="(dyeMode.selectColor(colorNumber), hide())"
+                />
+              </div>
+              <div class="mt-1.5 grid grid-cols-5">
+                <DyeColorButton
+                  v-for="{ colorNumber } in colorList2"
                   :key="colorNumber"
                   :color="colorNumber"
                   class="m-0.5 h-7 w-10"

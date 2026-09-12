@@ -109,7 +109,6 @@ watch(
               />
             </CardRows>
           </CardRowsWrapper>
-          <cy-tips></cy-tips>
           <p v-if="group.id === 'grayscale'" class="text-gray-40 mt-2 px-1 text-sm">
             {{ t('chromatic-trans-simulator.grayscale-tips') }}
           </p>
