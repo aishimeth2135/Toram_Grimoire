@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLocaleStore } from './locale'
 
-const version = '5.3.2'
+const version = '5.4.2'
 
 export const useMainStore = defineStore('app-main', () => {
   type ServiceWorkerUpdateHandler = (reloadPage?: boolean) => Promise<void>

@@ -12,7 +12,7 @@ description: 在 Toram Grimoire 專案建立新頁面的基本框架，包含 Vu
 - 分類名稱 `CategoryName`：獨立指定，用於 views 與 router 的分類資料夾及父路由名稱。新增分類沿用 PascalCase；既有分類使用實際名稱。
 - 頁面名稱 `PageName`：必須由使用者指定 PascalCase 名稱，例如 `RegistletQuery`。不從中文標題推測，也不默默修正不合法的命名。
 - 頁面標題：必須由使用者提供繁體中文顯示文字。
-- 首頁分組：依目前首頁的實作，需指定加入哪個分組。現有分組為 `query`、`character`、`enchant`、`other`；分類資料夾名稱與首頁分組是不同概念。
+- 首頁分組：依目前首頁的實作，需指定加入哪個分組。現有分組為 `main`、`query`、`other`；分類資料夾名稱與首頁分組是不同概念。
 
 缺少輸入或命名有歧義時，先彙整詢問，再進行依賴該答案的修改。圖示固定預設為 `mdi:book-outline`，留給人工後續調整，不必要求提供。
 
@@ -32,7 +32,7 @@ description: 在 Toram Grimoire 專案建立新頁面的基本框架，包含 Vu
 | LocaleViewNamespaces | `PageName: 'page-kebab'`                               |
 | 標題 ID              | `app.page-title.page-kebab`                            |
 
-若分類與頁面同名，父子路由名稱會衝突，需詢問父路由名稱，不自行加 `Base`。若分類已存在，保留原有父路由與所有 children，詢問新頁面的 child path，不搶占既有空路徑或重建該分類。
+若分類與頁面同名，父子路由名稱會衝突，需詢問父路由名稱，不自行加 `Base`。若分類已存在，保留原有父路由與所有 children，詢問新頁面的 child path，不搶占既有空路徑或重建該分類。新增的 child 加在尾端。
 
 ## 實作流程
 

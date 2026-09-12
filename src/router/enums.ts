@@ -10,6 +10,7 @@ export const AppRouteNames = {
   Items: 'items',
   ItemQuery: 'ItemQuery',
   CrystalQuery: 'CrystalQuery',
+  ChromaticTransSimulator: 'ChromaticTransSimulator',
 
   Enchant: 'Enchant',
   EnchantSimulator: 'EnchantSimulator',

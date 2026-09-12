@@ -11,13 +11,18 @@ import { AppRouteNames } from '../enums'
 
 const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
 const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
+const ChromaticTransSimulatorView = () => import('@/views/Items/ChromaticTransSimulator/index.vue')
 
 export default {
   name: AppRouteNames.Items,
   path: '/items',
   component: ViewWrapper,
   beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.ItemQuery, LocaleViewNamespaces.CrystalQuery)
+    PrepareLocaleInit(
+      LocaleViewNamespaces.ItemQuery,
+      LocaleViewNamespaces.CrystalQuery,
+      LocaleViewNamespaces.ChromaticTransSimulator
+    )
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
@@ -31,6 +36,11 @@ export default {
         title: 'app.page-title.crystal-query',
         icon: 'bx-bx-cube-alt',
         pathName: AppRouteNames.CrystalQuery,
+      },
+      {
+        title: 'app.page-title.chromatic-trans-simulator',
+        icon: 'ic-outline-palette',
+        pathName: AppRouteNames.ChromaticTransSimulator,
       },
     ],
   },
@@ -49,6 +59,14 @@ export default {
       component: CrystalQueryView,
       meta: {
         title: 'app.page-title.crystal-query',
+      },
+    },
+    {
+      name: AppRouteNames.ChromaticTransSimulator,
+      path: 'chromatic-trans',
+      component: ChromaticTransSimulatorView,
+      meta: {
+        title: 'app.page-title.chromatic-trans-simulator',
       },
     },
   ],

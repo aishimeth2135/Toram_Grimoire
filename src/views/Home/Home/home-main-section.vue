@@ -52,6 +52,7 @@ const groups = (() => {
     {
       id: 'other',
       links: _handle([
+        AppRouteNames.ChromaticTransSimulator,
         AppRouteNames.EnchantSimulator,
         AppRouteNames.GlossaryQuery,
         AppRouteNames.DamageCalculation,

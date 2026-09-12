@@ -30,7 +30,7 @@ const rootClass = computed(() => {
 <template>
   <button
     type="button"
-    class="cursor-pointer border leading-7"
+    class="flex cursor-pointer items-center justify-center border"
     :class="rootClass"
     :style="{ backgroundColor }"
   >

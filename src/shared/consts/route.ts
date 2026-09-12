@@ -17,6 +17,11 @@ export interface RouteLinkData {
 
 export const ROUTE_LINK_DATAS: RouteLinkData[] = [
   {
+    name: 'chromatic-trans-simulator',
+    icon: 'ic-outline-palette',
+    pathName: AppRouteNames.ChromaticTransSimulator,
+  },
+  {
     name: 'skill-query',
     icon: 'ic-outline-menu-book',
     pathName: AppRouteNames.SkillQuery,

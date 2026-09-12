@@ -1,0 +1,37 @@
+step: '步驟 {step}'
+optional: 可選
+expand: 展開
+collapse: 收合
+reset-steps: 重置所有步驟
+base: 選擇基礎顏色
+shade: 淡化/變深
+grayscale: 新增灰階
+grayscale-tips: 新增灰階也附帶淡化或變深。
+narrow: 縮小範圍
+mix: 混色
+preview: 步驟預覽
+pool: 顏色池
+empty: 請先選擇基礎顏色。
+result-title: 最終結果
+gems:
+  ruby: 紅寶石
+  garnet: 石榴
+  red-agate: 紅瑪瑙
+  topaz: 黃玉
+  citrine: 黃水晶
+  peridot: 翠綠橄欖石
+  emerald: 祖母綠
+  beryl: 綠柱石
+  sapphire: 藍寶石
+  zircon: 鋯石
+  rose-quartz: 粉晶
+  lapis-lazuli: 青金岩
+  onyx: 黑瑪瑙
+  amethyst: 紫水晶
+  red-quartz: 紅水晶
+  tourmaline: 電氣石
+  cat-eye: 貓眼石
+  moonstone: 月長石
+  pearl: 珍珠
+  obsidian: 黑曜石
+  diamond: 鑽石
