@@ -123,5 +123,3 @@ features:
   copy-to-clipboard-success-tips: 已复制文本至剪贴簿。
   copy-url-to-clipboard-success-tips: 已复制网址至剪贴簿。
   localStorage-inavailable-tips: 此浏览器版本无法使用内建储存功能。
-notices:
-  enchant-refactor: 由于附魔系统的更新，如果遇到错误请到「设定」里进行「清除资料库快取」，资料库重新下载后附魔系统就能正常运作。

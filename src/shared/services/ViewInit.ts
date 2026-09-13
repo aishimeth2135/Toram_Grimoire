@@ -57,18 +57,21 @@ export async function ViewInitSlient(...inits: DataStoreIds[]) {
 
 export async function ViewInit(...inits: DataStoreIds[]) {
   const initializeStore = useInitializeStore()
+
+  const forceSkip = initializeStore.checkSkippable(inits) && initializeStore.isDeferred
+  if (inits.length === 0 || forceSkip) {
+    await initializeStore.startInitLocale()
+    initializeStore.emitInitSkipped()
+    await nextTick()
+    return
+  }
+
   const datasStore = useDatasStore()
 
   initializeStore.initState()
   await nextTick()
 
-  if (inits.length === 0) {
-    await initializeStore.startInitLocale()
-    initializeStore.skipInit()
-    return
-  }
-
-  const logger = new CommonLogger('Init')
+  const initLogger = new CommonLogger('Init')
 
   const initItems = inits.map(id => {
     const loaded = datasStore.checkLoaded(id)
@@ -76,7 +79,7 @@ export async function ViewInit(...inits: DataStoreIds[]) {
       ? Promise.resolve(() => Promise.resolve())
       : datasStore.prepareDataStore(id)
     if (!loaded) {
-      logger.addTitle(id).info('Loading...')
+      initLogger.addTitle(id).info('Loading...')
     }
     const message = 'app.loading-message.' + id
     return { id, promise, message, loaded } as ViewInitItem
@@ -88,7 +91,7 @@ export async function ViewInit(...inits: DataStoreIds[]) {
   await Promise.all(
     finishedInitItems.map(async item => {
       await item.init()
-      logger.addTitle(item.id).info('Loading finished.')
+      initLogger.addTitle(item.id).info('Loading finished.')
       datasStore.loadFinished(item.id)
     })
   )
@@ -98,8 +101,13 @@ export async function ViewInit(...inits: DataStoreIds[]) {
   }
 
   await initializeStore.startInitLocale()
+  initializeStore.emitInitBeforeFinished()
+}
 
-  await initializeStore.initBeforeFinished()
+export async function ViewInitDeferred(...inits: DataStoreIds[]) {
+  const initializeStore = useInitializeStore()
+  initializeStore.markNextIsDeferred()
+  await ViewInit(...inits)
 }
 
 export function PrepareLocaleInit(...namespaces: LocaleViewNamespaces[]) {

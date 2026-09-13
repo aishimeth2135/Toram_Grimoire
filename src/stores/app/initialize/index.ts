@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { DataStoreIds } from '../datas'
 import { useLocaleStore } from '../locale'
 import { LocaleViewNamespaces } from '../locale/enums'
@@ -17,9 +19,11 @@ interface InitItemWithStatus extends InitItem {
 }
 
 export const useInitializeStore = defineStore('app-initialize', () => {
+  const initedDataStores = new Set<DataStoreIds>()
   const initItems = ref<InitItemWithStatus[]>([])
   const initLocaleNamespaces = ref<LocaleViewNamespaces[]>([])
   const status = ref<InitializeStatus>(InitializeStatus.ViewLoading)
+  const nextIsDeferred = ref(false)
 
   const appendInitItems = ({ id, message, promise }: InitItem) => {
     initItems.value.push({
@@ -30,27 +34,38 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     })
   }
 
+  const checkSkippable = (dataStoreIds: DataStoreIds[]) => {
+    return dataStoreIds.every(id => initedDataStores.has(id))
+  }
+
   const initState = () => {
     status.value = InitializeStatus.ViewLoading
     initItems.value = []
   }
 
-  const initBeforeFinished = async () => {
+  const clearInitStates = () => {
+    nextIsDeferred.value = false
+  }
+
+  const emitInitBeforeFinished = () => {
     status.value = InitializeStatus.BeforeFinished
   }
 
-  const initFinished = () => {
+  const emitInitFinished = () => {
     if (status.value !== InitializeStatus.BeforeFinished) {
-      throw new Error(
-        `[ViewInit] Unknow error. The status should be 101 instead of ${status.value}`
-      )
+      CommonLogger.warn('ViewInit', 'Unexpected status in initFinished.')
     }
     status.value = InitializeStatus.Finished
+    initItems.value.forEach(item => {
+      initedDataStores.add(item.id)
+    })
     initItems.value = []
+    clearInitStates()
   }
 
-  const skipInit = () => {
+  const emitInitSkipped = () => {
     status.value = InitializeStatus.Finished
+    clearInitStates()
   }
 
   const startInit = async () => {
@@ -95,18 +110,26 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     status.value = InitializeStatus.LocaleSuccess
   }
 
+  const markNextIsDeferred = () => {
+    nextIsDeferred.value = true
+  }
+
   return {
     initItems: readonly(initItems),
     status: readonly(status),
+    isDeferred: readonly(nextIsDeferred),
 
     appendInitItems,
     initState,
-    initBeforeFinished,
-    initFinished,
-    skipInit,
+    emitInitBeforeFinished,
+    emitInitFinished,
+    emitInitSkipped,
     startInit,
 
     appendLoadLocaleNamespace,
     startInitLocale,
+
+    checkSkippable,
+    markNextIsDeferred,
   }
 })

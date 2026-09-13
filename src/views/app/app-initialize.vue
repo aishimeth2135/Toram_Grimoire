@@ -2,51 +2,62 @@
   <div
     v-if="status !== InitializeStatus.Finished"
     class="z-100 fixed left-0 top-0 flex size-full items-center justify-center bg-white py-4"
+    :class="{ 'bg-white/50': isDeferred }"
   >
-    <HomeBackgroud />
-    <div class="relative flex w-full flex-col items-center">
-      <div class="flex size-32 items-center justify-center rounded-full bg-white/50">
-        <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
-      </div>
+    <HomeBackgroud :class="{ 'opacity-50': isDeferred }" />
+    <div
+      class="wd:bg-transparent relative flex w-full flex-col items-center justify-center bg-white/75"
+    >
       <div
-        v-if="status < InitializeStatus.BeforeFinished"
-        class="mt-8 flex min-h-48 w-full justify-center bg-white/40 px-4 py-6"
+        class="wd:flex-row wd:bg-white/75 mx-4 flex flex-col items-center gap-4 rounded-2xl px-8 py-6"
       >
-        <div class="mt-2 inline-block">
-          <template v-if="status <= InitializeStatus.ViewSuccess">
-            <div
-              v-for="item in initItems"
-              :key="item.message"
-              class="mb-2 flex items-center justify-center pl-1"
-            >
-              <cy-icon
-                :icon="statusIcon(item.status)"
-                :class="{
-                  'loading-circle': item.status === InitItemStatus.Loading,
-                  'text-orange-60': item.status === InitItemStatus.Error,
-                  'text-blue-60': item.status !== InitItemStatus.Error,
-                }"
-                width="1.25rem"
-              />
-              <span class="text-primary-70 ml-4 w-full">
-                {{ t(item.message) }}
-              </span>
-            </div>
-          </template>
-          <template v-else-if="status <= InitializeStatus.LocaleSuccess">
-            <div class="flex items-center justify-center pl-1">
-              <span class="text-primary-60 mr-3 w-full">
-                {{ t('app.loading-message.init-locale') }}
-              </span>
-              <cy-icon
-                :icon="statusIcon(status - 10)"
-                :class="{
-                  'loading-circle': status === InitializeStatus.LocaleLoading,
-                }"
-                class="text-blue-60"
-              />
-            </div>
-          </template>
+        <div class="wd:w-48 wd:max-w-48 wd:py-6 flex items-center justify-center">
+          <div
+            class="title-icon-bg wd:size-32 flex size-24 items-center justify-center rounded-full"
+          >
+            <LoadingAnimation :status="status" @done="initializeStore.emitInitFinished()" />
+          </div>
+        </div>
+        <div
+          v-if="status < InitializeStatus.BeforeFinished"
+          class="flex flex-col justify-center px-4"
+        >
+          <div class="wd:max-h-56 wd:min-w-56 wd:py-6 wd:pr-4 flex grow flex-col flex-wrap gap-x-4">
+            <template v-if="status <= InitializeStatus.ViewSuccess">
+              <div
+                v-for="item in initItems"
+                :key="item.message"
+                class="gap-icon mb-2 flex items-center pl-1 text-sm"
+              >
+                <cy-icon
+                  :icon="statusIcon(item.status)"
+                  :class="{
+                    'loading-circle': item.status === InitItemStatus.Loading,
+                    'text-orange-60': item.status === InitItemStatus.Error,
+                    'text-blue-60': item.status !== InitItemStatus.Error,
+                  }"
+                  class="icon-first-line"
+                />
+                <span class="text-primary-70 w-full">
+                  {{ t(item.message) }}
+                </span>
+              </div>
+            </template>
+            <template v-else-if="status <= InitializeStatus.LocaleSuccess">
+              <div class="flex items-center justify-center pl-1">
+                <span class="text-primary-60 mr-3 w-full">
+                  {{ t('app.loading-message.init-locale') }}
+                </span>
+                <cy-icon
+                  :icon="statusIcon(status - 10)"
+                  :class="{
+                    'loading-circle': status === InitializeStatus.LocaleLoading,
+                  }"
+                  class="text-blue-60"
+                />
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -70,7 +81,7 @@ import LoadingAnimation from './initialization/loading-animation.vue'
 
 const initializeStore = useInitializeStore()
 
-const { initItems, status } = storeToRefs(initializeStore)
+const { initItems, status, isDeferred } = storeToRefs(initializeStore)
 
 const { t } = useI18n()
 const statusIcon = (value: number) => {
@@ -96,5 +107,9 @@ const statusIcon = (value: number) => {
   100% {
     transform: rotateZ(360deg);
   }
+}
+
+.title-icon-bg {
+  background: linear-gradient(to bottom right, var(--app-blue-10) 0%, var(--app-primary-10) 100%);
 }
 </style>

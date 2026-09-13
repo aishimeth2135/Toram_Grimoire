@@ -4,8 +4,6 @@ import { ref } from 'vue'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
-import Grimoire from '@/shared/Grimoire'
-import { useNotify } from '@/shared/composables/Notify'
 import { DataPathIds } from '@/shared/services/DataPath'
 import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
 
@@ -126,12 +124,15 @@ export const useDatasStore = defineStore('app-datas', () => {
     switch (dataId) {
       case DataStoreIds.Items: {
         const itemSystem = initItemsInstance()
-        const [equipmentData, crystalData] = await DownloadDatas(
-          { path: DataPathIds.Equipment, lang: true },
-          DataPathIds.Crystal
-        )
+        const [equipmentData] = await DownloadDatas({ path: DataPathIds.Equipment, lang: true })
         return async () => {
           LoadEquipments(itemSystem, equipmentData)
+        }
+      }
+      case DataStoreIds.Crystals: {
+        const itemSystem = initItemsInstance()
+        const [crystalData] = await DownloadDatas(DataPathIds.Crystal)
+        return async () => {
           LoadCrystals(itemSystem, crystalData.baseData)
           await InitCrystalIcons()
         }
@@ -191,10 +192,6 @@ export const useDatasStore = defineStore('app-datas', () => {
       case DataStoreIds.Enchant: {
         const enchantSystem = initEnchantInstance()
         const [enchantData] = await DownloadDatas(DataPathIds.Enchant)
-        if (!enchantData.baseData[0][4].startsWith('額外上限')) {
-          const notify = useNotify()
-          notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
-        }
         return async () => {
           LoadEnchant(enchantSystem, enchantData.baseData)
         }

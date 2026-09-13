@@ -1,9 +1,9 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { NavigationGuard, RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { PrepareLocaleInit, ViewInit, ViewInitDeferred } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -13,17 +13,25 @@ const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
 const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
 const ChromaticTransSimulatorView = () => import('@/views/Items/ChromaticTransSimulator/index.vue')
 
+function createItemsViewInitGuard(...inits: DataStoreIds[]): NavigationGuard {
+  return (_to, from) => {
+    const isItemsNavigation = from.matched.some(route => route.name === AppRouteNames.Items)
+    const init = isItemsNavigation ? ViewInitDeferred : ViewInit
+
+    return init(...inits)
+  }
+}
+
 export default {
   name: AppRouteNames.Items,
   path: '/items',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
+  beforeEnter() {
     PrepareLocaleInit(
       LocaleViewNamespaces.ItemQuery,
       LocaleViewNamespaces.CrystalQuery,
       LocaleViewNamespaces.ChromaticTransSimulator
     )
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
     leftMenuViewButtons: [
@@ -52,6 +60,7 @@ export default {
       meta: {
         title: 'app.page-title.item-query',
       },
+      beforeEnter: createItemsViewInitGuard(DataStoreIds.Stats, DataStoreIds.Items),
     },
     {
       name: AppRouteNames.CrystalQuery,
@@ -60,6 +69,7 @@ export default {
       meta: {
         title: 'app.page-title.crystal-query',
       },
+      beforeEnter: createItemsViewInitGuard(DataStoreIds.Stats, DataStoreIds.Crystals),
     },
     {
       name: AppRouteNames.ChromaticTransSimulator,
@@ -68,6 +78,7 @@ export default {
       meta: {
         title: 'app.page-title.chromatic-trans-simulator',
       },
+      beforeEnter: createItemsViewInitGuard(),
     },
   ],
 } satisfies RouteRecordRaw

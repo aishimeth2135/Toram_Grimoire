@@ -1,5 +1,6 @@
 const DataStoreIds = {
   Items: 'Items',
+  Crystals: 'Crystals',
   Stats: 'Stats',
   CharacterStats: 'CharacterStats',
   Glossary: 'Glossary',

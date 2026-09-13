@@ -1,23 +1,23 @@
 <template>
-  <div class="inline-block">
-    <transition mode="out-in" :css="false" @leave="leave">
-      <cy-icon v-if="!available" key="1" icon="@grimoire-cat" class="custom-icon inset-s-icon" />
-      <cy-icon v-else key="2" icon="@grimoire-cat" class="custom-icon inset-s-icon" />
-    </transition>
-    <!-- <transition
-      appear
-      :css="false"
-      @enter="enter"
-    >
-      <div v-if="available && end" class="ball" />
-    </transition> -->
-  </div>
+  <transition mode="out-in" name="logo-fade" @after-leave="emit('done')">
+    <div v-if="!available" class="flex">
+      <cy-icon
+        key="1"
+        icon="@grimoire-cat"
+        class="custom-icon wd:size-16 custom-icon-start size-12"
+      />
+    </div>
+    <div v-else class="flex">
+      <cy-icon
+        key="1"
+        icon="@grimoire-cat"
+        class="custom-icon wd:size-16 custom-icon-start size-12"
+      />
+    </div>
+  </transition>
 </template>
 
 <script lang="ts" setup>
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Velocity from 'velocity-animate'
 import { computed, onMounted, ref, toRefs, watch } from 'vue'
 
 import { InitializeStatus } from '@/stores/app/initialize/enums'
@@ -37,62 +37,10 @@ const { status } = toRefs(props)
 const mainStore = useMainStore()
 
 const innerStatus = ref(0)
-const end = ref(false)
 
 const available = computed(() => {
   return innerStatus.value >= InitializeStatus.BeforeFinished && !mainStore.routerGuiding
 })
-
-const leave = (el: Element, done: () => void) => {
-  Velocity(
-    el,
-    {
-      opacity: 1,
-    },
-    {
-      duration: 100,
-    }
-  )
-  Velocity(
-    el,
-    {
-      opacity: 0,
-    },
-    {
-      duration: 400,
-      easing: [0.42, 0, 1.0, 1.0],
-      complete: () => {
-        end.value = true
-        done()
-        emit('done')
-      },
-    }
-  )
-}
-// const enter = (el: Element, done: Function) => {
-//   const pwhite = getComputedStyle(document.body).getPropertyValue('--app-white').trim()
-//   const opts = window.innerHeight > window.innerWidth ? {
-//     width: '150vh',
-//     height: '150vh',
-//     left: '-=75vh',
-//     top: '-=75vh',
-//   } : {
-//     width: '150vw',
-//     height: '150vw',
-//     left: '-=75vw',
-//     top: '-=75vw',
-//   }
-//   Velocity(el, {
-//     backgroundColor: pwhite,
-//     ...opts,
-//   }, {
-//     duration: 600,
-//     complete: () => {
-//       done()
-//       setTimeout(() => emit('done'), 100)
-//     },
-//   })
-// }
 
 onMounted(() => {
   innerStatus.value = status.value
@@ -102,11 +50,9 @@ onMounted(() => {
 
 <style scoped>
 .custom-icon {
-  width: 4.5rem;
-  height: 4.5rem;
   color: var(--app-primary-30);
 
-  &.start-icon {
+  &.custom-icon-start {
     animation: loading-page-main-icon ease 4s infinite;
   }
 }
@@ -127,5 +73,15 @@ onMounted(() => {
   100% {
     transform: translate(0, 0);
   }
+}
+
+.logo-fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.logo-fade-leave-from {
+  opacity: 1;
+}
+.logo-fade-leave-to {
+  opacity: 0;
 }
 </style>

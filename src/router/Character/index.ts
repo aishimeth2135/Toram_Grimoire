@@ -38,6 +38,7 @@ export default {
     ViewInit(
       DataStoreIds.Stats,
       DataStoreIds.Items,
+      DataStoreIds.Crystals,
       DataStoreIds.CharacterStats,
       DataStoreIds.Skill,
       DataStoreIds.Food,
