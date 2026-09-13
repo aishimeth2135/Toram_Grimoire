@@ -1,7 +1,7 @@
 <template>
   <CardRow :selected="detailVisible">
     <div
-      class="sticky top-0 z-1 min-w-max"
+      class="z-1 sticky top-0 min-w-max"
       :class="{ 'bg-white': detailVisible }"
       @click="detailVisible = !detailVisible"
     >
@@ -13,9 +13,9 @@
           <cy-icon :icon="crystal.crystalIconPath" class="mr-1.5" />
           {{ crystal.name }}
         </div>
-        <div v-if="previewMode === 'default'" class="flex items-center text-sm text-cyan-60">
+        <div v-if="previewMode === 'default'" class="text-cyan-60 flex items-center text-sm">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon icon="mdi:arrow-up-bold-outline" small class="mr-2 text-cyan-60" />
+            <cy-icon icon="mdi:arrow-up-bold-outline" small class="text-cyan-60 mr-2" />
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </template>
@@ -28,7 +28,7 @@
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="max-w-full bg-white pt-2 pr-4 pb-3 pl-6">
+      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-6 pr-4 pt-2">
         <div>
           <ShowStat
             v-for="stat in crystal.stats"
@@ -39,10 +39,10 @@
         </div>
         <div v-if="crystal.origin.obtains.length > 0" class="mt-3 flex items-center">
           <cy-icon class="text-gray-40" icon="mdi:treasure-chest-outline" small />
-          <span class="ml-1 text-sm text-gray-40">
+          <span class="text-gray-40 ml-1 text-sm">
             {{ t('crystal-query.obtain-prefix') }}
           </span>
-          <span class="ml-2 text-sm text-primary-60">
+          <span class="text-primary-60 ml-2 text-sm">
             {{ crystal.origin.obtains[0].name }}
           </span>
         </div>
@@ -51,7 +51,7 @@
           <span class="ml-1 text-sm text-cyan-50">
             {{ t('crystal-query.enhancer-prefix') }}
           </span>
-          <span class="ml-2 flex items-center text-sm text-cyan-60">
+          <span class="text-cyan-60 ml-2 flex items-center text-sm">
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </span>

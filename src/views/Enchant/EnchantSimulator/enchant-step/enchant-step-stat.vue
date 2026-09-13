@@ -3,7 +3,7 @@
   <div class="py-1">
     <div class="flex flex-wrap items-center py-0.5" :class="{ 'opacity-50': !stat.valid }">
       <div
-        class="inline-flex items-center gap-icon"
+        class="gap-icon inline-flex items-center"
         :class="stat.value >= 0 ? 'text-primary-90' : 'text-orange-60'"
       >
         <cy-icon
@@ -14,17 +14,17 @@
       </div>
       <div
         v-if="rootState.statDisplayMode === 0"
-        class="mr-2 ml-auto inline-flex items-center gap-icon text-sm text-fuchsia-60"
+        class="gap-icon text-fuchsia-60 ml-auto mr-2 inline-flex items-center text-sm"
       >
         <cy-icon icon="mdi-creation" small class="text-primary-30" />
         {{ potentialEffect }}
       </div>
       <div v-else class="ml-auto inline-flex items-center">
-        <div class="inline-flex items-center gap-icon text-sm text-primary-90">
+        <div class="gap-icon text-primary-90 inline-flex items-center text-sm">
           <cy-icon icon="mdi-cube-outline" small class="text-blue-30" />
           {{ materialPoint.title }}
         </div>
-        <span class="ml-2 text-sm text-blue-60">
+        <span class="text-blue-60 ml-2 text-sm">
           {{ materialPoint.value }}
         </span>
       </div>
@@ -38,7 +38,7 @@
         :range="[stat.limit.min, stat.limit.max]"
         :disabled="!stat.valid"
       />
-      <cy-button-icon icon="jam-close-circle" class="ml-auto text-gray-60" @click="stat.remove()" />
+      <cy-button-icon icon="jam-close-circle" class="text-gray-60 ml-auto" @click="stat.remove()" />
     </div>
   </div>
 </template>

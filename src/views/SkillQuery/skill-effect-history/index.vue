@@ -7,7 +7,7 @@
       :computing="rootComputingContainer"
     />
   </div>
-  <div v-else class="h-48 px-1 py-3 text-sm text-primary-30">
+  <div v-else class="text-primary-30 h-48 px-1 py-3 text-sm">
     {{ t('skill-query.historical-record-equipment-type-invalid-tips') }}
   </div>
 </template>

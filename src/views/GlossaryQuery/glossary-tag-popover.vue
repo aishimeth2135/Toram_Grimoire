@@ -1,6 +1,6 @@
 <template>
   <cy-popover v-if="currentTag" tag="span" class="inline-block px-0.5" triggers="click hover">
-    <span class="cursor-pointer text-orange-60 underline">
+    <span class="text-orange-60 cursor-pointer underline">
       {{ displayName ?? name }}
     </span>
     <template #popper>

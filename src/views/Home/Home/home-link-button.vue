@@ -4,7 +4,7 @@
       <div class="home-link-button-wrapper" @click="navigate">
         <div class="home-link-button-bg1" />
         <div class="home-link-button-bg2" />
-        <div class="relative z-1 pt-4.5 pl-6.5">
+        <div class="z-1 pt-4.5 pl-6.5 relative">
           <cy-icon :icon="data.icon" width="2.5rem" class="text-blue-20" />
         </div>
         <div class="home-link-button-title">
@@ -16,7 +16,7 @@
       <div class="home-link-button-wrapper wrapper-mobile" @click="navigate">
         <div class="home-link-button-bg1" />
         <div class="home-link-button-bg2" />
-        <div class="relative z-1 pt-2 pl-3">
+        <div class="z-1 relative pl-3 pt-2">
           <cy-icon :icon="data.icon" width="1.5rem" class="text-blue-20" />
         </div>
         <div class="home-link-button-title">

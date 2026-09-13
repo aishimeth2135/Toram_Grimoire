@@ -16,7 +16,7 @@ const dyeColors = computed<(number | null)[]>(() => dyeConvert(props.dye))
 </script>
 
 <template>
-  <div class="ml-3 inline-flex shrink-0 items-center gap-icon text-sm text-primary-90">
+  <div class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm">
     <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
     <div class="flex items-center space-x-2">
       <template v-for="(color, index) in dyeColors" :key="dyeParts[index]">

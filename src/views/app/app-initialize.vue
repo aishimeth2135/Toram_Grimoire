@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="status !== InitializeStatus.Finished"
-    class="fixed top-0 left-0 z-100 flex size-full items-center justify-center bg-white py-4"
+    class="z-100 fixed left-0 top-0 flex size-full items-center justify-center bg-white py-4"
   >
     <HomeBackgroud />
     <div class="relative flex w-full flex-col items-center">
@@ -28,14 +28,14 @@
                 }"
                 width="1.25rem"
               />
-              <span class="ml-4 w-full text-primary-70">
+              <span class="text-primary-70 ml-4 w-full">
                 {{ t(item.message) }}
               </span>
             </div>
           </template>
           <template v-else-if="status <= InitializeStatus.LocaleSuccess">
             <div class="flex items-center justify-center pl-1">
-              <span class="mr-3 w-full text-primary-60">
+              <span class="text-primary-60 mr-3 w-full">
                 {{ t('app.loading-message.init-locale') }}
               </span>
               <cy-icon
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="absolute right-4 bottom-4 text-sm">
+    <div class="absolute bottom-4 right-4 text-sm">
       <div>{{ t('app.loading-message.bottom-tips.0') }}</div>
       <div>{{ t('app.loading-message.bottom-tips.1') }}</div>
     </div>

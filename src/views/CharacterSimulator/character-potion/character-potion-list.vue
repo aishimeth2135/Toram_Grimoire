@@ -66,7 +66,7 @@ const toggleDetailVisible = (itemId: string) => {
 </script>
 
 <template>
-  <div class="flex max-h-128 flex-col">
+  <div class="max-h-128 flex flex-col">
     <CommonSearchableItems
       v-model:search-text="searchText"
       :placeholder="t('global.search')"
@@ -95,7 +95,7 @@ const toggleDetailVisible = (itemId: string) => {
           <PotionCaption
             v-if="detailVisibleItemIds.has(item.id)"
             :potion="item.base"
-            class="mt-1 text-sm text-gray-60"
+            class="text-gray-60 mt-1 text-sm"
           />
         </div>
       </template>

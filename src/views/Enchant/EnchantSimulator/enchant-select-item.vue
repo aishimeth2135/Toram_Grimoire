@@ -1,11 +1,11 @@
 <template>
   <cy-modal :visible="visible" footer @close="$emit('close')">
     <template #title>
-      <div v-if="once" class="inline-flex items-center gap-icon text-blue-60">
+      <div v-if="once" class="gap-icon text-blue-60 inline-flex items-center">
         <cy-icon icon="fluent-list-16-filled" class="text-blue-60" />
         {{ t('enchant-simulator.step.select-one-stat-item') }}
       </div>
-      <div v-else class="inline-flex items-center gap-icon text-orange-60">
+      <div v-else class="gap-icon text-orange-60 inline-flex items-center">
         <cy-icon icon="fluent-list-16-filled" class="text-orange-60" />
         {{ t('enchant-simulator.step.select-multiple-stat-items') }}
       </div>
@@ -13,9 +13,9 @@
     <div v-for="category in validCategorys" :key="category.origin.title" class="relative mb-2 p-1">
       <div
         v-if="category.origin.weaponOnly && !isWeapon"
-        class="absolute top-0 left-0 z-1 size-full cursor-not-allowed bg-white opacity-50"
+        class="z-1 absolute left-0 top-0 size-full cursor-not-allowed bg-white opacity-50"
       />
-      <div class="inline-flex w-full items-center gap-icon text-sm text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex w-full items-center text-sm">
         <cy-icon small class="text-primary-30" />
         {{ category.origin.title }}
       </div>
@@ -34,7 +34,7 @@
           <span>
             {{ item.origin.statBase.title(item.type) }}
           </span>
-          <span class="ml-2 text-sm text-primary-30">
+          <span class="text-primary-30 ml-2 text-sm">
             {{ item.origin.getPotential(item.type, tmpEquipment) + 'pt' }}
           </span>
         </cy-button-check>

@@ -31,27 +31,27 @@ const { editEquipment } = useCharacterSimulatorState()
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center py-0.5 pr-2 pl-4" @click.stop>
+  <div class="flex flex-wrap items-center py-0.5 pl-4 pr-2" @click.stop>
     <template v-if="!equipDisabled">
       <template v-if="!equipped">
         <div
-          class="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 select-none hover:border-primary-50 hover:text-primary-60"
+          class="border-primary-20 text-primary-30 hover:border-primary-50 hover:text-primary-60 flex size-8 shrink-0 cursor-pointer select-none items-center justify-center rounded-full border duration-150"
           @click="emit('equip', equipment)"
         >
           <cy-icon icon="ic:round-check-circle" class="text-inherit" />
         </div>
-        <span class="ml-2 text-sm text-primary-30">
+        <span class="text-primary-30 ml-2 text-sm">
           {{ t('character-simulator.browse-equipments.equip-label') }}
         </span>
       </template>
       <template v-else>
         <div
-          class="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-primary-20 text-primary-30 duration-150 select-none hover:border-primary-50 hover:text-primary-60"
+          class="border-primary-20 text-primary-30 hover:border-primary-50 hover:text-primary-60 flex size-8 shrink-0 cursor-pointer select-none items-center justify-center rounded-full border duration-150"
           @click="emit('equip-cancel')"
         >
           <cy-icon icon="mdi:close" class="text-inherit" />
         </div>
-        <span class="ml-2 text-sm text-primary-30">
+        <span class="text-primary-30 ml-2 text-sm">
           {{ t('character-simulator.browse-equipments.equip-cancel-label') }}
         </span>
       </template>

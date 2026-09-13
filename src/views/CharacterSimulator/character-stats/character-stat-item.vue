@@ -2,7 +2,7 @@
   <div>
     <div class="flex cursor-pointer items-center py-0.5" @click="detailVisible = !detailVisible">
       <template v-if="!statResult.origin.isBoolStat">
-        <div class="min-w-8 text-gray-60">
+        <div class="text-gray-60 min-w-8">
           {{ statResult.name }}
         </div>
         <span
@@ -10,28 +10,28 @@
             (statResult.origin.min !== null && statResult.originalValue < statResult.origin.min) ||
             (statResult.origin.max !== null && statResult.originalValue > statResult.origin.max)
           "
-          class="ml-2 text-red-60 underline"
+          class="text-red-60 ml-2 underline"
         >
           {{ statResult.displayValue }}
         </span>
-        <span v-else class="ml-2 text-primary-60">
+        <span v-else class="text-primary-60 ml-2">
           {{ statResult.displayValue }}
         </span>
       </template>
       <span v-else class="text-primary-60">
         {{ statResult.name }}
       </span>
-      <div v-if="showPreviewValues" class="ml-4 flex items-center space-x-2 text-primary-30">
+      <div v-if="showPreviewValues" class="text-primary-30 ml-4 flex items-center space-x-2">
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
           {{ data.title.value }}
         </div>
       </div>
     </div>
-    <div v-if="detailVisible" class="mt-2 mb-4 border border-primary-10">
+    <div v-if="detailVisible" class="border-primary-10 mb-4 mt-2 border">
       <div
-        class="flex flex-wrap items-center border-b border-primary-10 px-3 py-1 text-sm text-primary-50"
+        class="border-primary-10 text-primary-50 flex flex-wrap items-center border-b px-3 py-1 text-sm"
       >
-        <cy-icon icon="mdi:label-outline" class="mr-2 text-primary-20" />
+        <cy-icon icon="mdi:label-outline" class="text-primary-20 mr-2" />
         {{ statResult.originalValue }}
         <div
           v-if="statResult.origin.min || statResult.origin.max"
@@ -49,12 +49,12 @@
       </div>
       <div
         v-if="statDetailCaption"
-        class="stat-detail-caption border-b border-primary-10 px-3 py-2 text-sm text-gray-50"
+        class="stat-detail-caption border-primary-10 border-b px-3 py-2 text-sm text-gray-50"
         v-html="statDetailCaption"
       />
       <div
         v-if="showStatDetailDatas.conditionalBase"
-        class="inline-flex items-center gap-icon text-primary-90"
+        class="gap-icon text-primary-90 inline-flex items-center"
       >
         <cy-icon icon="mdi-sword" class="text-primary-30" />
         <span>
@@ -65,15 +65,15 @@
       </div>
       <div class="max-w-full space-y-2 overflow-x-auto p-3 text-sm">
         <div v-for="data in showStatDetailDatas.datas" :key="data.id">
-          <div class="flex items-center text-primary-70">
-            <cy-icon icon="mdi:label-outline" class="mr-2 text-primary-20" />
+          <div class="text-primary-70 flex items-center">
+            <cy-icon icon="mdi:label-outline" class="text-primary-20 mr-2" />
             {{ data.title.text }}
-            <span v-if="data.title.value !== null" class="ml-2 text-primary-50">
+            <span v-if="data.title.value !== null" class="text-primary-50 ml-2">
               {{ data.title.value }}
             </span>
           </div>
           <div v-if="data.lines.length !== 0" class="mt-1.5 space-y-0.5 pb-1 pl-2">
-            <div v-for="line in data.lines" :key="'line-' + line.iid" class="flex gap-icon-tight">
+            <div v-for="line in data.lines" :key="'line-' + line.iid" class="gap-icon-tight flex">
               <cy-icon icon="ic-round-add" small class="icon-first-line" />
               <div class="flex flex-wrap items-center">
                 <template v-if="typeof line.title === 'string'">

@@ -20,9 +20,9 @@ const { t } = useI18n()
     <cy-transition>
       <div v-if="visible" class="app-layout--side-float-wrapper" @click="emit('close')">
         <div class="app-layout--side-float" @click.stop>
-          <div class="flex justify-end pt-2.5 pb-1.5">
+          <div class="flex justify-end pb-1.5 pt-2.5">
             <span
-              class="flex cursor-pointer items-center px-3 text-sm text-primary-40"
+              class="text-primary-40 flex cursor-pointer items-center px-3 text-sm"
               @click="emit('close')"
             >
               <cy-icon icon="ic:round-close" class="mr-1" small />

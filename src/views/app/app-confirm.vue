@@ -1,9 +1,9 @@
 <template>
-  <div v-if="store.confirmItems.length !== 0" class="fixed top-0 left-0 z-100 size-full">
-    <div class="absolute -z-1 size-full bg-black opacity-30" />
+  <div v-if="store.confirmItems.length !== 0" class="z-100 fixed left-0 top-0 size-full">
+    <div class="-z-1 absolute size-full bg-black opacity-30" />
     <div class="flex size-full items-center justify-center">
       <div
-        class="app-confirm-slide-up m-4 max-h-full w-full max-w-sm overflow-y-auto border border-primary-30 bg-white p-6"
+        class="app-confirm-slide-up border-primary-30 m-4 max-h-full w-full max-w-sm overflow-y-auto border bg-white p-6"
       >
         <div class="mb-6 flex">
           <div>

@@ -29,7 +29,7 @@
       <slot name="main-custom">
         <div
           v-if="slots['default']"
-          class="pointer-events-auto grow rounded-full border border-primary-30 bg-white px-3 py-1 shadow-lg"
+          class="border-primary-30 pointer-events-auto grow rounded-full border bg-white px-3 py-1 shadow-lg"
         >
           <slot></slot>
         </div>

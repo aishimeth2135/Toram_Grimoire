@@ -49,7 +49,7 @@ const activeSkills = computed(() => {
       <div v-for="item in activeSkills" :key="item.skill.skillId" class="flex items-center">
         <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
-        <div class="ml-2 text-primary-60">
+        <div class="text-primary-60 ml-2">
           {{ `Lv.${item.skillLevel}` }}
         </div>
       </div>
@@ -58,7 +58,7 @@ const activeSkills = computed(() => {
       <div v-for="item in passiveSkills" :key="item.skill.skillId" class="flex items-center">
         <cy-icon :icon="getSkillIconPath(item.skill)" class="mr-2" />
         {{ item.skill.name }}
-        <div class="ml-2 text-primary-60">
+        <div class="text-primary-60 ml-2">
           {{ `Lv.${item.skillLevel}` }}
         </div>
       </div>

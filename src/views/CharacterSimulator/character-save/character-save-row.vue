@@ -7,9 +7,9 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="p-4 wd:flex wd:items-start">
+  <div class="wd:flex wd:items-start p-4">
     <div
-      class="mr-2 mb-4 flex size-16 shrink-0 items-center justify-center rounded-full bg-primary-5"
+      class="bg-primary-5 mb-4 mr-2 flex size-16 shrink-0 items-center justify-center rounded-full"
     >
       <cy-icon :icon="icon" width="1.5rem" />
     </div>

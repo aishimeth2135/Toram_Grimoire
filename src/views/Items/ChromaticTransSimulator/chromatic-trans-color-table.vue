@@ -14,7 +14,7 @@ defineProps<Props>()
 
 <template>
   <div class="overflow-x-auto">
-    <div class="grid w-max grid-flow-col grid-cols-5 grid-rows-16 gap-px">
+    <div class="grid-rows-16 grid w-max grid-flow-col grid-cols-5 gap-px">
       <DyeColorButton
         v-for="color in chromaticColors"
         :key="color"

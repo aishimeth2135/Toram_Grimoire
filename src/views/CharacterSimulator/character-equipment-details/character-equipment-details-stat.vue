@@ -10,7 +10,7 @@ defineProps<Props>()
 
 <template>
   <div class="py-0.5">
-    <div v-if="!stat.isPlain()" class="space-x-2 pt-0.5 text-sm text-primary-40">
+    <div v-if="!stat.isPlain()" class="text-primary-40 space-x-2 pt-0.5 text-sm">
       <span v-for="text in stat.restrictionTexts()" :key="text">
         {{ text }}
       </span>

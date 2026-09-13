@@ -27,7 +27,7 @@
         @click="toggleDetailVisible"
       />
     </div>
-    <div v-if="statExtraContainers.length > 0" class="space-y-1 pt-2 pb-1 pl-2">
+    <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
@@ -42,7 +42,7 @@
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
-    <div v-if="detailVisible" class="mt-2 border-2 border-primary-30 bg-white px-3 py-2 text-sm">
+    <div v-if="detailVisible" class="border-primary-30 mt-2 border-2 bg-white px-3 py-2 text-sm">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"

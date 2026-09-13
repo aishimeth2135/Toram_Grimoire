@@ -180,7 +180,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
 </script>
 
 <template>
-  <div class="flex max-h-96 min-h-0 max-w-xs grow flex-col wd-lg:max-h-none">
+  <div class="wd-lg:max-h-none flex max-h-96 min-h-0 max-w-xs grow flex-col">
     <div class="flex justify-end pb-1">
       <cy-button-toggle v-model:selected="showCrystalStats">
         {{ t('character-simulator.select-crystals.show-crystal-stats') }}
@@ -195,7 +195,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
           class="grow"
         />
         <cy-popover
-          class="flex items-center border-b border-l border-primary-5 bg-white px-1.5"
+          class="border-primary-5 flex items-center border-b border-l bg-white px-1.5"
           placement="bottom-end"
         >
           <cy-button-icon icon="mdi-filter" :selected="onlyshowLastCrystal" />
@@ -216,7 +216,7 @@ const currentEquipmentRelatedCrystals = computed(() => {
       </div>
       <div class="grow space-y-3 overflow-y-auto py-2">
         <div v-for="category in currentCrystalCategorys" :key="category.id">
-          <div class="pb-2 pl-3 text-sm text-gray-60">{{ category.title }}</div>
+          <div class="text-gray-60 pb-2 pl-3 text-sm">{{ category.title }}</div>
           <CardRowsDelegation @row-clicked="toggleCrystal">
             <CharacterEquipmentDetailsSelectCrystalOption
               v-for="option in category.crystals"

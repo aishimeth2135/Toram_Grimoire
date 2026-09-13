@@ -27,7 +27,7 @@ const displayedItems = computed(() => {
     <div class="space-y-1.5">
       <div v-for="potion in displayedItems" :key="potion.base.id" class="flex items-center">
         {{ potion.base.name }}
-        <div class="ml-2 text-sm text-primary-40">
+        <div class="text-primary-40 ml-2 text-sm">
           {{ potion.belongCategory.base.name }}
         </div>
       </div>

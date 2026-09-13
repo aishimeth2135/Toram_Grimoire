@@ -1,11 +1,11 @@
 <template>
   <AppLayoutMain>
     <cy-top-header class="cursor-pointer" @click="toggleSearchVisible">
-      <div v-if="currentSkill" class="inline-flex items-center gap-icon text-primary-90">
+      <div v-if="currentSkill" class="gap-icon text-primary-90 inline-flex items-center">
         <cy-icon icon="bx:bxs-book-bookmark" class="text-primary-30" />
         {{ currentSkill.name }}
       </div>
-      <div v-else class="ml-2 text-primary-30">
+      <div v-else class="text-primary-30 ml-2">
         {{ t('skill-query.search-tips') }}
       </div>
       <cy-button-icon class="ml-auto" icon="bx:bx-search" />
@@ -48,7 +48,7 @@
       class="pt-10"
       style="min-height: 50vh"
     >
-      <div class="border-t border-orange-60 pt-4">
+      <div class="border-orange-60 border-t pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
           @set-current-skill="selectCurrentSkill($event, true)"

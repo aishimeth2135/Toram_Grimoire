@@ -29,7 +29,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(ca
     <template #popper>
       <div class="px-3 py-2">
         <div v-for="{ category, skillTrees } in allSkillTreeCategorys" :key="category.id">
-          <div class="py-0.5 text-sm text-primary-40">
+          <div class="text-primary-40 py-0.5 text-sm">
             {{ category.name }}
           </div>
           <CardRows class="pb-2">

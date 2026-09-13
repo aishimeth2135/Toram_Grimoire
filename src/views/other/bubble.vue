@@ -213,25 +213,25 @@ export default {
 
 <style scoped>
 .main--bubble {
+  position: absolute;
+  left: 0;
+  z-index: 51;
+  margin: 0 0.5vw;
   width: 95%;
   height: 100%;
-  margin: 0 0.5vw;
-  position: absolute;
-  z-index: 51;
   overflow-y: hidden;
-  left: 0;
 
   &.display-bg {
-    background-color: var(--app-white);
     z-index: 99;
+    background-color: var(--app-white);
   }
 
   & > svg.up {
+    position: absolute;
+    offset-anchor: center;
+    offset-rotate: 90deg auto;
     animation: icon-up 20s;
     animation-fill-mode: forwards;
-    position: absolute;
-    offset-rotate: 90deg auto;
-    offset-anchor: center;
   }
 }
 
@@ -242,12 +242,12 @@ export default {
 }
 
 .toggle-bg-area {
-  z-index: 100;
-  height: 100%;
-  width: 3rem;
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
+  z-index: 100;
+  width: 3rem;
+  height: 100%;
 
   &:hover {
     background-color: --alpha(var(--app-black) / 30%);

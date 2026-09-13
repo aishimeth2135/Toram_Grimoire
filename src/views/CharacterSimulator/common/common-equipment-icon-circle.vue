@@ -22,7 +22,7 @@ withDefaults(defineProps<Props>(), {
     <cy-icon
       v-if="equipped"
       icon="ic:round-check-circle"
-      class="absolute -top-1.5 -right-1.5 bg-white text-red-60"
+      class="text-red-60 absolute -right-1.5 -top-1.5 bg-white"
     />
   </div>
 </template>

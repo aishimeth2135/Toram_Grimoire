@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0 size-full overflow-hidden">
+  <div class="absolute left-0 top-0 size-full overflow-hidden">
     <div class="app-home-background" />
   </div>
 </template>

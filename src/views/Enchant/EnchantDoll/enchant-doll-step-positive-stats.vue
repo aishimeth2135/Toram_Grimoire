@@ -1,7 +1,7 @@
 <template>
   <EnchantDollStepWrapper :step-id="StepIds.SelectPositiveStat">
     <div>
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.select-positives.title') }}
       </div>
@@ -10,11 +10,11 @@
       {{ t('enchant-doll.select-positives.caption') }}
     </div>
     <div class="my-4 flex justify-center">
-      <div class="mt-2 max-w-xs border border-fuchsia-60">
+      <div class="border-fuchsia-60 mt-2 max-w-xs border">
         <template v-if="doll.positiveStats.length !== 0">
           <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
             <div
-              class="inline-flex w-full items-center gap-icon"
+              class="gap-icon inline-flex w-full items-center"
               :class="stat.value >= 0 ? 'text-primary-90' : 'text-orange-60'"
             >
               <cy-icon class="text-primary-30" />
@@ -30,7 +30,7 @@
               />
               <cy-button-icon
                 icon="jam-close-circle"
-                class="ml-auto text-gray-60"
+                class="text-gray-60 ml-auto"
                 @click="doll.removePositiveStat(stat)"
               />
             </div>
@@ -80,7 +80,7 @@
             @click="appendShortHandStats"
           />
         </div>
-        <div v-if="shortHandStatItems.length > 0" class="px-1 pt-1 text-primary-50">
+        <div v-if="shortHandStatItems.length > 0" class="text-primary-50 px-1 pt-1">
           <div
             v-for="{ origin, type, value } in shortHandStatItems"
             :key="origin.statBase.getStatId(type)"
@@ -88,7 +88,7 @@
             {{ origin.statBase.show(type, value) }}
           </div>
         </div>
-        <div v-else class="text-center text-primary-30">ex: AD3CD%CDC</div>
+        <div v-else class="text-primary-30 text-center">ex: AD3CD%CDC</div>
       </div>
     </div>
   </EnchantDollStepWrapper>

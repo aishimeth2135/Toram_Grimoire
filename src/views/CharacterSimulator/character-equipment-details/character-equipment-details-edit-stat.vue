@@ -85,7 +85,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
           </EquipmentPropInputContainer>
         </template>
       </Draggable>
-      <div v-else class="py-2 text-sm text-primary-60">
+      <div v-else class="text-primary-60 py-2 text-sm">
         {{ t('character-simulator.select-stats.stat-empty-tips') }}
       </div>
     </div>

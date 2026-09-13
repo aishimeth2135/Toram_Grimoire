@@ -30,7 +30,7 @@ const displayedItems = computed(() => {
     <div class="space-y-1.5">
       <div v-for="item in displayedItems" :key="item.base.id" class="flex items-center">
         {{ item.base.name }}
-        <div class="ml-2 text-primary-60">
+        <div class="text-primary-60 ml-2">
           {{ `Lv.${item.level}` }}
         </div>
       </div>

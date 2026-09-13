@@ -25,9 +25,9 @@ type SkillBranchItemOverwriteRecords = {
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>
 }
 
-abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase>
-  implements InstanceWithId
-{
+abstract class SkillBranchItemBase<
+  Parent extends SkillEffectItemBase = SkillEffectItemBase,
+> implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
   readonly instanceId: InstanceId

@@ -35,7 +35,7 @@
       </template>
       <template #side-contents>
         <AppLayoutBottomContent v-if="displayModeMenuVisible" class="px-4 py-2.5">
-          <div class="text-sm text-gray-40">
+          <div class="text-gray-40 text-sm">
             {{ t('registlet-query.display-mode.title') }}
           </div>
           <div class="mt-1 flex">
@@ -52,7 +52,7 @@
               {{ t('registlet-query.display-mode.obtain-levels') }}
             </cy-button-radio>
           </div>
-          <div class="mt-4 text-sm text-gray-40">
+          <div class="text-gray-40 mt-4 text-sm">
             {{ t('registlet-query.detail.obtain-levels') }}
           </div>
           <cy-button-radio-group

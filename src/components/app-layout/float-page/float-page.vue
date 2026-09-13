@@ -80,8 +80,8 @@ registPageClose(innerVisible, closePage)
         v-bind="attrs"
       >
         <div class="app-layout-float-page">
-          <div class="flex shrink-0 items-center border-b border-primary-10 px-4 py-3">
-            <div class="flex items-center text-primary-80">
+          <div class="border-primary-10 flex shrink-0 items-center border-b px-4 py-3">
+            <div class="text-primary-80 flex items-center">
               <cy-icon :icon="titleIcon" class="mr-3" />
               {{ title }}
             </div>

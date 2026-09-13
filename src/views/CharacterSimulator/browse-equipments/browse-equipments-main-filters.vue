@@ -102,9 +102,9 @@ watch(
             {{ label.text }}
           </CardRow>
         </CardRows>
-        <div class="flex justify-end px-4 pt-1 pb-2">
+        <div class="flex justify-end px-4 pb-2 pt-1">
           <span
-            class="cursor-pointer text-sm text-primary-50"
+            class="text-primary-50 cursor-pointer text-sm"
             @click="labelFilter.selectedLabels.value = []"
           >
             {{ t('global.reset') }}

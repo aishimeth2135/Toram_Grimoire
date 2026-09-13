@@ -40,13 +40,13 @@ watch(
             @remove="equipment.removeCrystal($event)"
           />
         </div>
-        <div v-else class="py-2 text-sm text-primary-60">
+        <div v-else class="text-primary-60 py-2 text-sm">
           {{ t('character-simulator.select-crystals.crystal-empty-tips') }}
         </div>
       </template>
       <CharacterEquipmentDetailsSelectCrystal v-else :equipment="equipment" />
     </template>
-    <div v-else class="text-sm text-primary-60">
+    <div v-else class="text-primary-60 text-sm">
       {{ t('character-simulator.select-crystals.equipment-type-not-support-crystal-tips') }}
     </div>
   </div>

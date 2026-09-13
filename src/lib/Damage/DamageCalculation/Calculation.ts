@@ -31,8 +31,7 @@ interface CalculationSaveData {
 interface CalculationConfig {
   getItemValue: ((itemId: CalculationItemIds) => number | null) | null
   getContainerCurrentItemId:
-    | ((containerId: CalculationContainerIds) => CalculationItemIds | null)
-    | null
+    ((containerId: CalculationContainerIds) => CalculationItemIds | null) | null
   getContainerForceHidden: ((containerId: CalculationContainerIds) => boolean | null) | null
 }
 

@@ -1,7 +1,7 @@
 <template>
   <EnchantDollStepWrapper v-if="resultEquipment" :step-id="StepIds.Result">
     <div>
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.result.title') }}
       </div>
@@ -13,7 +13,7 @@
       v-if="equipmentState.autoFindPotentialMinimum"
       class="mt-6 flex items-center justify-center"
     >
-      <div class="mr-3 inline-flex items-center gap-icon text-primary-90">
+      <div class="gap-icon text-primary-90 mr-3 inline-flex items-center">
         <cy-icon icon="bx-bx-star" class="text-primary-30" />
         {{ t('enchant-doll.result.current-potential-is') }}
       </div>
@@ -29,7 +29,7 @@
       "
       class="mt-2 flex justify-center"
     >
-      <div class="inline-flex items-center gap-icon text-sm text-blue-60">
+      <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
         <cy-icon icon="ic-outline-info" small class="text-blue-30" />
         {{
           t('enchant-doll.tips.cannot-auto-find-original-potential-minimum', {
@@ -38,13 +38,13 @@
         }}
       </div>
     </div>
-    <div class="mt-6 mb-4 flex justify-center">
-      <div class="rounded-lg border-2 border-fuchsia-60 bg-white pt-3 pr-6 pb-5 pl-4">
+    <div class="mb-4 mt-6 flex justify-center">
+      <div class="border-fuchsia-60 rounded-lg border-2 bg-white pb-5 pl-4 pr-6 pt-3">
         <EnchantResult :equipment="resultEquipment" />
       </div>
     </div>
     <div class="mt-6">
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.export-result.title') }}
       </div>
@@ -89,7 +89,7 @@
           {{ t('enchant-doll.result.select-other-result') }}
         </cy-button-plain>
       </div>
-      <CardRowsWrapper v-if="selectOtherResults" class="mt-3 divide-y divide-primary-20 px-0.5">
+      <CardRowsWrapper v-if="selectOtherResults" class="divide-primary-20 mt-3 divide-y px-0.5">
         <CardRows v-for="(result, idx) in doll.lastResults" :key="idx">
           <EnchantDollResultItem
             :result="result"

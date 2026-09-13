@@ -63,8 +63,8 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
 
 <template>
   <div class="flex grow flex-col items-center justify-center">
-    <div class="flex w-full flex-wrap px-2 wd-lg:flex-nowrap">
-      <div class="flex flex-wrap items-start wd:flex-nowrap">
+    <div class="wd-lg:flex-nowrap flex w-full flex-wrap px-2">
+      <div class="wd:flex-nowrap flex flex-wrap items-start">
         <cy-tabs
           v-model="currentField"
           :direction="device.isWide ? 'vertical' : 'horizontal'"
@@ -79,7 +79,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             v-for="field in currentCharacter.equipmentFields"
             :key="field.fieldId"
             :value="field"
-            class="px-5 py-3 hover:bg-primary-10"
+            class="hover:bg-primary-10 px-5 py-3"
           >
             <CommonEquipmentIcon
               v-if="field.equipment"
@@ -89,10 +89,10 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             <cy-icon v-else width="1.5rem" :icon="getFieldDefaultIcon(field)" class="opacity-50" />
           </cy-tab>
         </cy-tabs>
-        <div class="px-2 py-4 wd:px-0 wd-lg:pb-0">
+        <div class="wd:px-0 wd-lg:pb-0 px-2 py-4">
           <CharacterEquipmentDetails :equipment="currentField.equipment" equipped />
         </div>
-        <div v-if="!device.isMobile" class="px-2 py-4 wd:px-8 wd-lg:pb-0">
+        <div v-if="!device.isMobile" class="wd:px-8 wd-lg:pb-0 px-2 py-4">
           <CharacterEquipmentDetails
             :equipment="selectedEquipment"
             :equipped="selectedEquipment === currentField.equipment"
@@ -101,7 +101,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
       </div>
       <div
         :class="device.isMobile ? 'border-primary-10 mt-5 border-t' : 'pl-4'"
-        class="flex h-180 min-w-xs grow flex-col pt-4"
+        class="h-180 min-w-xs flex grow flex-col pt-4"
       >
         <BrowseEquipmentsMain
           :selected-equipment="selectedEquipment"
@@ -121,7 +121,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             />
           </template>
         </BrowseEquipmentsMain>
-        <div class="px-4 py-3 text-right text-sm text-gray-40">
+        <div class="text-gray-40 px-4 py-3 text-right text-sm">
           {{ t('character-simulator.browse-equipments.double-click-to-select-tips') }}
         </div>
         <CharacterEquipmentsManage v-model:visible="equipmentsManageVisible" />

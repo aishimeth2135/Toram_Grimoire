@@ -8,9 +8,9 @@
       <div class="relative">
         <div
           v-if="currentEffectEquipments && subContentVisible"
-          class="flex items-center pt-2 pb-1.5 pl-3"
+          class="flex items-center pb-1.5 pl-3 pt-2"
         >
-          <div class="shrink-0 pr-3 text-sm text-gray-40">
+          <div class="text-gray-40 shrink-0 pr-3 text-sm">
             {{ t('skill-query.branch.current-effect-equipments-prefix') }}
           </div>
           <SkillEquipmentButton :equipments="currentEffectEquipments" selected />
@@ -77,8 +77,8 @@
       </div>
       <cy-transition>
         <div v-if="!sub && subContentVisible">
-          <div class="flex items-center pt-3 pb-1.5 pl-3">
-            <div class="shrink-0 pr-3 text-sm text-gray-40">
+          <div class="flex items-center pb-1.5 pl-3 pt-3">
+            <div class="text-gray-40 shrink-0 pr-3 text-sm">
               {{ t('skill-query.branch.compared-effect-equipments-prefix') }}
             </div>
             <div class="flex flex-wrap items-center">

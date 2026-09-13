@@ -37,43 +37,43 @@ const { setCurrentTab } = useCharacterSimulatorState()
 
 <template>
   <div class="p-3">
-    <div class="border border-primary-20 shadow-xs wd:flex wd:items-stretch">
-      <div class="w-full shrink-0 px-8 py-5 wd:max-w-xs">
-        <div class="-mx-1 border-b border-primary-10 px-1 text-primary-80">
+    <div class="border-primary-20 shadow-xs wd:flex wd:items-stretch border">
+      <div class="wd:max-w-xs w-full shrink-0 px-8 py-5">
+        <div class="border-primary-10 text-primary-80 -mx-1 border-b px-1">
           {{ character.name }}
         </div>
-        <div class="mt-3 text-primary-40">{{ `Lv.${character.level}` }}</div>
+        <div class="text-primary-40 mt-3">{{ `Lv.${character.level}` }}</div>
       </div>
 
       <div v-if="validBaseStats.length > 0" class="flex items-center px-8 py-5">
         <div
           class="mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2 border-red-50"
         >
-          <span class="text-sm text-primary-50">
+          <span class="text-primary-50 text-sm">
             {{ primaryBaseStat.name }}
           </span>
-          <span class="pb-1 text-primary-80">
+          <span class="text-primary-80 pb-1">
             {{ primaryBaseStat.value }}
           </span>
         </div>
         <div
           v-if="secondaryBaseStat"
-          class="mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2 border-primary-30"
+          class="border-primary-30 mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2"
         >
-          <span class="text-sm text-primary-50">
+          <span class="text-primary-50 text-sm">
             {{ secondaryBaseStat.name }}
           </span>
-          <span class="pb-1 text-primary-80">
+          <span class="text-primary-80 pb-1">
             {{ secondaryBaseStat.value }}
           </span>
         </div>
       </div>
     </div>
-    <div class="mt-7 border border-primary-20 shadow-xs wd:flex wd:items-stretch">
-      <div class="relative w-full py-2 wd:border-r wd:border-primary-10">
+    <div class="border-primary-20 shadow-xs wd:flex wd:items-stretch mt-7 border">
+      <div class="wd:border-r wd:border-primary-10 relative w-full py-2">
         <cy-button-icon
           icon="mdi:square-edit-outline"
-          class="absolute top-2 right-2"
+          class="absolute right-2 top-2"
           @click="setCurrentTab(CharacterSimulatorRouteNames.Equipment)"
         />
         <template v-if="character.equipmentFields.some(field => !field.isEmpty)">
@@ -86,28 +86,28 @@ const { setCurrentTab } = useCharacterSimulatorState()
             :class="idx % 2 !== 0 ? 'bg-primary-5/50' : ''"
           />
         </template>
-        <div v-else class="px-4 py-2 text-sm text-primary-40">
+        <div v-else class="text-primary-40 px-4 py-2 text-sm">
           {{ t('character-simulator.character-dashboard.no--any-equipment-tips') }}
         </div>
       </div>
-      <div class="flex w-full shrink-0 flex-col items-start wd:max-w-sm">
+      <div class="wd:max-w-sm flex w-full shrink-0 flex-col items-start">
         <CharacterDashboardSkillBuild
           v-if="characterState.skillBuild"
           :skill-build="characterState.skillBuild"
         />
         <CharacterDashboardFoodBuild
           v-if="characterState.foodBuild"
-          class="border-t border-primary-10"
+          class="border-primary-10 border-t"
           :food-build="characterState.foodBuild"
         />
         <CharacterDashboardPotionBuild
           v-if="characterState.potionBuild"
-          class="border-t border-primary-10"
+          class="border-primary-10 border-t"
           :potion-build="characterState.potionBuild"
         />
         <CharacterDashboardRegistletBuild
           v-if="characterState.registletBuild"
-          class="border-t border-primary-10"
+          class="border-primary-10 border-t"
           :registlet-build="characterState.registletBuild"
         />
       </div>

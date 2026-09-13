@@ -33,7 +33,7 @@ const { t } = useI18n()
 
 <template>
   <CardRow class="py-2.5">
-    <div class="sticky top-0 z-1 min-w-max pr-3.5">
+    <div class="z-1 sticky top-0 min-w-max pr-3.5">
       <div class="flex items-center">
         <div
           class="mr-3 flex cursor-pointer items-center pl-3.5"
@@ -42,7 +42,7 @@ const { t } = useI18n()
           <cy-icon icon="ic:round-add" class="mr-3.5" />
           <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" />
           <cy-icon v-else icon="eva-star-outline" />
-          <div class="mr-2.5 ml-2 w-32 truncate">
+          <div class="ml-2 mr-2.5 w-32 truncate">
             {{ equipment.name }}
           </div>
           <div v-if="previewStat" :class="previewStat.value > 0 ? 'text-cyan-70' : 'text-red-40'">
@@ -50,7 +50,7 @@ const { t } = useI18n()
           </div>
           <div v-else-if="!equipment.unknowCategory" class="flex items-center">
             <cy-icon :icon="equipment.isWeapon() ? 'mdi:sword' : 'mdi:shield-outline'" />
-            <span class="ml-1.5 text-primary-80">
+            <span class="text-primary-80 ml-1.5">
               {{ equipment.baseValue }}
             </span>
           </div>
@@ -64,7 +64,7 @@ const { t } = useI18n()
     </div>
     <div
       v-if="showDetail"
-      class="relative mt-2.5 max-w-max overscroll-none bg-orange-20/5 py-3 pr-4 pl-6 shadow-xs"
+      class="bg-orange-20/5 shadow-xs relative mt-2.5 max-w-max overscroll-none py-3 pl-6 pr-4"
     >
       <div class="mb-1 flex items-center text-sm">
         <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" small />
@@ -82,7 +82,7 @@ const { t } = useI18n()
           class="text-sm"
         />
       </div>
-      <div v-else class="text-sm text-gray-40">
+      <div v-else class="text-gray-40 text-sm">
         {{ t('item-query.equipment-detail.no-any-stat-tips') }}
       </div>
     </div>

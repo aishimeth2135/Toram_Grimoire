@@ -18,14 +18,14 @@ const { t } = useI18n()
 
 <template>
   <CardRow :item="section" class="flex cursor-pointer px-3 py-2">
-    <div class="mr-2 text-primary-30">
+    <div class="text-primary-30 mr-2">
       {{ section.sectionId.toString().padStart(2, '0') }}
     </div>
     <div>
       <div class="text-primary-80">
         {{ section.name }}
       </div>
-      <div class="text-sm text-primary-50">
+      <div class="text-primary-50 text-sm">
         {{ numberWithCommas(section.exp) }}
         <span class="text-primary-30">EXP</span>
       </div>
@@ -36,7 +36,7 @@ const { t } = useI18n()
             {{ t('main-quest-calc.skippable-sub-section-annotation') }}
           </span>
         </div>
-        <div class="text-sm text-primary-50">
+        <div class="text-primary-50 text-sm">
           {{ numberWithCommas(section.skippableExp) }}
           <span class="text-primary-30">EXP</span>
         </div>

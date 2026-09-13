@@ -169,12 +169,12 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
   }
 
   & > circle.skill-circle {
-    fill: #fff;
     z-index: 5;
+    transition: 0.3s;
+    cursor: pointer;
+    fill: #fff;
     stroke: #ff5fb7;
     stroke-width: 2px;
-    cursor: pointer;
-    transition: 0.3s;
 
     &:hover,
     &.cur,
@@ -197,11 +197,11 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
     }
   }
   & > text.skill-name {
-    text-anchor: middle;
-    stroke-width: 0;
-    fill: var(--app-fuchsia-60);
-    transition: 0.3s;
     display: none;
+    transition: 0.3s;
+    fill: var(--app-fuchsia-60);
+    stroke-width: 0;
+    text-anchor: middle;
   }
 
   & .skill-icon-pattern-bg {
@@ -220,9 +220,9 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 
   & > text.skill-level-text {
     fill: var(--app-primary-60);
-    text-anchor: middle;
     stroke-width: 0;
     dominant-baseline: middle;
+    text-anchor: middle;
   }
   & > circle.star-gem-level-circle {
     fill: #2196f3;
@@ -233,9 +233,9 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
   }
   & > text.star-gem-level-text {
     fill: var(--app-blue-60);
-    text-anchor: middle;
     stroke-width: 0;
     dominant-baseline: middle;
+    text-anchor: middle;
   }
 }
 </style>

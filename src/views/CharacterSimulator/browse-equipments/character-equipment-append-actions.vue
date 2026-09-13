@@ -55,7 +55,7 @@ const { displayedItems } = useEquipmentsDisplayedItems()
             <div
               v-for="item of types"
               :key="item"
-              class="m-1.5 flex size-12 cursor-pointer items-center justify-center rounded-full border-2 border-primary-10 duration-150 hover:border-primary-40"
+              class="border-primary-10 hover:border-primary-40 m-1.5 flex size-12 cursor-pointer items-center justify-center rounded-full border-2 duration-150"
               hover
               @click="(createCustomEquipment(item), hide())"
             >

@@ -1,10 +1,10 @@
 <template>
   <div class="flex items-start pb-0.5 pl-2.5">
     <IconCircle :icon="icon" />
-    <div class="pt-1 pl-3">
+    <div class="pl-3 pt-1">
       <div class="flex items-center">
         <div class="text-red-60" v-html="title"></div>
-        <div v-if="titleProps" class="ml-3 flex items-center space-x-1.5 text-sm text-emerald-60">
+        <div v-if="titleProps" class="text-emerald-60 ml-3 flex items-center space-x-1.5 text-sm">
           <span v-for="titleProp in titleProps" :key="titleProp" class="inline-block">
             {{ titleProp }}
           </span>

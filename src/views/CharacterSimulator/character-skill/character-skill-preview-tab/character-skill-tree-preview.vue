@@ -72,7 +72,7 @@ const handleSkillClick = (skill: Skill) => {
 
 <template>
   <div>
-    <div class="flex items-center px-3 py-0.5 text-sm text-primary-40">
+    <div class="text-primary-40 flex items-center px-3 py-0.5 text-sm">
       {{ skillTree.name }}
       <CommonEditModeButton v-model:is-editing="isEditing" class="ml-auto" />
     </div>
@@ -86,7 +86,7 @@ const handleSkillClick = (skill: Skill) => {
           :skill-build="skillBuild"
         />
       </CardRows>
-      <div v-else class="px-3 pt-1 pb-4 text-sm text-gray-40">
+      <div v-else class="text-gray-40 px-3 pb-4 pt-1 text-sm">
         {{ t('character-simulator.skill-build.skill-tree-empty-tips') }}
       </div>
     </template>

@@ -2,7 +2,7 @@
   <teleport to="#app-loading">
     <div
       v-show="store.active"
-      class="app--loading fixed top-0 left-0 z-100 flex size-full justify-center p-4"
+      class="app--loading z-100 fixed left-0 top-0 flex size-full justify-center p-4"
       @click.stop
     >
       <div class="main-container">
@@ -26,10 +26,10 @@ const store = useLoadingStore()
   background-color: --alpha(var(--app-white) / 60%);
 }
 .custom-icon {
+  animation: loading-page-main-icon ease 4s infinite;
   width: 6rem;
   height: 6rem;
   color: #f7a8d3;
-  animation: loading-page-main-icon ease 4s infinite;
 }
 .main-container {
   margin-top: 15vh;

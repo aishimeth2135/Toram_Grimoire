@@ -28,11 +28,11 @@
     </template>
     <div
       v-else
-      class="fixed top-0 left-0 z-100 flex size-full items-center justify-center bg-white"
+      class="z-100 fixed left-0 top-0 flex size-full items-center justify-center bg-white"
     >
       <div class="flex flex-wrap justify-center">
         <LoadingAnimation :status="0" />
-        <div class="mt-2 w-full text-center text-xl text-primary-30">Initializing...</div>
+        <div class="text-primary-30 mt-2 w-full text-center text-xl">Initializing...</div>
       </div>
     </div>
   </div>

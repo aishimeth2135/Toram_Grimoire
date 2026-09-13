@@ -1,20 +1,20 @@
 <template>
   <div class="skill-branch-layout-normal rounded-sm bg-white">
-    <div class="rounded-sm border-2 border-l-4 border-red-30 bg-white pb-2">
-      <div class="mb-2.5 flex items-center border-b border-red-20 py-1.5 pl-2.5">
+    <div class="border-red-30 rounded-sm border-2 border-l-4 bg-white pb-2">
+      <div class="border-red-20 mb-2.5 flex items-center border-b py-1.5 pl-2.5">
         <cy-icon :icon="nameIcon" class="text-red-30" />
-        <div class="ml-1.5 text-red-40">{{ container.get('name') }}</div>
+        <div class="text-red-40 ml-1.5">{{ container.get('name') }}</div>
       </div>
       <div class="flex items-start">
         <div class="shrink-0 pl-2.5">
-          <div class="flex shrink-0 rounded-full border border-red-30 bg-white p-1.5">
+          <div class="border-red-30 flex shrink-0 rounded-full border bg-white p-1.5">
             <cy-icon :icon="mainIcon" class="text-red-30" />
           </div>
         </div>
-        <div class="pt-1 pr-2 pl-3.5">
+        <div class="pl-3.5 pr-2 pt-1">
           <div v-if="mainTitle" class="flex items-center">
             <div class="text-primary-80" v-html="mainTitle"></div>
-            <div v-if="nameProps" class="flex space-x-2 pl-3 text-sm text-emerald-60">
+            <div v-if="nameProps" class="text-emerald-60 flex space-x-2 pl-3 text-sm">
               <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
                 {{ nameProp }}
               </span>
@@ -30,7 +30,7 @@
         class="flex items-start py-1.5 pl-2.5"
       >
         <IconCircle icon="mdi:help" />
-        <div class="border-y border-transparent pt-1 pr-2 pl-3.5">
+        <div class="border-y border-transparent pl-3.5 pr-2 pt-1">
           <span
             v-for="contentData in subContentDatas"
             :key="contentData.key"
@@ -49,7 +49,7 @@
                   :result="contentData.title"
                 />
               </slot>
-              <span v-if="contentData.value" class="prop-value-wrapper ml-1.5 text-primary-50">
+              <span v-if="contentData.value" class="prop-value-wrapper text-primary-50 ml-1.5">
                 {{ contentData.value }}
               </span>
             </div>
@@ -59,25 +59,25 @@
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
         <IconCircle icon="ic:outline-share-arrival-time" />
-        <div class="pt-1 pr-2 pl-3.5">
+        <div class="pl-3.5 pr-2 pt-1">
           <div class="mb-1 flex items-center text-sm text-red-50">
             <div>{{ t('skill-query.branch.action-frame.title') }}</div>
-            <span class="ml-2 text-gray-30">60F/1s</span>
+            <span class="text-gray-30 ml-2">60F/1s</span>
           </div>
           <div class="flex flex-wrap items-center">
             <div class="mr-5 flex flex-wrap items-center">
-              <div class="text-sm text-primary-30">
+              <div class="text-primary-30 text-sm">
                 {{ t('skill-query.branch.action-frame.title-base') }}
               </div>
-              <div class="ml-2.5 text-sm text-red-60">
+              <div class="text-red-60 ml-2.5 text-sm">
                 {{ actionFrameData.base }}
               </div>
             </div>
             <div class="flex items-center">
-              <div class="text-sm text-primary-30">
+              <div class="text-primary-30 text-sm">
                 {{ t('skill-query.branch.action-frame.title-min') }}
               </div>
-              <div class="ml-2.5 text-sm text-red-60">
+              <div class="text-red-60 ml-2.5 text-sm">
                 {{ actionFrameData.min }}
               </div>
             </div>
@@ -92,7 +92,7 @@
             small
             @click.stop="toggleAreaDetailVisible"
           />
-          <div class="cursor-pointer pl-3 text-primary-30" @click.stop="toggleAreaDetailVisible">
+          <div class="text-primary-30 cursor-pointer pl-3" @click.stop="toggleAreaDetailVisible">
             {{ t('skill-query.branch.skill-area.button-text') }}
           </div>
         </div>
@@ -102,8 +102,8 @@
       </div>
     </div>
     <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
-      <div class="ml-7 h-3 border-l-2 border-primary-20" />
-      <div class="rounded-sm border-2 border-primary-20 bg-white pt-2.5 pb-2">
+      <div class="border-primary-20 ml-7 h-3 border-l-2" />
+      <div class="border-primary-20 rounded-sm border-2 bg-white pb-2 pt-2.5">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"

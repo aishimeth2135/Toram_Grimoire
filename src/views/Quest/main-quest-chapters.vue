@@ -163,12 +163,12 @@ watch(
 <template>
   <div>
     <div
-      class="max-h-128 overflow-y-auto border wd:min-w-96"
+      class="max-h-128 wd:min-w-96 overflow-y-auto border"
       :class="isChangingEndSection ? 'border-cyan-60' : 'border-primary-10'"
     >
       <div v-if="displayedChapterItems.frontUnselecteds.length > 0">
         <div v-for="{ id, name, sections } in displayedChapterItems.frontUnselecteds" :key="id">
-          <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
+          <div v-if="name" class="text-gray-40 px-3 pt-2 text-sm">
             {{ `${id.toString().padStart(2, '0')}. ${name}` }}
           </div>
           <CardRowsDelegation @row-clicked="selectSection">
@@ -180,9 +180,9 @@ watch(
           </CardRowsDelegation>
         </div>
       </div>
-      <div class="border border-primary-40">
+      <div class="border-primary-40 border">
         <div v-for="{ id, name, sections } in displayedChapterItems.selecteds" :key="id">
-          <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
+          <div v-if="name" class="text-gray-40 px-3 pt-2 text-sm">
             {{ `${id.toString().padStart(2, '0')}. ${name}` }}
           </div>
           <CardRowsDelegation class="mt-1" @row-clicked="selectSection">
@@ -196,7 +196,7 @@ watch(
       </div>
       <div v-if="displayedChapterItems.backUnselecteds.length > 0">
         <div v-for="{ id, name, sections } in displayedChapterItems.backUnselecteds" :key="id">
-          <div v-if="name" class="px-3 pt-2 text-sm text-gray-40">
+          <div v-if="name" class="text-gray-40 px-3 pt-2 text-sm">
             {{ `${id.toString().padStart(2, '0')}. ${name}` }}
           </div>
           <CardRowsDelegation @row-clicked="selectSection">

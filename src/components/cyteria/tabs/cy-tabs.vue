@@ -42,7 +42,7 @@ useResizeObserver(tabsEl, () => {
     :class="[direction === 'horizontal' ? 'cy-tabs-h' : 'cy-tabs-v', { 'not-plain': !plain }]"
   >
     <slot />
-    <div class="absolute rounded-full bg-primary-40 ease-linear" :style="sliderStyle" />
+    <div class="bg-primary-40 absolute rounded-full ease-linear" :style="sliderStyle" />
   </div>
 </template>
 

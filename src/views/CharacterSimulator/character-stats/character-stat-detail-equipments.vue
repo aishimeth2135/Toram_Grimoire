@@ -7,14 +7,14 @@
       class="text-orange-60"
     >
       <template #equip>
-        <span class="mx-1 inline-flex items-center text-emerald-60">
+        <span class="text-emerald-60 mx-1 inline-flex items-center">
           <template v-for="text in equipmentTexts" :key="'text-i-' + text.id">
             <cy-icon v-if="text.text === '+'" icon="ic-round-add" />
             <cy-icon v-else-if="text.text === '/'" icon="mdi-slash-forward" />
             <span
               v-else-if="text.text === '(' || text.text === ')'"
               :key="'separate-' + text.id"
-              class="mx-2 inline-block h-4 border-l border-solid border-primary-30"
+              class="border-primary-30 mx-2 inline-block h-4 border-l border-solid"
             />
             <span v-else :key="'text-' + text.id">
               {{ text.text }}

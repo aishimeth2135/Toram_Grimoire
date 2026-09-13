@@ -74,7 +74,7 @@ const displayDatas = computed(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-120">
+  <div class="max-w-120 w-full">
     <div
       class="flex cursor-pointer items-center text-sm"
       :class="expRateVisible ? 'text-primary-70' : 'text-primary-40'"
@@ -94,7 +94,7 @@ const displayDatas = computed(() => {
         </div>
         <div class="flex grow items-center">
           <div class="h-3" :class="data.barClass" :style="{ width: `${data.expRate}%` }" />
-          <div class="ml-2 shrink-0 text-primary-50">
+          <div class="text-primary-50 ml-2 shrink-0">
             {{ `${data.expRate}%` }}
           </div>
         </div>

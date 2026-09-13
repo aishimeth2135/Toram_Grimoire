@@ -3,17 +3,17 @@
     <template v-if="comparedStatsDatas.length != 0">
       <div v-for="data in comparedStatsDatas" :key="data.id" class="flex items-center">
         <template v-if="!data.isBoolStat">
-          <div class="inline-flex items-center gap-icon text-sm text-primary-90">
+          <div class="gap-icon text-primary-90 inline-flex items-center text-sm">
             <cy-icon small class="text-primary-30" />
             {{ data.text }}
           </div>
-          <span class="ml-1 text-sm text-primary-50" :class="{ 'text-gray': data.negative }">
+          <span class="text-primary-50 ml-1 text-sm" :class="{ 'text-gray': data.negative }">
             {{ data.displayValue }}
           </span>
         </template>
         <div
           v-else
-          class="inline-flex items-center gap-icon text-sm"
+          class="gap-icon inline-flex items-center text-sm"
           :class="data.negative ? 'text-gray-60' : 'text-primary-50'"
         >
           <cy-icon small class="text-primary-30" />

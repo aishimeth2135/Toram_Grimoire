@@ -1,21 +1,21 @@
 <template>
-  <CardRow class="px-1 pt-2.5 pb-2">
+  <CardRow class="px-1 pb-2 pt-2.5">
     <div class="flex h-full items-start">
-      <div class="shrink-0 self-stretch pr-3 pl-2">
+      <div class="shrink-0 self-stretch pl-2 pr-3">
         <div
-          class="relative flex cursor-pointer rounded-full border-2 bg-white p-1.5 duration-150 hover:border-primary-40"
+          class="hover:border-primary-40 relative flex cursor-pointer rounded-full border-2 bg-white p-1.5 duration-150"
           :class="invalid ? 'border-gray-20' : enabled ? 'border-primary-50' : 'border-primary-20'"
           @click="enabled = !enabled"
         >
           <cy-icon
             v-if="enabled"
-            class="absolute -top-1.5 -left-1.5"
+            class="absolute -left-1.5 -top-1.5"
             icon="material-symbols:check-circle-rounded-sm"
           />
           <cy-icon :icon="skillIconPath" width="1.5rem" />
         </div>
       </div>
-      <div class="grow pt-1 pr-3" :class="{ 'opacity-50': !enabled }">
+      <div class="grow pr-3 pt-1" :class="{ 'opacity-50': !enabled }">
         <div>
           <div class="flex items-center">
             <div class="flex cursor-pointer items-center" @click="enabled = !enabled">
@@ -30,11 +30,11 @@
               <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
             </div>
           </div>
-          <div v-if="invalid" class="py-2 text-sm text-gray-40">
+          <div v-if="invalid" class="text-gray-40 py-2 text-sm">
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
           <div v-else-if="skillResultsState.results.length > 0">
-            <div v-if="isMutipleItem" class="py-1 text-primary-30">
+            <div v-if="isMutipleItem" class="text-primary-30 py-1">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
             <CharacterSkillResultItem
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div v-if="!invalid">
-          <div v-if="isMutipleItem" class="pt-1 pb-1.5">
+          <div v-if="isMutipleItem" class="pb-1.5 pt-1">
             <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
               <CharacterSkillResultItem :result="result" />
             </div>

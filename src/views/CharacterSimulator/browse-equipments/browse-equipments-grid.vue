@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
       <div
         v-for="virtualRow in equipmentsVirtualizer.getVirtualItems()"
         :key="virtualRow.index"
-        class="absolute top-0 left-0 flex w-full px-1.5"
+        class="absolute left-0 top-0 flex w-full px-1.5"
         :style="{
           height: `${virtualRow.size}px`,
           transform: `translateY(${virtualRow.start}px)`,

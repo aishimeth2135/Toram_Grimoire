@@ -1,9 +1,9 @@
 <template>
-  <CardRow class="relative py-1 pr-4 pl-2" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
+  <CardRow class="relative py-1 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
-      class="absolute top-3.5 right-3"
+      class="absolute right-3 top-3.5"
       @click="item.remove()"
     />
     <div class="flex flex-wrap items-center">
@@ -14,10 +14,10 @@
             item.enabled
           "
         />
-        <div class="ml-1 text-primary-70">{{ item.base.name }}</div>
+        <div class="text-primary-70 ml-1">{{ item.base.name }}</div>
       </div>
     </div>
-    <div v-if="detailVisible" class="px-2 pt-1 pl-10">
+    <div v-if="detailVisible" class="px-2 pl-10 pt-1">
       <PotionCaption :potion="item.base" />
     </div>
   </CardRow>

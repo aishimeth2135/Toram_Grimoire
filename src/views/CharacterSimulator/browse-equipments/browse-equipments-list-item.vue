@@ -50,7 +50,7 @@ const { device } = useDevice()
         </div>
       </div>
       <BrowseEquipmentInfoSimplified v-if="selected && device.isMobile" :equipment="equipment" />
-      <div v-if="selected" class="border-t border-primary-10 py-1">
+      <div v-if="selected" class="border-primary-10 border-t py-1">
         <EquipmentBrowseActions
           :equipment="equipment"
           :equipped="equipped"

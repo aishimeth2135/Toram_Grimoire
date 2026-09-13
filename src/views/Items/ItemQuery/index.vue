@@ -15,7 +15,7 @@
           v-if="state.currentMode === 'normal' && normalMode.state.optionsVisible"
           class="px-3.5 py-2.5"
         >
-          <div class="mb-1 text-sm text-primary-30">
+          <div class="text-primary-30 mb-1 text-sm">
             {{ t('item-query.options-normal.title') }}
           </div>
           <div>
@@ -58,11 +58,11 @@
           <ItemQueryFilterMenu :equipments="equipments" @filter="validEquipments = $event" />
         </AppLayoutBottomContent>
         <AppLayoutBottomContent v-show="sortOptionsVisible" class="px-3.5 py-2.5">
-          <div class="text-sm text-primary-30">
+          <div class="text-primary-30 text-sm">
             {{ t('item-query.sort-options.title') }}
           </div>
           <cy-button-radio-group v-model:value="sortState.currentSelected" :options="sortOptions" />
-          <div class="mt-2 text-sm text-primary-30">
+          <div class="text-primary-30 mt-2 text-sm">
             {{ t('item-query.sort-options.order.title') }}
           </div>
           <cy-button-radio-group

@@ -1,11 +1,11 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter border border-l-4 bg-white outline-hidden duration-300"
+      class="cy--input-counter outline-hidden border border-l-4 bg-white duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title'] || title" class="mr-3 inline-flex items-center text-primary-80">
+      <div v-if="$slots['title'] || title" class="text-primary-80 mr-3 inline-flex items-center">
         <slot name="title">
           {{ title }}
         </slot>
@@ -129,11 +129,11 @@ const setValue = (value: number) => {
 <style>
 .cy--input-counter {
   display: flex;
-  align-items: center;
-  padding: 0.25rem 0.75rem 0.25rem 1rem;
-  transition: border-color 0.3s;
   position: relative;
+  align-items: center;
+  transition: border-color 0.3s;
   border-color: var(--input-counter-color);
+  padding: 0.25rem 0.75rem 0.25rem 1rem;
   --input-width: 2.125rem;
 
   &.theme-primary {
@@ -158,8 +158,8 @@ const setValue = (value: number) => {
   &.inline {
     display: inline-flex;
     border: 0;
-    padding: 0 0.5rem;
     background-color: transparent;
+    padding: 0 0.5rem;
   }
 
   & > .counter-content {
@@ -167,11 +167,11 @@ const setValue = (value: number) => {
     align-items: center;
 
     & > input {
-      width: var(--input-width);
-      border: 0;
       outline: 0;
-      text-align: center;
+      border: 0;
+      width: var(--input-width);
       font-size: 1rem;
+      text-align: center;
     }
   }
 
@@ -179,15 +179,15 @@ const setValue = (value: number) => {
     opacity: 0.7;
 
     &::before {
-      content: '';
-      width: 100%;
-      height: 100%;
-      cursor: not-allowed;
-      z-index: 10;
       display: inline-block;
       position: absolute;
-      left: 0;
       top: 0;
+      left: 0;
+      z-index: 10;
+      cursor: not-allowed;
+      width: 100%;
+      height: 100%;
+      content: '';
     }
   }
 }

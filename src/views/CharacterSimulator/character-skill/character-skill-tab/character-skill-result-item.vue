@@ -7,7 +7,7 @@
       />
     </div>
     <div class="grow">
-      <div v-if="!hideName" class="pt-0.5 text-primary-70">
+      <div v-if="!hideName" class="text-primary-70 pt-0.5">
         {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
       </div>
       <div class="py-0.5">

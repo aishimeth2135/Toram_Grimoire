@@ -46,7 +46,7 @@
       <template #main-content>
         <AppLayoutBottomContent v-if="resultDetailVisible" class="px-4 py-3">
           <div>
-            <div class="inline-flex items-center gap-icon text-sm text-fuchsia-60">
+            <div class="gap-icon text-fuchsia-60 inline-flex items-center text-sm">
               <cy-icon icon="ant-design:star-outlined" small class="text-primary-30" />
               {{ t('damage-calculation.result.title') }}
             </div>
@@ -60,7 +60,7 @@
               <DamageCalculationResultItem :result-item="modeItem" />
             </div>
             <div>
-              <div class="ml-6 inline-flex items-start gap-icon text-sm text-primary-30">
+              <div class="gap-icon text-primary-30 ml-6 inline-flex items-start text-sm">
                 <cy-icon icon="bx-bx-info-circle" small class="icon-first-line text-primary-30" />
                 {{ t('damage-calculation.result.modes-caption.' + modeItem.id) }}
               </div>
@@ -118,7 +118,7 @@
                 <cy-button-circle icon="ant-design:build-outlined" small />
               </template>
               <template #item="{ value }">
-                <div class="inline-flex items-center gap-icon text-primary-90">
+                <div class="gap-icon text-primary-90 inline-flex items-center">
                   <cy-icon icon="ant-design:build-outlined" class="text-primary-30" />
                   {{ value.name }}
                 </div>
@@ -148,13 +148,13 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent v-else-if="compareVisible" class="px-4 py-3">
           <div>
-            <div class="inline-flex items-center gap-icon text-sm text-fuchsia-60">
+            <div class="gap-icon text-fuchsia-60 inline-flex items-center text-sm">
               <cy-icon icon="bx:bx-git-compare" small class="text-primary-30" />
               {{ t('damage-calculation.compare.title') }}
             </div>
           </div>
           <div class="mb-2">
-            <div class="ml-2 inline-flex items-center gap-icon text-sm text-primary-50">
+            <div class="gap-icon text-primary-50 ml-2 inline-flex items-center text-sm">
               <cy-icon icon="bx-bx-info-circle" small class="text-primary-30" />
               {{ t('damage-calculation.compare.caption') }}
             </div>
@@ -163,13 +163,13 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent v-else-if="calcModeDetailVisible" class="px-4 py-3">
           <div>
-            <div class="inline-flex items-center gap-icon text-sm text-fuchsia-60">
+            <div class="gap-icon text-fuchsia-60 inline-flex items-center text-sm">
               <cy-icon icon="ant-design:star-outlined" small class="text-primary-30" />
               {{ t('damage-calculation.calc-mode.title') }}
             </div>
           </div>
           <div>
-            <div class="ml-2 inline-flex items-center gap-icon text-sm text-primary-50">
+            <div class="gap-icon text-primary-50 ml-2 inline-flex items-center text-sm">
               <cy-icon icon="bx-bx-info-circle" small class="text-primary-30" />
               {{ t('damage-calculation.calc-mode.caption') }}
             </div>
@@ -184,7 +184,7 @@
               </cy-button-check>
             </div>
             <div>
-              <div class="ml-6 inline-flex items-start gap-icon text-sm text-primary-30">
+              <div class="gap-icon text-primary-30 ml-6 inline-flex items-start text-sm">
                 <cy-icon icon="bx-bx-info-circle" small class="icon-first-line text-primary-30" />
                 {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
               </div>

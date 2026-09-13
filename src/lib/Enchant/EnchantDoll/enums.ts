@@ -9,6 +9,7 @@ const AutoFindNegaitveStatsTypes = {
   SuccessRate: 'success-rate',
   Material: 'material',
 } as const
-type AutoFindNegaitveStatsTypes = (typeof AutoFindNegaitveStatsTypes)[keyof typeof AutoFindNegaitveStatsTypes]
+type AutoFindNegaitveStatsTypes =
+  (typeof AutoFindNegaitveStatsTypes)[keyof typeof AutoFindNegaitveStatsTypes]
 
 export { EnchantDollBaseTypes, AutoFindNegaitveStatsTypes }

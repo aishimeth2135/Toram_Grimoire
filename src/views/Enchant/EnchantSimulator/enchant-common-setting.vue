@@ -38,7 +38,7 @@ const materialTypes = [0, 1, 2, 3, 4, 5]
         <cy-button-check v-model:selected="config.hasExpertsCustomization2Skill">
           {{ t('enchant-simulator.experts-customization-2-skill') }}
         </cy-button-check>
-        <div class="text-sm text-primary-30">
+        <div class="text-primary-30 text-sm">
           {{ t('enchant-simulator.experts-customization-2-skill-desc') }}
         </div>
       </div>
@@ -49,7 +49,7 @@ const materialTypes = [0, 1, 2, 3, 4, 5]
           :title="t('enchant-simulator.material-anvil-skill-level-sum')"
           :range="[0, 40]"
         />
-        <div class="mt-1 text-sm text-primary-30">
+        <div class="text-primary-30 mt-1 text-sm">
           {{ t('enchant-simulator.material-anvil-skill-level-desc') }}
         </div>
       </div>

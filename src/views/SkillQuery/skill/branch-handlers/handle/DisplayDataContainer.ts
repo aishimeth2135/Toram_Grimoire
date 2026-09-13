@@ -14,8 +14,7 @@ import {
 
 export default class DisplayDataContainer<
   Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds,
-> implements InstanceWithId
-{
+> implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
   private _titles: SkillDisplayData

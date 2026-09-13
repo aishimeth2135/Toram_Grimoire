@@ -8,13 +8,13 @@
     footer
   >
     <template #title-end>
-      <div class="ml-auto px-2.5 text-gray-60">
+      <div class="text-gray-60 ml-auto px-2.5">
         {{ 'v' + mainStore.version }}
       </div>
     </template>
     <div v-if="mainStore.serviceWorker.hasUpdate" class="flex items-center justify-center p-4">
-      <div class="flex items-center text-fuchsia-60">
-        <cy-icon icon="mdi-creation" class="mr-2 text-fuchsia-40" />
+      <div class="text-fuchsia-60 flex items-center">
+        <cy-icon icon="mdi-creation" class="text-fuchsia-40 mr-2" />
         {{ t('app.settings.update.new-version-detected') }}
       </div>
       <div class="pl-4">

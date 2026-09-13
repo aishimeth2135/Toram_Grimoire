@@ -18,10 +18,10 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <CardRowsWrapper>
-    <div class="border-b border-primary-20 bg-white px-3 py-0.5 text-sm text-primary-30">
+    <div class="border-primary-20 text-primary-30 border-b bg-white px-3 py-0.5 text-sm">
       {{ category.base.name }}
     </div>
-    <CardRows class="pt-1.5 pb-2.5">
+    <CardRows class="pb-2.5 pt-1.5">
       <CharacterPotionItem
         v-for="item in category.items"
         :key="item.base.id"

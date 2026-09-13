@@ -22,12 +22,12 @@ withDefaults(defineProps<Props>(), {
 .cy--list-item {
   display: flex;
   flex-wrap: wrap;
-  cursor: pointer;
   align-items: center;
+  transition-duration: 200ms;
+  cursor: pointer;
+  border: 1px solid transparent;
   padding-inline: --spacing(3);
   padding-block: --spacing(1.5);
-  border: 1px solid transparent;
-  transition-duration: 200ms;
 
   &:hover {
     background-color: var(--app-primary-5);
@@ -38,9 +38,9 @@ withDefaults(defineProps<Props>(), {
   }
 
   &.selected {
-    color: var(--app-fuchsia-60);
     border: 1px solid var(--app-primary-30);
     background-color: --alpha(var(--app-primary-10) / 10%);
+    color: var(--app-fuchsia-60);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {

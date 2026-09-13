@@ -52,8 +52,8 @@ function resetSteps() {
       @select="selectGem(step.index, $event)"
       @toggle="toggleStep(step.index)"
     />
-    <section class="rounded-sm border border-primary-20 p-3 pt-2" aria-live="polite">
-      <h3 class="mb-3 text-sm text-primary-60">
+    <section class="border-primary-20 rounded-sm border p-3 pt-2" aria-live="polite">
+      <h3 class="text-primary-60 mb-3 text-sm">
         {{ t('chromatic-trans-simulator.result-title') }}
       </h3>
       <div v-if="container.pool.length" class="flex flex-wrap gap-1">
@@ -65,7 +65,7 @@ function resetSteps() {
           :tabindex="-1"
         />
       </div>
-      <p v-else class="text-sm text-primary-40">{{ t('chromatic-trans-simulator.empty') }}</p>
+      <p v-else class="text-primary-40 text-sm">{{ t('chromatic-trans-simulator.empty') }}</p>
     </section>
   </div>
 </template>

@@ -1,27 +1,27 @@
 <template>
   <CardRow :selected="detailVisible">
     <div
-      class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
+      class="hover:bg-primary-5 flex cursor-pointer items-center px-3.5 py-2.5 duration-150"
       @click="detailVisible = !detailVisible"
     >
       <div
-        class="inline-flex items-center gap-icon"
+        class="gap-icon inline-flex items-center"
         :class="!sub ? 'text-primary-80' : 'text-orange-60'"
       >
         <cy-icon icon="mdi:tag-outline" class="text-primary-30" />
         {{ tag.name }}
       </div>
-      <div class="ml-3 flex items-center space-x-1.5 text-sm text-primary-30">
+      <div class="text-primary-30 ml-3 flex items-center space-x-1.5 text-sm">
         <div v-for="row in categoryRows" :key="row.value.join(',')">
           {{ row.value[0] }}
         </div>
       </div>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="bg-white pr-2 pb-2.5 pl-3.5">
-        <GlossaryTagContentRows class="py-2 pr-4 pl-6" :tag="tag" />
+      <div v-if="detailVisible" class="bg-white pb-2.5 pl-3.5 pr-2">
+        <GlossaryTagContentRows class="py-2 pl-6 pr-4" :tag="tag" />
         <div v-if="includedTags.length > 0">
-          <CardRows class="border-l-4 border-primary-30">
+          <CardRows class="border-primary-30 border-l-4">
             <GlossaryTagItem
               v-for="otherTag in includedTags"
               :key="otherTag.name"

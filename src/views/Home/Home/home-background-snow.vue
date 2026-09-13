@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="supportOffscreenCanvas"
-    class="pointer-events-none absolute top-0 left-0 size-full overflow-hidden opacity-100 duration-500"
+    class="pointer-events-none absolute left-0 top-0 size-full overflow-hidden opacity-100 duration-500"
     :class="{ ['opacity-0!']: !ready }"
   >
     <canvas
@@ -10,7 +10,7 @@
       :width="canvasViewport.width"
       :height="canvasViewport.height"
     />
-    <div class="absolute top-0 left-0 size-full" style="backdrop-filter: blur(1px)" />
+    <div class="absolute left-0 top-0 size-full" style="backdrop-filter: blur(1px)" />
   </div>
 </template>
 

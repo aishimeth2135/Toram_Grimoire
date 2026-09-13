@@ -25,7 +25,7 @@ defineProps<Props>()
         class="flex items-center"
       >
         {{ food.stat().show() }}
-        <div class="ml-2 text-sm text-primary-40">
+        <div class="text-primary-40 ml-2 text-sm">
           {{ `Lv.${food.level}` }}
         </div>
       </div>

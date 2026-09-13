@@ -6,7 +6,7 @@
     triggers="click hover"
     popper-content-class="rounded-md"
   >
-    <span class="cursor-pointer text-red-60 underline">
+    <span class="text-red-60 cursor-pointer underline">
       {{ currentSkill.name }}
     </span>
     <template #popper>

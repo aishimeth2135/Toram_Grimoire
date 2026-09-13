@@ -91,23 +91,23 @@ function selectMode(id: SearchMode) {
     >
       <template #title>
         <div
-          class="flex cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-30 bg-white pr-2.5 pl-3.5 duration-150 hover:bg-primary-10"
+          class="border-primary-30 hover:bg-primary-10 flex cursor-pointer items-center self-stretch rounded-l-full border border-r-0 bg-white pl-3.5 pr-2.5 duration-150"
         >
           <cy-icon icon="mdi:exchange" />
         </div>
       </template>
       <template #item="{ value }">
-        <div class="inline-flex items-center gap-icon text-primary-90">
+        <div class="gap-icon text-primary-90 inline-flex items-center">
           <cy-icon :icon="value.icon" class="text-primary-30" />
           {{ t('item-query.modes.' + value.id) }}
         </div>
       </template>
     </cy-options>
     <div
-      class="min-w-0 grow rounded-r-full border border-primary-30 bg-white focus-within:border-primary-60"
+      class="border-primary-30 focus-within:border-primary-60 min-w-0 grow rounded-r-full border bg-white"
     >
       <template v-if="state.currentMode === 'normal'">
-        <div class="flex w-full items-center pr-2 pl-2.5">
+        <div class="flex w-full items-center pl-2.5 pr-2">
           <div class="relative flex w-full items-center">
             <cy-icon icon="ic-outline-search" class="shrink-0" />
             <input
@@ -130,7 +130,7 @@ function selectMode(id: SearchMode) {
         </div>
       </template>
       <template v-else-if="state.currentMode === 'stat'">
-        <div class="inline-flex min-w-68 border-primary-20 p-0.5 sm:border-r">
+        <div class="min-w-68 border-primary-20 inline-flex p-0.5 sm:border-r">
           <CommonSearchableItemsPopover
             v-model:search-text="statMode.state.statSearchText"
             :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
@@ -139,7 +139,7 @@ function selectMode(id: SearchMode) {
             placement="top"
             @select-item="selectStat"
           >
-            <div v-if="statMode.state.currentStats.length === 0" class="text-sm text-primary-30">
+            <div v-if="statMode.state.currentStats.length === 0" class="text-primary-30 text-sm">
               {{ t('item-query.options-stat.select-stat.title') }}
             </div>
             <template v-else-if="statMode.state.currentStats.length === 1">
@@ -159,7 +159,7 @@ function selectMode(id: SearchMode) {
         </div>
       </template>
       <template v-else-if="state.currentMode === 'item-level'">
-        <div class="flex items-center py-2 pr-2 pl-3">
+        <div class="flex items-center py-2 pl-3 pr-2">
           <cy-icon icon="jam-hammer" />
           <input
             v-model="itemLevelMinimum"
@@ -212,12 +212,12 @@ function selectMode(id: SearchMode) {
             </div>
           </template>
         </cy-popover>
-        <div class="space-x-1 border-l border-primary-20 py-1.5 pl-2">
+        <div class="border-primary-20 space-x-1 border-l py-1.5 pl-2">
           <button
             v-for="part in dyeParts"
             :key="part.id"
             type="button"
-            class="cursor-pointer border border-primary-20 px-2 hover:bg-primary-10"
+            class="border-primary-20 hover:bg-primary-10 cursor-pointer border px-2"
             :class="{ 'border-primary-60': dyeMode.state.parts.includes(part.id) }"
             @click="dyeMode.togglePart(part.id)"
           >

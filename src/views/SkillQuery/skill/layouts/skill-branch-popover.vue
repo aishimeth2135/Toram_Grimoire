@@ -6,7 +6,7 @@
     triggers="click hover"
     popper-content-class="!border-0"
   >
-    <span class="cursor-pointer text-cyan-60 underline">
+    <span class="text-cyan-60 cursor-pointer underline">
       {{ currentBranchItem.prop('name') }}
     </span>
     <template #popper>

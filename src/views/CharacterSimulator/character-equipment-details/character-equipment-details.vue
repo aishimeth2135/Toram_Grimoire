@@ -66,17 +66,17 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
 </script>
 
 <template>
-  <div v-if="equipment" class="relative flex w-66 shrink-0 flex-col">
+  <div v-if="equipment" class="w-66 relative flex shrink-0 flex-col">
     <cy-tabs
       v-model="innerEditMode"
       direction="vertical"
       plain
-      class="relative z-5 w-full border border-primary-20 bg-white py-2"
+      class="z-5 border-primary-20 relative w-full border bg-white py-2"
     >
       <cy-icon
         v-if="equipped"
         icon="ic:round-check-circle"
-        class="absolute -top-3 -right-3 bg-white text-red-60"
+        class="text-red-60 absolute -right-3 -top-3 bg-white"
         width="1.5rem"
       />
       <CharacterEquipmentDetailsSelection
@@ -86,21 +86,21 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
       >
         <div class="flex items-center px-2 py-1">
           <div>
-            <div class="flex items-center text-primary-80">
+            <div class="text-primary-80 flex items-center">
               {{ equipment.name }}
               <span
                 v-if="equipment.supportRefining && equipment.refining > 0"
-                class="ml-2 text-blue-70"
+                class="text-blue-70 ml-2"
               >
                 {{ `+${equipment.refiningText}` }}
               </span>
             </div>
-            <div class="text-sm text-primary-50">
+            <div class="text-primary-50 text-sm">
               {{ t('common.Equipment.category.' + equipment.type) }}
             </div>
           </div>
           <div
-            class="ml-auto flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-primary-10"
+            class="border-primary-10 ml-auto flex size-11 shrink-0 items-center justify-center rounded-full border-2"
           >
             <CommonEquipmentIcon :equipment="equipment" width="1.5rem" />
           </div>
@@ -109,12 +109,12 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
           v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)"
           class="mt-0.5 pb-1.5"
         >
-          <div class="border-b border-primary-20 px-2.5">
-            <div v-if="equipment.is(EquipmentKinds.Weapon)" class="text-xs text-primary-30">
+          <div class="border-primary-20 border-b px-2.5">
+            <div v-if="equipment.is(EquipmentKinds.Weapon)" class="text-primary-30 text-xs">
               ATK
             </div>
-            <div v-else class="text-xs text-primary-30">DEF</div>
-            <div class="flex w-full items-center text-primary-70">
+            <div v-else class="text-primary-30 text-xs">DEF</div>
+            <div class="text-primary-70 flex w-full items-center">
               {{ equipment.basicValue }}
               <span
                 v-if="refiningAdditionAmount > 0"
@@ -123,7 +123,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
               >
                 +{{ refiningAdditionAmount }}
               </span>
-              <span v-if="equipment.supportStability" class="ml-auto text-sm text-cyan-70">
+              <span v-if="equipment.supportStability" class="text-cyan-70 ml-auto text-sm">
                 {{ `${equipment.stability}%` }}
               </span>
             </div>
@@ -142,7 +142,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             :stat="stat"
           />
         </div>
-        <div v-else class="pt-1 text-sm text-primary-30">
+        <div v-else class="text-primary-30 pt-1 text-sm">
           {{ t('character-simulator.equipment-info.stat-empty') }}
         </div>
       </CharacterEquipmentDetailsSelection>
@@ -159,10 +159,10 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
             class="flex w-full items-center pl-2"
           >
             <cy-icon :icon="crystal.crystalIconPath" />
-            <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
+            <span class="text-cyan-60 ml-1 text-sm">{{ crystal.name }}</span>
           </div>
         </template>
-        <div v-else class="px-2 text-sm text-primary-30">
+        <div v-else class="text-primary-30 px-2 text-sm">
           {{ t('character-simulator.equipment-info.crystal-empty') }}
         </div>
       </CharacterEquipmentDetailsSelection>
@@ -173,17 +173,17 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
         @edit="goEdit"
       >
         <CharacterEquipmentTraitTitle v-if="equipment.trait" :equipment-trait="equipment.trait" />
-        <div v-else class="text-sm text-primary-30">
+        <div v-else class="text-primary-30 text-sm">
           {{ t('character-simulator.equipment-info.trait-empty') }}
         </div>
       </CharacterEquipmentDetailsSelection>
       <CharacterEquipmentLabels
         :equipment="equipment"
-        class="mt-0.5 w-full justify-end py-1 pr-1 pl-6"
+        class="mt-0.5 w-full justify-end py-1 pl-6 pr-1"
       />
     </cy-tabs>
   </div>
-  <div v-else class="flex w-66 justify-center border border-primary-10 py-8">
+  <div v-else class="w-66 border-primary-10 flex justify-center border py-8">
     <cy-icon icon="mdi:more-horiz" width="2rem" />
   </div>
 </template>

@@ -18,14 +18,14 @@ const { t } = useI18n()
   <AppLayoutMain>
     <div class="wd:flex">
       <div class="px-3">
-        <div class="top-0 flex flex-col py-4 wd:sticky">
-          <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
+        <div class="wd:sticky top-0 flex flex-col py-4">
+          <div class="border-primary-30 text-primary-30 border-b px-1.5 py-0.5 text-sm">
             {{ t('main-quest-calc.select-start-section-title') }}
           </div>
           <MainQuestChapters class="mt-4" @selected-sections-changed="selectedSections = $event" />
         </div>
       </div>
-      <div class="grow px-3 py-4 wd:ml-2">
+      <div class="wd:ml-2 grow px-3 py-4">
         <MainQuestCalcOverview :selected-quest-sections="selectedSections" />
       </div>
     </div>

@@ -32,7 +32,7 @@ const buttonBaseBinds = computed(() => {
   <div class="cy-button-dropdown-wrapper" :class="{ 'content-visble': contentVisible }">
     <CyButtonBase
       v-bind="buttonBaseBinds"
-      class="cy-button-dropdown-main w-full gap-icon"
+      class="cy-button-dropdown-main gap-icon w-full"
       @click="toggleContentVisible"
     >
       <ButtonIcon :icon="props.icon" class="cy-button-base-icon" />

@@ -2,12 +2,12 @@
   <div class="pb-2.5" :class="sub ? 'pt-2.5' : 'pt-4'">
     <div class="px-4">
       <div
-        class="relative flex items-center pl-3 text-primary-70"
+        class="text-primary-70 relative flex items-center pl-3"
         :class="{ 'cursor-pointer': sub }"
         @click="detailVisible = !detailVisible"
       >
         <span>{{ tag.name }}</span>
-        <span v-if="categoryRow" class="ml-3 text-sm text-primary-30">
+        <span v-if="categoryRow" class="text-primary-30 ml-3 text-sm">
           {{ categoryRow.value[0] }}
         </span>
         <cy-icon
@@ -18,19 +18,19 @@
         <cy-icon
           v-if="!sub"
           icon="ic:round-label"
-          class="absolute top-0 -left-5 text-primary-20"
+          class="text-primary-20 absolute -left-5 top-0"
           width="1.45rem"
         />
       </div>
       <GlossaryTagContentRows
         v-if="!sub || detailVisible"
-        class="pt-3 pr-4 pb-3.5 pl-3"
+        class="pb-3.5 pl-3 pr-4 pt-3"
         :tag="tag"
       />
     </div>
     <div
       v-if="includedTags.length > 0"
-      class="divide divide-y-2 divide-primary-10 border-t border-primary-20"
+      class="divide divide-primary-10 border-primary-20 divide-y-2 border-t"
     >
       <GlossaryTagContent v-for="tag in includedTags" :key="tag.name" :tag="tag" sub />
     </div>

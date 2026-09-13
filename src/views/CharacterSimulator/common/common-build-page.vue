@@ -53,9 +53,9 @@ const moveMode = ref(false)
 </script>
 
 <template>
-  <div class="px-2 wd-lg:flex">
-    <div class="mb-3 border-b border-primary-10 px-1 pb-4 wd-lg:hidden">
-      <div class="flex items-center wd-lg:hidden">
+  <div class="wd-lg:flex px-2">
+    <div class="border-primary-10 wd-lg:hidden mb-3 border-b px-1 pb-4">
+      <div class="wd-lg:hidden flex items-center">
         <CommonBuildDropdowns
           v-model="selectedBuild"
           :options="builds"
@@ -79,10 +79,10 @@ const moveMode = ref(false)
         />
       </div>
       <div v-if="moveMode" class="mt-4 w-full max-w-xs pb-2">
-        <div class="px-1 py-1.5 text-right text-sm text-primary-30">
+        <div class="text-primary-30 px-1 py-1.5 text-right text-sm">
           {{ t('character-simulator.build-common.move-tips') }}
         </div>
-        <Draggable v-model="builds" item-key="id" class="rounded-sm border-2 border-primary-20">
+        <Draggable v-model="builds" item-key="id" class="border-primary-20 rounded-sm border-2">
           <template #item="{ element }">
             <div class="flex cursor-move items-center px-4 py-2.5">
               <cy-icon icon="ic:baseline-drag-indicator" class="mr-2" />

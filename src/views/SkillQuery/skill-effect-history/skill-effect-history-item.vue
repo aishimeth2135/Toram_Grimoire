@@ -3,7 +3,7 @@
     <cy-list-item @click="detailVisible = !detailVisible">
       <div class="flex w-full items-center py-1">
         <div
-          class="inline-flex items-center gap-icon"
+          class="gap-icon inline-flex items-center"
           :class="detailVisible ? 'text-primary-50' : 'text-primary-90'"
         >
           <cy-icon icon="ic:round-history" class="text-primary-30" />
@@ -17,7 +17,7 @@
     </cy-list-item>
     <div
       v-if="introductionBranchItemDatas.length > 0 && !detailVisible"
-      class="flex w-full items-start pb-2 pl-5.5"
+      class="pl-5.5 flex w-full items-start pb-2"
     >
       <SkillBranch
         :skill-branch-item="introductionBranchItemDatas[0].branchItem"
@@ -30,7 +30,7 @@
         <div
           v-for="{ branchItem, iid } in introductionBranchItemDatas"
           :key="iid"
-          class="pr-2 pl-5.5"
+          class="pl-5.5 pr-2"
         >
           <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
@@ -55,7 +55,7 @@
           <SkillBranch :skill-branch-item="next" :computing="computing" sub />
         </div>
         <div v-else class="history-item-compare-empty">
-          <div class="inline-flex items-center gap-icon text-primary-90">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
             <cy-icon icon="mdi:book-remove-outline" class="text-primary-30" />
             {{ t('skill-query.branch-removed') }}
           </div>
@@ -67,7 +67,7 @@
         class="history-item-compare"
       >
         <div class="history-item-compare-empty">
-          <div class="inline-flex items-center gap-icon text-primary-90">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
             <cy-icon icon="mdi:book-plus-outline" class="text-primary-30" />
             {{ t('skill-query.branch-added') }}
           </div>
@@ -91,7 +91,7 @@
           <cy-icon icon="ic:round-keyboard-double-arrow-down" class="text-primary-60" />
         </div>
         <div class="history-item-compare-empty">
-          <div class="inline-flex items-center gap-icon text-primary-90">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
             <cy-icon icon="mdi:book-remove-outline" class="text-primary-30" />
             {{ t('skill-query.branch-removed') }}
           </div>

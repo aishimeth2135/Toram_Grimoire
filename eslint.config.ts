@@ -43,6 +43,7 @@ export default defineConfigWithVueTs(
     },
     rules: {
       'tailwindcss/no-custom-classname': 'off',
+      'tailwindcss/classnames-order': 'off',
 
       'no-var': 'error',
       'eqeqeq': 'error',

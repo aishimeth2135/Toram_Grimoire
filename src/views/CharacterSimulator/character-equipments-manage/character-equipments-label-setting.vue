@@ -64,7 +64,7 @@ const closeEditingLabel = () => {
 
 <template>
   <div>
-    <div class="flex items-center px-1.5 py-2 text-sm text-gray-40">
+    <div class="text-gray-40 flex items-center px-1.5 py-2 text-sm">
       {{ t('character-simulator.equipment-basic-editor.equipment-label') }}
       <cy-button-icon
         icon="ic-round-add-circle-outline"
@@ -72,7 +72,7 @@ const closeEditingLabel = () => {
         @click="createBuildLabel"
       />
     </div>
-    <CardRowsWrapper class="max-h-96 overflow-y-auto wd-lg:max-h-none">
+    <CardRowsWrapper class="wd-lg:max-h-none max-h-96 overflow-y-auto">
       <CardRows v-if="buildLabels.length > 0">
         <Draggable v-model="buildLabels" item-key="id" handle=".drag-handle">
           <template #item="{ element: label }">
@@ -91,7 +91,7 @@ const closeEditingLabel = () => {
                 <div class="w-full pr-4">
                   <input
                     v-model="label.text"
-                    class="w-full border-2 border-transparent bg-transparent px-1 duration-150 focus:border-b-primary-60 focus:text-primary-90"
+                    class="focus:border-b-primary-60 focus:text-primary-90 w-full border-2 border-transparent bg-transparent px-1 duration-150"
                     :class="getEquipmentLabelColorClasses(label.color).text"
                   />
                 </div>
@@ -102,7 +102,7 @@ const closeEditingLabel = () => {
               </div>
               <div
                 v-if="currentEditedLabel === label"
-                class="mx-1 rounded-md bg-orange-5/50 py-2 pr-2 pl-9"
+                class="bg-orange-5/50 mx-1 rounded-md py-2 pl-9 pr-2"
               >
                 <cy-tabs v-model="label.color" plain>
                   <cy-tab
@@ -120,7 +120,7 @@ const closeEditingLabel = () => {
                 </cy-tabs>
                 <div class="mt-3 text-right">
                   <span
-                    class="cursor-pointer text-sm text-primary-50 underline"
+                    class="text-primary-50 cursor-pointer text-sm underline"
                     @click="removeLabel(label)"
                   >
                     {{ t('character-simulator.equipment-basic-editor.label-delete') }}
@@ -131,7 +131,7 @@ const closeEditingLabel = () => {
           </template>
         </Draggable>
       </CardRows>
-      <div v-else class="p-4 text-sm text-primary-50">
+      <div v-else class="text-primary-50 p-4 text-sm">
         {{ t('character-simulator.equipment-basic-editor.label-empty-caption') }}
       </div>
     </CardRowsWrapper>

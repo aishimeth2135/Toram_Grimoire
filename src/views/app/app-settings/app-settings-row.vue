@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="title" class="relative flex items-center">
-      <div class="flex shrink-0 items-center px-2 text-gray-90">
+      <div class="text-gray-90 flex shrink-0 items-center px-2">
         {{ title }}
       </div>
-      <div class="ml-4 w-full border-t border-primary-20"></div>
-      <div class="absolute top-1 right-0 size-3.5 bg-primary-20"></div>
+      <div class="border-primary-20 ml-4 w-full border-t"></div>
+      <div class="bg-primary-20 absolute right-0 top-1 size-3.5"></div>
     </div>
     <div class="mt-2 px-2 text-sm text-gray-50">
       <slot name="caption" />

@@ -79,9 +79,7 @@ export default {
           name: CharacterSimulatorRouteNames.Equipment,
           path: 'equipment',
           component: () =>
-            import(
-              '@/views/CharacterSimulator/character-equipment-fields/character-equipment-fields.vue'
-            ),
+            import('@/views/CharacterSimulator/character-equipment-fields/character-equipment-fields.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Skill,

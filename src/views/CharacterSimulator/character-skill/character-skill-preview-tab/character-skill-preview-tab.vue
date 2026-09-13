@@ -76,11 +76,11 @@ const skillTreesDefaultEditing = ref(false)
         <div class="text-primary-60">
           {{ $t('character-simulator.skill-build.skill-trees-directory.title') }}
         </div>
-        <div class="mt-1 text-gray-40">
+        <div class="text-gray-40 mt-1">
           {{ $t('character-simulator.skill-build.skill-trees-directory.caption') }}
         </div>
       </div>
-      <div v-else class="space-y-1 text-sm text-primary-60">
+      <div v-else class="text-primary-60 space-y-1 text-sm">
         <div>
           {{ t('character-simulator.skill-build.no-any-skill-tips.0') }}
         </div>
@@ -100,42 +100,40 @@ const skillTreesDefaultEditing = ref(false)
       <div
         v-for="{ skillTree, skillLevelSum } in displayedSkillTrees"
         :key="skillTree.skillTreeId"
-        class="flex flex-wrap items-center px-3 py-2 text-primary-50 duration-150 hover:text-primary-80"
+        class="text-primary-50 hover:text-primary-80 flex flex-wrap items-center px-3 py-2 duration-150"
       >
         <div class="flex cursor-pointer items-center" @click="goSkillTree(skillTree)">
-          <cy-icon class="mr-3 text-primary-30" icon="mdi:book-open-variant-outline" />
+          <cy-icon class="text-primary-30 mr-3" icon="mdi:book-open-variant-outline" />
           <div class="w-36 truncate">
             {{ skillTree.name }}
           </div>
         </div>
         <div class="ml-4 flex items-center">
           <cy-icon class="text-primary-30" icon="mdi:star-four-points-outline" width="0.875rem" />
-          <span class="ml-1 w-8 text-red-60">
+          <span class="text-red-60 ml-1 w-8">
             {{ skillLevelSum.level }}
           </span>
           <cy-icon
-            class="ml-4 text-blue-30"
+            class="text-blue-30 ml-4"
             icon="mdi:star-four-points-circle-outline"
             width="0.875rem"
           />
-          <span class="ml-1 text-blue-60">
+          <span class="text-blue-60 ml-1">
             {{ skillLevelSum.starGemLevel }}
           </span>
         </div>
       </div>
-      <div
-        class="mt-2 flex w-xs items-center border-t border-primary-10 pt-0.5 pl-[12.675rem]"
-      >
+      <div class="w-xs border-primary-10 mt-2 flex items-center border-t pl-[12.675rem] pt-0.5">
         <cy-icon class="text-primary-30" icon="mdi:star-four-points-outline" width="0.875rem" />
-        <span class="ml-1 w-8 text-red-60">
+        <span class="text-red-60 ml-1 w-8">
           {{ skillPointSum.skillLevel }}
         </span>
         <cy-icon
-          class="ml-4 text-blue-30"
+          class="text-blue-30 ml-4"
           icon="mdi:star-four-points-circle-outline"
           width="0.875rem"
         />
-        <span class="ml-1 text-blue-60">
+        <span class="text-blue-60 ml-1">
           {{ skillPointSum.starGemLevel }}
         </span>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <CardRowsWrapper class="overflow-x-auto">
-    <div class="flex items-center px-2 pt-3 pb-4">
+    <div class="flex items-center px-2 pb-4 pt-3">
       <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
       </cy-button-toggle>
@@ -18,7 +18,7 @@
     </CardRows>
     <CardRows
       v-if="postponedValidResultItem.length > 0"
-      class="border-t border-primary-30 pt-0.5"
+      class="border-primary-30 border-t pt-0.5"
       :class="{ 'opacity-50': disableAll }"
     >
       <CharacterSkillItem

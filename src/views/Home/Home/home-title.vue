@@ -2,8 +2,8 @@
   <div class="home-title-root">
     <HomeIconTitle class="home-title-wrapper" :root-el="rootEl" />
     <div class="home-title-title">
-      <div class="home-title-sub text-4xl text-primary-70">Cy's Grimoire</div>
-      <div class="home-title-sub mt-2 text-xl text-primary-40">布偶的魔法書</div>
+      <div class="home-title-sub text-primary-70 text-4xl">Cy's Grimoire</div>
+      <div class="home-title-sub text-primary-40 mt-2 text-xl">布偶的魔法書</div>
     </div>
     <div class="home-title-author text-xl text-blue-50">By. Cyteria</div>
   </div>
@@ -23,24 +23,24 @@ defineProps<Props>()
 @reference "@/tailwind.css";
 
 .home-title-root {
+  display: flex;
   position: absolute;
   bottom: 0;
   left: 0;
-  display: flex;
   align-items: center;
-  height: --spacing(48);
+  transition-duration: 150ms;
   padding-left: calc((100% - 1024px) / 2 - 12rem);
   width: calc((100% - 1024px) / 2 - 1rem);
-  transition-duration: 150ms;
+  height: --spacing(48);
 
   &:hover {
+    z-index: 50;
     background: linear-gradient(
       to right,
       --alpha(var(--app-white) / 75%) 0%,
       --alpha(var(--app-white) / 75%) 75%,
       --alpha(var(--app-white) / 25%) 100%
     );
-    z-index: 50;
     width: 100%;
 
     & > .home-title-wrapper {
@@ -52,14 +52,14 @@ defineProps<Props>()
     }
 
     & > .home-title-title {
-      width: 100%;
       opacity: 1;
+      width: 100%;
     }
 
     & > .home-title-author {
-      transition-duration: 150ms;
-      transition-delay: 0.75s;
       opacity: 1;
+      transition-delay: 0.75s;
+      transition-duration: 150ms;
     }
   }
 }
@@ -67,20 +67,20 @@ defineProps<Props>()
 .home-title-wrapper {
   display: flex;
   align-items: center;
-  border-radius: calc(infinity * 1px);
-  padding: --spacing(5);
-  transition-duration: 150ms;
   transform: translate(0, 8%);
-  background-color: --alpha(var(--app-white) / 50%);
   animation: wrapper-floating ease 8s infinite;
+  transition-duration: 150ms;
+  border-radius: calc(infinity * 1px);
+  background-color: --alpha(var(--app-white) / 50%);
+  padding: --spacing(5);
 }
 
 .home-title-title {
-  width: 0;
-  overflow: hidden;
-  padding-left: --spacing(12);
   opacity: 0;
   transition-duration: 150ms;
+  padding-left: --spacing(12);
+  width: 0;
+  overflow: hidden;
 
   & > .home-title-sub {
     white-space: nowrap;
@@ -88,12 +88,12 @@ defineProps<Props>()
 }
 
 .home-title-author {
-  position: absolute;
-  bottom: --spacing(6);
   display: flex;
+  position: absolute;
+  right: calc((100% - 1024px) / 2 - 12rem);
+  bottom: --spacing(6);
   align-items: center;
   opacity: 0;
-  right: calc((100% - 1024px) / 2 - 12rem);
 }
 
 @keyframes wrapper-floating {

@@ -1,7 +1,7 @@
 <template>
   <EnchantDollStepWrapper :step-id="StepIds.SelectNegativeStat">
     <div>
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.select-negatives.title') }}
       </div>
@@ -9,20 +9,20 @@
     <div class="mt-1 pb-2 pl-4 text-sm">
       {{ t('enchant-doll.select-negatives.caption') }}
     </div>
-    <div class="mt-1 mr-2 ml-4">
-      <div class="inline-flex items-center gap-icon text-sm text-blue-60">
+    <div class="ml-4 mr-2 mt-1">
+      <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
         <cy-icon icon="ic-outline-info" small class="text-blue-30" />
         {{ t('enchant-doll.tips.performance.auto-find-negatives') }}
       </div>
     </div>
-    <div v-if="currentEquipmentType !== 1" class="mt-1 mr-2 ml-4">
-      <div class="inline-flex items-center gap-icon text-sm text-blue-60">
+    <div v-if="currentEquipmentType !== 1" class="ml-4 mr-2 mt-1">
+      <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
         <cy-icon icon="ic-outline-info" small class="text-blue-30" />
         {{ t('enchant-doll.select-negatives.tips-1') }}
       </div>
     </div>
-    <div v-if="equipmentState.autoFindPotentialMinimum" class="mt-1 mr-2 ml-4">
-      <div class="inline-flex items-center gap-icon text-sm text-blue-60">
+    <div v-if="equipmentState.autoFindPotentialMinimum" class="ml-4 mr-2 mt-1">
+      <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
         <cy-icon icon="ic-outline-info" small class="text-blue-30" />
         <span>
           <!-- prettier-ignore -->
@@ -30,7 +30,7 @@
         </span>
       </div>
     </div>
-    <div class="mt-4 mb-6 flex flex-col items-center">
+    <div class="mb-6 mt-4 flex flex-col items-center">
       <div>
         <cy-button-check v-model:selected="negativeStatsState.auto">
           {{ t('enchant-doll.select-negatives.auto-select') }}
@@ -51,7 +51,7 @@
     <template v-if="negativeStatsState.auto">
       <template v-if="currentEquipmentType === 1">
         <div>
-          <div class="inline-flex items-center gap-icon text-fuchsia-60">
+          <div class="gap-icon text-fuchsia-60 inline-flex items-center">
             <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
             <span>
               <!-- prettier-ignore -->
@@ -76,7 +76,7 @@
         </div>
       </template>
       <div>
-        <div class="inline-flex items-center gap-icon text-fuchsia-60">
+        <div class="gap-icon text-fuchsia-60 inline-flex items-center">
           <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
           <span>
             <!-- prettier-ignore -->
@@ -105,22 +105,22 @@
       class="mt-4 flex justify-center"
     >
       <div>
-        <div class="mr-4 inline-flex items-center gap-icon text-sm text-primary-90">
+        <div class="gap-icon text-primary-90 mr-4 inline-flex items-center text-sm">
           <cy-icon small class="text-blue-60" />
           {{ t('enchant-doll.select-negatives.auto-select') }}
         </div>
-        <div class="inline-flex items-center gap-icon text-sm text-primary-90">
+        <div class="gap-icon text-primary-90 inline-flex items-center text-sm">
           <cy-icon small class="text-primary-30" />
           {{ t('enchant-doll.select-negatives.manually-selected') }}
         </div>
       </div>
     </div>
     <div class="mb-4 flex justify-center">
-      <div class="mt-2 max-w-xs border border-fuchsia-60">
+      <div class="border-fuchsia-60 mt-2 max-w-xs border">
         <template v-if="negativeStats.length !== 0">
           <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
             <div
-              class="inline-flex w-full items-center gap-icon"
+              class="gap-icon inline-flex w-full items-center"
               :class="stat.value >= 0 ? 'text-primary-90' : 'text-orange-60'"
             >
               <cy-icon
@@ -167,7 +167,7 @@
         class="mt-2"
       >
         <div>
-          <div class="inline-flex items-center gap-icon text-sm text-blue-60">
+          <div class="gap-icon text-blue-60 inline-flex items-center text-sm">
             <cy-icon icon="ic-outline-info" small class="text-blue-30" />
             <span>
               <!-- prettier-ignore -->
@@ -175,7 +175,7 @@
             </span>
           </div>
         </div>
-        <div class="text-sm text-blue-60">
+        <div class="text-blue-60 text-sm">
           {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.1') }}
         </div>
       </div>

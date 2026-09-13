@@ -18,7 +18,7 @@ const innerValue = defineModel<string>('value', { required: true })
         ref="inputElement"
         v-model="innerValue"
         type="text"
-        class="w-full bg-transparent text-primary-70"
+        class="text-primary-70 w-full bg-transparent"
         @focus="setInputFocus(true)"
         @blur="setInputFocus(false)"
       />

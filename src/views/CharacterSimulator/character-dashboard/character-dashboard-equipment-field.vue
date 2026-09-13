@@ -22,14 +22,14 @@ const equipment = computed(() => props.equipmentField.equipment)
     <div class="shrink-0">
       <CommonEquipmentIcon :equipment="equipment" width="1.375rem" />
     </div>
-    <div class="mt-0.5 ml-3">
+    <div class="ml-3 mt-0.5">
       <div>
         {{ equipment.name }}
         <span
           v-if="equipment.supportRefining && equipment.refining > 0"
-          class="text ml-2 inline-flex items-center text-blue-70"
+          class="text text-blue-70 ml-2 inline-flex items-center"
         >
-          <span class="mr-0.5 text-primary-60">{{ equipment.basicValue }}</span>
+          <span class="text-primary-60 mr-0.5">{{ equipment.basicValue }}</span>
           {{ `+${equipment.refiningText}` }}
         </span>
       </div>
@@ -39,7 +39,7 @@ const equipment = computed(() => props.equipmentField.equipment)
       <div v-if="equipment.crystals.length > 0" class="mt-2 flex flex-wrap items-center">
         <div v-for="crystal in equipment.crystals" :key="crystal.id" class="mr-3 flex items-center">
           <cy-icon :icon="crystal.crystalIconPath" />
-          <span class="ml-1 text-sm text-cyan-60">{{ crystal.name }}</span>
+          <span class="text-cyan-60 ml-1 text-sm">{{ crystal.name }}</span>
         </div>
       </div>
       <div v-if="equipment.trait" class="mt-2">

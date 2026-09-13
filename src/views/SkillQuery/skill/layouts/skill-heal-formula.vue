@@ -2,7 +2,7 @@
   <div>
     <div class="heal-formula-main inline-flex flex-wrap items-center pb-1.5">
       <div class="heal-formula-main-first" />
-      <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
+      <span v-if="isSingleValue" class="attr-item text-primary-30 mr-1 text-sm">
         {{ t('skill-query.branch.heal.constant-prefix') }}
       </span>
       <template v-if="container.has('constant')">

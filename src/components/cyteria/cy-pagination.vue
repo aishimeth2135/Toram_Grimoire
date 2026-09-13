@@ -33,7 +33,7 @@
         @click="inputValue = maxPage"
       />
     </div>
-    <div class="flex items-center space-x-0.5 text-sm text-primary-30">
+    <div class="text-primary-30 flex items-center space-x-0.5 text-sm">
       <span>{{ value }}</span>
       <cy-icon icon="mdi:slash-forward" small />
       <span>{{ maxPage }}</span>

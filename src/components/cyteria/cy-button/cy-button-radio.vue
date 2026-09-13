@@ -14,7 +14,7 @@ const props = defineProps<Props>()
     :color="props.color"
     :selected="props.selected"
     :disabled="props.disabled"
-    class="cy-button-radio my-1 gap-icon px-2"
+    class="cy-button-radio gap-icon my-1 px-2"
   >
     <ButtonIcon
       :icon="props.selected ? 'ic:round-radio-button-checked' : 'ic:round-radio-button-unchecked'"

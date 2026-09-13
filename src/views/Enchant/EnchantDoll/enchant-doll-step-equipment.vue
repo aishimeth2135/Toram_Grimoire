@@ -1,7 +1,7 @@
 <template>
   <EnchantDollStepWrapper :step-id="StepIds.Equipment">
     <div>
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.equipment.select-type.title') }}
       </div>
@@ -20,7 +20,7 @@
       </cy-button-radio>
     </div>
     <div class="mt-4">
-      <div class="inline-flex items-center gap-icon text-fuchsia-60">
+      <div class="gap-icon text-fuchsia-60 inline-flex items-center">
         <cy-icon icon="gg-menu-left-alt" class="text-primary-30" />
         {{ t('enchant-doll.equipment.original-potential.title') }}
       </div>
@@ -40,7 +40,7 @@
         :range="[1, 200]"
       >
         <template #title>
-          <div class="inline-flex items-center gap-icon text-primary-90">
+          <div class="gap-icon text-primary-90 inline-flex items-center">
             <cy-icon icon="mdi-creation" class="text-primary-30" />
             {{ t('enchant-simulator.equipment-original-potential') }}
           </div>
@@ -58,7 +58,7 @@
       </cy-button-plain>
     </div>
     <div v-if="setConfig" class="flex justify-center">
-      <div class="flex border border-primary-30 px-5 py-4">
+      <div class="border-primary-30 flex border px-5 py-4">
         <EnchantCommonSetting />
       </div>
     </div>

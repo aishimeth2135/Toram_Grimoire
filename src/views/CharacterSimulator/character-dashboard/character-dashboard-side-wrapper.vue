@@ -21,15 +21,15 @@ const goTab = () => {
 </script>
 
 <template>
-  <div class="relative flex w-full items-start p-4 pr-8 pb-6">
-    <cy-button-icon icon="mdi:square-edit-outline" class="absolute top-2 right-2" @click="goTab" />
+  <div class="relative flex w-full items-start p-4 pb-6 pr-8">
+    <cy-button-icon icon="mdi:square-edit-outline" class="absolute right-2 top-2" @click="goTab" />
     <div
-      class="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-primary-10"
+      class="border-primary-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2"
     >
       <cy-icon :icon="icon" width="1.375rem" />
     </div>
-    <div class="w-full pt-1.5 pl-4">
-      <div class="mr-4 -ml-1 border-b border-primary-10 px-1 text-primary-80">
+    <div class="w-full pl-4 pt-1.5">
+      <div class="border-primary-10 text-primary-80 -ml-1 mr-4 border-b px-1">
         {{ title }}
       </div>
       <div class="pt-4">
