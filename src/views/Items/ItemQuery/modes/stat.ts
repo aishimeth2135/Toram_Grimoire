@@ -5,21 +5,14 @@ import { defineViewState } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
 
 import type { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { StatTypes } from '@/lib/Character/Stat'
+import { getSelectableStatTypes, getSelectableStats } from '@/lib/Character/Stat'
 
 import { type SearchModeHandler, type StatOption, findStat } from '../setup'
 
 function createStatOptions(): StatOption[] {
-  const statTypes = [StatTypes.Constant, StatTypes.Multiplier]
   const stats: StatOption[] = []
-  Grimoire.Character.statList.forEach(stat => {
-    if (stat.hidden) {
-      return
-    }
-    statTypes.forEach(type => {
-      if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
-        return
-      }
+  getSelectableStats(Grimoire.Character.statList).forEach(stat => {
+    getSelectableStatTypes(stat).forEach(type => {
       stats.push({ id: stat.getStatId(type), origin: stat, text: stat.title(type), type })
     })
   })

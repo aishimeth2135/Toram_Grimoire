@@ -29,50 +29,72 @@
       />
     </div>
     <AppLayoutBottom>
-      <template #main-start>
-        <cy-options
-          :value="modes.find(item => item.id === mode)"
-          :options="modes.map(item => ({ id: item.id, value: item }))"
-          placement="top-start"
-          @update:value="selectMode($event.id)"
-        >
-          <template #title>
-            <cy-button-circle icon="heroicons-solid:switch-vertical" color="blue" />
-          </template>
-          <template #item="{ value }">
-            <div class="gap-icon text-primary-90 inline-flex items-center">
-              <cy-icon :icon="value.icon" class="text-primary-30" />
-              {{ t('crystal-query.modes.' + value.id) }}
+      <template #main-custom>
+        <div class="pointer-events-auto flex grow items-center rounded-full shadow-lg">
+          <cy-options
+            class="flex self-stretch"
+            :value="modes.find(item => item.id === mode)"
+            :options="modes.map(item => ({ id: item.id, value: item }))"
+            placement="top-start"
+            @update:value="selectMode($event.id)"
+          >
+            <template #title>
+              <div
+                class="border-primary-30 hover:bg-primary-10 flex cursor-pointer items-center self-stretch rounded-l-full border border-r-0 bg-white pl-3.5 pr-2.5 duration-150"
+              >
+                <cy-icon icon="mdi:exchange" />
+              </div>
+            </template>
+            <template #item="{ value }">
+              <div class="gap-icon text-primary-90 inline-flex items-center">
+                <cy-icon :icon="value.icon" class="text-primary-30" />
+                {{ t('crystal-query.modes.' + value.id) }}
+              </div>
+            </template>
+          </cy-options>
+          <div
+            class="border-primary-30 focus-within:border-primary-60 min-w-0 grow rounded-r-full border bg-white"
+          >
+            <div v-if="mode === 'normal'" class="flex w-full items-center pl-2.5 pr-2">
+              <div class="relative flex w-full items-center">
+                <cy-icon icon="ic-outline-search" class="shrink-0" />
+                <input
+                  v-model="modeNormal.searchText"
+                  type="text"
+                  class="grow border-0 px-2 py-2"
+                  :placeholder="t('global.search')"
+                />
+              </div>
+              <cy-button-icon
+                :class="{ invisible: modeNormal.searchText === '' }"
+                class="shrink-0"
+                icon="mdi:close-circle"
+                @click="modeNormal.searchText = ''"
+              />
             </div>
-          </template>
-        </cy-options>
-      </template>
-      <template #default>
-        <div v-if="mode === 'normal'" class="flex w-full items-center">
-          <cy-icon icon="ic-outline-search" class="shrink-0" />
-          <input
-            v-model="modeNormal.searchText"
-            type="text"
-            class="ml-2 inline-block w-full border-0 bg-transparent p-1"
-            :placeholder="t('global.search')"
-          />
-          <cy-button-icon
-            :class="{
-              invisible: modeNormal.searchText === '',
-            }"
-            icon="mdi:close-circle"
-            class="shrink-0"
-            @click="modeNormal.searchText = ''"
-          />
+            <div v-else-if="mode === 'stat'" class="min-w-68 border-primary-20 inline-flex p-0.5">
+              <CommonSearchableItemsPopover
+                v-model:search-text="modeStat.searchText"
+                :placeholder="t('crystal-query.select-stat.search-placeholder')"
+                :items="statSearchResult"
+                :selected-item-ids="modeStat.statItem ? [modeStat.statItem.id] : []"
+                placement="top"
+                close-on-select
+                @select-item="selectStat"
+              >
+                <div v-if="!modeStat.statItem" class="text-primary-30 text-sm">
+                  {{ t('crystal-query.select-stat.title') }}
+                </div>
+                <template v-else>
+                  {{ modeStat.statItem.text }}
+                </template>
+                <template #item="{ item }">
+                  {{ item.text }}
+                </template>
+              </CommonSearchableItemsPopover>
+            </div>
+          </div>
         </div>
-        <cy-button-plain
-          v-else-if="mode === 'stat'"
-          icon="mdi-rhombus-outline"
-          :color="modeStat.statItem ? 'primary' : 'red'"
-          @click="toggleSelectedStatVisible"
-        >
-          {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
-        </cy-button-plain>
       </template>
       <template #side-buttons>
         <cy-button-circle
@@ -116,11 +138,6 @@
         </AppLayoutBottomContent>
       </template>
     </AppLayoutBottom>
-    <CrystalQuerySelectStat
-      v-model:selected-stat-item="modeStat.statItem"
-      :visible="selectedStatVisible"
-      @close="toggleSelectedStatVisible"
-    />
   </AppLayoutMain>
 </template>
 
@@ -133,6 +150,7 @@ import { usePageControl } from '@/shared/composables/PageControl'
 import { useToggle } from '@/shared/composables/State'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
+import { getSelectableStatTypes, getSelectableStats } from '@/lib/Character/Stat'
 import { BagCrystal } from '@/lib/Items/BagItem'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
@@ -140,9 +158,9 @@ import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
+import CommonSearchableItemsPopover from '@/views/CharacterSimulator/common/common-searchable-items-popover.vue'
 
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
-import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
 
 import { type PreviewMode, type StatOptionItem } from './setup'
 
@@ -153,9 +171,6 @@ defineOptions({
 type SearchMode = 'normal' | 'stat'
 
 const { t } = useI18n()
-
-const selectedStatVisible = ref(false)
-const toggleSelectedStatVisible = useToggle(selectedStatVisible)
 
 const searchFilterVisible = ref(false)
 const toggleSearchFilterVisible = useToggle(searchFilterVisible)
@@ -189,8 +204,30 @@ const modeNormal = reactive({
 })
 
 const modeStat = reactive({
+  searchText: '',
   statItem: null as StatOptionItem | null,
 })
+
+const statOptions: StatOptionItem[] = []
+getSelectableStats(Grimoire.Character.statList).forEach(stat => {
+  getSelectableStatTypes(stat).forEach(type => {
+    statOptions.push({
+      id: stat.getStatId(type),
+      origin: stat,
+      type,
+      text: stat.title(type),
+    })
+  })
+})
+
+const statSearchResult = computed(() => {
+  const searchText = modeStat.searchText.toLowerCase()
+  return statOptions.filter(option => option.text.toLowerCase().includes(searchText))
+})
+
+const selectStat = (option: StatOptionItem) => {
+  modeStat.statItem = option
+}
 
 const selectMode = (id: SearchMode) => {
   mode.value = id

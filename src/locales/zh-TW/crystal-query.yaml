@@ -1,5 +1,6 @@
 select-stat:
   title: 選擇能力
+  search-placeholder: 搜尋能力
 modes:
   title: 搜尋模式
   normal: 一般

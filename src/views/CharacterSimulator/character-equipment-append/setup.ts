@@ -4,8 +4,13 @@ import Grimoire from '@/shared/Grimoire'
 import { fuzzySearch, prepareFuzzySearch } from '@/shared/utils/data'
 
 import { CharacterEquipment, EquipmentTypes } from '@/lib/Character/CharacterEquipment'
-import { StatBase, StatRestriction } from '@/lib/Character/Stat'
-import { StatTypes } from '@/lib/Character/Stat'
+import {
+  StatBase,
+  StatRestriction,
+  StatTypes,
+  getSelectableStatTypes,
+  getSelectableStats,
+} from '@/lib/Character/Stat'
 import { BagEquipment } from '@/lib/Items/BagItem'
 
 export const EquipmentSearchMode = {
@@ -33,16 +38,9 @@ export const useEquipmentsSearch = (filterEquipmentTypes: Ref<EquipmentTypes[]>)
   const sortByValue = ref(false)
 
   const statOptions = (() => {
-    const statTypes = [StatTypes.Constant, StatTypes.Multiplier]
     const _statOptions: StatOption[] = []
-    Grimoire.Character.statList.forEach(stat => {
-      if (stat.hidden) {
-        return
-      }
-      statTypes.forEach(type => {
-        if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
-          return
-        }
+    getSelectableStats(Grimoire.Character.statList).forEach(stat => {
+      getSelectableStatTypes(stat).forEach(type => {
         _statOptions.push(
           markRaw({
             id: stat.getStatId(type),
