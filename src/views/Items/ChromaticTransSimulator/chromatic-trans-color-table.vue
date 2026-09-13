@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { CHROMATIC_COLORS } from '@/lib/ChromaticTrans/gems'
+import { getChromaticColors } from '@/lib/Items/Dye/DyeColors'
 
 import DyeColorButton from '@/components/common/dye-color-button.vue'
 
 interface Props {
   pool: readonly number[]
 }
+
+const chromaticColors = getChromaticColors()
 
 defineProps<Props>()
 </script>
@@ -14,7 +16,7 @@ defineProps<Props>()
   <div class="overflow-x-auto">
     <div class="grid-rows-16 grid w-max grid-flow-col grid-cols-5 gap-px">
       <DyeColorButton
-        v-for="color in CHROMATIC_COLORS"
+        v-for="color in chromaticColors"
         :key="color"
         :color="color"
         class="h-6 w-8 text-sm"

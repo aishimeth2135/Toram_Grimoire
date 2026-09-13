@@ -102,10 +102,6 @@ yarn exec prettier --check <file>
 - CSS declarations 應保持連續，不依 property 類型插入空白行。
 - CSS declarations 與後續第一個 nested selector 之間保留一個空白行。
 
-## 錯誤處理
-
-- 因為值可能不合法而需要錯誤處理時，優先考慮給定預設值，throw error 為最後手段。
-
 ## 遊戲公式與資料
 
 - 牽涉到遊戲資料流處理及公式處理的相關流程，應以不更動到邏輯為優先。
@@ -128,6 +124,15 @@ yarn exec prettier --check <file>
 - Damage(傷害值，為角色發動攻擊時會對敵人造成的傷害數值)
 - Quest(任務)、Main Quest(主線任務)
 - Glossary(遊戲專用名詞，其結構包含名詞的詳細解釋)
+
+## TypeScript
+
+- 避免使用`Object.freeze`，在型別上約束即可。如果要避免 vue 的狀態監聽，可以優先考慮`markRaw`。
+- 建立類別(class)時，成員變數的初始化都寫在`constructor`，`constructor`外僅宣告型別。
+
+## 錯誤處理
+
+- 因為值可能不合法而需要錯誤處理時，優先考慮給定預設值，throw error 為最後手段。
 
 ## 元件
 

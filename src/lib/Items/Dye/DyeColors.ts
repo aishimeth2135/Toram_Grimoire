@@ -86,14 +86,19 @@ const DYE_COLOR_LIST = [
   '4b0025',
 ]
 
-export function getAllColorList() {
-  return DYE_COLOR_LIST.map((item, idx) => ({
-    colorNumber: idx + 1,
-    colorHex: '#' + item,
-  }))
-}
-
 export function getColorCode(colorNumber: number): string | null {
   const colorHex = DYE_COLOR_LIST[colorNumber - 1]
   return colorHex ? '#' + colorHex : null
+}
+
+export function getAllColors(): number[] {
+  return Array.from({ length: 85 }, (_value, index) => index + 1)
+}
+
+export function getGrayStyleColors(): number[] {
+  return [1, 2, 3, 4, 5]
+}
+
+export function getChromaticColors() {
+  return Array.from({ length: 80 }, (_value, index) => index + 6)
 }

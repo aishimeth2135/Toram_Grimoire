@@ -1,11 +1,16 @@
+import { markRaw } from 'vue'
+
 import { ChromaticTransStep } from './ChromaticTransStep'
 import { type ChromaticTransGem, getBaseGemColor, isBaseGem } from './gems'
 
 export class ChromaticTransContainer {
-  private selections: (ChromaticTransGem | null)[] = Array.from({ length: 5 }, () => null)
-  private currentSteps: readonly ChromaticTransStep[] = []
+  private selections: (ChromaticTransGem | null)[]
+  private currentSteps: readonly ChromaticTransStep[]
 
   constructor() {
+    this.selections = markRaw(Array.from({ length: 5 }, () => null))
+    this.currentSteps = markRaw([])
+
     this.recalculate()
   }
 
@@ -51,11 +56,11 @@ export class ChromaticTransContainer {
   }
 
   private recalculate(): void {
-    const steps: ChromaticTransStep[] = []
+    const steps: ChromaticTransStep[] = markRaw([])
     const count = this.selections[0] ? 5 : 1
     for (let index = 0; index < count; index += 1) {
-      steps.push(new ChromaticTransStep(index, this.selections[index], steps[index - 1]))
+      steps.push(markRaw(new ChromaticTransStep(index, this.selections[index], steps[index - 1])))
     }
-    this.currentSteps = Object.freeze(steps)
+    this.currentSteps = steps
   }
 }

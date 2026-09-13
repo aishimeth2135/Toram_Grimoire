@@ -5,6 +5,7 @@ import { getColorCode } from '@/lib/Items/Dye/DyeColors'
 
 interface Props {
   color: number
+  hex?: string
 }
 
 const props = defineProps<Props>()

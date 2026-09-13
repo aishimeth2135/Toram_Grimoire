@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { getAllColorList } from '@/lib/Items/Dye/DyeColors'
+import { getAllColors } from '@/lib/Items/Dye/DyeColors'
 
 import DyeColorButton from '@/components/common/dye-color-button.vue'
 import CommonSearchableItemsPopover from '@/views/CharacterSimulator/common/common-searchable-items-popover.vue'
@@ -22,15 +22,12 @@ const statMode = useStatSearchMode()
 const itemLevelMode = useItemLevelSearchMode()
 const dyeMode = useDyeSearchMode()
 
-const allColorList = getAllColorList()
+const allColorList = getAllColors()
 
-const colorList1 = allColorList.filter(color => color.colorNumber <= 5)
+const colorList1 = allColorList.filter(color => color <= 5)
 const colorList2 = allColorList
-  .filter(color => color.colorNumber > 5)
-  .sort(
-    (colorA, colorB) =>
-      getDyeColorDisplayOrder(colorA.colorNumber) - getDyeColorDisplayOrder(colorB.colorNumber)
-  )
+  .filter(color => color > 5)
+  .sort((colorA, colorB) => getDyeColorDisplayOrder(colorA) - getDyeColorDisplayOrder(colorB))
 
 const currentModeOption = computed(() =>
   searchModeOptions.find(option => option.id === state.currentMode)
@@ -196,20 +193,20 @@ function selectMode(id: SearchMode) {
               </div>
               <div class="mt-1.5 grid grid-cols-5 gap-0.5 px-0.5">
                 <DyeColorButton
-                  v-for="{ colorNumber } in colorList1"
-                  :key="colorNumber"
-                  :color="colorNumber"
+                  v-for="color in colorList1"
+                  :key="color"
+                  :color="color"
                   class="h-7 w-10"
-                  @click="(dyeMode.selectColor(colorNumber), hide())"
+                  @click="(dyeMode.selectColor(color), hide())"
                 />
               </div>
               <div class="mt-1.5 grid grid-cols-5">
                 <DyeColorButton
-                  v-for="{ colorNumber } in colorList2"
-                  :key="colorNumber"
-                  :color="colorNumber"
+                  v-for="color in colorList2"
+                  :key="color"
+                  :color="color"
                   class="m-0.5 h-7 w-10"
-                  @click="(dyeMode.selectColor(colorNumber), hide())"
+                  @click="(dyeMode.selectColor(color), hide())"
                 />
               </div>
             </div>
