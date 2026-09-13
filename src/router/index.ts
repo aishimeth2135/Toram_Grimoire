@@ -16,15 +16,24 @@ import Items from './Items'
 import Page404 from './Page404'
 import Quest from './Quest'
 import Registlet from './Registlet'
-import Skill from './Skill'
-import Trait from './Trait'
+import { AppRouteNames } from './enums'
+
+const SkillQueryCompatibilityRoute = {
+  path: '/skill/:skillId?',
+  redirect: to => ({
+    name: AppRouteNames.SkillQuery,
+    params: to.params,
+    query: to.query,
+    hash: to.hash,
+  }),
+} satisfies RouteRecordRaw
 
 export default function createAppRouter() {
   const routes: RouteRecordRaw[] = [
     Home,
     Dev,
     Character,
-    Skill,
+    SkillQueryCompatibilityRoute,
     Items,
     Enchant,
     Glossary,
@@ -33,7 +42,6 @@ export default function createAppRouter() {
     Bubble,
     DamageCalculation,
     Registlet,
-    Trait,
     Quest,
   ]
 

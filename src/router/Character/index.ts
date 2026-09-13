@@ -3,11 +3,10 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { initializePage } from '@/shared/services/ViewInit'
-
 import ViewWrapper from './view-wrapper.vue'
 
 import { AppRouteNames } from '../enums'
+import { createCategoryViewInitGuard } from '../utils'
 
 export const CharacterSimulatorRouteNames = {
   Basic: 'CharacterSimulator.Basic',
@@ -22,41 +21,23 @@ export const CharacterSimulatorRouteNames = {
 export type CharacterSimulatorRouteNames =
   (typeof CharacterSimulatorRouteNames)[keyof typeof CharacterSimulatorRouteNames]
 
+const createCharacterViewInitGuard = createCategoryViewInitGuard(AppRouteNames.Character)
+
 export default {
   name: AppRouteNames.Character,
   path: '/character',
   component: ViewWrapper,
-  beforeEnter() {
-    return initializePage({
-      data: [
-        DataStoreIds.Stats,
-        DataStoreIds.Items,
-        DataStoreIds.Crystals,
-        DataStoreIds.CharacterStats,
-        DataStoreIds.Skill,
-        DataStoreIds.Food,
-        DataStoreIds.DamageCalculation,
-        DataStoreIds.Registlet,
-        DataStoreIds.ItemsPotion,
-        DataStoreIds.EquipmentTrait,
-        DataStoreIds.Glossary,
-      ],
-      locales: [
-        LocaleViewNamespaces.CharacterSimulator,
-        LocaleViewNamespaces.SkillSimulator,
-        LocaleViewNamespaces.SkillQuery,
-        LocaleViewNamespaces.DamageCalculation,
-        LocaleViewNamespaces.RegistletQuery,
-        LocaleViewNamespaces.EquipmentTrait,
-      ],
-    })
-  },
   meta: {
     leftMenuViewButtons: [
       {
         title: 'app.page-title.character-simulator',
         icon: 'gridicons-user',
         pathName: AppRouteNames.CharacterSimulator,
+      },
+      {
+        title: 'app.page-title.skill-query',
+        icon: 'ic-outline-menu-book',
+        pathName: AppRouteNames.SkillQuery,
       },
     ],
   },
@@ -72,6 +53,27 @@ export default {
       redirect: {
         name: CharacterSimulatorRouteNames.Equipment,
       },
+      beforeEnter: createCharacterViewInitGuard(
+        [
+          LocaleViewNamespaces.CharacterSimulator,
+          LocaleViewNamespaces.SkillSimulator,
+          LocaleViewNamespaces.SkillQuery,
+          LocaleViewNamespaces.DamageCalculation,
+          LocaleViewNamespaces.RegistletQuery,
+          LocaleViewNamespaces.EquipmentTrait,
+        ],
+        DataStoreIds.Stats,
+        DataStoreIds.Items,
+        DataStoreIds.Crystals,
+        DataStoreIds.CharacterStats,
+        DataStoreIds.Skill,
+        DataStoreIds.Food,
+        DataStoreIds.DamageCalculation,
+        DataStoreIds.Registlet,
+        DataStoreIds.ItemsPotion,
+        DataStoreIds.EquipmentTrait,
+        DataStoreIds.Glossary
+      ),
       children: [
         {
           name: CharacterSimulatorRouteNames.Basic,
@@ -116,6 +118,21 @@ export default {
             import('@/views/CharacterSimulator/character-dashboard/character-dashboard.vue'),
         },
       ],
+    },
+    {
+      name: AppRouteNames.SkillQuery,
+      path: 'skill-info/:skillId?',
+      component: () => import('@/views/Character/SkillQuery/index.vue'),
+      meta: {
+        title: 'app.page-title.skill-query',
+      },
+      beforeEnter: createCharacterViewInitGuard(
+        [LocaleViewNamespaces.SkillQuery],
+        DataStoreIds.Stats,
+        DataStoreIds.Skill,
+        DataStoreIds.Glossary,
+        DataStoreIds.Registlet
+      ),
     },
   ],
 } satisfies RouteRecordRaw

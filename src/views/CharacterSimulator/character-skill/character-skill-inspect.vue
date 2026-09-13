@@ -8,7 +8,7 @@ import type { Skill } from '@/lib/Skill/Skill'
 import type { SkillItem } from '@/lib/Skill/SkillComputing'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
-import { ComputingContainerInjectionKey } from '@/views/SkillQuery/injection-keys'
+import { ComputingContainerInjectionKey } from '@/views/Character/SkillQuery/injection-keys'
 
 import { setStackValue } from './character-skill-tab/utils'
 

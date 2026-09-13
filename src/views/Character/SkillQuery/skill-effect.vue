@@ -67,7 +67,8 @@ import { useI18n } from 'vue-i18n'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
-import GlossaryTagPopover from '../GlossaryQuery/glossary-tag-popover.vue'
+import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+
 import SkillEffectHistory from './skill-effect-history/index.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'

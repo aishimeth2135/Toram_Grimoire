@@ -56,6 +56,9 @@ abstract class BagItem {
   }
 
   appendStat(baseId: string, value: number, type: StatTypes, restriction: string): void {
+    if (!baseId) {
+      return
+    }
     const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
       CommonLogger.warn('Character', "Can't find stat-base with id: " + baseId)

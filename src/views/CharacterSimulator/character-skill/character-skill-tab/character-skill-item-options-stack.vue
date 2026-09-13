@@ -34,7 +34,7 @@ import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import { setStackValue } from './utils'
 

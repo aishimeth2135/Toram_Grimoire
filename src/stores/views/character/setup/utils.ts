@@ -6,7 +6,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { SkillBranchItem, SkillBranchStatResult } from '@/lib/Skill/SkillComputing'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import type { SkillResult } from './setupCharacterSkills'
 

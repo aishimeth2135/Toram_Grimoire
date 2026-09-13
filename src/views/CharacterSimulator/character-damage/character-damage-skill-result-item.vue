@@ -112,7 +112,7 @@ import { markText } from '@/shared/utils/view'
 import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 
-import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
+import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 

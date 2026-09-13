@@ -4,7 +4,6 @@ export const AppRouteNames = {
   Home: 'Home',
   About: 'About',
 
-  Skill: 'Skill',
   SkillQuery: 'SkillQuery',
 
   Items: 'items',
@@ -26,7 +25,6 @@ export const AppRouteNames = {
   Glossary: 'Glossary',
   GlossaryQuery: 'GlossaryQuery',
 
-  Trait: 'Trait',
   TraitQuery: 'TraitQuery',
 
   Registlet: 'Registlet',

@@ -17,13 +17,13 @@ import {
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputing'
 
-import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
-import DamageHandler from '@/views/SkillQuery/skill/branch-handlers/DamageHandler'
-import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
-import ExtraHandler from '@/views/SkillQuery/skill/branch-handlers/ExtraHandler'
-import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHandler'
-import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import BasicHandler from '@/views/Character/SkillQuery/skill/branch-handlers/BasicHandler'
+import DamageHandler from '@/views/Character/SkillQuery/skill/branch-handlers/DamageHandler'
+import EffectHandler from '@/views/Character/SkillQuery/skill/branch-handlers/EffectHandler'
+import ExtraHandler from '@/views/Character/SkillQuery/skill/branch-handlers/ExtraHandler'
+import PassiveHandler from '@/views/Character/SkillQuery/skill/branch-handlers/PassiveHandler'
+import StackHandler from '@/views/Character/SkillQuery/skill/branch-handlers/StackHandler'
+import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import type { CharacterBuildsContext } from './context'
 import { getSkillBranchState } from './getState'

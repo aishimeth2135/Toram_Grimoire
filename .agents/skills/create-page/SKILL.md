@@ -37,7 +37,7 @@ description: 在 Toram Grimoire 專案建立新頁面的基本框架，包含 Vu
 ## 實作流程
 
 1. 查看 `git status` 與適用的 `AGENTS.md`，保留既有修改。確認以下實作尚符合目前專案：
-   - `src/router/enums.ts`、`src/router/index.ts`
+   - `src/router/enums.ts`、`src/router/index.ts`、`src/router/utils.ts`
    - `src/router/Registlet/index.ts`、`view-wrapper.vue`
    - `src/stores/app/locale/enums.ts`、`index.ts`
    - `src/shared/services/ViewInit.ts`
@@ -48,8 +48,9 @@ description: 在 Toram Grimoire 專案建立新頁面的基本框架，包含 Vu
 3. 在 `src/router/enums.ts` 的 `AppRouteNames` 新增分類及頁面名稱，key/value 使用對應的 PascalCase 字串。分類已存在則沿用其值。
 4. 建立頁面 `index.vue`，使用下方最小模板，只 import `AppLayoutMain`。
 5. 新分類建立 `view-wrapper.vue` 與 `index.ts`，依下方模板替換命名；既有分類只追加所需項目。
-   - `PrepareLocaleInit(LocaleViewNamespaces.PageName)` 在 `ViewInit` 前呼叫。
-   - 新分類使用 `ViewInit().then(next)`，參數保持空白供人工補充，不引入 `DataStoreIds`。既有分類保留原本的初始化參數並追加 namespace。
+   - 使用 `initializePage({ locales: [...] })` 同時處理頁面資料與 locale 初始化，不再分開呼叫 locale 初始化 API。
+   - 新分類的 route guard 直接 `return initializePage(...)`，只傳入頁面 namespace；資料需求尚未確認時不引入 `DataStoreIds`。
+   - 既有分類沿用其 route guard 組織方式。若各 child 有不同資料需求，使用 `createCategoryViewInitGuard(AppRouteNames.CategoryName)` 建立分類專用 factory，將 guard 放在 child route；不要把所有 child 的初始化需求合併到 parent route。此 helper 會在分類內切頁時使用 `deferred`，由分類外進入時使用 `blocking`。
    - `meta.leftMenuViewButtons` 新增 item，`pathName` 指向新頁面。
    - `children` 新增 route，使用 lazy import；其 `meta.title` 與按鈕 `title` 必須相同。
 6. 在 `src/router/index.ts` import 新分類並加入 `routes`；既有分類不重複註冊。
@@ -90,7 +91,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -102,9 +103,10 @@ export default {
   name: AppRouteNames.CategoryName,
   path: '/category-kebab',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.PageName)
-    ViewInit().then(next)
+  beforeEnter() {
+    return initializePage({
+      locales: [LocaleViewNamespaces.PageName],
+    })
   },
   meta: {
     leftMenuViewButtons: [
@@ -143,4 +145,4 @@ export default {
 - 對照 diff 確認父子路由、lazy import、路由註冊、namespace 與四語系空檔、兩處標題 ID、zh-TW 標題、全站入口與首頁分組均一致。
 - 使用專案工具處理本次檔案格式，避免整批格式化；對修改的 Vue／TypeScript 檔執行 `yarn exec eslint <files>`，並執行 `yarn type-check`。需要時使用 `yarn exec prettier --check <files>` 檢查格式。
 - 遵循專案要求，不新增 unit test、不啟動 dev server、不執行 build；功能由人工確認。
-- 以繁體中文交付變更檔案、頁面 URL、已執行檢查結果及尚待人工補上的內容（頁面功能、ViewInit 資料需求與圖示）。未執行或失敗的檢查須明確註明。
+- 以繁體中文交付變更檔案、頁面 URL、已執行檢查結果及尚待人工補上的內容（頁面功能、`initializePage` 資料需求與圖示）。未執行或失敗的檢查須明確註明。

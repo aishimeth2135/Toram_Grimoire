@@ -7,7 +7,7 @@ import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 
 import CardRows from '@/components/card/card-rows.vue'
-import SkillTreeDiagram from '@/views/SkillQuery/skill-tree-diagram.vue'
+import SkillTreeDiagram from '@/views/Character/SkillQuery/skill-tree-diagram.vue'
 
 import CommonEditModeButton from '../../common/common-edit-mode-button.vue'
 import CharacterSkillPreviewItem from './character-skill-preivew-item.vue'

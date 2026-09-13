@@ -1,31 +1,19 @@
-import type { NavigationGuard, RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { initializePage } from '@/shared/services/ViewInit'
-
 import ViewWrapper from './view-wrapper.vue'
 
 import { AppRouteNames } from '../enums'
+import { createCategoryViewInitGuard } from '../utils'
 
 const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
 const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
 const ChromaticTransSimulatorView = () => import('@/views/Items/ChromaticTransSimulator/index.vue')
+const TraitQueryView = () => import('@/views/Items/TraitQuery/index.vue')
 
-function createItemsViewInitGuard(
-  locales: LocaleViewNamespaces[],
-  ...data: DataStoreIds[]
-): NavigationGuard {
-  return (_to, from) => {
-    const isItemsNavigation = from.matched.some(route => route.name === AppRouteNames.Items)
-    return initializePage({
-      data,
-      locales,
-      mode: isItemsNavigation ? 'deferred' : 'blocking',
-    })
-  }
-}
+const createItemsViewInitGuard = createCategoryViewInitGuard(AppRouteNames.Items)
 
 export default {
   name: AppRouteNames.Items,
@@ -42,6 +30,11 @@ export default {
         title: 'app.page-title.crystal-query',
         icon: 'bx-bx-cube-alt',
         pathName: AppRouteNames.CrystalQuery,
+      },
+      {
+        title: 'app.page-title.trait-query',
+        icon: 'ic:outline-pentagon',
+        pathName: AppRouteNames.TraitQuery,
       },
       {
         title: 'app.page-title.chromatic-trans-simulator',
@@ -85,6 +78,19 @@ export default {
         title: 'app.page-title.chromatic-trans-simulator',
       },
       beforeEnter: createItemsViewInitGuard([LocaleViewNamespaces.ChromaticTransSimulator]),
+    },
+    {
+      name: AppRouteNames.TraitQuery,
+      path: 'trait-query',
+      component: TraitQueryView,
+      meta: {
+        title: 'app.page-title.trait-query',
+      },
+      beforeEnter: createItemsViewInitGuard(
+        [LocaleViewNamespaces.TraitQuery, LocaleViewNamespaces.EquipmentTrait],
+        DataStoreIds.Stats,
+        DataStoreIds.EquipmentTrait
+      ),
     },
   ],
 } satisfies RouteRecordRaw
