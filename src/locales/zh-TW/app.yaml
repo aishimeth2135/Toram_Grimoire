@@ -17,6 +17,9 @@ loading-message:
     0: 初次載入需要較長的時間，請稍候...
     1: 若載入途中發生錯誤，請先試著重新整理網頁。
   init-locale: 載入語言資料
+  load-failed: 載入失敗，請稍後重試。
+  retry: 重新載入
+  retrying: 重新載入中
 page-title:
   chromatic-trans-simulator: 色彩煉成模擬
   trait-query: 特性查詢

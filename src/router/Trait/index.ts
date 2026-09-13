@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,9 +15,11 @@ export default {
   name: AppRouteNames.Trait,
   path: '/trait',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.TraitQuery, LocaleViewNamespaces.EquipmentTrait)
-    ViewInit(DataStoreIds.Stats, DataStoreIds.EquipmentTrait).then(next)
+  beforeEnter() {
+    return initializePage({
+      data: [DataStoreIds.Stats, DataStoreIds.EquipmentTrait],
+      locales: [LocaleViewNamespaces.TraitQuery, LocaleViewNamespaces.EquipmentTrait],
+    })
   },
   meta: {
     leftMenuViewButtons: [

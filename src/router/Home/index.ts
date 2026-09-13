@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import HomeView from '@/views/Home/Home/index.vue'
 
@@ -14,8 +14,8 @@ export default {
   name: AppRouteNames.Base,
   path: '/',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    ViewInit().then(next)
+  beforeEnter() {
+    return initializePage()
   },
   meta: {
     leftMenuViewButtons: [

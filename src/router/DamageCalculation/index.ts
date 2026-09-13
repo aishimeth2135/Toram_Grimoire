@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import { AppRouteNames } from '@/router/enums'
 
@@ -15,9 +15,11 @@ export default {
   name: AppRouteNames.DamageCalculationBase,
   path: '/damage-calculation',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.DamageCalculation)
-    ViewInit(DataStoreIds.DamageCalculation).then(next)
+  beforeEnter() {
+    return initializePage({
+      data: [DataStoreIds.DamageCalculation],
+      locales: [LocaleViewNamespaces.DamageCalculation],
+    })
   },
   meta: {
     leftMenuViewButtons: [

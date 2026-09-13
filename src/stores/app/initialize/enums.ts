@@ -1,20 +1,17 @@
 export const InitializeStatus = {
-  ViewLoading: 0,
-  ViewSuccess: 1,
-
-  LocaleLoading: 10,
-  LocaleSuccess: 11,
-
-  BeforeFinished: 100,
-  Finished: 390,
-
-  Error: -1,
+  ViewLoading: 'view-loading',
+  ViewSuccess: 'view-success',
+  LocaleLoading: 'locale-loading',
+  LocaleSuccess: 'locale-success',
+  BeforeFinished: 'before-finished',
+  Finished: 'finished',
+  Error: 'error',
 } as const
 export type InitializeStatus = (typeof InitializeStatus)[keyof typeof InitializeStatus]
 
 export const InitItemStatus = {
-  Loading: 0,
-  Success: 1,
-  Error: -1,
+  Loading: 'loading',
+  Success: 'success',
+  Error: 'error',
 } as const
 export type InitItemStatus = (typeof InitItemStatus)[keyof typeof InitItemStatus]

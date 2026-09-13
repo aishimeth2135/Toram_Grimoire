@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,14 +15,11 @@ export default {
   name: AppRouteNames.Registlet,
   path: '/registlet',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.RegistletQuery)
-    ViewInit(
-      DataStoreIds.Skill,
-      DataStoreIds.Stats,
-      DataStoreIds.Registlet,
-      DataStoreIds.Glossary
-    ).then(next)
+  beforeEnter() {
+    return initializePage({
+      data: [DataStoreIds.Skill, DataStoreIds.Stats, DataStoreIds.Registlet, DataStoreIds.Glossary],
+      locales: [LocaleViewNamespaces.RegistletQuery],
+    })
   },
   meta: {
     leftMenuViewButtons: [

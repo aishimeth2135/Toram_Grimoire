@@ -31,8 +31,8 @@
       class="z-100 fixed left-0 top-0 flex size-full items-center justify-center bg-white"
     >
       <div class="flex flex-wrap justify-center">
-        <LoadingAnimation :status="0" />
-        <div class="text-primary-30 mt-2 w-full text-center text-xl">Initializing...</div>
+        <AppInitializeLogo :status="InitializeStatus.ViewLoading" />
+        <div class="text-primary-30 mt-4 w-full text-center text-xl">Initializing...</div>
       </div>
     </div>
   </div>
@@ -42,6 +42,7 @@
 import { onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { InitializeStatus } from '@/stores/app/initialize/enums'
 import { useLocaleStore } from '@/stores/app/locale'
 import { useMainStore } from '@/stores/app/main'
 
@@ -49,13 +50,13 @@ import { debounce } from '@/shared/utils/function'
 
 import { AppRouteNames } from '@/router/enums'
 import AppConfirm from '@/views/app/app-confirm.vue'
+import AppInitializeLogo from '@/views/app/app-initialize-logo.vue'
 import AppInitialize from '@/views/app/app-initialize.vue'
 import AppLoading from '@/views/app/app-loading.vue'
 import AppNotify from '@/views/app/app-notify.vue'
 import AppSetting from '@/views/app/app-settings/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
-import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
 import { useDevice } from './shared/composables/Device'
 import { useResizeObserver } from './shared/composables/ElementObserver'

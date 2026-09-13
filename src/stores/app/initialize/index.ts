@@ -1,135 +1,102 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
-import { CommonLogger } from '@/shared/services/Logger'
-
 import { DataStoreIds } from '../datas'
-import { useLocaleStore } from '../locale'
-import { LocaleViewNamespaces } from '../locale/enums'
 import { InitItemStatus, InitializeStatus } from './enums'
 
 interface InitItem {
   id: DataStoreIds
   message: string
-  promise: Promise<() => Promise<void>>
-}
-
-interface InitItemWithStatus extends InitItem {
   status: InitItemStatus
 }
 
 export const useInitializeStore = defineStore('app-initialize', () => {
-  const initedDataStores = new Set<DataStoreIds>()
-  const initItems = ref<InitItemWithStatus[]>([])
-  const initLocaleNamespaces = ref<LocaleViewNamespaces[]>([])
+  const initItems = ref<InitItem[]>([])
   const status = ref<InitializeStatus>(InitializeStatus.ViewLoading)
-  const nextIsDeferred = ref(false)
+  const isDeferred = ref(false)
+  const retrying = ref(false)
+  let retryHandler: (() => Promise<void>) | null = null
 
-  const appendInitItems = ({ id, message, promise }: InitItem) => {
-    initItems.value.push({
-      id,
-      message,
-      promise,
-      status: InitItemStatus.Loading,
-    })
-  }
-
-  const checkSkippable = (dataStoreIds: DataStoreIds[]) => {
-    return dataStoreIds.every(id => initedDataStores.has(id))
-  }
-
-  const initState = () => {
+  const startInit = (dataStoreIds: DataStoreIds[], deferred: boolean) => {
     status.value = InitializeStatus.ViewLoading
-    initItems.value = []
+    isDeferred.value = deferred
+    retryHandler = null
+    initItems.value = dataStoreIds.map(id => ({
+      id,
+      message: 'app.loading-message.' + id,
+      status: InitItemStatus.Loading,
+    }))
   }
 
-  const clearInitStates = () => {
-    nextIsDeferred.value = false
+  const updateInitItemStatus = (id: DataStoreIds, itemStatus: InitItemStatus) => {
+    const item = initItems.value.find(initItem => initItem.id === id)
+    if (item) {
+      item.status = itemStatus
+    }
+  }
+
+  const finishInitData = () => {
+    status.value = InitializeStatus.ViewSuccess
+  }
+
+  const startInitLocale = () => {
+    status.value = InitializeStatus.LocaleLoading
+  }
+
+  const finishInitLocale = () => {
+    status.value = InitializeStatus.LocaleSuccess
+  }
+
+  const emitInitError = (handler: () => Promise<void>) => {
+    retryHandler = handler
+    status.value = InitializeStatus.Error
+  }
+
+  const retryInit = async () => {
+    if (!retryHandler || retrying.value) {
+      return
+    }
+    retrying.value = true
+    try {
+      await retryHandler()
+    } finally {
+      retrying.value = false
+    }
   }
 
   const emitInitBeforeFinished = () => {
+    retryHandler = null
     status.value = InitializeStatus.BeforeFinished
   }
 
   const emitInitFinished = () => {
-    if (status.value !== InitializeStatus.BeforeFinished) {
-      CommonLogger.warn('ViewInit', 'Unexpected status in initFinished.')
-    }
     status.value = InitializeStatus.Finished
-    initItems.value.forEach(item => {
-      initedDataStores.add(item.id)
-    })
     initItems.value = []
-    clearInitStates()
+    isDeferred.value = false
   }
 
   const emitInitSkipped = () => {
+    retryHandler = null
     status.value = InitializeStatus.Finished
-    clearInitStates()
-  }
-
-  const startInit = async () => {
-    const inits = await Promise.all(
-      initItems.value.map(async item => {
-        try {
-          const init = await item.promise
-          item.status = InitItemStatus.Success
-          return {
-            id: item.id,
-            init,
-          }
-        } catch (err) {
-          console.error(err)
-          item.status = InitItemStatus.Error
-        }
-        return {
-          id: item.id,
-          init: () => Promise.resolve(),
-        }
-      })
-    )
-    if (initItems.value.every(item => item.status !== InitItemStatus.Error)) {
-      status.value = InitializeStatus.ViewSuccess
-    } else {
-      status.value = InitializeStatus.Error
-    }
-    return inits
-  }
-
-  const appendLoadLocaleNamespace = (...namespaces: LocaleViewNamespaces[]) => {
-    initLocaleNamespaces.value.push(...namespaces)
-  }
-
-  const languageStore = useLocaleStore()
-  const startInitLocale = async () => {
-    status.value = InitializeStatus.LocaleLoading
-    if (initLocaleNamespaces.value.length > 0) {
-      await languageStore.loadLocaleMessages(initLocaleNamespaces.value)
-      initLocaleNamespaces.value = []
-    }
-    status.value = InitializeStatus.LocaleSuccess
-  }
-
-  const markNextIsDeferred = () => {
-    nextIsDeferred.value = true
+    initItems.value = []
+    isDeferred.value = false
   }
 
   return {
     initItems: readonly(initItems),
     status: readonly(status),
-    isDeferred: readonly(nextIsDeferred),
+    isDeferred: readonly(isDeferred),
+    retrying: readonly(retrying),
 
-    appendInitItems,
-    initState,
+    startInit,
+    updateInitItemStatus,
+    finishInitData,
+    startInitLocale,
+    finishInitLocale,
+    emitInitError,
+    retryInit,
     emitInitBeforeFinished,
     emitInitFinished,
     emitInitSkipped,
-    startInit,
-
-    appendLoadLocaleNamespace,
-    startInitLocale,
-
-    checkSkippable,
-    markNextIsDeferred,
   }
 })

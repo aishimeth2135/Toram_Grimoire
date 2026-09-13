@@ -3,7 +3,7 @@ import type { NavigationGuard, RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit, ViewInitDeferred } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -13,12 +13,17 @@ const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
 const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
 const ChromaticTransSimulatorView = () => import('@/views/Items/ChromaticTransSimulator/index.vue')
 
-function createItemsViewInitGuard(...inits: DataStoreIds[]): NavigationGuard {
+function createItemsViewInitGuard(
+  locales: LocaleViewNamespaces[],
+  ...data: DataStoreIds[]
+): NavigationGuard {
   return (_to, from) => {
     const isItemsNavigation = from.matched.some(route => route.name === AppRouteNames.Items)
-    const init = isItemsNavigation ? ViewInitDeferred : ViewInit
-
-    return init(...inits)
+    return initializePage({
+      data,
+      locales,
+      mode: isItemsNavigation ? 'deferred' : 'blocking',
+    })
   }
 }
 
@@ -26,13 +31,6 @@ export default {
   name: AppRouteNames.Items,
   path: '/items',
   component: ViewWrapper,
-  beforeEnter() {
-    PrepareLocaleInit(
-      LocaleViewNamespaces.ItemQuery,
-      LocaleViewNamespaces.CrystalQuery,
-      LocaleViewNamespaces.ChromaticTransSimulator
-    )
-  },
   meta: {
     leftMenuViewButtons: [
       {
@@ -60,7 +58,11 @@ export default {
       meta: {
         title: 'app.page-title.item-query',
       },
-      beforeEnter: createItemsViewInitGuard(DataStoreIds.Stats, DataStoreIds.Items),
+      beforeEnter: createItemsViewInitGuard(
+        [LocaleViewNamespaces.ItemQuery],
+        DataStoreIds.Stats,
+        DataStoreIds.Items
+      ),
     },
     {
       name: AppRouteNames.CrystalQuery,
@@ -69,7 +71,11 @@ export default {
       meta: {
         title: 'app.page-title.crystal-query',
       },
-      beforeEnter: createItemsViewInitGuard(DataStoreIds.Stats, DataStoreIds.Crystals),
+      beforeEnter: createItemsViewInitGuard(
+        [LocaleViewNamespaces.CrystalQuery],
+        DataStoreIds.Stats,
+        DataStoreIds.Crystals
+      ),
     },
     {
       name: AppRouteNames.ChromaticTransSimulator,
@@ -78,7 +84,7 @@ export default {
       meta: {
         title: 'app.page-title.chromatic-trans-simulator',
       },
-      beforeEnter: createItemsViewInitGuard(),
+      beforeEnter: createItemsViewInitGuard([LocaleViewNamespaces.ChromaticTransSimulator]),
     },
   ],
 } satisfies RouteRecordRaw

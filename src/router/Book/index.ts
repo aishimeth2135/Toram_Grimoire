@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit, ViewInitSlient } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -16,10 +16,12 @@ export default {
   name: AppRouteNames.Book,
   path: '/book',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.BookTemplate)
-    ViewInitSlient(DataStoreIds.Stats, DataStoreIds.Items)
-    ViewInit().then(next)
+  beforeEnter() {
+    void initializePage({
+      data: [DataStoreIds.Stats, DataStoreIds.Items],
+      mode: 'silent',
+    })
+    return initializePage({ locales: [LocaleViewNamespaces.BookTemplate] })
   },
   meta: {
     leftMenuViewButtons: [

@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -26,28 +26,30 @@ export default {
   name: AppRouteNames.Character,
   path: '/character',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(
-      LocaleViewNamespaces.CharacterSimulator,
-      LocaleViewNamespaces.SkillSimulator,
-      LocaleViewNamespaces.SkillQuery,
-      LocaleViewNamespaces.DamageCalculation,
-      LocaleViewNamespaces.RegistletQuery,
-      LocaleViewNamespaces.EquipmentTrait
-    )
-    ViewInit(
-      DataStoreIds.Stats,
-      DataStoreIds.Items,
-      DataStoreIds.Crystals,
-      DataStoreIds.CharacterStats,
-      DataStoreIds.Skill,
-      DataStoreIds.Food,
-      DataStoreIds.DamageCalculation,
-      DataStoreIds.Registlet,
-      DataStoreIds.ItemsPotion,
-      DataStoreIds.EquipmentTrait,
-      DataStoreIds.Glossary
-    ).then(next)
+  beforeEnter() {
+    return initializePage({
+      data: [
+        DataStoreIds.Stats,
+        DataStoreIds.Items,
+        DataStoreIds.Crystals,
+        DataStoreIds.CharacterStats,
+        DataStoreIds.Skill,
+        DataStoreIds.Food,
+        DataStoreIds.DamageCalculation,
+        DataStoreIds.Registlet,
+        DataStoreIds.ItemsPotion,
+        DataStoreIds.EquipmentTrait,
+        DataStoreIds.Glossary,
+      ],
+      locales: [
+        LocaleViewNamespaces.CharacterSimulator,
+        LocaleViewNamespaces.SkillSimulator,
+        LocaleViewNamespaces.SkillQuery,
+        LocaleViewNamespaces.DamageCalculation,
+        LocaleViewNamespaces.RegistletQuery,
+        LocaleViewNamespaces.EquipmentTrait,
+      ],
+    })
   },
   meta: {
     leftMenuViewButtons: [

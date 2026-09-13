@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import Page404View from '@/views/app/page404.vue'
 
@@ -10,8 +10,8 @@ export default {
   name: AppRouteNames.UnrecognizedPath,
   path: '/:pathMatch(.*)*',
   component: Page404View,
-  beforeEnter(_to, _from, next) {
-    ViewInit().then(next)
+  beforeEnter() {
+    return initializePage()
   },
   meta: {
     title: '404',

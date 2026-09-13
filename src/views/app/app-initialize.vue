@@ -15,15 +15,12 @@
           <div
             class="title-icon-bg wd:size-32 flex size-24 items-center justify-center rounded-full"
           >
-            <LoadingAnimation :status="status" @done="initializeStore.emitInitFinished()" />
+            <AppInitializeLogo :status="status" @done="initializeStore.emitInitFinished()" />
           </div>
         </div>
-        <div
-          v-if="status < InitializeStatus.BeforeFinished"
-          class="flex flex-col justify-center px-4"
-        >
+        <div v-if="contentVisible" class="flex flex-col justify-center px-4">
           <div class="wd:max-h-56 wd:min-w-56 wd:py-6 wd:pr-4 flex grow flex-col flex-wrap gap-x-4">
-            <template v-if="status <= InitializeStatus.ViewSuccess">
+            <template v-if="viewStatusVisible">
               <div
                 v-for="item in initItems"
                 :key="item.message"
@@ -42,14 +39,32 @@
                   {{ t(item.message) }}
                 </span>
               </div>
+              <div v-if="status === InitializeStatus.Error" class="mt-4 text-center">
+                <div class="text-orange-60 mb-2">
+                  {{ t('app.loading-message.load-failed') }}
+                </div>
+                <cy-button-plain
+                  icon="mdi-refresh"
+                  :disabled="retrying"
+                  @click="initializeStore.retryInit()"
+                >
+                  {{ t(retrying ? 'app.loading-message.retrying' : 'app.loading-message.retry') }}
+                </cy-button-plain>
+              </div>
             </template>
-            <template v-else-if="status <= InitializeStatus.LocaleSuccess">
+            <template v-else>
               <div class="flex items-center justify-center pl-1">
                 <span class="text-primary-60 mr-3 w-full">
                   {{ t('app.loading-message.init-locale') }}
                 </span>
                 <cy-icon
-                  :icon="statusIcon(status - 10)"
+                  :icon="
+                    statusIcon(
+                      status === InitializeStatus.LocaleLoading
+                        ? InitItemStatus.Loading
+                        : InitItemStatus.Success
+                    )
+                  "
                   :class="{
                     'loading-circle': status === InitializeStatus.LocaleLoading,
                   }"
@@ -70,6 +85,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useInitializeStore } from '@/stores/app/initialize'
@@ -77,16 +93,29 @@ import { InitItemStatus, InitializeStatus } from '@/stores/app/initialize/enums'
 
 import HomeBackgroud from '@/views/Home/Home/home-backgroud.vue'
 
-import LoadingAnimation from './initialization/loading-animation.vue'
+import AppInitializeLogo from './app-initialize-logo.vue'
 
 const initializeStore = useInitializeStore()
 
-const { initItems, status, isDeferred } = storeToRefs(initializeStore)
+const { initItems, status, isDeferred, retrying } = storeToRefs(initializeStore)
 
 const { t } = useI18n()
-const statusIcon = (value: number) => {
-  if (value >= 0) {
-    return ['mdi-loading', 'ic-round-check-circle-outline'][value]
+const contentVisible = computed(
+  () =>
+    status.value !== InitializeStatus.BeforeFinished && status.value !== InitializeStatus.Finished
+)
+const viewStatusVisible = computed(
+  () =>
+    status.value === InitializeStatus.ViewLoading ||
+    status.value === InitializeStatus.ViewSuccess ||
+    status.value === InitializeStatus.Error
+)
+const statusIcon = (value: InitItemStatus) => {
+  if (value === InitItemStatus.Loading) {
+    return 'mdi-loading'
+  }
+  if (value === InitItemStatus.Success) {
+    return 'ic-round-check-circle-outline'
   }
   return 'ic-round-close'
 }

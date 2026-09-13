@@ -3,118 +3,116 @@ import { nextTick } from 'vue'
 import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas'
 import { useInitializeStore } from '@/stores/app/initialize'
-import { InitializeStatus } from '@/stores/app/initialize/enums'
+import { InitItemStatus } from '@/stores/app/initialize/enums'
 import { useLocaleStore } from '@/stores/app/locale'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
 import { CommonLogger } from './Logger'
 
-interface ViewInitItem {
-  id: DataStoreIds
-  promise: Promise<() => Promise<void>>
-  message: string
-  loaded: boolean
+export type PageInitMode = 'blocking' | 'deferred' | 'silent'
+
+export interface PageInitOptions {
+  data?: DataStoreIds[]
+  locales?: LocaleViewNamespaces[]
+  mode?: PageInitMode
 }
 
-export async function ViewInitSlient(...inits: DataStoreIds[]) {
+async function initializeSilently(dataStoreIds: DataStoreIds[]) {
   const datasStore = useDatasStore()
-  const initItems = inits.map(id => {
-    const loaded = datasStore.checkLoaded(id)
-    const promise = loaded
-      ? Promise.resolve(() => Promise.resolve())
-      : datasStore.prepareDataStore(id)
-    return { id, promise, loaded }
+  const results = await datasStore.ensureLoaded(dataStoreIds)
+  results.forEach(result => {
+    if (!result.success) {
+      console.error(result.error)
+    }
   })
-
-  const finishedInitItems = await Promise.all(
-    initItems.map(async item => {
-      try {
-        const init = await item.promise
-        return {
-          id: item.id,
-          init,
-        }
-      } catch (err) {
-        console.error(err)
-      }
-      return {
-        id: item.id,
-        init: () => Promise.resolve(),
-      }
-    })
-  )
-  await Promise.all(
-    finishedInitItems.map(async item => {
-      try {
-        await item.init()
-        datasStore.loadFinished(item.id)
-      } catch (err) {
-        console.error(err)
-      }
-    })
-  )
 }
 
-export async function ViewInit(...inits: DataStoreIds[]) {
-  const initializeStore = useInitializeStore()
+export async function initializePage(options: PageInitOptions = {}) {
+  const dataStoreIds = [...new Set(options.data ?? [])]
+  const localeNamespaces = [...new Set(options.locales ?? [])]
+  const mode = options.mode ?? 'blocking'
 
-  const forceSkip = initializeStore.checkSkippable(inits) && initializeStore.isDeferred
-  if (inits.length === 0 || forceSkip) {
-    await initializeStore.startInitLocale()
+  if (mode === 'silent') {
+    await initializeSilently(dataStoreIds)
+    return
+  }
+
+  const initializeStore = useInitializeStore()
+  const datasStore = useDatasStore()
+  const localeStore = useLocaleStore()
+
+  const hasUnloadedData = dataStoreIds.some(id => !datasStore.checkLoaded(id))
+  const hasUnloadedLocale = localeNamespaces.some(
+    namespace => !localeStore.i18nLoadedLocaleNamespaces.has(namespace)
+  )
+  if (
+    (!hasUnloadedData && !hasUnloadedLocale && mode === 'deferred') ||
+    (dataStoreIds.length === 0 && localeNamespaces.length === 0)
+  ) {
     initializeStore.emitInitSkipped()
     await nextTick()
     return
   }
 
-  const datasStore = useDatasStore()
-
-  initializeStore.initState()
-  await nextTick()
-
   const initLogger = new CommonLogger('Init')
+  const run = async () => {
+    initializeStore.startInit(dataStoreIds, mode === 'deferred')
+    await nextTick()
 
-  const initItems = inits.map(id => {
-    const loaded = datasStore.checkLoaded(id)
-    const promise = loaded
-      ? Promise.resolve(() => Promise.resolve())
-      : datasStore.prepareDataStore(id)
-    if (!loaded) {
+    const localeResultPromise = localeStore.ensureLocaleLoaded(localeNamespaces).then(
+      () => ({ success: true as const }),
+      error => ({ success: false as const, error })
+    )
+    dataStoreIds.forEach(id => {
+      if (datasStore.checkLoaded(id)) {
+        initializeStore.updateInitItemStatus(id, InitItemStatus.Success)
+        return
+      }
       initLogger.addTitle(id).info('Loading...')
-    }
-    const message = 'app.loading-message.' + id
-    return { id, promise, message, loaded } as ViewInitItem
-  })
-
-  initItems.forEach(item => initializeStore.appendInitItems(item))
-
-  const finishedInitItems = await initializeStore.startInit()
-  await Promise.all(
-    finishedInitItems.map(async item => {
-      await item.init()
-      initLogger.addTitle(item.id).info('Loading finished.')
-      datasStore.loadFinished(item.id)
     })
-  )
+    const dataResults = await datasStore.ensureLoaded(dataStoreIds, id => {
+      initializeStore.updateInitItemStatus(id, InitItemStatus.Success)
+    })
+    dataResults.forEach((result, index) => {
+      const id = dataStoreIds[index]
+      if (result.success) {
+        initializeStore.updateInitItemStatus(id, InitItemStatus.Success)
+        initLogger.addTitle(id).info('Loading finished.')
+      } else {
+        console.error(result.error)
+        initializeStore.updateInitItemStatus(id, InitItemStatus.Error)
+      }
+    })
+    initializeStore.finishInitData()
 
-  if (initializeStore.status === InitializeStatus.Error) {
+    initializeStore.startInitLocale()
+    const localeResult = await localeResultPromise
+    if (!localeResult.success) {
+      console.error(localeResult.error)
+    } else {
+      initializeStore.finishInitLocale()
+    }
+
+    if (dataResults.some(result => !result.success) || !localeResult.success) {
+      return false
+    }
+
+    initializeStore.emitInitBeforeFinished()
+    return true
+  }
+
+  if (await run()) {
     return
   }
 
-  await initializeStore.startInitLocale()
-  initializeStore.emitInitBeforeFinished()
-}
-
-export async function ViewInitDeferred(...inits: DataStoreIds[]) {
-  const initializeStore = useInitializeStore()
-  initializeStore.markNextIsDeferred()
-  await ViewInit(...inits)
-}
-
-export function PrepareLocaleInit(...namespaces: LocaleViewNamespaces[]) {
-  const initializeStore = useInitializeStore()
-  const languageStore = useLocaleStore()
-  namespaces = namespaces.filter(
-    namespace => !languageStore.i18nLoadedLocaleNamespaces.has(namespace)
-  )
-  initializeStore.appendLoadLocaleNamespace(...namespaces)
+  await new Promise<void>(resolve => {
+    const retry = async () => {
+      if (await run()) {
+        resolve()
+      } else {
+        initializeStore.emitInitError(retry)
+      }
+    }
+    initializeStore.emitInitError(retry)
+  })
 }

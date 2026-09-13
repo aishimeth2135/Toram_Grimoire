@@ -23,8 +23,12 @@ import { computed, onMounted, ref, toRefs, watch } from 'vue'
 import { InitializeStatus } from '@/stores/app/initialize/enums'
 import { useMainStore } from '@/stores/app/main'
 
+defineOptions({
+  name: 'AppInitializeLogo',
+})
+
 interface Props {
-  status: number
+  status: InitializeStatus
 }
 interface Emits {
   (evt: 'done'): void
@@ -36,10 +40,10 @@ const emit = defineEmits<Emits>()
 const { status } = toRefs(props)
 const mainStore = useMainStore()
 
-const innerStatus = ref(0)
+const innerStatus = ref<InitializeStatus>(InitializeStatus.ViewLoading)
 
 const available = computed(() => {
-  return innerStatus.value >= InitializeStatus.BeforeFinished && !mainStore.routerGuiding
+  return innerStatus.value === InitializeStatus.BeforeFinished && !mainStore.routerGuiding
 })
 
 onMounted(() => {

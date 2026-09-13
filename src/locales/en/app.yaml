@@ -16,6 +16,9 @@ loading-message:
     '0': It will take extra time for loading the first time.  Please wait...
     '1': Please refresh the website first if any errors occur.
   init-locale: Loading Locale
+  load-failed: Loading failed. Please try again later.
+  retry: Retry
+  retrying: Retrying
 page-title:
   base: "Cy's Grimoire"
   character-simulator: Character Simulator

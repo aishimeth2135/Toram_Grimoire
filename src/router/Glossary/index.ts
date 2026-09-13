@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -14,8 +14,8 @@ export default {
   name: AppRouteNames.Glossary,
   path: '/glossary',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    ViewInit(DataStoreIds.Glossary).then(next)
+  beforeEnter() {
+    return initializePage({ data: [DataStoreIds.Glossary] })
   },
   meta: {
     leftMenuViewButtons: [

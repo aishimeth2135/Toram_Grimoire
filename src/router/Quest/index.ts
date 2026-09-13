@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { DataStoreIds } from '@/stores/app/datas'
 import { LocaleViewNamespaces } from '@/stores/app/locale/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
+import { initializePage } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,9 +15,11 @@ export default {
   name: AppRouteNames.Quest,
   path: '/main-quest',
   component: ViewWrapper,
-  beforeEnter(_to, _from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.MainQuestCalc)
-    ViewInit(DataStoreIds.Quest).then(next)
+  beforeEnter() {
+    return initializePage({
+      data: [DataStoreIds.Quest],
+      locales: [LocaleViewNamespaces.MainQuestCalc],
+    })
   },
   meta: {
     leftMenuViewButtons: [
