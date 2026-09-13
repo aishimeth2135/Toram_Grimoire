@@ -11,7 +11,7 @@
                 :key="crystal.id"
                 :crystal="crystal"
                 :detail-visible-default="resultItemsDetailVisibleDefault"
-                :preview-stat="mode === SearchMode.Stat ? modeStat.statItem : null"
+                :preview-stat="mode === 'stat' ? modeStat.statItem : null"
                 :preview-mode="resultItemPreviewMode"
               />
             </CardRows>
@@ -21,7 +21,12 @@
           </cy-default-tips>
         </div>
       </CardRowsWrapper>
-      <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
+      <cy-pagination
+        v-if="!paginationUseless"
+        v-model:value="page"
+        :max-page="maxPage"
+        @changed="pageChanged"
+      />
     </div>
     <AppLayoutBottom>
       <template #main-start>
@@ -43,7 +48,7 @@
         </cy-options>
       </template>
       <template #default>
-        <div v-if="mode === SearchMode.Normal" class="flex w-full items-center">
+        <div v-if="mode === 'normal'" class="flex w-full items-center">
           <cy-icon icon="ic-outline-search" class="shrink-0" />
           <input
             v-model="modeNormal.searchText"
@@ -61,7 +66,7 @@
           />
         </div>
         <cy-button-plain
-          v-else-if="mode === SearchMode.Stat"
+          v-else-if="mode === 'stat'"
           icon="mdi-rhombus-outline"
           :color="modeStat.statItem ? 'primary' : 'red'"
           @click="toggleSelectedStatVisible"
@@ -71,14 +76,11 @@
       </template>
       <template #side-buttons>
         <cy-button-circle
-          v-if="mode === SearchMode.Stat"
+          v-if="mode === 'stat'"
           icon="ci:list-checklist-alt"
           color="cyan"
           @click="
-            resultItemPreviewMode =
-              resultItemPreviewMode === PreviewMode.Default
-                ? PreviewMode.CurrentMode
-                : PreviewMode.Default
+            resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'current-mode' : 'default'
           "
         />
         <cy-button-circle
@@ -142,17 +144,13 @@ import CardRows from '@/components/card/card-rows.vue'
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
 
-import { PreviewMode, type StatOptionItem } from './setup'
+import { type PreviewMode, type StatOptionItem } from './setup'
 
 defineOptions({
   name: 'CrystalQuery',
 })
 
-const SearchMode = {
-  Normal: 0,
-  Stat: 1,
-} as const
-type SearchMode = (typeof SearchMode)[keyof typeof SearchMode]
+type SearchMode = 'normal' | 'stat'
 
 const { t } = useI18n()
 
@@ -169,22 +167,22 @@ const resultItemsDetailVisibleDefault = ref(false)
 const topElement = useTemplateRef('top-element')
 
 // Mode
-const mode: Ref<SearchMode> = ref(SearchMode.Normal)
+const mode: Ref<SearchMode> = ref('normal')
 const modes: {
   id: SearchMode
   icon: string
 }[] = [
   {
-    id: SearchMode.Normal,
+    id: 'normal',
     icon: 'ic:baseline-search',
   },
   {
-    id: SearchMode.Stat,
+    id: 'stat',
     icon: 'mdi:script-outline',
   },
 ]
 
-const resultItemPreviewMode: Ref<PreviewMode> = ref(PreviewMode.Default)
+const resultItemPreviewMode: Ref<PreviewMode> = ref('default')
 
 const modeNormal = reactive({
   searchText: '',
@@ -196,8 +194,7 @@ const modeStat = reactive({
 
 const selectMode = (id: SearchMode) => {
   mode.value = id
-  resultItemPreviewMode.value =
-    id === SearchMode.Stat ? PreviewMode.CurrentMode : PreviewMode.Default
+  resultItemPreviewMode.value = id === 'stat' ? 'current-mode' : 'default'
 }
 
 // Search filter
@@ -238,7 +235,7 @@ const resultCrystals = computed(() => {
   const filteredCrystals = crystals.filter(crystal =>
     selectedCategories.includes(crystal.origin.category)
   )
-  if (mode.value === SearchMode.Normal) {
+  if (mode.value === 'normal') {
     const text = modeNormal.searchText.toLowerCase()
     return filteredCrystals.filter(crystal => {
       if (crystal.name.toLowerCase().includes(text)) {
@@ -253,7 +250,7 @@ const resultCrystals = computed(() => {
       return false
     })
   }
-  if (mode.value === SearchMode.Stat) {
+  if (mode.value === 'stat') {
     if (!modeStat.statItem) {
       return []
     }
@@ -276,7 +273,7 @@ const resultCrystals = computed(() => {
 })
 
 // Page control
-const { currentItems, page, maxPage } = usePageControl({
+const { currentItems, page, maxPage, paginationUseless } = usePageControl({
   items: resultCrystals,
   step: 30,
 })

@@ -20,6 +20,7 @@ export function usePageControl<Item = unknown>({
     })
   })()
   const currentItems = computed(() => items.value.slice((page.value - 1) * step, page.value * step))
+  const paginationUseless = computed(() => items.value.length <= step)
 
   watch(items, () => {
     page.value = 1
@@ -29,5 +30,6 @@ export function usePageControl<Item = unknown>({
     page,
     maxPage,
     currentItems,
+    paginationUseless,
   }
 }

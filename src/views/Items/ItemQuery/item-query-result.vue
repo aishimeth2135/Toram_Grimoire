@@ -8,7 +8,7 @@
         </CardRows>
       </div>
     </CardRowsWrapper>
-    <div v-if="equipments.length > PAGINATION_STEP" class="mt-3">
+    <div v-if="!paginationUseless" class="mt-3">
       <cy-pagination v-model:value="page" :max-page="maxPage" @changed="pageChanged" />
     </div>
   </div>
@@ -32,11 +32,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const PAGINATION_STEP = 30
-
-const { currentItems, page, maxPage } = usePageControl({
+const { currentItems, page, maxPage, paginationUseless } = usePageControl({
   items: toRef(() => props.equipments),
-  step: PAGINATION_STEP,
+  step: 30,
 })
 
 const topElement = useTemplateRef('topElement')

@@ -13,17 +13,14 @@
           <cy-icon :icon="crystal.crystalIconPath" class="mr-1.5" />
           {{ crystal.name }}
         </div>
-        <div
-          v-if="previewMode === PreviewMode.Default"
-          class="text-cyan-60 flex items-center text-sm"
-        >
+        <div v-if="previewMode === 'default'" class="text-cyan-60 flex items-center text-sm">
           <template v-if="crystal.origin.enhancer">
             <cy-icon icon="mdi:arrow-up-bold-outline" small class="text-cyan-60 mr-2" />
             <cy-icon :icon="crystal.origin.crystalBaseIconPath" small class="mr-1" />
             {{ crystal.origin.enhancer }}
           </template>
         </div>
-        <div v-if="previewMode === PreviewMode.CurrentMode && previewStats.length > 0">
+        <div v-if="previewMode === 'current-mode' && previewStats.length > 0">
           <div v-for="stat in previewStats" :key="stat.statId">
             <ShowStat :stat="stat" :negative-value="stat.value < 0" type="preview" />
           </div>
@@ -73,7 +70,7 @@ import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import { PreviewMode, type StatOptionItem } from './setup'
+import { type PreviewMode, type StatOptionItem } from './setup'
 
 interface Props {
   crystal: EquipmentCrystal
