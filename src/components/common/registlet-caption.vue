@@ -24,7 +24,7 @@ const handleValue = (str: string) =>
     <div v-if="registletItem.link instanceof StatBase" class="flex items-center">
       <div>{{ registletItem.link.text }}</div>
       <div>+</div>
-      <div class="border-primary-20 text-primary-60 ml-2 border-x px-2">
+      <div class="ml-2 border-x border-primary-20 px-2 text-primary-60">
         {{ handleValue(registletItem.rows[0].value) }}
       </div>
     </div>
@@ -33,7 +33,7 @@ const handleValue = (str: string) =>
         <div v-if="row.type === 'caption'">
           <RegistletCaptionValue :text="row.value" :handle-value="handleValue" />
         </div>
-        <div v-else-if="row.type === 'remark'" class="text-primary-40 text-sm">
+        <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
           {{ row.value }}
         </div>
       </template>

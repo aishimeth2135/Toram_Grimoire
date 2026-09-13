@@ -49,7 +49,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
 </script>
 
 <template>
-  <div class="flex h-full w-full flex-col py-2">
+  <div class="flex size-full flex-col py-2">
     <div class="mb-3 flex justify-end">
       <CommonEditModeButton v-model:is-editing="isEditing" />
     </div>
@@ -85,7 +85,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
           </EquipmentPropInputContainer>
         </template>
       </Draggable>
-      <div v-else class="text-primary-60 py-2 text-sm">
+      <div v-else class="py-2 text-sm text-primary-60">
         {{ t('character-simulator.select-stats.stat-empty-tips') }}
       </div>
     </div>

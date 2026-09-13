@@ -1,8 +1,8 @@
 <template>
   <div class="inline-block">
     <transition mode="out-in" :css="false" @leave="leave">
-      <cy-icon v-if="!available" key="1" icon="@grimoire-cat" class="custom-icon start-icon" />
-      <cy-icon v-else key="2" icon="@grimoire-cat" class="custom-icon start-icon" />
+      <cy-icon v-if="!available" key="1" icon="@grimoire-cat" class="custom-icon inset-s-icon" />
+      <cy-icon v-else key="2" icon="@grimoire-cat" class="custom-icon inset-s-icon" />
     </transition>
     <!-- <transition
       appear

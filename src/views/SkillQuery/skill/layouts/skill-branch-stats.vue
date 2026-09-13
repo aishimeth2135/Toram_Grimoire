@@ -3,7 +3,7 @@
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="cy--text-underline mb-1.5 mr-4 pb-0.5 text-primary-30"
+      class="cy--text-underline mr-4 mb-1.5 pb-0.5 text-primary-30"
     >
       <SkillBranchPropValue :result="container" />
     </div>

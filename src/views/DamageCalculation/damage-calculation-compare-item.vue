@@ -1,12 +1,12 @@
 <template>
-  <div class="border-primary-30 border-t p-2">
-    <div class="text-fuchsia-60 mb-1 text-sm">{{ calculation.name }}</div>
+  <div class="border-t border-primary-30 p-2">
+    <div class="mb-1 text-sm text-fuchsia-60">{{ calculation.name }}</div>
     <div class="flex items-center">
-      <div class="gap-icon text-primary-90 inline-flex items-center">
+      <div class="inline-flex items-center gap-icon text-primary-90">
         <cy-icon icon="ant-design:star-outlined" class="text-primary-30" />
         {{ t('damage-calculation.result.modes.expected') }}
       </div>
-      <span class="text-primary-50 ml-2 mr-4">{{ expectedResult }}</span>
+      <span class="mr-4 ml-2 text-primary-50">{{ expectedResult }}</span>
       <div :class="calculationResultDifferenceRate >= 0 ? 'text-blue-60' : 'text-red-60'">
         {{ calculationResultDifferenceRateDisplay }}
       </div>
@@ -17,7 +17,7 @@
         :key="comparedItem.item.base.id"
         class="flex items-center"
       >
-        <div class="gap-icon text-primary-90 mr-2 inline-flex items-center text-sm">
+        <div class="mr-2 inline-flex items-center gap-icon text-sm text-primary-90">
           <cy-icon small class="text-primary-30" />
           <span>
             <span

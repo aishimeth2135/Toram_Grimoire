@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-start pb-0.5 pl-2.5">
     <IconCircle :icon="icon" />
-    <div class="pl-3 pt-1">
+    <div class="pt-1 pl-3">
       <div class="flex items-center">
         <div class="text-red-60" v-html="title"></div>
         <div v-if="titleProps" class="ml-3 flex items-center space-x-1.5 text-sm text-emerald-60">

@@ -29,7 +29,7 @@
         :result="container.result('frequency')"
       />
     </div>
-    <div v-if="container.has('@custom-base-caption')" class="mb-1.5 mt-1 text-sm">
+    <div v-if="container.has('@custom-base-caption')" class="mt-1 mb-1.5 text-sm">
       <div class="text-orange-60">
         {{ container.get('base') }}
       </div>

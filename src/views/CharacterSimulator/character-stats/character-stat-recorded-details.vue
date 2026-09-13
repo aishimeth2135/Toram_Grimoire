@@ -18,7 +18,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="space-y-1 pl-0.5 pr-3 text-sm">
+  <div class="space-y-1 pr-3 pl-0.5 text-sm">
     <div v-for="(src, idx) in stat.sources" :key="idx" class="flex items-center space-x-2">
       <cy-icon icon="ic-round-add" small />
       <template v-if="src.type === StatValueSourceTypes.Skill">

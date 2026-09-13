@@ -44,7 +44,7 @@ const { characterSimulatorOptions } = useCharacterSimulatorState()
 <template>
   <SideFloat :visible="visible" @close="emit('close')">
     <div class="overflow-x-auto">
-      <div class="min-w-[20rem] px-4 py-2 wd:w-[32rem] wd:px-6">
+      <div class="min-w-xs px-4 py-2 wd:w-lg wd:px-6">
         <div v-for="data in categoryResults" :key="data.name" class="mb-4 px-2">
           <div class="py-1 text-sm text-primary-30">
             {{ data.name }}
@@ -62,7 +62,7 @@ const { characterSimulatorOptions } = useCharacterSimulatorState()
       <cy-icon icon="ic:outline-info" class="mr-2 text-gray-40" />
       {{ t('character-simulator.character-stat-detail.toggle-detail-visibility-caption') }}
     </div>
-    <div class="border-t border-primary-10 px-2.5 pb-5 pt-3">
+    <div class="border-t border-primary-10 px-2.5 pt-3 pb-5">
       <cy-button-toggle
         v-model:selected="characterSimulatorOptions.characterStatsDetailPreviewVisible"
       >

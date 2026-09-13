@@ -1,17 +1,17 @@
 <template>
   <AppLayoutMain class="py-6">
     <div v-if="!hasQuery">
-      <div class="shadow-xs border-2 border-primary-30 bg-white px-4 py-3">
+      <div class="border-2 border-primary-30 bg-white px-4 py-3 shadow-xs">
         <textarea
           v-model="urlText"
-          class="outline-hidden w-full resize-none border-0 bg-transparent"
+          class="w-full resize-none border-0 bg-transparent outline-hidden"
           placeholder="https://"
         />
       </div>
       <div class="relative mt-6 rounded-r-md bg-primary-5 px-4 py-3" style="min-height: 5rem">
         <cy-button-icon
           icon="mdi:content-copy"
-          class="absolute right-2 top-2"
+          class="absolute top-2 right-2"
           @click="copyToClipboard(convertedUrl)"
         />
         {{ convertedUrl }}

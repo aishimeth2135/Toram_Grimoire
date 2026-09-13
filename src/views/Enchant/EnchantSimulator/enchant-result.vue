@@ -3,7 +3,7 @@
     <div class="flex items-start">
       <cy-button-icon
         :icon="resultStatsVisible ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
-        class="text-orange-60 shrink-0"
+        class="shrink-0 text-orange-60"
         :selected="resultStatsVisible"
         @click="toggleResultStatsVisible"
       />
@@ -27,10 +27,10 @@
             <span
               v-for="item in enchantResultMaterials"
               :key="item.title"
-              class="stat-scope border-blue-30 text-blue-30 text-sm"
+              class="stat-scope border-blue-30 text-sm text-blue-30"
             >
               <span class="text-primary-90">{{ item.title }}</span>
-              <span class="text-blue-60 ml-2">{{ item.value }}</span>
+              <span class="ml-2 text-blue-60">{{ item.value }}</span>
             </span>
           </div>
         </div>
@@ -42,16 +42,16 @@
       />
     </div>
     <div class="my-1 flex items-center">
-      <div class="gap-icon text-primary-30 inline-flex items-center">
+      <div class="inline-flex items-center gap-icon text-primary-30">
         <cy-icon icon="ic:round-numbers" class="text-primary-30" />
         {{ t('enchant-simulator.result.operation-steps-quantity') }}
       </div>
-      <span class="text-violet-60 ml-3">
+      <span class="ml-3 text-violet-60">
         {{ equipment.operationStepsQuantity }}
       </span>
     </div>
     <div v-for="(item, idx) in enchantResult" :key="item.iid" class="flex items-start">
-      <div class="text-primary-30 my-1 mr-3 w-6 shrink-0 text-right">{{ idx + 1 }}.</div>
+      <div class="my-1 mr-3 w-6 shrink-0 text-right text-primary-30">{{ idx + 1 }}.</div>
       <template v-if="item.type === 'normal'">
         <span class="my-1 mr-2 shrink-0">{{ item.parts[0] }}</span>
         <div class="flex flex-wrap items-center">
@@ -67,7 +67,7 @@
           >
             {{ part.text }}
           </span>
-          <div class="gap-icon text-blue-60 ml-2 inline-flex items-center text-sm">
+          <div class="ml-2 inline-flex items-center gap-icon text-sm text-blue-60">
             <cy-icon icon="mdi-creation" small class="text-blue-60" />
             {{ item.remainingPotential }}
           </div>
@@ -91,7 +91,7 @@
             {{ part }}
           </span>
         </template>
-        <div class="gap-icon text-blue-60 my-1 ml-2 inline-flex items-center text-sm">
+        <div class="my-1 ml-2 inline-flex items-center gap-icon text-sm text-blue-60">
           <cy-icon icon="mdi-creation" small class="text-blue-60" />
           {{ item.remainingPotential }}
         </div>
@@ -100,20 +100,20 @@
     <div class="mt-4 flex cursor-pointer items-center px-2">
       <div class="ml-auto flex flex-wrap items-center justify-items-end">
         <div class="mr-4 inline-flex items-center">
-          <div class="gap-icon text-primary-90 inline-flex items-center">
+          <div class="inline-flex items-center gap-icon text-primary-90">
             <cy-icon icon="ant-design:star-outlined" class="text-blue-60" />
             {{ t('enchant-simulator.success-rate') }}
           </div>
-          <span class="text-blue-60 ml-2">
+          <span class="ml-2 text-blue-60">
             {{ successRate }}
           </span>
         </div>
         <div class="inline-flex items-center">
-          <div class="gap-icon text-primary-90 inline-flex items-center">
+          <div class="inline-flex items-center gap-icon text-primary-90">
             <cy-icon icon="ant-design:star-outlined" class="text-primary-60" />
             {{ t('enchant-simulator.expected-success-rate') }}
           </div>
-          <span class="text-primary-60 ml-2">
+          <span class="ml-2 text-primary-60">
             {{ expectedSuccessRate }}
           </span>
         </div>

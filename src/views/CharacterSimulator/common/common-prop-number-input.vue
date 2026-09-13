@@ -73,7 +73,7 @@ const toMax = () => {
   <CommonPropInputBase
     v-slot="{ inputId, setInputFocus }"
     :title="title"
-    :class="maxButton ? 'max-w-[10rem]' : 'max-w-[8rem]'"
+    :class="maxButton ? 'max-w-40' : 'max-w-32'"
   >
     <div class="relative min-w-4" @click.stop>
       <div class="invisible h-6">{{ innerValue }}</div>
@@ -82,12 +82,12 @@ const toMax = () => {
         ref="inputElement"
         v-model="innerValue"
         type="number"
-        class="text-primary-70 absolute left-0 top-0 w-full bg-transparent"
+        class="absolute top-0 left-0 w-full bg-transparent text-primary-70"
         @focus="setInputFocus(true)"
         @blur="setInputFocus(false)"
       />
     </div>
-    <div v-if="unit" class="text-primary-40 pl-1 pr-2">{{ unit }}</div>
+    <div v-if="unit" class="pr-2 pl-1 text-primary-40">{{ unit }}</div>
     <div class="ml-auto flex shrink-0 items-center">
       <cy-button-icon icon="ic-round-remove-circle-outline" @click="incValue(-1)" />
       <cy-button-icon icon="ic-round-add-circle-outline" @click="incValue(1)" />

@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
     <cy-transition appear>
-      <div class="bg-black/50 fixed left-0 top-0 z-100 h-full w-full" @click="emit('close')">
+      <div class="fixed top-0 left-0 z-100 size-full bg-black/50" @click="emit('close')">
         <div style="max-width: 40rem" class="mx-auto py-5" @click.stop>
           <div>
             <cy-title-input

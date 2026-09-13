@@ -5,7 +5,7 @@
       :key="skill.skillId"
       @click="emit('submit', skill)"
     >
-      <div class="gap-icon text-primary-90 inline-flex items-center">
+      <div class="inline-flex items-center gap-icon text-primary-90">
         <cy-icon :icon="getSkillIconPath(skill)" class="text-primary-30" />
         {{ skill.name }}
       </div>

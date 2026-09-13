@@ -6,7 +6,7 @@
           <EnchantStepView :step="step" />
         </div>
         <div
-          class="step-container border-primary-30 hover:border-primary-50 flex h-48 cursor-pointer items-center justify-center border duration-200"
+          class="step-container flex h-48 cursor-pointer items-center justify-center border border-primary-30 duration-200 hover:border-primary-50"
           @click="appendStep"
         >
           <cy-icon icon="ic-round-add-circle-outline" width="3.5rem" />
@@ -26,7 +26,7 @@
     <AppLayoutBottom>
       <template #default>
         <div class="flex items-center justify-end px-1 py-0.5">
-          <div class="gap-icon text-primary-90 mr-3 inline-flex items-center">
+          <div class="mr-3 inline-flex items-center gap-icon text-primary-90">
             <cy-icon icon="bx-bx-star" class="text-primary-30" />
             {{ t('enchant-simulator.success-rate') }}
           </div>
@@ -82,7 +82,7 @@
                 <cy-button-circle icon="ant-design:build-outlined" small />
               </template>
               <template #item="{ value }">
-                <div class="gap-icon text-primary-90 inline-flex items-center">
+                <div class="inline-flex items-center gap-icon text-primary-90">
                   <cy-icon icon="ant-design:build-outlined" class="text-primary-30" />
                   {{ value.name }}
                 </div>

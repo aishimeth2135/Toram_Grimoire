@@ -26,7 +26,7 @@ const { t } = useI18n()
       />
     </div>
     <div v-if="equipment.customTypeList">
-      <div class="text-gray-60 px-1.5 text-sm">
+      <div class="px-1.5 text-sm text-gray-60">
         {{ t('character-simulator.equipment-basic-editor.equipment-type') }}
       </div>
       <cy-button-radio-group
@@ -37,7 +37,7 @@ const { t } = useI18n()
             value: item,
           }))
         "
-        class="-mb-0.5 mt-1.5"
+        class="mt-1.5 -mb-0.5"
       />
     </div>
     <div v-if="equipment.is(EquipmentKinds.Weapon)" class="flex flex-wrap items-center">
@@ -61,7 +61,7 @@ const { t } = useI18n()
         max-button
       />
     </div>
-    <div class="w-full max-w-[20rem]">
+    <div class="w-full max-w-xs">
       <CharacterEquipmentDetailsEditLabel :equipment="equipment" />
     </div>
   </div>

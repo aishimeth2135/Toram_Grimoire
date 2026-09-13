@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap items-center p-1 pr-3">
-    <div class="mr-2 mt-0.5">
+    <div class="mt-0.5 mr-2">
       <cy-input-counter
         v-model:value="stackValue"
         :range="stackValueRange"

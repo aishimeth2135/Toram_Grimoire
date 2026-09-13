@@ -2,7 +2,7 @@
   <div>
     <div class="flex w-full flex-wrap items-center">
       <cy-icon icon="ic:round-label" />
-      <div class="text-primary-70 ml-2">
+      <div class="ml-2 text-primary-70">
         {{ result.container.get('name') }}
       </div>
       <div class="ml-3 flex items-center space-x-0.5">
@@ -23,9 +23,9 @@
       </div>
       <div
         v-if="valid && characterStore.calculationOptions.armorBreakDisplay"
-        class="border-primary-30 ml-3 flex items-baseline border-l pl-2.5"
+        class="ml-3 flex items-baseline border-l border-primary-30 pl-2.5"
       >
-        <div class="text-blue-30 mr-2 text-sm">
+        <div class="mr-2 text-sm text-blue-30">
           {{ t('character-simulator.character-damage.armor-break') }}
         </div>
         <div class="flex items-center space-x-0.5">
@@ -48,7 +48,7 @@
         @click="toggleDetailVisible"
       />
     </div>
-    <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
+    <div v-if="statExtraContainers.length > 0" class="space-y-1 pt-2 pb-1 pl-2">
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
@@ -65,10 +65,10 @@
           :stat-containers="extraContainer.statContainers"
         />
         <div v-else-if="extraContainer.has('dual_element')" class="5 flex items-center py-0 pl-1">
-          <div v-if="extraContainer.has('condition')" class="text-primary-30 mr-3 text-sm">
+          <div v-if="extraContainer.has('condition')" class="mr-3 text-sm text-primary-30">
             {{ extraContainer.get('condition') }}
           </div>
-          <div class="text-orange-60 mr-2">
+          <div class="mr-2 text-orange-60">
             {{ t('skill-query.branch.dual-element-title') }}
           </div>
           <div class="text-violet-60">
@@ -79,7 +79,7 @@
     </div>
     <div
       v-if="detailVisible"
-      class="border-primary-20 mt-2 rounded-sm border-2 bg-white px-3 py-2 text-sm"
+      class="mt-2 rounded-sm border-2 border-primary-20 bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"

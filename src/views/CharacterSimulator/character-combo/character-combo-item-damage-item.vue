@@ -2,7 +2,7 @@
   <div class="px-0.5 py-2">
     <div class="flex items-center">
       <div class="mr-3 flex shrink-0" style="min-width: 10rem">
-        <div class="gap-icon text-fuchsia-60 inline-flex items-center">
+        <div class="inline-flex items-center gap-icon text-fuchsia-60">
           <cy-icon :icon="skillIconPath" class="text-fuchsia-30" />
           {{ skillResultsState.skill.name }}
         </div>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="pb-1 pl-1">
-      <div class="space-y-2 pl-2 pt-2">
+      <div class="space-y-2 pt-2 pl-2">
         <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
           <CharacterComboItemDamageResultItem
             ref="resultItems"
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div v-if="previousSkillNextResultsState" class="pt-1">
-      <div class="gap-icon text-primary-30 inline-flex items-center text-sm">
+      <div class="inline-flex items-center gap-icon text-sm text-primary-30">
         <cy-icon small class="text-primary-30" />
         {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
       </div>

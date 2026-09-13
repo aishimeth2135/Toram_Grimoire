@@ -69,8 +69,8 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="wd-lg:flex w-full">
-    <div class="wd-lg:mr-6 wd-lg:w-[20rem] shrink-0 px-2 pb-6 pt-2">
+  <div class="w-full wd-lg:flex">
+    <div class="shrink-0 px-2 pt-2 pb-6 wd-lg:mr-6 wd-lg:w-xs">
       <CardRowsWrapper>
         <CardRows v-if="current">
           <CardRow
@@ -86,13 +86,13 @@ const submit = () => {
           <CardRow
             v-for="stat in currentPartStats.invalidStats"
             :key="stat.statId"
-            class="text-gray-60 flex items-center px-4 py-2 opacity-50"
+            class="flex items-center px-4 py-2 text-gray-60 opacity-50"
           >
             <cy-icon icon="mdi:ban" class="mr-3" />
             {{ stat.show() }}
           </CardRow>
         </CardRows>
-        <div v-else class="text-primary-40 px-6 py-4 text-sm">
+        <div v-else class="px-6 py-4 text-sm text-primary-40">
           <div class="mb-2">
             {{ t('character-simulator.equipment-basic-editor.clone-stats.caption-1') }}
           </div>

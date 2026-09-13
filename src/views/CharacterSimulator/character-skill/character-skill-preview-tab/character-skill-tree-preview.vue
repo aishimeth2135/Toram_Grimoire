@@ -86,7 +86,7 @@ const handleSkillClick = (skill: Skill) => {
           :skill-build="skillBuild"
         />
       </CardRows>
-      <div v-else class="px-3 pb-4 pt-1 text-sm text-gray-40">
+      <div v-else class="px-3 pt-1 pb-4 text-sm text-gray-40">
         {{ t('character-simulator.skill-build.skill-tree-empty-tips') }}
       </div>
     </template>

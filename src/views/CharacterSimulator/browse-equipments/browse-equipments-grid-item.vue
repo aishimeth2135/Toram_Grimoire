@@ -39,7 +39,7 @@ const secondCrystalClass = computed(() => getCrystalClasses(props.equipment.crys
       <cy-icon
         v-if="equipped"
         icon="ic:round-check-circle"
-        class="text-red-60 absolute -right-2.5 -top-2.5 bg-white"
+        class="absolute -top-2.5 -right-2.5 bg-white text-red-60"
       />
       <cy-icon
         :icon="
@@ -54,7 +54,7 @@ const secondCrystalClass = computed(() => getCrystalClasses(props.equipment.crys
         <span class="text-primary-70">{{ equipment.basicValue }}</span>
         <span
           v-if="equipment.supportRefining && equipment.refining !== 0"
-          class="text-blue-60 ml-0.5"
+          class="ml-0.5 text-blue-60"
         >
           {{ `+${equipment.refiningText}` }}
         </span>
@@ -62,12 +62,12 @@ const secondCrystalClass = computed(() => getCrystalClasses(props.equipment.crys
       <div
         v-if="firstCrystalClass"
         :class="firstCrystalClass"
-        class="absolute right-1.5 top-2 h-3 w-3 rounded-full"
+        class="absolute top-2 right-1.5 size-3 rounded-full"
       />
       <div
         v-if="secondCrystalClass"
         :class="secondCrystalClass"
-        class="absolute right-1.5 top-6 h-3 w-3 rounded-full"
+        class="absolute top-6 right-1.5 size-3 rounded-full"
       />
     </BrowseEquipmentsItemWrapper>
   </div>

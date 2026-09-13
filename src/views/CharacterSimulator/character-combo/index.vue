@@ -12,13 +12,13 @@
     >
       <cy-icon icon="ic-round-add-circle-outline" width="2.5rem" />
     </div>
-    <div class="border-primary-50 border-t pt-3">
-      <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-        <cy-icon icon="ic:outline-info" small class="text-primary-30 icon-first-line" />
+    <div class="border-t border-primary-50 pt-3">
+      <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+        <cy-icon icon="ic:outline-info" small class="icon-first-line text-primary-30" />
         {{ t('character-simulator.combo.tips.0') }}
       </div>
-      <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-        <cy-icon icon="ic:outline-info" small class="text-primary-30 icon-first-line" />
+      <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+        <cy-icon icon="ic:outline-info" small class="icon-first-line text-primary-30" />
         {{ t('character-simulator.combo.tips.1') }}
       </div>
     </div>

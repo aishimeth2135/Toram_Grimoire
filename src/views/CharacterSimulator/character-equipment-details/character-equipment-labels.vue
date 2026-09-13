@@ -19,7 +19,7 @@ defineProps<Props>()
       :class="getEquipmentLabelColorClasses(label.color).text"
     >
       <div
-        class="shadow-xs mr-1 h-2.5 w-2.5"
+        class="mr-1 size-2.5 shadow-xs"
         :class="getEquipmentLabelColorClasses(label.color).background"
       />
       <div class="px-0.5">

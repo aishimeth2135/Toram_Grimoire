@@ -34,7 +34,7 @@ const showDetail = ref(false)
       <EquipmentTraitCaption
         v-if="showDetail"
         :trait-item="traitItem"
-        class="text-gray-60 mt-1 pl-7 text-sm"
+        class="mt-1 pl-7 text-sm text-gray-60"
       />
     </div>
   </CardRow>

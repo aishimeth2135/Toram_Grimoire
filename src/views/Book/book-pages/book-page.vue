@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white px-4 py-4">
+  <div class="bg-white p-4">
     <BookPageSectionView v-for="(section, idx) in page.sections" :key="idx" :section="section" />
   </div>
 </template>

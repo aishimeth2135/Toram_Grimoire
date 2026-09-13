@@ -49,7 +49,7 @@
       <AppLayoutBottomContent v-if="advancedMenuVisible" class="p-4">
         <div class="space-y-3">
           <div v-for="{ key, value } in equipmentOptions" :key="key">
-            <div class="text-primary-30 text-sm">
+            <div class="text-sm text-primary-30">
               {{ t(`skill-query.equipment.${key}: title`) }}
             </div>
             <div class="flex flex-wrap items-start">
@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="text-primary-30 mt-3 text-sm">
+        <div class="mt-3 text-sm text-primary-30">
           {{ t('skill-query.main-menu-title-common') }}
         </div>
         <div class="mt-2 space-y-2">
@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="mt-4">
-          <div class="text-primary-30 text-sm">
+          <div class="text-sm text-primary-30">
             {{ t('skill-query.formula-display-mode.title') }}
           </div>
           <div class="flex flex-wrap items-center">
@@ -114,7 +114,7 @@
     </template>
     <template #side-contents>
       <AppLayoutBottomContent v-if="switchEffectVisible" class="px-3 py-2.5">
-        <div class="text-primary-30 px-2 text-sm">
+        <div class="px-2 text-sm text-primary-30">
           {{ t('skill-query.quick-switch-equipment-type-caption') }}
         </div>
         <div class="mt-2">

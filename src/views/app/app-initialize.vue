@@ -1,16 +1,16 @@
 <template>
   <div
     v-if="status !== InitializeStatus.Finished"
-    class="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-white py-4"
+    class="fixed top-0 left-0 z-100 flex size-full items-center justify-center bg-white py-4"
   >
     <HomeBackgroud />
     <div class="relative flex w-full flex-col items-center">
-      <div class="bg-white/50 flex h-32 w-32 items-center justify-center rounded-full">
+      <div class="flex size-32 items-center justify-center rounded-full bg-white/50">
         <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
       </div>
       <div
         v-if="status < InitializeStatus.BeforeFinished"
-        class="bg-white/40 mt-8 flex min-h-[12rem] w-full justify-center px-4 py-6"
+        class="mt-8 flex min-h-48 w-full justify-center bg-white/40 px-4 py-6"
       >
         <div class="mt-2 inline-block">
           <template v-if="status <= InitializeStatus.ViewSuccess">
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="absolute bottom-4 right-4 text-sm">
+    <div class="absolute right-4 bottom-4 text-sm">
       <div>{{ t('app.loading-message.bottom-tips.0') }}</div>
       <div>{{ t('app.loading-message.bottom-tips.1') }}</div>
     </div>

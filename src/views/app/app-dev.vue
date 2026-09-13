@@ -1,6 +1,6 @@
 <template>
   <AppLayoutMain class="h-full">
-    <div class="flex h-full w-full items-center justify-center">
+    <div class="flex size-full items-center justify-center">
       <cy-icon
         :icon="mainStore.devMode ? 'mdi:weather-partly-cloudy' : 'mdi:weather-night-partly-cloudy'"
         width="5rem"

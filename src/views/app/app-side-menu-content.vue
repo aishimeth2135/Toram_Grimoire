@@ -11,7 +11,7 @@
     <div v-if="routeNotHome(currentRoute.name!)" class="mt-0.5 pt-0.5">
       <AppRouterLink v-for="data in routeLinks" :key="data.title" :data="data" :is-main="isMain" />
       <div
-        class="hover:bg-primary-5 flex cursor-pointer justify-center py-0.5 duration-200"
+        class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
         @click.stop="toggleLinksMenu"
       >
         <cy-icon

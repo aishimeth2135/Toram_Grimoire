@@ -104,7 +104,7 @@ const skillTreesDefaultEditing = ref(false)
       >
         <div class="flex cursor-pointer items-center" @click="goSkillTree(skillTree)">
           <cy-icon class="mr-3 text-primary-30" icon="mdi:book-open-variant-outline" />
-          <div class="w-[9rem] overflow-hidden text-ellipsis whitespace-nowrap">
+          <div class="w-36 truncate">
             {{ skillTree.name }}
           </div>
         </div>
@@ -124,7 +124,7 @@ const skillTreesDefaultEditing = ref(false)
         </div>
       </div>
       <div
-        class="mt-2 flex w-[20rem] items-center border-t border-primary-10 pl-[12.675rem] pt-0.5"
+        class="mt-2 flex w-xs items-center border-t border-primary-10 pt-0.5 pl-[12.675rem]"
       >
         <cy-icon class="text-primary-30" icon="mdi:star-four-points-outline" width="0.875rem" />
         <span class="ml-1 w-8 text-red-60">

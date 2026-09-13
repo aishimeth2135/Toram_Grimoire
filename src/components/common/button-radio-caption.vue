@@ -1,5 +1,5 @@
 <template>
-  <div class="text-primary-60 pl-9 pr-2 text-sm">
+  <div class="pr-2 pl-9 text-sm text-primary-60">
     <slot />
   </div>
 </template>

@@ -3,7 +3,7 @@
     <template #column(0)>
       <textarea
         v-model="currentText"
-        class="book-preview-textarea outline-hidden m-0 block h-full w-full resize-none border-0 bg-white p-3 !font-mono"
+        class="book-preview-textarea m-0 block size-full resize-none border-0 bg-white p-3 font-mono! outline-hidden"
       />
     </template>
     <template #column(1)>

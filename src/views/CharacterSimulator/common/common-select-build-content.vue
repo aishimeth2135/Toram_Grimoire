@@ -16,7 +16,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="bg-blue-5/30 flex flex-wrap items-center px-4 py-3">
+  <div class="flex flex-wrap items-center bg-blue-5/30 px-4 py-3">
     <cy-button-action
       :disabled="currentBuild === selectedBuild"
       icon="carbon:location-current"

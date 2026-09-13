@@ -29,20 +29,20 @@ const innerValue = computed<string>({
 
 <template>
   <div class="relative flex items-center">
-    <div class="absolute left-0 top-0 flex h-full items-center pl-3">
+    <div class="absolute top-0 left-0 flex h-full items-center pl-3">
       <cy-icon icon="mdi:search" width="1.375rem" />
     </div>
     <input
       v-model="innerValue"
       type="text"
-      class="border-primary-20 bg-primary-5 focus:border-primary-50 w-full px-10 py-1.5 duration-150 focus:bg-white"
+      class="w-full border-primary-20 bg-primary-5 px-10 py-1.5 duration-150 focus:border-primary-50 focus:bg-white"
       :class="{
         [isHeader ? 'border-b' : 'border']: true,
         [behind ? 'rounded-r-full' : 'rounded-full']: !isHeader,
       }"
       :placeholder="placeholder"
     />
-    <div class="absolute right-0 top-0 flex h-full items-center pr-2.5">
+    <div class="absolute top-0 right-0 flex h-full items-center pr-2.5">
       <cy-button-icon
         icon="mdi:close-circle"
         :class="{ invisible: !innerValue }"

@@ -5,6 +5,7 @@ import {
   vueTsConfigs,
 } from '@vue/eslint-config-typescript'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import eslintPluginTailwindcss from 'eslint-plugin-tailwindcss'
 import pluginVue from 'eslint-plugin-vue'
 import { globalIgnores } from 'eslint/config'
 
@@ -30,11 +31,19 @@ export default defineConfigWithVueTs(
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
+  eslintPluginTailwindcss.configs.recommended,
   skipFormatting,
   eslintConfigPrettier,
 
   {
+    settings: {
+      tailwindcss: {
+        cssConfigPath: './src/tailwind.css',
+      },
+    },
     rules: {
+      'tailwindcss/no-custom-classname': 'off',
+
       'no-var': 'error',
       'eqeqeq': 'error',
       'space-in-parens': ['error', 'never'],

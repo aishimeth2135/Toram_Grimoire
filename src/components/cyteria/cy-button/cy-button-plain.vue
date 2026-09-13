@@ -28,7 +28,7 @@ const buttonClick = (evt: MouseEvent) => {
     :color="props.color"
     :selected="props.selected"
     :disabled="props.disabled"
-    class="cy-button-plain gap-icon m-1"
+    class="cy-button-plain m-1 gap-icon"
     :class="{ 'button-width-full': widthFull }"
     @click="buttonClick"
   >

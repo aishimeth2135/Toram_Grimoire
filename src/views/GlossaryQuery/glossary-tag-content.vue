@@ -18,19 +18,19 @@
         <cy-icon
           v-if="!sub"
           icon="ic:round-label"
-          class="absolute -left-5 top-0 text-primary-20"
+          class="absolute top-0 -left-5 text-primary-20"
           width="1.45rem"
         />
       </div>
       <GlossaryTagContentRows
         v-if="!sub || detailVisible"
-        class="pb-3.5 pl-3 pr-4 pt-3"
+        class="pt-3 pr-4 pb-3.5 pl-3"
         :tag="tag"
       />
     </div>
     <div
       v-if="includedTags.length > 0"
-      class="divide divide-y-2 divide-primary-10 border-t-1 border-primary-20"
+      class="divide divide-y-2 divide-primary-10 border-t border-primary-20"
     >
       <GlossaryTagContent v-for="tag in includedTags" :key="tag.name" :tag="tag" sub />
     </div>

@@ -1,11 +1,11 @@
 <template>
-  <div class="border-emerald-30 relative rounded-sm border-2 border-l-4 bg-white pt-2.5">
+  <div class="relative rounded-sm border-2 border-l-4 border-emerald-30 bg-white pt-2.5">
     <div class="flex items-start pb-3 pl-2.5">
       <IconCircle icon="game-icons:beveled-star" color="emerald" />
-      <div class="pl-3 pr-2 pt-1">
+      <div class="pt-1 pr-2 pl-3">
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>
-          <div class="text-emerald-30 ml-3 text-sm">
+          <div class="ml-3 text-sm text-emerald-30">
             {{ t('common.Registlet.title') }}
           </div>
         </div>
@@ -16,7 +16,7 @@
               :text="row.value"
               :handle-value="handleValue"
             />
-            <div v-else-if="row.type === 'remark'" class="text-primary-40 text-sm">
+            <div v-else-if="row.type === 'remark'" class="text-sm text-primary-40">
               {{ row.value }}
             </div>
           </template>
@@ -24,17 +24,17 @@
       </div>
     </div>
     <cy-transition>
-      <div v-show="registletItemState.enabled" class="border-emerald-20 border-t px-4 pb-3 pt-4">
+      <div v-show="registletItemState.enabled" class="border-t border-emerald-20 px-4 pt-4 pb-3">
         <div>
           <cy-input-counter
             v-model:value="registletItemState.level /* eslint-disable-line vue/no-mutating-props */"
             :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
-          <div class="text-primary-30 mt-3 flex items-center pl-0.5 text-sm">
+          <div class="mt-3 flex items-center pl-0.5 text-sm text-primary-30">
             <cy-icon icon="mdi:arrow-up-bold-outline" class="mr-1 text-inherit" small />
             {{ t('skill-query.registlet-max-level-title') }}
-            <div class="text-primary-50 ml-2">
+            <div class="ml-2 text-primary-50">
               {{ registletItemState.item.maxLevel }}
             </div>
           </div>
@@ -47,7 +47,7 @@
         registletItemState.enabled
       "
       color="emerald"
-      class="absolute right-0 top-1.5"
+      class="absolute top-1.5 right-0"
     />
   </div>
 </template>

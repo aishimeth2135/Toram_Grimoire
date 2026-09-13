@@ -50,7 +50,7 @@ const groupStarted = (item: Item, idx: number) => {
 </script>
 
 <template>
-  <CardRowsWrapper class="wd-lg:max-h-none flex h-full max-h-96 max-w-[20rem] flex-col">
+  <CardRowsWrapper class="flex h-full max-h-96 max-w-xs flex-col wd-lg:max-h-none">
     <div class="pb-1">
       <CommonSearchInput
         :model-value="searchText"
@@ -63,7 +63,7 @@ const groupStarted = (item: Item, idx: number) => {
       <template v-for="(item, idx) in items" :key="item.id">
         <div
           v-if="groupStarted(item, idx)"
-          class="text-gray-60 px-3 pb-1 text-sm"
+          class="px-3 pb-1 text-sm text-gray-60"
           :class="{ 'pt-2': idx !== 0 }"
         >
           <slot name="group" :item="item" />

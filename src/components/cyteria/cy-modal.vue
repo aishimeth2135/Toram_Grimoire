@@ -10,7 +10,7 @@
             @click.stop="closeModal"
           />
           <div class="modal-container" :class="{ 'h-full': heightFull }" @click.stop>
-            <div v-if="slots['title'] || title" class="text-primary-70 flex items-center px-4 pb-2">
+            <div v-if="slots['title'] || title" class="flex items-center px-4 pb-2 text-primary-70">
               <slot name="title">
                 <cy-icon :icon="titleIcon" class="mr-1.5" />
                 {{ title }}
@@ -40,7 +40,7 @@
             <div class="modal-extra" @click="showExtraContent">
               <slot name="extra-content" />
             </div>
-            <div class="absolute -bottom-16 right-4">
+            <div class="absolute right-4 -bottom-16">
               <cy-button-circle
                 v-show="extraContentVisible"
                 color="blue"

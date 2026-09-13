@@ -65,8 +65,8 @@ const browseMode = ref(BrowseMode.Equipped)
     title-icon="ic-round-edit"
     @update:visible="emit('close')"
   >
-    <div class="wd-lg:flex h-full w-full overflow-y-auto px-4 py-4">
-      <div class="wd:flex wd-lg:h-full shrink-0 py-2">
+    <div class="size-full overflow-y-auto p-4 wd-lg:flex">
+      <div class="shrink-0 py-2 wd:flex wd-lg:h-full">
         <CharacterEquipmentDetails
           :current-edit-mode="currentMode"
           :equipment="equipment"
@@ -74,7 +74,7 @@ const browseMode = ref(BrowseMode.Equipped)
         />
         <div
           v-if="equipment"
-          class="wd:mx-4 wd:my-0 wd:h-full wd:w-[22rem] my-6 w-full max-w-[22rem] overflow-y-auto px-4"
+          class="my-6 w-full max-w-88 overflow-y-auto px-4 wd:mx-4 wd:my-0 wd:h-full wd:w-88"
         >
           <CharacterEquipmentDetailsEditBasic
             v-if="currentMode === CharacterEquipmentEditModes.Basic"
@@ -95,9 +95,9 @@ const browseMode = ref(BrowseMode.Equipped)
         </div>
       </div>
       <div
-        class="border-primary-10 wd:grow wd-lg:h-full flex max-h-full max-w-[45.25rem] flex-col rounded-sm border bg-white pb-2"
+        class="flex max-h-full max-w-181 flex-col rounded-sm border border-primary-10 bg-white pb-2 wd:grow wd-lg:h-full"
       >
-        <div class="text-gray-40 px-3 pt-2 text-sm">
+        <div class="px-3 pt-2 text-sm text-gray-40">
           {{ t('character-simulator.equipment-basic-editor.select-equipment-to-edit-tips') }}
         </div>
         <cy-tabs v-model="browseMode" class="mb-4 px-2">
@@ -110,7 +110,7 @@ const browseMode = ref(BrowseMode.Equipped)
         </cy-tabs>
         <div
           v-if="browseMode === BrowseMode.Equipped"
-          class="border-primary-10 mx-2 grow overflow-y-auto rounded-sm border"
+          class="mx-2 grow overflow-y-auto rounded-sm border border-primary-10"
         >
           <BrowseEquipmentEquippedItems v-model:selected-equipment="equipment" />
         </div>

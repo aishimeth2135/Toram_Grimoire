@@ -72,7 +72,7 @@ const downloadImage = () => {
       v-model:visible="visible"
       :title="t('character-simulator.skill-build.export-buile-title')"
     >
-      <div class="wd:flex h-full w-full p-4">
+      <div class="size-full p-4 wd:flex">
         <cy-tabs
           v-model="currentExportMode"
           :class="device.isWide ? 'mr-6 min-w-[8rem]' : 'mb-6'"
@@ -91,7 +91,7 @@ const downloadImage = () => {
         >
           <div class="mb-4 flex">
             <cy-button-circle icon="mdi:content-copy" small @click="copyText" />
-            <div class="text-primary-50 flex min-h-full items-center px-4 text-sm">
+            <div class="flex min-h-full items-center px-4 text-sm text-primary-50">
               {{ t('character-simulator.skill-build.export-text-caption') }}
             </div>
           </div>
@@ -103,7 +103,7 @@ const downloadImage = () => {
         >
           <div class="mb-4 flex">
             <cy-button-circle icon="mdi:download" small @click="downloadImage" />
-            <div class="text-primary-50 space-y-2 px-4 text-sm">
+            <div class="space-y-2 px-4 text-sm text-primary-50">
               <div>
                 {{ t('character-simulator.skill-build.export-image-caption.0') }}
               </div>

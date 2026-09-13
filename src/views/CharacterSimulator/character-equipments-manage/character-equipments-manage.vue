@@ -187,9 +187,9 @@ const sortAllEquipments = () => {
     :title="t('character-simulator.character-equipments-manage.title')"
     title-icon="ic-round-edit"
   >
-    <div class="wd-lg:flex h-full w-full overflow-y-auto px-2 py-4">
-      <div class="wd-lg:h-full shrink-0 py-2 pb-6">
-        <div class="text-gray-40 mb-1 px-2 text-sm">
+    <div class="size-full overflow-y-auto px-2 py-4 wd-lg:flex">
+      <div class="shrink-0 py-2 pb-6 wd-lg:h-full">
+        <div class="mb-1 px-2 text-sm text-gray-40">
           {{ t('character-simulator.character-equipments-manage.mode-selections-title') }}
         </div>
         <div class="mb-1 space-y-2">
@@ -227,13 +227,13 @@ const sortAllEquipments = () => {
             </ButtonRadioCaption>
           </div>
         </div>
-        <div class="mb-5 mt-2 pl-1 pr-4">
+        <div class="mt-2 mb-5 pr-4 pl-1">
           <CharacterEquipmentsLabelSetting
             :selected-labels="selectedLabel ? [selectedLabel] : []"
             @label-click="toggleSelectedLabel"
           />
         </div>
-        <div class="text-gray-40 mb-1 px-2 text-sm">
+        <div class="mb-1 px-2 text-sm text-gray-40">
           {{ t('character-simulator.character-equipments-manage.batch-sorting-title') }}
         </div>
         <div class="mb-2 flex flex-col">
@@ -271,7 +271,7 @@ const sortAllEquipments = () => {
           </cy-button-action>
         </div>
       </div>
-      <div class="wd:grow wd-lg:h-full wd-lg:ml-auto flex max-h-full max-w-[45.25rem] flex-col">
+      <div class="flex max-h-full max-w-181 flex-col wd:grow wd-lg:ml-auto wd-lg:h-full">
         <div v-if="currentEditedMode === ManageMode.BatchMove" class="shrink-0 pb-2">
           <div class="flex flex-wrap items-center">
             <cy-button-action
@@ -294,7 +294,7 @@ const sortAllEquipments = () => {
               {{ t('global.reset') }}
             </cy-button-plain>
           </div>
-          <div class="text-primary-60 mt-1 px-3 text-sm">
+          <div class="mt-1 px-3 text-sm text-primary-60">
             <template v-if="batchMoveState.currentStep === BatchMoveStep.Select">
               {{
                 t(
@@ -317,7 +317,7 @@ const sortAllEquipments = () => {
                 scope="global"
               >
                 <template #name>
-                  <span class="text-orange-60 mx-1">
+                  <span class="mx-1 text-orange-60">
                     {{ batchMoveState.moveTarget.name }}
                   </span>
                 </template>

@@ -40,28 +40,28 @@
           >
             <template #title>
               <div
-                class="border-primary-30 hover:bg-primary-10 flex cursor-pointer items-center self-stretch rounded-l-full border border-r-0 bg-white pl-3.5 pr-2.5 duration-150"
+                class="flex cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-30 bg-white pr-2.5 pl-3.5 duration-150 hover:bg-primary-10"
               >
                 <cy-icon icon="mdi:exchange" />
               </div>
             </template>
             <template #item="{ value }">
-              <div class="gap-icon text-primary-90 inline-flex items-center">
+              <div class="inline-flex items-center gap-icon text-primary-90">
                 <cy-icon :icon="value.icon" class="text-primary-30" />
                 {{ t('crystal-query.modes.' + value.id) }}
               </div>
             </template>
           </cy-options>
           <div
-            class="border-primary-30 focus-within:border-primary-60 min-w-0 grow rounded-r-full border bg-white"
+            class="min-w-0 grow rounded-r-full border border-primary-30 bg-white focus-within:border-primary-60"
           >
-            <div v-if="mode === 'normal'" class="flex w-full items-center pl-2.5 pr-2">
+            <div v-if="mode === 'normal'" class="flex w-full items-center pr-2 pl-2.5">
               <div class="relative flex w-full items-center">
                 <cy-icon icon="ic-outline-search" class="shrink-0" />
                 <input
                   v-model="modeNormal.searchText"
                   type="text"
-                  class="grow border-0 px-2 py-2"
+                  class="grow border-0 p-2"
                   :placeholder="t('global.search')"
                 />
               </div>
@@ -72,7 +72,7 @@
                 @click="modeNormal.searchText = ''"
               />
             </div>
-            <div v-else-if="mode === 'stat'" class="min-w-68 border-primary-20 inline-flex p-0.5">
+            <div v-else-if="mode === 'stat'" class="inline-flex min-w-68 border-primary-20 p-0.5">
               <CommonSearchableItemsPopover
                 v-model:search-text="modeStat.searchText"
                 :placeholder="t('crystal-query.select-stat.search-placeholder')"
@@ -82,7 +82,7 @@
                 close-on-select
                 @select-item="selectStat"
               >
-                <div v-if="!modeStat.statItem" class="text-primary-30 text-sm">
+                <div v-if="!modeStat.statItem" class="text-sm text-primary-30">
                   {{ t('crystal-query.select-stat.title') }}
                 </div>
                 <template v-else>

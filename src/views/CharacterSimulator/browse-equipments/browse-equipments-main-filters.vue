@@ -96,15 +96,15 @@ watch(
           >
             <IconSelection :selected="labelFilter.labelSelected(label)" class="mr-3.5 shrink-0" />
             <div
-              class="mr-2 h-3.5 w-3.5 rounded-sm"
+              class="mr-2 size-3.5 rounded-sm"
               :class="getEquipmentLabelColorClasses(label.color).background"
             />
             {{ label.text }}
           </CardRow>
         </CardRows>
-        <div class="flex justify-end px-4 pb-2 pt-1">
+        <div class="flex justify-end px-4 pt-1 pb-2">
           <span
-            class="text-primary-50 cursor-pointer text-sm"
+            class="cursor-pointer text-sm text-primary-50"
             @click="labelFilter.selectedLabels.value = []"
           >
             {{ t('global.reset') }}

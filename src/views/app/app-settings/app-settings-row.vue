@@ -5,14 +5,14 @@
         {{ title }}
       </div>
       <div class="ml-4 w-full border-t border-primary-20"></div>
-      <div class="absolute right-0 top-1 h-3.5 w-3.5 bg-primary-20"></div>
+      <div class="absolute top-1 right-0 size-3.5 bg-primary-20"></div>
     </div>
     <div class="mt-2 px-2 text-sm text-gray-50">
       <slot name="caption" />
     </div>
     <div
       v-if="slotNotEmpty(slots['caption-sub'])"
-      class="flex flex-wrap items-center space-x-2 px-2 py-2"
+      class="flex flex-wrap items-center space-x-2 p-2"
     >
       <slot name="caption-sub" />
     </div>

@@ -19,7 +19,7 @@
       </div>
       <cy-button-icon
         icon="mdi:delete-outline"
-        class="absolute right-0 top-0"
+        class="absolute top-0 right-0"
         @click="comboSkillState.comboSkill.remove()"
       />
     </div>
@@ -40,7 +40,7 @@
             />
           </template>
           <template #item="{ id, value }">
-            <div class="gap-icon text-primary-90 inline-flex items-center">
+            <div class="inline-flex items-center gap-icon text-primary-90">
               <cy-icon :icon="getTagIcon(value)" class="text-primary-30" />
               {{ t('character-simulator.combo.tags.' + id) }}
             </div>

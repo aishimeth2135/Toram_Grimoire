@@ -22,9 +22,9 @@ const setInputFocus = (value: boolean) => {
 
 <template>
   <div class="w-full">
-    <div class="text-gray-60 px-1.5 text-sm">{{ title }}</div>
+    <div class="px-1.5 text-sm text-gray-60">{{ title }}</div>
     <label
-      class="border-primary-20 flex cursor-text border-b px-1.5 py-1 duration-150"
+      class="flex cursor-text border-b border-primary-20 px-1.5 py-1 duration-150"
       :class="{ 'border-primary-70': focus }"
       :for="inputId"
     >

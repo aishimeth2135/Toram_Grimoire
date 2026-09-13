@@ -1,5 +1,5 @@
 <template>
-  <div class="border-primary-30 border-l-2 px-4 py-2">
+  <div class="border-l-2 border-primary-30 px-4 py-2">
     <!-- <div class="flex items-center justify-center">
       <div>
         <div class="inline-flex items-center gap-icon text-red-60">
@@ -32,7 +32,7 @@
       />
       <div class="flex w-28 justify-center">
         <div
-          class="border-primary-30 hover:border-primary-50 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 duration-200"
+          class="flex size-12 cursor-pointer items-center justify-center rounded-full border-4 border-primary-30 duration-200 hover:border-primary-50"
           @click="selectComboSkill(combo.appendSkill())"
         >
           <cy-icon icon="ic-round-add" width="2.25rem" />
@@ -40,15 +40,15 @@
       </div>
     </div>
     <div v-if="damageCalcEnabled" class="mt-3">
-      <div class="border-violet-30 relative flex items-center border-b px-1 py-0.5">
-        <div class="gap-icon text-violet-30 inline-flex items-center text-sm">
+      <div class="relative flex items-center border-b border-violet-30 px-1 py-0.5">
+        <div class="inline-flex items-center gap-icon text-sm text-violet-30">
           <cy-icon icon="mdi-sword" small class="text-violet-30" />
           {{ t('character-simulator.combo.damage-calc.damage-sum-title') }}
         </div>
-        <span class="text-violet-60 ml-3">{{ expectedDamageSum }}</span>
-        <div class="bg-violet-30 absolute bottom-0 right-0 h-3 w-3" />
+        <span class="ml-3 text-violet-60">{{ expectedDamageSum }}</span>
+        <div class="absolute right-0 bottom-0 size-3 bg-violet-30" />
       </div>
-      <div class="divide-primary-30 mt-1 divide-y">
+      <div class="mt-1 divide-y divide-primary-30">
         <CharacterComboItemDamageItem
           v-for="{ resultsState, comboSkillState } in comboSkillStateItems"
           :key="resultsState.skill.skillId"

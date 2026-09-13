@@ -1,7 +1,7 @@
 <template>
-  <div v-if="store.confirmItems.length !== 0" class="fixed left-0 top-0 z-100 h-full w-full">
-    <div class="absolute -z-1 h-full w-full bg-black opacity-30" />
-    <div class="flex h-full w-full items-center justify-center">
+  <div v-if="store.confirmItems.length !== 0" class="fixed top-0 left-0 z-100 size-full">
+    <div class="absolute -z-1 size-full bg-black opacity-30" />
+    <div class="flex size-full items-center justify-center">
       <div
         class="app-confirm-slide-up m-4 max-h-full w-full max-w-sm overflow-y-auto border border-primary-30 bg-white p-6"
       >

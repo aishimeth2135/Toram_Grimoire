@@ -11,7 +11,7 @@ const innerValue = defineModel<string>('value', { required: true })
 </script>
 
 <template>
-  <CommonPropInputBase v-slot="{ inputId, setInputFocus }" :title="title" class="max-w-[15rem]">
+  <CommonPropInputBase v-slot="{ inputId, setInputFocus }" :title="title" class="max-w-60">
     <div class="w-full" @click.stop>
       <input
         :id="inputId"

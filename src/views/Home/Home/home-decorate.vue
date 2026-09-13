@@ -1,12 +1,12 @@
 <template>
-  <div class="absolute left-0 top-0 h-full w-full overflow-hidden">
+  <div class="absolute top-0 left-0 size-full overflow-hidden">
     <div
       v-for="starStyle in starStyles"
       :key="starStyle.id"
       class="app-home-decorate-star"
       :style="starStyle"
     />
-    <div class="absolute left-0 top-0 h-full w-full" style="backdrop-filter: blur(1px)" />
+    <div class="absolute top-0 left-0 size-full" style="backdrop-filter: blur(1px)" />
   </div>
 </template>
 

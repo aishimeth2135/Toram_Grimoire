@@ -4,7 +4,7 @@
       <RenderText v-if="row.type === 'caption'" :text="row.value[0]" />
       <div v-else-if="row.type === 'list'" class="pl-2">
         <div v-for="rowValue in row.value" :key="rowValue" class="relative py-0.5 pl-5">
-          <span class="absolute left-0 top-1 inline-block h-2 w-2 rounded-full bg-primary-30" />
+          <span class="absolute top-1 left-0 inline-block size-2 rounded-full bg-primary-30" />
           <RenderText :text="rowValue" />
         </div>
       </div>

@@ -1,11 +1,11 @@
 <template>
   <div class="flex">
     <div
-      class="cy--input-counter outline-hidden border border-l-4 bg-white duration-300"
+      class="cy--input-counter border border-l-4 bg-white outline-hidden duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title'] || title" class="text-primary-80 mr-3 inline-flex items-center">
+      <div v-if="$slots['title'] || title" class="mr-3 inline-flex items-center text-primary-80">
         <slot name="title">
           {{ title }}
         </slot>

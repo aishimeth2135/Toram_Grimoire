@@ -36,8 +36,8 @@ const { setCurrentTab } = useCharacterSimulatorState()
 </script>
 
 <template>
-  <div class="px-3 py-3">
-    <div class="shadow-xs border border-primary-20 wd:flex wd:items-stretch">
+  <div class="p-3">
+    <div class="border border-primary-20 shadow-xs wd:flex wd:items-stretch">
       <div class="w-full shrink-0 px-8 py-5 wd:max-w-xs">
         <div class="-mx-1 border-b border-primary-10 px-1 text-primary-80">
           {{ character.name }}
@@ -47,7 +47,7 @@ const { setCurrentTab } = useCharacterSimulatorState()
 
       <div v-if="validBaseStats.length > 0" class="flex items-center px-8 py-5">
         <div
-          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-red-50"
+          class="mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2 border-red-50"
         >
           <span class="text-sm text-primary-50">
             {{ primaryBaseStat.name }}
@@ -58,7 +58,7 @@ const { setCurrentTab } = useCharacterSimulatorState()
         </div>
         <div
           v-if="secondaryBaseStat"
-          class="mr-4 flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-primary-30"
+          class="mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2 border-primary-30"
         >
           <span class="text-sm text-primary-50">
             {{ secondaryBaseStat.name }}
@@ -69,11 +69,11 @@ const { setCurrentTab } = useCharacterSimulatorState()
         </div>
       </div>
     </div>
-    <div class="shadow-xs mt-7 border border-primary-20 wd:flex wd:items-stretch">
+    <div class="mt-7 border border-primary-20 shadow-xs wd:flex wd:items-stretch">
       <div class="relative w-full py-2 wd:border-r wd:border-primary-10">
         <cy-button-icon
           icon="mdi:square-edit-outline"
-          class="absolute right-2 top-2"
+          class="absolute top-2 right-2"
           @click="setCurrentTab(CharacterSimulatorRouteNames.Equipment)"
         />
         <template v-if="character.equipmentFields.some(field => !field.isEmpty)">

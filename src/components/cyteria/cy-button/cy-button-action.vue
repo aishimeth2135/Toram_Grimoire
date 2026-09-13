@@ -14,7 +14,7 @@ const props = defineProps<Props>()
     :color="props.color"
     :selected="props.selected"
     :disabled="props.disabled"
-    class="cy-button-action gap-icon mx-2 my-1"
+    class="cy-button-action mx-2 my-1 gap-icon"
   >
     <ButtonIcon :icon="props.icon" class="cy-button-base-icon" />
     <span v-if="$slots.default" class="mr-1">

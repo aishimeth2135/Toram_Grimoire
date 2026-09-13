@@ -8,7 +8,7 @@
     }"
     class="relative mr-3 inline-flex items-baseline pl-4"
   >
-    <div class="absolute bottom-1 left-0 h-2 w-2 rounded-full bg-primary-20" />
+    <div class="absolute bottom-1 left-0 size-2 rounded-full bg-primary-20" />
     <div v-for="text in restrictionTexts" :key="text" class="mr-1 text-sm text-primary-40">
       {{ text }}
     </div>

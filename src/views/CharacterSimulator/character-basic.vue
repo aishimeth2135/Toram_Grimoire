@@ -92,8 +92,8 @@ const RenderContentTitie = (attrs: { title: string }) => {
   >
     <template #header>
       <div class="pb-4">
-        <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-          <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
+        <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
           {{ t('character-simulator.character-basic.character-builds-tip') }}
         </div>
       </div>

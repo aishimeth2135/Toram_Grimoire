@@ -16,14 +16,14 @@ const dyeColors = computed<(number | null)[]>(() => dyeConvert(props.dye))
 </script>
 
 <template>
-  <div class="gap-icon text-primary-90 ml-3 inline-flex shrink-0 items-center text-sm">
+  <div class="ml-3 inline-flex shrink-0 items-center gap-icon text-sm text-primary-90">
     <cy-icon icon="ic-outline-palette" small class="text-primary-30" />
     <div class="flex items-center space-x-2">
       <template v-for="(color, index) in dyeColors" :key="dyeParts[index]">
         <span v-if="color !== null" class="inline-flex items-center">
           <DyeColorButton
             :color="color"
-            class="mr-1 h-3 w-3 overflow-hidden text-[0px] leading-none"
+            class="mr-1 size-3 overflow-hidden text-[0px] leading-none"
             tabindex="-1"
             aria-hidden="true"
           />

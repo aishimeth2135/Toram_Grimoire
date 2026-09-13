@@ -23,7 +23,7 @@
             :registlet-item-state="registletItemState"
           />
           <div class="px-4 py-2 text-sm">
-            <div class="gap-icon text-primary-90 mr-2 mt-0.5 inline-flex items-center">
+            <div class="mt-0.5 mr-2 inline-flex items-center gap-icon text-primary-90">
               <cy-icon icon="ic:outline-tips-and-updates" class="text-primary-30" />
               <span>
                 <i18n-t

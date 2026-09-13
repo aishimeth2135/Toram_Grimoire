@@ -6,7 +6,7 @@
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="bg-primary-10/50 text-primary-80 w-20 rounded-md p-2 text-center"
+      class="w-20 rounded-md bg-primary-10/50 p-2 text-center text-primary-80"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -77,10 +77,10 @@
           </div>
           <div
             v-if="container.customItemAddable"
-            class="border-primary-50 flex w-64 cursor-pointer items-center justify-center border bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
+            class="flex w-64 cursor-pointer items-center justify-center border border-primary-50 bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
             @click="createCustomItem"
           >
-            <div class="gap-icon text-primary-50 inline-flex items-center">
+            <div class="inline-flex items-center gap-icon text-primary-50">
               <cy-icon icon="ic:round-add-circle-outline" class="text-primary-30" />
               {{ t('damage-calculation.create-custom-item') }}
             </div>
@@ -91,7 +91,7 @@
   </div>
   <div
     v-else
-    class="border-primary-50/70 relative px-2 py-3"
+    class="relative border-primary-50/70 px-2 py-3"
     :class="{ 'border-l-4': !root, 'border': !root }"
     style="margin-left: -0.2rem"
   >

@@ -46,14 +46,14 @@ const maxStack = computed(() => {
 </script>
 
 <template>
-  <div class="flex h-full w-full flex-col py-2">
+  <div class="flex size-full flex-col py-2">
     <template v-if="equipment.supportTrait">
       <div class="mb-3 flex justify-end">
         <CommonEditModeButton v-model:is-editing="isEditing" />
       </div>
       <template v-if="!isEditing">
         <div v-if="equipment.trait">
-          <div class="border-gray-20 flex w-full items-center border-b py-1">
+          <div class="flex w-full items-center border-b border-gray-20 py-1">
             <CharacterEquipmentTraitTitle :equipment-trait="equipment.trait" />
             <cy-button-icon
               icon="mdi:close-circle-outline"
@@ -81,13 +81,13 @@ const maxStack = computed(() => {
             />
           </div>
         </div>
-        <div v-else class="text-primary-60 py-2 text-sm">
+        <div v-else class="py-2 text-sm text-primary-60">
           {{ t('character-simulator.select-trait.trait-empty-tips') }}
         </div>
       </template>
       <CharacterEquipmentDetailsSelectTrait v-else :equipment="equipment" />
     </template>
-    <div v-else class="text-primary-60 text-sm">
+    <div v-else class="text-sm text-primary-60">
       {{ t('character-simulator.select-trait.equipment-type-not-support-trait-tips') }}
     </div>
   </div>

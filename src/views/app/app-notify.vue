@@ -1,27 +1,27 @@
 <template>
   <teleport to="#app-notify">
-    <div class="z-100 fixed bottom-14 right-5 w-80" style="max-width: calc(100vw - 2rem)">
+    <div class="fixed right-5 bottom-14 z-100 w-80" style="max-width: calc(100vw - 2rem)">
       <transition-group name="fade-slide">
         <div
           v-for="msg in store.messages"
           :key="msg.iid"
-          class="bg-primary-90 relative mt-4 flex w-full flex-wrap items-center rounded-sm p-3 text-white duration-300"
+          class="relative mt-4 flex w-full flex-wrap items-center rounded-sm bg-primary-90 p-3 text-white duration-300"
         >
           <span
             v-if="msg.counter > 1"
-            class="border-primary-30 bg-primary-90 text-primary-30 absolute -right-4 -top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-solid"
+            class="absolute -top-4 -right-4 inline-flex size-8 items-center justify-center rounded-full border border-solid border-primary-30 bg-primary-90 text-primary-30"
           >
             <span>{{ msg.counter }}</span>
           </span>
           <div class="inline-flex items-center">
-            <cy-icon :icon="msg.icon" class="text-primary-5 mr-3" />
+            <cy-icon :icon="msg.icon" class="mr-3 text-primary-5" />
             {{ msg.message }}
           </div>
           <div v-if="msg.options.actions?.length">
             <span
               v-for="action in msg.options.actions"
               :key="action.iid"
-              class="text-primary-30 hover:text-primary-30 ml-3 cursor-pointer text-right"
+              class="ml-3 cursor-pointer text-right text-primary-30 hover:text-primary-30"
               @click="messageActionClick(msg, action)"
             >
               {{ action.label }}

@@ -100,10 +100,10 @@ const toggleDisplayMode = (isListMode: boolean) => {
 </script>
 
 <template>
-  <div class="max-w-180 flex grow flex-col">
+  <div class="flex max-w-180 grow flex-col">
     <div class="flex w-full shrink-0 flex-wrap items-center justify-end px-2 pb-1">
       <slot name="additional-actions" />
-      <CharacterEquipmentAppendActions class="ml-2 mr-5" />
+      <CharacterEquipmentAppendActions class="mr-5 ml-2" />
       <CommonSwitchModeButton
         :is-left="displayMode === DisplayModes.List"
         left-icon="ic:baseline-format-list-bulleted"
@@ -111,8 +111,8 @@ const toggleDisplayMode = (isListMode: boolean) => {
         @update:is-left="toggleDisplayMode"
       />
     </div>
-    <div class="border-primary-20 mx-2 mt-2 flex min-h-0 grow flex-col rounded-sm border py-0.5">
-      <div class="border-primary-20 shrink-0 border-b px-2 py-1">
+    <div class="mx-2 mt-2 flex min-h-0 grow flex-col rounded-sm border border-primary-20 py-0.5">
+      <div class="shrink-0 border-b border-primary-20 px-2 py-1">
         <BrowseEquipmentsMainFilters
           v-model="filteredEquipments"
           v-model:current-field-types="currentFieldTypes"
@@ -121,7 +121,7 @@ const toggleDisplayMode = (isListMode: boolean) => {
       </div>
       <div
         v-if="displayMode === DisplayModes.Grid"
-        class="border-primary-10 m-3 mb-2 flex shrink-0 flex-wrap items-center border py-1"
+        class="m-3 mb-2 flex shrink-0 flex-wrap items-center border border-primary-10 py-1"
       >
         <template v-if="selectedEquipment">
           <EquipmentBrowseTitle
@@ -129,7 +129,7 @@ const toggleDisplayMode = (isListMode: boolean) => {
             :equipment="selectedEquipment"
             class="mr-6 pl-4"
           />
-          <div v-else class="border-primary-10 mb-1 w-full border-b px-4 pb-1">
+          <div v-else class="mb-1 w-full border-b border-primary-10 px-4 pb-1">
             <EquipmentBrowseTitle :equipment="selectedEquipment" />
           </div>
           <EquipmentBrowseActions
@@ -141,7 +141,7 @@ const toggleDisplayMode = (isListMode: boolean) => {
             @equip-cancel="emit('equip-cancel')"
           />
         </template>
-        <span v-else class="text-primary-30 flex h-8 items-center pl-4 text-sm">
+        <span v-else class="flex h-8 items-center pl-4 text-sm text-primary-30">
           {{ t('character-simulator.browse-equipments.select-equipment-tips') }}
         </span>
       </div>
@@ -165,10 +165,10 @@ const toggleDisplayMode = (isListMode: boolean) => {
         @select="handleSelectItem"
       />
       <div v-else class="min-h-0 grow overflow-y-auto">
-        <div v-if="allEquipments.length !== 0" class="text-primary-50 px-8 py-12">
+        <div v-if="allEquipments.length !== 0" class="px-8 py-12 text-primary-50">
           {{ t('character-simulator.browse-equipments.serach-no-equipment-tips') }}
         </div>
-        <div v-else class="text-primary-40 px-4 py-3 text-sm">
+        <div v-else class="px-4 py-3 text-sm text-primary-40">
           {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
         </div>
       </div>

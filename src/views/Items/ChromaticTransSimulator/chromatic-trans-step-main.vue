@@ -72,7 +72,7 @@ watch(
 </script>
 
 <template>
-  <section class="border-primary-20 rounded-sm border px-3 py-2">
+  <section class="rounded-sm border border-primary-20 px-3 py-2">
     <div
       class="flex cursor-pointer items-center gap-2 py-0.5"
       :class="{ 'mb-3': expanded }"
@@ -81,18 +81,18 @@ watch(
       <h2 class="text-primary-70">
         {{ t('chromatic-trans-simulator.step', { step: step.index + 1 }) }}
       </h2>
-      <span v-if="step.index > 0" class="text-primary-40 text-sm">
+      <span v-if="step.index > 0" class="text-sm text-primary-40">
         {{ t('chromatic-trans-simulator.optional') }}
       </span>
-      <div class="gap-icon text-primary-30 ml-auto flex items-center text-sm">
+      <div class="ml-auto flex items-center gap-icon text-sm text-primary-30">
         <cy-icon small :icon="expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'" />
         {{ t('chromatic-trans-simulator.' + (expanded ? 'collapse' : 'expand')) }}
       </div>
     </div>
     <div v-if="expanded" class="flex flex-col gap-6 pb-2 sm:flex-row">
-      <div class="sm:w-68 sm:max-w-68 min-w-0 shrink-0 grow space-y-3">
+      <div class="min-w-0 shrink-0 grow space-y-3 sm:w-68 sm:max-w-68">
         <div v-for="group in groups" :key="group.id">
-          <h3 class="text-primary-60 mb-2 text-sm">
+          <h3 class="mb-2 text-sm text-primary-60">
             {{ t('chromatic-trans-simulator.' + group.id) }}
           </h3>
           <CardRowsWrapper :class="group.id === 'mix' ? 'max-h-32 overflow-y-auto' : ''">
@@ -109,22 +109,22 @@ watch(
               />
             </CardRows>
           </CardRowsWrapper>
-          <p v-if="group.id === 'grayscale'" class="text-gray-40 mt-2 px-1 text-sm">
+          <p v-if="group.id === 'grayscale'" class="mt-2 px-1 text-sm text-gray-40">
             {{ t('chromatic-trans-simulator.grayscale-tips') }}
           </p>
         </div>
       </div>
       <div class="min-w-0 space-y-3">
-        <h3 class="text-primary-60 text-sm">{{ t('chromatic-trans-simulator.preview') }}</h3>
+        <h3 class="text-sm text-primary-60">{{ t('chromatic-trans-simulator.preview') }}</h3>
         <ChromaticTransColorTable :pool="preview.pool" />
         <ChromaticTransGrayscaleTable v-if="preview.white || preview.black" :pool="preview.pool" />
-        <div v-if="step.lockedColor !== null" class="text-red-60 mt-3 text-sm">
+        <div v-if="step.lockedColor !== null" class="mt-3 text-sm text-red-60">
           {{ t('chromatic-trans-simulator.color-table-lock-tips') }}
         </div>
         <div class="mt-4">
-          <h3 class="text-primary-60 mb-2.5 text-sm">
+          <h3 class="mb-2.5 text-sm text-primary-60">
             {{ t('chromatic-trans-simulator.pool') }}
-            <span class="text-orange-60 ml-1">
+            <span class="ml-1 text-orange-60">
               {{ `[${preview.pool.length}]` }}
             </span>
           </h3>

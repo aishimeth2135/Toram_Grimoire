@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap items-center p-1 pb-0.5 pr-3">
+  <div class="flex flex-wrap items-center p-1 pr-3 pb-0.5">
     <div class="mt-0.5">
       <cy-input-counter
         v-if="computing.config.formulaDisplayMode === FormulaDisplayModes.Normal"
@@ -13,11 +13,11 @@
           <span class="text-primary-50">{{ container.get('unit') }}</span>
         </template>
       </cy-input-counter>
-      <div v-else class="border-1 border-blue-30 text-blue-60 px-3 py-1.5">
+      <div v-else class="border border-blue-30 px-3 py-1.5 text-blue-60">
         {{ container.get('name') }}
       </div>
     </div>
-    <div class="text-primary-30 ml-4 mt-0.5 flex items-center space-x-1">
+    <div class="mt-0.5 ml-4 flex items-center space-x-1 text-primary-30">
       <cy-icon icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
       <skill-branch-prop-value v-if="container.has('min')" :result="container.result('min')" />
       <cy-icon icon="mdi:tilde" width="0.8rem" />

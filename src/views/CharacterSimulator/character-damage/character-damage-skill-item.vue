@@ -1,7 +1,7 @@
 <template>
   <CardRow :selected="enabled">
     <div
-      class="flex cursor-pointer items-center py-2 pl-1.5 pr-2.5 duration-150 hover:bg-primary-5"
+      class="flex cursor-pointer items-center py-2 pr-2.5 pl-1.5 duration-150 hover:bg-primary-5"
       @click="enabled = !enabled"
     >
       <div class="mr-3 flex shrink-0 items-center" style="min-width: 10rem">
@@ -18,7 +18,7 @@
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
     </div>
-    <div v-if="enabled && !invalid" class="pb-5 pl-10 pr-3 pt-2">
+    <div v-if="enabled && !invalid" class="pt-2 pr-3 pb-5 pl-10">
       <div class="space-y-2 pl-2">
         <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
           <CharacterDamageSkillResultItem :result="result" />

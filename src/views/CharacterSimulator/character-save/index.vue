@@ -5,7 +5,7 @@
         {{ t('character-simulator.save-load-control.export-save-data-caption') }}
       </div>
       <div class="py-2">
-        <div class="gap-icon text-primary-50 inline-flex items-center text-sm">
+        <div class="inline-flex items-center gap-icon text-sm text-primary-50">
           <cy-icon icon="ic:outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.export-save-data-tips[0]') }}
         </div>
@@ -23,7 +23,7 @@
       <div>
         {{ t('character-simulator.save-load-control.manual-save-load-caption') }}
       </div>
-      <div class="pb-2 pt-4">
+      <div class="pt-4 pb-2">
         <cy-button-action icon="ic-round-save" @click="store.saveCharacterSimulator()">
           {{ t('character-simulator.save-load-control.manual-save-button-title') }}
         </cy-button-action>
@@ -37,11 +37,11 @@
         {{ t('character-simulator.save-load-control.deleta-all-data-caption.0') }}
       </div>
       <div class="py-2">
-        <div class="gap-icon text-primary-50 mt-2 inline-flex items-center text-sm">
+        <div class="mt-2 inline-flex items-center gap-icon text-sm text-primary-50">
           <cy-icon icon="ic-outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.1') }}
         </div>
-        <div class="gap-icon text-primary-50 mt-2 inline-flex items-center text-sm">
+        <div class="mt-2 inline-flex items-center gap-icon text-sm text-primary-50">
           <cy-icon icon="ic-outline-info" small class="text-primary-30" />
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.2') }}
         </div>
@@ -49,7 +49,7 @@
       <div class="py-2">
         <cy-input-counter v-model:value="deleteCounter">
           <template #title>
-            <div class="gap-icon text-primary-90 inline-flex items-center">
+            <div class="inline-flex items-center gap-icon text-primary-90">
               <cy-icon icon="ic-round-delete" class="text-primary-30" />
               {{ t('character-simulator.save-load-control.deleta-all-data-counter-title') }}
             </div>

@@ -23,7 +23,7 @@
       @close="toggleSelectCalculationVisible(false)"
     >
       <template #title>
-        <div class="gap-icon text-primary-90 inline-flex items-center">
+        <div class="inline-flex items-center gap-icon text-primary-90">
           <cy-icon icon="bx:bx-git-compare" class="text-primary-30" />
           {{ t('damage-calculation.compare.select-build') }}
         </div>

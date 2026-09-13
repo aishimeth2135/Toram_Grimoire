@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-full flex-wrap items-center space-x-4 px-3 py-1">
     <cy-icon icon="entypo-link" small class="mr-1" />
-    <span class="text-primary-30 mr-2.5 text-sm">
+    <span class="mr-2.5 text-sm text-primary-30">
       {{ t('skill-query.branch.reference.base-title') }}
     </span>
     <span v-if="container.has('text')">

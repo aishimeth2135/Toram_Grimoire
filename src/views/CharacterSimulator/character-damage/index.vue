@@ -30,14 +30,14 @@
       </cy-default-tips>
       <div class="mt-4 space-y-1">
         <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
+          <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
             {{ t('character-simulator.character-damage.basic-tips.0') }}
           </div>
         </div>
         <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
+          <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
             {{ t('character-simulator.character-damage.test-version-tips') }}
           </div>
         </div>

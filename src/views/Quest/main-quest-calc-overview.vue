@@ -101,7 +101,7 @@ const submitItemDatas = computed(() => {
 
 <template>
   <div v-if="firstSection">
-    <div class="border-primary-30 text-primary-30 border-b px-1.5 py-0.5 text-sm">
+    <div class="border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.common-settings-title') }}
     </div>
     <div class="mt-3 flex flex-wrap items-center space-x-4">
@@ -124,12 +124,12 @@ const submitItemDatas = computed(() => {
         :range="[1, null]"
       />
     </div>
-    <div class="border-primary-30 text-primary-30 mt-6 border-b px-1.5 py-0.5 text-sm">
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.select-skipped-sub-section-title') }}
     </div>
     <div v-if="skippableSubSectionItems.length > 0" class="mt-4 space-y-2">
       <div v-for="{ section, name, exp } in skippableSubSectionItems" :key="section.index">
-        <div class="text-gray-40 px-1.5 text-sm">
+        <div class="px-1.5 text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>
         <div class="mt-2 flex items-start">
@@ -141,7 +141,7 @@ const submitItemDatas = computed(() => {
             <div class="text-primary-80">
               {{ name }}
             </div>
-            <div class="text-primary-50 text-sm">
+            <div class="text-sm text-primary-50">
               {{ numberWithCommas(exp) }}
               <span class="text-primary-30">EXP</span>
             </div>
@@ -149,25 +149,25 @@ const submitItemDatas = computed(() => {
         </div>
       </div>
     </div>
-    <div v-else class="text-gray-40 mt-3 px-1.5 text-sm">
+    <div v-else class="mt-3 px-1.5 text-sm text-gray-40">
       {{ t('main-quest-calc.no-skippable-sub-setion') }}
     </div>
-    <div class="border-primary-30 text-primary-30 mt-6 border-b px-1.5 py-0.5 text-sm">
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.calc-result-title') }}
     </div>
     <div class="mt-4 px-1.5">
       <div class="text-sm text-gray-50">
         {{ t('main-quest-calc.selected-section-range-title') }}
       </div>
-      <div class="text-primary-80 mt-0.5">
+      <div class="mt-0.5 text-primary-80">
         <span>{{ `${firstSection.chapterId}.${firstSection.sectionId}` }}</span>
-        <cy-icon icon="mdi:arrow-right" width="1rem" class="text-primary-30 mx-3" />
+        <cy-icon icon="mdi:arrow-right" width="1rem" class="mx-3 text-primary-30" />
         <span>{{ `${lastSection.chapterId}.${lastSection.sectionId}` }}</span>
       </div>
       <div class="mt-3 text-sm text-gray-50">
         {{ t('main-quest-calc.exp-sum-title') }}
       </div>
-      <div class="text-primary-80 mt-0.5 flex items-center space-x-1">
+      <div class="mt-0.5 flex items-center space-x-1 text-primary-80">
         <span>{{ numberWithCommas(expSum) }}</span>
         <span class="text-primary-30">EXP</span>
         <template v-if="diaryRounds > 1">
@@ -178,18 +178,18 @@ const submitItemDatas = computed(() => {
       <div class="mt-3 text-sm text-gray-50">
         {{ t('main-quest-calc.character-level-diff-title') }}
       </div>
-      <div class="text-primary-80 mt-0.5 flex items-center">
+      <div class="mt-0.5 flex items-center text-primary-80">
         <span>
           {{ `Lv.${characterStartLevel}` }}
         </span>
-        <span v-if="characterStartPercentage > 0" class="text-primary-50 ml-2">
+        <span v-if="characterStartPercentage > 0" class="ml-2 text-primary-50">
           {{ `${characterStartPercentage}%` }}
         </span>
-        <cy-icon icon="mdi:arrow-right" width="1rem" class="text-primary-30 ml-3" />
+        <cy-icon icon="mdi:arrow-right" width="1rem" class="ml-3 text-primary-30" />
         <span class="ml-3">
           {{ `Lv.${levelDiff.level}` }}
         </span>
-        <span class="text-primary-50 ml-2">
+        <span class="ml-2 text-primary-50">
           {{ `${levelDiff.percentage}%` }}
         </span>
       </div>
@@ -199,18 +199,18 @@ const submitItemDatas = computed(() => {
         :skipped-sub-section-ids="skippedSubSectionIds"
       />
     </div>
-    <div class="border-primary-30 text-primary-30 mt-6 border-b px-1.5 py-0.5 text-sm">
+    <div class="mt-6 border-b border-primary-30 px-1.5 py-0.5 text-sm text-primary-30">
       {{ t('main-quest-calc.submit-items-title') }}
     </div>
     <div class="mt-4 space-y-3 px-1.5">
       <div v-for="{ section, items } in submitItemDatas" :key="section.index" class="text-sm">
-        <div class="text-gray-40 text-sm">
+        <div class="text-sm text-gray-40">
           {{ `${section.chapterId}.${section.sectionId} ${section.name}` }}
         </div>
         <div class="mt-1 space-y-0.5">
           <div v-for="item in items" :key="item.name" class="flex items-center">
             <span>{{ item.name }}</span>
-            <span class="text-primary-50 ml-1">
+            <span class="ml-1 text-primary-50">
               {{ `×${item.quantity}` }}
             </span>
           </div>

@@ -1,14 +1,14 @@
 <template>
-  <div v-if="!device.isMobile" class="z-1 relative flex py-1">
-    <div class="mt-6 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/75">
+  <div v-if="!device.isMobile" class="relative z-1 flex py-1">
+    <div class="mt-6 flex size-10 shrink-0 items-center justify-center rounded-full bg-white/75">
       <cy-icon :icon="icon" :class="iconClass" width="1.25rem" />
     </div>
-    <div class="flex flex-wrap pl-2 pr-6">
+    <div class="flex flex-wrap pr-6 pl-2">
       <slot />
     </div>
   </div>
-  <div v-else class="z-1 relative flex py-2">
-    <div class="mt-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/75">
+  <div v-else class="relative z-1 flex py-2">
+    <div class="mt-4 flex size-8 shrink-0 items-center justify-center rounded-full bg-white/75">
       <cy-icon :icon="icon" :class="iconClass" width="1.125rem" />
     </div>
     <div class="flex flex-wrap pl-2">

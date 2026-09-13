@@ -103,7 +103,7 @@ const selectStatOption = (option: StatOption) => {
         <div class="flex w-full max-w-sm items-center self-end">
           <div class="flex grow items-center">
             <div
-              class="border-primary-10 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pl-3 pr-2 duration-150"
+              class="flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 border-primary-10 pr-2 pl-3 duration-150 hover:bg-primary-10"
               @click="
                 currentMode =
                   currentMode === EquipmentSearchMode.Normal
@@ -113,7 +113,7 @@ const selectStatOption = (option: StatOption) => {
             >
               <cy-icon icon="mdi:exchange" />
             </div>
-            <div class="border-primary-10 grow rounded-r-full border">
+            <div class="grow rounded-r-full border border-primary-10">
               <div v-if="currentMode === EquipmentSearchMode.Normal">
                 <CommonSearchInput v-model="normalSearchText" behind />
               </div>
@@ -125,11 +125,11 @@ const selectStatOption = (option: StatOption) => {
                 close-on-select
                 @select-item="selectStatOption"
               >
-                <div v-if="!selectedStatOption" class="text-primary-30 text-sm">
+                <div v-if="!selectedStatOption" class="text-sm text-primary-30">
                   {{ t('character-simulator.append-equipments.search-stat-tips') }}
                 </div>
                 <template v-else>
-                  <div class="text-primary-30 mr-2.5 text-sm">
+                  <div class="mr-2.5 text-sm text-primary-30">
                     {{ t('character-simulator.append-equipments.current-selected-stat') }}
                   </div>
                   <div class="text-primary-80">
@@ -155,7 +155,7 @@ const selectStatOption = (option: StatOption) => {
             />
           </div>
         </div>
-        <CardRowsWrapper class="wd:max-h-none mt-3 flex max-h-96 grow flex-col overflow-x-auto">
+        <CardRowsWrapper class="mt-3 flex max-h-96 grow flex-col overflow-x-auto wd:max-h-none">
           <div class="h-full min-h-0 min-w-min grow overflow-y-auto">
             <div ref="topElement"></div>
             <CardRows v-if="currentItems.length > 0">
@@ -204,7 +204,7 @@ const selectStatOption = (option: StatOption) => {
               </div>
             </CardRow>
           </CardRows>
-          <div v-else class="text-primary-40 px-6 py-4 text-sm">
+          <div v-else class="px-6 py-4 text-sm text-primary-40">
             {{ t('character-simulator.append-equipments.selected-equipments-default-tips') }}
           </div>
         </CardRowsWrapper>

@@ -27,7 +27,7 @@ const itemDetailVisible = ref(true)
       {{ t('character-simulator.registlet-build.show-detail') }}
     </cy-button-check>
   </div>
-  <CardRowsWrapper class="max-w-xl pb-1 pt-0.5" :class="itemDetailVisible ? 'pb-1.5' : 'pb-0.5'">
+  <CardRowsWrapper class="max-w-xl pt-0.5 pb-1" :class="itemDetailVisible ? 'pb-1.5' : 'pb-0.5'">
     <CardRows v-if="registletBuild.items.length > 0" :class="{ 'opacity-50': disabled }">
       <CharacterRegistletItem
         v-for="item in registletBuild.items"
@@ -40,16 +40,16 @@ const itemDetailVisible = ref(true)
       {{ t('character-simulator.registlet-build.default-tips') }}
     </cy-default-tips>
   </CardRowsWrapper>
-  <div class="space-y-1 pb-2 pt-6">
+  <div class="space-y-1 pt-6 pb-2">
     <div>
-      <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-        <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
+      <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+        <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
         {{ t('character-simulator.registlet-build.main-tips-1') }}
       </div>
     </div>
     <div>
-      <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-        <cy-icon icon="ic-outline-info" small class="text-primary-30 icon-first-line" />
+      <div class="inline-flex items-start gap-icon text-sm text-primary-50">
+        <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
         {{ t('character-simulator.registlet-build.main-tips-2') }}
       </div>
     </div>

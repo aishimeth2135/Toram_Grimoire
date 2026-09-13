@@ -61,7 +61,7 @@ onMounted(async () => {
         :key="equipments[virtualItem.index]!.id"
         :ref="element => equipmentsVirtualizer.measureElement(element as Element)"
         :data-index="virtualItem.index"
-        class="absolute left-0 top-0 w-full"
+        class="absolute top-0 left-0 w-full"
         :class="{ 'bg-primary-5/50': virtualItem.index % 2 !== 0 }"
         :style="{ transform: `translateY(${virtualItem.start}px)` }"
       >

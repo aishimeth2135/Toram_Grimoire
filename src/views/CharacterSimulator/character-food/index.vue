@@ -98,11 +98,11 @@ const addFoodBuild = () => {
     <template #content>
       <div>
         <div class="mt-1 pl-2">
-          <div class="gap-icon text-primary-50 mr-2 inline-flex items-center text-sm">
+          <div class="mr-2 inline-flex items-center gap-icon text-sm text-primary-50">
             <cy-icon icon="ic-outline-info" small class="text-primary-30" />
             {{ t('character-simulator.food-build.introduction.0') }}
           </div>
-          <div class="gap-icon text-primary-50 inline-flex items-center text-sm">
+          <div class="inline-flex items-center gap-icon text-sm text-primary-50">
             <cy-icon icon="ic-outline-info" small class="text-primary-30" />
             {{ t('character-simulator.food-build.introduction.1') }}
           </div>

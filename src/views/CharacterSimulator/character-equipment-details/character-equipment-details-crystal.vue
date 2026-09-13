@@ -16,10 +16,10 @@ const emit = defineEmits<Emits>()
 
 <template>
   <div>
-    <div class="border-gray-20 flex w-full items-center border-b py-1">
+    <div class="flex w-full items-center border-b border-gray-20 py-1">
       <div class="flex shrink-0 items-center">
         <cy-icon :icon="crystal.crystalIconPath" />
-        <span class="text-cyan-60 ml-1.5 text-sm">{{ crystal.name }}</span>
+        <span class="ml-1.5 text-sm text-cyan-60">{{ crystal.name }}</span>
       </div>
       <cy-button-icon
         icon="mdi:close-circle-outline"
@@ -28,7 +28,7 @@ const emit = defineEmits<Emits>()
         @click="emit('remove', crystal)"
       />
     </div>
-    <div class="mt-1.5 pl-3 pr-2">
+    <div class="mt-1.5 pr-2 pl-3">
       <CharacterEquipmentDetailsStat
         v-for="stat in crystal.stats"
         :key="stat.statId"

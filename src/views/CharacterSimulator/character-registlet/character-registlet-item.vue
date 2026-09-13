@@ -1,9 +1,9 @@
 <template>
-  <CardRow class="relative py-2 pl-2 pr-4" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
+  <CardRow class="relative py-2 pr-4 pl-2" :class="item.enabled ? 'opacity-100' : 'opacity-60'">
     <cy-button-icon
       icon="ic:round-delete-outline"
       color="gray"
-      class="absolute right-3 top-3.5"
+      class="absolute top-3.5 right-3"
       @click="item.remove()"
     />
     <div class="flex flex-wrap items-center">
@@ -14,9 +14,9 @@
             item.enabled
           "
         />
-        <div class="text-primary-80 ml-1">{{ item.base.name }}</div>
+        <div class="ml-1 text-primary-80">{{ item.base.name }}</div>
       </div>
-      <div v-if="item.enabled" class="ml-10 mr-6 flex items-center">
+      <div v-if="item.enabled" class="mr-6 ml-10 flex items-center">
         <span class="text-primary-30">Lv.</span>
         <cy-input-counter
           v-model:value="
@@ -28,7 +28,7 @@
         />
       </div>
     </div>
-    <div v-if="item.enabled && detailVisible" class="text-gray-60 pl-10 pr-2 pt-1">
+    <div v-if="item.enabled && detailVisible" class="pt-1 pr-2 pl-10 text-gray-60">
       <RegistletCaption :registlet-item="item.base" />
     </div>
   </CardRow>

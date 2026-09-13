@@ -1,8 +1,8 @@
 <template>
   <CardRow :selected="detailVisible">
-    <div class="z-1 sticky top-0 min-w-max">
+    <div class="sticky top-0 z-1 min-w-max">
       <div
-        class="hover:bg-primary-5 flex cursor-pointer items-center px-3.5 py-2.5 duration-150"
+        class="flex cursor-pointer items-center px-3.5 py-2.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': detailVisible }"
         @click="toggleDetailVisible"
       >
@@ -20,7 +20,7 @@
               <cy-icon
                 v-if="firstObtain && firstObtain.isDrop"
                 icon="jam-box"
-                class="text-orange-60 ml-2"
+                class="ml-2 text-orange-60"
               />
             </div>
           </div>
@@ -35,7 +35,7 @@
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
               <cy-icon icon="mdi-sword" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
-              <div class="border-gray-20 h-4 border-l"></div>
+              <div class="h-4 border-l border-gray-20"></div>
               <span class="text-blue-50"> {{ equipment.stability }}% </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
@@ -43,7 +43,7 @@
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
-              <div class="gap-icon text-primary-30 inline-flex items-center">
+              <div class="inline-flex items-center gap-icon text-primary-30">
                 <cy-icon icon="mdi-ghost" class="text-primary-30" small />
                 {{ originEquipment.unknowCategory }}
               </div>
@@ -64,11 +64,11 @@
             v-else-if="state.currentMode === 'item-level' && originEquipment.recipe"
             class="flex items-center text-sm"
           >
-            <div class="gap-icon text-primary-30 inline-flex items-center">
+            <div class="inline-flex items-center gap-icon text-primary-30">
               <cy-icon icon="jam-hammer" class="text-primary-30" small />
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </div>
-            <span class="text-blue-60 ml-2">
+            <span class="ml-2 text-blue-60">
               {{ originEquipment.recipe['item_level'] }}
             </span>
           </div>
@@ -78,12 +78,12 @@
     <cy-transition>
       <div
         v-if="detailVisible"
-        class="relative max-w-full overscroll-none bg-white pb-3 pl-4 pr-3 pt-2"
+        class="relative max-w-full overscroll-none bg-white pt-2 pr-3 pb-3 pl-4"
       >
         <div v-if="originEquipment.extra" class="mb-2">
           <div
             v-if="originEquipment.extra['caption']"
-            class="gap-icon inline-flex items-center text-sm text-red-50"
+            class="inline-flex items-center gap-icon text-sm text-red-50"
           >
             <cy-icon icon="ic-outline-info" small class="text-primary-30" />
             {{ originEquipment.extra['caption'] }}
@@ -91,7 +91,7 @@
         </div>
         <div class="content-row">
           <div class="flex">
-            <div class="gap-icon text-primary-40 inline-flex items-center text-sm">
+            <div class="inline-flex items-center gap-icon text-sm text-primary-40">
               <cy-icon
                 icon="mdi:checkbox-multiple-blank-circle-outline"
                 small
@@ -112,7 +112,7 @@
                   "
                   small
                 />
-                <span class="text-primary-50 ml-1">
+                <span class="ml-1 text-primary-50">
                   {{ originEquipment.unknowCategory || equipment.typeText }}
                 </span>
               </span>
@@ -120,7 +120,7 @@
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
               <div class="row-attr">
                 <span>ATK</span>
-                <span class="text-primary-50 ml-2">
+                <span class="ml-2 text-primary-50">
                   {{ equipment.basicValue }}
                 </span>
               </div>
@@ -134,7 +134,7 @@
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
               <div class="row-attr">
                 <span>DEF</span>
-                <span class="text-primary-50 ml-2">
+                <span class="ml-2 text-primary-50">
                   {{ equipment.basicValue }}
                 </span>
               </div>
@@ -148,7 +148,7 @@
                   :negative-value="stat.value < 0"
                 />
               </template>
-              <div v-else class="text-gray-40 text-sm">
+              <div v-else class="text-sm text-gray-40">
                 {{ t('item-query.equipment-detail.no-any-stat-tips') }}
               </div>
             </div>
@@ -156,7 +156,7 @@
         </div>
         <div v-if="originEquipment.recipe">
           <div class="flex">
-            <div class="gap-icon text-primary-40 inline-flex items-center text-sm">
+            <div class="inline-flex items-center gap-icon text-sm text-primary-40">
               <cy-icon icon="ion-hammer" small class="text-primary-40" />
               {{ t('item-query.equipment-detail.content-titles.recipe') }}
             </div>
@@ -172,7 +172,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.item-level') }}
                 </span>
-                <span class="text-primary-50 ml-2">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['item_level'] || '?' }}
                 </span>
               </div>
@@ -180,7 +180,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.item-difficulty') }}
                 </span>
-                <span class="text-primary-50 ml-2">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['item_difficulty'] || '?' }}
                 </span>
               </div>
@@ -188,7 +188,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.base-potential') }}
                 </span>
-                <span class="text-primary-50 ml-2">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['potential'] || '?' }}
                 </span>
               </div>
@@ -196,7 +196,7 @@
             <div class="pb-3 pl-3">
               <div v-if="originEquipment.recipe['cost']" class="flex items-center">
                 <div class="flex w-40">
-                  <div class="gap-icon text-primary-90 inline-flex items-center">
+                  <div class="inline-flex items-center gap-icon text-primary-90">
                     <cy-icon icon="la-coins" class="text-primary-30" />
                     {{ t('item-query.equipment-detail.recipe.spina') }}
                   </div>
@@ -211,7 +211,7 @@
                 class="flex items-center"
               >
                 <div class="flex w-40">
-                  <div class="gap-icon text-primary-90 inline-flex items-center">
+                  <div class="inline-flex items-center gap-icon text-primary-90">
                     <cy-icon icon="mdi-cube-outline" class="text-primary-30" />
                     {{ material.name }}
                   </div>
@@ -225,16 +225,16 @@
         </div>
         <div>
           <div class="flex">
-            <div class="gap-icon text-primary-40 inline-flex items-center text-sm">
+            <div class="inline-flex items-center gap-icon text-sm text-primary-40">
               <cy-icon icon="bx-bx-search-alt" small class="text-primary-40" />
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </div>
           </div>
           <div class="py-1.5 pl-4">
-            <div v-if="obtainsDatas.length !== 0" class="divide-primary-20 -my-1 divide-y">
-              <div v-for="data in obtainsDatas" :key="data.iid" class="px-1 pb-2 pt-1.5">
+            <div v-if="obtainsDatas.length !== 0" class="-my-1 divide-y divide-primary-20">
+              <div v-for="data in obtainsDatas" :key="data.iid" class="px-1 pt-1.5 pb-2">
                 <div class="flex items-center">
-                  <div class="gap-icon text-primary-60 mr-2 inline-flex items-center text-sm">
+                  <div class="mr-2 inline-flex items-center gap-icon text-sm text-primary-60">
                     <cy-icon :icon="data.icon" small class="text-primary-30" />
                     {{ data.type }}
                   </div>
@@ -244,7 +244,7 @@
                   <ItemQueryDyeDisplay v-if="data.dye" :dye="data.dye" />
                   <div
                     v-if="data.map"
-                    class="gap-icon ml-3 inline-flex shrink-0 items-center text-sm text-gray-50"
+                    class="ml-3 inline-flex shrink-0 items-center gap-icon text-sm text-gray-50"
                   >
                     <cy-icon icon="ic-outline-map" small class="text-gray-20" />
                     {{ data.map }}
@@ -252,7 +252,7 @@
                 </div>
               </div>
             </div>
-            <div v-else class="text-gray-40 text-sm">
+            <div v-else class="text-sm text-gray-40">
               {{ t('item-query.equipment-detail.no-any-obtain-tips') }}
             </div>
           </div>
@@ -260,12 +260,12 @@
       </div>
       <div
         v-else-if="state.currentMode === 'dye'"
-        class="border-primary-60 ml-5.5 mb-2 border-l pl-2"
+        class="mb-2 ml-5.5 border-l border-primary-60 pl-2"
       >
-        <div class="divide-primary-20 divide-y">
-          <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
+        <div class="divide-y divide-primary-20">
+          <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pt-1.5 pb-2">
             <div class="flex items-center">
-              <div class="gap-icon text-primary-60 mr-2 inline-flex items-center text-sm">
+              <div class="mr-2 inline-flex items-center gap-icon text-sm text-primary-60">
                 <cy-icon :icon="item.icon" small class="text-primary-30" />
                 {{ item.type }}
               </div>
@@ -275,7 +275,7 @@
               <ItemQueryDyeDisplay v-if="item.dye" :dye="item.dye" />
               <div
                 v-if="item.map"
-                class="text-gray-60 ml-3 inline-flex shrink-0 items-center gap-1 text-sm"
+                class="ml-3 inline-flex shrink-0 items-center gap-1 text-sm text-gray-60"
               >
                 <cy-icon icon="ic-outline-map" small class="text-gray-40" />
                 {{ item.map }}
