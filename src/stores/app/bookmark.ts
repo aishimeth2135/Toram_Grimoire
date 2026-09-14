@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, readonly, ref } from 'vue'
 
+import { LocalStorageService } from '@/shared/services/Storage'
+
 export const BookmarkTypes = {
   Item: 'item',
   Skill: 'skill',
@@ -19,11 +21,12 @@ export const useBookmarkStore = defineStore('app-bookmark', () => {
 
   const items = computed(() => {
     if (_items.value === null) {
-      const datas = window.localStorage.getItem(SAVE_STORAGE_KEY)
+      const result = LocalStorageService.getItem(SAVE_STORAGE_KEY)
+      const datas = result.success ? result.value : null
       try {
         _items.value = (datas !== null ? JSON.parse(datas) : []) as BookmarkItem[]
       } catch (_err) {
-        window.localStorage.setItem(SAVE_STORAGE_KEY + '-tmp', datas!)
+        LocalStorageService.setItem(SAVE_STORAGE_KEY + '-tmp', datas!)
         _items.value = []
       }
     }
@@ -31,7 +34,10 @@ export const useBookmarkStore = defineStore('app-bookmark', () => {
   })
 
   const _save = () => {
-    window.localStorage.setItem(SAVE_STORAGE_KEY, JSON.stringify(items))
+    const result = LocalStorageService.setJson(SAVE_STORAGE_KEY, items)
+    if (!result.success) {
+      throw result.error
+    }
   }
 
   const hasBookmark = (item: BookmarkItem) => {

@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, readonly, ref, shallowReactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
+import { LocalStorageService } from '@/shared/services/Storage'
 
 import { useLocaleStore } from './locale'
 
@@ -47,16 +49,17 @@ export const useMainStore = defineStore('app-main', () => {
     window.document.title = title
   }
 
-  const _devMode = ref(localStorage.getItem('dev-mode') === '1')
+  const devModeResult = LocalStorageService.getItem(APP_STORAGE_KEYS.DEV_MODE)
+  const _devMode = ref(devModeResult.success && devModeResult.value === '1')
   const devMode = computed({
     get() {
       return _devMode.value
     },
     set(value) {
       if (value) {
-        localStorage.setItem('dev-mode', '1')
+        LocalStorageService.setItem(APP_STORAGE_KEYS.DEV_MODE, '1')
       } else {
-        localStorage.removeItem('dev-mode')
+        LocalStorageService.removeItem(APP_STORAGE_KEYS.DEV_MODE)
       }
       _devMode.value = value
     },

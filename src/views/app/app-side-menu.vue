@@ -24,11 +24,11 @@ import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
 
 import { usePageLayout } from '@/shared/composables/Layout'
-import Cyteria from '@/shared/utils/Cyteria'
+import { LocalStorageService } from '@/shared/services/Storage'
 
 import AppSideMenuContent from './app-side-menu-content.vue'
 
-const storageAvailable = Cyteria.storageAvailable('localStorage')
+const storageAvailable = LocalStorageService.isAvailable()
 
 const mainStore = useMainStore()
 const leftMenuStore = useLeftMenuStore()

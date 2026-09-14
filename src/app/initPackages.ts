@@ -1,7 +1,7 @@
 import jsep from 'jsep'
 import { marked } from 'marked'
 
-import Cyteria from '@/shared/utils/Cyteria'
+import { LocalStorageService } from '@/shared/services/Storage'
 
 export default function () {
   // jsep
@@ -47,17 +47,8 @@ export default function () {
 
   // iconify
   if (import.meta.env.PROD) {
-    if (Cyteria.storageAvailable('localStorage')) {
-      const storage = window.localStorage
-      Array(localStorage.length)
-        .fill(null)
-        .map((_item, idx) => idx)
-        .forEach(idx => {
-          const key = storage.key(idx)
-          if (key && key.startsWith('iconify')) {
-            storage.removeItem(key)
-          }
-        })
+    if (LocalStorageService.isAvailable()) {
+      LocalStorageService.removeByPrefix('iconify')
     }
   }
 }

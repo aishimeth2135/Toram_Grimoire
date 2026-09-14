@@ -84,7 +84,7 @@ import { type CharacterSimulatorSaveData, useCharacterStore } from '@/stores/vie
 
 import { useNotify } from '@/shared/composables/Notify'
 import { useToggle } from '@/shared/composables/State'
-import CY from '@/shared/utils/Cyteria'
+import { LocalStorageService } from '@/shared/services/Storage'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import CharacterSaveExport from './character-save-export.vue'
@@ -103,7 +103,7 @@ const store = useCharacterStore()
 const exportSaveDataVisible = ref(false)
 const toggleExportSaveDataVisible = useToggle(exportSaveDataVisible)
 
-const storageAvailable = CY.storageAvailable('localStorage')
+const storageAvailable = LocalStorageService.isAvailable()
 
 const importSaveData = () => {
   Cyteria.file.load({

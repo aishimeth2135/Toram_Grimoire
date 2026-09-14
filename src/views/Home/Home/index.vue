@@ -56,7 +56,7 @@ import { useTemplateRef } from 'vue'
 import { useMainStore } from '@/stores/app/main'
 
 import { useDevice } from '@/shared/composables/Device'
-import Cyteria from '@/shared/utils/Cyteria'
+import { LocalStorageService } from '@/shared/services/Storage'
 
 import { AppRouteNames } from '@/router/enums'
 
@@ -72,7 +72,7 @@ defineOptions({
   name: 'AppHome',
 })
 
-const storageAvailable = Cyteria.storageAvailable('localStorage')
+const storageAvailable = LocalStorageService.isAvailable()
 
 if (storageAvailable) {
   usePreviewDetect()

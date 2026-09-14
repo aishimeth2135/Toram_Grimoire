@@ -4,22 +4,26 @@ import { type Ref, computed, readonly, ref } from 'vue'
 import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
 
-import {
-  Character,
-  type CharacterBindingBuild,
-  type CharacterSaveData,
-} from '@/lib/Character/Character'
-import { type CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
-import { CharacterEquipment, type EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
+import { Character, type CharacterBindingBuild } from '@/lib/Character/Character'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
-import { FoodsBuild, type FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
-import { PotionBuild, type PotionBuildSaveData } from '@/lib/Character/PotionBuild'
-import { RegistletBuild, type RegistletBuildSaveData } from '@/lib/Character/RegistletBuild'
-import { SkillBuild, type SkillBuildSaveData } from '@/lib/Character/SkillBuild'
+import { FoodsBuild } from '@/lib/Character/FoodBuild'
+import { PotionBuild } from '@/lib/Character/PotionBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { Skill } from '@/lib/Skill/Skill'
 
 import { useCharacterFoodStore } from './food-build'
+import {
+  type CharacterSimulatorSaveData,
+  type CharacterSimulatorSaveDataRoot,
+  type CharacterStoreSaveSummary,
+  type EquipmentSaveDataWithIndex,
+  deleteCharacterSimulatorSaveData,
+  loadCharacterSimulatorSaveDataRoot,
+  saveCharacterSimulatorSaveDataRoot,
+} from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import type { CharacterPureStatsResult } from './setup/context'
@@ -42,47 +46,7 @@ import { useCharacterSkillStore } from './skill'
 import { useCharacterSkillBuildStore } from './skill-build'
 import { migrateCharacterSimulatorSaveData } from './utils'
 
-interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
-  idx: number
-}
-
-interface CharacterStoreSaveSummary {
-  characterIndex: number
-}
-
-interface CharacterStoreCharacterStateSaveData {
-  id: number
-  skillBuildId: number | null
-  foodBuildId: number | null
-  registletBuildId: number | null
-  potionBuildId: number | null
-}
-
-interface CharacterSimulatorSaveData {
-  version: string
-
-  characters: CharacterSaveData[]
-  characterStates: CharacterStoreCharacterStateSaveData[]
-
-  equipments: EquipmentSaveDataWithIndex[]
-
-  skillBuilds: SkillBuildSaveData[]
-
-  foodBuilds: FoodsBuildSaveData[]
-
-  registletBuilds: RegistletBuildSaveData[]
-
-  potionBuilds: PotionBuildSaveData[]
-
-  buildLabels: CharacterBuildLabelSaveData[]
-}
-
-interface CharacterSimulatorSaveDataRoot {
-  summary: CharacterStoreSaveSummary
-  datas: CharacterSimulatorSaveData
-}
-
-export const V2_AUTO_SAVE_STORAGE_KEY = 'app--character-simulator--data-v2--auto'
+export { V2_AUTO_SAVE_STORAGE_KEY } from './persistence'
 
 export const useCharacterStore = defineStore('view-character', () => {
   const characterSimulatorHasInit = ref(false)
@@ -145,7 +109,10 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 
   const deleteAllSavedData = () => {
-    window.localStorage.removeItem(V2_AUTO_SAVE_STORAGE_KEY)
+    const result = deleteCharacterSimulatorSaveData()
+    if (!result.success) {
+      throw result.error
+    }
     closeAutoSave()
   }
 
@@ -292,10 +259,13 @@ export const useCharacterStore = defineStore('view-character', () => {
     try {
       reset()
 
-      const v2Data = window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY)
-      if (v2Data !== null) {
+      const result = loadCharacterSimulatorSaveDataRoot()
+      if (!result.success) {
+        throw result.error
+      }
+      if (result.value !== null) {
         logger.info('Datas version: v2')
-        const { summary, datas } = JSON.parse(v2Data) as CharacterSimulatorSaveDataRoot
+        const { summary, datas } = result.value
 
         loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
@@ -315,16 +285,17 @@ export const useCharacterStore = defineStore('view-character', () => {
       characterIndex: currentCharacterIndex.value,
     }
 
-    const originalData = window.localStorage.getItem(V2_AUTO_SAVE_STORAGE_KEY) || '{}'
-    try {
-      const payload = {
-        summary,
-        datas,
-      } as CharacterSimulatorSaveDataRoot
-      window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, JSON.stringify(payload))
-    } catch (err) {
-      logger.addTitle('saveCharacterSimulator').start('Unexpected error occurs.').track(err).end()
-      window.localStorage.setItem(V2_AUTO_SAVE_STORAGE_KEY, originalData)
+    const payload: CharacterSimulatorSaveDataRoot = {
+      summary,
+      datas,
+    }
+    const result = saveCharacterSimulatorSaveDataRoot(payload)
+    if (!result.success) {
+      logger
+        .addTitle('saveCharacterSimulator')
+        .start('Unexpected error occurs.')
+        .track(result.error)
+        .end()
     }
   }
 

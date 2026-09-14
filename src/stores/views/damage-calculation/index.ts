@@ -3,14 +3,13 @@ import { type Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { Calculation, type CalculationSaveData } from '@/lib/Damage/DamageCalculation'
+import { Calculation } from '@/lib/Damage/DamageCalculation'
 
-interface DamageCalculationSaveData {
-  calculations: CalculationSaveData[]
-  currentCalculationIndex: number
-}
-
-const SAVE_KEY = 'app--damage-calculation--v1--data'
+import {
+  type DamageCalculationSaveData,
+  loadDamageCalculationSaveData,
+  saveDamageCalculationSaveData,
+} from './persistence'
 
 export const useDamageCalculationStore = defineStore('views-damage-calculation', () => {
   const calculations: Ref<Calculation[]> = ref([])
@@ -59,28 +58,35 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
       currentCalculationIndex: currentCalculationIndex.value,
     }
 
-    window.localStorage.setItem(SAVE_KEY, JSON.stringify(data))
+    const result = saveDamageCalculationSaveData(data)
+    if (!result.success) {
+      throw result.error
+    }
   }
 
   const load = () => {
-    const dataString = window.localStorage.getItem(SAVE_KEY)
-    if (!dataString) {
+    const result = loadDamageCalculationSaveData()
+    if (!result.success) {
+      console.warn('[store/damage-calculation/load] unknown error')
+      console.log(result.error)
+      throw result.error
+    }
+    if (result.value === null) {
       createCalculation()
       return
     }
-    const data = JSON.parse(dataString) as DamageCalculationSaveData
 
     try {
       const calculationBase = Grimoire.DamageCalculation.calculationBase
       const newCalculations: Calculation[] = []
-      data.calculations.forEach(calculationData => {
+      result.value.calculations.forEach(calculationData => {
         const calculation = calculationBase.createCalculation()
         calculation.load(calculationData)
         newCalculations.push(calculation)
       })
       reset({
         calculations: newCalculations,
-        currentCalculationIndex: data.currentCalculationIndex,
+        currentCalculationIndex: result.value.currentCalculationIndex,
       })
     } catch (error) {
       console.warn('[store/damage-calculation/load] unknown error')

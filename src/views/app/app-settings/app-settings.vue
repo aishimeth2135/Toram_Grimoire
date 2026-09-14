@@ -143,7 +143,8 @@ import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
 
 import { useLoading, useNotify } from '@/shared/composables/Notify'
-import { APP_STORAGE_KEYS } from '@/shared/consts/route'
+import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
+import { LocalStorageService } from '@/shared/services/Storage'
 import CY from '@/shared/utils/Cyteria'
 
 import { AppRouteNames } from '@/router/enums'
@@ -167,8 +168,13 @@ const appRemOptions = [120, 140, 160, 180, 200].map(value => ({
 const primaryLanguageList = ['auto', '0', '1', '2', '3']
 const fallbackLanguageList = ['0', '1', '2', '3']
 
+const getStorageItem = (key: string) => {
+  const result = LocalStorageService.getItem(key)
+  return result.success ? result.value : null
+}
+
 const _primaryLanguage = ref(
-  primaryLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto')
+  primaryLanguageList.indexOf(getStorageItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto')
 )
 const primaryLanguage = computed<number>({
   get() {
@@ -176,12 +182,12 @@ const primaryLanguage = computed<number>({
   },
   set(value) {
     _primaryLanguage.value = value
-    localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value])
+    LocalStorageService.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value])
   },
 })
 
 const _fallbackLanguage = ref(
-  fallbackLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto')
+  fallbackLanguageList.indexOf(getStorageItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto')
 )
 const fallbackLanguage = computed<number>({
   get() {
@@ -189,7 +195,7 @@ const fallbackLanguage = computed<number>({
   },
   set(value) {
     _fallbackLanguage.value = value
-    localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value])
+    LocalStorageService.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value])
   },
 })
 
@@ -209,21 +215,14 @@ const clearSpreadsheetsCaches = () => {
 }
 
 const saveLocalStorage = () => {
-  const data = {} as Record<string, string>
-  const storage = window.localStorage
-  Array(localStorage.length)
-    .fill(null)
-    .map((_value, idx) => idx)
-    .forEach(idx => {
-      const key = storage.key(idx)!
-      const item = storage.getItem(key)!
-      if (key.slice(0, 7) !== 'iconify') {
-        data[key] = item
-      }
-    })
+  const result = LocalStorageService.getEntries(key => !key.startsWith('iconify'))
+  if (!result.success) {
+    notify(t('app.settings.storage-backup.save-failed-tips'))
+    return
+  }
 
   CY.file.save({
-    data: JSON.stringify(data),
+    data: JSON.stringify(result.value),
     fileType: 'text/txt',
     fileName: 'cy-grimoire-storage.txt',
   })
@@ -232,25 +231,34 @@ const saveLocalStorage = () => {
 }
 
 const loadLocalStorage = () => {
-  const storage = window.localStorage
-
   CY.file.load({
     succeed: data => {
-      const jsonData = JSON.parse(data) as Record<string, string>
+      try {
+        const jsonData: unknown = JSON.parse(data)
+        if (
+          typeof jsonData !== 'object' ||
+          jsonData === null ||
+          Array.isArray(jsonData) ||
+          !Object.values(jsonData).every(value => typeof value === 'string')
+        ) {
+          notify(t('app.settings.storage-backup.load-failed-tips'))
+          return
+        }
 
-      // reset
-      Array(localStorage.length)
-        .fill(null)
-        .map((_value, idx) => idx)
-        .forEach(idx => {
-          const key = storage.key(idx)
-          if (key && !key.startsWith('iconify')) {
-            storage.removeItem(key)
-          }
-        })
-
-      Object.keys(jsonData).forEach(key => storage.setItem(key, jsonData[key]))
-      notify(t('app.settings.storage-backup.load-success-tips'))
+        const result = LocalStorageService.replaceEntries(
+          jsonData as Record<string, string>,
+          key => !key.startsWith('iconify')
+        )
+        notify(
+          t(
+            result.success
+              ? 'app.settings.storage-backup.load-success-tips'
+              : 'app.settings.storage-backup.load-failed-tips'
+          )
+        )
+      } catch (_error) {
+        notify(t('app.settings.storage-backup.load-failed-tips'))
+      }
     },
     error: () => {
       notify(t('app.settings.storage-backup.load-failed-tips'))
@@ -267,10 +275,7 @@ const loadLocalStorage = () => {
 
 const setLanguage = (target: 0 | 1, index: number) => {
   const state = target === 0 ? primaryLanguage : fallbackLanguage
-  const list = target === 0 ? primaryLanguageList : fallbackLanguageList
-  const key = target === 0 ? APP_STORAGE_KEYS.PRIMARY_LOCALE : APP_STORAGE_KEYS.FALLBACK_LOCALE
   state.value = index
-  localStorage[key] = list[index]
 }
 
 const settingStore = useSettingStore()

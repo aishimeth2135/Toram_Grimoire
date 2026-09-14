@@ -5,19 +5,12 @@ import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
 import { useNotify } from '@/shared/composables/Notify'
-import CY from '@/shared/utils/Cyteria'
+import { LocalStorageService } from '@/shared/services/Storage'
 
-import { EnchantBuild, type EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
+import { EnchantBuild } from '@/lib/Enchant/Enchant'
 
 import { type EnchantStoreConfig, enchantConfig, updateCharacterMaxLevel } from './config'
-
-interface EnchantStoreSaveData {
-  builds: EnchantBuildSaveData[]
-  index: number
-  config: EnchantStoreConfig
-}
-
-const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--'
+import { type EnchantStoreSaveData, loadEnchantSaveData, saveEnchantSaveData } from './persistence'
 
 export const useEnchantStore = defineStore('view-enchant', () => {
   const enchantBuilds: Ref<EnchantBuild[]> = ref([])
@@ -76,7 +69,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   }
 
   const save = (target = 'auto') => {
-    if (!CY.storageAvailable('localStorage')) {
+    if (!LocalStorageService.isAvailable()) {
       return
     }
     if (saveDisabled) {
@@ -88,11 +81,14 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       index: currentBuildIndex.value,
       config: config,
     }
-    window.localStorage.setItem(SAVE_PRETEXT + target, JSON.stringify(data))
+    const result = saveEnchantSaveData(target, data)
+    if (!result.success) {
+      throw result.error
+    }
   }
 
   const load = (target = 'auto') => {
-    if (!CY.storageAvailable('localStorage')) {
+    if (!LocalStorageService.isAvailable()) {
       return
     }
     const origin = {
@@ -101,12 +97,15 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       config: config,
     }
     try {
-      const odata = window.localStorage.getItem(SAVE_PRETEXT + target)
-      if (!odata) {
+      const result = loadEnchantSaveData(target)
+      if (!result.success) {
+        throw result.error
+      }
+      if (result.value === null) {
         console.warn('[enchant-simulator] data not found: ' + target)
         return
       }
-      const data = JSON.parse(odata) as EnchantStoreSaveData
+      const data = result.value
       enchantBuilds.value = data.builds.map(buildData => EnchantBuild.load(buildData))
       currentBuildIndex.value = data.index
 

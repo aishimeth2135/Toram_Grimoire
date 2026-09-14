@@ -3,8 +3,8 @@ import { computed, reactive, readonly, ref } from 'vue'
 import { type Composer } from 'vue-i18n'
 
 import { useNotify } from '@/shared/composables/Notify'
-import { APP_STORAGE_KEYS } from '@/shared/consts/route'
-import CY from '@/shared/utils/Cyteria'
+import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
+import { LocalStorageService } from '@/shared/services/Storage'
 import { toInt } from '@/shared/utils/number'
 
 import { I18nStore } from './I18nStore'
@@ -50,23 +50,28 @@ export const useLocaleStore = defineStore('app-locale', () => {
   }
 
   const initLocale = () => {
-    if (CY.storageAvailable('localStorage')) {
+    if (LocalStorageService.isAvailable()) {
       // default
-      if (!localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)) {
-        localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, 'auto')
+      const primaryLocaleResult = LocalStorageService.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)
+      if (!primaryLocaleResult.success || !primaryLocaleResult.value) {
+        LocalStorageService.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, 'auto')
       }
-      if (!localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)) {
-        localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, '0')
+      const fallbackLocaleResult = LocalStorageService.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)
+      if (!fallbackLocaleResult.success || !fallbackLocaleResult.value) {
+        LocalStorageService.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, '0')
       }
 
-      const curLangSet = localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)!
-      if (curLangSet === 'auto') {
+      const curLangSet = LocalStorageService.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)
+      const primaryLocaleSetting = curLangSet.success ? (curLangSet.value ?? 'auto') : 'auto'
+      if (primaryLocaleSetting === 'auto') {
         autoSetLang()
       } else {
-        primaryLang.value = toInt(curLangSet) ?? 0
+        primaryLang.value = toInt(primaryLocaleSetting) ?? 0
       }
 
-      secondaryLang.value = toInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!) ?? 0
+      const fallbackLocaleSetting = LocalStorageService.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)
+      secondaryLang.value =
+        toInt(fallbackLocaleSetting.success ? fallbackLocaleSetting.value : null) ?? 0
     } else {
       autoSetLang()
     }
