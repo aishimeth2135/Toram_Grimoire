@@ -10,7 +10,7 @@ import { LocalStorageService } from '@/shared/services/Storage'
 import { EnchantBuild } from '@/lib/Enchant/Enchant'
 
 import { type EnchantStoreConfig, enchantConfig, updateCharacterMaxLevel } from './config'
-import { type EnchantStoreSaveData, loadEnchantSaveData, saveEnchantSaveData } from './persistence'
+import { EnchantPersistenceService, type EnchantStoreSaveData } from './persistence'
 
 export const useEnchantStore = defineStore('view-enchant', () => {
   const enchantBuilds: Ref<EnchantBuild[]> = ref([])
@@ -68,7 +68,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
     currentBuildIndex.value = idx
   }
 
-  const save = (target = 'auto') => {
+  const save = () => {
     if (!LocalStorageService.isAvailable()) {
       return
     }
@@ -81,13 +81,13 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       index: currentBuildIndex.value,
       config: config,
     }
-    const result = saveEnchantSaveData(target, data)
+    const result = EnchantPersistenceService.save(data)
     if (!result.success) {
       throw result.error
     }
   }
 
-  const load = (target = 'auto') => {
+  const load = () => {
     if (!LocalStorageService.isAvailable()) {
       return
     }
@@ -97,12 +97,12 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       config: config,
     }
     try {
-      const result = loadEnchantSaveData(target)
+      const result = EnchantPersistenceService.load()
       if (!result.success) {
         throw result.error
       }
       if (result.value === null) {
-        console.warn('[enchant-simulator] data not found: ' + target)
+        console.warn('[enchant-simulator] data not found')
         return
       }
       const data = result.value
@@ -112,8 +112,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       resetConfig(data.config)
 
       hasFirstLoaded = true
+      EnchantPersistenceService.confirmLoaded()
     } catch (err) {
-      console.warn('[enchant-simulator] load failed: ' + target)
+      console.warn('[enchant-simulator] load failed')
       console.log(err)
       enchantBuilds.value = origin.builds
       currentBuildIndex.value = origin.index

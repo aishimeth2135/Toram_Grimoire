@@ -19,6 +19,7 @@
     "dompurify": "^2.3.10",
     "escape-string-regexp": "^5.0.0",
     "jsep": "^1.4.0",
+    "lz-string": "1.5.0",
     "marked": "^4.3.0",
     "os-browserify": "^0.3.0",
     "papaparse": "^5.7.0",

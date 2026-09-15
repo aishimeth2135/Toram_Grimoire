@@ -45,10 +45,12 @@ export default function () {
     extensions: [cyBracket],
   })
 
-  // iconify
+  // Lagacy data remove
   if (import.meta.env.PROD) {
     if (LocalStorageService.isAvailable()) {
       LocalStorageService.removeByPrefix('iconify')
+      LocalStorageService.removeByPrefix('app--character-simulator--data-0--skillBuilds')
+      LocalStorageService.removeByPrefix('app--character-simulator--data-0--foodBuilds')
     }
   }
 }

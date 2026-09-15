@@ -1,7 +1,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { V2_AUTO_SAVE_STORAGE_KEY } from '@/stores/views/character'
+import { CharacterPersistenceService, V2_AUTO_SAVE_STORAGE_KEY } from '@/stores/views/character'
 
 import { LocalStorageService } from '@/shared/services/Storage'
 
@@ -13,8 +13,7 @@ export function usePreviewDetect() {
 
   onMounted(() => {
     if (route.query.pre !== undefined) {
-      const result = LocalStorageService.getItem(V2_AUTO_SAVE_STORAGE_KEY)
-      if (result.success && !result.value) {
+      if (!CharacterPersistenceService.has()) {
         LocalStorageService.setItem(V2_AUTO_SAVE_STORAGE_KEY, preloadCharacterSimulatorData)
       }
     }

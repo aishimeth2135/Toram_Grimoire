@@ -1,4 +1,4 @@
-import { LocalStorageService } from '@/shared/services/Storage'
+import { DataPersistenceService } from '@/shared/services/DataPersistenceService'
 
 import type { EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
 
@@ -10,16 +10,7 @@ export interface EnchantStoreSaveData {
   config: EnchantStoreConfig
 }
 
-const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--'
-
-function getSaveKey(target: string): string {
-  return SAVE_PRETEXT + target
-}
-
-export function loadEnchantSaveData(target: string) {
-  return LocalStorageService.getJson<EnchantStoreSaveData>(getSaveKey(target))
-}
-
-export function saveEnchantSaveData(target: string, data: EnchantStoreSaveData) {
-  return LocalStorageService.setJson(getSaveKey(target), data)
-}
+export const EnchantPersistenceService = new DataPersistenceService<EnchantStoreSaveData>({
+  legacyKey: 'app--enchant-simulator--vbeta--auto',
+  compressedKey: 'app--enchant-simulator--lz-v1--auto',
+})

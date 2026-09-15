@@ -16,13 +16,11 @@ import { Skill } from '@/lib/Skill/Skill'
 
 import { useCharacterFoodStore } from './food-build'
 import {
+  CharacterPersistenceService,
   type CharacterSimulatorSaveData,
   type CharacterSimulatorSaveDataRoot,
   type CharacterStoreSaveSummary,
   type EquipmentSaveDataWithIndex,
-  deleteCharacterSimulatorSaveData,
-  loadCharacterSimulatorSaveDataRoot,
-  saveCharacterSimulatorSaveDataRoot,
 } from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
@@ -46,7 +44,7 @@ import { useCharacterSkillStore } from './skill'
 import { useCharacterSkillBuildStore } from './skill-build'
 import { migrateCharacterSimulatorSaveData } from './utils'
 
-export { V2_AUTO_SAVE_STORAGE_KEY } from './persistence'
+export { V2_AUTO_SAVE_STORAGE_KEY, CharacterPersistenceService } from './persistence'
 
 export const useCharacterStore = defineStore('view-character', () => {
   const characterSimulatorHasInit = ref(false)
@@ -109,7 +107,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 
   const deleteAllSavedData = () => {
-    const result = deleteCharacterSimulatorSaveData()
+    const result = CharacterPersistenceService.delete()
     if (!result.success) {
       throw result.error
     }
@@ -259,7 +257,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     try {
       reset()
 
-      const result = loadCharacterSimulatorSaveDataRoot()
+      const result = CharacterPersistenceService.load()
       if (!result.success) {
         throw result.error
       }
@@ -269,6 +267,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
         loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
+        CharacterPersistenceService.confirmLoaded()
       }
     } catch (error) {
       reset()
@@ -289,7 +288,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       summary,
       datas,
     }
-    const result = saveCharacterSimulatorSaveDataRoot(payload)
+    const result = CharacterPersistenceService.save(payload)
     if (!result.success) {
       logger
         .addTitle('saveCharacterSimulator')

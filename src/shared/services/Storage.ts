@@ -1,3 +1,5 @@
+import LZString from 'lz-string'
+
 export type StorageResult<Value> =
   | {
       success: true
@@ -23,6 +25,7 @@ export type StorageRestoreResult =
 type StorageKeyFilter = (key: string) => boolean
 
 const STORAGE_TEST_KEY = '__storage_test__'
+const COMPRESSED_JSON_PREFIX = 'cy-grimoire:lz:utf16:v1:'
 
 function getLocalStorage(): StorageResult<Storage> {
   try {
@@ -83,6 +86,46 @@ function getEntrySizeDifference(
   }
 
   return value.length - snapshot[key].length
+}
+
+function encodeJsonString(value: string): string {
+  try {
+    const compressed = LZString.compressToUTF16(value)
+    const encoded = COMPRESSED_JSON_PREFIX + compressed
+    if (encoded.length < value.length && LZString.decompressFromUTF16(compressed) === value) {
+      return encoded
+    }
+  } catch (_error) {
+    return value
+  }
+
+  return value
+}
+
+function decodeJsonString(value: string): StorageResult<string> {
+  if (!value.startsWith(COMPRESSED_JSON_PREFIX)) {
+    return {
+      success: true,
+      value,
+    }
+  }
+
+  try {
+    const decoded = LZString.decompressFromUTF16(value.slice(COMPRESSED_JSON_PREFIX.length))
+    if (typeof decoded !== 'string') {
+      throw new Error('The compressed JSON data is invalid.')
+    }
+
+    return {
+      success: true,
+      value: decoded,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    }
+  }
 }
 
 export class LocalStorageService {
@@ -198,6 +241,60 @@ export class LocalStorageService {
   static setJson(key: string, value: unknown): StorageResult<void> {
     try {
       return LocalStorageService.setItem(key, JSON.stringify(value))
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      }
+    }
+  }
+
+  static getCompressedJson<Value>(key: string): StorageResult<Value | null> {
+    const itemResult = LocalStorageService.getItem(key)
+    if (!itemResult.success) {
+      return itemResult
+    }
+    if (itemResult.value === null) {
+      return {
+        success: true,
+        value: null,
+      }
+    }
+
+    const decodedResult = decodeJsonString(itemResult.value)
+    if (!decodedResult.success) {
+      return decodedResult
+    }
+
+    try {
+      const value = JSON.parse(decodedResult.value) as Value
+      if (!itemResult.value.startsWith(COMPRESSED_JSON_PREFIX)) {
+        const encoded = encodeJsonString(decodedResult.value)
+        if (encoded !== decodedResult.value) {
+          LocalStorageService.setItem(key, encoded)
+        }
+      }
+
+      return {
+        success: true,
+        value,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      }
+    }
+  }
+
+  static setCompressedJson(key: string, value: unknown): StorageResult<void> {
+    try {
+      const json = JSON.stringify(value)
+      if (typeof json !== 'string') {
+        throw new Error('The value cannot be serialized as JSON.')
+      }
+
+      return LocalStorageService.setItem(key, encodeJsonString(json))
     } catch (error) {
       return {
         success: false,

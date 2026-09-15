@@ -5,11 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { Calculation } from '@/lib/Damage/DamageCalculation'
 
-import {
-  type DamageCalculationSaveData,
-  loadDamageCalculationSaveData,
-  saveDamageCalculationSaveData,
-} from './persistence'
+import { DamageCalculationPersistenceService, type DamageCalculationSaveData } from './persistence'
 
 export const useDamageCalculationStore = defineStore('views-damage-calculation', () => {
   const calculations: Ref<Calculation[]> = ref([])
@@ -58,14 +54,14 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
       currentCalculationIndex: currentCalculationIndex.value,
     }
 
-    const result = saveDamageCalculationSaveData(data)
+    const result = DamageCalculationPersistenceService.save(data)
     if (!result.success) {
       throw result.error
     }
   }
 
   const load = () => {
-    const result = loadDamageCalculationSaveData()
+    const result = DamageCalculationPersistenceService.load()
     if (!result.success) {
       console.warn('[store/damage-calculation/load] unknown error')
       console.log(result.error)
@@ -88,6 +84,7 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
         calculations: newCalculations,
         currentCalculationIndex: result.value.currentCalculationIndex,
       })
+      DamageCalculationPersistenceService.confirmLoaded()
     } catch (error) {
       console.warn('[store/damage-calculation/load] unknown error')
       console.log(error)

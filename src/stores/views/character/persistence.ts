@@ -1,4 +1,4 @@
-import { LocalStorageService } from '@/shared/services/Storage'
+import { DataPersistenceService } from '@/shared/services/DataPersistenceService'
 
 import type { CharacterSaveData } from '@/lib/Character/Character'
 import type { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
@@ -43,14 +43,8 @@ export interface CharacterSimulatorSaveDataRoot {
 
 export const V2_AUTO_SAVE_STORAGE_KEY = 'app--character-simulator--data-v2--auto'
 
-export function deleteCharacterSimulatorSaveData() {
-  return LocalStorageService.removeItem(V2_AUTO_SAVE_STORAGE_KEY)
-}
-
-export function loadCharacterSimulatorSaveDataRoot() {
-  return LocalStorageService.getJson<CharacterSimulatorSaveDataRoot>(V2_AUTO_SAVE_STORAGE_KEY)
-}
-
-export function saveCharacterSimulatorSaveDataRoot(data: CharacterSimulatorSaveDataRoot) {
-  return LocalStorageService.setJson(V2_AUTO_SAVE_STORAGE_KEY, data)
-}
+export const CharacterPersistenceService =
+  new DataPersistenceService<CharacterSimulatorSaveDataRoot>({
+    legacyKey: V2_AUTO_SAVE_STORAGE_KEY,
+    compressedKey: 'app--character-simulator--lz-v1',
+  })
