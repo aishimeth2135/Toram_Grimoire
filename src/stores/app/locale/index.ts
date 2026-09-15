@@ -3,15 +3,13 @@ import { computed, reactive, readonly, ref } from 'vue'
 import { type Composer } from 'vue-i18n'
 
 import { useNotify } from '@/shared/composables/Notify'
-import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
-import { LocalStorageService } from '@/shared/services/Storage'
-import { toInt } from '@/shared/utils/number'
+import { AppStorageService } from '@/shared/services/AppStorageService'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import { I18nStore } from './I18nStore'
 import { LocaleGlobalNamespaces, type LocaleNamespaces, LocaleViewNamespaces } from './enums'
 
 export const DEFAULT_LOCALE = 'zh-TW'
-const LOCALE_LIST = ['en', 'zh-TW', 'ja', 'zh-CN']
 const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
   LocaleGlobalNamespaces.App,
   LocaleGlobalNamespaces.Common,
@@ -19,6 +17,8 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
 ]
 
 export const useLocaleStore = defineStore('app-locale', () => {
+  const localeLogger = new CommonLogger('Locale')
+
   const primaryLang = ref(0)
   const secondaryLang = ref(0)
   const i18nMessageLoaded = ref(false)
@@ -27,11 +27,11 @@ export const useLocaleStore = defineStore('app-locale', () => {
   const loadingLocalePromises = new Map<LocaleNamespaces, Promise<void>>()
 
   const primaryLocale = computed(() => {
-    return LOCALE_LIST[primaryLang.value]
+    return AppStorageService.LOCALE_LIST[primaryLang.value]
   })
 
   const fallbackLocale = computed(() => {
-    return LOCALE_LIST[secondaryLang.value]
+    return AppStorageService.LOCALE_LIST[secondaryLang.value]
   })
 
   const setI18nInstance = (i18nInstance: Composer) => {
@@ -50,31 +50,13 @@ export const useLocaleStore = defineStore('app-locale', () => {
   }
 
   const initLocale = () => {
-    if (LocalStorageService.isAvailable()) {
-      // default
-      const primaryLocaleResult = LocalStorageService.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)
-      if (!primaryLocaleResult.success || !primaryLocaleResult.value) {
-        LocalStorageService.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, 'auto')
-      }
-      const fallbackLocaleResult = LocalStorageService.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)
-      if (!fallbackLocaleResult.success || !fallbackLocaleResult.value) {
-        LocalStorageService.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, '0')
-      }
-
-      const curLangSet = LocalStorageService.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)
-      const primaryLocaleSetting = curLangSet.success ? (curLangSet.value ?? 'auto') : 'auto'
-      if (primaryLocaleSetting === 'auto') {
-        autoSetLang()
-      } else {
-        primaryLang.value = toInt(primaryLocaleSetting) ?? 0
-      }
-
-      const fallbackLocaleSetting = LocalStorageService.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)
-      secondaryLang.value =
-        toInt(fallbackLocaleSetting.success ? fallbackLocaleSetting.value : null) ?? 0
-    } else {
+    const primaryLocaleSetting = AppStorageService.getPrimaryLocale()
+    if (primaryLocaleSetting === AppStorageService.LOCALE_AUTO) {
       autoSetLang()
+    } else {
+      primaryLang.value = primaryLocaleSetting
     }
+    secondaryLang.value = AppStorageService.getFallbackLocale()
   }
 
   type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (
@@ -83,7 +65,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
   const loadLocaleMessages: LoadLocaleMessages = async namespaces => {
     const namespaceList = typeof namespaces === 'string' ? [namespaces] : namespaces
     if (!i18n.value) {
-      console.warn('[Init language data] instance is no found')
+      localeLogger.warn('The instance is not found.')
       return
     }
 
@@ -100,12 +82,16 @@ export const useLocaleStore = defineStore('app-locale', () => {
           } catch (err) {
             count += 1
             lastError = err
+            localeLogger.warn(
+              'An unexpected error has occurred when downloading locale. Retrying...'
+            )
           }
         }
         while (count < 3 && !resultData) {
           await retry()
         }
         if (!resultData) {
+          localeLogger.warn('Download locale failed.')
           throw lastError
         }
         data[namespace] = resultData
@@ -151,7 +137,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
 
   const updateLocaleGlobalMessages = async () => {
     if (!i18n.value) {
-      console.warn('[Init language data] instance is no found')
+      localeLogger.warn('The instance is not found.')
       return
     }
     try {
@@ -160,7 +146,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
       console.error(err)
       const notify = useNotify()
       notify(
-        'An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.'
+        'An unexpected error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.'
       )
     } finally {
       i18nMessageLoaded.value = true

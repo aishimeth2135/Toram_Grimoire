@@ -1,19 +1,12 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
-import { LocalStorageService } from '@/shared/services/Storage'
-import { toInt } from '@/shared/utils/number'
+import { AppStorageService } from '@/shared/services/AppStorageService'
 
 export const useSettingStore = defineStore('app-setting', () => {
-  const getSetting = (key: string) => {
-    const result = LocalStorageService.getItem(key)
-    return result.success ? result.value : null
-  }
-
-  const appFont = ref(toInt(getSetting(APP_STORAGE_KEYS.FONT_FAMILY)) ?? 1)
-  const appRem = ref(toInt(getSetting(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE)) ?? 160)
-  const appNightMode = ref(getSetting(APP_STORAGE_KEYS.NIGHT_MODE) === '1')
+  const appFont = ref(AppStorageService.getFontFamily())
+  const appRem = ref(AppStorageService.getRootElementFontSize())
+  const appNightMode = ref(AppStorageService.getNightMode())
 
   const initDocumentElementClassList = () => {
     const rel = document.documentElement
@@ -34,7 +27,7 @@ export const useSettingStore = defineStore('app-setting', () => {
         if (value !== 0) {
           document.documentElement.classList.add('app-font-' + value.toString())
         }
-        LocalStorageService.setItem(APP_STORAGE_KEYS.FONT_FAMILY, value.toString())
+        AppStorageService.setFontFamily(value)
       },
       get() {
         return appFont.value
@@ -44,7 +37,7 @@ export const useSettingStore = defineStore('app-setting', () => {
       set(value) {
         appRem.value = value
         document.documentElement.style.fontSize = (value / 10).toString() + 'px'
-        LocalStorageService.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, value.toString())
+        AppStorageService.setRootElementFontSize(value)
       },
       get() {
         return appRem.value
@@ -54,7 +47,7 @@ export const useSettingStore = defineStore('app-setting', () => {
       set(value) {
         appNightMode.value = value
         document.documentElement.classList.toggle('theme--night-mode', value)
-        LocalStorageService.setItem(APP_STORAGE_KEYS.NIGHT_MODE, value ? '1' : '0')
+        AppStorageService.setNightMode(value)
       },
       get() {
         return appNightMode.value

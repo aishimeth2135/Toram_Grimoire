@@ -63,12 +63,12 @@
         </template>
         <template #actions>
           <cy-button-radio
-            v-for="(item, idx) in primaryLanguageList"
-            :key="item"
-            :selected="primaryLanguage === idx"
-            @click="setLanguage(0, idx)"
+            v-for="{ key, value } in primaryLanguageOptions"
+            :key="key"
+            :selected="primaryLanguage === value"
+            @click="setLanguage(0, value)"
           >
-            {{ t('app.settings.primary-language.lang-title.' + item) }}
+            {{ t('app.settings.primary-language.lang-title.' + key) }}
           </cy-button-radio>
         </template>
         <template #extra-rows>
@@ -82,12 +82,12 @@
             </template>
             <template #actions>
               <cy-button-radio
-                v-for="(item, idx) in fallbackLanguageList"
-                :key="item"
-                :selected="fallbackLanguage === idx"
-                @click="setLanguage(1, idx)"
+                v-for="{ key, value } in fallbackLanguageOptions"
+                :key="key"
+                :selected="fallbackLanguage === value"
+                @click="setLanguage(1, value)"
               >
-                {{ t('app.settings.primary-language.lang-title.' + item) }}
+                {{ t('app.settings.primary-language.lang-title.' + key) }}
               </cy-button-radio>
             </template>
           </AppSettingsRow>
@@ -143,7 +143,7 @@ import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
 
 import { useLoading, useNotify } from '@/shared/composables/Notify'
-import { APP_STORAGE_KEYS } from '@/shared/consts/storage'
+import { AppStorageService } from '@/shared/services/AppStorageService'
 import { LocalStorageService } from '@/shared/services/Storage'
 import CY from '@/shared/utils/Cyteria'
 
@@ -165,37 +165,37 @@ const appRemOptions = [120, 140, 160, 180, 200].map(value => ({
   value,
 }))
 
-const primaryLanguageList = ['auto', '0', '1', '2', '3']
-const fallbackLanguageList = ['0', '1', '2', '3']
-
-const getStorageItem = (key: string) => {
-  const result = LocalStorageService.getItem(key)
-  return result.success ? result.value : null
+const getBaseLanguageOptions = () => {
+  return AppStorageService.LOCALE_LIST.map((item, idx) => ({
+    value: idx,
+    key: item,
+  }))
 }
+const primaryLanguageOptions = [
+  { value: AppStorageService.LOCALE_AUTO, key: 'auto' },
+  ...getBaseLanguageOptions(),
+]
+const fallbackLanguageOptions = getBaseLanguageOptions()
 
-const _primaryLanguage = ref(
-  primaryLanguageList.indexOf(getStorageItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto')
-)
+const _primaryLanguage = ref(AppStorageService.getPrimaryLocale())
 const primaryLanguage = computed<number>({
   get() {
     return _primaryLanguage.value
   },
   set(value) {
     _primaryLanguage.value = value
-    LocalStorageService.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value])
+    AppStorageService.setPrimaryLocale(value)
   },
 })
 
-const _fallbackLanguage = ref(
-  fallbackLanguageList.indexOf(getStorageItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto')
-)
+const _fallbackLanguage = ref(AppStorageService.getFallbackLocale())
 const fallbackLanguage = computed<number>({
   get() {
     return _fallbackLanguage.value
   },
   set(value) {
     _fallbackLanguage.value = value
-    LocalStorageService.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value])
+    AppStorageService.setFallbackLocale(value)
   },
 })
 
