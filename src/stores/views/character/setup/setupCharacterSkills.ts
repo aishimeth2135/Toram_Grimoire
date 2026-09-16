@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed, markRaw, reactive } from 'vue'
+import { type ComputedRef, type Ref, computed, reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -221,7 +221,7 @@ export function setupCharacterSkills(
     computed(() => buildsContext.value.skillBuild)
   )
 
-  const computing = new SkillComputingContainer()
+  const computing = SkillComputingContainer.create()
   computing.varGetters.skillLevel = getSkillLevel
   computing.varGetters.characterLevel = () => character.value?.level ?? 0
   computing.varGetters.registletLevel = (() => {
@@ -650,7 +650,7 @@ export function setupCharacterSkills(
   })
 
   return {
-    skillComputingContainer: markRaw(computingContainer),
+    skillComputingContainer: computingContainer,
 
     activeSkillResultStates,
     passiveSkillResultStates,

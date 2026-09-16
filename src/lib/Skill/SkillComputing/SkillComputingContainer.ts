@@ -1,4 +1,4 @@
-import { shallowReactive } from 'vue'
+import { markRaw, shallowReactive } from 'vue'
 
 import type {
   HandleFormulaMethods,
@@ -32,6 +32,12 @@ interface ComputeFormulaExtraValueHandler {
   (formula: string): number | null
 }
 
+interface SkillComputingConfig {
+  formulaDisplayMode: FormulaDisplayModes
+  getFormulaExtraValue: GetFormulaExtraValueHandler | null
+  computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
+}
+
 /**
  * @vue-reactive-raw controller
  */
@@ -48,13 +54,9 @@ class SkillComputingContainer {
   // The extended callback may be affected by the reactive state
   readonly handleFormulaExtends: (() => HandleFormulaExtends)[]
 
-  readonly config: {
-    formulaDisplayMode: FormulaDisplayModes
-    getFormulaExtraValue: GetFormulaExtraValueHandler | null
-    computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
-  }
+  readonly config: SkillComputingConfig
 
-  constructor() {
+  private constructor(config: SkillComputingConfig) {
     this.varGetters = {
       characterLevel: null,
       skillLevel: null,
@@ -65,11 +67,17 @@ class SkillComputingContainer {
       texts: {},
     }
     this.handleFormulaExtends = []
-    this.config = shallowReactive({
+    this.config = config
+  }
+
+  static create(): SkillComputingContainer {
+    const config = shallowReactive<SkillComputingConfig>({
       formulaDisplayMode: FormulaDisplayModes.Normal,
       getFormulaExtraValue: null,
       computeFormulaExtraValue: null,
     })
+
+    return markRaw(new SkillComputingContainer(config))
   }
 }
 

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { markRaw, ref } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -24,7 +24,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
   const foodsBase: Ref<FoodsBase | null> = ref(null)
 
   const initFoodsBase = () => {
-    foodsBase.value = markRaw(new FoodsBase())
+    foodsBase.value = FoodsBase.create()
   }
 
   const createFoodBuild = () => {

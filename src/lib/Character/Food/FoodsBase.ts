@@ -10,9 +10,14 @@ type FoodAmount = [number, number]
 class FoodsBase {
   foodBases: FoodBase[]
 
-  constructor() {
-    this.foodBases = markRaw([])
-    initFoodsBase(this)
+  private constructor(foodBases: FoodBase[]) {
+    this.foodBases = foodBases
+  }
+
+  static create(): FoodsBase {
+    const foodsBase = markRaw(new FoodsBase(markRaw([])))
+    initFoodsBase(foodsBase)
+    return foodsBase
   }
 
   appendFoodBase(base: StatBase, amount: FoodAmount, negative: boolean = false) {
