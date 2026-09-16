@@ -214,8 +214,17 @@ const clearSpreadsheetsCaches = () => {
     .then(res => res && notify(t('app.settings.clear-spreadsheets-caches.success-tips')))
 }
 
+const getStorageBackupFileName = (): string => {
+  const date = new Date()
+  const year = date.getFullYear().toString()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = date.getDate().toString().padStart(2, '0')
+
+  return `cy-grimoire_${year}${month}${day}.txt`
+}
+
 const saveLocalStorage = () => {
-  const result = LocalStorageService.getEntries(key => !key.startsWith('iconify'))
+  const result = LocalStorageService.getDecompressedEntries(key => !key.startsWith('iconify'))
   if (!result.success) {
     notify(t('app.settings.storage-backup.save-failed-tips'))
     return
@@ -223,8 +232,9 @@ const saveLocalStorage = () => {
 
   CY.file.save({
     data: JSON.stringify(result.value),
-    fileType: 'text/txt',
-    fileName: 'cy-grimoire-storage.txt',
+    fileType: 'text/plain',
+    encoding: 'utf-8',
+    fileName: getStorageBackupFileName(),
   })
 
   notify(t('app.settings.storage-backup.save-success-tips'))
@@ -232,6 +242,7 @@ const saveLocalStorage = () => {
 
 const loadLocalStorage = () => {
   CY.file.load({
+    encoding: 'utf-8',
     succeed: data => {
       try {
         const jsonData: unknown = JSON.parse(data)

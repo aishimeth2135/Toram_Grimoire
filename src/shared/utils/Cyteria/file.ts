@@ -3,17 +3,24 @@ import sanitize from 'sanitize-filename'
 type FileSaveOptions = {
   data?: string
   fileType?: string
+  encoding?: string
   fileName: string
   dataUrl?: string
 }
 
-function save({ data, fileType = 'text/txt', fileName, dataUrl }: FileSaveOptions): void {
+function save({
+  data,
+  fileType = 'text/plain',
+  encoding = 'utf-8',
+  fileName,
+  dataUrl,
+}: FileSaveOptions): void {
   if (!dataUrl) {
     if (!data) {
       console.warn('[file.save] data and dataUrl must give at least one.')
       return
     }
-    const blob = new Blob([data], { type: fileType + ';charset=utf-8;' })
+    const blob = new Blob([data], { type: `${fileType};charset=${encoding}` })
     dataUrl = URL.createObjectURL(blob)
   }
   const link = document.createElement('a')
@@ -35,6 +42,7 @@ type FileLoadOptions = {
   error?: FileLoadError | null
   beforeLoad?: FileLoadBefore | null
   checkFileType?: FileLoadCheckType | null
+  encoding?: string
 }
 
 function load({
@@ -42,6 +50,7 @@ function load({
   error = null,
   beforeLoad = null,
   checkFileType = null,
+  encoding = 'utf-8',
 }: FileLoadOptions) {
   try {
     const input = document.createElement('input')
@@ -61,7 +70,7 @@ function load({
           succeed?.(this.result as string)
           document.body.removeChild(input)
         })
-        fr.readAsText(file)
+        fr.readAsText(file, encoding)
       } else {
         error?.(new Error('[Load File] unknown error.'))
       }

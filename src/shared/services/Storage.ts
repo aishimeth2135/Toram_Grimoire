@@ -322,6 +322,35 @@ export class LocalStorageService {
     }
   }
 
+  static getDecompressedEntries(filter?: StorageKeyFilter): StorageResult<Record<string, string>> {
+    const entriesResult = LocalStorageService.getEntries(filter)
+    if (!entriesResult.success) {
+      return entriesResult
+    }
+
+    try {
+      const entries = Object.fromEntries(
+        Object.entries(entriesResult.value).map(([key, value]) => {
+          const decodedResult = decodeJsonString(value)
+          if (!decodedResult.success) {
+            throw decodedResult.error
+          }
+
+          return [key, decodedResult.value]
+        })
+      )
+      return {
+        success: true,
+        value: entries,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      }
+    }
+  }
+
   static removeByPrefix(prefix: string): StorageResult<void> {
     const storageResult = getLocalStorage()
     if (!storageResult.success) {
