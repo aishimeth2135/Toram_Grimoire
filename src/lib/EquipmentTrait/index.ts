@@ -6,12 +6,12 @@ import type { EquipmentTraitCategory } from './EquipmentTrait/enums'
 export default class EquipmentTraitSystem {
   equipmentTraitItems: EquipmentTraitItem[]
 
-  private constructor(equipmentTraitItems: EquipmentTraitItem[]) {
-    this.equipmentTraitItems = equipmentTraitItems
+  private constructor() {
+    this.equipmentTraitItems = []
   }
 
   static create(): EquipmentTraitSystem {
-    return new EquipmentTraitSystem(markRaw([]))
+    return markRaw(new EquipmentTraitSystem())
   }
 
   appendEquipmentTraitItem(
@@ -20,7 +20,7 @@ export default class EquipmentTraitSystem {
     name: string
   ): EquipmentTraitItem {
     const newId = EquipmentTraitItem.generateId(id, category)
-    const newItem = markRaw(new EquipmentTraitItem(newId, category, name))
+    const newItem = EquipmentTraitItem.create(newId, category, name)
     this.equipmentTraitItems.push(newItem)
     return newItem
   }

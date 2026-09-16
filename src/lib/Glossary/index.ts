@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { GlossaryTag } from './GlossaryTag'
 
 export default class GlossarySystem {
@@ -10,11 +12,11 @@ export default class GlossarySystem {
   }
 
   static create(): GlossarySystem {
-    return new GlossarySystem()
+    return markRaw(new GlossarySystem())
   }
 
   appendTag(name: string) {
-    const tag = new GlossaryTag(name)
+    const tag = GlossaryTag.create(name)
     this.tags.push(tag)
     return tag
   }

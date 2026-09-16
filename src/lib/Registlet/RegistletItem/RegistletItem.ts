@@ -15,8 +15,8 @@ interface RegistletInfos {
 }
 
 class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> {
-  id: RegistletCategoryIds
-  items: ItemBase[]
+  readonly id: RegistletCategoryIds
+  readonly items: ItemBase[]
 
   private constructor(id: RegistletCategoryIds) {
     this.id = id
@@ -26,7 +26,7 @@ class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> 
   static create<ItemBase extends RegistletItemBase = RegistletItemBase>(
     id: RegistletCategoryIds
   ): RegistletCategory<ItemBase> {
-    return markRaw(new RegistletCategory<ItemBase>(id))
+    return new RegistletCategory<ItemBase>(id)
   }
 
   appendItem(item: ItemBase): void {
@@ -37,14 +37,14 @@ class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> 
 abstract class RegistletItemBase {
   abstract link: any
 
-  category: RegistletCategory
-  id: string
-  name: string
-  obtainLevels: number[]
-  maxLevel: number
-  powderCost: number
-  powderCostAdditional: number | null
-  rows: RegistletItemRow[]
+  readonly category: RegistletCategory
+  readonly id: string
+  readonly name: string
+  readonly obtainLevels: number[]
+  readonly maxLevel: number
+  readonly powderCost: number
+  readonly powderCostAdditional: number | null
+  readonly rows: RegistletItemRow[]
 
   protected constructor(category: RegistletCategory, infos: RegistletInfos) {
     this.category = category

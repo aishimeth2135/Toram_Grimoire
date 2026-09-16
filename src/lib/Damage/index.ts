@@ -22,7 +22,7 @@ export default class DamageCalculationSystem {
     type FactoryAlly = (id: CalculationContainerIds, callback: FactoryCreated) => void
     type DamageTypeHandlerCallback = (result: boolean) => CalculationItemIds
 
-    const base = new CalculationBase()
+    const base = CalculationBase.create()
 
     const factory = (
       id: CalculationContainerIds,

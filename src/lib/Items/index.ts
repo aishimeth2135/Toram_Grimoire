@@ -8,18 +8,14 @@ export default class ItemsSystem {
   crystals: BagCrystal[]
   potionsRoot: BagPotionsRoot
 
-  private constructor(
-    equipments: BagEquipment[],
-    crystals: BagCrystal[],
-    potionsRoot: BagPotionsRoot
-  ) {
-    this.equipments = equipments
-    this.crystals = crystals
-    this.potionsRoot = potionsRoot
+  private constructor() {
+    this.equipments = []
+    this.crystals = []
+    this.potionsRoot = BagPotionsRoot.create()
   }
 
   static create(): ItemsSystem {
-    return new ItemsSystem(markRaw([]), markRaw([]), BagPotionsRoot.create())
+    return markRaw(new ItemsSystem())
   }
 
   appendEquipment(

@@ -28,7 +28,7 @@ import {
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
   let basicBranch = effectItem.branchItems.find(branchItem => branchItem.is(SkillBranchNames.Basic))
   if (!basicBranch) {
-    basicBranch = new SkillBranchItem(effectItem, effectBasicPropsToBranch(origin))
+    basicBranch = SkillBranchItem.create(effectItem, effectBasicPropsToBranch(origin))
     effectItem.branchItems.unshift(basicBranch)
   }
   effectItem.basicBranchItem = basicBranch
@@ -152,7 +152,7 @@ function initBranchSpecialProps(effectItem: SkillEffectItem) {
       (bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) &&
       bch.hasProp('buffs')
     ) {
-      bch.buffs = new SkillBranchBuffs(bch.prop('buffs'))
+      bch.buffs = SkillBranchBuffs.create(bch.prop('buffs'))
       bch.removeProp('buffs')
     }
   })

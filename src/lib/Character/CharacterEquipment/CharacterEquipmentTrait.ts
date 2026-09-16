@@ -13,10 +13,14 @@ class CharacterEquipmentTrait {
   level: number
   currentStack: number
 
-  constructor(base: EquipmentTraitItem, level = 1) {
+  private constructor(base: EquipmentTraitItem, level = 1) {
     this.base = base
     this.level = level
     this.currentStack = 1
+  }
+
+  static create(base: EquipmentTraitItem, level = 1): CharacterEquipmentTrait {
+    return new CharacterEquipmentTrait(base, level)
   }
 
   save(): CharacterEquipmentTraitSaveData {
@@ -32,7 +36,7 @@ class CharacterEquipmentTrait {
     if (!base) {
       return null
     }
-    const newTrait = new CharacterEquipmentTrait(base, data.level)
+    const newTrait = CharacterEquipmentTrait.create(base, data.level)
     newTrait.currentStack = data.stack
     return newTrait
   }

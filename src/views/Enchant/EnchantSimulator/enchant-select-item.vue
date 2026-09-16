@@ -124,7 +124,7 @@ const categorys = (() => {
 const showNegativeSuggestedList = ref(false)
 
 const tmpEquipment = computed(() => {
-  const equip = new EnchantEquipment()
+  const equip = EnchantEquipment.create()
   if (!props.isWeapon) {
     equip.fieldType = EnchantEquipmentTypes.BodyArmor
   }

@@ -43,7 +43,7 @@ class Calculation {
   containerCustomItems: Map<CalculationContainerIds, CalcItemCustom[]>
   config: CalculationConfig
 
-  constructor(base: CalculationBase, name: string = '') {
+  private constructor(base: CalculationBase, name: string = '') {
     this.base = base
     this.name = name
     this.containers = new Map()
@@ -55,12 +55,12 @@ class Calculation {
 
     // init of containers and items
     for (const itemBase of this.base.items.values()) {
-      const item = new CalcItem(this, itemBase)
+      const item = CalcItem.create(this, itemBase)
       this.items.set(itemBase.id, item)
     }
 
     for (const containerBase of this.base.containers.values()) {
-      const container = new CalcItemContainer(this, containerBase)
+      const container = CalcItemContainer.create(this, containerBase)
       container.initItems()
       this.containers.set(containerBase.id, container)
     }
@@ -70,6 +70,10 @@ class Calculation {
       getContainerCurrentItemId: null,
       getContainerForceHidden: null,
     }
+  }
+
+  static create(base: CalculationBase, name: string = ''): Calculation {
+    return new Calculation(base, name)
   }
 
   appendCustomItem(
@@ -85,7 +89,7 @@ class Calculation {
     const container = this.containers.get(containerId)
     const itemBase = container ? container.base.items.get(itemId) : null
     if (itemBase) {
-      const newItem = new CalcItemCustom(this, itemBase)
+      const newItem = CalcItemCustom.create(this, itemBase)
       this.containerCustomItems.get(containerId)!.push(newItem)
       return newItem
     }
@@ -193,12 +197,16 @@ class CalcItemContainer {
   enabled: boolean
   items: Map<CalculationItemIds, CalcItem>
 
-  constructor(calculation: Calculation, base: CalcItemContainerBase) {
+  private constructor(calculation: Calculation, base: CalcItemContainerBase) {
     this._calculation = calculation
     this.base = base
     this.enabled = base.enabledDefaultValue
     this.items = new Map()
     this._currentItemId = null
+  }
+
+  static create(calculation: Calculation, base: CalcItemContainerBase): CalcItemContainer {
+    return new CalcItemContainer(calculation, base)
   }
 
   /**
@@ -301,10 +309,14 @@ class CalcItem {
 
   base: CalcItemBase
 
-  constructor(calculation: Calculation, base: CalcItemBase) {
+  protected constructor(calculation: Calculation, base: CalcItemBase) {
     this._calculation = calculation
     this.base = base
     this._value = base.defaultValue
+  }
+
+  static create(calculation: Calculation, base: CalcItemBase): CalcItem {
+    return new CalcItem(calculation, base)
   }
   get value(): number {
     const value = this._calculation.config.getItemValue?.(this.base.id)
@@ -327,10 +339,14 @@ class CalcItem {
 class CalcItemCustom extends CalcItem {
   name: string
 
-  constructor(calculation: Calculation, base: CalcItemBase, name: string = '') {
+  private constructor(calculation: Calculation, base: CalcItemBase, name: string = '') {
     super(calculation, base)
 
     this.name = name
+  }
+
+  static create(calculation: Calculation, base: CalcItemBase, name: string = ''): CalcItemCustom {
+    return new CalcItemCustom(calculation, base, name)
   }
 }
 

@@ -94,8 +94,8 @@ class SkillItem {
     const defaultSef = skill.defaultEffect
     const otherSefs = skill.effects.filter(sef => sef !== defaultSef)
     this.effectItems = [
-      new SkillEffectItem(this, defaultSef),
-      ...otherSefs.map(sef => new SkillEffectItem(this, defaultSef, sef)),
+      SkillEffectItem.create(this, defaultSef),
+      ...otherSefs.map(sef => SkillEffectItem.create(this, defaultSef, sef)),
     ]
   }
 

@@ -55,7 +55,7 @@ abstract class SkillEffectItemBase implements InstanceWithId {
   // reactive: init in `initStackStates`
   readonly stackStates: BranchStackState[]
 
-  constructor(parent: SkillItem) {
+  protected constructor(parent: SkillItem) {
     this.instanceId = SkillEffectItemBase._idGenerator.generate()
     this.parent = parent
     this.stackStates = []
@@ -84,11 +84,11 @@ class SkillEffectItem extends SkillEffectItemBase {
 
   basicBranchItem!: SkillBranchItem<SkillEffectItem>
 
-  constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
+  private constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
-    this.branchItems = normalizeBaseBranches(defaultSef.branches).map(
-      bch => new SkillBranchItem(this, bch)
+    this.branchItems = normalizeBaseBranches(defaultSef.branches).map(bch =>
+      SkillBranchItem.create(this, bch)
     )
     initBasicBranchItem(this, defaultSef)
 
@@ -96,8 +96,8 @@ class SkillEffectItem extends SkillEffectItemBase {
     const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
     this.equipments = convertEffectEquipment(current, dualSwordRegress)
 
-    this.historys = current.historys.map(
-      history => new SkillEffectItemHistory(parent, this, history)
+    this.historys = current.historys.map(history =>
+      SkillEffectItemHistory.create(parent, this, history)
     )
 
     if (from) {
@@ -120,6 +120,10 @@ class SkillEffectItem extends SkillEffectItemBase {
     })
 
     initStackStates(this)
+  }
+
+  static create(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect): SkillEffectItem {
+    return new SkillEffectItem(parent, defaultSef, from)
   }
 
   private computedEquipmentBranchValue(
@@ -236,10 +240,14 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   // Map<SkillBranchItem.instanceId, SkillBranchItem | null>
   nexts: Map<InstanceId, SkillBranchItem | null>
 
-  constructor(parent: SkillItem, parentEffect: SkillEffectItem, historyEffect: SkillEffectHistory) {
+  private constructor(
+    parent: SkillItem,
+    parentEffect: SkillEffectItem,
+    historyEffect: SkillEffectHistory
+  ) {
     super(parent)
-    this.branchItems = normalizeBaseBranches(historyEffect.branches).map(
-      bch => new SkillBranchItem(this, bch)
+    this.branchItems = normalizeBaseBranches(historyEffect.branches).map(bch =>
+      SkillBranchItem.create(this, bch)
     )
 
     this.origin = historyEffect
@@ -248,6 +256,14 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     this.nexts = new Map()
     this.introductionBranches = []
     this.removedBranches = []
+  }
+
+  static create(
+    parent: SkillItem,
+    parentEffect: SkillEffectItem,
+    historyEffect: SkillEffectHistory
+  ): SkillEffectItemHistory {
+    return new SkillEffectItemHistory(parent, parentEffect, historyEffect)
   }
 
   get modifiedBranchItems() {

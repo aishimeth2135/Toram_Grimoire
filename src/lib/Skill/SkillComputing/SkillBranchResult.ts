@@ -146,11 +146,19 @@ class SkillBranchStatResult extends SkillBranchResult {
   // The condition value that will be calc and result is `boolean`.
   conditionValue: string | null
 
-  constructor(branch: SkillBranchItemBaseChilds, origin: StatComputed, stat: StatComputed) {
+  private constructor(branch: SkillBranchItemBaseChilds, origin: StatComputed, stat: StatComputed) {
     super(ResultContainerTypes.Number, branch, stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
     this.conditionValue = null
+  }
+
+  static createForStat(
+    branch: SkillBranchItemBaseChilds,
+    origin: StatComputed,
+    stat: StatComputed
+  ): SkillBranchStatResult {
+    return new SkillBranchStatResult(branch, origin, stat)
   }
 
   override get valueSum() {
@@ -326,7 +334,7 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     }
   }
 
-  constructor(
+  private constructor(
     branch: SkillBranchItemBaseChilds,
     key: string,
     origin: string,
@@ -336,6 +344,16 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     super(origin, value, parseResult)
     this.branch = branch
     this.key = key
+  }
+
+  static createForBranch(
+    branch: SkillBranchItemBaseChilds,
+    key: string,
+    origin: string,
+    value: string,
+    parseResult: SkillBranchTextResultParseResult
+  ): SkillBranchTextResult {
+    return new SkillBranchTextResult(branch, key, origin, value, parseResult)
   }
 
   get valueSum() {

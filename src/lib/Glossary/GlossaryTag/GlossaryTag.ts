@@ -1,26 +1,34 @@
 class GlossaryTag {
   name: string
-  rows: GlossaryTagRow[]
+  readonly rows: GlossaryTagRow[]
 
-  constructor(name: string) {
+  private constructor(name: string) {
     this.name = name
     this.rows = []
   }
 
+  static create(name: string): GlossaryTag {
+    return new GlossaryTag(name)
+  }
+
   appendRow(type: string, value: string): GlossaryTagRow {
-    const frame = new GlossaryTagRow(type, value)
+    const frame = GlossaryTagRow.create(type, value)
     this.rows.push(frame)
     return frame
   }
 }
 
 class GlossaryTagRow {
-  type: string
-  value: string[]
+  readonly type: string
+  readonly value: string[]
 
-  constructor(type: string, value: string) {
+  private constructor(type: string, value: string) {
     this.type = type
     this.value = [value]
+  }
+
+  static create(type: string, value: string): GlossaryTagRow {
+    return new GlossaryTagRow(type, value)
   }
 
   appendValue(value: string): void {

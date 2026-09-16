@@ -51,20 +51,24 @@ class CalculationBase {
    */
   items: Map<CalculationItemIds, CalcItemBase>
 
-  constructor() {
+  private constructor() {
     this.containers = new Map()
     this.items = new Map()
   }
 
+  static create(): CalculationBase {
+    return new CalculationBase()
+  }
+
   appendContainer(id: CalculationContainerIds, type: ContainerTypes): CalcItemContainerBase {
-    const container = new CalcItemContainerBase(this, id, type)
+    const container = CalcItemContainerBase.create(this, id, type)
     this.containers.set(id, container)
     return container
   }
 
   appendItem(id: CalculationItemIds): CalcItemBase {
     if (!this.items.has(id)) {
-      const item = new CalcItemBase(this, id)
+      const item = CalcItemBase.create(this, id)
       this.items.set(id, item)
       return item
     }
@@ -72,7 +76,7 @@ class CalculationBase {
   }
 
   createCalculation(name: string = ''): Calculation {
-    return new Calculation(this, name)
+    return Calculation.create(this, name)
   }
 
   result(
@@ -156,7 +160,7 @@ class CalcItemContainerBase {
 
   readonly references: CalculationContainerIds[]
 
-  constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
+  private constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
     this.id = id
     this._parent = parent
     this.type = type ?? ContainerTypes.Normal
@@ -173,6 +177,14 @@ class CalcItemContainerBase {
       valueValid: true,
     }
     this.references = []
+  }
+
+  static create(
+    parent: CalculationBase,
+    id: CalculationContainerIds,
+    type: ContainerTypes
+  ): CalcItemContainerBase {
+    return new CalcItemContainerBase(parent, id, type)
   }
 
   get disabledValue(): number {
@@ -270,7 +282,7 @@ class CalcItemBase {
   step: number
   defaultValue: number
 
-  constructor(parent: CalculationBase, id: CalculationItemIds) {
+  private constructor(parent: CalculationBase, id: CalculationItemIds) {
     this._parent = parent
     this.id = id
     this.unit = ''
@@ -278,6 +290,10 @@ class CalcItemBase {
     this._max = null
     this.step = 1
     this.defaultValue = 0
+  }
+
+  static create(parent: CalculationBase, id: CalculationItemIds): CalcItemBase {
+    return new CalcItemBase(parent, id)
   }
 
   get min(): number {

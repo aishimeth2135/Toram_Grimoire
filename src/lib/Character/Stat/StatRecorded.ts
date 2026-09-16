@@ -23,10 +23,22 @@ class StatValueSource {
   readonly type: StatValueSourceTypes | null
   readonly value: number
 
-  constructor(src: StatValueSourceDetails, value: number, type: StatValueSourceTypes | null) {
+  private constructor(
+    src: StatValueSourceDetails,
+    value: number,
+    type: StatValueSourceTypes | null
+  ) {
     this.src = src
     this.type = type
     this.value = value
+  }
+
+  static create(
+    src: StatValueSourceDetails,
+    value: number,
+    type: StatValueSourceTypes | null
+  ): StatValueSource {
+    return new StatValueSource(src, value, type)
   }
 
   // get displayedName(): string {
@@ -94,7 +106,7 @@ class StatRecorded extends StatElementBase {
     if (value !== 0) {
       this._value += value
       if (source) {
-        this.sources.push(new StatValueSource(source, value, type))
+        this.sources.push(StatValueSource.create(source, value, type))
       } else {
         this.unknownSourceValue += value
       }

@@ -4,26 +4,26 @@ import { CharacterStatCategory } from './Character'
 import { StatBase } from './Stat'
 
 export default class CharacterSystem {
-  statList: StatBase[]
-  characterStatCategoryList: CharacterStatCategory[]
+  readonly statList: StatBase[]
+  readonly characterStatCategoryList: CharacterStatCategory[]
 
-  private constructor(statList: StatBase[], characterStatCategoryList: CharacterStatCategory[]) {
-    this.statList = statList
-    this.characterStatCategoryList = characterStatCategoryList
+  private constructor() {
+    this.statList = []
+    this.characterStatCategoryList = []
   }
 
   static create(): CharacterSystem {
-    return new CharacterSystem(markRaw([]), markRaw([]))
+    return markRaw(new CharacterSystem())
   }
 
-  appendStatBase(...args: ConstructorParameters<typeof StatBase>): StatBase {
-    const statBase = markRaw(new StatBase(...args))
+  appendStatBase(...args: Parameters<typeof StatBase.create>): StatBase {
+    const statBase = StatBase.create(...args)
     this.statList.push(statBase)
     return statBase
   }
 
   appendCharacterStatCategory(name: string): CharacterStatCategory {
-    const category = markRaw(new CharacterStatCategory(this, name))
+    const category = CharacterStatCategory.create(this, name)
     this.characterStatCategoryList.push(category)
     return category
   }

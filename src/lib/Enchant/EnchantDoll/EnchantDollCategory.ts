@@ -5,9 +5,13 @@ class EnchantDollCategory {
   category: EnchantCategory
   stats: EnchantStat[]
 
-  constructor(category: EnchantCategory) {
+  private constructor(category: EnchantCategory) {
     this.category = category
     this.stats = []
+  }
+
+  static create(category: EnchantCategory): EnchantDollCategory {
+    return new EnchantDollCategory(category)
   }
 
   static classifyStats(stats: EnchantStat[]): EnchantDollCategory[] {
@@ -18,7 +22,7 @@ class EnchantDollCategory {
       if (find) {
         find.stats.push(stat)
       } else {
-        const category = new EnchantDollCategory(statCategory)
+        const category = EnchantDollCategory.create(statCategory)
         category.stats.push(stat)
         target.push(category)
       }

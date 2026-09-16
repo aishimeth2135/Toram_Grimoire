@@ -1,13 +1,15 @@
+import { markRaw } from 'vue'
+
 import { SkillRoot } from './Skill'
 
 export default class SkillSystem {
-  skillRoot: SkillRoot
+  readonly skillRoot: SkillRoot
 
   private constructor() {
     this.skillRoot = SkillRoot.create()
   }
 
   static create(): SkillSystem {
-    return new SkillSystem()
+    return markRaw(new SkillSystem())
   }
 }

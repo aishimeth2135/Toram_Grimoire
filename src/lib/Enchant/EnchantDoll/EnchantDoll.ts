@@ -32,8 +32,8 @@ class EnchantDoll {
     containsNaturalMpRegenConstant: boolean
   }
 
-  constructor() {
-    this.build = new EnchantBuild('Potum')
+  private constructor() {
+    this.build = EnchantBuild.create('Potum')
     this._positiveStats = []
     this.lastResults = []
     this.config = {
@@ -41,6 +41,10 @@ class EnchantDoll {
       autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes.SuccessRate,
       containsNaturalMpRegenConstant: false,
     }
+  }
+
+  static create(): EnchantDoll {
+    return new EnchantDoll()
   }
 
   get numPositiveStats() {
@@ -55,7 +59,7 @@ class EnchantDoll {
   }
 
   appendPositiveStat(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
-    const stat = new EnchantStat(itemBase, type, value)
+    const stat = EnchantStat.create(itemBase, type, value)
     if (this._positiveStats.length === enchantStates.EquipmentItemMaximumNumber) {
       return null
     }
@@ -104,7 +108,7 @@ class EnchantDoll {
     // const negatives = EnchantDollCategory.classifyStats(negativeStats);
     // const positives = EnchantDollCategory.classifyStats(positiveStats);
 
-    const dollEq = new EnchantDollEquipmentContainer({
+    const dollEq = EnchantDollEquipmentContainer.create({
       itemCategorys: this.build.categorys,
       equipment: this.build.equipment,
       positiveStats,
@@ -291,7 +295,7 @@ class EnchantDoll {
             if (this.hasPositiveStat(item, type)) {
               return
             }
-            const stat = new EnchantStat(item, type, item.getLimit(type).min)
+            const stat = EnchantStat.create(item, type, item.getLimit(type).min)
             shortlist.push(stat)
           })
         }

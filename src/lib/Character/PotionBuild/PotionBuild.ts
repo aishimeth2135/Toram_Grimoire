@@ -46,7 +46,7 @@ class PotionBuild implements CharacterBindingBuild {
   private _getCategory(base: BagPotion): PotionItemsCategory {
     const category = base.belongCategory
     if (!this._categorysMap.has(category)) {
-      const itemsCategory = new PotionItemsCategory(this, category)
+      const itemsCategory = PotionItemsCategory.create(this, category)
       this._categorysMap.set(category, itemsCategory)
       this.categorys.push(itemsCategory)
     }
@@ -77,7 +77,7 @@ class PotionBuild implements CharacterBindingBuild {
 
   private _appendItem(base: BagPotion): PotionItem {
     const category = this._getCategory(base)
-    const newItem = new PotionItem(this, category, base)
+    const newItem = PotionItem.create(this, category, base)
     this._itemsMap.set(newItem.base, newItem)
     this.items.push(newItem)
     category.items.push(newItem)
@@ -125,11 +125,15 @@ class PotionItemsCategory {
   readonly items: PotionItem[]
   private _selectedPotionBase: BagPotion | null
 
-  constructor(build: PotionBuild, base: BagPotionsCategory) {
+  private constructor(build: PotionBuild, base: BagPotionsCategory) {
     this._build = build
     this.base = base
     this.items = []
     this._selectedPotionBase = null
+  }
+
+  static create(build: PotionBuild, base: BagPotionsCategory): PotionItemsCategory {
+    return new PotionItemsCategory(build, base)
   }
 
   itemSelected(base: BagPotion) {
@@ -160,10 +164,14 @@ class PotionItem {
   private readonly _category: PotionItemsCategory
   base: BagPotion
 
-  constructor(build: PotionBuild, category: PotionItemsCategory, base: BagPotion) {
+  private constructor(build: PotionBuild, category: PotionItemsCategory, base: BagPotion) {
     this._build = build
     this._category = category
     this.base = base
+  }
+
+  static create(build: PotionBuild, category: PotionItemsCategory, base: BagPotion): PotionItem {
+    return new PotionItem(build, category, base)
   }
 
   get enabled(): boolean {
