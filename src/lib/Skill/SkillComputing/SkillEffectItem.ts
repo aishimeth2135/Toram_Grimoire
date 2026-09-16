@@ -148,7 +148,7 @@ class SkillEffectItem extends SkillEffectItemBase {
           const mainRest = equipments.find(rest => rest.main !== null && rest.sub === null)
           if (mainRest) {
             equipments.push(
-              new EquipmentRestrictions({
+              EquipmentRestrictions.create({
                 main: mainRest.main,
                 sub: EquipmentTypes.NinjutsuScroll,
               })

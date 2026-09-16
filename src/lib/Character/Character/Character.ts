@@ -26,7 +26,7 @@ class Character implements CharacterBindingBuild {
 
   static _autoIncreasement = 0
 
-  constructor(name = 'Potum') {
+  private constructor(name = 'Potum') {
     this.loadedId = null
     this.id = Character._autoIncreasement
     Character._autoIncreasement += 1
@@ -56,6 +56,10 @@ class Character implements CharacterBindingBuild {
     ]
 
     this.comboBuild = new CharacterComboBuild()
+  }
+
+  static create(name = 'Potum'): Character {
+    return new Character(name)
   }
 
   get origin(): Character {
@@ -137,7 +141,7 @@ class Character implements CharacterBindingBuild {
   }
 
   clone(): Character {
-    const chara = new Character(this.name + '*')
+    const chara = Character.create(this.name + '*')
     chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
       const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name)!

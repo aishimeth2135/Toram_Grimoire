@@ -12,7 +12,7 @@ export const getTextParseItems = (() => {
         handler(context) {
           const [value] = context.values
           const text = value.replace(new RegExp('_', 'g'), ' ')
-          const newPart = new TextResultContainerPart(
+          const newPart = TextResultContainerPart.create(
             TextResultContainerPartTypes.GlossaryTag,
             text
           )

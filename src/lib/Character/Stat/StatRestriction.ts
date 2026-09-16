@@ -114,7 +114,7 @@ class StatRestriction extends Stat {
       EquipmentTypes.BodyNormal,
     ]
 
-    const newOriginRestriction = new EquipmentRestrictions()
+    const newOriginRestriction = EquipmentRestrictions.create()
 
     splitComma(originRestriction).forEach(item => {
       let [_eqType, _restriction] = item.split('.')
@@ -171,7 +171,7 @@ class StatRestriction extends Stat {
 
       let restriction = null
       if (data.restriction !== null) {
-        restriction = new EquipmentRestrictions()
+        restriction = EquipmentRestrictions.create()
         const from = data.restriction
         restriction.main = from.main
         restriction.sub = from.sub
@@ -200,7 +200,7 @@ class EquipmentRestrictions {
   body: EquipmentTypes | null
   other: string | null
 
-  constructor({
+  private constructor({
     main = null,
     sub = null,
     body = null,
@@ -210,6 +210,10 @@ class EquipmentRestrictions {
     this.sub = sub
     this.body = body
     this.other = other
+  }
+
+  static create(params: EquipmentRestrictionsParam = {}): EquipmentRestrictions {
+    return new EquipmentRestrictions(params)
   }
 }
 

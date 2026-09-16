@@ -70,7 +70,7 @@ function handleRegistletValue(
     const originalValue = bch.prop(container.key, 'registlet')
     if (helper.checkRegistletLevel(originalValue)) {
       const value = computeBranchFormulaValue(originalValue, helper)
-      const subContainer = new SkillBranchResult(
+      const subContainer = SkillBranchResult.create(
         ResultContainerTypes.Number,
         bch,
         bch.propKey(container.key, 'registlet'),
@@ -389,7 +389,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   propKeys.forEach(propKey => {
     const originalFormula = props.get(propKey as string)
     if (originalFormula === undefined) {
-      propResult[propKey] = new SkillBranchResult(
+      propResult[propKey] = SkillBranchResult.create(
         ResultContainerTypes.Number,
         helper.branchItem,
         propKey as string,
@@ -399,7 +399,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       propResult[propKey].markEmpty()
       return
     }
-    const container = new SkillBranchResult(
+    const container = SkillBranchResult.create(
       ResultContainerTypes.Number,
       helper.branchItem,
       propKey as string,

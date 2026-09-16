@@ -50,7 +50,7 @@ export function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
         return
       }
 
-      const newChapter = new MainQuestChapter(currentChapter, row('chapter-name'))
+      const newChapter = MainQuestChapter.create(currentChapter, row('chapter-name'))
       questChapters.push(newChapter)
     }
 
@@ -61,7 +61,7 @@ export function LoadQuests(questSystem: QuestSystem, datas: CsvData) {
     const currentSection = handleIntData(row('section'))
 
     if (currentSection !== INVALID_SECTION) {
-      const newQuest = new MainQuestSection(
+      const newQuest = MainQuestSection.create(
         sectionIndex,
         currentChapter,
         handleIntData(row('section')),

@@ -7,9 +7,13 @@ export default class CharacterSystem {
   statList: StatBase[]
   characterStatCategoryList: CharacterStatCategory[]
 
-  constructor() {
-    this.statList = markRaw([])
-    this.characterStatCategoryList = markRaw([])
+  private constructor(statList: StatBase[], characterStatCategoryList: CharacterStatCategory[]) {
+    this.statList = statList
+    this.characterStatCategoryList = characterStatCategoryList
+  }
+
+  static create(): CharacterSystem {
+    return new CharacterSystem(markRaw([]), markRaw([]))
   }
 
   appendStatBase(...args: ConstructorParameters<typeof StatBase>): StatBase {

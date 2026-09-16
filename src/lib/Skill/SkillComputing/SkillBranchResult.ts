@@ -46,7 +46,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
   }
 
   static from(container: ResultContainer, branch: SkillBranchItemBaseChilds, key: string) {
-    const result = new SkillBranchResult(
+    const result = SkillBranchResult.create(
       container.type,
       branch,
       key,
@@ -57,7 +57,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     return result
   }
 
-  constructor(
+  protected constructor(
     type: ResultContainerTypes,
     branch: SkillBranchItemBaseChilds,
     key: string,
@@ -71,6 +71,16 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     this.subContainers = {
       registlet: null,
     }
+  }
+
+  static create(
+    type: ResultContainerTypes,
+    branch: SkillBranchItemBaseChilds,
+    key: string,
+    origin: string,
+    value: string
+  ): SkillBranchResult {
+    return new SkillBranchResult(type, branch, key, origin, value)
   }
 
   override get result() {
@@ -209,7 +219,7 @@ const useTextResultBaseParseItems = defineState(() => {
 
   const getSkillQueryMarkHandler = (typeForSkillResultDipslay: string) =>
     (context => {
-      const newPart = new SkillBranchTextResultPart(
+      const newPart = SkillBranchTextResultPart.create(
         TextResultContainerPartTypes.Other,
         context.values[0]
       )
@@ -288,7 +298,7 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
         }
 
         const handler: TextParseHandler<SkillBranchTextResultPart> = context => {
-          const newPart = new SkillBranchTextResultPart(
+          const newPart = SkillBranchTextResultPart.create(
             TextResultContainerPartTypes.Other,
             context.values[0]
           )
@@ -336,6 +346,22 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
 export class SkillBranchTextResultPart extends TextResultContainerPart {
   declare parts: SkillBranchTextResultPartValue[]
 
+  private constructor(
+    type: TextResultContainerPartTypes,
+    value: Parameters<typeof TextResultContainerPart.create>[1],
+    unit: string = ''
+  ) {
+    super(type, value, unit)
+  }
+
+  static override create(
+    type: TextResultContainerPartTypes,
+    value: Parameters<typeof TextResultContainerPart.create>[1],
+    unit: string = ''
+  ): SkillBranchTextResultPart {
+    return new SkillBranchTextResultPart(type, value, unit)
+  }
+
   static from(resultPart: TextResultContainerPart): SkillBranchTextResultPart {
     const parts = resultPart.parts.map(part => {
       if (part instanceof TextResultContainerPart) {
@@ -343,7 +369,7 @@ export class SkillBranchTextResultPart extends TextResultContainerPart {
       }
       return part
     })
-    const newPart = new SkillBranchTextResultPart(resultPart.type, parts, resultPart.unit)
+    const newPart = SkillBranchTextResultPart.create(resultPart.type, parts, resultPart.unit)
     for (const [key, value] of resultPart.metadata.entries()) {
       newPart.metadata.set(key, value)
     }

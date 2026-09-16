@@ -27,7 +27,7 @@ class RegistletBuild implements CharacterBindingBuild {
   loadedId: string | null
   items: RegistletItem[]
 
-  constructor(name: string = '') {
+  private constructor(name: string = '') {
     this.id = RegistletBuild._autoIncrement
     RegistletBuild._autoIncrement += 1
 
@@ -35,6 +35,10 @@ class RegistletBuild implements CharacterBindingBuild {
     this.name = name
     this._itemsMap = new Map()
     this.items = []
+  }
+
+  static create(name: string = ''): RegistletBuild {
+    return new RegistletBuild(name)
   }
 
   getItem(base: RegistletItemBase): RegistletItem | null {
@@ -69,7 +73,7 @@ class RegistletBuild implements CharacterBindingBuild {
   }
 
   clone(): RegistletBuild {
-    const newBuild = new RegistletBuild(this.name + ' *')
+    const newBuild = RegistletBuild.create(this.name + ' *')
     newBuild.items = this.items.map(item => item.clone())
     return newBuild
   }
@@ -79,7 +83,7 @@ class RegistletBuild implements CharacterBindingBuild {
   }
 
   static load(loadedCategory: string, data: RegistletBuildSaveData) {
-    const newBuild = new RegistletBuild(data.name)
+    const newBuild = RegistletBuild.create(data.name)
     newBuild.loadedId = getLoadedId(loadedCategory, data.id)
     data.items.forEach(item => {
       const newItem = RegistletItem.load(newBuild, item)

@@ -53,7 +53,7 @@ export class SkillBuild implements CharacterBindingBuild {
   id: number
   name: string
 
-  constructor(name: string = '') {
+  private constructor(name: string = '') {
     this.loadedId = null
     this.id = SkillBuild._idIncreasement
     SkillBuild._idIncreasement += 1
@@ -61,6 +61,10 @@ export class SkillBuild implements CharacterBindingBuild {
     this.name = name
     this._skillStatesMap = new Map()
     this._skillTreesSet = new Set()
+  }
+
+  static create(name: string = ''): SkillBuild {
+    return new SkillBuild(name)
   }
 
   hasSkill(skill: Skill): boolean {
@@ -331,7 +335,7 @@ export class SkillBuild implements CharacterBindingBuild {
   }
 
   static load(loadCategory: string | null, data: SkillBuildSaveData): SkillBuild {
-    const newBuild = new SkillBuild(data.name)
+    const newBuild = SkillBuild.create(data.name)
     data.selectedSkillTrees.forEach(skillTreeId => {
       let skillTree: SkillTree | null = null
       Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
@@ -376,7 +380,7 @@ export class SkillBuild implements CharacterBindingBuild {
   }
 
   static loadFromLagacy(buildState: SkillBuildState): SkillBuild {
-    const newBuild = new SkillBuild(buildState.name)
+    const newBuild = SkillBuild.create(buildState.name)
 
     buildState.skillTreeCategoryStates.forEach(stcState => {
       stcState.skillTreeStates.forEach(stState => {

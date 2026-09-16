@@ -28,7 +28,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
   }
 
   const createFoodBuild = () => {
-    const newBuild = new FoodsBuild(
+    const newBuild = FoodsBuild.create(
       foodsBase.value!,
 
       Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (builds.value.length + 1)

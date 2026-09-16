@@ -6,9 +6,13 @@ class MainQuestChapter {
   readonly chapterId: number
   name: string
 
-  constructor(chapter: number, name: string) {
+  private constructor(chapter: number, name: string) {
     this.chapterId = chapter
     this.name = name
+  }
+
+  static create(chapter: number, name: string): MainQuestChapter {
+    return new MainQuestChapter(chapter, name)
   }
 }
 
@@ -21,13 +25,29 @@ class MainQuestSection extends QuestBase {
   skippableSubSection: string
   skippableExp: number
 
-  constructor(index: number, chapterId: number, sectionId: number, name: string, exp: number) {
+  private constructor(
+    index: number,
+    chapterId: number,
+    sectionId: number,
+    name: string,
+    exp: number
+  ) {
     super(name, exp)
     this.index = index as MainQuestSectionIndex
     this.chapterId = chapterId
     this.sectionId = sectionId
     this.skippableSubSection = ''
     this.skippableExp = 0
+  }
+
+  static create(
+    index: number,
+    chapterId: number,
+    sectionId: number,
+    name: string,
+    exp: number
+  ): MainQuestSection {
+    return new MainQuestSection(index, chapterId, sectionId, name, exp)
   }
 
   setSkippableExp(name: string, exp: number): void {

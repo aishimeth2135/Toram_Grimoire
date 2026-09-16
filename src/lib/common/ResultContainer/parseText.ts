@@ -32,7 +32,7 @@ export interface TextParseItem<
 
 function generateCommonHandler(type: TextResultContainerPartTypes) {
   return (context: TextParseContext) => {
-    return new TextResultContainerPart(type, context.parts, context.unit)
+    return TextResultContainerPart.create(type, context.parts, context.unit)
   }
 }
 
@@ -258,32 +258,32 @@ export function getCommonTextParseItemHandler<Id extends CommonTextParseItemIds>
       return (context => {
         const [value1, value2] = context.values
         if (value2) {
-          const newPart = new TextResultContainerPart(
+          const newPart = TextResultContainerPart.create(
             TextResultContainerPartTypes.GlossaryTag,
             value2
           )
           newPart.metadata.set('display-name', value1)
           return newPart
         }
-        return new TextResultContainerPart(TextResultContainerPartTypes.GlossaryTag, value1)
+        return TextResultContainerPart.create(TextResultContainerPartTypes.GlossaryTag, value1)
       }) as CommonTextParseItemHandlerTypeMap[Id]
     case CommonTextParseItemIds.Mark:
       return (context => {
         const [value] = context.values
-        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
+        const newPart = TextResultContainerPart.create(TextResultContainerPartTypes.Other, value)
         newPart.subType = 'mark'
         return newPart
       }) as CommonTextParseItemHandlerTypeMap[Id]
     case CommonTextParseItemIds.Underline:
       return (context => {
         const [value] = context.values
-        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.Other, value)
+        const newPart = TextResultContainerPart.create(TextResultContainerPartTypes.Other, value)
         newPart.subType = 'underline'
         return newPart
       }) as CommonTextParseItemHandlerTypeMap[Id]
     case CommonTextParseItemIds.BreakLine:
       return (_context => {
-        const newPart = new TextResultContainerPart(TextResultContainerPartTypes.BreakLine, '')
+        const newPart = TextResultContainerPart.create(TextResultContainerPartTypes.BreakLine, '')
         return newPart
       }) as CommonTextParseItemHandlerTypeMap[Id]
   }

@@ -21,7 +21,7 @@ export const useSkillQueryState = defineState(() => {
   const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
   const currentSkillTree: Ref<SkillTree | null> = ref(null)
   const currentSkill: Ref<Skill | null> = ref(null)
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(EquipmentRestrictions.create())
 
   const skillLevel = ref(10)
   const characterLevel = ref(300)
@@ -121,7 +121,7 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
   watchEffect(() => {
-    currentSkillItem.value = skillRef.value ? new SkillItem(skillRef.value) : null
+    currentSkillItem.value = skillRef.value ? SkillItem.create(skillRef.value) : null
     const vars = {
       slv: skillLevel.value,
       clv: characterLevel.value,

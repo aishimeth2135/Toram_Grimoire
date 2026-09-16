@@ -5,8 +5,12 @@ export default class GlossarySystem {
 
   private _includesTagsCache!: Map<string, GlossaryTag[]>
 
-  constructor() {
+  private constructor() {
     this.tags = []
+  }
+
+  static create(): GlossarySystem {
+    return new GlossarySystem()
   }
 
   appendTag(name: string) {

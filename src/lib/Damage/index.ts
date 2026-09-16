@@ -13,7 +13,11 @@ import {
 export default class DamageCalculationSystem {
   calculationBase: CalculationBase
 
-  constructor() {
+  private constructor(calculationBase: CalculationBase) {
+    this.calculationBase = calculationBase
+  }
+
+  static create(): DamageCalculationSystem {
     type FactoryCreated = (container: CalcItemContainerBase) => void
     type FactoryAlly = (id: CalculationContainerIds, callback: FactoryCreated) => void
     type DamageTypeHandlerCallback = (result: boolean) => CalculationItemIds
@@ -411,6 +415,6 @@ export default class DamageCalculationSystem {
       })
     })
 
-    this.calculationBase = markRaw(base)
+    return new DamageCalculationSystem(markRaw(base))
   }
 }
