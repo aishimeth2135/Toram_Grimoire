@@ -61,7 +61,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initItemsInstance = () => {
     if (DatasStoreBase.Items === null) {
-      DatasStoreBase.Items = new ItemsSystem()
+      DatasStoreBase.Items = ItemsSystem.create()
     }
     return DatasStoreBase.Items
   }
@@ -82,14 +82,14 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initSkillInstance = () => {
     if (DatasStoreBase.Skill === null) {
-      DatasStoreBase.Skill = new SkillSystem()
+      DatasStoreBase.Skill = SkillSystem.create()
     }
     return DatasStoreBase.Skill
   }
 
   const initEnchantInstance = () => {
     if (DatasStoreBase.Enchant === null) {
-      DatasStoreBase.Enchant = new EnchantSystem()
+      DatasStoreBase.Enchant = EnchantSystem.create()
     }
     return DatasStoreBase.Enchant
   }
@@ -103,7 +103,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initRegistletInstance = () => {
     if (DatasStoreBase.Registlet === null) {
-      DatasStoreBase.Registlet = new RegistletSystem()
+      DatasStoreBase.Registlet = RegistletSystem.create()
     }
     return DatasStoreBase.Registlet
   }

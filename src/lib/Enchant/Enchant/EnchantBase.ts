@@ -49,10 +49,14 @@ class EnchantCategory {
   readonly title: string
   readonly items: EnchantItem[]
 
-  constructor(title: string) {
+  private constructor(title: string, items: EnchantItem[]) {
     this.title = title
-    this.items = markRaw([])
+    this.items = items
     this._weaponOnly = false
+  }
+
+  static create(title: string): EnchantCategory {
+    return markRaw(new EnchantCategory(title, markRaw([])))
   }
 
   get weaponOnly(): boolean {
@@ -64,7 +68,7 @@ class EnchantCategory {
   }
 
   appendItem(params: EnchantItemParams): EnchantItem {
-    const newItem = markRaw(new EnchantItem(this, params))
+    const newItem = EnchantItem.create(this, params)
     this.items.push(newItem)
     return newItem
   }
@@ -91,7 +95,7 @@ class EnchantItem {
   readonly materialPointValue: EnchantItemPropertyValue<number | null>
   readonly potentialConvertThreshold: EnchantItemPropertyValue<number | null>
 
-  constructor(
+  private constructor(
     category: EnchantCategory,
     {
       baseId,
@@ -152,6 +156,10 @@ class EnchantItem {
     }
   }
 
+  static create(category: EnchantCategory, params: EnchantItemParams): EnchantItem {
+    return markRaw(new EnchantItem(category, params))
+  }
+
   get belongCategory() {
     return this._category
   }
@@ -160,7 +168,7 @@ class EnchantItem {
     condition: EnchantItemConditions,
     params: EnchantItemConditionalPropertiesParams
   ): void {
-    const newProp = new EnchantItemConditionalProperties(condition, params)
+    const newProp = EnchantItemConditionalProperties.create(condition, params)
     this.conditionalProps.push(newProp)
   }
 
@@ -260,7 +268,7 @@ class EnchantItemConditionalProperties {
   readonly condition: EnchantItemConditions
   readonly potential: EnchantItemPropertyValue<number>
 
-  constructor(
+  private constructor(
     condition: EnchantItemConditions,
     { potential }: EnchantItemConditionalPropertiesParams
   ) {
@@ -269,6 +277,13 @@ class EnchantItemConditionalProperties {
       [StatTypes.Constant]: potential[0],
       [StatTypes.Multiplier]: potential[1],
     }
+  }
+
+  static create(
+    condition: EnchantItemConditions,
+    params: EnchantItemConditionalPropertiesParams
+  ): EnchantItemConditionalProperties {
+    return new EnchantItemConditionalProperties(condition, params)
   }
 }
 

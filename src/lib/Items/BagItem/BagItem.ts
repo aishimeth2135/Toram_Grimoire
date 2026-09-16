@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import { CommonLogger } from '@/shared/services/Logger'
@@ -38,7 +40,7 @@ abstract class BagItem {
   recipe: BagItemRecipe | null
   extra: BagItemExtra | null
 
-  constructor(id: string, name: string) {
+  protected constructor(id: string, name: string) {
     this.id = id
     this.name = name
     this.stats = []
@@ -82,7 +84,7 @@ class BagEquipment extends BagItem {
   caption: string
   unknowCategory: null | string
 
-  constructor(
+  private constructor(
     id: string,
     name: string,
     category: number,
@@ -102,6 +104,17 @@ class BagEquipment extends BagItem {
     this.unknowCategory = null
   }
 
+  static create(
+    id: string,
+    name: string,
+    category: number,
+    baseValue: number,
+    stability: number,
+    caption: string
+  ): BagEquipment {
+    return markRaw(new BagEquipment(id, name, category, baseValue, stability, caption))
+  }
+
   setRecipe(): BagItemRecipe {
     this.recipe = {}
     return this.recipe
@@ -117,12 +130,16 @@ class BagCrystal extends BagItem {
   bossCategory: number
   enhancer: null | string
 
-  constructor(id: string, name: string, category: number, bossCategory: number) {
+  private constructor(id: string, name: string, category: number, bossCategory: number) {
     super(id, name)
 
     this.category = category
     this.bossCategory = bossCategory
     this.enhancer = null
+  }
+
+  static create(id: string, name: string, category: number, bossCategory: number): BagCrystal {
+    return markRaw(new BagCrystal(id, name, category, bossCategory))
   }
 
   setEnhancer(name: string): void {
@@ -193,9 +210,13 @@ class BagItemRecipeMaterial {
   name: string
   quantity: number
 
-  constructor(name: string, quantity: number) {
+  private constructor(name: string, quantity: number) {
     this.name = name
     this.quantity = quantity
+  }
+
+  static create(name: string, quantity: number): BagItemRecipeMaterial {
+    return new BagItemRecipeMaterial(name, quantity)
   }
 }
 

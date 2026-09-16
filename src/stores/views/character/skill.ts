@@ -93,7 +93,7 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
           skillTreeStates: stc.skillTrees
             .filter(st => !st.attrs.simulatorFlag)
             .map(st => {
-              const lst = new LevelSkillTree(st)
+              const lst = LevelSkillTree.create(st)
               st.skills.forEach(skill => lst.appendLevelSkill(skill))
               return {
                 origin: st,
