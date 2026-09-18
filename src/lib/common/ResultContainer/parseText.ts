@@ -1,7 +1,10 @@
-import { ResultContainer, TextResultContainerPart, type TextResultContainerPartValue } from '.'
-
 import { CommonLogger } from '@/shared/services/Logger'
 
+import {
+  ResultContainer,
+  TextResultContainerPart,
+  type TextResultContainerPartValue,
+} from './ResultContainer'
 import { CommonTextParseItemIds, ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
 interface TextParseContext {

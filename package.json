@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
+    "lint:check": "eslint .",
     "type-check": "vue-tsc --build",
     "pretty": "prettier --write src",
     "format": "prettier --config .prettierrc.yaml --write \"src/**/*.{js,ts,jsx,tsx,json,css,vue}\""

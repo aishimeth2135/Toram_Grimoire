@@ -13,14 +13,14 @@ import {
   ResultContainerBase,
   TextResultContainer,
   TextResultContainerPart,
-} from '@/lib/common/ResultContainer/index'
+} from '@/lib/common/ResultContainer'
 import {
   type TextParseHandler,
   type TextParseItem,
   getCommonTextParseItemBase,
   getCommonTextParseItemHandler,
   handleParseText,
-} from '@/lib/common/ResultContainer/parseText'
+} from '@/lib/common/ResultContainer'
 
 import type { SkillBranchItemBaseChilds } from './SkillBranchItem'
 

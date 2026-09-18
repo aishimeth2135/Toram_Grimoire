@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
-import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment/CharacterEquipmentTrait'
+import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { BagPotion } from '@/lib/Items/BagItem'
 import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'

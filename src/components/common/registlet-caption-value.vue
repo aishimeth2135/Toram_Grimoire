@@ -3,7 +3,7 @@ import { h } from 'vue'
 
 import { CommonTextParseItemIds, ResultContainer } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
-import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 

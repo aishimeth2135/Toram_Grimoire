@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { getColorCode } from '@/lib/Items/Dye/DyeColors'
+import { getColorCode } from '@/lib/Items/Dye'
 
 interface Props {
   color: number

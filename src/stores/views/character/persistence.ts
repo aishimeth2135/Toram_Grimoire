@@ -1,7 +1,7 @@
 import { DataPersistenceService } from '@/shared/services/DataPersistenceService'
 
 import type { CharacterSaveData } from '@/lib/Character/Character'
-import type { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
+import type { CharacterBuildLabelSaveData } from '@/lib/Character/Character'
 import type { EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import type { FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
 import type { PotionBuildSaveData } from '@/lib/Character/PotionBuild'

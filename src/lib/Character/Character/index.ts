@@ -1,4 +1,6 @@
 export * from './Character'
+export * from './CharacterBuildLabel'
 export * from './CharacterStat'
 export * from './enums'
 export * from './consts'
+export * from './utils'

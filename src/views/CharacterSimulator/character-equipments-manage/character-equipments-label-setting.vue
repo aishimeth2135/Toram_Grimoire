@@ -7,7 +7,7 @@ import Draggable from 'vuedraggable'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
-import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
+import { CharacterBuildLabel } from '@/lib/Character/Character'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'

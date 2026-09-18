@@ -321,7 +321,7 @@ class SkillBranch extends SkillNode {
   readonly parent: SkillEffectBase
 
   // id of branch. -1 means no define
-  readonly id: number
+  id: number
   // type of branch
   name: SkillBranchNames
 

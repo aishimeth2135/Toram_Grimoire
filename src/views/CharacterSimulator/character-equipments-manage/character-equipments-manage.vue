@@ -7,7 +7,7 @@ import Draggable from 'vuedraggable'
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterBuildLabelStore } from '@/stores/views/character/setup/setupCharacterBuildLabels'
 
-import type { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
+import type { CharacterBuildLabel } from '@/lib/Character/Character'
 import { AllEquipmentTypeCategorys, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Items } from '@/lib/common/Items'
 

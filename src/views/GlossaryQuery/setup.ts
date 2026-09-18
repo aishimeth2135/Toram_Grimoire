@@ -1,6 +1,6 @@
 import { CommonTextParseItemIds, TextResultContainerPart } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
-import { type TextParseItem, getCommonTextParseItem } from '@/lib/common/ResultContainer/parseText'
+import { type TextParseItem, getCommonTextParseItem } from '@/lib/common/ResultContainer'
 
 export const getTextParseItems = (() => {
   let items: TextParseItem[]
