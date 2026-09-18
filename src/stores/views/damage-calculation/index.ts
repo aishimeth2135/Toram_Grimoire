@@ -5,7 +5,11 @@ import Grimoire from '@/shared/Grimoire'
 
 import { Calculation } from '@/lib/Damage/DamageCalculation'
 
-import { DamageCalculationPersistenceService, type DamageCalculationSaveData } from './persistence'
+import {
+  DamageCalculationPersistenceService,
+  type DamageCalculationSaveData,
+  parseDamageCalculationSaveData,
+} from './persistence'
 
 export const useDamageCalculationStore = defineStore('views-damage-calculation', () => {
   const calculations: Ref<Calculation[]> = ref([])
@@ -23,21 +27,31 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
     currentCalculationIndex.value = calculations.value.length - 1
   }
 
-  const selectCalculation = (idx: number | Calculation) => {
+  const selectCalculation = (idx: number | Calculation): boolean => {
     if (typeof idx !== 'number') {
       idx = calculations.value.indexOf(idx)
     }
+    if (!Number.isInteger(idx) || idx < 0 || idx >= calculations.value.length) {
+      return false
+    }
     currentCalculationIndex.value = idx
+    return true
   }
 
-  const removeCalculation = (calculation: Calculation) => {
+  const removeCalculation = (calculation: Calculation): boolean => {
     const idx = calculations.value.indexOf(calculation)
-    if (idx !== -1) {
-      calculations.value.splice(idx, 1)
-      if (currentCalculationIndex.value !== 0) {
-        currentCalculationIndex.value = idx - 1
-      }
+    if (idx === -1 || calculations.value.length === 1) {
+      return false
     }
+
+    const selectedIndex = currentCalculationIndex.value
+    calculations.value.splice(idx, 1)
+    if (idx < selectedIndex) {
+      currentCalculationIndex.value = selectedIndex - 1
+    } else if (idx === selectedIndex) {
+      currentCalculationIndex.value = Math.min(idx, calculations.value.length - 1)
+    }
+    return true
   }
 
   const createCalculation = () => {
@@ -50,6 +64,7 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
 
   const save = () => {
     const data: DamageCalculationSaveData = {
+      version: 2,
       calculations: calculations.value.map(calculation => calculation.save()),
       currentCalculationIndex: currentCalculationIndex.value,
     }
@@ -73,16 +88,20 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
     }
 
     try {
+      const saveData = parseDamageCalculationSaveData(result.value)
+      if (!saveData) {
+        throw new Error('Invalid damage calculation save data')
+      }
       const calculationBase = Grimoire.DamageCalculation.calculationBase
       const newCalculations: Calculation[] = []
-      result.value.calculations.forEach(calculationData => {
+      saveData.calculations.forEach(calculationData => {
         const calculation = calculationBase.createCalculation()
         calculation.load(calculationData)
         newCalculations.push(calculation)
       })
       reset({
         calculations: newCalculations,
-        currentCalculationIndex: result.value.currentCalculationIndex,
+        currentCalculationIndex: saveData.currentCalculationIndex,
       })
       DamageCalculationPersistenceService.confirmLoaded()
     } catch (error) {
