@@ -1,9 +1,11 @@
 import type {
   CalcItemBase,
   CalcItemContainerBase,
+  CalcItemContainerContext,
   CalcResultOptions,
   CalcStructItem,
   CalculationBase,
+  CalculationSnapshot,
 } from './CalculationBase'
 import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 
@@ -211,6 +213,25 @@ class Calculation {
     return this.base.result(this, calcStruct, options)
   }
 
+  createSnapshot(): CalculationSnapshot {
+    return {
+      itemValues: new Map(
+        Array.from(this.items, ([itemId, item]) => [itemId, item.value] as const)
+      ),
+      containers: new Map(
+        Array.from(this.containers, ([containerId, container]) => [
+          containerId,
+          {
+            enabled: container.enabled,
+            applicable: !container.hidden,
+            currentItemId: container.base.isVirtual ? null : container.currentItem.base.id,
+            customItemValues: container.customItems.map(item => item.value),
+          },
+        ])
+      ),
+    }
+  }
+
   save(): CalculationSaveData {
     const items = Array.from(this.items.values()).map(item => {
       return {
@@ -289,7 +310,7 @@ class Calculation {
   }
 }
 
-class CalcItemContainer {
+class CalcItemContainer implements CalcItemContainerContext {
   private _calculation: Calculation
   private _currentItemId: CalculationItemIds | null
 
@@ -363,6 +384,18 @@ class CalcItemContainer {
     return this.items.get(this._currentItemId!)!
   }
 
+  get currentItemId(): CalculationItemIds | null {
+    return this.base.isVirtual ? null : this.currentItem.base.id
+  }
+
+  get currentItemValue(): number {
+    return this.currentItem.value
+  }
+
+  get customItemValues(): readonly number[] {
+    return this.customItems.map(item => item.value)
+  }
+
   get customItemAddable(): boolean {
     return this.belongCalculation.containerCustomItems.has(this.base.id)
   }
@@ -392,6 +425,15 @@ class CalcItemContainer {
       return 0
     }
     return (this.items.get(id) as CalcItem).value
+  }
+
+  getContainerResult(id: CalculationContainerIds): number {
+    return this.belongCalculation.containers.get(id)?.result() ?? 0
+  }
+
+  getContainerCurrentItemId(id: CalculationContainerIds): CalculationItemIds | null {
+    const container = this.belongCalculation.containers.get(id)
+    return !container || container.base.isVirtual ? null : container.currentItem.base.id
   }
 
   selectItem(id: CalculationItemIds): boolean {

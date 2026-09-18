@@ -24,18 +24,41 @@ interface CalcStructMultipleMul {
   list: (CalcStructItem | CalcStructAction)[]
 }
 interface CalcResultOptions {
-  containerResults?: {
-    [key in CalculationContainerIds]?: number | ((itemContainer: CalcItemContainer) => number)
-  }
+  containerResults?: Partial<Record<CalculationContainerIds, number>>
 }
 interface CurrentItemIdGetter {
-  (itemContainer: CalcItemContainer): CalculationItemIds | null
+  (context: CalcItemContainerContext): CalculationItemIds | null
 }
 interface HiddenGetter {
-  (itemContainer: CalcItemContainer): boolean
+  (context: CalcItemContainerContext): boolean
 }
 interface CalcResult {
-  (itemContainer: CalcItemContainer): number
+  (context: CalcItemContainerContext): number
+}
+interface CalcItemContainerContext {
+  readonly currentItemId: CalculationItemIds | null
+  readonly currentItemValue: number
+  readonly customItemValues: readonly number[]
+  getItemValue(id: CalculationItemIds): number
+  getContainerResult(id: CalculationContainerIds): number
+  getContainerCurrentItemId(id: CalculationContainerIds): CalculationItemIds | null
+}
+interface CalculationContainerSnapshot {
+  readonly enabled: boolean
+  readonly applicable: boolean
+  readonly currentItemId: CalculationItemIds | null
+  readonly customItemValues: readonly number[]
+}
+interface CalculationSnapshot {
+  readonly itemValues: ReadonlyMap<CalculationItemIds, number>
+  readonly containers: ReadonlyMap<CalculationContainerIds, CalculationContainerSnapshot>
+}
+interface CalculationSnapshotOverrides {
+  readonly itemValues?: ReadonlyMap<CalculationItemIds, number>
+}
+interface CalculationEvaluationResult {
+  readonly value: number
+  readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
 }
 
 function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
@@ -84,31 +107,70 @@ class CalculationBase {
     calcStruct: CalcStructItem,
     options: CalcResultOptions = {}
   ): number {
+    return this.evaluate(calculation.createSnapshot(), calcStruct, options).value
+  }
+
+  evaluate(
+    snapshot: CalculationSnapshot,
+    calcStruct: CalcStructItem,
+    options: CalcResultOptions = {},
+    overrides: CalculationSnapshotOverrides = {}
+  ): CalculationEvaluationResult {
     if (!calcStruct) {
-      return 0
+      return {
+        value: 0,
+        containerResults: new Map(),
+      }
     }
 
     const { containerResults = {} } = options
+    const evaluatedContainerResults = new Map<CalculationContainerIds, number>()
+
+    const getItemValue = (id: CalculationItemIds) => {
+      return overrides.itemValues?.get(id) ?? snapshot.itemValues.get(id) ?? 0
+    }
+    const evaluateContainer = (id: CalculationContainerIds): number => {
+      const cached = evaluatedContainerResults.get(id)
+      if (cached !== undefined) {
+        return cached
+      }
+
+      const containerBase = this.containers.get(id)
+      const container = snapshot.containers.get(id)
+      if (!containerBase || !container) {
+        console.warn('[DamageCalculation.evaluate] unknown container id:', id)
+        return 0
+      }
+
+      const overriddenResult = containerResults[id]
+      let result: number
+      if (!container.enabled || !container.applicable) {
+        result = containerBase.disabledValue
+      } else if (overriddenResult !== undefined) {
+        result = overriddenResult
+      } else {
+        const context: CalcItemContainerContext = {
+          currentItemId: container.currentItemId,
+          currentItemValue:
+            container.currentItemId === null ? 0 : getItemValue(container.currentItemId),
+          customItemValues: container.customItemValues,
+          getItemValue,
+          getContainerResult: evaluateContainer,
+          getContainerCurrentItemId: containerId =>
+            snapshot.containers.get(containerId)?.currentItemId ?? null,
+        }
+        result = containerBase.calculate(context)
+      }
+      evaluatedContainerResults.set(id, result)
+      return result
+    }
 
     const handle = (item: CalcStructItem): number => {
       if (typeof item === 'string') {
-        const container = calculation.containers.get(item)
-        if (container !== undefined) {
-          const res = (() => {
-            if (!container.enabled || container.hidden) {
-              // disabled value
-              return container.result()
-            }
-            const resultItem = containerResults[item]
-            if (typeof resultItem === 'number') {
-              return resultItem
-            }
-            if (typeof resultItem === 'function') {
-              return resultItem(container)
-            }
-            return container.result()
-          })()
-          return container.base.isMultiplier ? res / 100 : res
+        const containerBase = this.containers.get(item)
+        if (containerBase !== undefined) {
+          const result = evaluateContainer(item)
+          return containerBase.isMultiplier ? result / 100 : result
         }
         console.warn('[DamageCalculation.result] unknown container id:', item)
         return 0
@@ -136,7 +198,10 @@ class CalculationBase {
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item)
       return 0
     }
-    return Math.floor(handle(calcStruct))
+    return {
+      value: Math.floor(handle(calcStruct)),
+      containerResults: evaluatedContainerResults,
+    }
   }
 }
 
@@ -258,17 +323,16 @@ class CalcItemContainerBase {
     this.enabledDefaultValue = false
   }
 
+  calculate(context: CalcItemContainerContext): number {
+    const result = this._calcResult ? this._calcResult(context) : context.currentItemValue
+    return this.floorResult ? Math.floor(result) : result
+  }
+
   result(itemContainer: CalcItemContainer): number {
     if (!itemContainer.enabled || itemContainer.hidden) {
       return this.disabledValue
     }
-    const res = (() => {
-      if (this._calcResult) {
-        return this._calcResult(itemContainer)
-      }
-      return itemContainer.currentItem.value
-    })()
-    return this.floorResult ? Math.floor(res) : res
+    return this.calculate(itemContainer)
   }
 }
 
@@ -335,4 +399,9 @@ export type {
   CalcStructAction,
   CalcResultOptions,
   CurrentItemIdGetter,
+  CalcItemContainerContext,
+  CalculationContainerSnapshot,
+  CalculationSnapshot,
+  CalculationSnapshotOverrides,
+  CalculationEvaluationResult,
 }
