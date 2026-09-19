@@ -16,6 +16,11 @@ export interface CharacterStoreSaveSummary {
   characterIndex: number
 }
 
+export interface DamageCalculationSelectionSaveData {
+  skillStates: Record<string, { enabled: boolean }>
+  skillBranchStates: Record<string, { enabled: boolean }>
+}
+
 interface CharacterStoreCharacterStateSaveData {
   id: number
   skillBuildId: number | null
@@ -34,6 +39,7 @@ export interface CharacterSimulatorSaveData {
   registletBuilds: RegistletBuildSaveData[]
   potionBuilds: PotionBuildSaveData[]
   buildLabels: CharacterBuildLabelSaveData[]
+  damageCalc?: DamageCalculationSelectionSaveData
 }
 
 export interface CharacterSimulatorSaveDataRoot {

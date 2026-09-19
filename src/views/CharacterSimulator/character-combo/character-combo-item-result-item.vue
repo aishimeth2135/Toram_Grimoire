@@ -28,9 +28,8 @@
         <div class="mr-3 flex shrink-0">
           <cy-button-toggle
             v-model:selected="
-              characterStore.getDamageCalculationSkillBranchState(
-                suffixContainer.branchItem.default
-              ).enabled
+              characterStore.getDamageCalculationSkillBranchState(suffixContainer.branchItem)
+                .enabled
             "
             :disabled="suffixContainer.statContainers.length === 0"
           >
@@ -66,6 +65,6 @@ const { t } = useI18n()
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  characterStore.getDamageCalculationSkillBranchState(container.value.branchItem.default)
+  characterStore.getDamageCalculationSkillBranchState(container.value.branchItem)
 )
 </script>

@@ -209,6 +209,7 @@ const submit = () => {
     characterStates: originalData.value!.characterStates.filter(state =>
       characters.some(item => item.id === state.id)
     ),
+    damageCalc: originalData.value!.damageCalc,
   }
   Cyteria.file.save({
     data: JSON.stringify(datas),

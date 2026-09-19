@@ -28,7 +28,7 @@ export function getSkillStatContainerValid(
         id: statContainer.branch.parent.parent.skill.skillId,
       },
       $branch: {
-        id: skillResult.container.branchItem.id,
+        id: skillResult.container.branchItem.overrideId,
         prop: (key: string) => skillResult.container.branchItem.prop(key),
       },
     }

@@ -244,7 +244,7 @@ const { otherEffectBranches, currentOtherEffectBranch, setCurrentOtherEffectBran
 
 const currentEffectEquipments = computed(() => {
   const current = branchItem.value
-  if (current.id === -1) {
+  if (current.overrideId === -1) {
     return null
   }
   if (current.parent instanceof SkillEffectItem) {

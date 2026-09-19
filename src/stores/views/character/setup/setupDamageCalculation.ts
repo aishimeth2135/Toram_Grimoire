@@ -14,10 +14,11 @@ import {
   ContainerTypes,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
-import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
+import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
+import { SkillBranchItem, type SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
+import type { DamageCalculationSelectionSaveData } from '../persistence'
 import { createElementMap, getCharacterElement } from '../utils'
 import { type SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
 import { type SkillResult } from './setupCharacterSkills'
@@ -41,6 +42,8 @@ export interface CalculationOptions {
   forceCritical: boolean
   armorBreakDisplay: boolean
 }
+
+const DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT = 8
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
   [EquipmentTypes.Empty]: 50,
@@ -97,26 +100,93 @@ export function setupDamageCalculation(
     skillMultiplier: number
   }
 
-  const getSkillState = (() => {
-    const skillStates = ref(new Map<Skill, { enabled: boolean }>())
-    return (skill: Skill) => {
-      if (!skillStates.value.has(skill)) {
-        skillStates.value.set(skill, { enabled: false })
-      }
-      return skillStates.value.get(skill)!
+  const skillStates = ref(new Map<string, { enabled: boolean }>())
+  const getSkillState = (skill: Skill) => {
+    if (!skillStates.value.has(skill.skillId)) {
+      skillStates.value.set(skill.skillId, { enabled: false })
     }
-  })()
+    return skillStates.value.get(skill.skillId)!
+  }
 
-  const getSkillBranchState = (() => {
-    // save state by default branch
-    const skillBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
-    return (branch: SkillBranch) => {
-      if (!skillBranchStates.value.has(branch)) {
-        skillBranchStates.value.set(branch, { enabled: true })
-      }
-      return skillBranchStates.value.get(branch)!
+  const damageCalculationSkillSelectionLimitReached = computed(
+    () =>
+      Array.from(skillStates.value.values()).filter(state => state.enabled).length >=
+      DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+  )
+
+  const setDamageCalculationSkillEnabled = (skill: Skill, enabled: boolean) => {
+    const state = getSkillState(skill)
+    if (enabled && !state.enabled && damageCalculationSkillSelectionLimitReached.value) {
+      return false
     }
-  })()
+    state.enabled = enabled
+    return true
+  }
+
+  // save state by default branch
+  const skillBranchStates = ref(new Map<string, { enabled: boolean }>())
+  const getSkillBranchState = (branchItem: SkillBranchItemBaseChilds) => {
+    if (!skillBranchStates.value.has(branchItem.defaultBranchId)) {
+      skillBranchStates.value.set(branchItem.defaultBranchId, { enabled: true })
+    }
+    return skillBranchStates.value.get(branchItem.defaultBranchId)!
+  }
+
+  const resetDamageCalculationSelectionStates = () => {
+    skillStates.value.clear()
+    skillBranchStates.value.clear()
+  }
+
+  const createDamageCalculationSelectionSaveData = (): DamageCalculationSelectionSaveData => ({
+    skillStates: Object.fromEntries(
+      Array.from(skillStates.value)
+        .filter(([, state]) => state.enabled)
+        .map(([id]) => [id, { enabled: true }])
+    ),
+    skillBranchStates: Object.fromEntries(
+      Array.from(skillBranchStates.value)
+        .filter(([, state]) => state.enabled)
+        .map(([id]) => [id, { enabled: true }])
+    ),
+  })
+
+  const validDefaultBranchIds = new Set(
+    Grimoire.Skill.skillRoot.skillTreeCategorys.flatMap(category =>
+      category.skillTrees.flatMap(skillTree =>
+        skillTree.skills.flatMap(skill =>
+          skill.defaultEffect.branches.map((_branch, index) => `${skill.skillId}-b${index}`)
+        )
+      )
+    )
+  )
+
+  const loadDamageCalculationSelectionSaveData = (data?: DamageCalculationSelectionSaveData) => {
+    resetDamageCalculationSelectionStates()
+    if (!data) {
+      return
+    }
+
+    let selectedSkillCount = 0
+    Object.entries(data.skillStates).forEach(([id, state]) => {
+      if (!Grimoire.Skill.skillRoot.findSkillById(id)) {
+        delete data.skillStates[id]
+        return
+      }
+      const enabled = state.enabled && selectedSkillCount < DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+      if (enabled) {
+        selectedSkillCount += 1
+      }
+      skillStates.value.set(id, { enabled })
+    })
+
+    Object.entries(data.skillBranchStates).forEach(([id, state]) => {
+      if (!validDefaultBranchIds.has(id)) {
+        delete data.skillBranchStates[id]
+        return
+      }
+      skillBranchStates.value.set(id, { enabled: state.enabled })
+    })
+  }
 
   const getSkillElement = (branchItem: SkillBranchItem) => {
     const chara = character.value
@@ -131,7 +201,7 @@ export function setupDamageCalculation(
     let skillDualElement = branchItem.prop('dual_element')
     if (skillDualElement === 'none') {
       const extraBch = branchItem.suffixBranches.find(suf => {
-        if (!getSkillBranchState(suf.default).enabled) {
+        if (!getSkillBranchState(suf).enabled) {
           return false
         }
         return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
@@ -586,7 +656,12 @@ export function setupDamageCalculation(
   return {
     setupDamageCalculationExpectedResult,
     getDamageCalculationSkillState: getSkillState,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState: getSkillBranchState,
+    createDamageCalculationSelectionSaveData,
+    loadDamageCalculationSelectionSaveData,
+    resetDamageCalculationSelectionStates,
   }
 }
 

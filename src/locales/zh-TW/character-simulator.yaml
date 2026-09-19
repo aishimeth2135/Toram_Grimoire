@@ -17,6 +17,18 @@ character-basic:
 character-dashboard:
   title: 總覽
   no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
+  damage-chart:
+    title: 傷害計算圖表
+    tabs:
+      low: 低防禦
+      medium: 中防禦
+      high: 高防禦
+    x-axis-title: 雙抗/雙防
+    y-axis-title: 傷害期望值 (m)
+    damage-title: 傷害量
+    comparison-title: 傷害比較
+    tips: 雙抗取0~30%，雙防取{min}~{max}。
+    no-data: 目前沒有可計算的傷害技能。
 character-equipments-manage:
   title: 管理所有裝備
   mode-selections-title: 選擇檢視模式

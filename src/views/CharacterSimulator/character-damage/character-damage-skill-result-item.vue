@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-icon icon="ic:round-label" />
-      <div class="text-primary-70 ml-2">
+      <cy-button-check v-model:selected="enabled" inline>
         {{ result.container.get('name') }}
-      </div>
+      </cy-button-check>
       <div class="ml-3 flex items-center space-x-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
@@ -56,8 +55,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem.default)
-              .enabled
+            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem).enabled
           "
         />
         <CharacterSkillItemStats
@@ -127,6 +125,17 @@ const characterStore = useCharacterStore()
 const { t } = useI18n()
 const detailVisible = ref(false)
 const toggleDetailVisible = useToggle(detailVisible)
+
+const enabled = computed<boolean>({
+  get() {
+    return characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem)
+      .enabled
+  },
+  set(value) {
+    characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem).enabled =
+      value
+  },
+})
 
 const result = computed(() => props.result)
 

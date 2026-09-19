@@ -79,10 +79,10 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
 
 function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBranchItem[]) {
   from.forEach(fromBranch => {
-    if (fromBranch.id === -1) {
+    if (fromBranch.overrideId === -1) {
       return
     }
-    const idx = to.findIndex(bch => bch.id === fromBranch.id)
+    const idx = to.findIndex(bch => bch.overrideId === fromBranch.overrideId)
     if (idx === -1) {
       return
     }
@@ -400,7 +400,7 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
     const fromBranches = history.branchItems
     let meetFirstBranchHasId = false
     fromBranches.forEach(historyBch => {
-      if (historyBch.id === -1) {
+      if (historyBch.overrideId === -1) {
         if (meetFirstBranchHasId) {
           history.removedBranches.push(historyBch)
           toBranches.push(historyBch)
@@ -421,17 +421,19 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
 function initHistoryNexts(history: SkillEffectItemHistory) {
   history.modifiedBranchItems.forEach(branchItem => {
     const next = branchItem.hasId()
-      ? history.nextEffect.branchItems.find(bch => branchItem.id === bch.id)
+      ? history.nextEffect.branchItems.find(bch => branchItem.overrideId === bch.overrideId)
       : history.nextEffect.branchItems.find(bch =>
           [...bch.suffixBranches, ...bch.emptySuffixBranches].some(
-            suf => suf.hasId() && branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
+            suf =>
+              suf.hasId() &&
+              branchItem.suffixBranches.some(_suf => suf.overrideId === _suf.overrideId)
           )
         )
     if (next) {
       const nextClone = next.clone(history)
       nextClone.setHistoryRecord(branchItem.record)
       nextClone.suffixBranches.forEach(suffix => {
-        const find = branchItem.suffixBranches.find(suf => suf.id === suffix.id)
+        const find = branchItem.suffixBranches.find(suf => suf.overrideId === suffix.overrideId)
         if (find) {
           suffix.setHistoryRecord(find.record)
         }
@@ -462,11 +464,11 @@ function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
         if (targetId === null) {
           return null
         }
-        const newBch = branches.find(item => item.id === targetId)?.clone()
+        const newBch = branches.find(item => item.overrideId === targetId)?.clone()
         if (!newBch) {
           return null
         }
-        newBch.id = bch.id
+        newBch.overrideId = bch.overrideId
         for (const [key, value] of bch.props.entries()) {
           newBch.props.set(key, value)
         }

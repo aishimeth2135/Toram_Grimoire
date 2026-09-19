@@ -1,11 +1,15 @@
 <template>
   <CardRow :selected="enabled">
     <div
-      class="hover:bg-primary-5 flex cursor-pointer items-center py-2 pl-1.5 pr-2.5 duration-150"
-      @click="enabled = !enabled"
+      class="hover:bg-primary-5 flex items-center py-2 pl-1.5 pr-2.5 duration-150"
+      :class="{
+        'cursor-pointer': !selectionDisabled,
+        'cursor-not-allowed opacity-50': selectionDisabled,
+      }"
+      @click="toggleEnabled"
     >
       <div class="mr-3 flex shrink-0 items-center" style="min-width: 10rem">
-        <cy-button-check :selected="enabled" />
+        <cy-button-check :selected="enabled" :disabled="selectionDisabled" />
         <cy-icon :icon="skillIconPath" class="ml-1.5" />
         <span class="text-primary-70 ml-2">
           {{ skillResultsState.skill.name }}
@@ -56,9 +60,19 @@ const enabled = computed<boolean>({
     return characterStore.getDamageCalculationSkillState(props.skillResultsState.skill).enabled
   },
   set(value) {
-    characterStore.getDamageCalculationSkillState(props.skillResultsState.skill).enabled = value
+    characterStore.setDamageCalculationSkillEnabled(props.skillResultsState.skill, value)
   },
 })
+
+const selectionDisabled = computed(
+  () => !enabled.value && characterStore.damageCalculationSkillSelectionLimitReached
+)
+
+const toggleEnabled = () => {
+  if (!selectionDisabled.value) {
+    enabled.value = !enabled.value
+  }
+}
 
 const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
 

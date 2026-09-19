@@ -17,6 +17,7 @@
     "@floating-ui/dom": "^1.8.0",
     "@tanstack/vue-virtual": "^3.13.37",
     "assert": "^2.1.0",
+    "chart.js": "^4.5.1",
     "dompurify": "^2.3.10",
     "escape-string-regexp": "^5.0.0",
     "jsep": "^1.4.0",
