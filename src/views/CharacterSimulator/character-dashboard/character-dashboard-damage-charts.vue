@@ -1,12 +1,25 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { type Ref, computed, effectScope, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
+import {
+  type EffectScope,
+  type Ref,
+  computed,
+  effectScope,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  watch,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSettingStore } from '@/stores/app/setting'
 import { useCharacterStore } from '@/stores/views/character'
-import type { SkillResult, SkillResultsState } from '@/stores/views/character/setup'
+import type { SkillResult } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
+
+import type { InstanceId } from '@/shared/services/InstanceId'
+
+import { CalculationItemIds, type CalculationSweepDimension } from '@/lib/Damage/DamageCalculation'
 
 import CharacterDashboardDamageChart from './character-dashboard-damage-chart.vue'
 import CharacterDashboardDamageRatioChart from './character-dashboard-damage-ratio-chart.vue'
@@ -17,13 +30,24 @@ import type { DamageChartSeries } from './character-dashboard-damage-chart-types
 
 interface DamageResultValues {
   enabled: Ref<boolean>
-  valid: Ref<boolean>[]
-  values: Ref<number>[]
+  valid: Ref<boolean>
+  values: Ref<readonly number[]>
 }
 
 interface DamageSkillLine {
   label: string
   results: DamageResultValues[]
+}
+
+interface DamageResultCalculator {
+  result: Ref<SkillResult>
+  scope: EffectScope
+  values: DamageResultValues
+}
+
+interface SelectedSkillResults {
+  label: string
+  results: SkillResult[]
 }
 
 const ChartTabs = {
@@ -92,17 +116,21 @@ const tabs = computed(() => [
   },
 ])
 
-const selectedSkillResultStates = computed<SkillResultsState[]>(() => {
+const selectedSkillResults = computed<SelectedSkillResults[]>(() => {
   const skillBuild = skillBuildStore.currentSkillBuild
   if (!skillBuild) {
     return []
   }
 
-  return (characterStore.damageSkillResultStates as SkillResultsState[]).filter(
-    state =>
-      skillBuild.getSkillLevel(state.skill) > 0 &&
-      characterStore.getDamageCalculationSkillState(state.skill).enabled
-  )
+  return characterStore.damageSkillResultStates.flatMap(state => {
+    if (
+      skillBuild.getSkillLevel(state.skill) === 0 ||
+      !characterStore.isDamageCalculationSkillEnabled(state.skill)
+    ) {
+      return []
+    }
+    return [{ label: state.skill.name, results: state.results }]
+  })
 })
 
 const resistanceValues = Array.from(
@@ -117,6 +145,27 @@ const defenseValues = computed(() =>
   )
 )
 
+const targetProperties = computed(() => characterStore.targetProperties)
+const calculationOptions = computed(() => characterStore.calculationOptions)
+const sweepDimensions = computed<readonly CalculationSweepDimension[]>(() => [
+  {
+    itemId: CalculationItemIds.TargetPhysicalResistance,
+    values: resistanceValues,
+  },
+  {
+    itemId: CalculationItemIds.TargetMagicResistance,
+    values: resistanceValues,
+  },
+  {
+    itemId: CalculationItemIds.TargetDef,
+    values: defenseValues.value,
+  },
+  {
+    itemId: CalculationItemIds.TargetMdef,
+    values: defenseValues.value,
+  },
+])
+
 const damageChartTips = computed(() =>
   t('character-simulator.character-dashboard.damage-chart.tips', {
     min: defenseValues.value[0],
@@ -124,47 +173,52 @@ const damageChartTips = computed(() =>
   })
 )
 
-let calculatorsScope = effectScope()
+const calculators = new Map<InstanceId, DamageResultCalculator>()
 
-const setupDamageResultValues = (result: SkillResult): DamageResultValues => {
-  const resultRef = computed(() => result)
+const setupDamageResultValues = (resultRef: Ref<SkillResult>): DamageResultValues => {
   const { extraStats } = setupSkilResultExtraStats(resultRef)
-  const calculators = resistanceValues.map((resistance, index) => {
-    const targetProperties = computed(() => ({
-      ...characterStore.targetProperties,
-      physicalResistance: resistance,
-      magicResistance: resistance,
-      def: defenseValues.value[index],
-      mdef: defenseValues.value[index],
-    }))
-
-    return characterStore.setupDamageCalculationExpectedResult(
-      resultRef,
-      extraStats,
-      targetProperties,
-      computed(() => characterStore.calculationOptions)
-    )
-  })
+  const calculator = characterStore.setupDamageCalculationExpectedResultSweep(
+    resultRef,
+    extraStats,
+    targetProperties,
+    calculationOptions,
+    sweepDimensions
+  )
 
   return {
-    enabled: computed(
-      () => characterStore.getDamageCalculationSkillBranchState(result.container.branchItem).enabled
+    enabled: computed(() =>
+      characterStore.isDamageCalculationSkillBranchEnabled(resultRef.value.container.branchItem)
     ),
-    valid: calculators.map(calculator => calculator.valid),
-    values: calculators.map(calculator => calculator.expectedResult),
+    valid: calculator.valid,
+    values: calculator.expectedResults,
   }
 }
 
 watch(
-  selectedSkillResultStates,
-  states => {
-    calculatorsScope.stop()
-    calculatorsScope = effectScope()
-    calculatorsScope.run(() => {
-      damageSkillLines.value = states.map(state => ({
-        label: state.skill.name,
-        results: state.results.map(setupDamageResultValues),
-      }))
+  selectedSkillResults,
+  skills => {
+    const unusedIds = new Set(calculators.keys())
+    damageSkillLines.value = skills.map(skill => ({
+      label: skill.label,
+      results: skill.results.map(result => {
+        const id = result.container.branchItem.instanceId
+        unusedIds.delete(id)
+        const existing = calculators.get(id)
+        if (existing) {
+          existing.result.value = result
+          return existing.values
+        }
+
+        const resultRef = shallowRef<SkillResult>(result)
+        const scope = effectScope(true)
+        const values = scope.run(() => setupDamageResultValues(resultRef))!
+        calculators.set(id, { result: resultRef, scope, values })
+        return values
+      }),
+    }))
+    unusedIds.forEach(id => {
+      calculators.get(id)!.scope.stop()
+      calculators.delete(id)
     })
   },
   { immediate: true }
@@ -173,10 +227,7 @@ watch(
 const damageChartSeries = computed<DamageChartSeries[]>(() =>
   damageSkillLines.value.flatMap((line, index) => {
     const selectedResults = line.results.filter(result => result.enabled.value)
-    if (
-      selectedResults.length === 0 ||
-      selectedResults.some(result => result.valid.some(valid => !valid.value))
-    ) {
+    if (selectedResults.length === 0 || selectedResults.some(result => !result.valid.value)) {
       return []
     }
 
@@ -185,7 +236,7 @@ const damageChartSeries = computed<DamageChartSeries[]>(() =>
         label: line.label,
         color: lineColors.value[index % lineColors.value.length],
         values: resistanceValues.map((_resistance, pointIndex) =>
-          selectedResults.reduce((sum, result) => sum + result.values[pointIndex].value, 0)
+          selectedResults.reduce((sum, result) => sum + (result.values.value[pointIndex] ?? 0), 0)
         ),
       },
     ]
@@ -193,13 +244,15 @@ const damageChartSeries = computed<DamageChartSeries[]>(() =>
 )
 
 onBeforeUnmount(() => {
-  calculatorsScope.stop()
+  calculators.forEach(calculator => calculator.scope.stop())
+  calculators.clear()
 })
 </script>
 
 <template>
   <CharacterDashboardSection
     :title="t('character-simulator.character-dashboard.damage-chart.title')"
+    default-hidden
   >
     <div class="px-4">
       <cy-tabs v-model="currentTab">

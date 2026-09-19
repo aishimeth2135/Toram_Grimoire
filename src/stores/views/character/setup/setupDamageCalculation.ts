@@ -11,7 +11,9 @@ import {
   type CalculationContainerSnapshot,
   CalculationItemIds,
   type CalculationSnapshot,
+  type CalculationSweepDimension,
   ContainerTypes,
+  evaluateCalculationExpectedValueZipSweep,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
@@ -40,7 +42,6 @@ export interface CalculationOptions {
   proration: number
   comboRate: number
   forceCritical: boolean
-  armorBreakDisplay: boolean
 }
 
 const DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT = 8
@@ -108,6 +109,8 @@ export function setupDamageCalculation(
     return skillStates.value.get(skill.skillId)!
   }
 
+  const isSkillEnabled = (skill: Skill) => skillStates.value.get(skill.skillId)?.enabled ?? false
+
   const damageCalculationSkillSelectionLimitReached = computed(
     () =>
       Array.from(skillStates.value.values()).filter(state => state.enabled).length >=
@@ -131,6 +134,9 @@ export function setupDamageCalculation(
     }
     return skillBranchStates.value.get(branchItem.defaultBranchId)!
   }
+
+  const isSkillBranchEnabled = (branchItem: SkillBranchItemBaseChilds) =>
+    skillBranchStates.value.get(branchItem.defaultBranchId)?.enabled ?? true
 
   const resetDamageCalculationSelectionStates = () => {
     skillStates.value.clear()
@@ -653,12 +659,42 @@ export function setupDamageCalculation(
     }
   }
 
+  const setupDamageCalculationExpectedResultSweep = (
+    skillResult: Ref<SkillResult>,
+    extraStats: Ref<StatRecorded[]>,
+    targetProperties: Ref<TargetProperties>,
+    calculationOptions: Ref<CalculationOptions>,
+    dimensions: Ref<readonly CalculationSweepDimension[]>
+  ) => {
+    const calculator = setupDamageCalculationExpectedResult(
+      skillResult,
+      extraStats,
+      targetProperties,
+      calculationOptions
+    )
+    const sweepResult = computed(() =>
+      evaluateCalculationExpectedValueZipSweep(
+        calculationBase,
+        calculator.calculationSnapshot.value,
+        dimensions.value
+      )
+    )
+
+    return {
+      valid: computed(() => calculator.valid.value && sweepResult.value.issues.length === 0),
+      expectedResults: computed(() => sweepResult.value.values),
+    }
+  }
+
   return {
     setupDamageCalculationExpectedResult,
+    setupDamageCalculationExpectedResultSweep,
     getDamageCalculationSkillState: getSkillState,
+    isDamageCalculationSkillEnabled: isSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState: getSkillBranchState,
+    isDamageCalculationSkillBranchEnabled: isSkillBranchEnabled,
     createDamageCalculationSelectionSaveData,
     loadDamageCalculationSelectionSaveData,
     resetDamageCalculationSelectionStates,

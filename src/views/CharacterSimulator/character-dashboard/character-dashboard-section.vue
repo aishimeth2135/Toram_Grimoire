@@ -4,16 +4,19 @@ import { useI18n } from 'vue-i18n'
 
 interface Props {
   title: string
+  defaultHidden?: boolean
 }
 interface Slots {
   default(): VNodeChild
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  defaultHidden: false,
+})
 defineSlots<Slots>()
 
 const { t } = useI18n()
-const expanded = ref(true)
+const expanded = ref(!props.defaultHidden)
 </script>
 
 <template>

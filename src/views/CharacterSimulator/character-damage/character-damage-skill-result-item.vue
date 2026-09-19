@@ -4,7 +4,7 @@
       <cy-button-check v-model:selected="enabled" inline>
         {{ result.container.get('name') }}
       </cy-button-check>
-      <div class="ml-3 flex items-center space-x-0.5">
+      <div class="ml-1 flex items-center space-x-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
@@ -19,27 +19,6 @@
           v-if="frequencyVisible"
           :result="result.container.result('frequency')"
         />
-      </div>
-      <div
-        v-if="valid && characterStore.calculationOptions.armorBreakDisplay"
-        class="border-primary-30 ml-3 flex items-baseline border-l pl-2.5"
-      >
-        <div class="text-blue-30 mr-2 text-sm">
-          {{ t('character-simulator.character-damage.armor-break') }}
-        </div>
-        <div class="flex items-center space-x-0.5">
-          <div class="text-blue-60">
-            {{ armorBreakExpectedResult }}
-          </div>
-          <cy-icon
-            v-if="frequencyVisible && result.container.has('frequency')"
-            icon="ic-round-close"
-          />
-          <SkillBranchPropValue
-            v-if="frequencyVisible"
-            :result="result.container.result('frequency')"
-          />
-        </div>
       </div>
       <cy-button-icon
         icon="majesticons:checkbox-list-detail-line"
@@ -144,14 +123,6 @@ const { extraStats } = setupSkilResultExtraStats(result)
 const { valid, calculationItems, expectedResult } = setupStoreDamageCalculationExpectedResult(
   result,
   extraStats
-)
-
-const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(
-  result,
-  extraStats,
-  {
-    armorBreak: true,
-  }
 )
 
 const frequencyVisible = computed(() => {

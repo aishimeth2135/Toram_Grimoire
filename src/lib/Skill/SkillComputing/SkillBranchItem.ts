@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { markRaw, reactive } from 'vue'
 
 import {
   type InstanceId,
@@ -197,9 +197,6 @@ abstract class SkillBranchItemBase<
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillBranchItem<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
@@ -238,7 +235,7 @@ class SkillBranchItem<
       parentExpanded: true,
       isGroupEnd: false,
     })
-    return new SkillBranchItem(parent, branch, groupState)
+    return markRaw(new SkillBranchItem(parent, branch, groupState))
   }
 
   _initDatasByProp() {
@@ -308,9 +305,6 @@ class SkillBranchItem<
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillBranchItemSuffix<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
@@ -327,7 +321,7 @@ class SkillBranchItemSuffix<
     branch: SkillBranchItemBase,
     mainBranch: SkillBranchItem
   ): SkillBranchItemSuffix<Parent> {
-    return new SkillBranchItemSuffix(parent, branch, mainBranch)
+    return markRaw(new SkillBranchItemSuffix(parent, branch, mainBranch))
   }
 
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(

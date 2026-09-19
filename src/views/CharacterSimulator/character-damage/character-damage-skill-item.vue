@@ -22,7 +22,7 @@
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
     </div>
-    <div v-if="enabled && !invalid" class="pb-5 pl-10 pr-3 pt-2">
+    <div v-if="enabled && !invalid" class="pb-4 pl-8 pr-3">
       <div class="space-y-2 pl-2">
         <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
           <CharacterDamageSkillResultItem :result="result" />

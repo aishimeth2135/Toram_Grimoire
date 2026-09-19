@@ -14,7 +14,7 @@ export function getContainerStats(
   container: DisplayDataContainer
 ) {
   const stats: StatRecorded[] = []
-  if (!store.getDamageCalculationSkillBranchState(container.branchItem)?.enabled) {
+  if (!store.isDamageCalculationSkillBranchEnabled(container.branchItem)) {
     return stats
   }
   container.statContainers.forEach(statContainer => {
@@ -41,21 +41,14 @@ export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
 
 export function setupStoreDamageCalculationExpectedResult(
   result: Ref<SkillResult>,
-  extraStats: Ref<StatRecorded[]>,
-  { armorBreak = false } = {}
+  extraStats: Ref<StatRecorded[]>
 ) {
   const store = useCharacterStore()
 
   return store.setupDamageCalculationExpectedResult(
     result,
     extraStats,
-    armorBreak
-      ? computed(() => ({
-          ...store.targetProperties,
-          def: Math.floor(store.targetProperties.def / 2),
-          mdef: Math.floor(store.targetProperties.mdef / 2),
-        }))
-      : computed(() => store.targetProperties),
+    computed(() => store.targetProperties),
     computed(() => store.calculationOptions)
   )
 }

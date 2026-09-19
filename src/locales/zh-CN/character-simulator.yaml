@@ -141,10 +141,7 @@ character-damage:
   title: 伤害计算
   target-options-title: 目标数值设定
   options-base-title: 基本设定
-  options-other-title: 其他设定
-  armor-break-display: 显示降防时伤害
   force-critical: 伤害必定爆击
-  armor-break: 降防
   element-none: 无设定
   no-result: 伤害公式待更新
   range-damage-title: 目标距离判定
