@@ -263,7 +263,7 @@ onBeforeUnmount(() => {
     </div>
     <div class="border-primary-10 border-t p-4">
       <template v-if="damageChartSeries.length > 0">
-        <div class="gap-icon text-primary-50 mb-3 inline-flex items-start px-2 text-sm">
+        <div class="gap-icon text-primary-30 mb-3 inline-flex items-start px-2 text-sm">
           <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
           {{ damageChartTips }}
         </div>

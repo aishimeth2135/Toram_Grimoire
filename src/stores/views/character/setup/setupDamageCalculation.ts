@@ -689,7 +689,6 @@ export function setupDamageCalculation(
   return {
     setupDamageCalculationExpectedResult,
     setupDamageCalculationExpectedResultSweep,
-    getDamageCalculationSkillState: getSkillState,
     isDamageCalculationSkillEnabled: isSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,
