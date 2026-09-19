@@ -10,6 +10,7 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 
 import CharacterDashboardDamageChart from './character-dashboard-damage-chart.vue'
 import CharacterDashboardDamageRatioChart from './character-dashboard-damage-ratio-chart.vue'
+import CharacterDashboardSection from './character-dashboard-section.vue'
 
 import { setupSkilResultExtraStats } from '../character-damage/setup'
 import type { DamageChartSeries } from './character-dashboard-damage-chart-types'
@@ -197,18 +198,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section class="border-primary-20 shadow-xs mt-7 border">
-    <div class="border-primary-10 border-b px-4 pt-3">
-      <div class="text-primary-80 mb-2">
-        {{ t('character-simulator.character-dashboard.damage-chart.title') }}
-      </div>
+  <CharacterDashboardSection
+    :title="t('character-simulator.character-dashboard.damage-chart.title')"
+  >
+    <div class="px-4">
       <cy-tabs v-model="currentTab">
         <cy-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
           {{ tab.text }}
         </cy-tab>
       </cy-tabs>
     </div>
-    <div class="p-4">
+    <div class="border-primary-10 border-t p-4">
       <template v-if="damageChartSeries.length > 0">
         <div class="gap-icon text-primary-50 mb-3 inline-flex items-start px-2 text-sm">
           <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
@@ -253,5 +253,5 @@ onBeforeUnmount(() => {
         {{ t('character-simulator.character-dashboard.damage-chart.no-data') }}
       </cy-default-tips>
     </div>
-  </section>
+  </CharacterDashboardSection>
 </template>

@@ -16,6 +16,7 @@ character-basic:
   character-builds-tip: 技能配置、料理配置等其他配置皆是以角色為單位進行綁定，系統會紀錄每個角色綁定了哪些配置。
 character-dashboard:
   title: 總覽
+  character-build-title: 角色配置
   no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
   damage-chart:
     title: 傷害計算圖表
