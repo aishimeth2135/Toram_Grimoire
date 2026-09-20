@@ -83,6 +83,24 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     return new SkillBranchResult(type, branch, key, origin, value)
   }
 
+  clone(): SkillBranchResult {
+    const result = SkillBranchResult.create(
+      this.type,
+      this.branch,
+      this.key,
+      this.origin,
+      this.value
+    )
+    result._result = this._result
+    result.displayResult = this.displayResult
+    result.mergeDisplayOptions(this.displayOptions)
+    result.subContainers.registlet = this.subContainers.registlet?.clone() ?? null
+    if (this.isEmpty()) {
+      result.markEmpty()
+    }
+    return result
+  }
+
   override get result() {
     return this.displayResult ?? this._result
   }

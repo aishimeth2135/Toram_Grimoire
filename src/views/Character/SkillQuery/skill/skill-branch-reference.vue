@@ -20,8 +20,7 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-
-import ReferenceHandler from './branch-handlers/ReferenceHandler'
+import { ReferenceHandler } from '@/lib/Skill/SkillDisplay'
 
 interface Props {
   computing: SkillComputingContainer

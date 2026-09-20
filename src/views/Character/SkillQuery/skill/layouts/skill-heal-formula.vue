@@ -28,11 +28,9 @@ import { useI18n } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import SkillBranchPropValue from './skill-branch-prop-value.vue'
+import { DisplayDataContainer, type HealExtraItem } from '@/lib/Skill/SkillDisplay'
 
-import DisplayDataContainer, {
-  type HealExtraItem,
-} from '../branch-handlers/handle/DisplayDataContainer'
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
   container: DisplayDataContainer

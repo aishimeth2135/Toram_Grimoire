@@ -32,11 +32,10 @@ import {
   SkillBranchResult,
   SkillComputingContainer,
 } from '@/lib/Skill/SkillComputing'
+import { BasicHandler } from '@/lib/Skill/SkillDisplay'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
-
-import BasicHandler from './branch-handlers/BasicHandler'
 
 const ATTR_DATAS: {
   key: string

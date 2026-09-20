@@ -34,6 +34,7 @@ export default class DisplayDataContainer<
 
   readonly branchItem: Branch
   readonly containers: Map<string, SkillBranchResultBase>
+  readonly computedValues: ReadonlyMap<string, SkillBranchResultBase>
   readonly statContainers: SkillBranchStatResult[]
 
   constructor({
@@ -41,16 +42,19 @@ export default class DisplayDataContainer<
     containers = new Map(),
     statContainers = [],
     titles = new Map(),
+    computedValues = new Map(),
   }: {
     branchItem: Branch
     containers?: Map<string, SkillBranchResultBase>
     statContainers?: SkillBranchStatResult[]
     titles?: SkillDisplayData
+    computedValues?: ReadonlyMap<string, SkillBranchResultBase>
   }) {
     this.instanceId = DisplayDataContainer._idGenerator.generate()
 
     this.branchItem = branchItem
     this.containers = containers
+    this.computedValues = computedValues
     this.statContainers = statContainers
     this._titles = titles
     this._customDatas = { healExtraItems: [], stackInputWidth: undefined }
@@ -69,11 +73,11 @@ export default class DisplayDataContainer<
   }
 
   getValue(key: string): string {
-    return this.containers.get(key)?.value ?? ''
+    return (this.computedValues.get(key) ?? this.containers.get(key))?.value ?? ''
   }
 
   getValueSum(key: string): number {
-    return this.containers.get(key)?.valueSum ?? 0
+    return (this.computedValues.get(key) ?? this.containers.get(key))?.valueSum ?? 0
   }
 
   getOrigin(key: string): string {

@@ -4,8 +4,8 @@ import { toInt } from '@/shared/utils/number'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing'
 
+import { type HandleBranchValuePropsMap } from '../compute'
 import {
   type HandleBranchLangPropsMap,
   type HandleDisplayDataOptionFilters,

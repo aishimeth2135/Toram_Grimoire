@@ -6,8 +6,7 @@ import { type SkillResult } from '@/stores/views/character/setup'
 import { isNumberString } from '@/shared/utils/string'
 
 import { StatRecorded } from '@/lib/Character/Stat'
-
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 export function getContainerStats(
   store: ReturnType<typeof useCharacterStore>,

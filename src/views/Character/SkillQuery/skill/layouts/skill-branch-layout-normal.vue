@@ -127,13 +127,13 @@ import { useToggle } from '@/shared/composables/State'
 import { slotNotEmpty } from '@/shared/utils/vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
-import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 import type { ExtraSuffixBranchData } from '../setup'
 import type { NormalLayoutSubContent } from './setup'
 

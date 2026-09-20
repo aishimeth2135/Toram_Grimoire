@@ -15,17 +15,20 @@ import {
 } from '@/lib/Skill/SkillComputing'
 import {
   type ComputedBranchHelperResult,
-  type HandleBranchTextPropsMap,
-  type HandleBranchValuePropsMap,
   collectBranchFormulaValues,
   computeBranchValue,
+  computeBranchValueResults,
   computedBranchHelper,
-  handleBranchStats,
-  handleBranchTextProps,
-  handleBranchValueProps,
 } from '@/lib/Skill/SkillComputing'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
+import {
+  type HandleBranchTextPropsMap,
+  type HandleBranchValuePropsMap,
+  handleBranchStats,
+  handleBranchTextProps,
+  handleBranchValueProps,
+} from '../../compute'
 import DisplayDataContainer from './DisplayDataContainer'
 import { handleFunctionHighlight, numberStringToPercentage } from './utils'
 
@@ -173,6 +176,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   )
 
   const formulaDisplayMode = helper.formulaDisplayMode
+  const computedValues = computeBranchValueResults(helper, props, Object.keys(values))
 
   const ignoreProp = (key: string) => {
     delete values[key]
@@ -231,7 +235,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     )
   }
 
-  const valueContainers = handleBranchValueProps(helper, props, values)
+  const valueContainers = handleBranchValueProps(helper, props, values, computedValues)
   const textContainers = handleBranchTextProps(helper, props, texts)
   const statContainers = handleBranchStats(helper, branchItem.stats)
 
@@ -366,6 +370,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     containers,
     titles: titlesResult,
     statContainers: statContainers,
+    computedValues: new Map(Object.entries(computedValues)),
   })
 }
 

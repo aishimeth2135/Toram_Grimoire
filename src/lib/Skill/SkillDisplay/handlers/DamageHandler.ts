@@ -2,11 +2,8 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import type {
-  HandleBranchTextPropsMap,
-  HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputing'
 
+import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '../compute'
 import ProrationHandler from './ProrationHandler'
 import {
   type HandleBranchLangPropsMap,

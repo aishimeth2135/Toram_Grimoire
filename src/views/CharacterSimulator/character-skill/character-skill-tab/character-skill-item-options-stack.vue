@@ -33,8 +33,7 @@ import { computed, toRefs } from 'vue'
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
-
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import { setStackValue } from './utils'
 

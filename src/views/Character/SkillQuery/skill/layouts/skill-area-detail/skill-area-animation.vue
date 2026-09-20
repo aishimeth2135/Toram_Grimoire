@@ -8,7 +8,8 @@ import { computed, h, toRefs } from 'vue'
 import { numberToFixed } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
-import DisplayDataContainer from '../../branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
+
 import { createSectorPathD } from './utils'
 
 interface Props {

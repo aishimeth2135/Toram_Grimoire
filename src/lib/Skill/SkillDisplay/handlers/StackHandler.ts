@@ -3,8 +3,8 @@ import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing'
 
+import type { HandleBranchValuePropsMap } from '../compute'
 import { type HandleDisplayDataOptionFilters, cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'
 

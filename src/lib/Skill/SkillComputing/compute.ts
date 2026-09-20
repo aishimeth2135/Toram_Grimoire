@@ -14,19 +14,13 @@ import {
   handleFormula,
 } from '@/shared/utils/data'
 import { toIndex, toInt } from '@/shared/utils/number'
-import { isNumberString, splitComma } from '@/shared/utils/string'
+import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
-import type { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import { SkillBranchNames } from '../Skill'
-import {
-  SkillBranchResult,
-  SkillBranchStatResult,
-  SkillBranchTextResult,
-  type SkillBranchTextResultParseResult,
-} from './SkillBranchResult'
+import { SkillBranchResult, SkillBranchStatResult } from './SkillBranchResult'
 import { FormulaDisplayModes } from './enums'
 
 function computeBranchFormulaValue(str: string, helper: ComputedBranchHelperResult): string {
@@ -48,17 +42,6 @@ function computeBranchFormulaValue(str: string, helper: ComputedBranchHelperResu
   return handleFormula(str, { vars, texts, methods }) as string
 }
 
-function handleDisplayValue(
-  container: SkillBranchResult,
-  helper: ComputedBranchHelperResult
-): void {
-  const formula = helper.props.get(helper.branchItem.propKey(container.key, 'display'))
-  if (formula !== undefined) {
-    const displayValue = computeBranchFormulaValue(formula, helper)
-    container.initDisplayValue(displayValue)
-  }
-}
-
 function handleRegistletValue(
   container: SkillBranchResult,
   helper: ComputedBranchHelperResult
@@ -78,19 +61,6 @@ function handleRegistletValue(
       container.subContainers.registlet = subContainer
     }
   }
-}
-
-function handleHighlight(container: SkillBranchResult) {
-  const originalFormula = container.origin
-  const className =
-    isNumberString(container.value) && parseFloat(container.value) < 0
-      ? originalFormula.includes('stack')
-        ? 'text-cyan-60'
-        : 'text-gray'
-      : originalFormula.includes('stack')
-        ? 'text-blue-60'
-        : 'text-primary-50'
-  container.mergeDisplayOptions({ classNames: [className] })
 }
 
 /**
@@ -354,125 +324,6 @@ function computeBranchValueProps<Key extends string>(
   return propValues
 }
 
-interface HandleBranchValueOptions extends ResultContainerDisplayOptions {
-  toPersentage?: boolean
-}
-interface HandleBranchValuePropsMap {
-  [key: string]: HandleBranchValueOptions | string | null
-}
-type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
-  [key in keyof PropMap]: SkillBranchResult
-}
-function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
-  helper: ComputedBranchHelperResult,
-  props: Map<string, string>,
-  propMap: PropMap
-): HandleBranchValuePropsResult<PropMap> {
-  const propKeys = Object.keys(propMap) as (keyof PropMap)[]
-  const propValues = computeBranchValueProps(helper, props, propKeys as string[]) as Map<
-    keyof PropMap,
-    string
-  >
-  const propResult = {} as HandleBranchValuePropsResult<PropMap>
-  propKeys.forEach(propKey => {
-    const originalFormula = props.get(propKey as string)
-    if (originalFormula === undefined) {
-      propResult[propKey] = SkillBranchResult.create(
-        ResultContainerTypes.Number,
-        helper.branchItem,
-        propKey as string,
-        '0',
-        '0'
-      )
-      propResult[propKey].markEmpty()
-      return
-    }
-    const container = SkillBranchResult.create(
-      ResultContainerTypes.Number,
-      helper.branchItem,
-      propKey as string,
-      originalFormula,
-      propValues.get(propKey)!
-    )
-    const sourceOptions = container.normalizeDisplayOptions<HandleBranchValueOptions>(
-      propMap[propKey]
-    )
-    const options = sourceOptions ? { ...sourceOptions } : null
-    if (options?.toPersentage) {
-      container.handle(value => {
-        if (isNumberString(value)) {
-          return (parseFloat(value) * 100).toString()
-        }
-        return value
-      })
-      options.unit = '%'
-    }
-    container.mergeDisplayOptions(options)
-
-    handleDisplayValue(container, helper)
-    handleRegistletValue(container, helper)
-    handleHighlight(container)
-
-    propResult[propKey] = container
-  })
-
-  return propResult
-}
-
-interface HandleBranchTextPropsMap {
-  [key: string]: null
-}
-type HandleBranchTextPropsResult<PropMap extends HandleBranchTextPropsMap> = {
-  [key in keyof PropMap]: SkillBranchTextResult
-}
-function computedBranchText(
-  helper: ComputedBranchHelperResult,
-  propKey: string,
-  propValue: string | undefined
-) {
-  const textStr = propValue
-  if (textStr === undefined) {
-    const _parseResult = {
-      containers: [],
-      parts: [''],
-    } as SkillBranchTextResultParseResult
-    const resultContainer = SkillBranchTextResult.createForBranch(
-      helper.branchItem,
-      propKey,
-      '0',
-      '0',
-      _parseResult
-    )
-    resultContainer.markEmpty()
-    return resultContainer
-  }
-  const parseResult = SkillBranchTextResult.parse(helper.branchItem, propKey, textStr, value =>
-    computeBranchFormulaValue(value, helper)
-  )
-  return SkillBranchTextResult.createForBranch(
-    helper.branchItem,
-    propKey,
-    textStr,
-    textStr,
-    parseResult
-  )
-}
-function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
-  helper: ComputedBranchHelperResult,
-  props: Map<string, string>,
-  propMap: PropMap
-): HandleBranchTextPropsResult<PropMap> {
-  const propKeys = Object.keys(propMap) as (keyof PropMap)[]
-  const propResult = {} as HandleBranchTextPropsResult<PropMap>
-  propKeys.forEach(propKey => {
-    const container = computedBranchText(helper, propKey as string, props.get(propKey as string))
-    container.containers.forEach(ctner => handleHighlight(ctner))
-    propResult[propKey] = container
-  })
-
-  return propResult
-}
-
 function computedBranchStats(
   helper: ComputedBranchHelperResult,
   stats: StatComputed[]
@@ -485,48 +336,51 @@ function computedBranchStats(
   })
 }
 
-function handleBranchStats(
-  helper: ComputedBranchHelperResult,
-  stats: StatComputed[]
-): SkillBranchStatResult[] {
-  const newStats = computedBranchStats(helper, stats)
-  return newStats.map(stat => {
-    const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
-    const container = SkillBranchStatResult.createForStat(helper.branchItem, originalStat, stat)
-    handleDisplayValue(container, helper)
-    handleRegistletValue(container, helper)
-
-    const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
-    if (helper.props.has(displayTitleKey)) {
-      const displayTitleContainer = computedBranchText(
-        helper,
-        displayTitleKey,
-        helper.props.get(displayTitleKey)
-      )
-      displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
-      container.setDisplayTitle(displayTitleContainer)
-    }
-    const conditionValueKey = helper.branchItem.propKey(container.key, 'conditionValue')
-    if (helper.props.has(conditionValueKey)) {
-      container.setConditionValue(helper.props.get(conditionValueKey)!)
-    }
-
-    const showData = stat.getShowData()
-    container.mergeDisplayOptions(container.normalizeDisplayOptions(showData.tail))
-
-    handleHighlight(container)
-
-    return container
-  })
-}
-
 export {
   computeBranchFormulaValue as computeBranchValue,
   computedBranchHelper,
   computeBranchValueProps,
-  handleBranchValueProps,
-  handleBranchTextProps,
   computedBranchStats,
-  handleBranchStats,
 }
-export type { HandleBranchValuePropsMap, HandleBranchTextPropsMap, ComputedBranchHelperResult }
+export type { ComputedBranchHelperResult }
+
+/** Numeric results, including registlet bonuses, without display overrides or styling. */
+export function computeBranchValueResults(
+  helper: ComputedBranchHelperResult,
+  props: ReadonlyMap<string, string>,
+  keys: readonly string[]
+): Record<string, SkillBranchResult> {
+  const results: Record<string, SkillBranchResult> = {}
+  keys.forEach(key => {
+    const origin = props.get(key)
+    const result = SkillBranchResult.create(
+      ResultContainerTypes.Number,
+      helper.branchItem,
+      key,
+      origin ?? '0',
+      origin === undefined ? '0' : computeBranchFormulaValue(origin, helper)
+    )
+    if (origin === undefined) {
+      result.markEmpty()
+    } else {
+      handleRegistletValue(result, helper)
+    }
+    results[key] = result
+  })
+  return results
+}
+
+export function computeBranchStatResults(
+  helper: ComputedBranchHelperResult,
+  stats: StatComputed[]
+): SkillBranchStatResult[] {
+  return computedBranchStats(helper, stats).map((stat, index) => {
+    const result = SkillBranchStatResult.createForStat(helper.branchItem, stats[index], stat)
+    handleRegistletValue(result, helper)
+    const condition = helper.props.get(helper.branchItem.propKey(result.key, 'conditionValue'))
+    if (condition !== undefined) {
+      result.setConditionValue(condition)
+    }
+    return result
+  })
+}

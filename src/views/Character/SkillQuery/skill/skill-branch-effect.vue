@@ -29,12 +29,12 @@
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { EffectHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
-import EffectHandler from './branch-handlers/EffectHandler'
 import { type NormalLayoutSubContent } from './layouts/setup'
 import { setupCommonExtraSuffixBranches } from './setup'
 
