@@ -7,6 +7,7 @@ export default function () {
   // jsep
   jsep.addIdentifierChar('@')
   jsep.addIdentifierChar('#')
+  jsep.addBinaryOp('^', 11, true)
 
   // marked
   const cyBracket: marked.TokenizerExtension & marked.RendererExtension = {

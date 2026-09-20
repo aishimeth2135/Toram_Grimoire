@@ -35,6 +35,9 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
   if (operator === '/') {
     return left / right
   }
+  if (operator === '^') {
+    return left ** right
+  }
   return 0
 }
 
@@ -104,7 +107,8 @@ function parseFormula(
   // inject Math
   vars.Math = window.Math as unknown as ParseFormulaVars
 
-  const _options = options
+  const { compile: compileVar = '' } = options
+  const isCompile = typeof compileVar === 'string' && compileVar !== ''
   const unknowSnippet = (value: unknown) => typeof value === 'string'
   const handleArray = (ary: (jsep.Expression | null)[], parentNode: jsep.Expression): unknown[] => {
     return ary
@@ -143,16 +147,29 @@ function parseFormula(
       }
       const operator = node.operator
       if (unknowSnippet(left) || unknowSnippet(right)) {
-        return (operator === '+' || operator === '-') &&
+        const op = isCompile && operator === '^' ? '**' : operator // for compile
+        if (operator === '^') {
+          return `(${left}${op}${right})`
+        }
+        if (
+          (op === '+' || op === '-') &&
           !(
             parentNode &&
             jsepTypes.isBinaryExpression(parentNode) &&
-            (parentNode.operator === '+' || parentNode.operator === '-')
+            (parentNode.op === '+' || parentNode.op === '-')
           )
-          ? `(${left}${operator}${right})`
-          : `${left}${operator}${right}`
+        ) {
+          return `(${left}${op}${right})`
+        }
+        return `${left}${op}${right}`
       }
-      if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
+      if (
+        operator === '+' ||
+        operator === '-' ||
+        operator === '*' ||
+        operator === '/' ||
+        operator === '^'
+      ) {
         if (typeof left === 'boolean') {
           left = left ? 1 : 0
         }
@@ -171,8 +188,8 @@ function parseFormula(
     if (jsepTypes.isIdentifier(node)) {
       const isRoot =
         !parentNode || !jsepTypes.isMemberExpression(parentNode) || parentNode.object === node
-      if (_options.compile) {
-        return isRoot ? `${_options.compile}['${node.name}']` : `['${node.name}']`
+      if (isCompile) {
+        return isRoot ? `${compileVar}['${node.name}']` : `['${node.name}']`
       }
       if (node.name in vars && isRoot) {
         return vars[node.name]
@@ -432,6 +449,7 @@ function computeFormula(
   } else {
     const paramName = '__VARS__'
     let func: AnyFunction
+
     try {
       const body = parseFormula(formula, {}, { compile: paramName }) as string
       func = new Function(paramName, `return (${body});`) as AnyFunction
@@ -442,6 +460,7 @@ function computeFormula(
         .end()
       func = () => defaultValue
     }
+
     _computeFormulaCaches.set(formula, func)
     handle = func
   }
