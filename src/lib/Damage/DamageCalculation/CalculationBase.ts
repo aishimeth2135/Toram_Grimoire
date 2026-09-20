@@ -60,6 +60,31 @@ interface CalculationEvaluationResult {
   readonly value: number
   readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
 }
+interface CalculationSweepDimension {
+  readonly itemId: CalculationItemIds
+  readonly values: readonly number[]
+}
+interface CalculationSweepPoint<Result = CalculationEvaluationResult> {
+  readonly index: number
+  readonly dimensions: ReadonlyMap<CalculationItemIds, number>
+  readonly result: Result
+}
+interface CalculationSweepIssue {
+  readonly type: 'duplicate-item' | 'unknown-item' | 'length-mismatch'
+  readonly itemId?: CalculationItemIds
+}
+interface CalculationSweepScenarios {
+  readonly points: readonly {
+    readonly index: number
+    readonly dimensions: ReadonlyMap<CalculationItemIds, number>
+    readonly overrides: CalculationSnapshotOverrides
+  }[]
+  readonly issues: readonly CalculationSweepIssue[]
+}
+interface CalculationSweepResult<Result = CalculationEvaluationResult> {
+  readonly points: readonly CalculationSweepPoint<Result>[]
+  readonly issues: readonly CalculationSweepIssue[]
+}
 
 function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
   return typeof payload !== 'string' || !payload.startsWith('@')
@@ -201,6 +226,67 @@ class CalculationBase {
     return {
       value: Math.floor(handle(calcStruct)),
       containerResults: evaluatedContainerResults,
+    }
+  }
+
+  createZipSweepScenarios(
+    dimensions: readonly CalculationSweepDimension[]
+  ): CalculationSweepScenarios {
+    const issues: CalculationSweepIssue[] = []
+    const knownItemIds = new Set<CalculationItemIds>()
+    dimensions.forEach(dimension => {
+      if (!this.items.has(dimension.itemId)) {
+        issues.push({ type: 'unknown-item', itemId: dimension.itemId })
+      }
+      if (knownItemIds.has(dimension.itemId)) {
+        issues.push({ type: 'duplicate-item', itemId: dimension.itemId })
+      }
+      knownItemIds.add(dimension.itemId)
+    })
+
+    const pointCount = dimensions[0]?.values.length ?? 1
+    if (dimensions.some(dimension => dimension.values.length !== pointCount)) {
+      issues.push({ type: 'length-mismatch' })
+    }
+    if (issues.length > 0) {
+      return { points: [], issues }
+    }
+
+    const points = Array.from({ length: pointCount }, (unusedValue, index) => {
+      void unusedValue
+      const dimensionValues = new Map<CalculationItemIds, number>()
+      dimensions.forEach(dimension => {
+        const item = this.items.get(dimension.itemId)!
+        const sourceValue = dimension.values[index]
+        const finiteValue = Number.isFinite(sourceValue) ? sourceValue : item.defaultValue
+        const value = Math.min(Math.max(finiteValue, item.min), item.max)
+        dimensionValues.set(dimension.itemId, value)
+      })
+      return {
+        index,
+        dimensions: dimensionValues,
+        overrides: {
+          itemValues: dimensionValues,
+        },
+      }
+    })
+    return { points, issues }
+  }
+
+  evaluateZipSweep(
+    snapshot: CalculationSnapshot,
+    calcStruct: CalcStructItem,
+    dimensions: readonly CalculationSweepDimension[],
+    options: CalcResultOptions = {}
+  ): CalculationSweepResult {
+    const scenarios = this.createZipSweepScenarios(dimensions)
+    return {
+      issues: scenarios.issues,
+      points: scenarios.points.map(point => ({
+        index: point.index,
+        dimensions: point.dimensions,
+        result: this.evaluate(snapshot, calcStruct, options, point.overrides),
+      })),
     }
   }
 }
@@ -404,4 +490,9 @@ export type {
   CalculationSnapshot,
   CalculationSnapshotOverrides,
   CalculationEvaluationResult,
+  CalculationSweepDimension,
+  CalculationSweepPoint,
+  CalculationSweepIssue,
+  CalculationSweepScenarios,
+  CalculationSweepResult,
 }
