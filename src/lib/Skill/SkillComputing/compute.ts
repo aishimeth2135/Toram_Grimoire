@@ -21,6 +21,7 @@ import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import { SkillBranchNames } from '../Skill'
 import { SkillBranchResult, SkillBranchStatResult } from './SkillBranchResult'
+import { resolveStackName } from './branchProps'
 import { FormulaDisplayModes } from './enums'
 
 function computeBranchFormulaValue(str: string, helper: ComputedBranchHelperResult): string {
@@ -143,11 +144,8 @@ function computedBranchHelper(
       const stackStates = branchItem.parent.stackStates
       const stackNames = stackIds.map((id, idx) => {
         const item = stackStates.find(state => state.stackId === id)
-        let name = item ? item.branch.prop('name') : 'auto'
-        if (name === 'auto') {
-          name = `${t('skill-query.branch.stack.base-name')}${idx + 1}`
-        }
-        return name
+        const defaultName = t('skill-query.branch.stack.base-name')
+        return item ? resolveStackName(item.branch, defaultName) : `${defaultName}${idx + 1}`
       })
       stack.push(...stackNames)
     }
@@ -165,6 +163,9 @@ function computedBranchHelper(
       }
     })
 
+    if (stack[0] === undefined) {
+      stack[0] = `${t('skill-query.branch.stack.base-name')}1`
+    }
     vars = {
       ...extendsDatas.vars,
     } as HandleFormulaVars
@@ -210,11 +211,11 @@ function computedBranchHelper(
       }
     })
 
-    if (stack.length === 0) {
-      stack.push(0)
+    if (stack[0] === undefined) {
+      stack[0] = 0
     }
-    if (RLv.length === 0) {
-      RLv.push(0)
+    if (RLv[0] === undefined) {
+      RLv[0] = 0
     }
 
     vars = {

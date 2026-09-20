@@ -50,7 +50,10 @@
                 />
               </slot>
               <span v-if="contentData.value" class="prop-value-wrapper text-primary-50 ml-1.5">
-                {{ contentData.value }}
+                <template v-if="typeof contentData.value === 'string'">{{
+                  contentData.value
+                }}</template>
+                <SkillBranchPropValue v-else :result="contentData.value" />
               </span>
             </div>
           </span>

@@ -4,7 +4,7 @@
       <cy-input-counter
         v-model:value="stackValue"
         :range="stackValueRange"
-        :input-width="container.getCustomData('stackInputWidth')"
+        :input-width="getStackInputWidth(container)"
         :step="stackStep"
         :title="container.get('name')"
       >
@@ -33,7 +33,7 @@ import { computed, toRefs } from 'vue'
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
-import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
+import { DisplayDataContainer, getStackInputWidth } from '@/lib/Skill/SkillDisplay'
 
 import { setStackValue } from './utils'
 

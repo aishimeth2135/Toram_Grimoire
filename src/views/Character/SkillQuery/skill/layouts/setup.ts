@@ -3,7 +3,11 @@ import { Translation } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import { SkillBranchResult, type SkillBranchTextResultPartValue } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchResult,
+  type SkillBranchResultBase,
+  type SkillBranchTextResultPartValue,
+} from '@/lib/Skill/SkillComputing'
 import {
   ResultContainerTypes,
   TextResultContainerPart,
@@ -20,7 +24,7 @@ export interface NormalLayoutSubContent {
   key: string
   icon: string
   title?: string
-  value?: string
+  value?: string | SkillBranchResultBase
   custom?: boolean
   type?: 'primary' | 'normal' | 'cyan' | 'gray'
 }

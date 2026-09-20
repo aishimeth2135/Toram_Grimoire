@@ -16,3 +16,4 @@ export {
   type HealExtraItem,
 } from './handlers/handle/DisplayDataContainer'
 export type { HandleBranchValuePropsMap, HandleBranchTextPropsMap } from './compute'
+export { getStackInputWidth } from './presentation'

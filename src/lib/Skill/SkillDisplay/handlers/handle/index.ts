@@ -10,6 +10,7 @@ import {
   SkillBranchItemSuffix,
   SkillBranchResult,
   type SkillBranchResultBase,
+  type SkillBranchResultSource,
   SkillComputingContainer,
   SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputing'
@@ -143,6 +144,7 @@ interface HandleDisplayDataOptions {
   pureDatas?: readonly string[]
   titles?: readonly string[]
   formulaDisplayMode?: FormulaDisplayModes
+  sources?: Readonly<Record<string, readonly SkillBranchResultSource[]>>
 }
 
 type SkillDisplayData = Map<string, string>
@@ -177,6 +179,30 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   const formulaDisplayMode = helper.formulaDisplayMode
   const computedValues = computeBranchValueResults(helper, props, Object.keys(values))
+  const formulaKeys = [
+    ...pureValues,
+    ...Object.keys(langs).filter(key => langs[key]?.type === 'value'),
+  ]
+  formulaKeys.forEach(key => {
+    if (computedValues[key]) {
+      return
+    }
+    const origin = props.get(key) || '0'
+    computedValues[key] = SkillBranchResult.create(
+      ResultContainerTypes.Number,
+      branchItem,
+      key,
+      origin,
+      computeBranchValue(origin, helper)
+    )
+  })
+  const applySource = (result: SkillBranchResultBase) => {
+    const sources = options.sources?.[result.key]
+    if (sources) {
+      result.setSources(sources)
+    }
+  }
+  Object.values(computedValues).forEach(applySource)
 
   const ignoreProp = (key: string) => {
     delete values[key]
@@ -261,12 +287,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const handlePropHistoryHighlight =
     branchItem.parent instanceof SkillEffectItemHistory
       ? (targetResult: SkillBranchResult) => {
-          const key = targetResult.key
           const searchKeys = branchRecordKeys
-          const check = searchKeys.some(
-            searchKey =>
-              branchItem.record.props[searchKey].includes(key) ||
-              branchItem.historyRecord?.props[searchKey].includes(key)
+          const check = targetResult.sources.some(({ branch, key }) =>
+            searchKeys.some(
+              searchKey =>
+                branch.record.props[searchKey].includes(key) ||
+                branch.historyRecord?.props[searchKey].includes(key)
+            )
           )
           if (check) {
             targetResult.mergeDisplayOptions({
@@ -300,6 +327,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   Object.values(textContainers).forEach(container => {
+    applySource(container)
     handleContainerFormulaValue(container)
 
     container.containers.forEach(ctner => {
@@ -309,6 +337,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   Object.values(langDatas).forEach(container => {
+    applySource(container)
     handlePropHistoryHighlight(container)
   })
 
@@ -335,15 +364,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   ] as [string, SkillBranchResult][])
 
   pureValues.forEach(key => {
-    const origin = props.get(key) || '0'
-    const value = computeBranchValue(origin, helper)
-    const container = SkillBranchResult.create(
-      ResultContainerTypes.Number,
-      branchItem,
-      key,
-      origin,
-      value
-    )
+    const container = computedValues[key].clone()
 
     if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
       handleContainerFormulaValue(container)
@@ -351,6 +372,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
     container.handleDisplay(str => handleFunctionHighlight(str))
 
+    applySource(container)
+    handlePropHistoryHighlight(container)
     containers.set(key, container)
   })
 
@@ -359,10 +382,16 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return
     }
     const value = props.get(key)!
-    containers.set(
+    const container = SkillBranchResult.create(
+      ResultContainerTypes.String,
+      branchItem,
       key,
-      SkillBranchResult.create(ResultContainerTypes.String, branchItem, key, value, value)
+      value,
+      value
     )
+    applySource(container)
+    handlePropHistoryHighlight(container)
+    containers.set(key, container)
   })
 
   return new DisplayDataContainer({

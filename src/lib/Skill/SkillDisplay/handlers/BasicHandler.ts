@@ -1,4 +1,8 @@
-import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchItem,
+  SkillComputingContainer,
+  isSkillRangeKeyword,
+} from '@/lib/Skill/SkillComputing'
 
 import type { HandleBranchValuePropsMap } from '../compute'
 import {
@@ -37,9 +41,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(
   } else {
     langAttrsMap.set('mp_cost', { type: 'normal' })
   }
-  if (['main', 'magic_device', 'katana'].includes(props.get('range')!)) {
-    langAttrsMap.append('range')
-  } else if (props.get('range') === 'no_limit') {
+  if (isSkillRangeKeyword(props.get('range') ?? '')) {
     langAttrsMap.append('range')
   } else {
     valuePropsMap.set('range', 'm')

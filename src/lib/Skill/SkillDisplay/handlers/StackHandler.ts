@@ -1,8 +1,11 @@
 import Grimoire from '@/shared/Grimoire'
-import { toInt } from '@/shared/utils/number'
 
-import { SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchItem,
+  SkillComputingContainer,
+  resolveStackDefaultValue,
+  resolveStackName,
+} from '@/lib/Skill/SkillComputing'
 
 import type { HandleBranchValuePropsMap } from '../compute'
 import { type HandleDisplayDataOptionFilters, cloneBranchProps, handleDisplayData } from './handle'
@@ -14,17 +17,11 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(
 ) {
   const { t } = Grimoire.i18n
 
-  const idx = branchItem.parent.branchItems
-    .filter(item => item.is(SkillBranchNames.Stack))
-    .indexOf(branchItem)
   const props = cloneBranchProps(branchItem, {
-    name: value =>
-      value === 'auto' ? t('skill-query.branch.stack.base-name') + (idx + 1).toString() : value,
+    name: () => resolveStackName(branchItem, t('skill-query.branch.stack.base-name')),
   })
 
-  if (props.get('default') === 'auto') {
-    props.set('default', props.get('min')!)
-  }
+  props.set('default', resolveStackDefaultValue(props))
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     max: value => !!value,
   })
@@ -32,17 +29,19 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(
   const pureValues = ['default', 'step']
   const pureDatas = ['name', 'unit']
 
-  const displayData = handleDisplayData(computing, branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     filters: filters.value,
     pureValues,
     pureDatas,
+    sources:
+      branchItem.prop('default') === 'auto'
+        ? {
+            default: [
+              { branch: branchItem, key: 'default' },
+              { branch: branchItem, key: 'min' },
+            ],
+          }
+        : {},
   })
-
-  const tmpv = toInt(displayData.getValue('max') || displayData.getValue('default'))
-  if (tmpv !== null && tmpv > 999) {
-    displayData.setCustomData('stackInputWidth', '3rem')
-  }
-
-  return displayData
 }

@@ -26,11 +26,19 @@ import type { SkillBranchItemBaseChilds } from './SkillBranchItem'
 
 type ResultHandler = (currentResult: string) => string
 
+interface SkillBranchResultSource {
+  readonly branch: SkillBranchItemBaseChilds
+  readonly key: string
+  readonly index?: number
+}
+
 interface SkillBranchResultBase extends ResultContainerBase {
   readonly branch: SkillBranchItemBaseChilds
 
   /** The key of prop */
   readonly key: string
+  readonly sources: readonly SkillBranchResultSource[]
+  setSources(sources: readonly SkillBranchResultSource[]): void
 
   get valueSum(): number
 }
@@ -38,6 +46,7 @@ interface SkillBranchResultBase extends ResultContainerBase {
 class SkillBranchResult extends ResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
+  sources: readonly SkillBranchResultSource[]
 
   private displayResult: string | null
 
@@ -67,6 +76,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     super(type, origin, value)
     this.branch = branch
     this.key = key
+    this.sources = [{ branch, key }]
     this.displayResult = null
     this.subContainers = {
       registlet: null,
@@ -95,10 +105,15 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     result.displayResult = this.displayResult
     result.mergeDisplayOptions(this.displayOptions)
     result.subContainers.registlet = this.subContainers.registlet?.clone() ?? null
+    result.setSources(this.sources)
     if (this.isEmpty()) {
       result.markEmpty()
     }
     return result
+  }
+
+  setSources(sources: readonly SkillBranchResultSource[]): void {
+    this.sources = [...sources]
   }
 
   override get result() {
@@ -293,6 +308,7 @@ interface SkillBranchTextResultParseResult {
 class SkillBranchTextResult extends TextResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
+  sources: readonly SkillBranchResultSource[]
 
   declare containers: SkillBranchResult[]
   declare parts: SkillBranchTextResultPartValue[]
@@ -362,6 +378,12 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     super(origin, value, parseResult)
     this.branch = branch
     this.key = key
+    this.sources = [{ branch, key }]
+  }
+
+  setSources(sources: readonly SkillBranchResultSource[]): void {
+    this.sources = [...sources]
+    this.containers.forEach(container => container.setSources(sources))
   }
 
   static createForBranch(
@@ -415,6 +437,7 @@ export class SkillBranchTextResultPart extends TextResultContainerPart {
 
 export { SkillBranchResult, SkillBranchStatResult, SkillBranchTextResult }
 export type {
+  SkillBranchResultSource,
   SkillBranchResultBase,
   SkillBranchTextResultParseResult,
   SkillBranchTextResultPartValue,

@@ -19,7 +19,6 @@ export interface HealExtraItem {
 
 interface DisplayCustomData {
   healExtraItems: HealExtraItem[]
-  stackInputWidth: string | undefined
 }
 
 export default class DisplayDataContainer<
@@ -57,11 +56,18 @@ export default class DisplayDataContainer<
     this.computedValues = computedValues
     this.statContainers = statContainers
     this._titles = titles
-    this._customDatas = { healExtraItems: [], stackInputWidth: undefined }
+    this._customDatas = { healExtraItems: [] }
   }
 
   result(key: string) {
     return this.containers.get(key) ?? null
+  }
+
+  setResult(key: string, result: SkillBranchResultBase, title?: string): void {
+    this.containers.set(key, result)
+    if (title !== undefined) {
+      this._titles.set(key, title)
+    }
   }
 
   get(key: string): string {

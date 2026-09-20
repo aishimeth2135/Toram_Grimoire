@@ -18,6 +18,7 @@ import type {
   SkillEffectItemBase,
   SkillEffectItemHistory,
 } from './SkillEffectItem'
+import { resolveStackDefaultValue } from './branchProps'
 import {
   BRANCH_PROPS_DEFAULT_VALUE,
   EQUIPMENT_TYPE_BODY_ORDER,
@@ -372,18 +373,13 @@ function initStackStates(effectItem: SkillEffectItemBase, vars?: { slv: number; 
       return shallowReactive({
         stackId: branchItem.stackId!,
         branch: branchItem,
-        value: handleFormula(
-          branchItem.prop('default') === 'auto'
-            ? branchItem.prop('min')
-            : branchItem.prop('default'),
-          {
-            vars: {
-              SLv: vars ? vars.slv : 0,
-              CLv: vars ? vars.clv : 0,
-            },
-            toNumber: true,
-          }
-        ) as number,
+        value: handleFormula(resolveStackDefaultValue(branchItem.allProps), {
+          vars: {
+            SLv: vars ? vars.slv : 0,
+            CLv: vars ? vars.clv : 0,
+          },
+          toNumber: true,
+        }) as number,
       })
     })
   effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates)
@@ -396,6 +392,7 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
   )
   effectItem.historys.forEach((history, idx, ary) => {
     const nextEffect = idx === 0 ? effectItem : ary[idx - 1]
+    history.nextEffect = nextEffect
     const toBranches = nextEffect.branchItems.map(bch => bch.clone(history))
     const fromBranches = history.branchItems
     let meetFirstBranchHasId = false
@@ -411,7 +408,6 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
         return
       }
       meetFirstBranchHasId = true
-      history.nextEffect = nextEffect
     })
     branchesOverwrite(toBranches, fromBranches)
     inplaceAssign(history.branchItems, toBranches)

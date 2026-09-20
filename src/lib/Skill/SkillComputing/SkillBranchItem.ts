@@ -76,7 +76,7 @@ abstract class SkillBranchItemBase<
     this.parent = parent
     this.overrideId = branch.overrideId
 
-    this._name = branch.name
+    this._name = branch instanceof SkillBranch ? branch.name : branch.realName
     this._inherit = null
     this.name = this._name // init _inherit
 

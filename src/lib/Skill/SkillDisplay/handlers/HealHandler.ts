@@ -69,6 +69,12 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,
+    sources: Object.fromEntries(
+      extraItems.map((item, index) => [
+        item.key,
+        [{ branch: branchItem, key: 'extra_value', index }],
+      ])
+    ),
   })
 
   displayData.setCustomData('healExtraItems', extraItems)

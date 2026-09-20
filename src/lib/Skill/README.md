@@ -1,0 +1,58 @@
+# 技能資料處理
+
+## 模組邊界
+
+- `Skill` 保存載入的技能、效果與原始分支資料。
+- `SkillComputing` 組裝效果、管理 Stack 與計算公式。`computeBranchValueResults`、`computeBranchStatResults` 不執行單位格式化、顯示覆寫或 CSS 標記。
+- `SkillDisplay` 提供查詢頁與角色模擬共用的 Handler、翻譯與顯示加工。請從其 `index.ts` 匯入，不要引用其他頁面的內部檔案。
+- Vue 元件負責版面與互動；輸入框寬度等顯示決策由 `SkillDisplay/presentation.ts` 提供。
+
+原本的 `views/Character/SkillQuery/skill/branch-handlers` 已移至 `SkillDisplay/handlers`。`Next` 沿用 `EffectHandler`，以 `realName` 判斷 Next 特有語意。
+
+## 分支處理順序
+
+1. 從原始分支建立可計算的分支，補基本資訊，建立歷史效果容器。
+2. `initializeEffectBranches` 執行效果覆寫、固定預設值及特殊屬性處理。
+3. 在分支仍為平面列表時，依日期由新到舊還原歷史資料。
+4. 分類主分支與 suffix，消化虛擬分支，再判斷延後計算需求。
+5. 依序組裝歷史分支與 Stack，建立其下一版本比較資料；最後初始化目前效果的 Stack。
+
+分類會消耗平面列表，每個效果僅執行一次。歷史還原前不能先分類；歷史比較的下一版本必須已經完成分類。歷史覆寫的空字串與刪除規則沿用既有行為，不在還原後重新填滿所有預設值。
+
+分支 clone 會重建 suffix 與空 suffix 的主分支關聯，保留 `realName`；覆寫紀錄則由歷史組裝流程建立，不直接沿用上一版本的紀錄。
+
+## Handler 與公式輸入
+
+Handler 在屬性副本上解析衍生資料，再交給 `handleDisplayData`。`collectBranchFormulaValues` 收集有效屬性與 Stat 公式，包含 `@range`、`@extra_value[n]`、`.display`、`.registlet` 等欄位。
+
+公式 helper 與後續計算使用同一份有效屬性。翻譯後還需要文字公式解析的 caption，會在翻譯後重新準備相依變數。RLv 陣列會複製，不修改呼叫端的響應式資料。
+
+固定缺值與 `auto` 推導是不同操作：`cloneBranchProps` 的字串預設值只補不存在的 key，函式則轉換既有值。Stack 的名稱／預設公式與 Proration 的 `auto` 解讀集中於 `branchProps.ts`。
+
+## 欄位與結果契約
+
+Handler 可以使用既有的 values、texts、langs 等設定表組裝動態欄位；同一欄位應明確選擇一種顯示處理方式。filter 函式依原始值判斷；物件形式以 `source: 'raw' | 'computed'` 明確指定輸入。
+
+共用處理不得修改傳入的屬性或設定表。顯示篩選與格式化使用副本：
+
+- `result`、`get`、`has` 表示可見的顯示結果。
+- `getValue`、`getValueSum` 優先讀取獨立的數值計算結果，即使數值欄位被顯示 filter 隱藏，也保留其數值與托環加值。
+- `getOrigin` 仍讀取顯示欄位的 origin。衍生欄位的真正來源請使用結果的 `sources`。
+- `computeBranchValueResults` 的缺值結果為 `0` 並標記 empty；Stat 合計沿用小數、一般數值合計沿用整數的既有規則。
+
+衍生欄位在 `sources` 指定原始 branch、key，必要時加上 index。歷史標記依來源欄位比對；文字公式子結果會繼承來源。組合其他 Handler 時，使用 `setResult` 保留子結果、來源與顯示 metadata，不先轉成字串再包裝。
+
+Heal 附加資料使用成對的 `HealExtraItem`。數值／標籤數量不一致時會記錄診斷，缺少數值以 `0` 補足，缺少標籤以空字串補足。Table 會記錄超出欄名範圍的 cell，維持原有欄數與呈現方式。
+
+## 人工驗證項目
+
+依專案規範不新增 unit test 或啟動 dev server。修改後執行相關檔案的 ESLint、Prettier 與 `yarn type-check`，再於實際頁面確認：
+
+- 切換技能／角色等級與原公式模式，包含 `stack`、`stack[2]`、`RLv[1]`、`RLv[2]`。
+- 啟用與停用第二個托環，確認主數值與加值均正確。
+- 調整 Stack，確認預設值、自動名稱及公式中的名稱一致。
+- 檢查短射程技能的 Area 示意圖，以及 Heal 的多項附加數值。
+- 切換裝備與歷史版本，確認 Next 語意、suffix 所屬主分支與 Proration／衍生欄位的差異標記。
+- 確認角色模擬的技能面板與傷害計算仍能讀取數值；顯示覆寫不能改變計算值。
+
+公式引擎與遊戲公式保持原有設計。未加入跨狀態快取；效能調整應先量測，再決定如何追蹤技能等級、Stack、托環與語系等相依狀態。

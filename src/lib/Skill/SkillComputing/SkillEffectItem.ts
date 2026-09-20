@@ -13,19 +13,12 @@ import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { Skill, SkillBranchNames, SkillEffect, SkillEffectHistory } from '../Skill'
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
+import { initializeEffectBranches } from './assemble'
 import {
-  classifyBranches,
   convertEffectEquipment,
-  effectOverwrite,
-  handleVirtualBranches,
   initBasicBranchItem,
-  initBranchSpecialProps,
-  initBranchesPostpone,
-  initHistoryNexts,
   initStackStates,
   normalizeBaseBranches,
-  regressHistoryBranches,
-  setBranchAttrsDefaultValue,
 } from './utils'
 
 interface BranchGroupState {
@@ -99,26 +92,7 @@ class SkillEffectItem extends SkillEffectItemBase {
       SkillEffectItemHistory.create(parent, this, history)
     )
 
-    if (from) {
-      effectOverwrite(this, from)
-    }
-    setBranchAttrsDefaultValue(this)
-    initBranchSpecialProps(this)
-
-    regressHistoryBranches(this)
-
-    classifyBranches(this)
-    handleVirtualBranches(this)
-    initBranchesPostpone(this)
-
-    this.historys.forEach(history => {
-      classifyBranches(history)
-      handleVirtualBranches(history)
-      initStackStates(history)
-      initHistoryNexts(history)
-    })
-
-    initStackStates(this)
+    initializeEffectBranches(this, from)
   }
 
   static create(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect): SkillEffectItem {

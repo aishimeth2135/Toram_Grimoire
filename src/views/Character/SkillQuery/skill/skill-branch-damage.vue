@@ -198,14 +198,14 @@ const subContents = computed(() => {
     {
       key: '@proration/damage',
       icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/damage: title'),
-      value: container.value.get('@proration/damage'),
+      title: container.value.title('@proration/damage'),
+      value: container.value.result('@proration/damage') ?? undefined,
     },
     {
       key: '@proration/proration',
       icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/proration: title'),
-      value: container.value.get('@proration/proration'),
+      title: container.value.title('@proration/proration'),
+      value: container.value.result('@proration/proration') ?? undefined,
     }
   )
   if (branchItem.value.prop('title') !== 'each') {
