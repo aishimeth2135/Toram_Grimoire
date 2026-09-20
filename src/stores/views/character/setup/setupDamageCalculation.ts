@@ -7,15 +7,17 @@ import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import {
-  Calculation,
   CalculationContainerIds,
+  type CalculationContainerSnapshot,
   CalculationItemIds,
+  type CalculationSnapshot,
+  ContainerTypes,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
-import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
+import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
 import { createElementMap, getCharacterElement } from '../utils'
 import { type SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
 import { type SkillResult } from './setupCharacterSkills'
@@ -338,12 +340,6 @@ export function setupDamageCalculation(
       ])
     })
 
-    const calculation = ref(calculationBase.createCalculation('')) as Ref<Calculation>
-
-    for (const ctner of calculation.value.containers.values()) {
-      ctner.enabled = true
-    }
-
     const valid = computed(() => {
       const constant = container.value.getValue('constant') || '0'
       const multiplier = container.value.getValue('multiplier') || '0'
@@ -420,10 +416,6 @@ export function setupDamageCalculation(
       ])
     })
 
-    calculation.value.config.getItemValue = itemId => {
-      return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
-    }
-
     const containerCurrentItemMap = computed(() => {
       let damageType: CalculationItemIds = CalculationItemIds.Physical
       let targetDefType: CalculationItemIds = CalculationItemIds.TargetDef
@@ -470,6 +462,12 @@ export function setupDamageCalculation(
         [CalculationContainerIds.DamageType, damageType],
         [CalculationContainerIds.TargetDefBase, targetDefType],
         [CalculationContainerIds.TargetResistance, targetResistanceType],
+        [
+          CalculationContainerIds.Pierce,
+          targetDefType === CalculationItemIds.TargetDef
+            ? CalculationItemIds.PhysicalPierce
+            : CalculationItemIds.MagicPierce,
+        ],
         [CalculationContainerIds.RangeDamage, rangeDamage],
       ])
       if (targetProperties.value.element !== null) {
@@ -480,10 +478,6 @@ export function setupDamageCalculation(
       }
       return resultMap
     })
-
-    calculation.value.config.getContainerCurrentItemId = containerId => {
-      return containerCurrentItemMap.value.get(containerId) ?? null
-    }
 
     const containerForceHiddenMap = computed(() => {
       const unsheatheDamageHidden = !container.value.branchItem.propBoolean('unsheathe_damage')
@@ -528,16 +522,63 @@ export function setupDamageCalculation(
       ])
     })
 
-    calculation.value.config.getContainerForceHidden = containerId => {
-      return containerForceHiddenMap.value.get(containerId) ?? null
-    }
+    const calculationSnapshot = computed<CalculationSnapshot>(() => {
+      const itemValues = new Map<CalculationItemIds, number>()
+      calculationBase.items.forEach((item, itemId) => itemValues.set(itemId, item.defaultValue))
+      varsMap.value.forEach((value, itemId) => itemValues.set(itemId, value))
+      calculationVars.value.forEach((value, itemId) => itemValues.set(itemId, value))
 
-    const { expectedResult } = setupCalculationExpectedResult(calculation)
+      const containers = new Map<CalculationContainerIds, CalculationContainerSnapshot>()
+      calculationBase.containers.forEach((containerBase, containerId) => {
+        const firstItemId = containerBase.items.keys().next().value ?? null
+        containers.set(containerId, {
+          enabled: true,
+          applicable: !(containerForceHiddenMap.value.get(containerId) ?? false),
+          currentItemId: containerCurrentItemMap.value.get(containerId) ?? firstItemId,
+          customItemValues: [],
+        })
+      })
+
+      return { itemValues, containers }
+    })
+
+    const calculationItems = computed(() => {
+      const snapshot = calculationSnapshot.value
+      return Array.from(calculationBase.containers, ([containerId, containerBase]) => {
+        const containerSnapshot = snapshot.containers.get(containerId)!
+        const itemIds =
+          containerBase.type === ContainerTypes.Options
+            ? [containerSnapshot.currentItemId]
+            : Array.from(containerBase.items.keys())
+        return itemIds.flatMap(itemId => {
+          if (itemId === null) {
+            return []
+          }
+          const item = calculationBase.items.get(itemId)!
+          return [
+            {
+              id: itemId,
+              value: snapshot.itemValues.get(itemId) ?? item.defaultValue,
+              unit: item.unit,
+              hidden: !containerSnapshot.applicable,
+              valueValid: containerBase.controls.valueValid,
+            },
+          ]
+        })
+      }).flat()
+    })
+
+    const { expectedResult, evaluation } = setupCalculationSnapshotExpectedResult(
+      calculationBase,
+      calculationSnapshot
+    )
 
     return {
-      calculation,
+      calculationSnapshot,
+      calculationItems,
       valid,
       expectedResult,
+      evaluation,
       extraStats,
     }
   }

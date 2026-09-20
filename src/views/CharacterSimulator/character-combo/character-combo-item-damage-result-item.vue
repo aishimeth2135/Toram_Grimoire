@@ -45,16 +45,16 @@
     <div v-if="detailVisible" class="border-primary-30 mt-2 border-2 bg-white px-3 py-2 text-sm">
       <div
         v-for="item in calculationItems"
-        :key="item.item.base.id"
+        :key="item.id"
         class="flex items-center space-x-2"
         :class="{ 'opacity-50': item.hidden }"
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.id))"
         ></div>
         <div v-if="item.valueValid" class="text-primary-50">
-          {{ item.item.value + item.item.base.unit }}
+          {{ item.value + item.unit }}
         </div>
       </div>
     </div>
@@ -72,7 +72,6 @@ import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
 import { StatRecorded } from '@/lib/Character/Stat'
-import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 
@@ -123,47 +122,19 @@ const result = computed(() => props.result)
 const { extraStats: baseExtraStats } = setupSkilResultExtraStats(result)
 const extraStats = computed(() => [...baseExtraStats.value, ...props.extraStats])
 
-const { valid, calculation, expectedResult } = characterStore.setupDamageCalculationExpectedResult(
-  result,
-  extraStats,
-  computed(() => characterStore.targetProperties),
-  computed(() => ({
-    ...characterStore.calculationOptions,
-    comboRate: props.comboRate,
-  }))
-)
+const { valid, calculationSnapshot, calculationItems, expectedResult, evaluation } =
+  characterStore.setupDamageCalculationExpectedResult(
+    result,
+    extraStats,
+    computed(() => characterStore.targetProperties),
+    computed(() => ({
+      ...characterStore.calculationOptions,
+      comboRate: props.comboRate,
+    }))
+  )
 
 const frequencyVisible = computed(() => {
   return valid.value && props.result.container.branchItem.prop('title') === 'each'
-})
-
-const calculationItems = computed(() => {
-  const containers = [...calculation.value.containers.values()]
-  const items: {
-    item: CalcItem
-    hidden: boolean
-    valueValid: boolean
-  }[] = []
-  containers.forEach(container => {
-    const hidden = container.hidden
-    const valueValid = container.base.controls.valueValid
-    if (container.base.type === ContainerTypes.Options) {
-      items.push({
-        item: container.currentItem,
-        hidden,
-        valueValid,
-      })
-    } else {
-      items.push(
-        ...[...container.items.values()].map(item => ({
-          item,
-          hidden,
-          valueValid,
-        }))
-      )
-    }
-  })
-  return items
 })
 
 const statExtraContainers = computed(() => {
@@ -174,7 +145,8 @@ const statExtraContainers = computed(() => {
 
 defineExpose({
   valid,
-  calculation,
+  calculationSnapshot,
+  evaluation,
   expectedResult: computed(() => (enabled.value ? expectedResult.value : 0)),
 })
 </script>

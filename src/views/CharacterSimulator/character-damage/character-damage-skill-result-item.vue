@@ -83,16 +83,16 @@
     >
       <div
         v-for="item in calculationItems"
-        :key="item.item.base.id"
+        :key="item.id"
         class="flex items-center space-x-2"
         :class="{ 'opacity-50': item.hidden }"
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.id))"
         ></div>
         <div v-if="item.valueValid" class="text-primary-50">
-          {{ item.item.value + item.item.base.unit }}
+          {{ item.value + item.unit }}
         </div>
       </div>
     </div>
@@ -109,7 +109,6 @@ import type { SkillResult } from '@/stores/views/character/setup'
 import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
-import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 
 import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
@@ -133,7 +132,7 @@ const result = computed(() => props.result)
 
 const { extraStats } = setupSkilResultExtraStats(result)
 
-const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(
+const { valid, calculationItems, expectedResult } = setupStoreDamageCalculationExpectedResult(
   result,
   extraStats
 )
@@ -148,35 +147,6 @@ const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculation
 
 const frequencyVisible = computed(() => {
   return valid.value && props.result.container.branchItem.prop('title') === 'each'
-})
-
-const calculationItems = computed(() => {
-  const containers = [...calculation.value.containers.values()]
-  const items: {
-    item: CalcItem
-    hidden: boolean
-    valueValid: boolean
-  }[] = []
-  containers.forEach(container => {
-    const hidden = container.hidden
-    const valueValid = container.base.controls.valueValid
-    if (container.base.type === ContainerTypes.Options) {
-      items.push({
-        item: container.currentItem,
-        hidden,
-        valueValid,
-      })
-    } else {
-      items.push(
-        ...[...container.items.values()].map(item => ({
-          item,
-          hidden,
-          valueValid,
-        }))
-      )
-    }
-  })
-  return items
 })
 
 const statExtraContainers = computed(() => {
