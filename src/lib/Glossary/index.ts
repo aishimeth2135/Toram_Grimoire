@@ -78,8 +78,5 @@ function searchTagValueTags(value: string): string[] {
   for (const match of value.matchAll(/#\[([^\]]+)\](?:\[([^\]]+)\])?/g)) {
     res.push(match[2] || match[1])
   }
-  for (const match of value.matchAll(/#([^\s]+)\s(\w?)/g)) {
-    res.push(match[1])
-  }
   return res
 }

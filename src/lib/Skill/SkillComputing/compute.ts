@@ -107,8 +107,7 @@ interface ComputedBranchHelperResult {
   formulaDisplayMode: FormulaDisplayModes
   checkRegistletLevel: (value: string) => boolean
 }
-const HANDLE_FORMULA_EXTRA_PATTERN_1 = /&(\d+):/g
-const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
+const HANDLE_FORMULA_EXTRA_PATTERN = /extra\[(\d+)\]/g
 /**
  * Create data contains vars and texts of branchItem to compute formula.
  * @param branchItem
@@ -318,14 +317,13 @@ function computedBranchHelper(
 
   const handleFormulaExtra = !formulaExtra
     ? (str: string) => {
-        return str
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) => getTextKey(p1))
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) => getTextKey(p1))
+        return str.replace(HANDLE_FORMULA_EXTRA_PATTERN, (_match, p1) => getTextKey(p1))
       }
     : (str: string) => {
-        return str
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (_match, p1) => getValue(p1) ?? getTextKey(p1))
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (_match, p1) => getValue(p1) ?? getTextKey(p1))
+        return str.replace(
+          HANDLE_FORMULA_EXTRA_PATTERN,
+          (_match, p1) => getValue(p1) ?? getTextKey(p1)
+        )
       }
 
   return {
