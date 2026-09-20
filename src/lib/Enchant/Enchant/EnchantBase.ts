@@ -49,14 +49,14 @@ class EnchantCategory {
   readonly title: string
   readonly items: EnchantItem[]
 
-  private constructor(title: string, items: EnchantItem[]) {
+  private constructor(title: string) {
     this.title = title
-    this.items = items
+    this.items = []
     this._weaponOnly = false
   }
 
   static create(title: string): EnchantCategory {
-    return markRaw(new EnchantCategory(title, markRaw([])))
+    return new EnchantCategory(title)
   }
 
   get weaponOnly(): boolean {

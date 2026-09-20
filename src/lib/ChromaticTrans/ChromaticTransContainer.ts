@@ -7,11 +7,18 @@ export class ChromaticTransContainer {
   private selections: (ChromaticTransGem | null)[]
   private currentSteps: readonly ChromaticTransStep[]
 
-  constructor() {
-    this.selections = markRaw(Array.from({ length: 5 }, () => null))
-    this.currentSteps = markRaw([])
+  private constructor(
+    selections: (ChromaticTransGem | null)[],
+    currentSteps: readonly ChromaticTransStep[]
+  ) {
+    this.selections = selections
+    this.currentSteps = currentSteps
 
     this.recalculate()
+  }
+
+  static create(): ChromaticTransContainer {
+    return new ChromaticTransContainer(markRaw(Array.from({ length: 5 }, () => null)), markRaw([]))
   }
 
   get steps(): readonly ChromaticTransStep[] {
@@ -39,7 +46,7 @@ export class ChromaticTransContainer {
       return this.steps[0]
     }
 
-    return new ChromaticTransStep(index, gem, this.steps[index - 1])
+    return ChromaticTransStep.create(index, gem, this.steps[index - 1])
   }
 
   getGemPreviewColor(index: number, gem: ChromaticTransGem): number {
@@ -59,7 +66,9 @@ export class ChromaticTransContainer {
     const steps: ChromaticTransStep[] = markRaw([])
     const count = this.selections[0] ? 5 : 1
     for (let index = 0; index < count; index += 1) {
-      steps.push(markRaw(new ChromaticTransStep(index, this.selections[index], steps[index - 1])))
+      steps.push(
+        ChromaticTransStep.createWithMarkRaw(index, this.selections[index], steps[index - 1])
+      )
     }
     this.currentSteps = steps
   }

@@ -445,7 +445,7 @@ function computedBranchText(
       containers: [],
       parts: [''],
     } as SkillBranchTextResultParseResult
-    const resultContainer = new SkillBranchTextResult(
+    const resultContainer = SkillBranchTextResult.createForBranch(
       helper.branchItem,
       propKey,
       '0',
@@ -458,7 +458,13 @@ function computedBranchText(
   const parseResult = SkillBranchTextResult.parse(helper.branchItem, propKey, textStr, value =>
     computeBranchFormulaValue(value, helper)
   )
-  return new SkillBranchTextResult(helper.branchItem, propKey, textStr, textStr, parseResult)
+  return SkillBranchTextResult.createForBranch(
+    helper.branchItem,
+    propKey,
+    textStr,
+    textStr,
+    parseResult
+  )
 }
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
@@ -495,7 +501,7 @@ function handleBranchStats(
   const newStats = computedBranchStats(helper, stats)
   return newStats.map(stat => {
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
-    const container = new SkillBranchStatResult(helper.branchItem, originalStat, stat)
+    const container = SkillBranchStatResult.createForStat(helper.branchItem, originalStat, stat)
     handleDisplayValue(container, helper)
     handleRegistletValue(container, helper)
 

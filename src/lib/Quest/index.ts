@@ -6,16 +6,13 @@ export default class QuestSystem {
   mainQuestChapters: Map<number, MainQuestChapter>
   mainQuestSections: Map<string, MainQuestSection>
 
-  private constructor(
-    mainQuestChapters: Map<number, MainQuestChapter>,
-    mainQuestSections: Map<string, MainQuestSection>
-  ) {
-    this.mainQuestChapters = mainQuestChapters
-    this.mainQuestSections = mainQuestSections
+  private constructor() {
+    this.mainQuestChapters = new Map()
+    this.mainQuestSections = new Map()
   }
 
   static create(): QuestSystem {
-    return new QuestSystem(markRaw(new Map()), markRaw(new Map()))
+    return markRaw(new QuestSystem())
   }
 
   appendMainQuestChapter(src: MainQuestChapter) {

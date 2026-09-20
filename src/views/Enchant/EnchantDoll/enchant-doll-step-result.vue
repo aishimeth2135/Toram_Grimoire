@@ -140,7 +140,7 @@ const exportResult = () => {
   if (!resultEquipment.value) {
     return
   }
-  const build = new EnchantBuild(
+  const build = EnchantBuild.create(
     exportState.name,
     resultEquipment.value.clone(Grimoire.Enchant.categorys)
   )

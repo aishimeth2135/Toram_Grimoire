@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { Skill } from '@/lib/Skill/Skill'
 
 import {
@@ -29,7 +31,7 @@ export default class RegistletSystem {
   }
 
   static create(): RegistletSystem {
-    return new RegistletSystem()
+    return markRaw(new RegistletSystem())
   }
 
   getRegistletItemById(id: string): RegistletItemBase | null {

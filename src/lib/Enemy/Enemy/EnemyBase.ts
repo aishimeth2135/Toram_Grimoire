@@ -27,7 +27,7 @@ class EnemyBasic {
   prorationMagic: number
   criticalResistance: number
 
-  constructor({
+  private constructor({
     def = 0,
     mdef = 0,
     physicalResistance = 0,
@@ -52,6 +52,10 @@ class EnemyBasic {
     this.prorationMagic = prorationMagic
     this.criticalResistance = criticalResistance
   }
+
+  static create(params: EnemyBaseParams = {}): EnemyBasic {
+    return new EnemyBasic(params)
+  }
 }
 
 type EnemyBasicConditionalType = '#' | '+' | '-'
@@ -68,13 +72,17 @@ class EnemyBase {
   conditionalBasics: EnemyBasicConditional[]
   level: number
 
-  constructor(level: number) {
+  protected constructor(level: number) {
     this.conditionalBasics = []
     this.level = level
   }
 
+  static createBase(level: number): EnemyBase {
+    return new EnemyBase(level)
+  }
+
   initBasic(params: EnemyBaseParams = {}) {
-    this.basic = new EnemyBasic(params)
+    this.basic = EnemyBasic.create(params)
   }
 
   appendConditionalBasic(
@@ -86,7 +94,7 @@ class EnemyBase {
       id: this.conditionalBasics.length,
       type,
       condition,
-      basic: new EnemyBasic(basicParams),
+      basic: EnemyBasic.create(basicParams),
     })
   }
 }
@@ -94,9 +102,13 @@ class EnemyBase {
 class EnemyBoss extends EnemyBase {
   hasDifficulty: boolean
 
-  constructor(level: number, hasDifficulty: boolean) {
+  private constructor(level: number, hasDifficulty: boolean) {
     super(level)
     this.hasDifficulty = hasDifficulty
+  }
+
+  static create(level: number, hasDifficulty: boolean): EnemyBoss {
+    return new EnemyBoss(level, hasDifficulty)
   }
 }
 

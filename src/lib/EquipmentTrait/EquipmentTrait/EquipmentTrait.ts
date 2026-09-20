@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { handleFormula } from '@/shared/utils/data'
 
 import { type StatComputed, StatTypes } from '@/lib/Character/Stat'
@@ -28,7 +30,7 @@ class EquipmentTraitItem {
     return category + id
   }
 
-  constructor(id: string, category: EquipmentTraitCategory, name: string) {
+  private constructor(id: string, category: EquipmentTraitCategory, name: string) {
     this.id = id
     this.category = category
     this.name = name
@@ -39,6 +41,10 @@ class EquipmentTraitItem {
     }
     this.stats = []
     this._stackInfo = null
+  }
+
+  static create(id: string, category: EquipmentTraitCategory, name: string): EquipmentTraitItem {
+    return markRaw(new EquipmentTraitItem(id, category, name))
   }
 
   appendStat(stat: StatComputed): void {

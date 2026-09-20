@@ -16,12 +16,16 @@ class CharacterBuildLabel implements CharacterBindingBuild {
   color: string
   loadedId: string | null
 
-  constructor(text: string) {
+  private constructor(text: string) {
     this.id = CharacterBuildLabel._autoIncreasement
     CharacterBuildLabel._autoIncreasement += 1
     this.text = text
     this.color = 'red'
     this.loadedId = null
+  }
+
+  static create(text: string): CharacterBuildLabel {
+    return new CharacterBuildLabel(text)
   }
 
   matchLoadedId(loadCategory: string, id: number | null): boolean {
@@ -36,19 +40,26 @@ class CharacterBuildLabel implements CharacterBindingBuild {
     }
   }
 
-  toReactive(): ShallowReactive<CharacterBuildLabel> {
+  private toReactive(): ShallowReactive<CharacterBuildLabel> {
     return shallowReactive(this)
   }
 
   static fromLoad(loadedCategory: string, data: CharacterBuildLabelSaveData): CharacterBuildLabel {
-    const newLabel = new CharacterBuildLabel(data.text)
+    const newLabel = CharacterBuildLabel.create(data.text)
     newLabel.color = data.color
     initLoadedId(newLabel, loadedCategory, data.id)
     return newLabel
   }
 
-  static reactivity(text: string): ShallowReactive<CharacterBuildLabel> {
-    return new CharacterBuildLabel(text).toReactive()
+  static fromLoadWithShallowReactive(
+    loadedCategory: string,
+    data: CharacterBuildLabelSaveData
+  ): ShallowReactive<CharacterBuildLabel> {
+    return CharacterBuildLabel.fromLoad(loadedCategory, data).toReactive()
+  }
+
+  static createWithShallowReactive(text: string): ShallowReactive<CharacterBuildLabel> {
+    return CharacterBuildLabel.create(text).toReactive()
   }
 }
 

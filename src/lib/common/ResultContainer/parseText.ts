@@ -250,7 +250,11 @@ export function getCommonTextParseItemHandler<Id extends CommonTextParseItemIds>
       return (context => {
         const value = context.values[0]
         const computedValue = options?.computedValue?.(value) ?? value
-        const container = new ResultContainer(ResultContainerTypes.Number, value, computedValue)
+        const container = ResultContainer.createBase(
+          ResultContainerTypes.Number,
+          value,
+          computedValue
+        )
         container.displayOptions.unit = context.unit
         return container
       }) as CommonTextParseItemHandlerTypeMap[Id]

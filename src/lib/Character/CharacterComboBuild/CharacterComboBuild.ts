@@ -7,13 +7,17 @@ interface CharacterComboBuildSaveData {
 export class CharacterComboBuild {
   combos: CharacterCombo[]
 
-  constructor() {
+  private constructor() {
     this.combos = []
     this.appendCombo()
   }
 
+  static create(): CharacterComboBuild {
+    return new CharacterComboBuild()
+  }
+
   appendCombo() {
-    const newCombo = new CharacterCombo()
+    const newCombo = CharacterCombo.create()
     this.combos.push(newCombo)
     return newCombo
   }
@@ -25,7 +29,7 @@ export class CharacterComboBuild {
   }
 
   static load(data: CharacterComboBuildSaveData): CharacterComboBuild {
-    const newBuild = new CharacterComboBuild()
+    const newBuild = CharacterComboBuild.create()
     newBuild.combos = data.combos.map(item => CharacterCombo.load(item))
     return newBuild
   }

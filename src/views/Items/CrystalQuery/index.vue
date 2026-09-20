@@ -175,8 +175,8 @@ const { t } = useI18n()
 const searchFilterVisible = ref(false)
 const toggleSearchFilterVisible = useToggle(searchFilterVisible)
 
-const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(
-  crystal => new EquipmentCrystal(crystal)
+const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(crystal =>
+  EquipmentCrystal.create(crystal)
 )
 const resultItemsDetailVisibleDefault = ref(false)
 const topElement = useTemplateRef('top-element')

@@ -6,12 +6,12 @@ import { EnchantCategory, EnchantItem } from './Enchant'
 export default class EnchantSystem {
   categorys: EnchantCategory[]
 
-  private constructor(categorys: EnchantCategory[]) {
-    this.categorys = categorys
+  private constructor() {
+    this.categorys = []
   }
 
   static create(): EnchantSystem {
-    return new EnchantSystem(markRaw([]))
+    return markRaw(new EnchantSystem())
   }
 
   appendCategory(title: string) {

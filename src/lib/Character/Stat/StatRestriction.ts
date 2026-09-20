@@ -16,14 +16,14 @@ import { StatTypes } from './enums'
 class StatRestriction extends Stat {
   readonly restriction: EquipmentRestrictions | null
 
-  constructor(
+  private constructor(
     base: StatBase,
     type: StatTypes,
     value: number,
     restriction: EquipmentRestrictions | null = null
   ) {
     super(base, type, value)
-    this.restriction = restriction !== null ? markRaw(restriction) : restriction
+    this.restriction = restriction
 
     let rtext = 'none++'
     if (this.restriction !== null) {
@@ -34,12 +34,22 @@ class StatRestriction extends Stat {
     this.statId = `${this.statId}|${rtext}`
   }
 
+  static create(
+    base: StatBase,
+    type: StatTypes,
+    value: number,
+    restriction: EquipmentRestrictions | null = null
+  ): StatRestriction {
+    const rawRestriction = restriction !== null ? markRaw(restriction) : restriction
+    return new StatRestriction(base, type, value, rawRestriction)
+  }
+
   override clone() {
-    return new StatRestriction(this.base, this.type, this.value, this.restriction)
+    return StatRestriction.create(this.base, this.type, this.value, this.restriction)
   }
 
   clonePured() {
-    return new StatRestriction(this.base, this.type, this.value, null)
+    return StatRestriction.create(this.base, this.type, this.value, null)
   }
 
   isPlain() {
@@ -55,7 +65,7 @@ class StatRestriction extends Stat {
   }
 
   pure() {
-    return new Stat(this.base, this.type, this.value)
+    return Stat.create(this.base, this.type, this.value)
   }
 
   restrictionTexts(): string[] {
@@ -88,7 +98,7 @@ class StatRestriction extends Stat {
   }
 
   static from(stat: Stat, restriction?: EquipmentRestrictions | null): StatRestriction {
-    return new StatRestriction(stat.base, stat.type, stat.value, restriction)
+    return StatRestriction.create(stat.base, stat.type, stat.value, restriction)
   }
 
   static fromOrigin(stat: Stat, originRestriction: string): StatRestriction {

@@ -19,10 +19,14 @@ class CharacterStatCategory {
   name: string
   stats: CharacterStat[]
 
-  constructor(parent: CharacterSystem, name: string) {
+  private constructor(parent: CharacterSystem, name: string, stats: CharacterStat[]) {
     this._parent = parent
     this.name = name
-    this.stats = markRaw([])
+    this.stats = stats
+  }
+
+  static create(parent: CharacterSystem, name: string): CharacterStatCategory {
+    return markRaw(new CharacterStatCategory(parent, name, markRaw([])))
   }
 
   get belongCategorys() {
@@ -30,7 +34,7 @@ class CharacterStatCategory {
   }
 
   appendStat(options: CharacterStatOptions): CharacterStat {
-    const stat = markRaw(new CharacterStat(this, options))
+    const stat = CharacterStat.create(this, options)
     this.stats.push(stat)
     return stat
   }
@@ -146,7 +150,7 @@ class CharacterStat {
 
   linkedStatBase: StatBase | null
 
-  constructor(
+  private constructor(
     category: CharacterStatCategory,
     { id, name, displayFormula, link, max, min, caption, hiddenOption }: CharacterStatOptions
   ) {
@@ -177,8 +181,12 @@ class CharacterStat {
     }
   }
 
+  static create(category: CharacterStatCategory, options: CharacterStatOptions): CharacterStat {
+    return markRaw(new CharacterStat(category, options))
+  }
+
   setFormula(str: string): CharacterStatFormula {
-    this._formula = markRaw(new CharacterStatFormula(this, str))
+    this._formula = CharacterStatFormula.create(this, str)
     return this._formula
   }
 
@@ -317,10 +325,18 @@ class CharacterStatFormula {
   readonly formula: string
   conditionValues: CharacterStatFormulaConditionalItem[]
 
-  constructor(parent: CharacterStat, str: string) {
+  private constructor(
+    parent: CharacterStat,
+    str: string,
+    conditionValues: CharacterStatFormulaConditionalItem[]
+  ) {
     this._parent = parent
     this.formula = str
-    this.conditionValues = markRaw([])
+    this.conditionValues = conditionValues
+  }
+
+  static create(parent: CharacterStat, str: string): CharacterStatFormula {
+    return markRaw(new CharacterStatFormula(parent, str, markRaw([])))
   }
 
   get belongCharacterStat() {
@@ -329,7 +345,7 @@ class CharacterStatFormula {
 
   appendConditionValue(conditional: string, formula: string, options: string) {
     const optionList = splitComma(options)
-    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
+    const item = CharacterStatFormulaConditionalItem.create(conditional, formula, optionList)
     this.conditionValues.push(item)
   }
 
@@ -642,10 +658,18 @@ class CharacterStatFormulaConditionalItem {
   readonly formula: string
   readonly options: string[]
 
-  constructor(conditional: string, formula: string, options: string[]) {
+  private constructor(conditional: string, formula: string, options: string[]) {
     this.conditional = conditional
     this.formula = formula
     this.options = options
+  }
+
+  static create(
+    conditional: string,
+    formula: string,
+    options: string[]
+  ): CharacterStatFormulaConditionalItem {
+    return markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, options))
   }
 }
 

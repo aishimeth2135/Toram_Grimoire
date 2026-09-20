@@ -12,13 +12,13 @@ export const useCharacterBuildLabelStore = defineStore('view-character-build-lab
   const labels = ref([] as ShallowReactive<CharacterBuildLabel>[])
 
   const createBuildLabel = () => {
-    const newLabel = CharacterBuildLabel.reactivity('0.0')
+    const newLabel = CharacterBuildLabel.createWithShallowReactive('0.0')
     labels.value.unshift(newLabel)
     return newLabel
   }
 
   const loadBuildLabel = (loadedCategory: string, data: CharacterBuildLabelSaveData) => {
-    const newLabel = CharacterBuildLabel.fromLoad(loadedCategory, data).toReactive()
+    const newLabel = CharacterBuildLabel.fromLoadWithShallowReactive(loadedCategory, data)
     labels.value.push(newLabel)
   }
 

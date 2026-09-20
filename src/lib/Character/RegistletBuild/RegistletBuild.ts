@@ -55,7 +55,7 @@ class RegistletBuild implements CharacterBindingBuild {
       this.items.splice(idx, 1)
       this._itemsMap.delete(base)
     } else {
-      this._appendItem(new RegistletItem(this, base))
+      this._appendItem(RegistletItem.create(this, base))
     }
   }
 
@@ -101,11 +101,15 @@ class RegistletItem {
   level: number
   enabled: boolean
 
-  constructor(build: RegistletBuild, base: RegistletItemBase) {
+  private constructor(build: RegistletBuild, base: RegistletItemBase) {
     this.build = build
     this.base = base
     this.level = base.maxLevel
     this.enabled = true
+  }
+
+  static create(build: RegistletBuild, base: RegistletItemBase): RegistletItem {
+    return new RegistletItem(build, base)
   }
 
   remove() {
@@ -121,7 +125,7 @@ class RegistletItem {
   }
 
   clone(): RegistletItem {
-    const newItem = new RegistletItem(this.build, this.base)
+    const newItem = RegistletItem.create(this.build, this.base)
     newItem.level = this.level
     newItem.enabled = this.enabled
     return newItem
@@ -130,7 +134,7 @@ class RegistletItem {
   static load(build: RegistletBuild, data: RegistletItemSaveData) {
     const base = Grimoire.Registlet.getRegistletItemById(data.id)
     if (base) {
-      const newItem = new RegistletItem(build, base)
+      const newItem = RegistletItem.create(build, base)
       newItem.level = data.level
       newItem.enabled = data.enabled
       return newItem

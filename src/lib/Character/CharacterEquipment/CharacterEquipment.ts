@@ -79,7 +79,11 @@ abstract class CharacterEquipment implements InstanceWithId {
 
   readonly customTypeList?: EquipmentTypes[]
 
-  constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
+  protected constructor(
+    origin: EquipmentOrigin = null,
+    name: string = '',
+    stats: StatRestriction[] = []
+  ) {
     this.loadedId = null
     this.instanceId = CharacterEquipment._idGenerator.generate()
 
@@ -249,7 +253,7 @@ abstract class CharacterEquipment implements InstanceWithId {
     if (this.supportCrystal) {
       const crystals = this.crystals
       if (crystals.length < 2) {
-        crystals.push(new EquipmentCrystal(origin))
+        crystals.push(EquipmentCrystal.create(origin))
       }
     }
   }
@@ -264,7 +268,7 @@ abstract class CharacterEquipment implements InstanceWithId {
 
   setTrait(item: EquipmentTraitItem, level?: number): void {
     level = typeof level === 'number' ? level : item.maxLevel
-    this.trait = new CharacterEquipmentTrait(item, level)
+    this.trait = CharacterEquipmentTrait.create(item, level)
   }
 
   removeTrait(): void {
@@ -278,29 +282,29 @@ abstract class CharacterEquipment implements InstanceWithId {
     let eq: CharacterEquipment | null = null
     if (this instanceof Weapon) {
       if (this instanceof MainWeapon) {
-        eq = new MainWeapon(this.origin, name, stats, this.type)
+        eq = MainWeapon.create(this.origin, name, stats, this.type)
       } else if (this instanceof SubWeapon) {
-        eq = new SubWeapon(this.origin, name, stats, this.type)
+        eq = SubWeapon.create(this.origin, name, stats, this.type)
       }
     }
     if (this instanceof Armor) {
       if (this instanceof SubArmor) {
-        eq = new SubArmor(this.origin, name, stats, this.type)
+        eq = SubArmor.create(this.origin, name, stats, this.type)
       } else if (this instanceof BodyArmor) {
-        eq = new BodyArmor(this.origin, name, stats)
+        eq = BodyArmor.create(this.origin, name, stats)
         eq.type = this.type
       } else if (this instanceof AdditionalGear) {
-        eq = new AdditionalGear(this.origin, name, stats)
+        eq = AdditionalGear.create(this.origin, name, stats)
       } else if (this instanceof SpecialGear) {
-        eq = new SpecialGear(this.origin, name, stats)
+        eq = SpecialGear.create(this.origin, name, stats)
       }
     }
     if (this instanceof Avatar) {
-      eq = new Avatar(this.origin, name, stats)
+      eq = Avatar.create(this.origin, name, stats)
     }
 
     if (!eq) {
-      eq = new Avatar(this.origin, name, stats)
+      eq = Avatar.create(this.origin, name, stats)
     }
 
     eq.basicValue = this.basicValue
@@ -424,20 +428,20 @@ abstract class CharacterEquipment implements InstanceWithId {
 
       let eq
       if (instance === 0) {
-        eq = new MainWeapon(null, name, stats, type, _basicValue, stability)
+        eq = MainWeapon.create(null, name, stats, type, _basicValue, stability)
       } else if (instance === 1) {
-        eq = new SubWeapon(null, name, stats, type, _basicValue, stability)
+        eq = SubWeapon.create(null, name, stats, type, _basicValue, stability)
       } else if (instance === 2) {
-        eq = new SubArmor(null, name, stats, type, _basicValue)
+        eq = SubArmor.create(null, name, stats, type, _basicValue)
       } else if (instance === 3) {
-        eq = new BodyArmor(null, name, stats, _basicValue)
+        eq = BodyArmor.create(null, name, stats, _basicValue)
         eq.setType(type)
       } else if (instance === 4) {
-        eq = new AdditionalGear(null, name, stats, _basicValue)
+        eq = AdditionalGear.create(null, name, stats, _basicValue)
       } else if (instance === 5) {
-        eq = new SpecialGear(null, name, stats, _basicValue)
+        eq = SpecialGear.create(null, name, stats, _basicValue)
       } else {
-        eq = new Avatar(null, name, stats)
+        eq = Avatar.create(null, name, stats)
       }
 
       if (eq.supportRefining) {
@@ -448,7 +452,7 @@ abstract class CharacterEquipment implements InstanceWithId {
           .map(crystalName => {
             const crystal = Grimoire.Items.crystals.find(_crystal => _crystal.name === crystalName)
             if (crystal) {
-              return new EquipmentCrystal(crystal)
+              return EquipmentCrystal.create(crystal)
             }
             CommonLogger.warn('CharacterEquipment.load', 'Can not find crystal: ' + crystalName)
             return null
@@ -535,44 +539,44 @@ abstract class CharacterEquipment implements InstanceWithId {
     const type = CharacterEquipment.convertOriginalCategory(item.category)
 
     if (MainWeaponTypeList.includes(type)) {
-      return new MainWeapon(origin, name, stats, type, baseValue, stability)
+      return MainWeapon.create(origin, name, stats, type, baseValue, stability)
     } else if (SubWeaponTypeList.includes(type)) {
-      return new SubWeapon(origin, name, stats, type, baseValue, stability)
+      return SubWeapon.create(origin, name, stats, type, baseValue, stability)
     } else if (SubArmorTypeList.includes(type)) {
-      return new SubArmor(origin, name, stats, type, baseValue)
+      return SubArmor.create(origin, name, stats, type, baseValue)
     } else if (BodyArmorTypeList.includes(type)) {
-      return new BodyArmor(origin, name, stats, baseValue)
+      return BodyArmor.create(origin, name, stats, baseValue)
     } else if (type === EquipmentTypes.Additional) {
-      return new AdditionalGear(origin, name, stats, baseValue)
+      return AdditionalGear.create(origin, name, stats, baseValue)
     } else if (type === EquipmentTypes.Special) {
-      return new SpecialGear(origin, name, stats, baseValue)
+      return SpecialGear.create(origin, name, stats, baseValue)
     }
 
-    return new Avatar(origin, name, stats)
+    return Avatar.create(origin, name, stats)
   }
 
   static createEmpty(name: string, type: EquipmentTypes): CharacterEquipment {
     if (MainWeaponTypeList.includes(type)) {
-      return new MainWeapon(null, name, [], type)
+      return MainWeapon.create(null, name, [], type)
     } else if (SubWeaponTypeList.includes(type)) {
-      return new SubWeapon(null, name, [], type)
+      return SubWeapon.create(null, name, [], type)
     } else if (SubArmorTypeList.includes(type)) {
-      return new SubArmor(null, name, [], type)
+      return SubArmor.create(null, name, [], type)
     } else if (BodyArmorTypeList.includes(type)) {
-      return new BodyArmor(null, name, [])
+      return BodyArmor.create(null, name, [])
     } else if (type === EquipmentTypes.Additional) {
-      return new AdditionalGear(null, name, [])
+      return AdditionalGear.create(null, name, [])
     } else if (type === EquipmentTypes.Special) {
-      return new SpecialGear(null, name, [])
+      return SpecialGear.create(null, name, [])
     }
-    return new Avatar(null, name, [])
+    return Avatar.create(null, name, [])
   }
 }
 
 abstract class Weapon extends CharacterEquipment {
   override stability: number
 
-  constructor(
+  protected constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -595,7 +599,7 @@ class MainWeapon extends Weapon {
   override crystals: EquipmentCrystal[]
   type: EquipmentTypes
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -608,6 +612,17 @@ class MainWeapon extends Weapon {
     this.type = type
     this.crystals = []
     this.refining = 0
+  }
+
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    type: EquipmentTypes,
+    atk?: number,
+    stability?: number
+  ): MainWeapon {
+    return new MainWeapon(origin, name, stats, type, atk, stability)
   }
 
   override get supportRefining() {
@@ -630,7 +645,7 @@ class MainWeapon extends Weapon {
 class SubWeapon extends Weapon {
   type: EquipmentTypes
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -643,13 +658,24 @@ class SubWeapon extends Weapon {
     this.type = type
   }
 
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    type: EquipmentTypes,
+    atk?: number,
+    stability?: number
+  ): SubWeapon {
+    return new SubWeapon(origin, name, stats, type, atk, stability)
+  }
+
   override get supportElement() {
     return this.type === EquipmentTypes.Arrow
   }
 }
 
 abstract class Armor extends CharacterEquipment {
-  constructor(
+  protected constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -665,7 +691,7 @@ class SubArmor extends Armor {
   override refining: number
   type: EquipmentTypes
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -676,6 +702,16 @@ class SubArmor extends Armor {
 
     this.type = type
     this.refining = 0
+  }
+
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    type: EquipmentTypes,
+    def?: number | string
+  ): SubArmor {
+    return new SubArmor(origin, name, stats, type, def)
   }
 
   override get supportRefining() {
@@ -692,7 +728,7 @@ class BodyArmor extends Armor {
 
   static _customTypeList: EquipmentTypes[] = BodyArmorTypeList
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -705,6 +741,15 @@ class BodyArmor extends Armor {
     this.crystals = []
 
     this.customTypeList = BodyArmor._customTypeList
+  }
+
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ): BodyArmor {
+    return new BodyArmor(origin, name, stats, def)
   }
   setType(type: EquipmentTypes) {
     this.type = type
@@ -730,7 +775,7 @@ class AdditionalGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -741,6 +786,15 @@ class AdditionalGear extends Armor {
     this.refining = 0
     this.crystals = []
     this.type = EquipmentTypes.Additional
+  }
+
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ): AdditionalGear {
+    return new AdditionalGear(origin, name, stats, def)
   }
 
   override get supportRefining() {
@@ -757,7 +811,7 @@ class SpecialGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(
+  private constructor(
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
@@ -769,6 +823,15 @@ class SpecialGear extends Armor {
     this.type = EquipmentTypes.Special
   }
 
+  static create(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ): SpecialGear {
+    return new SpecialGear(origin, name, stats, def)
+  }
+
   override get supportCrystal() {
     return true
   }
@@ -777,9 +840,13 @@ class SpecialGear extends Armor {
 class Avatar extends CharacterEquipment {
   readonly type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[]) {
+  private constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[]) {
     super(origin, name, stats)
     this.type = EquipmentTypes.Avatar
+  }
+
+  static create(origin: EquipmentOrigin, name: string, stats: StatRestriction[]): Avatar {
+    return new Avatar(origin, name, stats)
   }
 }
 
@@ -787,9 +854,13 @@ class EquipmentCrystal {
   origin: BagCrystal
   stats: StatRestriction[]
 
-  constructor(origin: BagCrystal) {
+  private constructor(origin: BagCrystal) {
     this.origin = origin
     this.stats = this.origin.stats.map(stat => stat.clone())
+  }
+
+  static create(origin: BagCrystal): EquipmentCrystal {
+    return new EquipmentCrystal(origin)
   }
 
   get id() {
@@ -800,7 +871,7 @@ class EquipmentCrystal {
   }
 
   clone() {
-    return new EquipmentCrystal(this.origin)
+    return EquipmentCrystal.create(this.origin)
   }
 
   get crystalIconPath() {

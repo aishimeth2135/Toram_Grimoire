@@ -80,7 +80,7 @@ const toggleStat = (option: StatOption) => {
   if (currentEquipmentStatOptions.value.has(option.id)) {
     props.equipment.removeStat(currentEquipmentStatOptions.value.get(option.id)!)
   } else {
-    const newStat = new StatRestriction(option.origin, option.type, 0)
+    const newStat = StatRestriction.create(option.origin, option.type, 0)
     // eslint-disable-next-line vue/no-mutating-props
     props.equipment.stats.push(newStat)
   }

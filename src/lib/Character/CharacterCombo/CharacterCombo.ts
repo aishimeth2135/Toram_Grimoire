@@ -40,7 +40,7 @@ class CharacterCombo implements InstanceWithId {
     unselectedBranches: SkillBranch[]
   }
 
-  constructor() {
+  private constructor() {
     this.instanceId = CharacterCombo._idGenerator.generate()
     this.comboSkills = []
     this.config = {
@@ -51,8 +51,12 @@ class CharacterCombo implements InstanceWithId {
     this.appendSkill()
   }
 
+  static create(): CharacterCombo {
+    return new CharacterCombo()
+  }
+
   appendSkill() {
-    const newSkill = new CharacterComboSkill(this)
+    const newSkill = CharacterComboSkill.create(this)
     this.comboSkills.push(newSkill)
     return newSkill
   }
@@ -120,7 +124,7 @@ class CharacterCombo implements InstanceWithId {
   }
 
   static load(data: CharacterComboSaveData): CharacterCombo {
-    const newCombo = new CharacterCombo()
+    const newCombo = CharacterCombo.create()
     newCombo.comboSkills = data.skills.map(_data => CharacterComboSkill.load(newCombo, _data))
     return newCombo
   }
@@ -132,11 +136,15 @@ class CharacterComboSkill {
   tag: CharacterComboTags | null
   condition: null | 'buff'
 
-  constructor(parent: CharacterCombo) {
+  private constructor(parent: CharacterCombo) {
     this.parent = parent
     this.skill = null
     this.tag = null
     this.condition = null
+  }
+
+  static create(parent: CharacterCombo): CharacterComboSkill {
+    return new CharacterComboSkill(parent)
   }
 
   get previousSkill(): CharacterComboSkill | null {
@@ -175,7 +183,7 @@ class CharacterComboSkill {
   }
 
   static load(parent: CharacterCombo, data: CharacterComboSkillSaveData): CharacterComboSkill {
-    const newSkill = new CharacterComboSkill(parent)
+    const newSkill = CharacterComboSkill.create(parent)
     newSkill.skill = data.skill ? Grimoire.Skill.skillRoot.findSkillById(data.skill) : null
     newSkill.tag = data.tag
     newSkill.condition = data.condition

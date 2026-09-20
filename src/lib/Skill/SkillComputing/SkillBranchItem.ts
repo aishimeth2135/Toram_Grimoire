@@ -70,7 +70,7 @@ abstract class SkillBranchItemBase<
    * @param parent - parent SkillEffectItem
    * @param branch - branch from default effect of skill, branch should be overwrite later
    */
-  constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
+  protected constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.instanceId = SkillBranchItemBase._idGenerator.generate()
     this.parent = parent
     this.id = branch.id
@@ -206,7 +206,11 @@ class SkillBranchItem<
 
   readonly groupState: BranchGroupState
 
-  constructor(parent: Parent, branch: SkillBranch | SkillBranchItem) {
+  private constructor(
+    parent: Parent,
+    branch: SkillBranch | SkillBranchItem,
+    groupState: BranchGroupState
+  ) {
     super(parent, branch)
 
     this.suffixBranches = []
@@ -216,13 +220,21 @@ class SkillBranchItem<
     this.linkedStackIds = []
     this._initDatasByProp()
 
-    this.groupState = reactive({
+    this.groupState = groupState
+  }
+
+  static create<Parent extends SkillEffectItemBase = SkillEffectItemBase>(
+    parent: Parent,
+    branch: SkillBranch | SkillBranchItem
+  ): SkillBranchItem<Parent> {
+    const groupState = reactive<BranchGroupState>({
       size: 0,
       expandable: false,
       expanded: true,
       parentExpanded: true,
       isGroupEnd: false,
     })
+    return new SkillBranchItem(parent, branch, groupState)
   }
 
   _initDatasByProp() {
@@ -275,7 +287,7 @@ class SkillBranchItem<
   }
 
   toSuffix(mainBranch: SkillBranchItem): SkillBranchItemSuffix {
-    const suffix = new SkillBranchItemSuffix(this.parent, this, mainBranch)
+    const suffix = SkillBranchItemSuffix.create(this.parent, this, mainBranch)
     suffix.syncRecord(this.record)
     return suffix
   }
@@ -284,7 +296,7 @@ class SkillBranchItem<
     parent?: TargetParent
   ): SkillBranchItem<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    const clone = new SkillBranchItem(parent, this)
+    const clone = SkillBranchItem.create(parent, this)
 
     clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
 
@@ -300,17 +312,25 @@ class SkillBranchItemSuffix<
 > extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 
-  constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
+  private constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
     super(parent, branch)
 
     this.mainBranch = mainBranch
+  }
+
+  static create<Parent extends SkillEffectItemBase = SkillEffectItemBase>(
+    parent: Parent,
+    branch: SkillBranchItemBase,
+    mainBranch: SkillBranchItem
+  ): SkillBranchItemSuffix<Parent> {
+    return new SkillBranchItemSuffix(parent, branch, mainBranch)
   }
 
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
     parent?: TargetParent
   ): SkillBranchItemSuffix<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    return new SkillBranchItemSuffix(parent, this, this.mainBranch)
+    return SkillBranchItemSuffix.create(parent, this, this.mainBranch)
   }
 }
 

@@ -111,7 +111,7 @@ useAutoSave({
   loadFirst: () => store.init(),
 })
 
-const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
+const doll = ref(EnchantDoll.create()) as Ref<EnchantDoll>
 const currentStep = ref<StepIds>(StepIds.Equipment)
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
 const autoNegativeStatsResult: Ref<AutoFindNegaitveStatsResult | null> = ref(null)
@@ -254,7 +254,7 @@ const autoFindPotentialMinimumEquipment = () => {
 
 const reset = async () => {
   if (await confirm(t('enchant-doll.tips.reset-confirm'))) {
-    doll.value = new EnchantDoll()
+    doll.value = EnchantDoll.create()
     currentStep.value = 0
     negativeStatsState.manually = []
     negativeStatsState.auto = false
@@ -348,7 +348,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       return
     }
     negativeStatsState.manually.push(
-      new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type).min)
+      EnchantStat.create(item.origin, item.type, item.origin.getLimit(item.type).min)
     )
   }
 }
