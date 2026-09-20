@@ -86,7 +86,7 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
 
   const { skillLevel, characterLevel } = useSkillQueryState()
 
-  const computingContainer = new SkillComputingContainer()
+  const computingContainer = SkillComputingContainer.create()
   const FORMULA_REPLACED_VARS = [
     'BSTR',
     'BINT',
