@@ -28,6 +28,101 @@ interface CalculationSaveData {
   }[]
 }
 
+const calculationContainerIdSet = new Set<string>(Object.values(CalculationContainerIds))
+const calculationItemIdSet = new Set<string>(Object.values(CalculationItemIds))
+
+function isCalculationContainerId(value: unknown): value is CalculationContainerIds {
+  return typeof value === 'string' && calculationContainerIdSet.has(value)
+}
+
+function isCalculationItemId(value: unknown): value is CalculationItemIds {
+  return typeof value === 'string' && calculationItemIdSet.has(value)
+}
+
+function parseCalculationSaveData(data: unknown): CalculationSaveData | null {
+  if (!data || typeof data !== 'object') {
+    return null
+  }
+
+  const source = data as Record<string, unknown>
+  if (
+    typeof source.name !== 'string' ||
+    !Array.isArray(source.containers) ||
+    !Array.isArray(source.items) ||
+    !Array.isArray(source.containerCustomItems)
+  ) {
+    return null
+  }
+
+  const containers = source.containers.flatMap(container => {
+    if (!container || typeof container !== 'object') {
+      return []
+    }
+    const item = container as Record<string, unknown>
+    if (
+      !isCalculationContainerId(item.id) ||
+      typeof item.enabled !== 'boolean' ||
+      (item.currentItemId !== null && !isCalculationItemId(item.currentItemId))
+    ) {
+      return []
+    }
+    return [
+      {
+        id: item.id,
+        enabled: item.enabled,
+        currentItemId: item.currentItemId,
+      },
+    ]
+  })
+  const items = source.items.flatMap(item => {
+    if (!item || typeof item !== 'object') {
+      return []
+    }
+    const value = item as Record<string, unknown>
+    if (!isCalculationItemId(value.id) || typeof value.value !== 'number') {
+      return []
+    }
+    return [{ id: value.id, value: Number.isFinite(value.value) ? value.value : 0 }]
+  })
+  const containerCustomItems = source.containerCustomItems.flatMap(container => {
+    if (!container || typeof container !== 'object') {
+      return []
+    }
+    const value = container as Record<string, unknown>
+    if (!isCalculationContainerId(value.containerId) || !Array.isArray(value.items)) {
+      return []
+    }
+    const customItems = value.items.flatMap(item => {
+      if (!item || typeof item !== 'object') {
+        return []
+      }
+      const customItem = item as Record<string, unknown>
+      if (
+        !isCalculationItemId(customItem.id) ||
+        typeof customItem.name !== 'string' ||
+        typeof customItem.value !== 'number'
+      ) {
+        return []
+      }
+      return [
+        {
+          id: customItem.id,
+          name: customItem.name,
+          value: Number.isFinite(customItem.value) ? customItem.value : 0,
+        },
+      ]
+    })
+    return [{ containerId: value.containerId, items: customItems }]
+  })
+
+  return {
+    name: source.name,
+    containers,
+    items,
+    containerCustomItems,
+  }
+}
+
 interface CalculationConfig {
   getItemValue: ((itemId: CalculationItemIds) => number | null) | null
   getContainerCurrentItemId:
@@ -96,15 +191,20 @@ class Calculation {
     return null
   }
 
-  removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom) {
+  removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom): boolean {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(
         `[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`
       )
-      return
+      return false
     }
     const items = this.containerCustomItems.get(containerId) as CalcItemCustom[]
-    items.splice(items.indexOf(item), 1)
+    const itemIndex = items.indexOf(item)
+    if (itemIndex === -1) {
+      return false
+    }
+    items.splice(itemIndex, 1)
+    return true
   }
 
   result(calcStruct: CalcStructItem, options?: CalcResultOptions): number {
@@ -279,8 +379,8 @@ class CalcItemContainer {
     }
     return null
   }
-  removeCustomItem(item: CalcItemCustom): void {
-    this.belongCalculation.removeCustomItem(this.base.id, item)
+  removeCustomItem(item: CalcItemCustom): boolean {
+    return this.belongCalculation.removeCustomItem(this.base.id, item)
   }
 
   /**
@@ -294,8 +394,12 @@ class CalcItemContainer {
     return (this.items.get(id) as CalcItem).value
   }
 
-  selectItem(id: CalculationItemIds) {
+  selectItem(id: CalculationItemIds): boolean {
+    if (!this.items.has(id)) {
+      return false
+    }
     this._currentItemId = id
+    return true
   }
 
   result(): number {
@@ -324,6 +428,9 @@ class CalcItem {
   }
 
   set value(value: number) {
+    if (!Number.isFinite(value)) {
+      value = this.base.defaultValue
+    }
     const max = this.base.max,
       min = this.base.min
     value = max !== null && value > max ? max : value
@@ -351,4 +458,5 @@ class CalcItemCustom extends CalcItem {
 }
 
 export { CalcItemContainer, Calculation, CalcItem, CalcItemCustom }
+export { parseCalculationSaveData }
 export type { CalculationSaveData }
