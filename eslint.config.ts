@@ -51,6 +51,17 @@ export default defineConfigWithVueTs(
       'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
       'radix': ['error'],
       'id-length': ['error', { properties: 'never', exceptions: ['t'] }],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^(?:@/|(?:\\.\\.?/)+)lib/[^/]+/[^/]+/.+',
+              message: '請從 lib 子分類的 index.ts 匯入，不可直接引用其內部檔案。',
+            },
+          ],
+        },
+      ],
 
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': [

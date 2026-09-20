@@ -5,7 +5,7 @@ import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillCompu
 import type {
   HandleBranchTextPropsMap,
   HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputing/compute'
+} from '@/lib/Skill/SkillComputing'
 
 import ProrationHandler from './ProrationHandler'
 import {

@@ -21,7 +21,7 @@ import {
   TextResultContainerPartTypes,
   type TextResultContainerPartValue,
 } from '@/lib/common/ResultContainer'
-import { handleParseText } from '@/lib/common/ResultContainer/parseText'
+import { handleParseText } from '@/lib/common/ResultContainer'
 
 import { getTextParseItems } from './setup'
 

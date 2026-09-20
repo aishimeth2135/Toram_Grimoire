@@ -23,7 +23,7 @@ import {
   SkillBranchTextResult,
 } from '@/lib/Skill/SkillComputing'
 import { CommonTextParseItemIds } from '@/lib/common/ResultContainer'
-import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer'
 
 import { RenderContainerResult, RenderPlainTextParts, RenderTextParts } from './setup'
 

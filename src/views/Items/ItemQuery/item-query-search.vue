@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { getAllColors } from '@/lib/Items/Dye/DyeColors'
+import { getAllColors } from '@/lib/Items/Dye'
 
 import DyeColorButton from '@/components/common/dye-color-button.vue'
 import CommonSearchableItemsPopover from '@/views/CharacterSimulator/common/common-searchable-items-popover.vue'

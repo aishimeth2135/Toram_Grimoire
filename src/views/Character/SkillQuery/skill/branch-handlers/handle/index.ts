@@ -22,7 +22,7 @@ import {
   handleBranchStats,
   handleBranchTextProps,
   handleBranchValueProps,
-} from '@/lib/Skill/SkillComputing/compute'
+} from '@/lib/Skill/SkillComputing'
 import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import DisplayDataContainer from './DisplayDataContainer'

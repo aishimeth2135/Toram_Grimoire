@@ -7,7 +7,7 @@ import { useNotify } from '@/shared/composables/Notify'
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-import { getSkillBuildImageDataURL, getSkillBuildText } from '@/lib/Character/SkillBuild/utils'
+import { getSkillBuildImageDataURL, getSkillBuildText } from '@/lib/Character/SkillBuild'
 
 import FloatPage from '@/components/app-layout/float-page/float-page.vue'
 

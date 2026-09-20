@@ -5,7 +5,7 @@ import { SkillBranchItemSuffix, SkillComputingContainer } from '@/lib/Skill/Skil
 import type {
   HandleBranchTextPropsMap,
   HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputing/compute'
+} from '@/lib/Skill/SkillComputing'
 
 import {
   type HandleBranchLangPropsMap,

@@ -5,14 +5,14 @@ import { useI18n } from 'vue-i18n'
 import { isNumberString } from '@/shared/utils/string'
 
 import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
-import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait/enums'
+import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait'
 import {
   CommonTextParseItemIds,
   ResultContainer,
   TextResultContainerPart,
   TextResultContainerPartTypes,
 } from '@/lib/common/ResultContainer'
-import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer/parseText'
+import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer'
 
 import ShowStatComputed from '@/components/common/show-stat-computed.vue'
 

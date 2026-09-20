@@ -2,7 +2,7 @@ import { toInt } from '@/shared/utils/number'
 
 import QuestSystem from '@/lib/Quest'
 import { MainQuestChapter, MainQuestSection } from '@/lib/Quest/Quest'
-import { QuestItemType } from '@/lib/Quest/Quest/enums'
+import { QuestItemType } from '@/lib/Quest/Quest'
 
 import { type CsvData } from './DownloadDatas'
 import { getCsvDataRowGetterHelper } from './utils'

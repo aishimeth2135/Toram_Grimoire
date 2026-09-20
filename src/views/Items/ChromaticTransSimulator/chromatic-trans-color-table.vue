@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getChromaticColors } from '@/lib/Items/Dye/DyeColors'
+import { getChromaticColors } from '@/lib/Items/Dye'
 
 import DyeColorButton from '@/components/common/dye-color-button.vue'
 
