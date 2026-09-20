@@ -335,7 +335,7 @@ export function setupCharacterSkills(
       target: ComputedRef<SkillBranchItem[]>,
       handler: (_computing: SkillComputingContainer, bch: SkillBranchItem) => DisplayDataContainer,
       validBranchNames: SkillBranchNames[]
-    ) => {
+    ): ComputedRef<SkillResultBase[]> => {
       return computed(() => {
         return target.value.map(bch => {
           const container = (
@@ -349,7 +349,7 @@ export function setupCharacterSkills(
           return {
             container,
             suffixContainers,
-          } as SkillResultBase
+          } satisfies SkillResultBase
         })
       })
     }
@@ -522,7 +522,7 @@ export function setupCharacterSkills(
   }
 
   const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResultBase[]>>) => {
-    const _map = new Map<Skill, SkillResultsState>()
+    const resultsStateMap = new Map<Skill, SkillResultsState>()
     for (const [skill, resultBases] of target.entries()) {
       const stackContainers = computed(() =>
         getUsedStackContainers(
@@ -546,34 +546,31 @@ export function setupCharacterSkills(
         stackContainers,
         basicContainer,
         hasOptions,
+        results: computed(() =>
+          resultBases.value.map(item => {
+            return {
+              ...item,
+              root: resultStates,
+            } as SkillResult
+          })
+        ),
       }) as SkillResultsState
-      const results = computed(() =>
-        resultBases.value.map(item => {
-          return {
-            ...item,
-            root: resultStates,
-          } as SkillResult
-        })
-      )
-      resultStates.results = results as unknown as SkillResult[]
-      _map.set(skill, resultStates)
+      resultsStateMap.set(skill, resultStates)
     }
 
     const resultStates = computed(() => {
       const results: SkillResultsState[] = []
       skillBuildAllSkills.value.forEach(skill => {
-        if (_map.has(skill)) {
-          results.push(_map.get(skill)!)
+        if (resultsStateMap.has(skill)) {
+          results.push(resultsStateMap.get(skill)!)
         }
       })
       return results
     })
 
-    const allResultStatesMap = _map
-
     return {
       resultStates,
-      allResultStatesMap,
+      allResultStatesMap: resultsStateMap,
     }
   }
 

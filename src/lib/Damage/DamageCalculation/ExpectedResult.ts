@@ -24,6 +24,11 @@ export interface CalculationExpectedSweepResult {
   readonly issues: readonly CalculationSweepIssue[]
 }
 
+export interface CalculationExpectedValueSweepResult {
+  readonly values: readonly number[]
+  readonly issues: readonly CalculationSweepIssue[]
+}
+
 export const calcStructCritical: CalcStructExpression = {
   id: 'expected_with_critical',
   operator: '*',
@@ -123,6 +128,29 @@ export const calcStructWithoutCritical: CalcStructExpression = {
   },
 }
 
+function calculateExpectedResultValue(
+  stability: number,
+  stabilityExpected: number,
+  criticalRate: number,
+  accuracy: number,
+  promisedAccuracyRate: number,
+  criticalValue: number,
+  nonCriticalValue: number
+): number {
+  const grazeStability = Math.floor(stability / 2)
+  const criticalAccuracyExpected =
+    stabilityExpected * accuracy + ((grazeStability + 100) / 2) * (100 - accuracy)
+  const criticalRateMultiplier = (criticalAccuracyExpected * criticalRate) / 1000000
+  const nonCriticalAccuracyExpected =
+    stabilityExpected * accuracy +
+    ((grazeStability + 100) / 2) * Math.max(0, promisedAccuracyRate - accuracy)
+  const nonCriticalRateMultiplier = (nonCriticalAccuracyExpected * (100 - criticalRate)) / 1000000
+
+  return Math.floor(
+    criticalValue * criticalRateMultiplier + nonCriticalValue * nonCriticalRateMultiplier
+  )
+}
+
 export function evaluateCalculationExpectedResult(
   calculationBase: CalculationBase,
   snapshot: CalculationSnapshot,
@@ -141,7 +169,6 @@ export function evaluateCalculationExpectedResult(
   const criticalRate = evaluateContainer(CalculationContainerIds.CriticalRate)
   const accuracy = evaluateContainer(CalculationContainerIds.Accuracy)
   const promisedAccuracyRate = getItemValue(CalculationItemIds.PromisedAccuracyRate)
-  const grazeStability = Math.floor(stability / 2)
 
   const criticalEvaluation = calculationBase.evaluate(
     snapshot,
@@ -149,31 +176,58 @@ export function evaluateCalculationExpectedResult(
     calculationOptions,
     overrides
   )
-  const criticalAccuracyExpected =
-    stabilityExpected * accuracy + ((grazeStability + 100) / 2) * (100 - accuracy)
-  const criticalRateMultiplier = (criticalAccuracyExpected * criticalRate) / 1000000
-
   const nonCriticalEvaluation = calculationBase.evaluate(
     snapshot,
     calcStructWithoutCritical,
     calculationOptions,
     overrides
   )
-  const nonCriticalAccuracyExpected =
-    stabilityExpected * accuracy +
-    ((grazeStability + 100) / 2) * Math.max(0, promisedAccuracyRate - accuracy)
-  const nonCriticalRateMultiplier = (nonCriticalAccuracyExpected * (100 - criticalRate)) / 1000000
-
   return {
     baseResultCritical: criticalEvaluation.value,
     baseResultWithoutCritical: nonCriticalEvaluation.value,
-    expectedResult: Math.floor(
-      criticalEvaluation.value * criticalRateMultiplier +
-        nonCriticalEvaluation.value * nonCriticalRateMultiplier
+    expectedResult: calculateExpectedResultValue(
+      stability,
+      stabilityExpected,
+      criticalRate,
+      accuracy,
+      promisedAccuracyRate,
+      criticalEvaluation.value,
+      nonCriticalEvaluation.value
     ),
     criticalEvaluation,
     nonCriticalEvaluation,
   }
+}
+
+export function evaluateCalculationExpectedValue(
+  calculationBase: CalculationBase,
+  snapshot: CalculationSnapshot,
+  calculationOptions?: CalcResultOptions,
+  overrides: CalculationSnapshotOverrides = {}
+): number {
+  const getItemValue = (itemId: CalculationItemIds) =>
+    overrides.itemValues?.get(itemId) ?? snapshot.itemValues.get(itemId) ?? 0
+  const evaluation = calculationBase.evaluateBatch(
+    snapshot,
+    [calcStructCritical, calcStructWithoutCritical],
+    [
+      CalculationContainerIds.Stability,
+      CalculationContainerIds.CriticalRate,
+      CalculationContainerIds.Accuracy,
+    ],
+    calculationOptions,
+    overrides
+  )
+
+  return calculateExpectedResultValue(
+    getItemValue(CalculationItemIds.Stability),
+    evaluation.containerResults.get(CalculationContainerIds.Stability) ?? 0,
+    evaluation.containerResults.get(CalculationContainerIds.CriticalRate) ?? 0,
+    evaluation.containerResults.get(CalculationContainerIds.Accuracy) ?? 0,
+    getItemValue(CalculationItemIds.PromisedAccuracyRate),
+    evaluation.values[0] ?? 0,
+    evaluation.values[1] ?? 0
+  )
 }
 
 export function evaluateCalculationExpectedResultZipSweep(
@@ -195,5 +249,25 @@ export function evaluateCalculationExpectedResultZipSweep(
         point.overrides
       ),
     })),
+  }
+}
+
+export function evaluateCalculationExpectedValueZipSweep(
+  calculationBase: CalculationBase,
+  snapshot: CalculationSnapshot,
+  dimensions: readonly CalculationSweepDimension[],
+  calculationOptions?: CalcResultOptions
+): CalculationExpectedValueSweepResult {
+  const scenarios = calculationBase.createZipSweepScenarios(dimensions)
+  return {
+    issues: scenarios.issues,
+    values: scenarios.points.map(point =>
+      evaluateCalculationExpectedValue(
+        calculationBase,
+        snapshot,
+        calculationOptions,
+        point.overrides
+      )
+    ),
   }
 }

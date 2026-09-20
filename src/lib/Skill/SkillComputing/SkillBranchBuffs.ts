@@ -1,10 +1,9 @@
+import { markRaw } from 'vue'
+
 import { splitComma } from '@/shared/utils/string'
 
 import { SkillBuffs } from './enums'
 
-/**
- * @vue-reactive-raw
- */
 class SkillBranchBuffs {
   private _buffs: Set<SkillBuffs>
 
@@ -20,7 +19,7 @@ class SkillBranchBuffs {
   }
 
   static create(str: string): SkillBranchBuffs {
-    return new SkillBranchBuffs(str)
+    return markRaw(new SkillBranchBuffs(str))
   }
 
   get items() {

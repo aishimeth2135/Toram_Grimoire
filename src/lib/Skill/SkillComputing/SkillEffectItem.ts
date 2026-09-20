@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import {
   type InstanceId,
   InstanceIdGenerator,
@@ -71,9 +73,6 @@ abstract class SkillEffectItemBase implements InstanceWithId {
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillEffectItem extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItem>[]
 
@@ -123,7 +122,7 @@ class SkillEffectItem extends SkillEffectItemBase {
   }
 
   static create(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect): SkillEffectItem {
-    return new SkillEffectItem(parent, defaultSef, from)
+    return markRaw(new SkillEffectItem(parent, defaultSef, from))
   }
 
   private computedEquipmentBranchValue(
@@ -221,9 +220,6 @@ class SkillEffectItem extends SkillEffectItemBase {
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillEffectItemHistory extends SkillEffectItemBase {
   declare auxiliaryBranchItems: SkillBranchItem<SkillEffectItemHistory>[]
 
@@ -263,7 +259,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     parentEffect: SkillEffectItem,
     historyEffect: SkillEffectHistory
   ): SkillEffectItemHistory {
-    return new SkillEffectItemHistory(parent, parentEffect, historyEffect)
+    return markRaw(new SkillEffectItemHistory(parent, parentEffect, historyEffect))
   }
 
   get modifiedBranchItems() {

@@ -60,6 +60,10 @@ interface CalculationEvaluationResult {
   readonly value: number
   readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
 }
+interface CalculationBatchEvaluationResult {
+  readonly values: readonly number[]
+  readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
+}
 interface CalculationSweepDimension {
   readonly itemId: CalculationItemIds
   readonly values: readonly number[]
@@ -135,19 +139,11 @@ class CalculationBase {
     return this.evaluate(calculation.createSnapshot(), calcStruct, options).value
   }
 
-  evaluate(
+  private createEvaluator(
     snapshot: CalculationSnapshot,
-    calcStruct: CalcStructItem,
-    options: CalcResultOptions = {},
-    overrides: CalculationSnapshotOverrides = {}
-  ): CalculationEvaluationResult {
-    if (!calcStruct) {
-      return {
-        value: 0,
-        containerResults: new Map(),
-      }
-    }
-
+    options: CalcResultOptions,
+    overrides: CalculationSnapshotOverrides
+  ) {
     const { containerResults = {} } = options
     const evaluatedContainerResults = new Map<CalculationContainerIds, number>()
 
@@ -223,9 +219,47 @@ class CalculationBase {
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item)
       return 0
     }
+
     return {
-      value: Math.floor(handle(calcStruct)),
       containerResults: evaluatedContainerResults,
+      evaluateContainer,
+      evaluateExpression: (calcStruct: CalcStructItem) => Math.floor(handle(calcStruct)),
+    }
+  }
+
+  evaluate(
+    snapshot: CalculationSnapshot,
+    calcStruct: CalcStructItem,
+    options: CalcResultOptions = {},
+    overrides: CalculationSnapshotOverrides = {}
+  ): CalculationEvaluationResult {
+    if (!calcStruct) {
+      return {
+        value: 0,
+        containerResults: new Map(),
+      }
+    }
+
+    const evaluator = this.createEvaluator(snapshot, options, overrides)
+    return {
+      value: evaluator.evaluateExpression(calcStruct),
+      containerResults: evaluator.containerResults,
+    }
+  }
+
+  evaluateBatch(
+    snapshot: CalculationSnapshot,
+    calcStructs: readonly CalcStructItem[],
+    requiredContainerIds: readonly CalculationContainerIds[],
+    options: CalcResultOptions = {},
+    overrides: CalculationSnapshotOverrides = {}
+  ): CalculationBatchEvaluationResult {
+    const evaluator = this.createEvaluator(snapshot, options, overrides)
+    requiredContainerIds.forEach(evaluator.evaluateContainer)
+
+    return {
+      values: calcStructs.map(evaluator.evaluateExpression),
+      containerResults: evaluator.containerResults,
     }
   }
 
@@ -490,6 +524,7 @@ export type {
   CalculationSnapshot,
   CalculationSnapshotOverrides,
   CalculationEvaluationResult,
+  CalculationBatchEvaluationResult,
   CalculationSweepDimension,
   CalculationSweepPoint,
   CalculationSweepIssue,

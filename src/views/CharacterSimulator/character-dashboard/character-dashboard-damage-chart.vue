@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Chart, type ChartData, type ChartOptions, registerables } from 'chart.js'
 import { computed, onBeforeUnmount, onMounted, useTemplateRef, watch } from 'vue'
 
 import type { DamageChartSeries } from './character-dashboard-damage-chart-types'
+import { Chart, type ChartData, type ChartOptions } from './chart'
 
 interface Props {
   series: DamageChartSeries[]
@@ -13,8 +13,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-Chart.register(...registerables)
 
 const canvas = useTemplateRef('canvas')
 let chart: Chart<'line'> | null = null
@@ -37,6 +35,9 @@ const options: ChartOptions<'line'> = {
     },
     tooltip: {
       callbacks: {
+        title(tooltipItems) {
+          return tooltipItems.at(0)?.label.split(',').join('/') ?? ''
+        },
         label(context) {
           return `${context.dataset.label}: ${numberFormatter.format(context.parsed.y ?? 0)}m`
         },
@@ -102,18 +103,14 @@ onMounted(() => {
   })
 })
 
-watch(
-  chartData,
-  data => {
-    if (!chart) {
-      return
-    }
+watch(chartData, data => {
+  if (!chart) {
+    return
+  }
 
-    chart.data = copyData(data)
-    chart.update()
-  },
-  { deep: true }
-)
+  chart.data = copyData(data)
+  chart.update()
+})
 
 onBeforeUnmount(() => {
   chart?.destroy()

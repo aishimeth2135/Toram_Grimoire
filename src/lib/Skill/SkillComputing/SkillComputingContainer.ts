@@ -38,9 +38,6 @@ interface SkillComputingConfig {
   computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
 }
 
-/**
- * @vue-reactive-raw controller
- */
 class SkillComputingContainer {
   readonly varGetters: {
     characterLevel: (() => number) | null
@@ -81,9 +78,6 @@ class SkillComputingContainer {
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillItem {
   readonly skill: Skill
   readonly effectItems: SkillEffectItem[]
@@ -100,7 +94,7 @@ class SkillItem {
   }
 
   static create(skill: Skill): SkillItem {
-    return new SkillItem(skill)
+    return markRaw(new SkillItem(skill))
   }
 
   findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {

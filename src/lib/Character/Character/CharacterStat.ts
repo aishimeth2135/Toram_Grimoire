@@ -123,6 +123,7 @@ export interface CharacterStatResultInputVars {
 }
 
 interface CharacterStatResultVars extends CharacterStatResultInputVars {
+  readonly allCharacterStatMap: Readonly<Record<string, CharacterStat>>
   getterResults: {
     [key: string]: number
   }
@@ -310,9 +311,20 @@ class CharacterStat {
     }
   }
 
-  static prepareCalcResultVars(input: CharacterStatResultInputVars): CharacterStatResultVars {
+  static prepareCalcResultVars(
+    input: CharacterStatResultInputVars,
+    categories: readonly CharacterStatCategory[]
+  ): CharacterStatResultVars {
+    const allCharacterStatMap: Record<string, CharacterStat> = {}
+    categories.forEach(category => {
+      category.stats.forEach(stat => {
+        allCharacterStatMap[stat.id] = stat
+      })
+    })
+
     return {
       ...input,
+      allCharacterStatMap,
       getterResults: {},
       getterOriginalResults: {},
     }
@@ -353,12 +365,7 @@ class CharacterStatFormula {
    * @param pureStats - pure stats. All stat ID of stat must be unique
    */
   calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
-    const allCharacterStatMap: Record<string, CharacterStat> = {}
-    this.belongCharacterStat.category.belongCategorys.forEach(cat => {
-      cat.stats.forEach(stat => {
-        allCharacterStatMap[stat.id] = stat
-      })
-    })
+    const { allCharacterStatMap } = vars
 
     const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
     const getStatByType = (type: StatTypes): StatRecorded | null => {

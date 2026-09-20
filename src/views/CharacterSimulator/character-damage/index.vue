@@ -66,12 +66,6 @@
           unit="%"
         />
       </div>
-      <RenderSectionHeader :title="t('character-simulator.character-damage.options-other-title')" />
-      <div class="mt-3">
-        <cy-button-check v-model:selected="characterStore.calculationOptions.armorBreakDisplay">
-          {{ t('character-simulator.character-damage.armor-break-display') }}
-        </cy-button-check>
-      </div>
       <RenderSectionHeader
         :title="t('character-simulator.character-damage.target-options-title')"
       />
@@ -169,9 +163,7 @@ const { t } = useI18n()
 
 const tabIndex = ref(0)
 
-const skillResultsStates = computed(
-  () => characterStore.damageSkillResultStates as SkillResultsState[]
-)
+const skillResultsStates = computed(() => characterStore.damageSkillResultStates)
 
 const skillBuildStore = useCharacterSkillBuildStore()
 const validResultStates = computed(() => {

@@ -401,16 +401,18 @@ export const useCharacterStore = defineStore('view-character', () => {
   const calculationOptions: Ref<CalculationOptions> = ref({
     proration: 250,
     comboRate: 150,
-    armorBreakDisplay: false,
     forceCritical: false,
   })
 
   const {
     setupDamageCalculationExpectedResult,
+    setupDamageCalculationExpectedResultSweep,
     getDamageCalculationSkillState,
+    isDamageCalculationSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
+    isDamageCalculationSkillBranchEnabled,
     createDamageCalculationSelectionSaveData: createDamageCalculationSelectionSaveDataFromState,
     loadDamageCalculationSelectionSaveData: loadDamageCalculationSelectionSaveDataToState,
     resetDamageCalculationSelectionStates,
@@ -498,12 +500,15 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     // damage calculation
     setupDamageCalculationExpectedResult,
+    setupDamageCalculationExpectedResultSweep,
     targetProperties,
     calculationOptions,
     getDamageCalculationSkillState,
+    isDamageCalculationSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
+    isDamageCalculationSkillBranchEnabled,
 
     deleteAllSavedData,
     loadCharacterSimulator,
