@@ -122,9 +122,7 @@ abstract class SkillBranchItemBase<
   }
 
   set name(value: SkillBranchNames) {
-    if (value === SkillBranchNames.Next) {
-      this._inherit = SkillBranchNames.Effect
-    }
+    this._inherit = value === SkillBranchNames.Next ? SkillBranchNames.Effect : null
     this._name = value
   }
 
@@ -299,7 +297,8 @@ class SkillBranchItem<
     parent = (parent ?? this.parent) as TargetParent
     const clone = SkillBranchItem.create(parent, this)
 
-    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
+    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent, clone)))
+    clone.emptySuffixBranches.push(...this.emptySuffixBranches.map(suf => suf.clone(parent, clone)))
 
     return clone
   }
@@ -325,10 +324,11 @@ class SkillBranchItemSuffix<
   }
 
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
-    parent?: TargetParent
+    parent?: TargetParent,
+    mainBranch: SkillBranchItem = this.mainBranch
   ): SkillBranchItemSuffix<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    return SkillBranchItemSuffix.create(parent, this, this.mainBranch)
+    return SkillBranchItemSuffix.create(parent, this, mainBranch)
   }
 }
 

@@ -147,9 +147,7 @@ function computedBranchHelper(
     }
   })
 
-  const RLv: number[] =
-    computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ?? []
-  const hasRLv = RLv.length > 0 && RLv.some(item => item > 0)
+  const RLv = [...(computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ?? [])]
 
   const STACK_ACCESS_PATTERN = /stack\[(\d+)\]/g
   const RLV_ACCESS_PATTERN = /RLv\[(\d+)\]/g
@@ -158,8 +156,8 @@ function computedBranchHelper(
     if (/RLv(?!\[)/.test(str)) {
       return RLv[0] > 0
     }
-    const match = str.match(RLV_ACCESS_PATTERN)
-    if (match) {
+    const match = str.matchAll(RLV_ACCESS_PATTERN).next().value
+    if (match !== undefined) {
       return RLv[toIndex(match[1])] > 0
     }
     return true
@@ -192,14 +190,8 @@ function computedBranchHelper(
           stack[idxValue] = `${t('skill-query.branch.stack.base-name')}${idxValue + 1}`
         }
       })
-      if (!hasRLv) {
-        const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
-        rlvMatches.forEach(match => {
-          const idxValue = toIndex(match[1])
-          if (RLvLength < idxValue) {
-            RLvLength = idxValue
-          }
-        })
+      for (const match of value.matchAll(RLV_ACCESS_PATTERN)) {
+        RLvLength = Math.max(RLvLength, toIndex(match[1]) + 1)
       }
     })
 
@@ -240,14 +232,11 @@ function computedBranchHelper(
           stack[idxValue] = 0
         }
       })
-      if (!hasRLv) {
-        const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
-        rlvMatches.forEach(match => {
-          const idxValue = toIndex(match[1])
-          if (RLv[idxValue] === undefined) {
-            RLv[idxValue] = 0
-          }
-        })
+      for (const match of value.matchAll(RLV_ACCESS_PATTERN)) {
+        const idxValue = toIndex(match[1])
+        if (RLv[idxValue] === undefined) {
+          RLv[idxValue] = 0
+        }
       }
     })
 
