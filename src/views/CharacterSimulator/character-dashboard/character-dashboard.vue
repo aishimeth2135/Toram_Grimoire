@@ -9,6 +9,7 @@ import type { CharacterBaseStat } from '@/lib/Character/Character'
 
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 
+import CharacterDashboardDamageCharts from './character-dashboard-damage-charts.vue'
 import CharacterDashboardEquipmentField from './character-dashboard-equipment-field.vue'
 import CharacterDashboardFoodBuild from './character-dashboard-food-build.vue'
 import CharacterDashboardPotionBuild from './character-dashboard-potion-build.vue'
@@ -112,5 +113,6 @@ const { setCurrentTab } = useCharacterSimulatorState()
         />
       </div>
     </div>
+    <CharacterDashboardDamageCharts />
   </div>
 </template>

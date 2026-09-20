@@ -42,7 +42,7 @@
       </div>
       <div
         v-for="{ branchItem, next } in displayedBranchItemDatas"
-        :key="branchItem.id"
+        :key="branchItem.overrideId"
         class="history-item-compare"
       >
         <div>
@@ -153,9 +153,9 @@ const stackBranchItemDatas = computed(() => {
 const addedBranchItemDatas = computed(() => {
   const branchIds = historyItem.value.origin.branches
     .filter(bch => bch.isEmpty && bch.hasId())
-    .map(bch => bch.id)
+    .map(bch => bch.overrideId)
   return historyItem.value.branchItems
-    .filter(bch => branchIds.includes(bch.id))
+    .filter(bch => branchIds.includes(bch.overrideId))
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })
 

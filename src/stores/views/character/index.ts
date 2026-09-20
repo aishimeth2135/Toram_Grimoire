@@ -95,6 +95,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     autoSaveDisabled.value = false
   }
 
+  const resetHandlers: (() => void)[] = []
   const reset = () => {
     skillStore.resetSkillBuilds()
     characters.value = []
@@ -104,6 +105,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
     buildLabelStore.resetBuildLabelStore()
+    resetHandlers.forEach(handler => handler())
   }
 
   const deleteAllSavedData = () => {
@@ -148,12 +150,16 @@ export const useCharacterStore = defineStore('view-character', () => {
       potionBuilds: potionBuildsData,
       buildLabels: buildLabelsData,
       characterStates,
+      damageCalc: createDamageCalculationSelectionSaveData(),
     }
   }
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
 
-    return (saveData: CharacterSimulatorSaveData) => {
+    return (
+      saveData: CharacterSimulatorSaveData,
+      { loadDamageCalculationSelection = true } = {}
+    ) => {
       migrateCharacterSimulatorSaveData(saveData)
 
       _loadCount += 1
@@ -250,6 +256,10 @@ export const useCharacterStore = defineStore('view-character', () => {
           )
         }
       })
+
+      if (loadDamageCalculationSelection) {
+        loadDamageCalculationSelectionSaveData(saveData.damageCalc)
+      }
     }
   })()
 
@@ -265,8 +275,9 @@ export const useCharacterStore = defineStore('view-character', () => {
         logger.info('Datas version: v2')
         const { summary, datas } = result.value
 
-        loadCharacterSimulatorSaveData(datas)
+        loadCharacterSimulatorSaveData(datas, { loadDamageCalculationSelection: false })
         setCurrentCharacter(summary.characterIndex)
+        loadDamageCalculationSelectionSaveData(datas.damageCalc)
         CharacterPersistenceService.confirmLoaded()
       }
     } catch (error) {
@@ -397,7 +408,12 @@ export const useCharacterStore = defineStore('view-character', () => {
   const {
     setupDamageCalculationExpectedResult,
     getDamageCalculationSkillState,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
+    createDamageCalculationSelectionSaveData: createDamageCalculationSelectionSaveDataFromState,
+    loadDamageCalculationSelectionSaveData: loadDamageCalculationSelectionSaveDataToState,
+    resetDamageCalculationSelectionStates,
   } = (() => {
     const allSkillResultStates = computed(() => [
       ...activeSkillResultStates.value,
@@ -426,6 +442,15 @@ export const useCharacterStore = defineStore('view-character', () => {
       getSkillLevel
     )
   })()
+  resetHandlers.push(resetDamageCalculationSelectionStates)
+
+  function createDamageCalculationSelectionSaveData() {
+    return createDamageCalculationSelectionSaveDataFromState()
+  }
+
+  function loadDamageCalculationSelectionSaveData(data: CharacterSimulatorSaveData['damageCalc']) {
+    loadDamageCalculationSelectionSaveDataToState(data)
+  }
 
   return {
     characters: characters,
@@ -476,6 +501,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     targetProperties,
     calculationOptions,
     getDamageCalculationSkillState,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
 
     deleteAllSavedData,

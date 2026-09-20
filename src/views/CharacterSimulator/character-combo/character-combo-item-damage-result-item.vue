@@ -35,8 +35,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem.default)
-              .enabled
+            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem).enabled
           "
         />
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />

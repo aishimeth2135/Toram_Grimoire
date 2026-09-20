@@ -453,7 +453,7 @@ export function getPartySkillBranchId(branch: SkillBranch) {
     return toInt(branch.props.get('effect_id')!) ?? 0
   }
   if (branch.hasId()) {
-    return branch.id
+    return branch.overrideId
   }
   return 0
 }

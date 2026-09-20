@@ -235,7 +235,7 @@ abstract class SkillEffectBase extends SkillNode {
   }
 
   appendSkillBranch(id: number, name: SkillBranchNames) {
-    const el = SkillBranch.createWithMarkRaw(this, id, name)
+    const el = SkillBranch.create(this, id, name)
     this.branches.push(el)
     return el
   }
@@ -320,8 +320,9 @@ class SkillEffectHistory extends SkillEffectBase {
 class SkillBranch extends SkillNode {
   readonly parent: SkillEffectBase
 
-  // id of branch. -1 means no define
-  id: number
+  // id of branch for override detecting. -1 means no define
+  overrideId: number
+
   // type of branch
   name: SkillBranchNames
 
@@ -330,25 +331,21 @@ class SkillBranch extends SkillNode {
 
   private constructor(
     sef: SkillEffectBase,
-    id: number,
+    overrideId: number,
     name: SkillBranchNames,
     props: Map<string, string> = new Map(),
     stats: StatComputed[] = []
   ) {
     super()
     this.parent = sef
-    this.id = id
+    this.overrideId = overrideId
     this.name = name
     this.props = props
     this.stats = stats
   }
 
-  static create(sef: SkillEffectBase, id: number, name: SkillBranchNames): SkillBranch {
-    return new SkillBranch(sef, id, name)
-  }
-
-  static createWithMarkRaw(sef: SkillEffectBase, id: number, name: SkillBranchNames): SkillBranch {
-    return markRaw(SkillBranch.create(sef, id, name))
+  static create(sef: SkillEffectBase, overrideId: number, name: SkillBranchNames): SkillBranch {
+    return markRaw(new SkillBranch(sef, overrideId, name))
   }
 
   get isEmpty() {
@@ -356,7 +353,7 @@ class SkillBranch extends SkillNode {
   }
 
   hasId(): boolean {
-    return this.id !== -1
+    return this.overrideId !== -1
   }
 
   appendProp(name: string, value: string, valueSub?: string) {
@@ -398,7 +395,7 @@ class SkillBranch extends SkillNode {
   static createFrom(branch: SkillBranch): SkillBranch {
     return new SkillBranch(
       branch.parent,
-      branch.id,
+      branch.overrideId,
       branch.name,
       new Map(branch.props),
       branch.stats.map(stat => stat.clone())

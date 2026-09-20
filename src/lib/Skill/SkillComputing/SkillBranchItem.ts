@@ -38,7 +38,7 @@ abstract class SkillBranchItemBase<
   private _inherit: SkillBranchNames | null
 
   // -1 means undefined
-  readonly id: number
+  readonly overrideId: number
 
   readonly parent: Parent
   readonly stats: StatComputed[]
@@ -54,6 +54,7 @@ abstract class SkillBranchItemBase<
 
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch
+  readonly defaultBranchId: string
 
   /** Record of overwrite */
   readonly record: SkillBranchItemOverwriteRecords
@@ -73,7 +74,7 @@ abstract class SkillBranchItemBase<
   protected constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.instanceId = SkillBranchItemBase._idGenerator.generate()
     this.parent = parent
-    this.id = branch.id
+    this.overrideId = branch.overrideId
 
     this._name = branch.name
     this._inherit = null
@@ -89,6 +90,9 @@ abstract class SkillBranchItemBase<
     this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
+
+    const defaultEffect = this.default.parent
+    this.defaultBranchId = `${defaultEffect.parent.skillId}-b${defaultEffect.branches.indexOf(this.default)}`
 
     this.record = {
       props: {
@@ -133,7 +137,7 @@ abstract class SkillBranchItemBase<
   }
 
   hasId(): boolean {
-    return this.id !== -1
+    return this.overrideId !== -1
   }
 
   propKey(...keys: string[]) {

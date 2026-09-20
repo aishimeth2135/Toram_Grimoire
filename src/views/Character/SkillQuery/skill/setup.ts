@@ -23,7 +23,7 @@ export const NORMAL_LAYOUT_BRANCH_NAMES: SkillBranchNames[] = [
 export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
   const otherEffectBranches = computed(() => {
     const current = branchItem.value
-    if (current.id === -1) {
+    if (current.overrideId === -1) {
       return []
     }
     const branches: SkillBranchItem<SkillEffectItem>[] = []
@@ -32,12 +32,12 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
         return
       }
       const bch = effectItem.branchItems.find(item => {
-        if (item.id === current.id) {
+        if (item.overrideId === current.overrideId) {
           return true
         }
         return item.suffixBranches
           .filter(suf => suf.hasId())
-          .some(suf => current.suffixBranches.some(_suf => suf.id === _suf.id))
+          .some(suf => current.suffixBranches.some(_suf => suf.overrideId === _suf.overrideId))
       })
       if (bch) {
         branches.push(bch)

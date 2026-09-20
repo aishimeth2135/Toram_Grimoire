@@ -16,13 +16,20 @@
       </div>
       <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto py-4">
         <CardRowsWrapper>
-          <CardRows>
-            <CharacterDamageSkillItem
-              v-for="skillResultsState in validResultStates"
-              :key="skillResultsState.skill.skillId"
-              :skill-results-state="skillResultsState"
-            />
-          </CardRows>
+          <div v-for="group in validResultStateGroups" :key="group.skillTree.skillTreeId">
+            <div
+              class="bg-primary-5 text-primary-60 border-primary-10 border-y px-3 py-1.5 text-sm"
+            >
+              {{ group.skillTree.name }}
+            </div>
+            <CardRows>
+              <CharacterDamageSkillItem
+                v-for="skillResultsState in group.states"
+                :key="skillResultsState.skill.skillId"
+                :skill-results-state="skillResultsState"
+              />
+            </CardRows>
+          </div>
         </CardRowsWrapper>
       </div>
       <cy-default-tips v-else>
@@ -135,6 +142,7 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
+import type { SkillTree } from '@/lib/Skill/Skill'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
@@ -170,6 +178,17 @@ const validResultStates = computed(() => {
   return skillResultsStates.value.filter(
     state => skillBuildStore.currentSkillBuild!.getSkillLevel(state.skill) > 0
   )
+})
+
+const validResultStateGroups = computed(() => {
+  const groups = new Map<SkillTree, SkillResultsState[]>()
+  validResultStates.value.forEach(state => {
+    const skillTree = state.skill.parent
+    const states = groups.get(skillTree) ?? []
+    states.push(state)
+    groups.set(skillTree, states)
+  })
+  return Array.from(groups, ([skillTree, states]) => ({ skillTree, states }))
 })
 
 const elementOptions: {

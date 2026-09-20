@@ -268,11 +268,15 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
 
   get modifiedBranchItems() {
     return this.branchItems.filter(branchItem => {
-      if (branchItem.hasId() && this.origin.branches.find(bch => bch.id === branchItem.id)) {
+      if (
+        branchItem.hasId() &&
+        this.origin.branches.find(bch => bch.overrideId === branchItem.overrideId)
+      ) {
         return true
       }
       return branchItem.suffixBranches.some(
-        suffix => suffix.hasId() && this.origin.branches.find(bch => suffix.id === bch.id)
+        suffix =>
+          suffix.hasId() && this.origin.branches.find(bch => suffix.overrideId === bch.overrideId)
       )
     })
   }
