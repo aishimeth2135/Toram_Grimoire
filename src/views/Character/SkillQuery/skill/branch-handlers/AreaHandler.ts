@@ -26,11 +26,11 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
     angle: value => !!value,
     start_position_offsets: {
       validation: value => value !== '0',
-      calc: true,
+      source: 'computed',
     },
     end_position_offsets: {
       validation: value => value !== '0',
-      calc: true,
+      source: 'computed',
     },
   })
 

@@ -12,13 +12,23 @@ import {
   SkillBranchStatResult,
 } from '@/lib/Skill/SkillComputing'
 
+export interface HealExtraItem {
+  key: string
+  text: string
+}
+
+interface DisplayCustomData {
+  healExtraItems: HealExtraItem[]
+  stackInputWidth: string | undefined
+}
+
 export default class DisplayDataContainer<
   Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds,
 > implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
   private _titles: SkillDisplayData
-  private _customDatas!: Record<string, any>
+  private _customDatas: DisplayCustomData
 
   readonly instanceId: InstanceId
 
@@ -43,6 +53,7 @@ export default class DisplayDataContainer<
     this.containers = containers
     this.statContainers = statContainers
     this._titles = titles
+    this._customDatas = { healExtraItems: [], stackInputWidth: undefined }
   }
 
   result(key: string) {
@@ -73,14 +84,14 @@ export default class DisplayDataContainer<
     return this._titles.get(key) ?? ''
   }
 
-  setCustomData(key: string, value: any): void {
-    if (!this._customDatas) {
-      this._customDatas = {}
-    }
+  setCustomData<Key extends keyof DisplayCustomData>(
+    key: Key,
+    value: DisplayCustomData[Key]
+  ): void {
     this._customDatas[key] = value
   }
 
-  getCustomData(key: string): any {
-    return this._customDatas?.[key]
+  getCustomData<Key extends keyof DisplayCustomData>(key: Key): DisplayCustomData[Key] {
+    return this._customDatas[key]
   }
 }

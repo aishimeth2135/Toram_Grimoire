@@ -1,3 +1,4 @@
+import { CommonLogger } from '@/shared/services/Logger'
 import { splitComma } from '@/shared/utils/string'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
@@ -31,6 +32,18 @@ function RowHandler<BranchItem extends SkillBranchItemSuffix>(
   cellsLength: number
 ) {
   const attrs = cloneBranchProps(branchItem)
+  const overflowCells = [...attrs.keys()].filter(key => {
+    const match = /^cell\.(\d+)$/.exec(key)
+    return match !== null && Number(match[1]) >= cellsLength
+  })
+  if (overflowCells.length > 0) {
+    CommonLogger.warn(
+      'TableHandler',
+      'Cells without column labels',
+      branchItem.defaultBranchId,
+      overflowCells
+    )
+  }
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
   textPropsMap.appendIterable('cell', cellsLength)
 

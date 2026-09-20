@@ -39,7 +39,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(
     pureDatas,
   })
 
-  const tmpv = toInt(displayData.get('max') || displayData.get('default'))
+  const tmpv = toInt(displayData.getValue('max') || displayData.getValue('default'))
   if (tmpv !== null && tmpv > 999) {
     displayData.setCustomData('stackInputWidth', '3rem')
   }

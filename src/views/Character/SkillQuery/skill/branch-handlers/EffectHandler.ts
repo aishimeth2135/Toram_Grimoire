@@ -51,6 +51,7 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(
 
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['is_place', 'type'])
   if (['auto', 'hit'].includes(props.get('condition')!)) {
+    textPropsMap.remove('condition')
     if (props.get('condition') === 'auto' && branchItem.realName === SkillBranchNames.Next) {
       props.set('condition', '@next')
     }

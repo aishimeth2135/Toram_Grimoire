@@ -52,11 +52,9 @@ function handleDisplayValue(
   container: SkillBranchResult,
   helper: ComputedBranchHelperResult
 ): void {
-  if (helper.branchItem.hasProp(container.key, 'display')) {
-    const displayValue = computeBranchFormulaValue(
-      helper.branchItem.prop(container.key, 'display'),
-      helper
-    )
+  const formula = helper.props.get(helper.branchItem.propKey(container.key, 'display'))
+  if (formula !== undefined) {
+    const displayValue = computeBranchFormulaValue(formula, helper)
     container.initDisplayValue(displayValue)
   }
 }
@@ -66,8 +64,8 @@ function handleRegistletValue(
   helper: ComputedBranchHelperResult
 ): void {
   const bch = helper.branchItem
-  if (bch.hasProp(container.key, 'registlet')) {
-    const originalValue = bch.prop(container.key, 'registlet')
+  const originalValue = helper.props.get(bch.propKey(container.key, 'registlet'))
+  if (originalValue !== undefined) {
     if (helper.checkRegistletLevel(originalValue)) {
       const value = computeBranchFormulaValue(originalValue, helper)
       const subContainer = SkillBranchResult.create(
@@ -103,6 +101,7 @@ interface ComputedBranchHelperResult {
   texts: HandleFormulaTexts
   methods: HandleFormulaMethods
   branchItem: SkillBranchItemBaseChilds
+  props: ReadonlyMap<string, string>
   handleFormulaExtra: (formula: string) => string
   formulaDisplayMode: FormulaDisplayModes
   checkRegistletLevel: (value: string) => boolean
@@ -119,7 +118,8 @@ function computedBranchHelper(
   computing: SkillComputingContainer,
   branchItem: SkillBranchItemBaseChilds,
   values: string[] = [],
-  formulaDisplayMode?: FormulaDisplayModes
+  formulaDisplayMode?: FormulaDisplayModes,
+  props: ReadonlyMap<string, string> = branchItem.allProps
 ): ComputedBranchHelperResult {
   let vars: HandleFormulaVars
   let texts: HandleFormulaTexts
@@ -293,7 +293,7 @@ function computedBranchHelper(
     if (idx === null) {
       return null
     }
-    const props = {
+    const bounds = {
       max: formulaExtra.hasProp('values', index, 'max')
         ? (computeFormula(formulaExtra.prop('values', index, 'max'), vars, 0) as number)
         : null,
@@ -301,7 +301,7 @@ function computedBranchHelper(
         ? (computeFormula(formulaExtra.prop('values', index, 'min'), vars, 0) as number)
         : null,
     }
-    return getFormulaExtraValue?.(mainBranchItem, extraTexts[idx], props)?.toString() ?? null
+    return getFormulaExtraValue?.(mainBranchItem, extraTexts[idx], bounds)?.toString() ?? null
   }
 
   const handleFormulaExtra = !formulaExtra
@@ -321,6 +321,7 @@ function computedBranchHelper(
     methods: extendsDatas.methods,
     handleFormulaExtra,
     branchItem,
+    props,
     formulaDisplayMode,
     checkRegistletLevel,
   }
@@ -393,7 +394,10 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       originalFormula,
       propValues.get(propKey)!
     )
-    const options = container.normalizeDisplayOptions<HandleBranchValueOptions>(propMap[propKey])
+    const sourceOptions = container.normalizeDisplayOptions<HandleBranchValueOptions>(
+      propMap[propKey]
+    )
+    const options = sourceOptions ? { ...sourceOptions } : null
     if (options?.toPersentage) {
       container.handle(value => {
         if (isNumberString(value)) {
@@ -493,18 +497,18 @@ function handleBranchStats(
     handleRegistletValue(container, helper)
 
     const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
-    if (helper.branchItem.hasProp(displayTitleKey)) {
+    if (helper.props.has(displayTitleKey)) {
       const displayTitleContainer = computedBranchText(
         helper,
         displayTitleKey,
-        helper.branchItem.prop(displayTitleKey)
+        helper.props.get(displayTitleKey)
       )
       displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
       container.setDisplayTitle(displayTitleContainer)
     }
     const conditionValueKey = helper.branchItem.propKey(container.key, 'conditionValue')
-    if (helper.branchItem.hasProp(conditionValueKey)) {
-      container.setConditionValue(helper.branchItem.prop(conditionValueKey))
+    if (helper.props.has(conditionValueKey)) {
+      container.setConditionValue(helper.props.get(conditionValueKey)!)
     }
 
     const showData = stat.getShowData()

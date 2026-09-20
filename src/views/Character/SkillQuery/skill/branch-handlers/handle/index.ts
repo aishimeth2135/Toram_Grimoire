@@ -17,6 +17,7 @@ import {
   type ComputedBranchHelperResult,
   type HandleBranchTextPropsMap,
   type HandleBranchValuePropsMap,
+  collectBranchFormulaValues,
   computeBranchValue,
   computedBranchHelper,
   handleBranchStats,
@@ -125,7 +126,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
 type HandleDisplayDataOptionFilterValidation = (value: string) => boolean
 interface HandleDisplayDataOptionFilterItem {
   validation: HandleDisplayDataOptionFilterValidation
-  calc?: boolean
+  source: 'raw' | 'computed'
 }
 interface HandleDisplayDataOptionFilters {
   [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem
@@ -135,9 +136,9 @@ interface HandleDisplayDataOptions {
   texts?: HandleBranchTextPropsMap
   langs?: HandleBranchLangPropsMap
   filters?: HandleDisplayDataOptionFilters
-  pureValues?: string[]
-  pureDatas?: string[]
-  titles?: string[]
+  pureValues?: readonly string[]
+  pureDatas?: readonly string[]
+  titles?: readonly string[]
   formulaDisplayMode?: FormulaDisplayModes
 }
 
@@ -150,33 +151,28 @@ const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   computing: SkillComputingContainer,
   branchItem: Branch,
-  props: Map<string, string>,
-  {
-    values = {},
-    texts = {},
-    langs = {},
-    filters = {},
-    pureValues = [],
-    pureDatas = [],
-    titles = [],
-    formulaDisplayMode,
-  }: HandleDisplayDataOptions
+  sourceProps: ReadonlyMap<string, string>,
+  options: HandleDisplayDataOptions
 ): DisplayDataContainer<Branch> {
   const { t } = Grimoire.i18n
+  const props = new Map(sourceProps)
+  const values = { ...options.values }
+  const texts = { ...options.texts }
+  const langs = { ...options.langs }
+  const filters = options.filters ?? {}
+  const pureValues = [...(options.pureValues ?? [])]
+  const pureDatas = [...(options.pureDatas ?? [])]
+  const titles = [...(options.titles ?? [])]
 
-  const helper = computedBranchHelper(
+  let helper = computedBranchHelper(
     computing,
     branchItem,
-    [
-      ...Object.keys(values).map(key => branchItem.prop(key)),
-      ...Object.keys(texts).map(key => branchItem.prop(key)),
-      ...pureValues.map(key => branchItem.prop(key)),
-      ...branchItem.stats.map(stat => stat.value),
-    ],
-    formulaDisplayMode
+    collectBranchFormulaValues(branchItem, props),
+    options.formulaDisplayMode,
+    props
   )
 
-  formulaDisplayMode = helper.formulaDisplayMode
+  const formulaDisplayMode = helper.formulaDisplayMode
 
   const ignoreProp = (key: string) => {
     delete values[key]
@@ -199,10 +195,10 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
     const propValue = props.get(key)!
     if (typeof value === 'function') {
-      value = { validation: value }
+      value = { validation: value, source: 'raw' }
     }
-    const { validation, calc = false } = value
-    const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
+    const { validation, source } = value
+    const validatedValue = source === 'computed' ? computeBranchValue(propValue, helper) : propValue
     if (!validation(validatedValue)) {
       props.delete(key)
       ignoreProp(key)
@@ -210,17 +206,30 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   const handleAsTextLangKeys: string[] = []
-  Object.entries(langs).forEach(([key, options]) => {
-    if (options?.handleAsText) {
+  Object.entries(langs).forEach(([key, langOptions]) => {
+    if (langOptions?.handleAsText) {
       handleAsTextLangKeys.push(key)
     }
   })
   const langDatas = handleBranchLangProps(helper, props, langs)
   handleAsTextLangKeys.forEach(key => {
-    props.set(key, langDatas[key].result as string)
+    const result = langDatas[key]
+    if (!result) {
+      return
+    }
+    props.set(key, result.result)
     texts[key] = null
     delete langDatas[key]
   })
+  if (handleAsTextLangKeys.length > 0) {
+    helper = computedBranchHelper(
+      computing,
+      branchItem,
+      collectBranchFormulaValues(branchItem, props),
+      formulaDisplayMode,
+      props
+    )
+  }
 
   const valueContainers = handleBranchValueProps(helper, props, values)
   const textContainers = handleBranchTextProps(helper, props, texts)
