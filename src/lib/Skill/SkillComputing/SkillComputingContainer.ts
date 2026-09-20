@@ -88,7 +88,7 @@ class SkillItem {
   readonly skill: Skill
   readonly effectItems: SkillEffectItem[]
 
-  constructor(skill: Skill) {
+  private constructor(skill: Skill) {
     this.skill = skill
 
     const defaultSef = skill.defaultEffect
@@ -97,6 +97,10 @@ class SkillItem {
       new SkillEffectItem(this, defaultSef),
       ...otherSefs.map(sef => new SkillEffectItem(this, defaultSef, sef)),
     ]
+  }
+
+  static create(skill: Skill): SkillItem {
+    return new SkillItem(skill)
   }
 
   findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {

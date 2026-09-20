@@ -170,7 +170,7 @@ function convertEffectEquipment(
   const { mainWeapon: main, subWeapon: sub, bodyArmor: body, equipmentOperator: operator } = effect
 
   if (main === -1 && sub === -1 && body === -1) {
-    return [new EquipmentRestrictions()]
+    return [EquipmentRestrictions.create()]
   }
   // const results: Map<string, EquipmentRestrictions> = new Map()
   const results: [string, EquipmentRestrictions][] = []
@@ -187,7 +187,7 @@ function convertEffectEquipment(
     }
   }
 
-  const mainData = new EquipmentRestrictions({
+  const mainData = EquipmentRestrictions.create({
     main: main === -1 ? null : EQUIPMENT_TYPE_MAIN_ORDER[main],
   })
   if (
@@ -196,7 +196,7 @@ function convertEffectEquipment(
     operator === 0
   ) {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         main: EquipmentTypes.DualSword,
       })
     )
@@ -208,7 +208,7 @@ function convertEffectEquipment(
     firstResult.sub = subItem
   } else {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         sub: subItem,
       })
     )
@@ -219,7 +219,7 @@ function convertEffectEquipment(
     firstResult.body = bodyItem
   } else {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         body: bodyItem,
       })
     )

@@ -43,19 +43,19 @@ export function setupCharacterSkillItems(
 ) {
   const currentCharacterEquipment = computed<EquipmentRestrictions>(() => {
     if (!character.value) {
-      return new EquipmentRestrictions()
+      return EquipmentRestrictions.create()
     }
 
     const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
     const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
     if (main === EquipmentTypes.OneHandSword && sub === EquipmentTypes.OneHandSword) {
-      return new EquipmentRestrictions({
+      return EquipmentRestrictions.create({
         main: EquipmentTypes.DualSword,
         body,
       })
     }
-    return new EquipmentRestrictions({ main, sub, body })
+    return EquipmentRestrictions.create({ main, sub, body })
   })
 
   const allSkills: Skill[] = []
@@ -68,7 +68,7 @@ export function setupCharacterSkillItems(
   const getSkillLevel = useGetSkillLevel(skillItemStates, skillBuild)
 
   allSkills.forEach(skill => {
-    const skillItem = new SkillItem(skill)
+    const skillItem = SkillItem.create(skill)
     const currentEffectItem = computed(() =>
       skillItem.findEffectItem(currentCharacterEquipment.value, getSkillLevel)
     )

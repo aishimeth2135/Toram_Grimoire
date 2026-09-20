@@ -68,14 +68,14 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initCharacterInstance = () => {
     if (DatasStoreBase.Character === null) {
-      DatasStoreBase.Character = new CharacterSystem()
+      DatasStoreBase.Character = CharacterSystem.create()
     }
     return DatasStoreBase.Character
   }
 
   const initGlossaryInstance = () => {
     if (DatasStoreBase.Glossary === null) {
-      DatasStoreBase.Glossary = new GlossarySystem()
+      DatasStoreBase.Glossary = GlossarySystem.create()
     }
     return DatasStoreBase.Glossary
   }
@@ -96,7 +96,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initDamageCalculationInstance = () => {
     if (DatasStoreBase.DamageCalculation === null) {
-      DatasStoreBase.DamageCalculation = new DamageCalculationSystem()
+      DatasStoreBase.DamageCalculation = DamageCalculationSystem.create()
     }
     return DatasStoreBase.DamageCalculation
   }
@@ -110,14 +110,14 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initQuestInstance = () => {
     if (DatasStoreBase.Quest === null) {
-      DatasStoreBase.Quest = new QuestSystem()
+      DatasStoreBase.Quest = QuestSystem.create()
     }
     return DatasStoreBase.Quest
   }
 
   const initEquipmentTraitInstance = () => {
     if (DatasStoreBase.EquipmentTrait === null) {
-      DatasStoreBase.EquipmentTrait = new EquipmentTraitSystem()
+      DatasStoreBase.EquipmentTrait = EquipmentTraitSystem.create()
     }
     return DatasStoreBase.EquipmentTrait
   }

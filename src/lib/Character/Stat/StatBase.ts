@@ -126,7 +126,7 @@ class StatBase {
     if (!this.hasMultiplier && type === StatTypes.Multiplier) {
       type = StatTypes.Constant
     }
-    return new StatComputed(this, type, value)
+    return StatComputed.create(this, type, value)
   }
 
   checkBoolStat(type?: StatTypes): boolean {
@@ -235,9 +235,13 @@ class Stat extends StatElementBase {
 class StatComputed extends StatElementBase {
   value: string
 
-  constructor(base: StatBase, type: StatTypes, value: string = '') {
+  private constructor(base: StatBase, type: StatTypes, value: string = '') {
     super(base, type)
     this.value = value
+  }
+
+  static create(base: StatBase, type: StatTypes, value: string = ''): StatComputed {
+    return new StatComputed(base, type, value)
   }
 
   clone(): StatComputed {

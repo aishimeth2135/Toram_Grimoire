@@ -92,7 +92,9 @@ export function LoadEquipmentTraits(root: EquipmentTraitSystem, csvData: CsvData
         const statBaseData = parseStatValueDataRaw(attrName)
         const statBase = Grimoire.Character.findStatBase(statBaseData.value)
         if (statBase) {
-          currentItem.appendStat(new StatComputed(statBase, statBaseData.type, row('attr/value')))
+          currentItem.appendStat(
+            StatComputed.create(statBase, statBaseData.type, row('attr/value'))
+          )
         }
       }
     }

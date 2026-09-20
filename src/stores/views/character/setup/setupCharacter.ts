@@ -216,7 +216,7 @@ export function prepareSetupCharacter() {
           if (typeof value === 'number') {
             const resultValue = value * equipTrait.currentStack
             traitStats.push(
-              new StatRecorded(
+              StatRecorded.create(
                 traitStat.base,
                 traitStat.type,
                 resultValue,

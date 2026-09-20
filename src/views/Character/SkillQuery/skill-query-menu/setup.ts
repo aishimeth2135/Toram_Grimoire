@@ -40,7 +40,7 @@ function setupEquipmentSelect(
     }
   })
 
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(EquipmentRestrictions.create())
 
   const submitCurrentEquipment = () => {
     emit('update:selected-equipment', currentEquipment.value)

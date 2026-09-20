@@ -180,7 +180,7 @@ class TextResultContainerPart {
 
   private _metadata!: Map<string, string>
 
-  constructor(
+  protected constructor(
     type: TextResultContainerPartTypes,
     value: string | TextResultContainerPartValue[],
     unit: string = ''
@@ -188,6 +188,14 @@ class TextResultContainerPart {
     this.type = type
     this.parts = typeof value === 'string' ? [value] : value
     this.unit = unit
+  }
+
+  static create(
+    type: TextResultContainerPartTypes,
+    value: string | TextResultContainerPartValue[],
+    unit: string = ''
+  ): TextResultContainerPart {
+    return new TextResultContainerPart(type, value, unit)
   }
 
   get hasMultipleParts(): boolean {

@@ -190,7 +190,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
       // character
       saveData.characters.forEach(charaRow => {
-        const chara = new Character()
+        const chara = Character.create()
         const loadSuccess = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (loadSuccess) {
           appendCharacter(chara, { updateIndex: false, source: 'load' })
@@ -205,7 +205,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       })
 
       saveData.foodBuilds.forEach(data => {
-        const build = new FoodsBuild(foodStore.foodsBase as FoodsBase)
+        const build = FoodsBuild.create(foodStore.foodsBase as FoodsBase)
         const load = build.load(loadedCategory, data)
         if (!load.error) {
           foodStore.appendFoodBuild(build, { updateIndex: false, source: 'load' })

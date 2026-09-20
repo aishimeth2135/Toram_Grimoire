@@ -20,7 +20,7 @@ export const useCharacterPotionBuildStore = defineStore('view-character-potion-b
   } = useCharacterBindingBuild<PotionBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createPotionBuild = () => {
-    const newBuild = new PotionBuild(
+    const newBuild = PotionBuild.create(
       t('character-simulator.potion-build.potion-build') +
         ' ' +
         (builds.value.length + 1).toString()

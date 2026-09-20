@@ -27,7 +27,7 @@ class PotionBuild implements CharacterBindingBuild {
   readonly items: PotionItem[]
   readonly categorys: PotionItemsCategory[]
 
-  constructor(name: string) {
+  private constructor(name: string) {
     this.id = PotionBuild._autoIncrement
     PotionBuild._autoIncrement += 1
     this.loadedId = null
@@ -37,6 +37,10 @@ class PotionBuild implements CharacterBindingBuild {
     this._itemsMap = new Map()
     this.items = []
     this.categorys = []
+  }
+
+  static create(name: string): PotionBuild {
+    return new PotionBuild(name)
   }
 
   private _getCategory(base: BagPotion): PotionItemsCategory {
@@ -85,7 +89,7 @@ class PotionBuild implements CharacterBindingBuild {
   }
 
   clone(): PotionBuild {
-    const newBuild = new PotionBuild(this.name + ' *')
+    const newBuild = PotionBuild.create(this.name + ' *')
     this.items.forEach(potion => newBuild.items.push(potion))
     return newBuild
   }
@@ -100,7 +104,7 @@ class PotionBuild implements CharacterBindingBuild {
   }
 
   static load(loadedCategory: string, data: PotionBuildSaveData): PotionBuild {
-    const newBuild = new PotionBuild(data.name)
+    const newBuild = PotionBuild.create(data.name)
     newBuild.loadedId = getLoadedId(loadedCategory, data.id)
     data.potions.forEach(potionData => {
       const potion = Grimoire.Items.potionsRoot.findPotionById(potionData.id)

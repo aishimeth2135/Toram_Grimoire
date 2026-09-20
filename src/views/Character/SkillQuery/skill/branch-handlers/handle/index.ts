@@ -112,7 +112,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }
-    const resultContainer = new SkillBranchResult(
+    const resultContainer = SkillBranchResult.create(
       ResultContainerTypes.String,
       branchItem,
       attrKey as string,
@@ -327,7 +327,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   pureValues.forEach(key => {
     const origin = props.get(key) || '0'
     const value = computeBranchValue(origin, helper)
-    const container = new SkillBranchResult(
+    const container = SkillBranchResult.create(
       ResultContainerTypes.Number,
       branchItem,
       key,
@@ -351,7 +351,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const value = props.get(key)!
     containers.set(
       key,
-      new SkillBranchResult(ResultContainerTypes.String, branchItem, key, value, value)
+      SkillBranchResult.create(ResultContainerTypes.String, branchItem, key, value, value)
     )
   })
 
