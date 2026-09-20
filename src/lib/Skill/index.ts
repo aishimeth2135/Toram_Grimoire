@@ -3,7 +3,11 @@ import { SkillRoot } from './Skill'
 export default class SkillSystem {
   skillRoot: SkillRoot
 
-  constructor() {
-    this.skillRoot = new SkillRoot()
+  private constructor() {
+    this.skillRoot = SkillRoot.create()
+  }
+
+  static create(): SkillSystem {
+    return new SkillSystem()
   }
 }

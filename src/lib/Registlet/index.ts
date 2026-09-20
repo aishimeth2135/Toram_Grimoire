@@ -1,5 +1,3 @@
-import { markRaw } from 'vue'
-
 import { Skill } from '@/lib/Skill/Skill'
 
 import {
@@ -20,16 +18,18 @@ export default class RegistletSystem {
   private _skillItemMap!: Map<Skill, RegistletItemBaseSkill[]>
   private _allObtainLevelList!: number[]
 
-  constructor() {
-    this.skillCategory = markRaw(
-      new RegistletCategory<RegistletItemBaseSkill>(RegistletCategoryIds.Skill)
+  private constructor() {
+    this.skillCategory = RegistletCategory.create<RegistletItemBaseSkill>(
+      RegistletCategoryIds.Skill
     )
-    this.statCategory = markRaw(
-      new RegistletCategory<RegistletItemBaseStat>(RegistletCategoryIds.Stat)
+    this.statCategory = RegistletCategory.create<RegistletItemBaseStat>(RegistletCategoryIds.Stat)
+    this.specialCategory = RegistletCategory.create<RegistletItemBaseSpecial>(
+      RegistletCategoryIds.Special
     )
-    this.specialCategory = markRaw(
-      new RegistletCategory<RegistletItemBaseSpecial>(RegistletCategoryIds.Special)
-    )
+  }
+
+  static create(): RegistletSystem {
+    return new RegistletSystem()
   }
 
   getRegistletItemById(id: string): RegistletItemBase | null {

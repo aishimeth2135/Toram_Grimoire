@@ -51,7 +51,7 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
       const name = parts[0],
         value = parts[1]
       if (name && value) {
-        materials.push(new BagItemRecipeMaterial(name, toInt(value) ?? 0))
+        materials.push(BagItemRecipeMaterial.create(name, toInt(value) ?? 0))
       }
     })
     return materials

@@ -63,7 +63,7 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
     action_time: value => actionTimeList[toIndex(value)],
     casting_time: value => value,
   }
-  const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
+  const branch = SkillBranch.create(origin, 139, SkillBranchNames.Basic)
   ;(Object.entries(origin.basicProps) as [keyof SkillEffectBasicProps, string | number][]).forEach(
     ([key, value]) => {
       if (value !== null) {
