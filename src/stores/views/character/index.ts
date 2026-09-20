@@ -407,7 +407,6 @@ export const useCharacterStore = defineStore('view-character', () => {
   const {
     setupDamageCalculationExpectedResult,
     setupDamageCalculationExpectedResultSweep,
-    getDamageCalculationSkillState,
     isDamageCalculationSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,
@@ -503,7 +502,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupDamageCalculationExpectedResultSweep,
     targetProperties,
     calculationOptions,
-    getDamageCalculationSkillState,
     isDamageCalculationSkillEnabled,
     setDamageCalculationSkillEnabled,
     damageCalculationSkillSelectionLimitReached,

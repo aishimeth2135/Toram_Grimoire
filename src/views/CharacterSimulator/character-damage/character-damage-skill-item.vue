@@ -8,7 +8,7 @@
       }"
       @click="toggleEnabled"
     >
-      <div class="mr-3 flex shrink-0 items-center" style="min-width: 10rem">
+      <div class="mr-3 flex min-w-40 shrink-0 items-center">
         <cy-button-check :selected="enabled" :disabled="selectionDisabled" />
         <cy-icon :icon="skillIconPath" class="ml-1.5" />
         <span class="text-primary-70 ml-2">
@@ -57,7 +57,7 @@ const { t } = useI18n()
 
 const enabled = computed<boolean>({
   get() {
-    return characterStore.getDamageCalculationSkillState(props.skillResultsState.skill).enabled
+    return characterStore.isDamageCalculationSkillEnabled(props.skillResultsState.skill)
   },
   set(value) {
     characterStore.setDamageCalculationSkillEnabled(props.skillResultsState.skill, value)

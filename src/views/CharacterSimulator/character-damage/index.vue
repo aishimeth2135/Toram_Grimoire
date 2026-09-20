@@ -16,20 +16,12 @@
       </div>
       <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto py-4">
         <CardRowsWrapper>
-          <div v-for="group in validResultStateGroups" :key="group.skillTree.skillTreeId">
-            <div
-              class="bg-primary-5 text-primary-60 border-primary-10 border-y px-3 py-1.5 text-sm"
-            >
-              {{ group.skillTree.name }}
-            </div>
-            <CardRows>
-              <CharacterDamageSkillItem
-                v-for="skillResultsState in group.states"
-                :key="skillResultsState.skill.skillId"
-                :skill-results-state="skillResultsState"
-              />
-            </CardRows>
-          </div>
+          <CharacterDamageSkillGroup
+            v-for="group in validResultStateGroups"
+            :key="group.skillTree.skillTreeId"
+            :skill-tree="group.skillTree"
+            :skill-results-states="group.states"
+          />
         </CardRowsWrapper>
       </div>
       <cy-default-tips v-else>
@@ -140,9 +132,8 @@ import type { SkillTree } from '@/lib/Skill/Skill'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
-import CardRows from '@/components/card/card-rows.vue'
 
-import CharacterDamageSkillItem from './character-damage-skill-item.vue'
+import CharacterDamageSkillGroup from './character-damage-skill-group.vue'
 
 interface Props {
   visible: boolean
