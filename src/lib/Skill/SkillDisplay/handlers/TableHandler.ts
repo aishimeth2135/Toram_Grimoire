@@ -1,6 +1,6 @@
 import { CommonLogger } from '@/shared/services/Logger'
-import { splitComma } from '@/shared/utils/string'
 
+import { parseListProperty } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -16,7 +16,7 @@ export default function TableHandler<BranchItem extends SkillBranchItem>(
   computing: SkillComputingContainer,
   branchItem: BranchItem
 ) {
-  const labels = splitComma(branchItem.prop('labels'))
+  const labels = parseListProperty(branchItem.prop('labels'))
   const rows = branchItem.suffixBranches
     .filter(suf => suf.is(SkillBranchNames.Row))
     .map(suf => RowHandler(computing, suf, labels.length))

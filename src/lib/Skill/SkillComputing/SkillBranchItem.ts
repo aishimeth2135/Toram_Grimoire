@@ -6,10 +6,12 @@ import {
   type InstanceWithId,
 } from '@/shared/services/InstanceId'
 import { toInt } from '@/shared/utils/number'
-import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
 
+import { parseBooleanProperty } from '../Properties/Boolean'
+import { createIterablePropertyKey } from '../Properties/Iterable'
+import { parseListProperty } from '../Properties/List'
 import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
@@ -139,7 +141,7 @@ abstract class SkillBranchItemBase<
   }
 
   propKey(...keys: string[]) {
-    return keys.join('.')
+    return createIterablePropertyKey(...keys)
   }
 
   prop(...keys: string[]): string {
@@ -151,7 +153,7 @@ abstract class SkillBranchItemBase<
   }
 
   propBoolean(...keys: string[]): boolean {
-    return this._props.get(this.propKey(...keys)) === '1'
+    return parseBooleanProperty(this._props.get(this.propKey(...keys)))
   }
 
   hasProp(...keys: string[]) {
@@ -240,7 +242,9 @@ class SkillBranchItem<
     this._initPostponeByProp()
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
     this.linkedStackIds =
-      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
+      this.stackId !== null
+        ? []
+        : parseListProperty(this.prop('stack_id')).map(id => toInt(id) ?? 0)
   }
 
   get isGroup(): boolean {

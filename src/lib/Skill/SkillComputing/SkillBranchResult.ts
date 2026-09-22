@@ -1,6 +1,6 @@
 import { defineState } from '@/shared/composables/State'
 import { toFloat, toInt } from '@/shared/utils/number'
-import { escapeRegExp, splitComma } from '@/shared/utils/string'
+import { escapeRegExp } from '@/shared/utils/string'
 
 import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import {
@@ -22,6 +22,7 @@ import {
   handleParseText,
 } from '@/lib/common/ResultContainer'
 
+import { parseListProperty } from '../Properties/List'
 import type { SkillBranchItemBaseChilds } from './SkillBranchItem'
 
 type ResultHandler = (currentResult: string) => string
@@ -334,7 +335,7 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
 
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
-        const values = splitComma(branch.prop(propKey))
+        const values = parseListProperty(branch.prop(propKey))
         if (values.length === 1 && !values[0]) {
           return
         }

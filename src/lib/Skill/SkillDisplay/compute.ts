@@ -1,12 +1,12 @@
 import { isNumberString } from '@/shared/utils/string'
 
 import type { StatComputed } from '@/lib/Character/Stat'
+import { computeTextProperty } from '@/lib/Skill/Properties'
 import {
   type ComputedBranchHelperResult,
   SkillBranchResult,
   SkillBranchStatResult,
   SkillBranchTextResult,
-  type SkillBranchTextResultParseResult,
   computeBranchStatResults,
   computeBranchValue,
   computeBranchValueResults,
@@ -96,39 +96,6 @@ type HandleBranchTextPropsResult<PropMap extends HandleBranchTextPropsMap> = {
   [key in keyof PropMap]: SkillBranchTextResult
 }
 
-function computedBranchText(
-  helper: ComputedBranchHelperResult,
-  propKey: string,
-  propValue: string | undefined
-) {
-  const textStr = propValue
-  if (textStr === undefined) {
-    const _parseResult = {
-      containers: [],
-      parts: [''],
-    } as SkillBranchTextResultParseResult
-    const resultContainer = SkillBranchTextResult.createForBranch(
-      helper.branchItem,
-      propKey,
-      '0',
-      '0',
-      _parseResult
-    )
-    resultContainer.markEmpty()
-    return resultContainer
-  }
-  const parseResult = SkillBranchTextResult.parse(helper.branchItem, propKey, textStr, value =>
-    computeBranchValue(value, helper)
-  )
-  return SkillBranchTextResult.createForBranch(
-    helper.branchItem,
-    propKey,
-    textStr,
-    textStr,
-    parseResult
-  )
-}
-
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
@@ -137,7 +104,7 @@ function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   const propKeys = Object.keys(propMap) as (keyof PropMap)[]
   const propResult = {} as HandleBranchTextPropsResult<PropMap>
   propKeys.forEach(propKey => {
-    const container = computedBranchText(helper, propKey as string, props.get(propKey as string))
+    const container = computeTextProperty(helper, propKey as string, props.get(propKey as string))
     container.containers.forEach(ctner => handleHighlight(ctner))
     propResult[propKey] = container
   })
@@ -154,7 +121,7 @@ function handleBranchStats(
 
     const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
     if (helper.props.has(displayTitleKey)) {
-      const displayTitleContainer = computedBranchText(
+      const displayTitleContainer = computeTextProperty(
         helper,
         displayTitleKey,
         helper.props.get(displayTitleKey)

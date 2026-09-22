@@ -1,8 +1,9 @@
 import Grimoire from '@/shared/Grimoire'
 import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
-import { isNumberString, splitComma } from '@/shared/utils/string'
+import { isNumberString } from '@/shared/utils/string'
 
+import { parseListProperty } from '@/lib/Skill/Properties'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
 import { type HandleBranchValuePropsMap } from '../compute'
@@ -44,7 +45,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(
   const extraItems: HealExtraItem[] = []
   if (props.has('extra_value') && props.has('extra_text')) {
     const values = props.get('extra_value')!.split(/\s*,,\s*/)
-    const texts = splitComma(props.get('extra_text')!)
+    const texts = parseListProperty(props.get('extra_text')!)
     if (values.length !== texts.length) {
       CommonLogger.warn(
         'HealHandler',

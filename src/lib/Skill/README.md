@@ -23,10 +23,17 @@
 
 屬性（property）在分支底下，是組成分支的基本單位，也是一個技能的資料的最小單位。屬性也可以視為一個分支的各種參數。一個屬性又可以拆成「屬性名稱」和「屬性值」。
 
+#### 子屬性
+
+屬於屬性的一種，通常用於在屬性上補充其資訊。其 key 值會用`(屬性名稱).(子屬性名稱)`表示。
+
 ## 屬性基本類型
 
-下面部分基本類型可以直接對應到`handleDisplayData`的`options`。
-其他的則是都有另外的處理方式。
+- 下面部分基本類型可以直接對應到`handleDisplayData`的`options`。其他的則是都有另外的處理方式。
+- 所有屬性一定在下方基本屬性類型的分類中。
+- 少部分屬性會由兩種類型進行組合。
+  - 例1：`Formula + FormulaSpecial`表示這個公式除了有自己專用的變數，也可以使用`Formula`的變數。
+  - 例2: `string + List`表示可以填入多個`string`。
 
 ### `Formula`: 公式
 
@@ -79,9 +86,41 @@
 - 與`List`類似，差別在於此屬性的每個值必須分開列出。
 - 填寫的格式為`(屬性名稱).(index)`。
 
+## 屬性類型模組
+
+屬性基本類型是「屬性值的處理策略」，不是分支種類。分支 Handler 仍依畫面語意組合多種屬性，實際的共用解析與結果建立集中在 `Properties`：
+
+| 類型              | 模組                            | 責任                                                             |
+| ----------------- | ------------------------------- | ---------------------------------------------------------------- |
+| `Formula`         | `Properties/Formula.ts`         | 建立公式變數、解析一般公式、計算屬性與 Stat 結果                 |
+| `FormulaExtended` | `Properties/FormulaExtended.ts` | 定義並合併角色模擬器追加的公式變數、文字與方法                   |
+| `FormulaSpecial`  | `Properties/FormulaSpecial/`    | 依屬性拆分具有獨立變數範圍與計算時機的專用公式                   |
+| `Text`            | `Properties/Text.ts`            | 解析文字標記及文字內的公式                                       |
+| `Options`         | `Properties/Options.ts`         | 將限定選項轉為翻譯後的顯示結果                                   |
+| `boolean`         | `Properties/Boolean.ts`         | 解析 `0`／`1` 並提供選項翻譯所需的正規化值                       |
+| `string`          | `Properties/String.ts`          | 建立不解析內容的字串結果                                         |
+| `number`          | `Properties/Number.ts`          | 建立數字結果；目前沿用既有公式計算入口以維持 `pureValues` 相容性 |
+| `List`            | `Properties/List.ts`            | 切分一般列表與以 `,,` 分隔的公式列表                             |
+| `Iterable`        | `Properties/Iterable.ts`        | 建立及載入 `(屬性名稱).(index)` 格式的鍵                         |
+
+`List` 與 `Iterable` 是可疊加在其他基本類型上的結構修飾，不會自行決定內容的解析方式。`SkillComputing/compute.ts` 與 `damageSource.ts` 保留為相容匯出入口；跨子分類的新程式應從 `Properties/index.ts` 匯入。
+
+### `FormulaSpecial` 分類
+
+`FormulaSpecial` 是類型分類，不代表所有專用公式共用同一組變數。每個屬性在 `Properties/FormulaSpecial` 內使用獨立檔案定義 scope 與計算時機：
+
+| 屬性                                  | 模組                | 變數與計算時機                                                                          |
+| ------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
+| `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或 Stat 結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值 |
+| `conditionValue`                      | `ConditionValue.ts` | 僅供 Stat 使用；保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷          |
+| 傷害來源的 `conditionValue`、`amount` | `DamageSource.ts`   | 分別使用傷害來源所需的 `$skill`，以及 `$self.damage`、`$branch.frequency`               |
+
+新增其他 `FormulaSpecial` 屬性時，應建立獨立檔案並明確定義其 scope，不應直接擴充一般 `Formula` 的共用變數。
+
 ## 模組邊界
 
 - `Skill` 保存載入的技能、效果與原始分支資料。
+- `Properties` 依屬性基本類型提供解析、正規化與結果建立策略。
 - `SkillComputing` 組裝效果、管理 Stack 與計算公式。`computeBranchValueResults`、`computeBranchStatResults` 不執行單位格式化、顯示覆寫或 CSS 標記。
 - `SkillDisplay` 提供查詢頁與角色模擬共用的 Handler、翻譯與顯示加工。請從其 `index.ts` 匯入，不要引用其他頁面的內部檔案。
 - Vue 元件負責版面與互動；輸入框寬度等顯示決策由 `SkillDisplay/presentation.ts` 提供。

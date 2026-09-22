@@ -2,12 +2,16 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
-import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
+  type OptionsPropertyMap as HandleBranchLangPropsMap,
+  createNumberPropertyResult,
+  createStringPropertyResult,
+  handleOptionsProperties,
+} from '@/lib/Skill/Properties'
 import {
   FormulaDisplayModes,
   type SkillBranchItemBaseChilds,
   type SkillBranchItemOverwriteRecords,
-  SkillBranchItemSuffix,
   SkillBranchResult,
   type SkillBranchResultBase,
   type SkillBranchResultSource,
@@ -15,13 +19,11 @@ import {
   SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputing'
 import {
-  type ComputedBranchHelperResult,
   collectBranchFormulaValues,
   computeBranchValue,
   computeBranchValueResults,
   computedBranchHelper,
 } from '@/lib/Skill/SkillComputing'
-import { ResultContainerTypes } from '@/lib/common/ResultContainer'
 
 import {
   type HandleBranchTextPropsMap,
@@ -48,83 +50,6 @@ function cloneBranchProps(
     })
   }
   return props
-}
-
-interface HandleBranchLangPropsOptions {
-  rootKey?: SkillBranchNames
-  type?: 'auto' | 'normal' | 'value' | 'boolean'
-  afterHandle?: ((value: string) => string) | null
-  handleAsText?: boolean
-}
-interface HandleBranchLangPropsMap {
-  [key: string]: HandleBranchLangPropsOptions | null
-}
-type HandleBranchLangPropsResult<PropMap extends HandleBranchLangPropsMap> = {
-  [key in keyof PropMap]: SkillBranchResult
-}
-function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
-  helper: ComputedBranchHelperResult,
-  props: Map<string, string>,
-  propMap: PropMap
-): HandleBranchLangPropsResult<PropMap> {
-  const { t } = Grimoire.i18n
-  const { branchItem } = helper
-
-  const attrValues = {} as Record<keyof PropMap, SkillBranchResult>
-  const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
-  attrKeys.forEach(attrKey => {
-    const {
-      type = 'auto',
-      rootKey,
-      afterHandle = null,
-    } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
-    const value = props.get(attrKey as string)
-    if (!value) {
-      return
-    }
-    let resultValue = value
-    let resultStr: string
-    if (type === 'value') {
-      const computedValue = computeBranchValue(value, helper)
-      const sign =
-        isNumberString(computedValue) && parseFloat(computedValue) < 0 ? 'negative' : 'positive'
-      const displayValue = sign === 'negative' ? -1 * parseFloat(computedValue) : computedValue
-      resultStr = t(`skill-query.branch.${rootKey ?? branchItem.name}.${String(attrKey)}.${sign}`, {
-        value: displayValue.toString(),
-      })
-      resultValue = computedValue
-    } else {
-      let displayValue = value
-      if (
-        (type === 'auto' || type === 'boolean') &&
-        (displayValue === '1' || displayValue === '0')
-      ) {
-        displayValue = displayValue === '1' ? 'true' : 'false'
-      }
-      let preName: string
-      if (rootKey) {
-        preName = rootKey
-      } else {
-        preName = branchItem.name
-        preName =
-          branchItem instanceof SkillBranchItemSuffix
-            ? branchItem.mainBranch.name + ': ' + preName
-            : preName
-      }
-      const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
-      resultStr = afterHandle ? afterHandle(result) : result
-    }
-    const resultContainer = SkillBranchResult.create(
-      ResultContainerTypes.String,
-      branchItem,
-      attrKey as string,
-      value,
-      resultValue
-    )
-    resultContainer.initDisplayValue(resultStr)
-    attrValues[attrKey] = resultContainer
-  })
-  return attrValues
 }
 
 type HandleDisplayDataOptionFilterValidation = (value: string) => boolean
@@ -188,13 +113,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return
     }
     const origin = props.get(key) || '0'
-    computedValues[key] = SkillBranchResult.create(
-      ResultContainerTypes.Number,
-      branchItem,
-      key,
-      origin,
-      computeBranchValue(origin, helper)
-    )
+    computedValues[key] = createNumberPropertyResult(helper, key, origin)
   })
   const applySource = (result: SkillBranchResultBase) => {
     const sources = options.sources?.[result.key]
@@ -241,7 +160,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       handleAsTextLangKeys.push(key)
     }
   })
-  const langDatas = handleBranchLangProps(helper, props, langs)
+  const langDatas = handleOptionsProperties(helper, props, langs)
   handleAsTextLangKeys.forEach(key => {
     const result = langDatas[key]
     if (!result) {
@@ -382,13 +301,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return
     }
     const value = props.get(key)!
-    const container = SkillBranchResult.create(
-      ResultContainerTypes.String,
-      branchItem,
-      key,
-      value,
-      value
-    )
+    const container = createStringPropertyResult(branchItem, key, value)
     applySource(container)
     handlePropHistoryHighlight(container)
     containers.set(key, container)

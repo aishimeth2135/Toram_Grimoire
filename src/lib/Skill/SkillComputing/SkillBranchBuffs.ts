@@ -1,7 +1,6 @@
 import { markRaw } from 'vue'
 
-import { splitComma } from '@/shared/utils/string'
-
+import { parseListProperty } from '../Properties/List'
 import { SkillBuffs } from './enums'
 
 class SkillBranchBuffs {
@@ -11,7 +10,7 @@ class SkillBranchBuffs {
 
   private constructor(str: string) {
     this._buffs = new Set()
-    ;(splitComma(str) as SkillBuffs[]).forEach(item => {
+    ;(parseListProperty(str) as SkillBuffs[]).forEach(item => {
       if (SkillBranchBuffs.SkillBuffList.includes(item)) {
         this._buffs.add(item)
       }

@@ -1,23 +1,12 @@
 import { markRaw, shallowReactive } from 'vue'
 
-import type {
-  HandleFormulaMethods,
-  HandleFormulaTexts,
-  HandleFormulaVars,
-} from '@/shared/utils/data'
-
 import type { EquipmentRestrictions } from '@/lib/Character/Stat'
 
+import type { FormulaExtendedData } from '../Properties/FormulaExtended'
 import type { Skill } from '../Skill'
 import { SkillBranchItem } from './SkillBranchItem'
 import { SkillEffectItem } from './SkillEffectItem'
 import { FormulaDisplayModes } from './enums'
-
-interface HandleFormulaExtends {
-  vars: HandleFormulaVars
-  texts: HandleFormulaTexts
-  methods?: HandleFormulaMethods
-}
 
 interface SkillFormulaExtraProps {
   max: number | null
@@ -46,10 +35,10 @@ class SkillComputingContainer {
   }
 
   // The constant variables
-  readonly handleFormulaConstants: HandleFormulaExtends
+  readonly handleFormulaConstants: FormulaExtendedData
 
   // The extended callback may be affected by the reactive state
-  readonly handleFormulaExtends: (() => HandleFormulaExtends)[]
+  readonly handleFormulaExtends: (() => FormulaExtendedData)[]
 
   readonly config: SkillComputingConfig
 

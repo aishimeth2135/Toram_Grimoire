@@ -5,6 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 import { StatComputed } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 
+import { appendIterablePropertyIndex } from '../Properties/Iterable'
 import { SkillBranchNames, SkillTypes } from './enums'
 
 abstract class SkillNode {
@@ -358,8 +359,7 @@ class SkillBranch extends SkillNode {
 
   appendProp(name: string, value: string, valueSub?: string) {
     if (valueSub) {
-      const [prop, subProp] = name.split('.')
-      name = prop + valueSub + (subProp ? `.${subProp}` : '')
+      name = appendIterablePropertyIndex(name, valueSub)
     }
     this.props.set(name, value)
     return this
