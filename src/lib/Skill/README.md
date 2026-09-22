@@ -109,11 +109,11 @@
 
 `FormulaSpecial` 是類型分類，不代表所有專用公式共用同一組變數。每個屬性在 `Properties/FormulaSpecial` 內使用獨立檔案定義 scope 與計算時機：
 
-| 屬性                                  | 模組                | 變數與計算時機                                                                          |
-| ------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
-| `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或 Stat 結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值 |
-| `conditionValue`                      | `ConditionValue.ts` | 僅供 Stat 使用；保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷          |
-| 傷害來源的 `conditionValue`、`amount` | `DamageSource.ts`   | 分別使用傷害來源所需的 `$skill`，以及 `$self.damage`、`$branch.frequency`               |
+| 屬性                                  | 模組                | 變數與計算時機                                                                                          |
+| ------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
+| `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或 Stat 結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值                 |
+| `conditionValue`                      | `ConditionValue.ts` | 僅供 Stat 使用；保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷                          |
+| 傷害來源的 `conditionValue`、`amount` | `DamageSource.ts`   | 分別使用傷害來源所需的 `$skill`、`$branch.from_normal_attack`，以及 `$self.damage`、`$branch.frequency` |
 
 新增其他 `FormulaSpecial` 屬性時，應建立獨立檔案並明確定義其 scope，不應直接擴充一般 `Formula` 的共用變數。
 

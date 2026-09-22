@@ -7,6 +7,9 @@ interface DamageSourceConditionFormulaScope {
   $skill: {
     id: string
   }
+  $branch: {
+    from_normal_attack: boolean
+  }
 }
 
 interface DamageSourceAmountFormulaScope {
@@ -33,7 +36,10 @@ export function matchesDamageSource(
   }
 
   const condition = suffix.prop('conditionValue')
-  const scope: DamageSourceConditionFormulaScope = { $skill: { id: skillId } }
+  const scope: DamageSourceConditionFormulaScope = {
+    $skill: { id: skillId },
+    $branch: { from_normal_attack: target.propBoolean('from_normal_attack') },
+  }
   return !!condition && computeFormula(condition, scope, false) === true
 }
 
