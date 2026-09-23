@@ -113,9 +113,12 @@
 | ------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
 | `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或 Stat 結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值                 |
 | `conditionValue`                      | `ConditionValue.ts` | 僅供 Stat 使用；保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷                          |
+| `displayCaption`                      | `DisplayCaption.ts` | 供所有 Stat 使用；以 Text 解析，公式可使用 `$value` 取得主屬性的計算結果，僅覆寫介面顯示                |
 | 傷害來源的 `conditionValue`、`amount` | `DamageSource.ts`   | 分別使用傷害來源所需的 `$skill`、`$branch.from_normal_attack`，以及 `$self.damage`、`$branch.frequency` |
 
 新增其他 `FormulaSpecial` 屬性時，應建立獨立檔案並明確定義其 scope，不應直接擴充一般 `Formula` 的共用變數。
+
+`(Stat ID).displayCaption` 可填入完整句子，例如 `造成 ${$value*2} 點效果`。有值時，它會取代原本的 Stat 標題、正負號與數值顯示，優先於 `displayTitle`；`$value` 取自該 Stat 的 `SkillBranchStatResult.result`，不更動 Stat 的計算結果。
 
 ## 模組邊界
 

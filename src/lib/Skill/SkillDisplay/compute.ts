@@ -1,7 +1,7 @@
 import { isNumberString } from '@/shared/utils/string'
 
 import type { StatComputed } from '@/lib/Character/Stat'
-import { computeTextProperty } from '@/lib/Skill/Properties'
+import { computeStatDisplayCaption, computeTextProperty } from '@/lib/Skill/Properties'
 import {
   type ComputedBranchHelperResult,
   SkillBranchResult,
@@ -119,8 +119,20 @@ function handleBranchStats(
   return computeBranchStatResults(helper, stats).map(container => {
     handleDisplayValue(container, helper)
 
+    const displayCaptionKey = helper.branchItem.propKey(container.key, 'displayCaption')
     const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
-    if (helper.props.has(displayTitleKey)) {
+
+    if (helper.props.has(displayCaptionKey)) {
+      const displayCaption = helper.props.get(displayCaptionKey)!
+      const captionContainer = computeStatDisplayCaption(
+        helper,
+        container,
+        displayCaptionKey,
+        displayCaption
+      )
+      captionContainer.containers.forEach(ctner => handleHighlight(ctner))
+      container.setDisplayCaption(captionContainer)
+    } else if (helper.props.has(displayTitleKey)) {
       const displayTitleContainer = computeTextProperty(
         helper,
         displayTitleKey,
@@ -129,6 +141,7 @@ function handleBranchStats(
       displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
       container.setDisplayTitle(displayTitleContainer)
     }
+
     const showData = container.stat.getShowData()
     container.mergeDisplayOptions(container.normalizeDisplayOptions(showData.tail))
 

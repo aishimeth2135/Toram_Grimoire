@@ -177,6 +177,9 @@ class SkillBranchStatResult extends SkillBranchResult {
   // The display title that priority is higher than the original title of `stat`.
   displayTitle: SkillBranchTextResult | null
 
+  // A complete display sentence that replaces the stat title and value.
+  displayCaption: SkillBranchTextResult | null
+
   // The condition value that will be calc and result is `boolean`.
   conditionValue: string | null
 
@@ -184,6 +187,7 @@ class SkillBranchStatResult extends SkillBranchResult {
     super(ResultContainerTypes.Number, branch, stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
+    this.displayCaption = null
     this.conditionValue = null
   }
 
@@ -211,6 +215,10 @@ class SkillBranchStatResult extends SkillBranchResult {
 
   setDisplayTitle(title: SkillBranchTextResult) {
     this.displayTitle = title
+  }
+
+  setDisplayCaption(caption: SkillBranchTextResult) {
+    this.displayCaption = caption
   }
 
   setConditionValue(title: string) {

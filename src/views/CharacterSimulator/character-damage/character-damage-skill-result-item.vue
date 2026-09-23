@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-button-check v-model:selected="enabled" inline>
+      <cy-button-check v-model:selected="enabled" />
+      <div class="text-primary-80 mr-1.5">
         {{ result.container.get('name') }}
-      </cy-button-check>
-      <div class="ml-1 flex items-center space-x-0.5">
+      </div>
+      <div class="ml-1 flex items-center gap-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
@@ -32,7 +33,7 @@
     <div
       v-for="bonus in damageSourceBonuses"
       :key="bonus.id"
-      class="text-primary-50 pl-8.5 flex items-center gap-2 pt-1 text-sm"
+      class="text-primary-50 flex items-center gap-2 pl-9 pt-1 text-sm"
     >
       <span class="text-primary-50">
         {{ bonus.name }}
