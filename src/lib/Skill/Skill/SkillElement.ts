@@ -235,14 +235,20 @@ abstract class SkillEffectBase extends SkillNode {
     this.branches = branches
   }
 
-  appendSkillBranch(id: number, name: SkillBranchNames) {
-    const el = SkillBranch.create(this, id, name)
+  private getNextBranchId(name: SkillBranchNames): string {
+    return `${this.parent.skillId}-${name}-${this.branches.length}`
+  }
+
+  appendSkillBranch(overrideId: number, name: SkillBranchNames) {
+    const branchId = this.getNextBranchId(name)
+    const el = SkillBranch.create(this, overrideId, branchId, name)
     this.branches.push(el)
     return el
   }
 
   appendSkillBranchFrom(branch: SkillBranch) {
-    const el = branch.cloneWithMarkRaw()
+    const branchId = this.getNextBranchId(branch.name)
+    const el = branch.cloneWithMarkRaw(branchId)
     this.branches.push(el)
     return el
   }
@@ -324,6 +330,8 @@ class SkillBranch extends SkillNode {
   // id of branch for override detecting. -1 means no define
   overrideId: number
 
+  readonly branchId: string
+
   // type of branch
   name: SkillBranchNames
 
@@ -333,6 +341,7 @@ class SkillBranch extends SkillNode {
   private constructor(
     sef: SkillEffectBase,
     overrideId: number,
+    branchId: string,
     name: SkillBranchNames,
     props: Map<string, string> = new Map(),
     stats: StatComputed[] = []
@@ -340,13 +349,19 @@ class SkillBranch extends SkillNode {
     super()
     this.parent = sef
     this.overrideId = overrideId
+    this.branchId = branchId
     this.name = name
     this.props = props
     this.stats = stats
   }
 
-  static create(sef: SkillEffectBase, overrideId: number, name: SkillBranchNames): SkillBranch {
-    return markRaw(new SkillBranch(sef, overrideId, name))
+  static create(
+    sef: SkillEffectBase,
+    overrideId: number,
+    branchId: string,
+    name: SkillBranchNames
+  ): SkillBranch {
+    return markRaw(new SkillBranch(sef, overrideId, branchId, name))
   }
 
   get isEmpty() {
@@ -384,26 +399,27 @@ class SkillBranch extends SkillNode {
     return stat
   }
 
-  clone(): SkillBranch {
-    return SkillBranch.createFrom(this)
+  clone(branchId: string): SkillBranch {
+    return SkillBranch.createFrom(this, branchId)
   }
 
-  cloneWithMarkRaw(): SkillBranch {
-    return SkillBranch.createFromWithMarkRaw(this)
+  cloneWithMarkRaw(branchId: string): SkillBranch {
+    return SkillBranch.createFromWithMarkRaw(this, branchId)
   }
 
-  static createFrom(branch: SkillBranch): SkillBranch {
+  static createFrom(branch: SkillBranch, branchId: string): SkillBranch {
     return new SkillBranch(
       branch.parent,
       branch.overrideId,
+      branchId,
       branch.name,
       new Map(branch.props),
       branch.stats.map(stat => stat.clone())
     )
   }
 
-  static createFromWithMarkRaw(branch: SkillBranch): SkillBranch {
-    return markRaw(SkillBranch.createFrom(branch))
+  static createFromWithMarkRaw(branch: SkillBranch, branchId: string): SkillBranch {
+    return markRaw(SkillBranch.createFrom(branch, branchId))
   }
 }
 

@@ -64,7 +64,12 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
     action_time: value => actionTimeList[toIndex(value)],
     casting_time: value => value,
   }
-  const branch = SkillBranch.create(origin, 139, SkillBranchNames.Basic)
+  const branch = SkillBranch.create(
+    origin,
+    139,
+    origin.parent.skillId + '-base-0',
+    SkillBranchNames.Basic
+  )
   ;(Object.entries(origin.basicProps) as [keyof SkillEffectBasicProps, string | number][]).forEach(
     ([key, value]) => {
       if (value !== null) {
@@ -461,7 +466,7 @@ function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
         if (targetId === null) {
           return null
         }
-        const newBch = branches.find(item => item.overrideId === targetId)?.clone()
+        const newBch = branches.find(item => item.overrideId === targetId)?.clone(bch.branchId)
         if (!newBch) {
           return null
         }

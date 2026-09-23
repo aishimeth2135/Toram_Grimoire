@@ -56,7 +56,6 @@ abstract class SkillBranchItemBase<
 
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch
-  readonly defaultBranchId: string
 
   /** Record of overwrite */
   readonly record: SkillBranchItemOverwriteRecords
@@ -92,9 +91,6 @@ abstract class SkillBranchItemBase<
     this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
-
-    const defaultEffect = this.default.parent
-    this.defaultBranchId = `${defaultEffect.parent.skillId}-b${defaultEffect.branches.indexOf(this.default)}`
 
     this.record = {
       props: {
@@ -132,8 +128,12 @@ abstract class SkillBranchItemBase<
     return this._name
   }
 
-  get allProps() {
+  get allProps(): Map<string, string> {
     return this._props
+  }
+
+  get defaultBranchId(): string {
+    return this.default.branchId
   }
 
   hasId(): boolean {
