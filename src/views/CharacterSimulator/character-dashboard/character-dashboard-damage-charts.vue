@@ -20,6 +20,11 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 import type { InstanceId } from '@/shared/services/InstanceId'
 
 import { CalculationItemIds, type CalculationSweepDimension } from '@/lib/Damage/DamageCalculation'
+import {
+  computeDamageSourceAmount,
+  getDamageSource,
+  matchesDamageSource,
+} from '@/lib/Skill/SkillComputing'
 
 import CharacterDashboardDamageChart from './character-dashboard-damage-chart.vue'
 import CharacterDashboardDamageRatioChart from './character-dashboard-damage-ratio-chart.vue'
@@ -29,6 +34,7 @@ import { setupSkilResultExtraStats } from '../character-damage/setup'
 import type { DamageChartSeries } from './character-dashboard-damage-chart-types'
 
 interface DamageResultValues {
+  result: Ref<SkillResult>
   enabled: Ref<boolean>
   valid: Ref<boolean>
   values: Ref<readonly number[]>
@@ -186,6 +192,7 @@ const setupDamageResultValues = (resultRef: Ref<SkillResult>): DamageResultValue
   )
 
   return {
+    result: resultRef,
     enabled: computed(() =>
       characterStore.isDamageCalculationSkillBranchEnabled(resultRef.value.container.branchItem)
     ),
@@ -226,7 +233,9 @@ watch(
 
 const damageChartSeries = computed<DamageChartSeries[]>(() =>
   damageSkillLines.value.flatMap((line, index) => {
-    const selectedResults = line.results.filter(result => result.enabled.value)
+    const selectedResults = line.results.filter(
+      result => result.enabled.value && !getDamageSource(result.result.value.container.branchItem)
+    )
     if (selectedResults.length === 0 || selectedResults.some(result => !result.valid.value)) {
       return []
     }
@@ -236,7 +245,34 @@ const damageChartSeries = computed<DamageChartSeries[]>(() =>
         label: line.label,
         color: lineColors.value[index % lineColors.value.length],
         values: resistanceValues.map((_resistance, pointIndex) =>
-          selectedResults.reduce((sum, result) => sum + (result.values.value[pointIndex] ?? 0), 0)
+          selectedResults.reduce((sum, result) => {
+            const target = result.result.value
+            const additional = damageSkillLines.value
+              .flatMap(item => item.results)
+              .reduce((total, source) => {
+                const branch = source.result.value.container.branchItem
+                if (
+                  !source.enabled.value ||
+                  !source.valid.value ||
+                  !matchesDamageSource(
+                    branch,
+                    target.container.branchItem,
+                    target.root.skill.skillId
+                  )
+                ) {
+                  return total
+                }
+                return (
+                  total +
+                  computeDamageSourceAmount(
+                    getDamageSource(branch)!,
+                    source.values.value[pointIndex] ?? 0,
+                    target.container.getValueSum('frequency')
+                  )
+                )
+              }, 0)
+            return sum + (result.values.value[pointIndex] ?? 0) + additional
+          }, 0)
         ),
       },
     ]

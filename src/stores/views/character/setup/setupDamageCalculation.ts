@@ -83,6 +83,9 @@ export function setupDamageCalculation(
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number }
 ) {
+  const SKILL_STATE_DEFAULT_ENABLED = false
+  const BRANCH_STATE_DEFAULT_ENABLED = true
+
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
   const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')!
@@ -104,12 +107,13 @@ export function setupDamageCalculation(
   const skillStates = ref(new Map<string, { enabled: boolean }>())
   const getSkillState = (skill: Skill) => {
     if (!skillStates.value.has(skill.skillId)) {
-      skillStates.value.set(skill.skillId, { enabled: false })
+      skillStates.value.set(skill.skillId, { enabled: SKILL_STATE_DEFAULT_ENABLED })
     }
     return skillStates.value.get(skill.skillId)!
   }
 
-  const isSkillEnabled = (skill: Skill) => skillStates.value.get(skill.skillId)?.enabled ?? false
+  const isSkillEnabled = (skill: Skill) =>
+    skillStates.value.get(skill.skillId)?.enabled ?? SKILL_STATE_DEFAULT_ENABLED
 
   const damageCalculationSkillSelectionLimitReached = computed(
     () =>
@@ -130,13 +134,15 @@ export function setupDamageCalculation(
   const skillBranchStates = ref(new Map<string, { enabled: boolean }>())
   const getSkillBranchState = (branchItem: SkillBranchItemBaseChilds) => {
     if (!skillBranchStates.value.has(branchItem.defaultBranchId)) {
-      skillBranchStates.value.set(branchItem.defaultBranchId, { enabled: true })
+      skillBranchStates.value.set(branchItem.defaultBranchId, {
+        enabled: BRANCH_STATE_DEFAULT_ENABLED,
+      })
     }
     return skillBranchStates.value.get(branchItem.defaultBranchId)!
   }
 
   const isSkillBranchEnabled = (branchItem: SkillBranchItemBaseChilds) =>
-    skillBranchStates.value.get(branchItem.defaultBranchId)?.enabled ?? true
+    skillBranchStates.value.get(branchItem.defaultBranchId)?.enabled ?? BRANCH_STATE_DEFAULT_ENABLED
 
   const resetDamageCalculationSelectionStates = () => {
     skillStates.value.clear()
@@ -146,13 +152,13 @@ export function setupDamageCalculation(
   const createDamageCalculationSelectionSaveData = (): DamageCalculationSelectionSaveData => ({
     skillStates: Object.fromEntries(
       Array.from(skillStates.value)
-        .filter(([, state]) => state.enabled)
-        .map(([id]) => [id, { enabled: true }])
+        .filter(([, state]) => state.enabled !== SKILL_STATE_DEFAULT_ENABLED)
+        .map(([id]) => [id, { enabled: !SKILL_STATE_DEFAULT_ENABLED }])
     ),
     skillBranchStates: Object.fromEntries(
       Array.from(skillBranchStates.value)
-        .filter(([, state]) => state.enabled)
-        .map(([id]) => [id, { enabled: true }])
+        .filter(([, state]) => state.enabled !== BRANCH_STATE_DEFAULT_ENABLED)
+        .map(([id]) => [id, { enabled: !BRANCH_STATE_DEFAULT_ENABLED }])
     ),
   })
 
@@ -160,7 +166,7 @@ export function setupDamageCalculation(
     Grimoire.Skill.skillRoot.skillTreeCategorys.flatMap(category =>
       category.skillTrees.flatMap(skillTree =>
         skillTree.skills.flatMap(skill =>
-          skill.defaultEffect.branches.map((_branch, index) => `${skill.skillId}-b${index}`)
+          skill.defaultEffect.branches.map(branch => branch.branchId)
         )
       )
     )
@@ -277,6 +283,7 @@ export function setupDamageCalculation(
 
     const statValue = (baseId: string) =>
       characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
+    const targetDefMultiplier = computed(() => (100 - statValue('def_ignore')) / 100)
     const resultValue = (id: string) => {
       let idToSearch = id
       if (container.value.branchItem) {
@@ -475,8 +482,8 @@ export function setupDamageCalculation(
         [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
         [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
         [CalculationItemIds.TargetLevel, targetProperties.value.level],
-        [CalculationItemIds.TargetDef, targetProperties.value.def],
-        [CalculationItemIds.TargetMdef, targetProperties.value.mdef],
+        [CalculationItemIds.TargetDef, targetProperties.value.def * targetDefMultiplier.value],
+        [CalculationItemIds.TargetMdef, targetProperties.value.mdef * targetDefMultiplier.value],
         [
           CalculationItemIds.TargetCriticalRateResistance,
           targetProperties.value.criticalRateResistance,
@@ -656,6 +663,7 @@ export function setupDamageCalculation(
       expectedResult,
       evaluation,
       extraStats,
+      targetDefMultiplier,
     }
   }
 
@@ -672,13 +680,27 @@ export function setupDamageCalculation(
       targetProperties,
       calculationOptions
     )
-    const sweepResult = computed(() =>
-      evaluateCalculationExpectedValueZipSweep(
+    const sweepResult = computed(() => {
+      const effectiveDimensions = dimensions.value.map(dimension => {
+        if (
+          dimension.itemId !== CalculationItemIds.TargetDef &&
+          dimension.itemId !== CalculationItemIds.TargetMdef
+        ) {
+          return dimension
+        }
+
+        return {
+          itemId: dimension.itemId,
+          values: dimension.values.map(value => value * calculator.targetDefMultiplier.value),
+        }
+      })
+
+      return evaluateCalculationExpectedValueZipSweep(
         calculationBase,
         calculator.calculationSnapshot.value,
-        dimensions.value
+        effectiveDimensions
       )
-    )
+    })
 
     return {
       valid: computed(() => calculator.valid.value && sweepResult.value.issues.length === 0),

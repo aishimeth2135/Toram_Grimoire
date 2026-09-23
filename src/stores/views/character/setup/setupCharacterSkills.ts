@@ -16,14 +16,13 @@ import {
   SkillComputingContainer,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputing'
-
-import BasicHandler from '@/views/Character/SkillQuery/skill/branch-handlers/BasicHandler'
-import DamageHandler from '@/views/Character/SkillQuery/skill/branch-handlers/DamageHandler'
-import EffectHandler from '@/views/Character/SkillQuery/skill/branch-handlers/EffectHandler'
-import ExtraHandler from '@/views/Character/SkillQuery/skill/branch-handlers/ExtraHandler'
-import PassiveHandler from '@/views/Character/SkillQuery/skill/branch-handlers/PassiveHandler'
-import StackHandler from '@/views/Character/SkillQuery/skill/branch-handlers/StackHandler'
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { BasicHandler } from '@/lib/Skill/SkillDisplay'
+import { DamageHandler } from '@/lib/Skill/SkillDisplay'
+import { EffectHandler } from '@/lib/Skill/SkillDisplay'
+import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
+import { PassiveHandler } from '@/lib/Skill/SkillDisplay'
+import { StackHandler } from '@/lib/Skill/SkillDisplay'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import type { CharacterBuildsContext } from './context'
 import { getSkillBranchState } from './getState'

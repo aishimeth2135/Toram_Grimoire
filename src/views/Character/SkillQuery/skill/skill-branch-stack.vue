@@ -5,7 +5,7 @@
         v-if="computing.config.formulaDisplayMode === FormulaDisplayModes.Normal"
         v-model:value="stackValue"
         :range="stackValueRange"
-        :input-width="container.getCustomData('stackInputWidth')"
+        :input-width="getStackInputWidth(container)"
         :step="stackStep"
         :title="container.get('name')"
       >
@@ -34,11 +34,11 @@ import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
+import { StackHandler, getStackInputWidth } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
-import StackHandler from './branch-handlers/StackHandler'
 
 interface Props {
   computing: SkillComputingContainer

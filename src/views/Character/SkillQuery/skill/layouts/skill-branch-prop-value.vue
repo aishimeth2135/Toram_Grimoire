@@ -3,13 +3,16 @@
   <span v-else-if="result.isEmpty()">
     {{ result.result }}
   </span>
-  <span v-else-if="!!(result instanceof SkillBranchStatResult)" class="inline-flex items-center">
-    <RenderDisplayTitle class="text-primary-90" :title="result.statResultData.title" />
-    <span class="text-primary-50">{{ result.statResultData.sign }}</span>
-    <span>
-      <RenderResult :key="result.instanceId" />
+  <template v-else-if="!!(result instanceof SkillBranchStatResult)">
+    <RenderText v-if="result.displayCaption" :result="result.displayCaption" />
+    <span v-else class="inline-flex items-center">
+      <RenderText class="text-primary-90" :result="result.statResultData.title" />
+      <span class="text-primary-50">{{ result.statResultData.sign }}</span>
+      <span>
+        <RenderResult :key="result.instanceId" />
+      </span>
     </span>
-  </span>
+  </template>
   <RenderResult v-else :key="result.instanceId" />
 </template>
 
@@ -25,7 +28,7 @@ import {
 import { CommonTextParseItemIds } from '@/lib/common/ResultContainer'
 import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer'
 
-import { RenderContainerResult, RenderPlainTextParts, RenderTextParts } from './setup'
+import { RenderText, renderContainerResult, renderPlainTextParts, renderTextResult } from './setup'
 
 interface Props {
   result: SkillBranchResultBase | null
@@ -39,32 +42,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const glossaryTagParseItem = getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag)
 
-const RenderTextResult = (res: SkillBranchTextResult) => {
-  return h('div', RenderTextParts(res.parts))
-}
-
-const RenderDisplayTitle = ({
-  title,
-}: {
-  title: SkillBranchTextResult | string
-  class?: string
-}) => {
-  if (typeof title === 'string') {
-    return h('div', title)
-  }
-  return RenderTextResult(title)
-}
-
 const RenderResult = () => {
   if (props.result instanceof SkillBranchResult) {
     if (props.parseGlossaryTag) {
       const parts = handleParseText(props.result.result, [glossaryTagParseItem]).parts
-      return h('div', RenderPlainTextParts(parts))
+      return h('div', renderPlainTextParts(parts))
     }
-    return RenderContainerResult(props.result, props.displayResult)
+    return renderContainerResult(props.result, props.displayResult)
   }
   if (props.result instanceof SkillBranchTextResult) {
-    return RenderTextResult(props.result)
+    return renderTextResult(props.result)
   }
   return h('span', '')
 }

@@ -1,13 +1,14 @@
-import { splitComma } from '@/shared/utils/string'
+import { CommonLogger } from '@/shared/services/Logger'
 
+import { parseListProperty } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillBranchItemSuffix,
   SkillComputingContainer,
 } from '@/lib/Skill/SkillComputing'
-import { type HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputing'
 
+import { type HandleBranchTextPropsMap } from '../compute'
 import { cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'
 
@@ -15,7 +16,7 @@ export default function TableHandler<BranchItem extends SkillBranchItem>(
   computing: SkillComputingContainer,
   branchItem: BranchItem
 ) {
-  const labels = splitComma(branchItem.prop('labels'))
+  const labels = parseListProperty(branchItem.prop('labels'))
   const rows = branchItem.suffixBranches
     .filter(suf => suf.is(SkillBranchNames.Row))
     .map(suf => RowHandler(computing, suf, labels.length))
@@ -31,6 +32,18 @@ function RowHandler<BranchItem extends SkillBranchItemSuffix>(
   cellsLength: number
 ) {
   const attrs = cloneBranchProps(branchItem)
+  const overflowCells = [...attrs.keys()].filter(key => {
+    const match = /^cell\.(\d+)$/.exec(key)
+    return match !== null && Number(match[1]) >= cellsLength
+  })
+  if (overflowCells.length > 0) {
+    CommonLogger.warn(
+      'TableHandler',
+      'Cells without column labels',
+      branchItem.defaultBranchId,
+      overflowCells
+    )
+  }
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
   textPropsMap.appendIterable('cell', cellsLength)
 

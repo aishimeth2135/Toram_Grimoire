@@ -1,8 +1,12 @@
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchItem,
+  SkillComputingContainer,
+  isSkillRangeKeyword,
+} from '@/lib/Skill/SkillComputing'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
-import { type HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputing'
 
+import { type HandleBranchValuePropsMap } from '../compute'
 import {
   type HandleBranchLangPropsMap,
   type HandleDisplayDataOptionFilters,
@@ -26,11 +30,11 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
     angle: value => !!value,
     start_position_offsets: {
       validation: value => value !== '0',
-      calc: true,
+      source: 'computed',
     },
     end_position_offsets: {
       validation: value => value !== '0',
-      calc: true,
+      source: 'computed',
     },
   })
 
@@ -50,7 +54,8 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
   })
 
   const pureValues = []
-  if (props.has('@range') && props.get('@range') !== 'no_limit' && props.get('@range') !== 'main') {
+  const range = props.get('@range') ?? ''
+  if (range && !isSkillRangeKeyword(range)) {
     pureValues.push('@range')
   }
 
@@ -73,5 +78,6 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
     pureValues,
     pureDatas,
     formulaDisplayMode,
+    sources: basicBranch ? { '@range': [{ branch: basicBranch, key: 'range' }] } : {},
   })
 }

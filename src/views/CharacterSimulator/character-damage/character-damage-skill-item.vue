@@ -11,7 +11,7 @@
       <div class="mr-3 flex min-w-40 shrink-0 items-center">
         <cy-button-check :selected="enabled" :disabled="selectionDisabled" />
         <cy-icon :icon="skillIconPath" class="ml-1.5" />
-        <span class="text-primary-70 ml-2">
+        <span class="text-primary-80 ml-2">
           {{ skillResultsState.skill.name }}
         </span>
         <div v-if="invalid" class="text-primary-30 ml-3">
@@ -22,11 +22,9 @@
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
     </div>
-    <div v-if="enabled && !invalid" class="pb-4 pl-8 pr-3">
-      <div class="space-y-2 pl-2">
-        <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
-          <CharacterDamageSkillResultItem :result="result" />
-        </div>
+    <div v-if="enabled && !invalid" class="pl-9.5 flex flex-col gap-2 pb-4 pr-3">
+      <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
+        <CharacterDamageSkillResultItem :result="result" />
       </div>
     </div>
   </CardRow>

@@ -7,19 +7,16 @@
       </span>
       <template v-if="container.has('constant')">
         <SkillBranchPropValue class="attr-item" :result="container.result('constant')" />
-        <cy-icon v-if="extraTextList.length !== 0" icon="ic-round-add" />
+        <cy-icon v-if="extraItems.length !== 0" icon="ic-round-add" />
       </template>
 
-      <template v-for="(text, idx) in extraTextList" :key="text + idx">
+      <template v-for="(item, idx) in extraItems" :key="item.key">
         <span class="attr-item space-x-0.5">
-          <span>{{ text }}</span>
+          <span>{{ item.text }}</span>
           <cy-icon icon="ic-round-close" />
-          <SkillBranchPropValue
-            class="attr-item"
-            :result="container.result(`@extra_value[${idx}]`)"
-          />
+          <SkillBranchPropValue class="attr-item" :result="container.result(item.key)" />
         </span>
-        <cy-icon v-if="idx !== extraTextList.length - 1" icon="ic-round-add" />
+        <cy-icon v-if="idx !== extraItems.length - 1" icon="ic-round-add" />
       </template>
     </div>
   </div>
@@ -31,9 +28,9 @@ import { useI18n } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import SkillBranchPropValue from './skill-branch-prop-value.vue'
+import { DisplayDataContainer, type HealExtraItem } from '@/lib/Skill/SkillDisplay'
 
-import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
   container: DisplayDataContainer
@@ -44,10 +41,10 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 const { t } = useI18n()
 
-const extraTextList = computed(() => container.value.getCustomData('extraTextList') as string[])
+const extraItems = computed<HealExtraItem[]>(() => container.value.getCustomData('healExtraItems'))
 
 const isSingleValue = computed(() => {
-  return extraTextList.value.length === 0 && isNumberString(container.value.getValue('constant'))
+  return extraItems.value.length === 0 && isNumberString(container.value.getValue('constant'))
 })
 </script>
 

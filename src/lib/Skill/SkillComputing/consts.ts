@@ -20,6 +20,7 @@ const BRANCH_PROPS_DEFAULT_VALUE: Partial<Record<SkillBranchNames, Record<string
     judgment: 'common',
     frequency_judgment: 'auto',
     unsheathe_damage: '0',
+    from_normal_attack: '0',
     range_damage: 'none',
     is_place: '0',
     skill_long_range: 'auto',

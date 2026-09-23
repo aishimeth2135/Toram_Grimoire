@@ -3,7 +3,12 @@ import { Translation } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import { SkillBranchResult, type SkillBranchTextResultPartValue } from '@/lib/Skill/SkillComputing'
+import {
+  SkillBranchResult,
+  type SkillBranchResultBase,
+  SkillBranchTextResult,
+  type SkillBranchTextResultPartValue,
+} from '@/lib/Skill/SkillComputing'
 import {
   ResultContainerTypes,
   TextResultContainerPart,
@@ -20,12 +25,12 @@ export interface NormalLayoutSubContent {
   key: string
   icon: string
   title?: string
-  value?: string
+  value?: string | SkillBranchResultBase
   custom?: boolean
   type?: 'primary' | 'normal' | 'cyan' | 'gray'
 }
 
-function _RenderContainerResult(container: SkillBranchResult, displayResult?: string) {
+function _renderContainerResult(container: SkillBranchResult, displayResult?: string) {
   const res = displayResult ?? container.result
 
   const { classNames: _classNames = [], unit: _unit = '', message } = container.displayOptions ?? {}
@@ -61,7 +66,7 @@ function _RenderContainerResult(container: SkillBranchResult, displayResult?: st
   })
 }
 
-function RenderContainerResult(container: SkillBranchResult, displayResult?: string) {
+export function renderContainerResult(container: SkillBranchResult, displayResult?: string) {
   const message = container.displayOptions?.message
   if (message) {
     const { id, param } = message
@@ -73,14 +78,14 @@ function RenderContainerResult(container: SkillBranchResult, displayResult?: str
         scope: 'global',
       },
       {
-        [param]: () => _RenderContainerResult(container),
+        [param]: () => _renderContainerResult(container),
       }
     )
   }
-  return _RenderContainerResult(container, displayResult)
+  return _renderContainerResult(container, displayResult)
 }
 
-function RenderTextParts(parts: SkillBranchTextResultPartValue[]) {
+export function renderTextParts(parts: SkillBranchTextResultPartValue[]) {
   return parts.map((part): string | VNode => {
     if (typeof part === 'string') {
       return h('span', part.replace(/\*/g, '×'))
@@ -92,7 +97,7 @@ function RenderTextParts(parts: SkillBranchTextResultPartValue[]) {
 
       if (part.type === TextResultContainerPartTypes.Separate) {
         const childs = part.hasMultipleParts
-          ? RenderTextParts(part.parts)
+          ? renderTextParts(part.parts)
           : h('span', part.value.replace(/\*/g, '×'))
         const classNames = ['cy--text-separate']
         if (part.unit) {
@@ -125,11 +130,11 @@ function RenderTextParts(parts: SkillBranchTextResultPartValue[]) {
       }
       return h('span', part.value)
     }
-    return RenderContainerResult(part)
+    return renderContainerResult(part)
   })
 }
 
-function RenderPlainTextParts(parts: TextResultContainerPartValue[]) {
+export function renderPlainTextParts(parts: TextResultContainerPartValue[]) {
   return parts.map((part): string | VNode => {
     if (typeof part === 'string') {
       return h('span', { innerHTML: part.replace(/\*/g, '×') })
@@ -146,4 +151,13 @@ function RenderPlainTextParts(parts: TextResultContainerPartValue[]) {
   })
 }
 
-export { RenderContainerResult, RenderPlainTextParts, RenderTextParts }
+export function renderTextResult(res: SkillBranchTextResult) {
+  return h('div', renderTextParts(res.parts))
+}
+
+export function RenderText({ result }: { result: SkillBranchTextResult | string; class?: string }) {
+  if (typeof result === 'string') {
+    return h('div', result)
+  }
+  return renderTextResult(result)
+}

@@ -1,12 +1,13 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import type {
-  HandleBranchTextPropsMap,
-  HandleBranchValuePropsMap,
+import {
+  SkillBranchItem,
+  type SkillBranchResultSource,
+  SkillComputingContainer,
 } from '@/lib/Skill/SkillComputing'
 
+import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '../compute'
 import ProrationHandler from './ProrationHandler'
 import {
   type HandleBranchLangPropsMap,
@@ -72,10 +73,17 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
 
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>([])
   const pureDatas = ['name', 'ailment_name', 'end_condition']
+  const sources: Record<string, SkillBranchResultSource[]> = {}
 
   if (props.get('base') === 'auto') {
+    sources.base = [{ branch: branchItem, key: 'base' }]
     const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
     if (baseSuffix) {
+      sources.base.push({ branch: baseSuffix, key: 'type' }, { branch: baseSuffix, key: 'title' })
+      sources['@custom-base-caption'] = [
+        { branch: baseSuffix, key: baseSuffix.prop('type') === 'custom' ? 'caption' : 'type' },
+      ]
+
       if (baseSuffix.prop('type') !== 'custom') {
         props.set('@custom-base-caption', baseSuffix.prop('type'))
         props.set('base', `@custom.${baseSuffix.prop('type')}`)
@@ -95,33 +103,20 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
         }
       }
     } else {
+      sources.base.push({ branch: branchItem, key: 'damage_type' })
       props.set('base', props.get('damage_type') === 'physical' ? 'atk' : 'matk')
       langAttrsMap.append('base')
     }
   } else {
     langAttrsMap.append('base')
   }
-  if (props.get('detail_display') === 'auto') {
-    props.set('detail_display', props.get('title') === 'normal_attack' ? '0' : '1')
-  }
 
   if (props.get('frequency_judgment') === 'auto') {
+    sources.frequency_judgment = [
+      { branch: branchItem, key: 'frequency_judgment' },
+      { branch: branchItem, key: 'title' },
+    ]
     props.set('frequency_judgment', props.get('title') !== 'each' ? 'single' : 'multiple')
-  }
-
-  const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
-  if (prorationBch) {
-    const _data = ProrationHandler(computing, prorationBch)
-    ;['damage', 'proration'].forEach(key => {
-      props.set('@proration/' + key, _data.get(key))
-      props.set(`@proration/${key}: title`, _data.title(key))
-    })
-    pureDatas.push(
-      '@proration/damage',
-      '@proration/damage: title',
-      '@proration/proration',
-      '@proration/proration: title'
-    )
   }
 
   const result = handleDisplayData(computing, branchItem, props, {
@@ -130,7 +125,20 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,
+    sources,
   })
 
+  const prorationBranch = branchItem.suffixBranches.find(suffix =>
+    suffix.is(SkillBranchNames.Proration)
+  )
+  if (prorationBranch) {
+    const proration = ProrationHandler(computing, prorationBranch)
+    for (const key of ['damage', 'proration']) {
+      const item = proration.result(key)
+      if (item) {
+        result.setResult('@proration/' + key, item, proration.title(key))
+      }
+    }
+  }
   return result
 }

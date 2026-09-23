@@ -29,10 +29,9 @@
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { ProrationHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
-
-import ProrationHandler from './branch-handlers/ProrationHandler'
 
 interface Props {
   computing: SkillComputingContainer

@@ -44,9 +44,9 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillBranchPropValue from './skill-branch-prop-value.vue'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
-import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
   container: DisplayDataContainer

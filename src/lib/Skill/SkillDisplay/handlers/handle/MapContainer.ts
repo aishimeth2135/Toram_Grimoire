@@ -1,4 +1,4 @@
-export default class MapContainer<AttrMap extends Record<string, any>> {
+export default class MapContainer<AttrMap extends Record<string, unknown>> {
   private _attrMap: AttrMap
 
   constructor(mapOrKeys?: string[] | AttrMap) {
@@ -36,8 +36,8 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
   }
 }
 
-function keysToAttrMap<T extends Record<string, any>>(keys: string[]): T {
-  const newAttrMap = {} as Record<string, any>
+function keysToAttrMap<T extends Record<string, unknown>>(keys: string[]): T {
+  const newAttrMap: Record<string, unknown> = {}
   keys.forEach(key => (newAttrMap[key] = null))
   return newAttrMap as T
 }

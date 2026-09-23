@@ -13,20 +13,8 @@ import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { Skill, SkillBranchNames, SkillEffect, SkillEffectHistory } from '../Skill'
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
-import {
-  classifyBranches,
-  convertEffectEquipment,
-  effectOverwrite,
-  handleVirtualBranches,
-  initBasicBranchItem,
-  initBranchSpecialProps,
-  initBranchesPostpone,
-  initHistoryNexts,
-  initStackStates,
-  normalizeBaseBranches,
-  regressHistoryBranches,
-  setBranchAttrsDefaultValue,
-} from './utils'
+import { initializeEffectBranches } from './assemble'
+import { convertEffectEquipment, initBasicBranchItem, initStackStates } from './utils'
 
 interface BranchGroupState {
   readonly size: number
@@ -86,9 +74,7 @@ class SkillEffectItem extends SkillEffectItemBase {
   private constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
-    this.branchItems = normalizeBaseBranches(defaultSef.branches).map(bch =>
-      SkillBranchItem.create(this, bch)
-    )
+    this.branchItems = defaultSef.branches.map(bch => SkillBranchItem.create(this, bch))
     initBasicBranchItem(this, defaultSef)
 
     const current = from ? from : defaultSef
@@ -99,26 +85,7 @@ class SkillEffectItem extends SkillEffectItemBase {
       SkillEffectItemHistory.create(parent, this, history)
     )
 
-    if (from) {
-      effectOverwrite(this, from)
-    }
-    setBranchAttrsDefaultValue(this)
-    initBranchSpecialProps(this)
-
-    regressHistoryBranches(this)
-
-    classifyBranches(this)
-    handleVirtualBranches(this)
-    initBranchesPostpone(this)
-
-    this.historys.forEach(history => {
-      classifyBranches(history)
-      handleVirtualBranches(history)
-      initStackStates(history)
-      initHistoryNexts(history)
-    })
-
-    initStackStates(this)
+    initializeEffectBranches(this, from)
   }
 
   static create(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect): SkillEffectItem {
@@ -242,9 +209,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     historyEffect: SkillEffectHistory
   ) {
     super(parent)
-    this.branchItems = normalizeBaseBranches(historyEffect.branches).map(bch =>
-      SkillBranchItem.create(this, bch)
-    )
+    this.branchItems = historyEffect.branches.map(bch => SkillBranchItem.create(this, bch))
 
     this.origin = historyEffect
     this.parentEffect = parentEffect

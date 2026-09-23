@@ -8,7 +8,8 @@ import { computed, h, toRefs } from 'vue'
 import { numberToFixed } from '@/shared/utils/number'
 import { isNumberString } from '@/shared/utils/string'
 
-import DisplayDataContainer from '../../branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
+
 import { createSectorPathD } from './utils'
 
 interface Props {
@@ -54,8 +55,6 @@ const areaDatas = computed(() => {
     endPositionOffsets = getAttrNumValue('end_position_offsets'),
     moveDistanceOrigin = getAttrNumValue('move_distance')
 
-  console.log(endPositionOffsets, ctner.getValue('end_position_offsets'))
-
   const datas: AreaElement[] = []
 
   const body_style = getComputedStyle(document.body)
@@ -71,7 +70,7 @@ const areaDatas = computed(() => {
     moveDistanceFix = 3
 
   const skillRangeDefault = '100'
-  let skillRangeOrigin: string | null = ctner.getValue('range') || null
+  let skillRangeOrigin: string | null = ctner.getValue('@range') || null
   skillRangeOrigin = skillRangeOrigin ? parseFloat(skillRangeOrigin).toFixed(2) : skillRangeDefault
   const skillRange: number = parseFloat(
     isNumberString(skillRangeOrigin) ? skillRangeOrigin : skillRangeDefault

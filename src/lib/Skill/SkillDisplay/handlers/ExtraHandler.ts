@@ -2,18 +2,14 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItemSuffix, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import type {
-  HandleBranchTextPropsMap,
-  HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputing'
 
+import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '../compute'
 import {
   type HandleBranchLangPropsMap,
   type HandleDisplayDataOptionFilters,
   cloneBranchProps,
   handleDisplayData,
 } from './handle'
-import DisplayDataContainer from './handle/DisplayDataContainer'
 import MapContainer from './handle/MapContainer'
 
 export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
@@ -34,9 +30,6 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
   })
 
   const mainBranch = branchItem.mainBranch
-  if (!mainBranch) {
-    return new DisplayDataContainer({ branchItem })
-  }
   const filters = new MapContainer<HandleDisplayDataOptionFilters>()
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>()
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
@@ -73,5 +66,6 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
     filters: filters.value,
     langs: langPropsMap.value,
     pureValues,
+    pureDatas: ['target'],
   })
 }

@@ -10,8 +10,7 @@ import {
   SkillComputingContainer,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputing'
-
-import ExtraHandler from './branch-handlers/ExtraHandler'
+import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
 
 export const NORMAL_LAYOUT_BRANCH_NAMES: SkillBranchNames[] = [
   SkillBranchNames.Damage,

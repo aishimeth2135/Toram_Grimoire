@@ -1,6 +1,6 @@
 import { defineState } from '@/shared/composables/State'
 import { toFloat, toInt } from '@/shared/utils/number'
-import { escapeRegExp, splitComma } from '@/shared/utils/string'
+import { escapeRegExp } from '@/shared/utils/string'
 
 import { StatComputed, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import {
@@ -22,15 +22,24 @@ import {
   handleParseText,
 } from '@/lib/common/ResultContainer'
 
+import { parseListProperty } from '../Properties/List'
 import type { SkillBranchItemBaseChilds } from './SkillBranchItem'
 
 type ResultHandler = (currentResult: string) => string
+
+interface SkillBranchResultSource {
+  readonly branch: SkillBranchItemBaseChilds
+  readonly key: string
+  readonly index?: number
+}
 
 interface SkillBranchResultBase extends ResultContainerBase {
   readonly branch: SkillBranchItemBaseChilds
 
   /** The key of prop */
   readonly key: string
+  readonly sources: readonly SkillBranchResultSource[]
+  setSources(sources: readonly SkillBranchResultSource[]): void
 
   get valueSum(): number
 }
@@ -38,6 +47,7 @@ interface SkillBranchResultBase extends ResultContainerBase {
 class SkillBranchResult extends ResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
+  sources: readonly SkillBranchResultSource[]
 
   private displayResult: string | null
 
@@ -67,6 +77,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     super(type, origin, value)
     this.branch = branch
     this.key = key
+    this.sources = [{ branch, key }]
     this.displayResult = null
     this.subContainers = {
       registlet: null,
@@ -81,6 +92,29 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     value: string
   ): SkillBranchResult {
     return new SkillBranchResult(type, branch, key, origin, value)
+  }
+
+  clone(): SkillBranchResult {
+    const result = SkillBranchResult.create(
+      this.type,
+      this.branch,
+      this.key,
+      this.origin,
+      this.value
+    )
+    result._result = this._result
+    result.displayResult = this.displayResult
+    result.mergeDisplayOptions(this.displayOptions)
+    result.subContainers.registlet = this.subContainers.registlet?.clone() ?? null
+    result.setSources(this.sources)
+    if (this.isEmpty()) {
+      result.markEmpty()
+    }
+    return result
+  }
+
+  setSources(sources: readonly SkillBranchResultSource[]): void {
+    this.sources = [...sources]
   }
 
   override get result() {
@@ -143,6 +177,9 @@ class SkillBranchStatResult extends SkillBranchResult {
   // The display title that priority is higher than the original title of `stat`.
   displayTitle: SkillBranchTextResult | null
 
+  // A complete display sentence that replaces the stat title and value.
+  displayCaption: SkillBranchTextResult | null
+
   // The condition value that will be calc and result is `boolean`.
   conditionValue: string | null
 
@@ -150,6 +187,7 @@ class SkillBranchStatResult extends SkillBranchResult {
     super(ResultContainerTypes.Number, branch, stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
+    this.displayCaption = null
     this.conditionValue = null
   }
 
@@ -177,6 +215,10 @@ class SkillBranchStatResult extends SkillBranchResult {
 
   setDisplayTitle(title: SkillBranchTextResult) {
     this.displayTitle = title
+  }
+
+  setDisplayCaption(caption: SkillBranchTextResult) {
+    this.displayCaption = caption
   }
 
   setConditionValue(title: string) {
@@ -275,6 +317,7 @@ interface SkillBranchTextResultParseResult {
 class SkillBranchTextResult extends TextResultContainer implements SkillBranchResultBase {
   branch: SkillBranchItemBaseChilds
   key: string
+  sources: readonly SkillBranchResultSource[]
 
   declare containers: SkillBranchResult[]
   declare parts: SkillBranchTextResultPartValue[]
@@ -300,7 +343,7 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
 
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
-        const values = splitComma(branch.prop(propKey))
+        const values = parseListProperty(branch.prop(propKey))
         if (values.length === 1 && !values[0]) {
           return
         }
@@ -344,6 +387,12 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     super(origin, value, parseResult)
     this.branch = branch
     this.key = key
+    this.sources = [{ branch, key }]
+  }
+
+  setSources(sources: readonly SkillBranchResultSource[]): void {
+    this.sources = [...sources]
+    this.containers.forEach(container => container.setSources(sources))
   }
 
   static createForBranch(
@@ -397,6 +446,7 @@ export class SkillBranchTextResultPart extends TextResultContainerPart {
 
 export { SkillBranchResult, SkillBranchStatResult, SkillBranchTextResult }
 export type {
+  SkillBranchResultSource,
   SkillBranchResultBase,
   SkillBranchTextResultParseResult,
   SkillBranchTextResultPartValue,

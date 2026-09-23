@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-button-check v-model:selected="enabled" inline>
+      <cy-button-check v-model:selected="enabled" />
+      <div class="text-primary-80 mr-1.5">
         {{ result.container.get('name') }}
-      </cy-button-check>
-      <div class="ml-1 flex items-center space-x-0.5">
+      </div>
+      <div class="ml-1 flex items-center gap-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
@@ -20,11 +21,24 @@
           :result="result.container.result('frequency')"
         />
       </div>
+      <span v-if="damageSourceType === 'additional'" class="text-orange-40 ml-3 text-sm">
+        {{ t('character-simulator.character-damage.damage-source.additional') }}
+      </span>
       <cy-button-icon
         icon="majesticons:checkbox-list-detail-line"
         class="ml-auto"
         @click="toggleDetailVisible"
       />
+    </div>
+    <div
+      v-for="bonus in damageSourceBonuses"
+      :key="bonus.id"
+      class="text-primary-50 flex items-center gap-2 pl-9 pt-1 text-sm"
+    >
+      <span class="text-primary-50">
+        {{ bonus.name }}
+      </span>
+      +{{ bonus.amount }}
     </div>
     <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
       <div
@@ -87,12 +101,17 @@ import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
+import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
-import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } from './setup'
+import {
+  setupDamageSourceBonuses,
+  setupSkilResultExtraStats,
+  setupStoreDamageCalculationExpectedResult,
+} from './setup'
 
 interface Props {
   result: SkillResult
@@ -117,6 +136,10 @@ const enabled = computed<boolean>({
 })
 
 const result = computed(() => props.result)
+const damageSourceBonuses = setupDamageSourceBonuses(result)
+const damageSourceType = computed(() =>
+  getDamageSource(props.result.container.branchItem)?.prop('type')
+)
 
 const { extraStats } = setupSkilResultExtraStats(result)
 

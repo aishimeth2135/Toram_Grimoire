@@ -52,7 +52,7 @@ import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 
 import SkillAreaAnimation from './skill-area-animation.vue'
 
-import AreaHandler from '../../branch-handlers/AreaHandler'
+import { AreaHandler } from '@/lib/Skill/SkillDisplay'
 import SkillBranchPropValue from '../skill-branch-prop-value.vue'
 
 defineOptions({

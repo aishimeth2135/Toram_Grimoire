@@ -6,10 +6,12 @@ import {
   type InstanceWithId,
 } from '@/shared/services/InstanceId'
 import { toInt } from '@/shared/utils/number'
-import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
 
+import { parseBooleanProperty } from '../Properties/Boolean'
+import { createIterablePropertyKey } from '../Properties/Iterable'
+import { parseListProperty } from '../Properties/List'
 import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
@@ -54,7 +56,6 @@ abstract class SkillBranchItemBase<
 
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch
-  readonly defaultBranchId: string
 
   /** Record of overwrite */
   readonly record: SkillBranchItemOverwriteRecords
@@ -76,7 +77,7 @@ abstract class SkillBranchItemBase<
     this.parent = parent
     this.overrideId = branch.overrideId
 
-    this._name = branch.name
+    this._name = branch instanceof SkillBranch ? branch.name : branch.realName
     this._inherit = null
     this.name = this._name // init _inherit
 
@@ -90,9 +91,6 @@ abstract class SkillBranchItemBase<
     this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
-
-    const defaultEffect = this.default.parent
-    this.defaultBranchId = `${defaultEffect.parent.skillId}-b${defaultEffect.branches.indexOf(this.default)}`
 
     this.record = {
       props: {
@@ -122,9 +120,7 @@ abstract class SkillBranchItemBase<
   }
 
   set name(value: SkillBranchNames) {
-    if (value === SkillBranchNames.Next) {
-      this._inherit = SkillBranchNames.Effect
-    }
+    this._inherit = value === SkillBranchNames.Next ? SkillBranchNames.Effect : null
     this._name = value
   }
 
@@ -132,8 +128,12 @@ abstract class SkillBranchItemBase<
     return this._name
   }
 
-  get allProps() {
+  get allProps(): Map<string, string> {
     return this._props
+  }
+
+  get defaultBranchId(): string {
+    return this.default.branchId
   }
 
   hasId(): boolean {
@@ -141,7 +141,7 @@ abstract class SkillBranchItemBase<
   }
 
   propKey(...keys: string[]) {
-    return keys.join('.')
+    return createIterablePropertyKey(...keys)
   }
 
   prop(...keys: string[]): string {
@@ -153,7 +153,7 @@ abstract class SkillBranchItemBase<
   }
 
   propBoolean(...keys: string[]): boolean {
-    return this._props.get(this.propKey(...keys)) === '1'
+    return parseBooleanProperty(this._props.get(this.propKey(...keys)))
   }
 
   hasProp(...keys: string[]) {
@@ -242,7 +242,9 @@ class SkillBranchItem<
     this._initPostponeByProp()
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
     this.linkedStackIds =
-      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
+      this.stackId !== null
+        ? []
+        : parseListProperty(this.prop('stack_id')).map(id => toInt(id) ?? 0)
   }
 
   get isGroup(): boolean {
@@ -299,7 +301,8 @@ class SkillBranchItem<
     parent = (parent ?? this.parent) as TargetParent
     const clone = SkillBranchItem.create(parent, this)
 
-    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
+    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent, clone)))
+    clone.emptySuffixBranches.push(...this.emptySuffixBranches.map(suf => suf.clone(parent, clone)))
 
     return clone
   }
@@ -325,10 +328,11 @@ class SkillBranchItemSuffix<
   }
 
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
-    parent?: TargetParent
+    parent?: TargetParent,
+    mainBranch: SkillBranchItem = this.mainBranch
   ): SkillBranchItemSuffix<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    return SkillBranchItemSuffix.create(parent, this, this.mainBranch)
+    return SkillBranchItemSuffix.create(parent, this, mainBranch)
   }
 }
 

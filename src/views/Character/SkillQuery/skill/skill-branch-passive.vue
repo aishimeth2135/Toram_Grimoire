@@ -23,12 +23,12 @@
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { PassiveHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
-import PassiveHandler from './branch-handlers/PassiveHandler'
 import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {
