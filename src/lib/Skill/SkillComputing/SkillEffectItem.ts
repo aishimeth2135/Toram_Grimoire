@@ -14,12 +14,7 @@ import { Skill, SkillBranchNames, SkillEffect, SkillEffectHistory } from '../Ski
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
 import { initializeEffectBranches } from './assemble'
-import {
-  convertEffectEquipment,
-  initBasicBranchItem,
-  initStackStates,
-  normalizeBaseBranches,
-} from './utils'
+import { convertEffectEquipment, initBasicBranchItem, initStackStates } from './utils'
 
 interface BranchGroupState {
   readonly size: number
@@ -79,9 +74,7 @@ class SkillEffectItem extends SkillEffectItemBase {
   private constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
-    this.branchItems = normalizeBaseBranches(defaultSef.branches).map(bch =>
-      SkillBranchItem.create(this, bch)
-    )
+    this.branchItems = defaultSef.branches.map(bch => SkillBranchItem.create(this, bch))
     initBasicBranchItem(this, defaultSef)
 
     const current = from ? from : defaultSef
@@ -216,9 +209,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     historyEffect: SkillEffectHistory
   ) {
     super(parent)
-    this.branchItems = normalizeBaseBranches(historyEffect.branches).map(bch =>
-      SkillBranchItem.create(this, bch)
-    )
+    this.branchItems = historyEffect.branches.map(bch => SkillBranchItem.create(this, bch))
 
     this.origin = historyEffect
     this.parentEffect = parentEffect

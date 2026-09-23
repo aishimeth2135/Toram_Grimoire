@@ -9,6 +9,7 @@ import {
   initHistoryNexts,
   initStackStates,
   regressHistoryBranches,
+  resolveExtendBranches,
   setBranchAttrsDefaultValue,
 } from './utils'
 
@@ -17,7 +18,6 @@ function resolveEffectProperties(effectItem: SkillEffectItem, override?: SkillEf
     effectOverwrite(effectItem, override)
   }
   setBranchAttrsDefaultValue(effectItem)
-  initBranchSpecialProps(effectItem)
 }
 
 /** Classification consumes the flat branch list; run exactly once per effect. */
@@ -33,6 +33,13 @@ export function initializeEffectBranches(
 ): void {
   resolveEffectProperties(effectItem, override)
   regressHistoryBranches(effectItem)
+
+  resolveExtendBranches(effectItem)
+  initBranchSpecialProps(effectItem)
+  effectItem.historys.forEach(history => {
+    resolveExtendBranches(history)
+    initBranchSpecialProps(history)
+  })
 
   assembleBranchTree(effectItem)
   initBranchesPostpone(effectItem)

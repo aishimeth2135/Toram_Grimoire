@@ -152,7 +152,7 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
 /**
  * Should call after branch be overwritten.
  */
-function initBranchSpecialProps(effectItem: SkillEffectItem) {
+function initBranchSpecialProps(effectItem: SkillEffectItemBase) {
   effectItem.branchItems.forEach(bch => {
     if (
       (bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) &&
@@ -458,27 +458,68 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   })
 }
 
-function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
-  return branches
-    .map(bch => {
-      if (bch.name === SkillBranchNames.Extend) {
-        const targetId = toInt(bch.props.get('extend'))
-        if (targetId === null) {
-          return null
-        }
-        const newBch = branches.find(item => item.overrideId === targetId)?.clone(bch.branchId)
-        if (!newBch) {
-          return null
-        }
-        newBch.overrideId = bch.overrideId
-        for (const [key, value] of bch.props.entries()) {
-          newBch.props.set(key, value)
-        }
-        return newBch
+function resolveExtendBranches(effectItem: SkillEffectItemBase) {
+  const resolving = new Set<SkillBranchItem>()
+  const resolved = new Map<SkillBranchItem, boolean>()
+
+  const resolve = (branch: SkillBranchItem): boolean => {
+    if (!branch.is(SkillBranchNames.Extend)) {
+      return true
+    }
+    if (resolved.has(branch)) {
+      return resolved.get(branch)!
+    }
+    if (resolving.has(branch)) {
+      return false
+    }
+
+    resolving.add(branch)
+    const targetId = toInt(branch.prop('extend'))
+    const target = effectItem.branchItems.find(
+      item => item.overrideId === targetId && item !== branch
+    )
+    if (!target || !resolve(target)) {
+      resolving.delete(branch)
+      resolved.set(branch, false)
+      return false
+    }
+
+    const ownProps = new Map(branch.allProps)
+    const ownStats = branch.stats.map(stat => stat.clone())
+    branch.name = target.realName
+    branch.clearProp()
+    target.allProps.forEach((value, key) => branch.setProp(key, value))
+    ownProps.forEach((value, key) => {
+      if (value === '' && branch.hasProp(key)) {
+        branch.removeProp(key)
+      } else {
+        branch.setProp(key, value)
       }
-      return bch
     })
-    .filter(bch => bch !== null) as SkillBranch[]
+    branch.stats.splice(0, branch.stats.length, ...target.stats.map(stat => stat.clone()))
+    ownStats.forEach(stat => {
+      const idx = branch.stats.findIndex(inherited => inherited.equals(stat))
+      if (idx === -1) {
+        if (stat.value !== '') {
+          branch.stats.push(stat)
+        }
+      } else if (stat.value === '') {
+        branch.stats.splice(idx, 1)
+      } else {
+        branch.stats[idx].value = stat.value
+      }
+    })
+    branch._initDatasByProp()
+
+    resolving.delete(branch)
+    resolved.set(branch, true)
+    return true
+  }
+
+  inplaceAssign(
+    effectItem.branchItems,
+    effectItem.branchItems.filter(branch => resolve(branch))
+  )
 }
 
 export {
@@ -492,5 +533,5 @@ export {
   regressHistoryBranches,
   initHistoryNexts,
   setBranchAttrsDefaultValue,
-  normalizeBaseBranches,
+  resolveExtendBranches,
 }
