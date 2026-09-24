@@ -25,7 +25,11 @@ import { StackHandler } from '@/lib/Skill/SkillDisplay'
 import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import type { CharacterBuildsContext } from './context'
-import { getSkillBranchState } from './getState'
+import {
+  getSkillBranchState,
+  getSkillFormulaExtraBranchState,
+  getSkillStackState,
+} from './getState'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { useGetSkillLevel } from './setupCharacterBuilds'
 
@@ -221,6 +225,7 @@ export function setupCharacterSkills(
   )
 
   const computing = SkillComputingContainer.create()
+  computing.config.getStackState = getSkillStackState
   computing.varGetters.skillLevel = getSkillLevel
   computing.varGetters.characterLevel = () => character.value?.level ?? 0
   computing.varGetters.registletLevel = (() => {
@@ -287,7 +292,7 @@ export function setupCharacterSkills(
   }
 
   computing.config.getFormulaExtraValue = (branch, id, props) => {
-    return getSkillBranchState(branch.default).getFormulaExtraState(id, props).value
+    return getSkillFormulaExtraBranchState(branch).getFormulaExtraState(id, props).value
   }
 
   const allSkills: Skill[] = []
@@ -534,9 +539,12 @@ export function setupCharacterSkills(
         if (stackContainers.value.length > 0) {
           return true
         }
-        return resultBases.value.some(
-          resultBase =>
-            getSkillBranchState(resultBase.container.branchItem.default).formulaExtraIds.length > 0
+        return resultBases.value.some(resultBase =>
+          resultBase.container.branchItem.suffixBranches.some(
+            suffix =>
+              suffix.is(SkillBranchNames.FormulaExtra) &&
+              getSkillFormulaExtraBranchState(suffix).formulaExtraIds.length > 0
+          )
         )
       })
       const resultStates = reactive({

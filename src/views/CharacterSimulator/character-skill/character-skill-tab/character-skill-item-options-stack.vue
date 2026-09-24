@@ -30,6 +30,8 @@
 import type { ComputedRef, WritableComputedRef } from 'vue'
 import { computed, toRefs } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
@@ -42,13 +44,12 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const characterStore = useCharacterStore()
 
 const { container } = toRefs(props)
 
 const stackState = computed(() => {
-  return container.value.branchItem.parent.getStackState(
-    container.value.branchItem.stackId as number
-  )
+  return characterStore.getSkillStackState(container.value.branchItem)
 })
 
 const stackValue: WritableComputedRef<number> = computed({

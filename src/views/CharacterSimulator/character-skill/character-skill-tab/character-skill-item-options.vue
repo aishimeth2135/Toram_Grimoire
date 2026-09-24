@@ -13,7 +13,7 @@
           :container="container"
         />
         <div class="mt-2 space-y-1.5">
-          <div v-for="state in formulaExtraStates" :key="state.id">
+          <div v-for="state in formulaExtraStates" :key="`${state.effectBranchId}-${state.id}`">
             <cy-input-counter
               v-model:value="state.value"
               :title="state.text"
@@ -32,6 +32,8 @@ import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillFormulaExtraVarState, SkillResultsState } from '@/stores/views/character/setup'
 
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+
 import CharacterSkillItemOptionsStack from './character-skill-item-options-stack.vue'
 
 interface Props {
@@ -45,8 +47,13 @@ const characterStore = useCharacterStore()
 const formulaExtraStates = computed(() => {
   const states: SkillFormulaExtraVarState[] = []
   props.skillResultsState.results.forEach(result => {
-    const branchState = characterStore.getSkillBranchState(result.container.branchItem.default)
-    states.push(...branchState.formulaExtraIds.map(id => branchState.getFormulaExtraState(id)))
+    const formulaExtra = result.container.branchItem.suffixBranches.find(suffix =>
+      suffix.is(SkillBranchNames.FormulaExtra)
+    )
+    if (formulaExtra) {
+      const branchState = characterStore.getSkillFormulaExtraBranchState(formulaExtra)
+      states.push(...branchState.formulaExtraIds.map(id => branchState.getFormulaExtraState(id)))
+    }
   })
   return states
 })

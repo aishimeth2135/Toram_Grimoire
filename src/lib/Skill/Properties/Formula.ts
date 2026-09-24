@@ -110,11 +110,10 @@ function computedBranchHelper(
     const RLvLength = getRegistletFormulaLevelCount(values)
 
     if (stackIds.length > 0) {
-      const stackStates = branchItem.parent.stackStates
       const stackNames = stackIds.map((id, idx) => {
-        const item = stackStates.find(state => state.stackId === id)
+        const stackBranch = branchItem.parent.branchItems.find(item => item.stackId === id)
         const defaultName = t('skill-query.branch.stack.base-name')
-        return item ? resolveStackName(item.branch, defaultName) : `${defaultName}${idx + 1}`
+        return stackBranch ? resolveStackName(stackBranch, defaultName) : `${defaultName}${idx + 1}`
       })
       stack.push(...stackNames)
     }
@@ -147,16 +146,19 @@ function computedBranchHelper(
 
     if (stackIds.length > 0) {
       const computeFormulaExtraValue = computing.config.computeFormulaExtraValue
-      const stackStates = branchItem.parent.stackStates
       const stackValues = stackIds.map(id => {
-        const item = stackStates.find(state => state.stackId === id)
-        if (!item) {
+        const stackBranch = branchItem.parent.branchItems.find(item => item.stackId === id)
+        if (!stackBranch) {
           return 0
         }
-        if (!computeFormulaExtraValue || !item.branch.hasProp('value')) {
-          return item.value
+        const stackState = computing.config.getStackState?.(stackBranch)
+        if (!stackState) {
+          return 0
         }
-        return computeFormulaExtraValue(item.branch.prop('value')) ?? item.value
+        if (!computeFormulaExtraValue || !stackBranch.hasProp('value')) {
+          return stackState.value
+        }
+        return computeFormulaExtraValue(stackBranch.prop('value')) ?? stackState.value
       })
       stack.push(...stackValues)
     }
@@ -234,7 +236,7 @@ function computedBranchHelper(
         ? (computeFormula(formulaExtra.prop('values', index, 'min'), vars, 0) as number)
         : null,
     }
-    return getFormulaExtraValue?.(mainBranchItem, extraTexts[idx], bounds)?.toString() ?? null
+    return getFormulaExtraValue?.(formulaExtra, extraTexts[idx], bounds)?.toString() ?? null
   }
 
   const handleFormulaExtra = !formulaExtra

@@ -235,8 +235,8 @@ abstract class SkillEffectBase extends SkillNode {
     this.branches = branches
   }
 
-  private getNextBranchId(name: SkillBranchNames): string {
-    return `${this.parent.skillId}-${name}-${this.branches.length}`
+  private getNextBranchId(name: SkillBranchNames): SkillBranchId {
+    return SkillBranch.generateBranchId(this.parent.skillId, name, this.branches.length)
   }
 
   appendSkillBranch(overrideId: number, name: SkillBranchNames) {
@@ -324,7 +324,14 @@ class SkillEffectHistory extends SkillEffectBase {
   }
 }
 
+// Only for constructor type check, `branchId` will be store as string
+type SkillBranchId = `${string}-${SkillBranchNames}-${number}`
+
 class SkillBranch extends SkillNode {
+  static generateBranchId(skillId: string, name: SkillBranchNames, indexId: number): SkillBranchId {
+    return `${skillId}-${name}-${indexId}`
+  }
+
   readonly parent: SkillEffectBase
 
   // id of branch for override detecting. -1 means no define
@@ -341,7 +348,7 @@ class SkillBranch extends SkillNode {
   private constructor(
     sef: SkillEffectBase,
     overrideId: number,
-    branchId: string,
+    branchId: SkillBranchId,
     name: SkillBranchNames,
     props: Map<string, string> = new Map(),
     stats: StatComputed[] = []
@@ -349,7 +356,7 @@ class SkillBranch extends SkillNode {
     super()
     this.parent = sef
     this.overrideId = overrideId
-    this.branchId = branchId
+    this.branchId = branchId as string
     this.name = name
     this.props = props
     this.stats = stats
@@ -358,7 +365,7 @@ class SkillBranch extends SkillNode {
   static create(
     sef: SkillEffectBase,
     overrideId: number,
-    branchId: string,
+    branchId: SkillBranchId,
     name: SkillBranchNames
   ): SkillBranch {
     return markRaw(new SkillBranch(sef, overrideId, branchId, name))
@@ -366,6 +373,11 @@ class SkillBranch extends SkillNode {
 
   get isEmpty() {
     return this.props.size === 0 && this.stats.length === 0
+  }
+
+  // Get index ID from format in `generateBranchId`
+  getIndexId(): string {
+    return this.branchId.split('-').pop()!
   }
 
   hasId(): boolean {
@@ -399,15 +411,15 @@ class SkillBranch extends SkillNode {
     return stat
   }
 
-  clone(branchId: string): SkillBranch {
+  clone(branchId: SkillBranchId): SkillBranch {
     return SkillBranch.createFrom(this, branchId)
   }
 
-  cloneWithMarkRaw(branchId: string): SkillBranch {
+  cloneWithMarkRaw(branchId: SkillBranchId): SkillBranch {
     return SkillBranch.createFromWithMarkRaw(this, branchId)
   }
 
-  static createFrom(branch: SkillBranch, branchId: string): SkillBranch {
+  static createFrom(branch: SkillBranch, branchId: SkillBranchId): SkillBranch {
     return new SkillBranch(
       branch.parent,
       branch.overrideId,
@@ -418,7 +430,7 @@ class SkillBranch extends SkillNode {
     )
   }
 
-  static createFromWithMarkRaw(branch: SkillBranch, branchId: string): SkillBranch {
+  static createFromWithMarkRaw(branch: SkillBranch, branchId: SkillBranchId): SkillBranch {
     return markRaw(SkillBranch.createFrom(branch, branchId))
   }
 }

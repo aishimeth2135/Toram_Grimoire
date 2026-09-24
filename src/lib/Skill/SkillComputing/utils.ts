@@ -1,7 +1,4 @@
-import { shallowReactive } from 'vue'
-
 import { inplaceAssign, lastElement } from '@/shared/utils/array'
-import { handleFormula } from '@/shared/utils/data'
 import { toIndex, toInt } from '@/shared/utils/number'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -13,12 +10,10 @@ import { SkillBranchBuffs } from './SkillBranchBuffs'
 import { SkillBranchItem } from './SkillBranchItem'
 import type {
   BranchGroupState,
-  BranchStackState,
   SkillEffectItem,
   SkillEffectItemBase,
   SkillEffectItemHistory,
 } from './SkillEffectItem'
-import { resolveStackDefaultValue } from './branchProps'
 import {
   BRANCH_PROPS_DEFAULT_VALUE,
   EQUIPMENT_TYPE_BODY_ORDER,
@@ -67,7 +62,7 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   const branch = SkillBranch.create(
     origin,
     139,
-    origin.parent.skillId + '-base-0',
+    SkillBranch.generateBranchId(origin.parent.skillId, SkillBranchNames.Basic, 0),
     SkillBranchNames.Basic
   )
   ;(Object.entries(origin.basicProps) as [keyof SkillEffectBasicProps, string | number][]).forEach(
@@ -368,29 +363,6 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
   })
 }
 
-function initStackStates(effectItem: SkillEffectItemBase, vars?: { slv: number; clv: number }) {
-  // const vars = {
-  //   slv: effectItem.parent.parent.vars.skillLevel,
-  //   clv: effectItem.parent.parent.vars.characterLevel,
-  // }
-  const stackStates: BranchStackState[] = effectItem.branchItems
-    .filter(branchItem => branchItem.is(SkillBranchNames.Stack))
-    .map(branchItem => {
-      return shallowReactive({
-        stackId: branchItem.stackId!,
-        branch: branchItem,
-        value: handleFormula(resolveStackDefaultValue(branchItem.allProps), {
-          vars: {
-            SLv: vars ? vars.slv : 0,
-            CLv: vars ? vars.clv : 0,
-          },
-          toNumber: true,
-        }) as number,
-      })
-    })
-  effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates)
-}
-
 function regressHistoryBranches(effectItem: SkillEffectItem) {
   // 日期新的擺前面
   effectItem.historys.sort((item1, item2) =>
@@ -529,7 +501,6 @@ export {
   initBranchSpecialProps,
   classifyBranches,
   handleVirtualBranches,
-  initStackStates,
   regressHistoryBranches,
   initHistoryNexts,
   setBranchAttrsDefaultValue,

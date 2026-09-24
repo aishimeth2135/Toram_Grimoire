@@ -7,7 +7,6 @@ import {
   initBranchSpecialProps,
   initBranchesPostpone,
   initHistoryNexts,
-  initStackStates,
   regressHistoryBranches,
   resolveExtendBranches,
   setBranchAttrsDefaultValue,
@@ -47,8 +46,6 @@ export function initializeEffectBranches(
   // Histories are newest first. Their next effect must already have a branch tree.
   effectItem.historys.forEach(history => {
     assembleBranchTree(history)
-    initStackStates(history)
     initHistoryNexts(history)
   })
-  initStackStates(effectItem)
 }

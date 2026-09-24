@@ -4,9 +4,10 @@ import type { EquipmentRestrictions } from '@/lib/Character/Stat'
 
 import type { FormulaExtendedData } from '../Properties/FormulaExtended'
 import type { Skill } from '../Skill'
-import { SkillBranchItem } from './SkillBranchItem'
+import { SkillBranchItem, SkillBranchItemSuffix } from './SkillBranchItem'
 import { SkillEffectItem } from './SkillEffectItem'
 import { FormulaDisplayModes } from './enums'
+import type { SkillStackState } from './stackStates'
 
 interface SkillFormulaExtraProps {
   max: number | null
@@ -14,7 +15,7 @@ interface SkillFormulaExtraProps {
 }
 
 interface GetFormulaExtraValueHandler {
-  (branch: SkillBranchItem, id: string, props?: SkillFormulaExtraProps): number | null
+  (branch: SkillBranchItemSuffix, id: string, props?: SkillFormulaExtraProps): number | null
 }
 
 interface ComputeFormulaExtraValueHandler {
@@ -23,6 +24,7 @@ interface ComputeFormulaExtraValueHandler {
 
 interface SkillComputingConfig {
   formulaDisplayMode: FormulaDisplayModes
+  getStackState: ((branch: SkillBranchItem) => SkillStackState | null) | null
   getFormulaExtraValue: GetFormulaExtraValueHandler | null
   computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
 }
@@ -59,6 +61,7 @@ class SkillComputingContainer {
   static create(): SkillComputingContainer {
     const config = shallowReactive<SkillComputingConfig>({
       formulaDisplayMode: FormulaDisplayModes.Normal,
+      getStackState: null,
       getFormulaExtraValue: null,
       computeFormulaExtraValue: null,
     })

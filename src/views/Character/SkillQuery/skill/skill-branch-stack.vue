@@ -53,7 +53,7 @@ const { branchItem } = toRefs(props)
 const container = computed(() => StackHandler(props.computing, branchItem.value))
 
 const stackState = computed(() => {
-  return branchItem.value.parent.getStackState(branchItem.value.stackId!)
+  return props.computing.config.getStackState?.(branchItem.value) ?? null
 })
 
 const stackValue: WritableComputedRef<number> = computed({

@@ -14,7 +14,7 @@ import { Skill, SkillBranchNames, SkillEffect, SkillEffectHistory } from '../Ski
 import { SkillBranchItem } from './SkillBranchItem'
 import type { SkillItem } from './SkillComputingContainer'
 import { initializeEffectBranches } from './assemble'
-import { convertEffectEquipment, initBasicBranchItem, initStackStates } from './utils'
+import { convertEffectEquipment, initBasicBranchItem } from './utils'
 
 interface BranchGroupState {
   readonly size: number
@@ -24,40 +24,34 @@ interface BranchGroupState {
   isGroupEnd: boolean
 }
 
-interface BranchStackState {
-  readonly stackId: number
-  readonly branch: SkillBranchItem
-  value: number
-}
+// Only for constructor type check, `effectId` will be store as string
+type SkillEffectItemId = `${string}-${number}`
 
 abstract class SkillEffectItemBase implements InstanceWithId {
   private static _idGenerator = new InstanceIdGenerator()
 
+  protected static generateEffectId(skill: Skill, effect: SkillEffect): SkillEffectItemId {
+    return `${skill.skillId}-${effect.effectId}`
+  }
+
   readonly instanceId: InstanceId
+  readonly effectId: string
+  readonly parent: SkillItem
 
   abstract readonly branchItems: SkillBranchItem<SkillEffectItemBase>[]
-
-  readonly parent: SkillItem
 
   // init in `classifyBranches`
   readonly auxiliaryBranchItems: SkillBranchItem<SkillEffectItemBase>[]
 
-  // reactive: init in `initStackStates`
-  readonly stackStates: BranchStackState[]
-
-  protected constructor(parent: SkillItem) {
+  protected constructor(parent: SkillItem, effectId: SkillEffectItemId) {
     this.instanceId = SkillEffectItemBase._idGenerator.generate()
+    this.effectId = effectId
     this.parent = parent
-    this.stackStates = []
     this.auxiliaryBranchItems = []
   }
 
   get visibleBranchItems(): SkillBranchItem[] {
     return this.branchItems.filter(branch => !branch.propBoolean('invisible'))
-  }
-
-  getStackState(stackId: number) {
-    return this.stackStates.find(state => state.stackId === stackId) ?? null
   }
 }
 
@@ -72,17 +66,19 @@ class SkillEffectItem extends SkillEffectItemBase {
   basicBranchItem!: SkillBranchItem<SkillEffectItem>
 
   private constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
-    super(parent)
+    const effect = from ? from : defaultSef
+    const effectId = SkillEffectItemBase.generateEffectId(parent.skill, effect)
+
+    super(parent, effectId)
 
     this.branchItems = defaultSef.branches.map(bch => SkillBranchItem.create(this, bch))
     initBasicBranchItem(this, defaultSef)
 
-    const current = from ? from : defaultSef
     const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
-    this.equipments = convertEffectEquipment(current, dualSwordRegress)
+    this.equipments = convertEffectEquipment(effect, dualSwordRegress)
 
-    this.historys = current.historys.map(history =>
-      SkillEffectItemHistory.create(parent, this, history)
+    this.historys = effect.historys.map((history, idx) =>
+      SkillEffectItemHistory.create(parent, this, idx, history)
     )
 
     initializeEffectBranches(this, from)
@@ -178,13 +174,6 @@ class SkillEffectItem extends SkillEffectItemBase {
     const keys = ['main', 'sub', 'body'] as const
     return this.equipments.map(equip => keys.map(key => equip[key] || 'none').join('+')).join('/')
   }
-
-  resetStackStates(vars: { slv: number; clv: number }) {
-    this.historys.forEach(history => {
-      initStackStates(history, vars)
-    })
-    initStackStates(this, vars)
-  }
 }
 
 class SkillEffectItemHistory extends SkillEffectItemBase {
@@ -206,9 +195,11 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   private constructor(
     parent: SkillItem,
     parentEffect: SkillEffectItem,
+    indexId: number,
     historyEffect: SkillEffectHistory
   ) {
-    super(parent)
+    super(parent, `history-${indexId}-${parentEffect.effectId}` as SkillEffectItemId)
+
     this.branchItems = historyEffect.branches.map(bch => SkillBranchItem.create(this, bch))
 
     this.origin = historyEffect
@@ -222,9 +213,10 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   static create(
     parent: SkillItem,
     parentEffect: SkillEffectItem,
+    indexId: number,
     historyEffect: SkillEffectHistory
   ): SkillEffectItemHistory {
-    return markRaw(new SkillEffectItemHistory(parent, parentEffect, historyEffect))
+    return markRaw(new SkillEffectItemHistory(parent, parentEffect, indexId, historyEffect))
   }
 
   get modifiedBranchItems() {
@@ -244,4 +236,4 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
 }
 
 export { SkillEffectItem, SkillEffectItemHistory }
-export type { SkillEffectItemBase, BranchGroupState, BranchStackState }
+export type { SkillEffectItemBase, BranchGroupState }

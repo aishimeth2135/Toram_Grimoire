@@ -27,18 +27,22 @@
       <cy-default-tips v-else>
         {{ t('character-simulator.character-damage.no-any-skill-tips') }}
       </cy-default-tips>
-      <div class="mt-4 space-y-1">
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
-            {{ t('character-simulator.character-damage.basic-tips.0') }}
-          </div>
+      <div class="mt-2 space-y-2">
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-1') }}
         </div>
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
-            {{ t('character-simulator.character-damage.test-version-tips') }}
-          </div>
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-2') }}
+        </div>
+        <div class="gap-icon text-primary-50 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+          {{ t('character-simulator.character-damage.basic-tips.0') }}
+        </div>
+        <div class="gap-icon text-primary-50 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+          {{ t('character-simulator.character-damage.test-version-tips') }}
         </div>
       </div>
     </div>

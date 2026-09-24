@@ -42,6 +42,8 @@ abstract class SkillBranchItemBase<
   // -1 means undefined
   readonly overrideId: number
 
+  readonly effectBranchId: string
+
   readonly parent: Parent
   readonly stats: StatComputed[]
   buffs: SkillBranchBuffs | null
@@ -91,6 +93,7 @@ abstract class SkillBranchItemBase<
     this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
+    this.effectBranchId = `${this.parent.effectId}-${this.default.getIndexId()}`
 
     this.record = {
       props: {
@@ -204,6 +207,7 @@ class SkillBranchItem<
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
   linkedStackIds: number[]
   stackId: number | null
+  effectStackId: string | null
 
   readonly groupState: BranchGroupState
 
@@ -218,6 +222,7 @@ class SkillBranchItem<
     this.emptySuffixBranches = []
 
     this.stackId = null
+    this.effectStackId = null
     this.linkedStackIds = []
     this._initDatasByProp()
 
@@ -241,6 +246,7 @@ class SkillBranchItem<
   _initDatasByProp() {
     this._initPostponeByProp()
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.effectStackId = this.stackId === null ? null : `${this.parent.effectId}-${this.stackId}`
     this.linkedStackIds =
       this.stackId !== null
         ? []

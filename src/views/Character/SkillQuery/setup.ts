@@ -1,4 +1,4 @@
-import { provide, reactive, ref, shallowReadonly, shallowRef, watchEffect } from 'vue'
+import { provide, reactive, ref, shallowReadonly, shallowRef, watch } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -10,9 +10,8 @@ import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
   SkillComputingContainer,
-  SkillEffectItem,
-  SkillEffectItemHistory,
   SkillItem,
+  createSkillStackStates,
 } from '@/lib/Skill/SkillComputing'
 
 import { ComputingContainerInjectionKey } from './injection-keys'
@@ -120,33 +119,24 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   }
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
-  watchEffect(() => {
-    currentSkillItem.value = skillRef.value ? SkillItem.create(skillRef.value) : null
-    const vars = {
-      slv: skillLevel.value,
-      clv: characterLevel.value,
-    }
-    currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
-  })
+  const stackStates = createSkillStackStates()
+  const getStackState = (branchItem: SkillBranchItem) =>
+    stackStates.getStackState(branchItem, { slv: skillLevel.value, clv: characterLevel.value })
+  computingContainer.config.getStackState = getStackState
+
+  watch(
+    [skillRef, skillLevel, characterLevel],
+    () => {
+      stackStates.resetStackStates()
+      currentSkillItem.value = skillRef.value ? SkillItem.create(skillRef.value) : null
+    },
+    { immediate: true }
+  )
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
-    const stackId = branchItem.stackId
-    if (typeof stackId !== 'number') {
-      return
-    }
-    const effect = branchItem.parent
-    if (effect instanceof SkillEffectItem) {
-      effect.parent.effectItems.forEach(effectItem => {
-        const stackState = effectItem.getStackState(stackId)
-        if (stackState) {
-          stackState.value = value
-        }
-      })
-    } else if (effect instanceof SkillEffectItemHistory) {
-      const stackState = effect.getStackState(stackId)
-      if (stackState) {
-        stackState.value = value
-      }
+    const stackState = getStackState(branchItem)
+    if (stackState) {
+      stackState.value = value
     }
   }
 

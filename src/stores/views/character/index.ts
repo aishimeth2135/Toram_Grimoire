@@ -21,11 +21,22 @@ import {
   type CharacterSimulatorSaveDataRoot,
   type CharacterStoreSaveSummary,
   type EquipmentSaveDataWithIndex,
+  type SkillOptionsSaveData,
 } from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import type { CharacterPureStatsResult } from './setup/context'
-import { getSkillBranchState } from './setup/getState'
+import {
+  createSkillFormulaExtraSaveData,
+  createSkillStackSaveData,
+  getSkillBranchState,
+  getSkillFormulaExtraBranchState,
+  getSkillStackState,
+  loadSkillFormulaExtraSaveData,
+  loadSkillStackSaveData,
+  resetSkillBranchStates,
+  resetSkillStackStates,
+} from './setup/getState'
 import { prepareSetupCharacter } from './setup/setupCharacter'
 import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
 import {
@@ -88,6 +99,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     cloneCharacter,
   } = setupCharacters()
 
+  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
+  const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
+  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
+
   const { equipments, appendEquipment, appendEquipments, removeEquipment } =
     setupEquipments(currentCharacter)
 
@@ -105,6 +120,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
     buildLabelStore.resetBuildLabelStore()
+    resetSkillBranchStates()
+    resetSkillStackStates()
     resetHandlers.forEach(handler => handler())
   }
 
@@ -114,6 +131,13 @@ export const useCharacterStore = defineStore('view-character', () => {
       throw result.error
     }
     closeAutoSave()
+  }
+
+  const createSkillOptionsSaveData = (): SkillOptionsSaveData => {
+    return {
+      stackValues: createSkillStackSaveData(),
+      formulaExtraValues: createSkillFormulaExtraSaveData(),
+    }
   }
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
@@ -151,7 +175,17 @@ export const useCharacterStore = defineStore('view-character', () => {
       buildLabels: buildLabelsData,
       characterStates,
       damageCalc: createDamageCalculationSelectionSaveData(),
+      skillOptions: createSkillOptionsSaveData(),
     }
+  }
+
+  const loadSkillOptionsSaveData = (data?: SkillOptionsSaveData) => {
+    if (!data) {
+      return
+    }
+
+    loadSkillStackSaveData(data.stackValues)
+    loadSkillFormulaExtraSaveData(data.formulaExtraValues)
   }
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
@@ -260,6 +294,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       if (loadDamageCalculationSelection) {
         loadDamageCalculationSelectionSaveData(saveData.damageCalc)
       }
+      loadSkillOptionsSaveData(saveData.skillOptions)
     }
   })()
 
@@ -309,8 +344,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
-  const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
   const currentCharacterRegistletBuild = computed(
     () => currentCharacterBuildsContext.value.registletBuild
   )
@@ -318,8 +351,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     () => currentCharacterBuildsContext.value.potionBuild
   )
   const currentCharacterFoodBuild = computed(() => currentCharacterBuildsContext.value.foodBuild)
-
-  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
   const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
 
@@ -479,6 +510,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     nextSkillResultStates,
     damageSkillResultStates,
     getSkillBranchState,
+    getSkillFormulaExtraBranchState,
+    getSkillStackState,
 
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
