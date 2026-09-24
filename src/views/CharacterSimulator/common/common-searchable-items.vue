@@ -1,5 +1,6 @@
 <script lang="ts" setup generic="Item extends { id: any }">
 import type { VNodeChild } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRowsDelegation from '@/components/card/card-rows-delegation.vue'
@@ -33,6 +34,8 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 defineSlots<Slots>()
 
+const { t } = useI18n()
+
 const itemClicked = (item: Item) => {
   emit('select-item', item)
 }
@@ -60,19 +63,24 @@ const groupStarted = (item: Item, idx: number) => {
       />
     </div>
     <CardRowsDelegation class="grow overflow-y-auto py-2" @row-clicked="itemClicked">
-      <template v-for="(item, idx) in items" :key="item.id">
-        <div
-          v-if="groupStarted(item, idx)"
-          class="text-gray-60 px-3 pb-1 text-sm"
-          :class="{ 'pt-2': idx !== 0 }"
-        >
-          <slot name="group" :item="item" />
-        </div>
-        <CardRow class="flex cursor-pointer items-start px-4 py-2" :item="item" hover>
-          <IconSelection :selected="itemSelected(item)" class="icon-first-line mr-3.5" />
-          <slot name="item" :item="item" :selected="itemSelected(item)" />
-        </CardRow>
+      <template v-if="items.length > 0">
+        <template v-for="(item, idx) in items" :key="item.id">
+          <div
+            v-if="groupStarted(item, idx)"
+            class="text-gray-60 px-3 pb-1 text-sm"
+            :class="{ 'pt-2': idx !== 0 }"
+          >
+            <slot name="group" :item="item" />
+          </div>
+          <CardRow class="flex cursor-pointer items-start px-4 py-2" :item="item" hover>
+            <IconSelection :selected="itemSelected(item)" class="icon-first-line mr-3.5" />
+            <slot name="item" :item="item" :selected="itemSelected(item)" />
+          </CardRow>
+        </template>
       </template>
+      <div v-else class="text-primary-30 px-3 text-sm">
+        {{ t('common.tips.search-no-result') }}
+      </div>
     </CardRowsDelegation>
   </CardRowsWrapper>
 </template>

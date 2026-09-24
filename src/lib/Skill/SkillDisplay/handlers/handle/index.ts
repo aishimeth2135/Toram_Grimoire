@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { numberToFixed } from '@/shared/utils/number'
 import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
@@ -262,6 +263,12 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   statContainers.forEach(container => {
     handleContainerFormulaValue(container)
+    container.handle(value => {
+      if (isNumberString(value)) {
+        return numberToFixed(parseFloat(value), 2).toString()
+      }
+      return value
+    })
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
     container.handleDisplay(value => handleFunctionHighlight(value))
 
@@ -269,7 +276,6 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const showData = container.stat.getShowData()
     const title = container.displayTitle ?? showData.title
     container.storeStatResultData({ title, sign })
-    // container.handle(value => title + sign + value)
   })
 
   titles.forEach(key => {
