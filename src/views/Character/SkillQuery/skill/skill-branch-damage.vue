@@ -100,6 +100,8 @@ import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { DamageHandler } from '@/lib/Skill/SkillDisplay'
+import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
@@ -108,8 +110,6 @@ import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillDamageFormula from './layouts/skill-damage-formula.vue'
 
-import DamageHandler from './branch-handlers/DamageHandler'
-import ExtraHandler from './branch-handlers/ExtraHandler'
 import { type NormalLayoutSubContent } from './layouts/setup'
 import { type ExtraSuffixBranchData } from './setup'
 
@@ -198,14 +198,14 @@ const subContents = computed(() => {
     {
       key: '@proration/damage',
       icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/damage: title'),
-      value: container.value.get('@proration/damage'),
+      title: container.value.title('@proration/damage'),
+      value: container.value.result('@proration/damage') ?? undefined,
     },
     {
       key: '@proration/proration',
       icon: 'ri-error-warning-line',
-      title: container.value.get('@proration/proration: title'),
-      value: container.value.get('@proration/proration'),
+      title: container.value.title('@proration/proration'),
+      value: container.value.result('@proration/proration') ?? undefined,
     }
   )
   if (branchItem.value.prop('title') !== 'each') {

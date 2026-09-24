@@ -19,7 +19,7 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
   } = useCharacterBindingBuild<SkillBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createSkillBuild = () => {
-    const newBuild = new SkillBuild(
+    const newBuild = SkillBuild.create(
       Grimoire.i18n.t('skill-simulator.skill-build') + ' ' + (builds.value.length + 1)
     )
     return appendSkillBuild(newBuild, { updateIndex: false })

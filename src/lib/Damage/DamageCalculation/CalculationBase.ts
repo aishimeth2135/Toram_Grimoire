@@ -24,18 +24,70 @@ interface CalcStructMultipleMul {
   list: (CalcStructItem | CalcStructAction)[]
 }
 interface CalcResultOptions {
-  containerResults?: {
-    [key in CalculationContainerIds]?: number | ((itemContainer: CalcItemContainer) => number)
-  }
+  containerResults?: Partial<Record<CalculationContainerIds, number>>
 }
 interface CurrentItemIdGetter {
-  (itemContainer: CalcItemContainer): CalculationItemIds | null
+  (context: CalcItemContainerContext): CalculationItemIds | null
 }
 interface HiddenGetter {
-  (itemContainer: CalcItemContainer): boolean
+  (context: CalcItemContainerContext): boolean
 }
 interface CalcResult {
-  (itemContainer: CalcItemContainer): number
+  (context: CalcItemContainerContext): number
+}
+interface CalcItemContainerContext {
+  readonly currentItemId: CalculationItemIds | null
+  readonly currentItemValue: number
+  readonly customItemValues: readonly number[]
+  getItemValue(id: CalculationItemIds): number
+  getContainerResult(id: CalculationContainerIds): number
+  getContainerCurrentItemId(id: CalculationContainerIds): CalculationItemIds | null
+}
+interface CalculationContainerSnapshot {
+  readonly enabled: boolean
+  readonly applicable: boolean
+  readonly currentItemId: CalculationItemIds | null
+  readonly customItemValues: readonly number[]
+}
+interface CalculationSnapshot {
+  readonly itemValues: ReadonlyMap<CalculationItemIds, number>
+  readonly containers: ReadonlyMap<CalculationContainerIds, CalculationContainerSnapshot>
+}
+interface CalculationSnapshotOverrides {
+  readonly itemValues?: ReadonlyMap<CalculationItemIds, number>
+}
+interface CalculationEvaluationResult {
+  readonly value: number
+  readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
+}
+interface CalculationBatchEvaluationResult {
+  readonly values: readonly number[]
+  readonly containerResults: ReadonlyMap<CalculationContainerIds, number>
+}
+interface CalculationSweepDimension {
+  readonly itemId: CalculationItemIds
+  readonly values: readonly number[]
+}
+interface CalculationSweepPoint<Result = CalculationEvaluationResult> {
+  readonly index: number
+  readonly dimensions: ReadonlyMap<CalculationItemIds, number>
+  readonly result: Result
+}
+interface CalculationSweepIssue {
+  readonly type: 'duplicate-item' | 'unknown-item' | 'length-mismatch'
+  readonly itemId?: CalculationItemIds
+}
+interface CalculationSweepScenarios {
+  readonly points: readonly {
+    readonly index: number
+    readonly dimensions: ReadonlyMap<CalculationItemIds, number>
+    readonly overrides: CalculationSnapshotOverrides
+  }[]
+  readonly issues: readonly CalculationSweepIssue[]
+}
+interface CalculationSweepResult<Result = CalculationEvaluationResult> {
+  readonly points: readonly CalculationSweepPoint<Result>[]
+  readonly issues: readonly CalculationSweepIssue[]
 }
 
 function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
@@ -51,20 +103,24 @@ class CalculationBase {
    */
   items: Map<CalculationItemIds, CalcItemBase>
 
-  constructor() {
+  private constructor() {
     this.containers = new Map()
     this.items = new Map()
   }
 
+  static create(): CalculationBase {
+    return new CalculationBase()
+  }
+
   appendContainer(id: CalculationContainerIds, type: ContainerTypes): CalcItemContainerBase {
-    const container = new CalcItemContainerBase(this, id, type)
+    const container = CalcItemContainerBase.create(this, id, type)
     this.containers.set(id, container)
     return container
   }
 
   appendItem(id: CalculationItemIds): CalcItemBase {
     if (!this.items.has(id)) {
-      const item = new CalcItemBase(this, id)
+      const item = CalcItemBase.create(this, id)
       this.items.set(id, item)
       return item
     }
@@ -72,7 +128,7 @@ class CalculationBase {
   }
 
   createCalculation(name: string = ''): Calculation {
-    return new Calculation(this, name)
+    return Calculation.create(this, name)
   }
 
   result(
@@ -80,31 +136,62 @@ class CalculationBase {
     calcStruct: CalcStructItem,
     options: CalcResultOptions = {}
   ): number {
-    if (!calcStruct) {
-      return 0
-    }
+    return this.evaluate(calculation.createSnapshot(), calcStruct, options).value
+  }
 
+  private createEvaluator(
+    snapshot: CalculationSnapshot,
+    options: CalcResultOptions,
+    overrides: CalculationSnapshotOverrides
+  ) {
     const { containerResults = {} } = options
+    const evaluatedContainerResults = new Map<CalculationContainerIds, number>()
+
+    const getItemValue = (id: CalculationItemIds) => {
+      return overrides.itemValues?.get(id) ?? snapshot.itemValues.get(id) ?? 0
+    }
+    const evaluateContainer = (id: CalculationContainerIds): number => {
+      const cached = evaluatedContainerResults.get(id)
+      if (cached !== undefined) {
+        return cached
+      }
+
+      const containerBase = this.containers.get(id)
+      const container = snapshot.containers.get(id)
+      if (!containerBase || !container) {
+        console.warn('[DamageCalculation.evaluate] unknown container id:', id)
+        return 0
+      }
+
+      const overriddenResult = containerResults[id]
+      let result: number
+      if (!container.enabled || !container.applicable) {
+        result = containerBase.disabledValue
+      } else if (overriddenResult !== undefined) {
+        result = overriddenResult
+      } else {
+        const context: CalcItemContainerContext = {
+          currentItemId: container.currentItemId,
+          currentItemValue:
+            container.currentItemId === null ? 0 : getItemValue(container.currentItemId),
+          customItemValues: container.customItemValues,
+          getItemValue,
+          getContainerResult: evaluateContainer,
+          getContainerCurrentItemId: containerId =>
+            snapshot.containers.get(containerId)?.currentItemId ?? null,
+        }
+        result = containerBase.calculate(context)
+      }
+      evaluatedContainerResults.set(id, result)
+      return result
+    }
 
     const handle = (item: CalcStructItem): number => {
       if (typeof item === 'string') {
-        const container = calculation.containers.get(item)
-        if (container !== undefined) {
-          const res = (() => {
-            if (!container.enabled || container.hidden) {
-              // disabled value
-              return container.result()
-            }
-            const resultItem = containerResults[item]
-            if (typeof resultItem === 'number') {
-              return resultItem
-            }
-            if (typeof resultItem === 'function') {
-              return resultItem(container)
-            }
-            return container.result()
-          })()
-          return container.base.isMultiplier ? res / 100 : res
+        const containerBase = this.containers.get(item)
+        if (containerBase !== undefined) {
+          const result = evaluateContainer(item)
+          return containerBase.isMultiplier ? result / 100 : result
         }
         console.warn('[DamageCalculation.result] unknown container id:', item)
         return 0
@@ -132,7 +219,109 @@ class CalculationBase {
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item)
       return 0
     }
-    return Math.floor(handle(calcStruct))
+
+    return {
+      containerResults: evaluatedContainerResults,
+      evaluateContainer,
+      evaluateExpression: (calcStruct: CalcStructItem) => Math.floor(handle(calcStruct)),
+    }
+  }
+
+  evaluate(
+    snapshot: CalculationSnapshot,
+    calcStruct: CalcStructItem,
+    options: CalcResultOptions = {},
+    overrides: CalculationSnapshotOverrides = {}
+  ): CalculationEvaluationResult {
+    if (!calcStruct) {
+      return {
+        value: 0,
+        containerResults: new Map(),
+      }
+    }
+
+    const evaluator = this.createEvaluator(snapshot, options, overrides)
+    return {
+      value: evaluator.evaluateExpression(calcStruct),
+      containerResults: evaluator.containerResults,
+    }
+  }
+
+  evaluateBatch(
+    snapshot: CalculationSnapshot,
+    calcStructs: readonly CalcStructItem[],
+    requiredContainerIds: readonly CalculationContainerIds[],
+    options: CalcResultOptions = {},
+    overrides: CalculationSnapshotOverrides = {}
+  ): CalculationBatchEvaluationResult {
+    const evaluator = this.createEvaluator(snapshot, options, overrides)
+    requiredContainerIds.forEach(evaluator.evaluateContainer)
+
+    return {
+      values: calcStructs.map(evaluator.evaluateExpression),
+      containerResults: evaluator.containerResults,
+    }
+  }
+
+  createZipSweepScenarios(
+    dimensions: readonly CalculationSweepDimension[]
+  ): CalculationSweepScenarios {
+    const issues: CalculationSweepIssue[] = []
+    const knownItemIds = new Set<CalculationItemIds>()
+    dimensions.forEach(dimension => {
+      if (!this.items.has(dimension.itemId)) {
+        issues.push({ type: 'unknown-item', itemId: dimension.itemId })
+      }
+      if (knownItemIds.has(dimension.itemId)) {
+        issues.push({ type: 'duplicate-item', itemId: dimension.itemId })
+      }
+      knownItemIds.add(dimension.itemId)
+    })
+
+    const pointCount = dimensions[0]?.values.length ?? 1
+    if (dimensions.some(dimension => dimension.values.length !== pointCount)) {
+      issues.push({ type: 'length-mismatch' })
+    }
+    if (issues.length > 0) {
+      return { points: [], issues }
+    }
+
+    const points = Array.from({ length: pointCount }, (unusedValue, index) => {
+      void unusedValue
+      const dimensionValues = new Map<CalculationItemIds, number>()
+      dimensions.forEach(dimension => {
+        const item = this.items.get(dimension.itemId)!
+        const sourceValue = dimension.values[index]
+        const finiteValue = Number.isFinite(sourceValue) ? sourceValue : item.defaultValue
+        const value = Math.min(Math.max(finiteValue, item.min), item.max)
+        dimensionValues.set(dimension.itemId, value)
+      })
+      return {
+        index,
+        dimensions: dimensionValues,
+        overrides: {
+          itemValues: dimensionValues,
+        },
+      }
+    })
+    return { points, issues }
+  }
+
+  evaluateZipSweep(
+    snapshot: CalculationSnapshot,
+    calcStruct: CalcStructItem,
+    dimensions: readonly CalculationSweepDimension[],
+    options: CalcResultOptions = {}
+  ): CalculationSweepResult {
+    const scenarios = this.createZipSweepScenarios(dimensions)
+    return {
+      issues: scenarios.issues,
+      points: scenarios.points.map(point => ({
+        index: point.index,
+        dimensions: point.dimensions,
+        result: this.evaluate(snapshot, calcStruct, options, point.overrides),
+      })),
+    }
   }
 }
 
@@ -156,7 +345,7 @@ class CalcItemContainerBase {
 
   readonly references: CalculationContainerIds[]
 
-  constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
+  private constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
     this.id = id
     this._parent = parent
     this.type = type ?? ContainerTypes.Normal
@@ -173,6 +362,14 @@ class CalcItemContainerBase {
       valueValid: true,
     }
     this.references = []
+  }
+
+  static create(
+    parent: CalculationBase,
+    id: CalculationContainerIds,
+    type: ContainerTypes
+  ): CalcItemContainerBase {
+    return new CalcItemContainerBase(parent, id, type)
   }
 
   get disabledValue(): number {
@@ -246,17 +443,16 @@ class CalcItemContainerBase {
     this.enabledDefaultValue = false
   }
 
+  calculate(context: CalcItemContainerContext): number {
+    const result = this._calcResult ? this._calcResult(context) : context.currentItemValue
+    return this.floorResult ? Math.floor(result) : result
+  }
+
   result(itemContainer: CalcItemContainer): number {
     if (!itemContainer.enabled || itemContainer.hidden) {
       return this.disabledValue
     }
-    const res = (() => {
-      if (this._calcResult) {
-        return this._calcResult(itemContainer)
-      }
-      return itemContainer.currentItem.value
-    })()
-    return this.floorResult ? Math.floor(res) : res
+    return this.calculate(itemContainer)
   }
 }
 
@@ -270,7 +466,7 @@ class CalcItemBase {
   step: number
   defaultValue: number
 
-  constructor(parent: CalculationBase, id: CalculationItemIds) {
+  private constructor(parent: CalculationBase, id: CalculationItemIds) {
     this._parent = parent
     this.id = id
     this.unit = ''
@@ -278,6 +474,10 @@ class CalcItemBase {
     this._max = null
     this.step = 1
     this.defaultValue = 0
+  }
+
+  static create(parent: CalculationBase, id: CalculationItemIds): CalcItemBase {
+    return new CalcItemBase(parent, id)
   }
 
   get min(): number {
@@ -319,4 +519,15 @@ export type {
   CalcStructAction,
   CalcResultOptions,
   CurrentItemIdGetter,
+  CalcItemContainerContext,
+  CalculationContainerSnapshot,
+  CalculationSnapshot,
+  CalculationSnapshotOverrides,
+  CalculationEvaluationResult,
+  CalculationBatchEvaluationResult,
+  CalculationSweepDimension,
+  CalculationSweepPoint,
+  CalculationSweepIssue,
+  CalculationSweepScenarios,
+  CalculationSweepResult,
 }

@@ -1,0 +1,83 @@
+import { SkillBranchNames } from '@/lib/Skill/Skill'
+import {
+  SkillBranchItem,
+  SkillComputingContainer,
+  isSkillRangeKeyword,
+} from '@/lib/Skill/SkillComputing'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
+
+import { type HandleBranchValuePropsMap } from '../compute'
+import {
+  type HandleBranchLangPropsMap,
+  type HandleDisplayDataOptionFilters,
+  cloneBranchProps,
+  handleDisplayData,
+} from './handle'
+import MapContainer from './handle/MapContainer'
+
+export default function AreaHandler<BranchItem extends SkillBranchItem>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem,
+  formulaDisplayMode?: FormulaDisplayModes
+) {
+  const props = cloneBranchProps(branchItem)
+
+  const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
+  props.set('@range', basicBranch?.prop('range') ?? '')
+
+  const filters = new MapContainer<HandleDisplayDataOptionFilters>({
+    move_distance: value => !!value,
+    angle: value => !!value,
+    start_position_offsets: {
+      validation: value => value !== '0',
+      source: 'computed',
+    },
+    end_position_offsets: {
+      validation: value => value !== '0',
+      source: 'computed',
+    },
+  })
+
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
+    angle: '°',
+    move_distance: 'm',
+  })
+
+  if (props.get('effective_area') !== 'sector') {
+    valuePropsMap.set('radius', 'm')
+  }
+
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>({
+    effective_area: null,
+    start_position_offsets: { type: 'value' },
+    end_position_offsets: { type: 'value' },
+  })
+
+  const pureValues = []
+  const range = props.get('@range') ?? ''
+  if (range && !isSkillRangeKeyword(range)) {
+    pureValues.push('@range')
+  }
+
+  const titles = [
+    'effective_area',
+    'radius',
+    'move_distance',
+    'angle',
+    'start_position_offsets',
+    'end_position_offsets',
+  ]
+
+  const pureDatas = ['target_offsets', 'end_position']
+
+  return handleDisplayData(computing, branchItem, props, {
+    filters: filters.value,
+    values: valuePropsMap.value,
+    langs: langAttrsMap.value,
+    titles,
+    pureValues,
+    pureDatas,
+    formulaDisplayMode,
+    sources: basicBranch ? { '@range': [{ branch: basicBranch, key: 'range' }] } : {},
+  })
+}

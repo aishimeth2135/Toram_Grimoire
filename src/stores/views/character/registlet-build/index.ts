@@ -20,7 +20,7 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
   } = useCharacterBindingBuild<RegistletBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
 
   const createRegistletBuild = () => {
-    const newBuild = new RegistletBuild(
+    const newBuild = RegistletBuild.create(
       t('character-simulator.registlet-build.registlet-build') +
         ' ' +
         (builds.value.length + 1).toString()

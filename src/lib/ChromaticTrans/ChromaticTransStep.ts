@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { type BaseGem, type ChromaticTransGem, getBaseGemColor, isBaseGem } from './gems'
 
 interface GrayscaleOrigin {
@@ -25,7 +27,11 @@ export class ChromaticTransStep {
   readonly lockedColor: number | null
   readonly pool: readonly number[]
 
-  constructor(index: number, selection: ChromaticTransGem | null, previous?: ChromaticTransStep) {
+  private constructor(
+    index: number,
+    selection: ChromaticTransGem | null,
+    previous?: ChromaticTransStep
+  ) {
     this.index = index
     this.gem = index === 0 && selection && !isBaseGem(selection) ? null : selection
     this.baseGem = index === 0 ? (this.gem as BaseGem | null) : (previous?.baseGem ?? null)
@@ -72,6 +78,22 @@ export class ChromaticTransStep {
     this.black = black
     this.lockedColor = lockedColor
     this.pool = Object.freeze(this.calculatePool())
+  }
+
+  static create(
+    index: number,
+    selection: ChromaticTransGem | null,
+    previous?: ChromaticTransStep
+  ): ChromaticTransStep {
+    return new ChromaticTransStep(index, selection, previous)
+  }
+
+  static createWithMarkRaw(
+    index: number,
+    selection: ChromaticTransGem | null,
+    previous?: ChromaticTransStep
+  ): ChromaticTransStep {
+    return markRaw(ChromaticTransStep.create(index, selection, previous))
   }
 
   get color(): number {

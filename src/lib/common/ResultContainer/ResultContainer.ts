@@ -38,7 +38,7 @@ abstract class ResultContainerBase implements InstanceWithId {
 
   private _isEmpty = false
 
-  constructor() {
+  protected constructor() {
     this.instanceId = ResultContainerBase._idGenerator.generate()
   }
 
@@ -60,12 +60,16 @@ class ResultContainer extends ResultContainerBase {
   protected _result: string
   protected _displayOptions!: ResultContainerDisplayOptions
 
-  constructor(type: ResultContainerTypes, origin: string, value: string) {
+  protected constructor(type: ResultContainerTypes, origin: string, value: string) {
     super()
     this.type = type
     this.origin = origin
     this.value = value
     this._result = value.toString()
+  }
+
+  static createBase(type: ResultContainerTypes, origin: string, value: string): ResultContainer {
+    return new ResultContainer(type, origin, value)
   }
 
   override get result(): string {
@@ -135,7 +139,11 @@ class TextResultContainer extends ResultContainerBase {
   containers: ResultContainer[]
   parts: TextResultContainerPartValue[]
 
-  constructor(origin: string, value: string, parseResult: TextResultContainerParseResult) {
+  protected constructor(
+    origin: string,
+    value: string,
+    parseResult: TextResultContainerParseResult
+  ) {
     super()
 
     const { parts, containers } = parseResult
@@ -144,6 +152,14 @@ class TextResultContainer extends ResultContainerBase {
     this.containers = containers
     this.origin = origin
     this.value = value
+  }
+
+  static create(
+    origin: string,
+    value: string,
+    parseResult: TextResultContainerParseResult
+  ): TextResultContainer {
+    return new TextResultContainer(origin, value, parseResult)
   }
 
   override get result(): string {
@@ -180,7 +196,7 @@ class TextResultContainerPart {
 
   private _metadata!: Map<string, string>
 
-  constructor(
+  protected constructor(
     type: TextResultContainerPartTypes,
     value: string | TextResultContainerPartValue[],
     unit: string = ''
@@ -188,6 +204,14 @@ class TextResultContainerPart {
     this.type = type
     this.parts = typeof value === 'string' ? [value] : value
     this.unit = unit
+  }
+
+  static create(
+    type: TextResultContainerPartTypes,
+    value: string | TextResultContainerPartValue[],
+    unit: string = ''
+  ): TextResultContainerPart {
+    return new TextResultContainerPart(type, value, unit)
   }
 
   get hasMultipleParts(): boolean {

@@ -214,7 +214,7 @@ import { useAutoSave } from '@/shared/composables/AutoSave'
 import { useExportBuild } from '@/shared/composables/ExportBuild'
 import { useToggle, useToggleGroup } from '@/shared/composables/State'
 
-import { type CalculationSaveData } from '@/lib/Damage/DamageCalculation'
+import { parseCalculationSaveData } from '@/lib/Damage/DamageCalculation'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
@@ -265,7 +265,10 @@ const { exportBuild, importBuild } = useExportBuild({
     handleSave(fileName, data)
   },
   loaded: res => {
-    const saveData = JSON.parse(res) as CalculationSaveData
+    const saveData = parseCalculationSaveData(JSON.parse(res))
+    if (!saveData) {
+      throw new Error('Invalid damage calculation import data')
+    }
     const calculationBase = Grimoire.DamageCalculation.calculationBase
     const calculation = calculationBase.createCalculation()
     calculation.load(saveData)

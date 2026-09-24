@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-icon icon="ic:round-label" />
-      <div class="text-primary-70 ml-2">
+      <cy-button-check v-model:selected="enabled" />
+      <div class="text-primary-80 mr-1.5">
         {{ result.container.get('name') }}
       </div>
-      <div class="ml-3 flex items-center space-x-0.5">
+      <div class="ml-1 flex items-center gap-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
@@ -21,32 +21,24 @@
           :result="result.container.result('frequency')"
         />
       </div>
-      <div
-        v-if="valid && characterStore.calculationOptions.armorBreakDisplay"
-        class="border-primary-30 ml-3 flex items-baseline border-l pl-2.5"
-      >
-        <div class="text-blue-30 mr-2 text-sm">
-          {{ t('character-simulator.character-damage.armor-break') }}
-        </div>
-        <div class="flex items-center space-x-0.5">
-          <div class="text-blue-60">
-            {{ armorBreakExpectedResult }}
-          </div>
-          <cy-icon
-            v-if="frequencyVisible && result.container.has('frequency')"
-            icon="ic-round-close"
-          />
-          <SkillBranchPropValue
-            v-if="frequencyVisible"
-            :result="result.container.result('frequency')"
-          />
-        </div>
-      </div>
+      <span v-if="damageSourceType === 'additional'" class="text-orange-40 ml-3 text-sm">
+        {{ t('character-simulator.character-damage.damage-source.additional') }}
+      </span>
       <cy-button-icon
         icon="majesticons:checkbox-list-detail-line"
         class="ml-auto"
         @click="toggleDetailVisible"
       />
+    </div>
+    <div
+      v-for="bonus in damageSourceBonuses"
+      :key="bonus.id"
+      class="text-primary-50 flex items-center gap-2 pl-9 pt-1 text-sm"
+    >
+      <span class="text-primary-50">
+        {{ bonus.name }}
+      </span>
+      +{{ bonus.amount }}
     </div>
     <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
       <div
@@ -56,8 +48,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem.default)
-              .enabled
+            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem).enabled
           "
         />
         <CharacterSkillItemStats
@@ -83,16 +74,16 @@
     >
       <div
         v-for="item in calculationItems"
-        :key="item.item.base.id"
+        :key="item.id"
         class="flex items-center space-x-2"
         :class="{ 'opacity-50': item.hidden }"
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.id))"
         ></div>
         <div v-if="item.valueValid" class="text-primary-50">
-          {{ item.item.value + item.item.base.unit }}
+          {{ item.value + item.unit }}
         </div>
       </div>
     </div>
@@ -109,14 +100,18 @@ import type { SkillResult } from '@/stores/views/character/setup'
 import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
-import { CalcItem, ContainerTypes } from '@/lib/Damage/DamageCalculation'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
+import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
-import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } from './setup'
+import {
+  setupDamageSourceBonuses,
+  setupSkilResultExtraStats,
+  setupStoreDamageCalculationExpectedResult,
+} from './setup'
 
 interface Props {
   result: SkillResult
@@ -129,54 +124,32 @@ const { t } = useI18n()
 const detailVisible = ref(false)
 const toggleDetailVisible = useToggle(detailVisible)
 
+const enabled = computed<boolean>({
+  get() {
+    return characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem)
+      .enabled
+  },
+  set(value) {
+    characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem).enabled =
+      value
+  },
+})
+
 const result = computed(() => props.result)
+const damageSourceBonuses = setupDamageSourceBonuses(result)
+const damageSourceType = computed(() =>
+  getDamageSource(props.result.container.branchItem)?.prop('type')
+)
 
 const { extraStats } = setupSkilResultExtraStats(result)
 
-const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(
+const { valid, calculationItems, expectedResult } = setupStoreDamageCalculationExpectedResult(
   result,
   extraStats
 )
 
-const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(
-  result,
-  extraStats,
-  {
-    armorBreak: true,
-  }
-)
-
 const frequencyVisible = computed(() => {
   return valid.value && props.result.container.branchItem.prop('title') === 'each'
-})
-
-const calculationItems = computed(() => {
-  const containers = [...calculation.value.containers.values()]
-  const items: {
-    item: CalcItem
-    hidden: boolean
-    valueValid: boolean
-  }[] = []
-  containers.forEach(container => {
-    const hidden = container.hidden
-    const valueValid = container.base.controls.valueValid
-    if (container.base.type === ContainerTypes.Options) {
-      items.push({
-        item: container.currentItem,
-        hidden,
-        valueValid,
-      })
-    } else {
-      items.push(
-        ...[...container.items.values()].map(item => ({
-          item,
-          hidden,
-          valueValid,
-        }))
-      )
-    }
-  })
-  return items
 })
 
 const statExtraContainers = computed(() => {

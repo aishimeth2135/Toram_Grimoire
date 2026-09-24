@@ -1,7 +1,7 @@
 import { DataPersistenceService } from '@/shared/services/DataPersistenceService'
 
 import type { CharacterSaveData } from '@/lib/Character/Character'
-import type { CharacterBuildLabelSaveData } from '@/lib/Character/Character/CharacterBuildLabel'
+import type { CharacterBuildLabelSaveData } from '@/lib/Character/Character'
 import type { EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import type { FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
 import type { PotionBuildSaveData } from '@/lib/Character/PotionBuild'
@@ -14,6 +14,17 @@ export interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
 
 export interface CharacterStoreSaveSummary {
   characterIndex: number
+}
+
+export interface DamageCalculationSelectionSaveData {
+  skillStates: Record<string, { enabled: boolean }>
+  skillBranchStates: Record<string, { enabled: boolean }>
+}
+
+export interface SkillOptionsSaveData {
+  skillBranchStates?: Record<string, { enabled: boolean }>
+  stackValues: Record<string, number>
+  formulaExtraValues: Record<string, Record<string, number>>
 }
 
 interface CharacterStoreCharacterStateSaveData {
@@ -34,6 +45,8 @@ export interface CharacterSimulatorSaveData {
   registletBuilds: RegistletBuildSaveData[]
   potionBuilds: PotionBuildSaveData[]
   buildLabels: CharacterBuildLabelSaveData[]
+  damageCalc?: DamageCalculationSelectionSaveData
+  skillOptions?: SkillOptionsSaveData
 }
 
 export interface CharacterSimulatorSaveDataRoot {

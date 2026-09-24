@@ -61,63 +61,63 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initItemsInstance = () => {
     if (DatasStoreBase.Items === null) {
-      DatasStoreBase.Items = new ItemsSystem()
+      DatasStoreBase.Items = ItemsSystem.create()
     }
     return DatasStoreBase.Items
   }
 
   const initCharacterInstance = () => {
     if (DatasStoreBase.Character === null) {
-      DatasStoreBase.Character = new CharacterSystem()
+      DatasStoreBase.Character = CharacterSystem.create()
     }
     return DatasStoreBase.Character
   }
 
   const initGlossaryInstance = () => {
     if (DatasStoreBase.Glossary === null) {
-      DatasStoreBase.Glossary = new GlossarySystem()
+      DatasStoreBase.Glossary = GlossarySystem.create()
     }
     return DatasStoreBase.Glossary
   }
 
   const initSkillInstance = () => {
     if (DatasStoreBase.Skill === null) {
-      DatasStoreBase.Skill = new SkillSystem()
+      DatasStoreBase.Skill = SkillSystem.create()
     }
     return DatasStoreBase.Skill
   }
 
   const initEnchantInstance = () => {
     if (DatasStoreBase.Enchant === null) {
-      DatasStoreBase.Enchant = new EnchantSystem()
+      DatasStoreBase.Enchant = EnchantSystem.create()
     }
     return DatasStoreBase.Enchant
   }
 
   const initDamageCalculationInstance = () => {
     if (DatasStoreBase.DamageCalculation === null) {
-      DatasStoreBase.DamageCalculation = new DamageCalculationSystem()
+      DatasStoreBase.DamageCalculation = DamageCalculationSystem.create()
     }
     return DatasStoreBase.DamageCalculation
   }
 
   const initRegistletInstance = () => {
     if (DatasStoreBase.Registlet === null) {
-      DatasStoreBase.Registlet = new RegistletSystem()
+      DatasStoreBase.Registlet = RegistletSystem.create()
     }
     return DatasStoreBase.Registlet
   }
 
   const initQuestInstance = () => {
     if (DatasStoreBase.Quest === null) {
-      DatasStoreBase.Quest = new QuestSystem()
+      DatasStoreBase.Quest = QuestSystem.create()
     }
     return DatasStoreBase.Quest
   }
 
   const initEquipmentTraitInstance = () => {
     if (DatasStoreBase.EquipmentTrait === null) {
-      DatasStoreBase.EquipmentTrait = new EquipmentTraitSystem()
+      DatasStoreBase.EquipmentTrait = EquipmentTraitSystem.create()
     }
     return DatasStoreBase.EquipmentTrait
   }

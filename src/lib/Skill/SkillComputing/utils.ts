@@ -1,7 +1,4 @@
-import { shallowReactive } from 'vue'
-
 import { inplaceAssign, lastElement } from '@/shared/utils/array'
-import { handleFormula } from '@/shared/utils/data'
 import { toIndex, toInt } from '@/shared/utils/number'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
@@ -13,7 +10,6 @@ import { SkillBranchBuffs } from './SkillBranchBuffs'
 import { SkillBranchItem } from './SkillBranchItem'
 import type {
   BranchGroupState,
-  BranchStackState,
   SkillEffectItem,
   SkillEffectItemBase,
   SkillEffectItemHistory,
@@ -28,7 +24,7 @@ import {
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
   let basicBranch = effectItem.branchItems.find(branchItem => branchItem.is(SkillBranchNames.Basic))
   if (!basicBranch) {
-    basicBranch = new SkillBranchItem(effectItem, effectBasicPropsToBranch(origin))
+    basicBranch = SkillBranchItem.create(effectItem, effectBasicPropsToBranch(origin))
     effectItem.branchItems.unshift(basicBranch)
   }
   effectItem.basicBranchItem = basicBranch
@@ -63,7 +59,12 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
     action_time: value => actionTimeList[toIndex(value)],
     casting_time: value => value,
   }
-  const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic)
+  const branch = SkillBranch.create(
+    origin,
+    139,
+    SkillBranch.generateBranchId(origin.parent.skillId, SkillBranchNames.Basic, 0),
+    SkillBranchNames.Basic
+  )
   ;(Object.entries(origin.basicProps) as [keyof SkillEffectBasicProps, string | number][]).forEach(
     ([key, value]) => {
       if (value !== null) {
@@ -79,10 +80,10 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
 
 function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBranchItem[]) {
   from.forEach(fromBranch => {
-    if (fromBranch.id === -1) {
+    if (fromBranch.overrideId === -1) {
       return
     }
-    const idx = to.findIndex(bch => bch.id === fromBranch.id)
+    const idx = to.findIndex(bch => bch.overrideId === fromBranch.overrideId)
     if (idx === -1) {
       return
     }
@@ -146,13 +147,13 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
 /**
  * Should call after branch be overwritten.
  */
-function initBranchSpecialProps(effectItem: SkillEffectItem) {
+function initBranchSpecialProps(effectItem: SkillEffectItemBase) {
   effectItem.branchItems.forEach(bch => {
     if (
       (bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) &&
       bch.hasProp('buffs')
     ) {
-      bch.buffs = new SkillBranchBuffs(bch.prop('buffs'))
+      bch.buffs = SkillBranchBuffs.create(bch.prop('buffs'))
       bch.removeProp('buffs')
     }
   })
@@ -170,7 +171,7 @@ function convertEffectEquipment(
   const { mainWeapon: main, subWeapon: sub, bodyArmor: body, equipmentOperator: operator } = effect
 
   if (main === -1 && sub === -1 && body === -1) {
-    return [new EquipmentRestrictions()]
+    return [EquipmentRestrictions.create()]
   }
   // const results: Map<string, EquipmentRestrictions> = new Map()
   const results: [string, EquipmentRestrictions][] = []
@@ -187,7 +188,7 @@ function convertEffectEquipment(
     }
   }
 
-  const mainData = new EquipmentRestrictions({
+  const mainData = EquipmentRestrictions.create({
     main: main === -1 ? null : EQUIPMENT_TYPE_MAIN_ORDER[main],
   })
   if (
@@ -196,7 +197,7 @@ function convertEffectEquipment(
     operator === 0
   ) {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         main: EquipmentTypes.DualSword,
       })
     )
@@ -208,7 +209,7 @@ function convertEffectEquipment(
     firstResult.sub = subItem
   } else {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         sub: subItem,
       })
     )
@@ -219,7 +220,7 @@ function convertEffectEquipment(
     firstResult.body = bodyItem
   } else {
     appendResult(
-      new EquipmentRestrictions({
+      EquipmentRestrictions.create({
         body: bodyItem,
       })
     )
@@ -238,6 +239,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
       SkillBranchNames.Proration,
       SkillBranchNames.Base,
       SkillBranchNames.DamageStat,
+      SkillBranchNames.DamageSource,
     ],
     [SkillBranchNames.Effect]: [SkillBranchNames.Extra],
     [SkillBranchNames.Passive]: [SkillBranchNames.Extra],
@@ -361,34 +363,6 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
   })
 }
 
-function initStackStates(effectItem: SkillEffectItemBase, vars?: { slv: number; clv: number }) {
-  // const vars = {
-  //   slv: effectItem.parent.parent.vars.skillLevel,
-  //   clv: effectItem.parent.parent.vars.characterLevel,
-  // }
-  const stackStates: BranchStackState[] = effectItem.branchItems
-    .filter(branchItem => branchItem.is(SkillBranchNames.Stack))
-    .map(branchItem => {
-      return shallowReactive({
-        stackId: branchItem.stackId!,
-        branch: branchItem,
-        value: handleFormula(
-          branchItem.prop('default') === 'auto'
-            ? branchItem.prop('min')
-            : branchItem.prop('default'),
-          {
-            vars: {
-              SLv: vars ? vars.slv : 0,
-              CLv: vars ? vars.clv : 0,
-            },
-            toNumber: true,
-          }
-        ) as number,
-      })
-    })
-  effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates)
-}
-
 function regressHistoryBranches(effectItem: SkillEffectItem) {
   // 日期新的擺前面
   effectItem.historys.sort((item1, item2) =>
@@ -396,11 +370,12 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
   )
   effectItem.historys.forEach((history, idx, ary) => {
     const nextEffect = idx === 0 ? effectItem : ary[idx - 1]
+    history.nextEffect = nextEffect
     const toBranches = nextEffect.branchItems.map(bch => bch.clone(history))
     const fromBranches = history.branchItems
     let meetFirstBranchHasId = false
     fromBranches.forEach(historyBch => {
-      if (historyBch.id === -1) {
+      if (historyBch.overrideId === -1) {
         if (meetFirstBranchHasId) {
           history.removedBranches.push(historyBch)
           toBranches.push(historyBch)
@@ -411,7 +386,6 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
         return
       }
       meetFirstBranchHasId = true
-      history.nextEffect = nextEffect
     })
     branchesOverwrite(toBranches, fromBranches)
     inplaceAssign(history.branchItems, toBranches)
@@ -421,17 +395,19 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
 function initHistoryNexts(history: SkillEffectItemHistory) {
   history.modifiedBranchItems.forEach(branchItem => {
     const next = branchItem.hasId()
-      ? history.nextEffect.branchItems.find(bch => branchItem.id === bch.id)
+      ? history.nextEffect.branchItems.find(bch => branchItem.overrideId === bch.overrideId)
       : history.nextEffect.branchItems.find(bch =>
           [...bch.suffixBranches, ...bch.emptySuffixBranches].some(
-            suf => suf.hasId() && branchItem.suffixBranches.some(_suf => suf.id === _suf.id)
+            suf =>
+              suf.hasId() &&
+              branchItem.suffixBranches.some(_suf => suf.overrideId === _suf.overrideId)
           )
         )
     if (next) {
       const nextClone = next.clone(history)
       nextClone.setHistoryRecord(branchItem.record)
       nextClone.suffixBranches.forEach(suffix => {
-        const find = branchItem.suffixBranches.find(suf => suf.id === suffix.id)
+        const find = branchItem.suffixBranches.find(suf => suf.overrideId === suffix.overrideId)
         if (find) {
           suffix.setHistoryRecord(find.record)
         }
@@ -454,27 +430,68 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   })
 }
 
-function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
-  return branches
-    .map(bch => {
-      if (bch.name === SkillBranchNames.Extend) {
-        const targetId = toInt(bch.props.get('extend'))
-        if (targetId === null) {
-          return null
-        }
-        const newBch = branches.find(item => item.id === targetId)?.clone()
-        if (!newBch) {
-          return null
-        }
-        newBch.id = bch.id
-        for (const [key, value] of bch.props.entries()) {
-          newBch.props.set(key, value)
-        }
-        return newBch
+function resolveExtendBranches(effectItem: SkillEffectItemBase) {
+  const resolving = new Set<SkillBranchItem>()
+  const resolved = new Map<SkillBranchItem, boolean>()
+
+  const resolve = (branch: SkillBranchItem): boolean => {
+    if (!branch.is(SkillBranchNames.Extend)) {
+      return true
+    }
+    if (resolved.has(branch)) {
+      return resolved.get(branch)!
+    }
+    if (resolving.has(branch)) {
+      return false
+    }
+
+    resolving.add(branch)
+    const targetId = toInt(branch.prop('extend'))
+    const target = effectItem.branchItems.find(
+      item => item.overrideId === targetId && item !== branch
+    )
+    if (!target || !resolve(target)) {
+      resolving.delete(branch)
+      resolved.set(branch, false)
+      return false
+    }
+
+    const ownProps = new Map(branch.allProps)
+    const ownStats = branch.stats.map(stat => stat.clone())
+    branch.name = target.realName
+    branch.clearProp()
+    target.allProps.forEach((value, key) => branch.setProp(key, value))
+    ownProps.forEach((value, key) => {
+      if (value === '' && branch.hasProp(key)) {
+        branch.removeProp(key)
+      } else {
+        branch.setProp(key, value)
       }
-      return bch
     })
-    .filter(bch => bch !== null) as SkillBranch[]
+    branch.stats.splice(0, branch.stats.length, ...target.stats.map(stat => stat.clone()))
+    ownStats.forEach(stat => {
+      const idx = branch.stats.findIndex(inherited => inherited.equals(stat))
+      if (idx === -1) {
+        if (stat.value !== '') {
+          branch.stats.push(stat)
+        }
+      } else if (stat.value === '') {
+        branch.stats.splice(idx, 1)
+      } else {
+        branch.stats[idx].value = stat.value
+      }
+    })
+    branch._initDatasByProp()
+
+    resolving.delete(branch)
+    resolved.set(branch, true)
+    return true
+  }
+
+  inplaceAssign(
+    effectItem.branchItems,
+    effectItem.branchItems.filter(branch => resolve(branch))
+  )
 }
 
 export {
@@ -484,9 +501,8 @@ export {
   initBranchSpecialProps,
   classifyBranches,
   handleVirtualBranches,
-  initStackStates,
   regressHistoryBranches,
   initHistoryNexts,
   setBranchAttrsDefaultValue,
-  normalizeBaseBranches,
+  resolveExtendBranches,
 }

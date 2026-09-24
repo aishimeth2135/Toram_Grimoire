@@ -6,7 +6,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions, type EquipmentRestrictionsBaseKeys } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
-import { convertEffectEquipment } from '@/lib/Skill/SkillComputing/utils'
+import { convertEffectEquipment } from '@/lib/Skill/SkillComputing'
 
 function setupEquipmentSelect(
   skillTree: Ref<SkillTree>,
@@ -40,7 +40,7 @@ function setupEquipmentSelect(
     }
   })
 
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(EquipmentRestrictions.create())
 
   const submitCurrentEquipment = () => {
     emit('update:selected-equipment', currentEquipment.value)

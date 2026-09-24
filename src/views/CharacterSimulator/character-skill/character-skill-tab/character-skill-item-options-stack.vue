@@ -4,7 +4,7 @@
       <cy-input-counter
         v-model:value="stackValue"
         :range="stackValueRange"
-        :input-width="container.getCustomData('stackInputWidth')"
+        :input-width="getStackInputWidth(container)"
         :step="stackStep"
         :title="container.get('name')"
       >
@@ -30,11 +30,12 @@
 import type { ComputedRef, WritableComputedRef } from 'vue'
 import { computed, toRefs } from 'vue'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
-
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer, getStackInputWidth } from '@/lib/Skill/SkillDisplay'
 
 import { setStackValue } from './utils'
 
@@ -43,13 +44,12 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const characterStore = useCharacterStore()
 
 const { container } = toRefs(props)
 
 const stackState = computed(() => {
-  return container.value.branchItem.parent.getStackState(
-    container.value.branchItem.stackId as number
-  )
+  return characterStore.getSkillStackState(container.value.branchItem)
 })
 
 const stackValue: WritableComputedRef<number> = computed({

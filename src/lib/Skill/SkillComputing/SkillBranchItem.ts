@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { markRaw, reactive } from 'vue'
 
 import {
   type InstanceId,
@@ -6,10 +6,12 @@ import {
   type InstanceWithId,
 } from '@/shared/services/InstanceId'
 import { toInt } from '@/shared/utils/number'
-import { splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
 
+import { parseBooleanProperty } from '../Properties/Boolean'
+import { createIterablePropertyKey } from '../Properties/Iterable'
+import { parseListProperty } from '../Properties/List'
 import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
@@ -38,7 +40,9 @@ abstract class SkillBranchItemBase<
   private _inherit: SkillBranchNames | null
 
   // -1 means undefined
-  readonly id: number
+  readonly overrideId: number
+
+  readonly effectBranchId: string
 
   readonly parent: Parent
   readonly stats: StatComputed[]
@@ -70,12 +74,12 @@ abstract class SkillBranchItemBase<
    * @param parent - parent SkillEffectItem
    * @param branch - branch from default effect of skill, branch should be overwrite later
    */
-  constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
+  protected constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.instanceId = SkillBranchItemBase._idGenerator.generate()
     this.parent = parent
-    this.id = branch.id
+    this.overrideId = branch.overrideId
 
-    this._name = branch.name
+    this._name = branch instanceof SkillBranch ? branch.name : branch.realName
     this._inherit = null
     this.name = this._name // init _inherit
 
@@ -89,6 +93,7 @@ abstract class SkillBranchItemBase<
     this._initPostponeByProp()
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
+    this.effectBranchId = `${this.parent.effectId}-${this.default.getIndexId()}`
 
     this.record = {
       props: {
@@ -118,9 +123,7 @@ abstract class SkillBranchItemBase<
   }
 
   set name(value: SkillBranchNames) {
-    if (value === SkillBranchNames.Next) {
-      this._inherit = SkillBranchNames.Effect
-    }
+    this._inherit = value === SkillBranchNames.Next ? SkillBranchNames.Effect : null
     this._name = value
   }
 
@@ -128,16 +131,20 @@ abstract class SkillBranchItemBase<
     return this._name
   }
 
-  get allProps() {
+  get allProps(): Map<string, string> {
     return this._props
   }
 
+  get defaultBranchId(): string {
+    return this.default.branchId
+  }
+
   hasId(): boolean {
-    return this.id !== -1
+    return this.overrideId !== -1
   }
 
   propKey(...keys: string[]) {
-    return keys.join('.')
+    return createIterablePropertyKey(...keys)
   }
 
   prop(...keys: string[]): string {
@@ -149,7 +156,7 @@ abstract class SkillBranchItemBase<
   }
 
   propBoolean(...keys: string[]): boolean {
-    return this._props.get(this.propKey(...keys)) === '1'
+    return parseBooleanProperty(this._props.get(this.propKey(...keys)))
   }
 
   hasProp(...keys: string[]) {
@@ -193,9 +200,6 @@ abstract class SkillBranchItemBase<
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillBranchItem<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
@@ -203,33 +207,50 @@ class SkillBranchItem<
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
   linkedStackIds: number[]
   stackId: number | null
+  effectStackId: string | null
 
   readonly groupState: BranchGroupState
 
-  constructor(parent: Parent, branch: SkillBranch | SkillBranchItem) {
+  private constructor(
+    parent: Parent,
+    branch: SkillBranch | SkillBranchItem,
+    groupState: BranchGroupState
+  ) {
     super(parent, branch)
 
     this.suffixBranches = []
     this.emptySuffixBranches = []
 
     this.stackId = null
+    this.effectStackId = null
     this.linkedStackIds = []
     this._initDatasByProp()
 
-    this.groupState = reactive({
+    this.groupState = groupState
+  }
+
+  static create<Parent extends SkillEffectItemBase = SkillEffectItemBase>(
+    parent: Parent,
+    branch: SkillBranch | SkillBranchItem
+  ): SkillBranchItem<Parent> {
+    const groupState = reactive<BranchGroupState>({
       size: 0,
       expandable: false,
       expanded: true,
       parentExpanded: true,
       isGroupEnd: false,
     })
+    return markRaw(new SkillBranchItem(parent, branch, groupState))
   }
 
   _initDatasByProp() {
     this._initPostponeByProp()
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.effectStackId = this.stackId === null ? null : `${this.parent.effectId}-${this.stackId}`
     this.linkedStackIds =
-      this.stackId !== null ? [] : splitComma(this.prop('stack_id')).map(id => toInt(id) ?? 0)
+      this.stackId !== null
+        ? []
+        : parseListProperty(this.prop('stack_id')).map(id => toInt(id) ?? 0)
   }
 
   get isGroup(): boolean {
@@ -275,7 +296,7 @@ class SkillBranchItem<
   }
 
   toSuffix(mainBranch: SkillBranchItem): SkillBranchItemSuffix {
-    const suffix = new SkillBranchItemSuffix(this.parent, this, mainBranch)
+    const suffix = SkillBranchItemSuffix.create(this.parent, this, mainBranch)
     suffix.syncRecord(this.record)
     return suffix
   }
@@ -284,33 +305,40 @@ class SkillBranchItem<
     parent?: TargetParent
   ): SkillBranchItem<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    const clone = new SkillBranchItem(parent, this)
+    const clone = SkillBranchItem.create(parent, this)
 
-    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
+    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent, clone)))
+    clone.emptySuffixBranches.push(...this.emptySuffixBranches.map(suf => suf.clone(parent, clone)))
 
     return clone
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillBranchItemSuffix<
   Parent extends SkillEffectItemBase = SkillEffectItemBase,
 > extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 
-  constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
+  private constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
     super(parent, branch)
 
     this.mainBranch = mainBranch
   }
 
+  static create<Parent extends SkillEffectItemBase = SkillEffectItemBase>(
+    parent: Parent,
+    branch: SkillBranchItemBase,
+    mainBranch: SkillBranchItem
+  ): SkillBranchItemSuffix<Parent> {
+    return markRaw(new SkillBranchItemSuffix(parent, branch, mainBranch))
+  }
+
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
-    parent?: TargetParent
+    parent?: TargetParent,
+    mainBranch: SkillBranchItem = this.mainBranch
   ): SkillBranchItemSuffix<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
-    return new SkillBranchItemSuffix(parent, this, this.mainBranch)
+    return SkillBranchItemSuffix.create(parent, this, mainBranch)
   }
 }
 

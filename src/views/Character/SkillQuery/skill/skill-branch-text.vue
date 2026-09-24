@@ -14,10 +14,9 @@ import { computed } from 'vue'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { TextHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
-
-import TextHandler from './branch-handlers/TextHandler'
 
 interface Props {
   computing: SkillComputingContainer

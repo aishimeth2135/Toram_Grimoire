@@ -19,11 +19,11 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { HealHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'
 
-import HealHandler from './branch-handlers/HealHandler'
 import { type NormalLayoutSubContent } from './layouts/setup'
 import { setupCommonExtraSuffixBranches } from './setup'
 

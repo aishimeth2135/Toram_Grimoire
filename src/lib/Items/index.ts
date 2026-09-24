@@ -8,10 +8,14 @@ export default class ItemsSystem {
   crystals: BagCrystal[]
   potionsRoot: BagPotionsRoot
 
-  constructor() {
-    this.equipments = markRaw([])
-    this.crystals = markRaw([])
-    this.potionsRoot = markRaw(new BagPotionsRoot())
+  private constructor() {
+    this.equipments = []
+    this.crystals = []
+    this.potionsRoot = BagPotionsRoot.create()
+  }
+
+  static create(): ItemsSystem {
+    return markRaw(new ItemsSystem())
   }
 
   appendEquipment(
@@ -21,24 +25,20 @@ export default class ItemsSystem {
     stability: number,
     caption: string
   ): BagEquipment {
-    const item = markRaw(
-      new BagEquipment(
-        this.equipments.length.toString(),
-        name,
-        category,
-        baseValue,
-        stability,
-        caption
-      )
+    const item = BagEquipment.create(
+      this.equipments.length.toString(),
+      name,
+      category,
+      baseValue,
+      stability,
+      caption
     )
     this.equipments.push(item)
     return item
   }
 
   appendCrystal(name: string, category: number, bossCategory: number): BagCrystal {
-    const item = markRaw(
-      new BagCrystal(this.crystals.length.toString(), name, category, bossCategory)
-    )
+    const item = BagCrystal.create(this.crystals.length.toString(), name, category, bossCategory)
     this.crystals.push(item)
     return item
   }

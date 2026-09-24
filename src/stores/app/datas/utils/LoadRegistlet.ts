@@ -85,7 +85,7 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
       if (currentCategory.id === RegistletCategoryIds.Stat) {
         const statBase = Grimoire.Character.findStatBase(row('link'))
         if (statBase) {
-          const newItem = new RegistletItemBaseStat(
+          const newItem = RegistletItemBaseStat.create(
             currentCategory as RegistletCategory<RegistletItemBaseStat>,
             infos,
             statBase
@@ -98,7 +98,7 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
           .map(item => Grimoire.Skill.skillRoot.findSkillById(item))
           .filter(item => item) as Skill[]
         infos.id = `-${idPrefix}-${infos.id}`
-        const newItem = new RegistletItemBaseSkill(
+        const newItem = RegistletItemBaseSkill.create(
           currentCategory as RegistletCategory<RegistletItemBaseSkill>,
           infos,
           skills
@@ -106,7 +106,7 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
         currentCategory.appendItem(newItem)
         currentItem = newItem
       } else if (currentCategory.id === RegistletCategoryIds.Special) {
-        const newItem = new RegistletItemBaseSpecial(
+        const newItem = RegistletItemBaseSpecial.create(
           currentCategory as RegistletCategory<RegistletItemBaseSpecial>,
           infos
         )
@@ -127,7 +127,7 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
         defaultRowType = 'value'
       }
       const rowType = row('type') || defaultRowType
-      const itemRow = new RegistletItemRow(rowType, row('value'))
+      const itemRow = RegistletItemRow.create(rowType, row('value'))
       currentItem.rows.push(itemRow)
     }
   })

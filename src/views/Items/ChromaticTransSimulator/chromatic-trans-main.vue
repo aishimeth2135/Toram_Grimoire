@@ -9,7 +9,7 @@ import DyeColorButton from '@/components/common/dye-color-button.vue'
 import ChromaticTransStepMain from './chromatic-trans-step-main.vue'
 
 const { t } = useI18n()
-const container = shallowRef<ChromaticTransContainer>(new ChromaticTransContainer())
+const container = shallowRef<ChromaticTransContainer>(ChromaticTransContainer.create())
 const expandedSteps = shallowRef<Set<number>>(new Set([0]))
 
 function selectGem(index: number, gem: ChromaticTransGem) {
@@ -31,7 +31,7 @@ function toggleStep(index: number) {
 }
 
 function resetSteps() {
-  container.value = new ChromaticTransContainer()
+  container.value = ChromaticTransContainer.create()
   expandedSteps.value = new Set([0])
 }
 </script>

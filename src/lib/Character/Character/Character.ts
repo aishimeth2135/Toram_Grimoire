@@ -26,7 +26,7 @@ class Character implements CharacterBindingBuild {
 
   static _autoIncreasement = 0
 
-  constructor(name = 'Potum') {
+  private constructor(name = 'Potum') {
     this.loadedId = null
     this.id = Character._autoIncreasement
     Character._autoIncreasement += 1
@@ -35,27 +35,31 @@ class Character implements CharacterBindingBuild {
 
     this.level = 1
     this._baseStats = [
-      new CharacterBaseStat(CharacterBaseStatTypes.STR),
-      new CharacterBaseStat(CharacterBaseStatTypes.DEX),
-      new CharacterBaseStat(CharacterBaseStatTypes.INT),
-      new CharacterBaseStat(CharacterBaseStatTypes.AGI),
-      new CharacterBaseStat(CharacterBaseStatTypes.VIT),
+      CharacterBaseStat.create(CharacterBaseStatTypes.STR),
+      CharacterBaseStat.create(CharacterBaseStatTypes.DEX),
+      CharacterBaseStat.create(CharacterBaseStatTypes.INT),
+      CharacterBaseStat.create(CharacterBaseStatTypes.AGI),
+      CharacterBaseStat.create(CharacterBaseStatTypes.VIT),
     ]
 
     this._optinalBaseStat = null
 
     this.equipmentFields = [
-      new EquipmentField(this, EquipmentFieldTypes.MainWeapon),
-      new EquipmentField(this, EquipmentFieldTypes.SubWeapon),
-      new EquipmentField(this, EquipmentFieldTypes.BodyArmor),
-      new EquipmentField(this, EquipmentFieldTypes.Additional),
-      new EquipmentField(this, EquipmentFieldTypes.Special),
-      new EquipmentField(this, EquipmentFieldTypes.Avatar, 0),
-      new EquipmentField(this, EquipmentFieldTypes.Avatar, 1),
-      new EquipmentField(this, EquipmentFieldTypes.Avatar, 2),
+      EquipmentField.create(this, EquipmentFieldTypes.MainWeapon),
+      EquipmentField.create(this, EquipmentFieldTypes.SubWeapon),
+      EquipmentField.create(this, EquipmentFieldTypes.BodyArmor),
+      EquipmentField.create(this, EquipmentFieldTypes.Additional),
+      EquipmentField.create(this, EquipmentFieldTypes.Special),
+      EquipmentField.create(this, EquipmentFieldTypes.Avatar, 0),
+      EquipmentField.create(this, EquipmentFieldTypes.Avatar, 1),
+      EquipmentField.create(this, EquipmentFieldTypes.Avatar, 2),
     ]
 
-    this.comboBuild = new CharacterComboBuild()
+    this.comboBuild = CharacterComboBuild.create()
+  }
+
+  static create(name = 'Potum'): Character {
+    return new Character(name)
   }
 
   get origin(): Character {
@@ -86,7 +90,7 @@ class Character implements CharacterBindingBuild {
     return this._optinalBaseStat ? true : false
   }
   setOptionalBaseStat(name: CharacterBaseStatTypes): void {
-    this._optinalBaseStat = new CharacterBaseStat(name)
+    this._optinalBaseStat = CharacterBaseStat.create(name)
   }
   clearOptinalBaseStat(): void {
     this._optinalBaseStat = null
@@ -137,7 +141,7 @@ class Character implements CharacterBindingBuild {
   }
 
   clone(): Character {
-    const chara = new Character(this.name + '*')
+    const chara = Character.create(this.name + '*')
     chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
       const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name)!
@@ -316,9 +320,13 @@ class CharacterBaseStat {
   name: CharacterBaseStatTypes
   value: number
 
-  constructor(name: CharacterBaseStatTypes, value: number = 1) {
+  private constructor(name: CharacterBaseStatTypes, value: number = 1) {
     this.name = name
     this.value = value
+  }
+
+  static create(name: CharacterBaseStatTypes, value: number = 1): CharacterBaseStat {
+    return new CharacterBaseStat(name, value)
   }
 }
 
@@ -329,13 +337,17 @@ class EquipmentField {
   readonly fieldId: string
   equipment: CharacterEquipment | null
 
-  constructor(parent: Character, type: EquipmentFieldTypes, index: number = 0) {
+  private constructor(parent: Character, type: EquipmentFieldTypes, index: number = 0) {
     this._parent = parent
     this.type = type
     this.index = index
     this.fieldId = type + (index === 0 ? '' : `-${index}`)
 
     this.equipment = null
+  }
+
+  static create(parent: Character, type: EquipmentFieldTypes, index: number = 0): EquipmentField {
+    return new EquipmentField(parent, type, index)
   }
 
   get belongCharacter() {

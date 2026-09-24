@@ -21,7 +21,7 @@ class FoodsBuild implements CharacterBindingBuild {
   selectedFoodIndexes: number[]
   base: FoodsBase
 
-  constructor(base: FoodsBase, name: string = '') {
+  private constructor(base: FoodsBase, name: string = '') {
     this.loadedId = null
     this.id = _foodBuildAutoIncreasement
     _foodBuildAutoIncreasement += 1
@@ -35,12 +35,16 @@ class FoodsBuild implements CharacterBindingBuild {
     this.selectedFoodIndexes = []
   }
 
+  static create(base: FoodsBase, name: string = ''): FoodsBuild {
+    return new FoodsBuild(base, name)
+  }
+
   get selectedFoods() {
     return this.selectedFoodIndexes.map(idx => this.foods[idx])
   }
 
   appendFood(foodBase: FoodBase) {
-    this.foods.push(new Food(foodBase))
+    this.foods.push(Food.create(foodBase))
   }
   foodSelected(idx: number) {
     return this.selectedFoodIndexes.includes(idx)
@@ -64,7 +68,7 @@ class FoodsBuild implements CharacterBindingBuild {
   }
 
   clone() {
-    const newFood = new FoodsBuild(this.base, this.name + '*')
+    const newFood = FoodsBuild.create(this.base, this.name + '*')
     newFood.foods = this.foods.map(food => food.clone())
     newFood.selectedFoodIndexes = this.selectedFoodIndexes.slice()
     return newFood
@@ -134,9 +138,13 @@ class Food {
   foodBase: FoodBase
   level: number
 
-  constructor(foodBase: FoodBase) {
+  private constructor(foodBase: FoodBase) {
     this.foodBase = foodBase
     this.level = 0
+  }
+
+  static create(foodBase: FoodBase): Food {
+    return new Food(foodBase)
   }
 
   stat() {
@@ -148,7 +156,7 @@ class Food {
   }
 
   clone() {
-    const newFood = new Food(this.foodBase)
+    const newFood = Food.create(this.foodBase)
     newFood.level = this.level
     return newFood
   }

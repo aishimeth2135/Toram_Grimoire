@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia'
 import { type ShallowReactive, ref } from 'vue'
 
-import {
-  CharacterBuildLabel,
-  type CharacterBuildLabelSaveData,
-} from '@/lib/Character/Character/CharacterBuildLabel'
+import { CharacterBuildLabel, type CharacterBuildLabelSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Items } from '@/lib/common/Items'
 
@@ -12,13 +9,13 @@ export const useCharacterBuildLabelStore = defineStore('view-character-build-lab
   const labels = ref([] as ShallowReactive<CharacterBuildLabel>[])
 
   const createBuildLabel = () => {
-    const newLabel = CharacterBuildLabel.reactivity('0.0')
+    const newLabel = CharacterBuildLabel.createWithShallowReactive('0.0')
     labels.value.unshift(newLabel)
     return newLabel
   }
 
   const loadBuildLabel = (loadedCategory: string, data: CharacterBuildLabelSaveData) => {
-    const newLabel = CharacterBuildLabel.fromLoad(loadedCategory, data).toReactive()
+    const newLabel = CharacterBuildLabel.fromLoadWithShallowReactive(loadedCategory, data)
     labels.value.push(newLabel)
   }
 

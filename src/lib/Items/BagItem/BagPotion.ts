@@ -6,13 +6,17 @@ class BagPotionsRoot {
   readonly categorys: BagPotionsCategory[]
   readonly allPotions: BagPotion[]
 
-  constructor() {
-    this.categorys = markRaw([])
-    this.allPotions = markRaw([])
+  private constructor(categorys: BagPotionsCategory[], allPotions: BagPotion[]) {
+    this.categorys = categorys
+    this.allPotions = allPotions
+  }
+
+  static create(): BagPotionsRoot {
+    return markRaw(new BagPotionsRoot(markRaw([]), markRaw([])))
   }
 
   appendCategory(id: string, name: string): BagPotionsCategory {
-    const category = markRaw(new BagPotionsCategory(this, id, name))
+    const category = BagPotionsCategory.create(this, id, name)
     this.categorys.push(category)
     return category
   }
@@ -29,15 +33,24 @@ class BagPotionsCategory {
 
   readonly obtainCategorys: BagPotionsObtainCategory[]
 
-  constructor(parent: BagPotionsRoot, id: string, name: string) {
+  private constructor(
+    parent: BagPotionsRoot,
+    id: string,
+    name: string,
+    obtainCategorys: BagPotionsObtainCategory[]
+  ) {
     this.root = parent
     this.id = id
     this.name = name
-    this.obtainCategorys = markRaw([])
+    this.obtainCategorys = obtainCategorys
+  }
+
+  static create(parent: BagPotionsRoot, id: string, name: string): BagPotionsCategory {
+    return markRaw(new BagPotionsCategory(parent, id, name, markRaw([])))
   }
 
   appendObtainCategory(id: string, name: string): BagPotionsObtainCategory {
-    const obtainCategory = markRaw(new BagPotionsObtainCategory(this, `${this.id}-${id}`, name))
+    const obtainCategory = BagPotionsObtainCategory.create(this, `${this.id}-${id}`, name)
     this.obtainCategorys.push(obtainCategory)
     return obtainCategory
   }
@@ -49,15 +62,19 @@ class BagPotionsObtainCategory {
   readonly name: string
   readonly potions: BagPotion[]
 
-  constructor(parent: BagPotionsCategory, id: string, name: string) {
+  private constructor(parent: BagPotionsCategory, id: string, name: string, potions: BagPotion[]) {
     this._parent = parent
     this.id = id
     this.name = name
-    this.potions = markRaw([])
+    this.potions = potions
+  }
+
+  static create(parent: BagPotionsCategory, id: string, name: string): BagPotionsObtainCategory {
+    return markRaw(new BagPotionsObtainCategory(parent, id, name, markRaw([])))
   }
 
   appendPotion(name: string): BagPotion {
-    const potion = markRaw(new BagPotion(this, `${this.id}-${this.potions.length}`, name))
+    const potion = BagPotion.create(this, `${this.id}-${this.potions.length}`, name)
     this._parent.root.allPotions.push(potion)
     this.potions.push(potion)
     return potion
@@ -72,10 +89,14 @@ class BagPotion extends BagItem {
   private readonly _parent: BagPotionsObtainCategory
   healType: 'hp' | 'mp' | null
 
-  constructor(parent: BagPotionsObtainCategory, id: string, name: string) {
+  private constructor(parent: BagPotionsObtainCategory, id: string, name: string) {
     super(id, name)
     this._parent = parent
     this.healType = null
+  }
+
+  static create(parent: BagPotionsObtainCategory, id: string, name: string): BagPotion {
+    return markRaw(new BagPotion(parent, id, name))
   }
 
   get belongCategory() {

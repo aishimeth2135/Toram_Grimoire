@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed, markRaw, reactive } from 'vue'
+import { type ComputedRef, type Ref, computed, reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -16,17 +16,20 @@ import {
   SkillComputingContainer,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputing'
-
-import BasicHandler from '@/views/Character/SkillQuery/skill/branch-handlers/BasicHandler'
-import DamageHandler from '@/views/Character/SkillQuery/skill/branch-handlers/DamageHandler'
-import EffectHandler from '@/views/Character/SkillQuery/skill/branch-handlers/EffectHandler'
-import ExtraHandler from '@/views/Character/SkillQuery/skill/branch-handlers/ExtraHandler'
-import PassiveHandler from '@/views/Character/SkillQuery/skill/branch-handlers/PassiveHandler'
-import StackHandler from '@/views/Character/SkillQuery/skill/branch-handlers/StackHandler'
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { BasicHandler } from '@/lib/Skill/SkillDisplay'
+import { DamageHandler } from '@/lib/Skill/SkillDisplay'
+import { EffectHandler } from '@/lib/Skill/SkillDisplay'
+import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
+import { PassiveHandler } from '@/lib/Skill/SkillDisplay'
+import { StackHandler } from '@/lib/Skill/SkillDisplay'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import type { CharacterBuildsContext } from './context'
-import { getSkillBranchState } from './getState'
+import {
+  getSkillBranchState,
+  getSkillFormulaExtraBranchState,
+  getSkillStackState,
+} from './getState'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { useGetSkillLevel } from './setupCharacterBuilds'
 
@@ -221,7 +224,8 @@ export function setupCharacterSkills(
     computed(() => buildsContext.value.skillBuild)
   )
 
-  const computing = new SkillComputingContainer()
+  const computing = SkillComputingContainer.create()
+  computing.config.getStackState = getSkillStackState
   computing.varGetters.skillLevel = getSkillLevel
   computing.varGetters.characterLevel = () => character.value?.level ?? 0
   computing.varGetters.registletLevel = (() => {
@@ -288,7 +292,7 @@ export function setupCharacterSkills(
   }
 
   computing.config.getFormulaExtraValue = (branch, id, props) => {
-    return getSkillBranchState(branch.default).getFormulaExtraState(id, props).value
+    return getSkillFormulaExtraBranchState(branch).getFormulaExtraState(id, props).value
   }
 
   const allSkills: Skill[] = []
@@ -335,7 +339,7 @@ export function setupCharacterSkills(
       target: ComputedRef<SkillBranchItem[]>,
       handler: (_computing: SkillComputingContainer, bch: SkillBranchItem) => DisplayDataContainer,
       validBranchNames: SkillBranchNames[]
-    ) => {
+    ): ComputedRef<SkillResultBase[]> => {
       return computed(() => {
         return target.value.map(bch => {
           const container = (
@@ -349,7 +353,7 @@ export function setupCharacterSkills(
           return {
             container,
             suffixContainers,
-          } as SkillResultBase
+          } satisfies SkillResultBase
         })
       })
     }
@@ -522,7 +526,7 @@ export function setupCharacterSkills(
   }
 
   const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResultBase[]>>) => {
-    const _map = new Map<Skill, SkillResultsState>()
+    const resultsStateMap = new Map<Skill, SkillResultsState>()
     for (const [skill, resultBases] of target.entries()) {
       const stackContainers = computed(() =>
         getUsedStackContainers(
@@ -535,9 +539,12 @@ export function setupCharacterSkills(
         if (stackContainers.value.length > 0) {
           return true
         }
-        return resultBases.value.some(
-          resultBase =>
-            getSkillBranchState(resultBase.container.branchItem.default).formulaExtraIds.length > 0
+        return resultBases.value.some(resultBase =>
+          resultBase.container.branchItem.suffixBranches.some(
+            suffix =>
+              suffix.is(SkillBranchNames.FormulaExtra) &&
+              getSkillFormulaExtraBranchState(suffix).formulaExtraIds.length > 0
+          )
         )
       })
       const resultStates = reactive({
@@ -546,34 +553,31 @@ export function setupCharacterSkills(
         stackContainers,
         basicContainer,
         hasOptions,
+        results: computed(() =>
+          resultBases.value.map(item => {
+            return {
+              ...item,
+              root: resultStates,
+            } as SkillResult
+          })
+        ),
       }) as SkillResultsState
-      const results = computed(() =>
-        resultBases.value.map(item => {
-          return {
-            ...item,
-            root: resultStates,
-          } as SkillResult
-        })
-      )
-      resultStates.results = results as unknown as SkillResult[]
-      _map.set(skill, resultStates)
+      resultsStateMap.set(skill, resultStates)
     }
 
     const resultStates = computed(() => {
       const results: SkillResultsState[] = []
       skillBuildAllSkills.value.forEach(skill => {
-        if (_map.has(skill)) {
-          results.push(_map.get(skill)!)
+        if (resultsStateMap.has(skill)) {
+          results.push(resultsStateMap.get(skill)!)
         }
       })
       return results
     })
 
-    const allResultStatesMap = _map
-
     return {
       resultStates,
-      allResultStatesMap,
+      allResultStatesMap: resultsStateMap,
     }
   }
 
@@ -650,7 +654,7 @@ export function setupCharacterSkills(
   })
 
   return {
-    skillComputingContainer: markRaw(computingContainer),
+    skillComputingContainer: computingContainer,
 
     activeSkillResultStates,
     passiveSkillResultStates,

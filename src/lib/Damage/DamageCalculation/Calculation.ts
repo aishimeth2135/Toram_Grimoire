@@ -1,9 +1,11 @@
 import type {
   CalcItemBase,
   CalcItemContainerBase,
+  CalcItemContainerContext,
   CalcResultOptions,
   CalcStructItem,
   CalculationBase,
+  CalculationSnapshot,
 } from './CalculationBase'
 import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 
@@ -28,6 +30,101 @@ interface CalculationSaveData {
   }[]
 }
 
+const calculationContainerIdSet = new Set<string>(Object.values(CalculationContainerIds))
+const calculationItemIdSet = new Set<string>(Object.values(CalculationItemIds))
+
+function isCalculationContainerId(value: unknown): value is CalculationContainerIds {
+  return typeof value === 'string' && calculationContainerIdSet.has(value)
+}
+
+function isCalculationItemId(value: unknown): value is CalculationItemIds {
+  return typeof value === 'string' && calculationItemIdSet.has(value)
+}
+
+function parseCalculationSaveData(data: unknown): CalculationSaveData | null {
+  if (!data || typeof data !== 'object') {
+    return null
+  }
+
+  const source = data as Record<string, unknown>
+  if (
+    typeof source.name !== 'string' ||
+    !Array.isArray(source.containers) ||
+    !Array.isArray(source.items) ||
+    !Array.isArray(source.containerCustomItems)
+  ) {
+    return null
+  }
+
+  const containers = source.containers.flatMap(container => {
+    if (!container || typeof container !== 'object') {
+      return []
+    }
+    const item = container as Record<string, unknown>
+    if (
+      !isCalculationContainerId(item.id) ||
+      typeof item.enabled !== 'boolean' ||
+      (item.currentItemId !== null && !isCalculationItemId(item.currentItemId))
+    ) {
+      return []
+    }
+    return [
+      {
+        id: item.id,
+        enabled: item.enabled,
+        currentItemId: item.currentItemId,
+      },
+    ]
+  })
+  const items = source.items.flatMap(item => {
+    if (!item || typeof item !== 'object') {
+      return []
+    }
+    const value = item as Record<string, unknown>
+    if (!isCalculationItemId(value.id) || typeof value.value !== 'number') {
+      return []
+    }
+    return [{ id: value.id, value: Number.isFinite(value.value) ? value.value : 0 }]
+  })
+  const containerCustomItems = source.containerCustomItems.flatMap(container => {
+    if (!container || typeof container !== 'object') {
+      return []
+    }
+    const value = container as Record<string, unknown>
+    if (!isCalculationContainerId(value.containerId) || !Array.isArray(value.items)) {
+      return []
+    }
+    const customItems = value.items.flatMap(item => {
+      if (!item || typeof item !== 'object') {
+        return []
+      }
+      const customItem = item as Record<string, unknown>
+      if (
+        !isCalculationItemId(customItem.id) ||
+        typeof customItem.name !== 'string' ||
+        typeof customItem.value !== 'number'
+      ) {
+        return []
+      }
+      return [
+        {
+          id: customItem.id,
+          name: customItem.name,
+          value: Number.isFinite(customItem.value) ? customItem.value : 0,
+        },
+      ]
+    })
+    return [{ containerId: value.containerId, items: customItems }]
+  })
+
+  return {
+    name: source.name,
+    containers,
+    items,
+    containerCustomItems,
+  }
+}
+
 interface CalculationConfig {
   getItemValue: ((itemId: CalculationItemIds) => number | null) | null
   getContainerCurrentItemId:
@@ -43,7 +140,7 @@ class Calculation {
   containerCustomItems: Map<CalculationContainerIds, CalcItemCustom[]>
   config: CalculationConfig
 
-  constructor(base: CalculationBase, name: string = '') {
+  private constructor(base: CalculationBase, name: string = '') {
     this.base = base
     this.name = name
     this.containers = new Map()
@@ -55,12 +152,12 @@ class Calculation {
 
     // init of containers and items
     for (const itemBase of this.base.items.values()) {
-      const item = new CalcItem(this, itemBase)
+      const item = CalcItem.create(this, itemBase)
       this.items.set(itemBase.id, item)
     }
 
     for (const containerBase of this.base.containers.values()) {
-      const container = new CalcItemContainer(this, containerBase)
+      const container = CalcItemContainer.create(this, containerBase)
       container.initItems()
       this.containers.set(containerBase.id, container)
     }
@@ -70,6 +167,10 @@ class Calculation {
       getContainerCurrentItemId: null,
       getContainerForceHidden: null,
     }
+  }
+
+  static create(base: CalculationBase, name: string = ''): Calculation {
+    return new Calculation(base, name)
   }
 
   appendCustomItem(
@@ -85,26 +186,50 @@ class Calculation {
     const container = this.containers.get(containerId)
     const itemBase = container ? container.base.items.get(itemId) : null
     if (itemBase) {
-      const newItem = new CalcItemCustom(this, itemBase)
+      const newItem = CalcItemCustom.create(this, itemBase)
       this.containerCustomItems.get(containerId)!.push(newItem)
       return newItem
     }
     return null
   }
 
-  removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom) {
+  removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom): boolean {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(
         `[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`
       )
-      return
+      return false
     }
     const items = this.containerCustomItems.get(containerId) as CalcItemCustom[]
-    items.splice(items.indexOf(item), 1)
+    const itemIndex = items.indexOf(item)
+    if (itemIndex === -1) {
+      return false
+    }
+    items.splice(itemIndex, 1)
+    return true
   }
 
   result(calcStruct: CalcStructItem, options?: CalcResultOptions): number {
     return this.base.result(this, calcStruct, options)
+  }
+
+  createSnapshot(): CalculationSnapshot {
+    return {
+      itemValues: new Map(
+        Array.from(this.items, ([itemId, item]) => [itemId, item.value] as const)
+      ),
+      containers: new Map(
+        Array.from(this.containers, ([containerId, container]) => [
+          containerId,
+          {
+            enabled: container.enabled,
+            applicable: !container.hidden,
+            currentItemId: container.base.isVirtual ? null : container.currentItem.base.id,
+            customItemValues: container.customItems.map(item => item.value),
+          },
+        ])
+      ),
+    }
   }
 
   save(): CalculationSaveData {
@@ -185,7 +310,7 @@ class Calculation {
   }
 }
 
-class CalcItemContainer {
+class CalcItemContainer implements CalcItemContainerContext {
   private _calculation: Calculation
   private _currentItemId: CalculationItemIds | null
 
@@ -193,12 +318,16 @@ class CalcItemContainer {
   enabled: boolean
   items: Map<CalculationItemIds, CalcItem>
 
-  constructor(calculation: Calculation, base: CalcItemContainerBase) {
+  private constructor(calculation: Calculation, base: CalcItemContainerBase) {
     this._calculation = calculation
     this.base = base
     this.enabled = base.enabledDefaultValue
     this.items = new Map()
     this._currentItemId = null
+  }
+
+  static create(calculation: Calculation, base: CalcItemContainerBase): CalcItemContainer {
+    return new CalcItemContainer(calculation, base)
   }
 
   /**
@@ -255,6 +384,18 @@ class CalcItemContainer {
     return this.items.get(this._currentItemId!)!
   }
 
+  get currentItemId(): CalculationItemIds | null {
+    return this.base.isVirtual ? null : this.currentItem.base.id
+  }
+
+  get currentItemValue(): number {
+    return this.currentItem.value
+  }
+
+  get customItemValues(): readonly number[] {
+    return this.customItems.map(item => item.value)
+  }
+
   get customItemAddable(): boolean {
     return this.belongCalculation.containerCustomItems.has(this.base.id)
   }
@@ -271,8 +412,8 @@ class CalcItemContainer {
     }
     return null
   }
-  removeCustomItem(item: CalcItemCustom): void {
-    this.belongCalculation.removeCustomItem(this.base.id, item)
+  removeCustomItem(item: CalcItemCustom): boolean {
+    return this.belongCalculation.removeCustomItem(this.base.id, item)
   }
 
   /**
@@ -286,8 +427,21 @@ class CalcItemContainer {
     return (this.items.get(id) as CalcItem).value
   }
 
-  selectItem(id: CalculationItemIds) {
+  getContainerResult(id: CalculationContainerIds): number {
+    return this.belongCalculation.containers.get(id)?.result() ?? 0
+  }
+
+  getContainerCurrentItemId(id: CalculationContainerIds): CalculationItemIds | null {
+    const container = this.belongCalculation.containers.get(id)
+    return !container || container.base.isVirtual ? null : container.currentItem.base.id
+  }
+
+  selectItem(id: CalculationItemIds): boolean {
+    if (!this.items.has(id)) {
+      return false
+    }
     this._currentItemId = id
+    return true
   }
 
   result(): number {
@@ -301,10 +455,14 @@ class CalcItem {
 
   base: CalcItemBase
 
-  constructor(calculation: Calculation, base: CalcItemBase) {
+  protected constructor(calculation: Calculation, base: CalcItemBase) {
     this._calculation = calculation
     this.base = base
     this._value = base.defaultValue
+  }
+
+  static create(calculation: Calculation, base: CalcItemBase): CalcItem {
+    return new CalcItem(calculation, base)
   }
   get value(): number {
     const value = this._calculation.config.getItemValue?.(this.base.id)
@@ -312,6 +470,9 @@ class CalcItem {
   }
 
   set value(value: number) {
+    if (!Number.isFinite(value)) {
+      value = this.base.defaultValue
+    }
     const max = this.base.max,
       min = this.base.min
     value = max !== null && value > max ? max : value
@@ -327,12 +488,17 @@ class CalcItem {
 class CalcItemCustom extends CalcItem {
   name: string
 
-  constructor(calculation: Calculation, base: CalcItemBase, name: string = '') {
+  private constructor(calculation: Calculation, base: CalcItemBase, name: string = '') {
     super(calculation, base)
 
     this.name = name
   }
+
+  static create(calculation: Calculation, base: CalcItemBase, name: string = ''): CalcItemCustom {
+    return new CalcItemCustom(calculation, base, name)
+  }
 }
 
 export { CalcItemContainer, Calculation, CalcItem, CalcItemCustom }
+export { parseCalculationSaveData }
 export type { CalculationSaveData }

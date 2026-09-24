@@ -1,4 +1,4 @@
-import { EquipmentFieldTypes } from '.'
+import { EquipmentFieldTypes } from './enums'
 
 export function getEquipmentFieldTypeText(
   type: EquipmentFieldTypes,

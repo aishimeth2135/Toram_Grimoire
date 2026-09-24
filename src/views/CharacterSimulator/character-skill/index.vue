@@ -78,6 +78,16 @@ const removeSkillBuild = () => {
         />
         <CharacterSkillPreviewTab v-else :skill-build="selectedBuild" />
       </div>
+      <div class="space-y-2">
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-1') }}
+        </div>
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-2') }}
+        </div>
+      </div>
     </template>
   </CommonBuildPage>
   <cy-default-tips v-else>

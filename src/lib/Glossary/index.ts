@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { GlossaryTag } from './GlossaryTag'
 
 export default class GlossarySystem {
@@ -5,12 +7,16 @@ export default class GlossarySystem {
 
   private _includesTagsCache!: Map<string, GlossaryTag[]>
 
-  constructor() {
+  private constructor() {
     this.tags = []
   }
 
+  static create(): GlossarySystem {
+    return markRaw(new GlossarySystem())
+  }
+
   appendTag(name: string) {
-    const tag = new GlossaryTag(name)
+    const tag = GlossaryTag.create(name)
     this.tags.push(tag)
     return tag
   }
@@ -71,9 +77,6 @@ function searchTagValueTags(value: string): string[] {
   const res: string[] = []
   for (const match of value.matchAll(/#\[([^\]]+)\](?:\[([^\]]+)\])?/g)) {
     res.push(match[2] || match[1])
-  }
-  for (const match of value.matchAll(/#([^\s]+)\s(\w?)/g)) {
-    res.push(match[1])
   }
   return res
 }

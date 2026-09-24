@@ -142,7 +142,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, computed, reactive, ref, useTemplateRef } from 'vue'
+import { type Ref, computed, reactive, ref, shallowReactive, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
@@ -175,8 +175,8 @@ const { t } = useI18n()
 const searchFilterVisible = ref(false)
 const toggleSearchFilterVisible = useToggle(searchFilterVisible)
 
-const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(
-  crystal => new EquipmentCrystal(crystal)
+const crystals: EquipmentCrystal[] = Grimoire.Items.crystals.map(crystal =>
+  EquipmentCrystal.create(crystal)
 )
 const resultItemsDetailVisibleDefault = ref(false)
 const topElement = useTemplateRef('top-element')
@@ -199,11 +199,11 @@ const modes: {
 
 const resultItemPreviewMode: Ref<PreviewMode> = ref('default')
 
-const modeNormal = reactive({
+const modeNormal = shallowReactive({
   searchText: '',
 })
 
-const modeStat = reactive({
+const modeStat = shallowReactive({
   searchText: '',
   statItem: null as StatOptionItem | null,
 })

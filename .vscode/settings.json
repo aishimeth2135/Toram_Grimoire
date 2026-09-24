@@ -1,0 +1,13 @@
+{
+  "i18n-ally.keystyle": "nested",
+  "files.associations": {
+    "*.css": "postcss"
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.importModuleSpecifierEnding": "minimal",
+  "js/ts.preferences.autoImportSpecifierExcludeRegexes": [
+    "^(?:@/|(?:\\.\\.?/)+)lib/[^/]+/[^/]+/.+$"
+  ]
+}

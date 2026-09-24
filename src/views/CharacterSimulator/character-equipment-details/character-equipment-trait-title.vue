@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment/CharacterEquipmentTrait'
+import type { CharacterEquipmentTrait } from '@/lib/Character/CharacterEquipment'
 
 interface Props {
   equipmentTrait: CharacterEquipmentTrait

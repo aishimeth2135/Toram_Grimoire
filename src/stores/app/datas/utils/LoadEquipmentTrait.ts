@@ -3,7 +3,7 @@ import Grimoire from '@/shared/Grimoire'
 import { StatComputed } from '@/lib/Character/Stat'
 import type EquipmentTraitSystem from '@/lib/EquipmentTrait'
 import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
-import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait/enums'
+import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait'
 
 import type { CsvData } from './DownloadDatas'
 import { getCsvDataRowGetterHelper, parseStatValueDataRaw } from './utils'
@@ -92,7 +92,9 @@ export function LoadEquipmentTraits(root: EquipmentTraitSystem, csvData: CsvData
         const statBaseData = parseStatValueDataRaw(attrName)
         const statBase = Grimoire.Character.findStatBase(statBaseData.value)
         if (statBase) {
-          currentItem.appendStat(new StatComputed(statBase, statBaseData.type, row('attr/value')))
+          currentItem.appendStat(
+            StatComputed.create(statBase, statBaseData.type, row('attr/value'))
+          )
         }
       }
     }

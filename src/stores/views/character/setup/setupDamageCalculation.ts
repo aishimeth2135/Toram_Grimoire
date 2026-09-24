@@ -7,15 +7,20 @@ import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import {
-  Calculation,
   CalculationContainerIds,
+  type CalculationContainerSnapshot,
   CalculationItemIds,
+  type CalculationSnapshot,
+  type CalculationSweepDimension,
+  ContainerTypes,
+  evaluateCalculationExpectedValueZipSweep,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
-import { Skill, SkillBranch, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
+import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
+import { SkillBranchItem, type SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputing'
 
-import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
+import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
+import type { DamageCalculationSelectionSaveData } from '../persistence'
 import { createElementMap, getCharacterElement } from '../utils'
 import { type SetupCharacterStatCategoryResultsExtended } from './setupCharacter'
 import { type SkillResult } from './setupCharacterSkills'
@@ -37,8 +42,9 @@ export interface CalculationOptions {
   proration: number
   comboRate: number
   forceCritical: boolean
-  armorBreakDisplay: boolean
 }
+
+const DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT = 8
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
   [EquipmentTypes.Empty]: 50,
@@ -77,6 +83,9 @@ export function setupDamageCalculation(
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number }
 ) {
+  const SKILL_STATE_DEFAULT_ENABLED = false
+  const BRANCH_STATE_DEFAULT_ENABLED = true
+
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
   const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')!
@@ -95,26 +104,101 @@ export function setupDamageCalculation(
     skillMultiplier: number
   }
 
-  const getSkillState = (() => {
-    const skillStates = ref(new Map<Skill, { enabled: boolean }>())
-    return (skill: Skill) => {
-      if (!skillStates.value.has(skill)) {
-        skillStates.value.set(skill, { enabled: false })
-      }
-      return skillStates.value.get(skill)!
+  const skillStates = ref(new Map<string, { enabled: boolean }>())
+  const getSkillState = (skill: Skill) => {
+    if (!skillStates.value.has(skill.skillId)) {
+      skillStates.value.set(skill.skillId, { enabled: SKILL_STATE_DEFAULT_ENABLED })
     }
-  })()
+    return skillStates.value.get(skill.skillId)!
+  }
 
-  const getSkillBranchState = (() => {
-    // save state by default branch
-    const skillBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
-    return (branch: SkillBranch) => {
-      if (!skillBranchStates.value.has(branch)) {
-        skillBranchStates.value.set(branch, { enabled: true })
-      }
-      return skillBranchStates.value.get(branch)!
+  const isSkillEnabled = (skill: Skill) =>
+    skillStates.value.get(skill.skillId)?.enabled ?? SKILL_STATE_DEFAULT_ENABLED
+
+  const damageCalculationSkillSelectionLimitReached = computed(
+    () =>
+      Array.from(skillStates.value.values()).filter(state => state.enabled).length >=
+      DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+  )
+
+  const setDamageCalculationSkillEnabled = (skill: Skill, enabled: boolean) => {
+    const state = getSkillState(skill)
+    if (enabled && !state.enabled && damageCalculationSkillSelectionLimitReached.value) {
+      return false
     }
-  })()
+    state.enabled = enabled
+    return true
+  }
+
+  // save state by default branch
+  const skillBranchStates = ref(new Map<string, { enabled: boolean }>())
+  const getSkillBranchState = (branchItem: SkillBranchItemBaseChilds) => {
+    if (!skillBranchStates.value.has(branchItem.defaultBranchId)) {
+      skillBranchStates.value.set(branchItem.defaultBranchId, {
+        enabled: BRANCH_STATE_DEFAULT_ENABLED,
+      })
+    }
+    return skillBranchStates.value.get(branchItem.defaultBranchId)!
+  }
+
+  const isSkillBranchEnabled = (branchItem: SkillBranchItemBaseChilds) =>
+    skillBranchStates.value.get(branchItem.defaultBranchId)?.enabled ?? BRANCH_STATE_DEFAULT_ENABLED
+
+  const resetDamageCalculationSelectionStates = () => {
+    skillStates.value.clear()
+    skillBranchStates.value.clear()
+  }
+
+  const createDamageCalculationSelectionSaveData = (): DamageCalculationSelectionSaveData => ({
+    skillStates: Object.fromEntries(
+      Array.from(skillStates.value)
+        .filter(([, state]) => state.enabled !== SKILL_STATE_DEFAULT_ENABLED)
+        .map(([id]) => [id, { enabled: !SKILL_STATE_DEFAULT_ENABLED }])
+    ),
+    skillBranchStates: Object.fromEntries(
+      Array.from(skillBranchStates.value)
+        .filter(([, state]) => state.enabled !== BRANCH_STATE_DEFAULT_ENABLED)
+        .map(([id]) => [id, { enabled: !BRANCH_STATE_DEFAULT_ENABLED }])
+    ),
+  })
+
+  const validDefaultBranchIds = new Set(
+    Grimoire.Skill.skillRoot.skillTreeCategorys.flatMap(category =>
+      category.skillTrees.flatMap(skillTree =>
+        skillTree.skills.flatMap(skill =>
+          skill.defaultEffect.branches.map(branch => branch.branchId)
+        )
+      )
+    )
+  )
+
+  const loadDamageCalculationSelectionSaveData = (data?: DamageCalculationSelectionSaveData) => {
+    resetDamageCalculationSelectionStates()
+    if (!data) {
+      return
+    }
+
+    let selectedSkillCount = 0
+    Object.entries(data.skillStates).forEach(([id, state]) => {
+      if (!Grimoire.Skill.skillRoot.findSkillById(id)) {
+        delete data.skillStates[id]
+        return
+      }
+      const enabled = state.enabled && selectedSkillCount < DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+      if (enabled) {
+        selectedSkillCount += 1
+      }
+      skillStates.value.set(id, { enabled })
+    })
+
+    Object.entries(data.skillBranchStates).forEach(([id, state]) => {
+      if (!validDefaultBranchIds.has(id)) {
+        delete data.skillBranchStates[id]
+        return
+      }
+      skillBranchStates.value.set(id, { enabled: state.enabled })
+    })
+  }
 
   const getSkillElement = (branchItem: SkillBranchItem) => {
     const chara = character.value
@@ -129,7 +213,7 @@ export function setupDamageCalculation(
     let skillDualElement = branchItem.prop('dual_element')
     if (skillDualElement === 'none') {
       const extraBch = branchItem.suffixBranches.find(suf => {
-        if (!getSkillBranchState(suf.default).enabled) {
+        if (!getSkillBranchState(suf).enabled) {
           return false
         }
         return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
@@ -199,6 +283,7 @@ export function setupDamageCalculation(
 
     const statValue = (baseId: string) =>
       characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
+    const targetDefMultiplier = computed(() => (100 - statValue('def_ignore')) / 100)
     const resultValue = (id: string) => {
       let idToSearch = id
       if (container.value.branchItem) {
@@ -338,12 +423,6 @@ export function setupDamageCalculation(
       ])
     })
 
-    const calculation = ref(calculationBase.createCalculation('')) as Ref<Calculation>
-
-    for (const ctner of calculation.value.containers.values()) {
-      ctner.enabled = true
-    }
-
     const valid = computed(() => {
       const constant = container.value.getValue('constant') || '0'
       const multiplier = container.value.getValue('multiplier') || '0'
@@ -403,8 +482,8 @@ export function setupDamageCalculation(
         [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
         [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
         [CalculationItemIds.TargetLevel, targetProperties.value.level],
-        [CalculationItemIds.TargetDef, targetProperties.value.def],
-        [CalculationItemIds.TargetMdef, targetProperties.value.mdef],
+        [CalculationItemIds.TargetDef, targetProperties.value.def * targetDefMultiplier.value],
+        [CalculationItemIds.TargetMdef, targetProperties.value.mdef * targetDefMultiplier.value],
         [
           CalculationItemIds.TargetCriticalRateResistance,
           targetProperties.value.criticalRateResistance,
@@ -419,10 +498,6 @@ export function setupDamageCalculation(
         [CalculationItemIds.ComboMultiplier, calculationOptions.value.comboRate],
       ])
     })
-
-    calculation.value.config.getItemValue = itemId => {
-      return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
-    }
 
     const containerCurrentItemMap = computed(() => {
       let damageType: CalculationItemIds = CalculationItemIds.Physical
@@ -470,6 +545,12 @@ export function setupDamageCalculation(
         [CalculationContainerIds.DamageType, damageType],
         [CalculationContainerIds.TargetDefBase, targetDefType],
         [CalculationContainerIds.TargetResistance, targetResistanceType],
+        [
+          CalculationContainerIds.Pierce,
+          targetDefType === CalculationItemIds.TargetDef
+            ? CalculationItemIds.PhysicalPierce
+            : CalculationItemIds.MagicPierce,
+        ],
         [CalculationContainerIds.RangeDamage, rangeDamage],
       ])
       if (targetProperties.value.element !== null) {
@@ -480,10 +561,6 @@ export function setupDamageCalculation(
       }
       return resultMap
     })
-
-    calculation.value.config.getContainerCurrentItemId = containerId => {
-      return containerCurrentItemMap.value.get(containerId) ?? null
-    }
 
     const containerForceHiddenMap = computed(() => {
       const unsheatheDamageHidden = !container.value.branchItem.propBoolean('unsheathe_damage')
@@ -528,24 +605,120 @@ export function setupDamageCalculation(
       ])
     })
 
-    calculation.value.config.getContainerForceHidden = containerId => {
-      return containerForceHiddenMap.value.get(containerId) ?? null
-    }
+    const calculationSnapshot = computed<CalculationSnapshot>(() => {
+      const itemValues = new Map<CalculationItemIds, number>()
+      calculationBase.items.forEach((item, itemId) => itemValues.set(itemId, item.defaultValue))
+      varsMap.value.forEach((value, itemId) => itemValues.set(itemId, value))
+      calculationVars.value.forEach((value, itemId) => itemValues.set(itemId, value))
 
-    const { expectedResult } = setupCalculationExpectedResult(calculation)
+      const containers = new Map<CalculationContainerIds, CalculationContainerSnapshot>()
+      calculationBase.containers.forEach((containerBase, containerId) => {
+        const firstItemId = containerBase.items.keys().next().value ?? null
+        containers.set(containerId, {
+          enabled: true,
+          applicable: !(containerForceHiddenMap.value.get(containerId) ?? false),
+          currentItemId: containerCurrentItemMap.value.get(containerId) ?? firstItemId,
+          customItemValues: [],
+        })
+      })
+
+      return { itemValues, containers }
+    })
+
+    const calculationItems = computed(() => {
+      const snapshot = calculationSnapshot.value
+      return Array.from(calculationBase.containers, ([containerId, containerBase]) => {
+        const containerSnapshot = snapshot.containers.get(containerId)!
+        const itemIds =
+          containerBase.type === ContainerTypes.Options
+            ? [containerSnapshot.currentItemId]
+            : Array.from(containerBase.items.keys())
+        return itemIds.flatMap(itemId => {
+          if (itemId === null) {
+            return []
+          }
+          const item = calculationBase.items.get(itemId)!
+          return [
+            {
+              id: itemId,
+              value: snapshot.itemValues.get(itemId) ?? item.defaultValue,
+              unit: item.unit,
+              hidden: !containerSnapshot.applicable,
+              valueValid: containerBase.controls.valueValid,
+            },
+          ]
+        })
+      }).flat()
+    })
+
+    const { expectedResult, evaluation } = setupCalculationSnapshotExpectedResult(
+      calculationBase,
+      calculationSnapshot
+    )
 
     return {
-      calculation,
+      calculationSnapshot,
+      calculationItems,
       valid,
       expectedResult,
+      evaluation,
       extraStats,
+      targetDefMultiplier,
+    }
+  }
+
+  const setupDamageCalculationExpectedResultSweep = (
+    skillResult: Ref<SkillResult>,
+    extraStats: Ref<StatRecorded[]>,
+    targetProperties: Ref<TargetProperties>,
+    calculationOptions: Ref<CalculationOptions>,
+    dimensions: Ref<readonly CalculationSweepDimension[]>
+  ) => {
+    const calculator = setupDamageCalculationExpectedResult(
+      skillResult,
+      extraStats,
+      targetProperties,
+      calculationOptions
+    )
+    const sweepResult = computed(() => {
+      const effectiveDimensions = dimensions.value.map(dimension => {
+        if (
+          dimension.itemId !== CalculationItemIds.TargetDef &&
+          dimension.itemId !== CalculationItemIds.TargetMdef
+        ) {
+          return dimension
+        }
+
+        return {
+          itemId: dimension.itemId,
+          values: dimension.values.map(value => value * calculator.targetDefMultiplier.value),
+        }
+      })
+
+      return evaluateCalculationExpectedValueZipSweep(
+        calculationBase,
+        calculator.calculationSnapshot.value,
+        effectiveDimensions
+      )
+    })
+
+    return {
+      valid: computed(() => calculator.valid.value && sweepResult.value.issues.length === 0),
+      expectedResults: computed(() => sweepResult.value.values),
     }
   }
 
   return {
     setupDamageCalculationExpectedResult,
-    getDamageCalculationSkillState: getSkillState,
+    setupDamageCalculationExpectedResultSweep,
+    isDamageCalculationSkillEnabled: isSkillEnabled,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState: getSkillBranchState,
+    isDamageCalculationSkillBranchEnabled: isSkillBranchEnabled,
+    createDamageCalculationSelectionSaveData,
+    loadDamageCalculationSelectionSaveData,
+    resetDamageCalculationSelectionStates,
   }
 }
 

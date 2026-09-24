@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { equipmentOriginalCategoryToType } from '@/lib/Character/CharacterEquipment/utils'
+import { equipmentOriginalCategoryToType } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { BagEquipment } from '@/lib/Items/BagItem'
 

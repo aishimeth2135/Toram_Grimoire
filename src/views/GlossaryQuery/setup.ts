@@ -1,6 +1,6 @@
 import { CommonTextParseItemIds, TextResultContainerPart } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
-import { type TextParseItem, getCommonTextParseItem } from '@/lib/common/ResultContainer/parseText'
+import { type TextParseItem, getCommonTextParseItem } from '@/lib/common/ResultContainer'
 
 export const getTextParseItems = (() => {
   let items: TextParseItem[]
@@ -12,7 +12,7 @@ export const getTextParseItems = (() => {
         handler(context) {
           const [value] = context.values
           const text = value.replace(new RegExp('_', 'g'), ' ')
-          const newPart = new TextResultContainerPart(
+          const newPart = TextResultContainerPart.create(
             TextResultContainerPartTypes.GlossaryTag,
             text
           )

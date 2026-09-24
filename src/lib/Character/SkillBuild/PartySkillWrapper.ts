@@ -9,9 +9,13 @@ class PartySkillBranch {
   readonly id: number
   readonly skillBranch: SkillBranch
 
-  constructor(id: number, skillBranch: SkillBranch) {
+  private constructor(id: number, skillBranch: SkillBranch) {
     this.id = id
     this.skillBranch = skillBranch
+  }
+
+  static create(id: number, skillBranch: SkillBranch): PartySkillBranch {
+    return new PartySkillBranch(id, skillBranch)
   }
 }
 
@@ -21,7 +25,7 @@ class PartySkill {
   readonly partySkillBranches: PartySkillBranch[]
   level: number
 
-  constructor(skill: Skill) {
+  private constructor(skill: Skill) {
     this.skillId = skill.skillId
     this.skill = skill
     this.partySkillBranches = []
@@ -30,10 +34,16 @@ class PartySkill {
     skill.effects.forEach(effect => {
       effect.branches.forEach(branch => {
         if (checkSkillBranchForParty(branch)) {
-          this.partySkillBranches.push(new PartySkillBranch(getPartySkillBranchId(branch), branch))
+          this.partySkillBranches.push(
+            PartySkillBranch.create(getPartySkillBranchId(branch), branch)
+          )
         }
       })
     })
+  }
+
+  static create(skill: Skill): PartySkill {
+    return new PartySkill(skill)
   }
 }
 
@@ -50,9 +60,13 @@ export class PartySkillBuild {
   private readonly selectedIds: Map<string, number[]>
   readonly partySkills: PartySkill[]
 
-  constructor() {
+  private constructor() {
     this.selectedIds = new Map()
     this.partySkills = []
+  }
+
+  static create(): PartySkillBuild {
+    return new PartySkillBuild()
   }
 
   private getPartySkillSelecteds(partySkill: PartySkill): number[] {
@@ -60,7 +74,7 @@ export class PartySkillBuild {
   }
 
   appendSkill(skill: Skill): PartySkill {
-    const partySkill = new PartySkill(skill)
+    const partySkill = PartySkill.create(skill)
     this.partySkills.push(partySkill)
     this.selectedIds.set(
       partySkill.skillId,
@@ -98,7 +112,7 @@ export class PartySkillBuild {
   }
 
   static load(data: PartySkillBuildSaveData): PartySkillBuild {
-    const newBuild = new PartySkillBuild()
+    const newBuild = PartySkillBuild.create()
     data.skills.forEach(skillData => {
       const skill = Grimoire.Skill.skillRoot.findSkillById(skillData.id)
       if (skill) {

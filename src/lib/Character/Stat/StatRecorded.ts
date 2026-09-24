@@ -23,10 +23,22 @@ class StatValueSource {
   readonly type: StatValueSourceTypes | null
   readonly value: number
 
-  constructor(src: StatValueSourceDetails, value: number, type: StatValueSourceTypes | null) {
+  private constructor(
+    src: StatValueSourceDetails,
+    value: number,
+    type: StatValueSourceTypes | null
+  ) {
     this.src = src
     this.type = type
     this.value = value
+  }
+
+  static create(
+    src: StatValueSourceDetails,
+    value: number,
+    type: StatValueSourceTypes | null
+  ): StatValueSource {
+    return new StatValueSource(src, value, type)
   }
 
   // get displayedName(): string {
@@ -59,10 +71,10 @@ class StatRecorded extends StatElementBase {
     source: StatValueSourceDetails,
     sourceType: StatValueSourceTypes | null
   ): StatRecorded {
-    return new StatRecorded(stat.base, stat.type, stat.value, source, sourceType)
+    return StatRecorded.create(stat.base, stat.type, stat.value, source, sourceType)
   }
 
-  constructor(
+  private constructor(
     base: StatBase,
     type: StatTypes,
     value: number = 0,
@@ -76,6 +88,16 @@ class StatRecorded extends StatElementBase {
     this.add(value, source, sourceType)
   }
 
+  static create(
+    base: StatBase,
+    type: StatTypes,
+    value: number = 0,
+    source: StatValueSourceDetails = null,
+    sourceType: StatValueSourceTypes | null = null
+  ): StatRecorded {
+    return new StatRecorded(base, type, value, source, sourceType)
+  }
+
   override get value(): number {
     return this._value
   }
@@ -84,7 +106,7 @@ class StatRecorded extends StatElementBase {
     if (value !== 0) {
       this._value += value
       if (source) {
-        this.sources.push(new StatValueSource(source, value, type))
+        this.sources.push(StatValueSource.create(source, value, type))
       } else {
         this.unknownSourceValue += value
       }
@@ -100,7 +122,7 @@ class StatRecorded extends StatElementBase {
 
   filterSource(filter: (src: StatValueSource) => boolean): StatRecorded {
     const sources = this.sources.filter(filter)
-    const newStat = new StatRecorded(this.base, this.type)
+    const newStat = StatRecorded.create(this.base, this.type)
     newStat._value = sources.reduce((cur, src) => cur + src.value, 0)
     newStat.sources = sources
     return newStat
@@ -111,7 +133,7 @@ class StatRecorded extends StatElementBase {
   }
 
   clone(): StatRecorded {
-    const newStat = new StatRecorded(this.base, this.type)
+    const newStat = StatRecorded.create(this.base, this.type)
     newStat._value = this._value
     newStat.sources = this.sources.slice()
     return newStat

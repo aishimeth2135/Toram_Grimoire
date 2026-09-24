@@ -10,7 +10,7 @@
           </span>
         </div>
       </div>
-      <div class="flex min-h-8 flex-wrap items-center">
+      <div class="flex min-h-8 flex-wrap">
         <slot>
           <SkillBranchPropValue v-if="result" :result="result" />
           <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />

@@ -10,7 +10,7 @@ import { defineViewState, useToggleList } from '@/shared/composables/State'
 import { ViewNames } from '@/shared/consts/view'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
-import { CharacterBuildLabel } from '@/lib/Character/Character/CharacterBuildLabel'
+import { CharacterBuildLabel } from '@/lib/Character/Character'
 import {
   CharacterEquipment,
   EquipmentCrystal,

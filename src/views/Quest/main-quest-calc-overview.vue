@@ -7,7 +7,7 @@ import { numberWithCommas } from '@/shared/utils/number'
 import { CHARACTER_MAX_LEVEL } from '@/lib/Character/Character'
 import { MainQuestSection } from '@/lib/Quest/Quest'
 import type { MainQuestSectionIndex } from '@/lib/Quest/Quest'
-import { QuestItemType } from '@/lib/Quest/Quest/enums'
+import { QuestItemType } from '@/lib/Quest/Quest'
 
 import CommonPropNumberInput from '@/views/CharacterSimulator/common/common-prop-number-input.vue'
 

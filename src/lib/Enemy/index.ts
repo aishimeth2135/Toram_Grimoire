@@ -3,7 +3,11 @@ import { EnemyBoss } from './Enemy'
 export default class EnemySystem {
   bosses: EnemyBoss[]
 
-  constructor() {
+  private constructor() {
     this.bosses = []
+  }
+
+  static create(): EnemySystem {
+    return new EnemySystem()
   }
 }

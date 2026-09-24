@@ -111,7 +111,7 @@ export function setupCharacters() {
   }
 
   const createCharacter = (updateIndex: boolean = true) => {
-    const newCharacter = new Character(
+    const newCharacter = Character.create(
       Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)
     )
     if (!appendCharacter(newCharacter, { updateIndex })) {

@@ -343,7 +343,7 @@ const isWeapon = computed(() => {
 
 const createBuild = () => {
   const name = t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
-  const build = new EnchantBuild(name)
+  const build = EnchantBuild.create(name)
   store.appendBuild(build)
   buildCount.value += 1
 }

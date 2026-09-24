@@ -46,7 +46,7 @@ export default class EnchantDollEquipmentContainer {
   clones: EnchantDollEquipmentContainer[]
   copyFrom: null | EnchantDollEquipmentContainer
 
-  constructor({
+  private constructor({
     itemCategorys,
     equipment,
     positiveStats,
@@ -66,6 +66,10 @@ export default class EnchantDollEquipmentContainer {
 
     this.clones = []
     this.copyFrom = null
+  }
+
+  static create(params: EnchantDollEquipmentContainerParams): EnchantDollEquipmentContainer {
+    return new EnchantDollEquipmentContainer(params)
   }
 
   get cloneId(): string {
@@ -835,7 +839,7 @@ export default class EnchantDollEquipmentContainer {
     const equipment = this.equipment
     const positiveStats = this.positiveStats
     const negativeStats = this.negativeStats
-    const newContainer = new EnchantDollEquipmentContainer({
+    const newContainer = EnchantDollEquipmentContainer.create({
       itemCategorys,
       equipment,
       positiveStats,

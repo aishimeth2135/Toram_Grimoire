@@ -29,7 +29,7 @@ const innerValue = computed<string>({
 
 <template>
   <div class="relative flex items-center">
-    <div class="absolute left-0 top-0 flex h-full items-center pl-3">
+    <div class="absolute left-0 top-0 flex h-full items-center pl-2.5">
       <cy-icon icon="mdi:search" width="1.375rem" />
     </div>
     <input
@@ -42,7 +42,7 @@ const innerValue = computed<string>({
       }"
       :placeholder="placeholder"
     />
-    <div class="absolute right-0 top-0 flex h-full items-center pr-2.5">
+    <div class="absolute right-0 top-0 flex h-full items-center pr-1">
       <cy-button-icon
         icon="mdi:close-circle"
         :class="{ invisible: !innerValue }"

@@ -3,7 +3,7 @@ import { reactive, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character'
-import { getEquipmentFieldTypeText } from '@/lib/Character/Character/utils'
+import { getEquipmentFieldTypeText } from '@/lib/Character/Character'
 import {
   CharacterEquipment,
   EquipmentTypes,

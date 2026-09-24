@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import Grimoire from '@/shared/Grimoire'
 import { numberToFixed, toInt } from '@/shared/utils/number'
 import { isNumberString, lastChar } from '@/shared/utils/string'
@@ -31,7 +33,7 @@ class StatBase {
   hidden: boolean
   devOnly: boolean
 
-  constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
+  private constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
     this.baseId = baseId
     this.text = text
     this.hasMultiplier = hasMultiplier
@@ -40,6 +42,10 @@ class StatBase {
     this.multiplierDisplayFormat = '$t$s$v$u'
     this.hidden = false
     this.devOnly = false
+  }
+
+  static create(baseId: string, text: string, hasMultiplier: boolean, order: number): StatBase {
+    return markRaw(new StatBase(baseId, text, hasMultiplier, order))
   }
 
   title(type: StatTypes): string {
@@ -70,7 +76,9 @@ class StatBase {
       if (typeof value === 'number') {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)d/, (_match, p1) => (value as number).toFixed(toInt(p1) ?? 0))
+          .replace(/\$(\d+)(-?)d/, (_match, p1, p2) =>
+            (value * (p2 === '-' ? -1 : 1)).toFixed(toInt(p1) ?? 0)
+          )
       }
       return res
     }
@@ -119,14 +127,21 @@ class StatBase {
     if (!this.hasMultiplier && type === StatTypes.Multiplier) {
       type = StatTypes.Constant
     }
-    return new Stat(this, type, value)
+    return Stat.create(this, type, value)
   }
 
   createStatComputed(type: StatTypes, value: string): StatComputed {
     if (!this.hasMultiplier && type === StatTypes.Multiplier) {
       type = StatTypes.Constant
     }
-    return new StatComputed(this, type, value)
+    return StatComputed.create(this, type, value)
+  }
+
+  createStatComputedWithMarkRaw(type: StatTypes, value: string): StatComputed {
+    if (!this.hasMultiplier && type === StatTypes.Multiplier) {
+      type = StatTypes.Constant
+    }
+    return StatComputed.createWithMarkRaw(this, type, value)
   }
 
   checkBoolStat(type?: StatTypes): boolean {
@@ -162,7 +177,7 @@ abstract class StatElementBase {
   abstract getShowData(): StatShowData<StatValue>
   abstract clone(): StatElementBase
 
-  constructor(base: StatBase, type: StatTypes) {
+  protected constructor(base: StatBase, type: StatTypes) {
     this.base = base
     this.type = type
     this.statId = this.base.getStatId(this.type)
@@ -209,9 +224,13 @@ abstract class StatElementBase {
 class Stat extends StatElementBase {
   value: number
 
-  constructor(base: StatBase, type: StatTypes, value: number = 0) {
+  protected constructor(base: StatBase, type: StatTypes, value: number = 0) {
     super(base, type)
     this.value = value
+  }
+
+  static create(base: StatBase, type: StatTypes, value: number = 0): Stat {
+    return new Stat(base, type, value)
   }
 
   add(value: number): number {
@@ -235,9 +254,17 @@ class Stat extends StatElementBase {
 class StatComputed extends StatElementBase {
   value: string
 
-  constructor(base: StatBase, type: StatTypes, value: string = '') {
+  private constructor(base: StatBase, type: StatTypes, value: string = '') {
     super(base, type)
     this.value = value
+  }
+
+  static create(base: StatBase, type: StatTypes, value: string = ''): StatComputed {
+    return new StatComputed(base, type, value)
+  }
+
+  static createWithMarkRaw(base: StatBase, type: StatTypes, value: string = ''): StatComputed {
+    return markRaw(StatComputed.create(base, type, value))
   }
 
   clone(): StatComputed {
@@ -249,7 +276,7 @@ class StatComputed extends StatElementBase {
   }
 
   toStat(value: number): Stat {
-    return new Stat(this.base, this.type, value)
+    return Stat.create(this.base, this.type, value)
   }
 }
 

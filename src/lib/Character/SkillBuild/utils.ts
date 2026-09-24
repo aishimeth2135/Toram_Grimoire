@@ -2,7 +2,6 @@ import Grimoire from '@/shared/Grimoire'
 import Cyteria from '@/shared/utils/Cyteria'
 import { toInt } from '@/shared/utils/number'
 
-import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill, SkillBranch, SkillBranchNames, SkillTree } from '@/lib/Skill/Skill'
 import {
   type DrawSkillTreeData,
@@ -10,6 +9,8 @@ import {
   GetDrawSetting,
   computeDrawSkillTreeData,
 } from '@/lib/Skill/drawSkillTree'
+
+import { SkillBuild } from './SkillBuild'
 
 export async function getSkillBuildImageDataURL(skillBuild: SkillBuild) {
   try {
@@ -452,7 +453,7 @@ export function getPartySkillBranchId(branch: SkillBranch) {
     return toInt(branch.props.get('effect_id')!) ?? 0
   }
   if (branch.hasId()) {
-    return branch.id
+    return branch.overrideId
   }
   return 0
 }

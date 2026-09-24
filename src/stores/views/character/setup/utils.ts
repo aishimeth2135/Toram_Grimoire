@@ -1,12 +1,11 @@
-import { computeFormula } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import { StatRecorded } from '@/lib/Character/Stat'
+import { computeStatConditionFormula } from '@/lib/Skill/Properties'
 import { SkillBranchItem, SkillBranchStatResult } from '@/lib/Skill/SkillComputing'
-
-import DisplayDataContainer from '@/views/Character/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import type { SkillResult } from './setupCharacterSkills'
 
@@ -28,11 +27,11 @@ export function getSkillStatContainerValid(
         id: statContainer.branch.parent.parent.skill.skillId,
       },
       $branch: {
-        id: skillResult.container.branchItem.id,
+        id: skillResult.container.branchItem.overrideId,
         prop: (key: string) => skillResult.container.branchItem.prop(key),
       },
     }
-    return computeFormula(statContainer.conditionValue, vars, false) as boolean
+    return computeStatConditionFormula(statContainer.conditionValue, vars)
   }
   return true
 }

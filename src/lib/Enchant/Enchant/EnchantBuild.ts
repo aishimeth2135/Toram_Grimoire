@@ -56,15 +56,19 @@ class EnchantBuild {
   equipment: EnchantEquipment
   categorys: EnchantCategory[]
 
-  constructor(name: string, equipment: EnchantEquipment | null = null) {
+  private constructor(name: string, equipment: EnchantEquipment | null = null) {
     this.name = name
     if (equipment) {
       this.equipment = equipment
     } else {
-      this.equipment = new EnchantEquipment()
+      this.equipment = EnchantEquipment.create()
       this.equipment.originalPotential = 90
     }
     this.categorys = Grimoire.Enchant.categorys // link
+  }
+
+  static create(name: string, equipment: EnchantEquipment | null = null): EnchantBuild {
+    return new EnchantBuild(name, equipment)
   }
 
   save(): EnchantBuildSaveData {
@@ -77,7 +81,7 @@ class EnchantBuild {
   static load(data: EnchantBuildSaveData) {
     const categorys = Grimoire.Enchant.categorys
     const equipment = EnchantEquipment.load(categorys, data.equipment)
-    return new EnchantBuild(data.name, equipment)
+    return EnchantBuild.create(data.name, equipment)
   }
 
   clone() {
@@ -94,12 +98,16 @@ class EnchantEquipment {
   fieldType: EnchantEquipmentTypes
   isOriginalElement: boolean
 
-  constructor() {
+  private constructor() {
     this._steps = []
     this.basePotential = enchantStates.EquipmentBasePotentialMinimum
     this.originalPotential = 1
     this.fieldType = EnchantEquipmentTypes.MainWeapon
     this.isOriginalElement = false
+  }
+
+  static create(): EnchantEquipment {
+    return new EnchantEquipment()
   }
 
   save(): EnchantEquipmentSaveData {
@@ -115,7 +123,7 @@ class EnchantEquipment {
   }
 
   static load(categorys: EnchantCategory[], data: EnchantEquipmentSaveData): EnchantEquipment {
-    const equipment = new EnchantEquipment()
+    const equipment = EnchantEquipment.create()
     equipment.basePotential = data.basePotential
     equipment.originalPotential = data.originalPotential
     equipment.fieldType = EnchantEquipmentTypesList[data.fieldType]
@@ -219,7 +227,7 @@ class EnchantEquipment {
    * append new empty step
    */
   appendStep(): EnchantStep {
-    const step = new EnchantStep(this)
+    const step = EnchantStep.create(this)
     this._steps.push(step)
     return step
   }
@@ -265,7 +273,7 @@ class EnchantEquipment {
    * @returns new EnchantStep be inserted
    */
   insertStepBefore(target: EnchantStep): EnchantStep {
-    const step = new EnchantStep(this)
+    const step = EnchantStep.create(this)
     this._steps.splice(target.index, 0, step)
     return step
   }
@@ -279,7 +287,7 @@ class EnchantEquipment {
       const stepStat = step.stat(itemBase, type)
       return stepStat?.valid ? cur + stepStat.value : cur
     }, 0)
-    return new EnchantStat(itemBase, type, value)
+    return EnchantStat.create(itemBase, type, value)
   }
 
   /**
@@ -436,12 +444,16 @@ class EnchantStep {
   step: number
   hidden: boolean
 
-  constructor(parent: EnchantEquipment) {
+  private constructor(parent: EnchantEquipment) {
     this._parent = parent
     this.stats = []
     this.type = EnchantStepTypes.Normal
     this.step = 1 // step for type == "each"
     this.hidden = false
+  }
+
+  static create(parent: EnchantEquipment): EnchantStep {
+    return new EnchantStep(parent)
   }
 
   save(): EnchantStepSaveData {
@@ -458,7 +470,7 @@ class EnchantStep {
     equipment: EnchantEquipment,
     data: EnchantStepSaveData
   ): EnchantStep {
-    const step = new EnchantStep(equipment)
+    const step = EnchantStep.create(equipment)
     step.type = EnchantStepTypesList[data.type] ?? EnchantStepTypes.Normal
     step.hidden = typeof data.hidden === 'number' ? data.hidden === 1 : data.hidden
     const stats = data.stats
@@ -526,7 +538,7 @@ class EnchantStep {
   }
 
   appendStat(itemBase: EnchantItem, type: StatNormalTypes, value: number): EnchantStepStat | null {
-    const stat = new EnchantStepStat(this, itemBase, type, value)
+    const stat = EnchantStepStat.createForStep(this, itemBase, type, value)
     if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat)) {
       return null
     }
@@ -569,7 +581,7 @@ class EnchantStep {
         if (value === 0) {
           return
         }
-        const newStat = new EnchantStepStat(this, stat.itemBase, stat.type, value)
+        const newStat = EnchantStepStat.createForStep(this, stat.itemBase, stat.type, value)
         newStats.push(newStat)
       })
     newStats.forEach(stat => {
@@ -638,9 +650,13 @@ class EnchantStat {
   private _lastCharacterLevel!: number
   private _limit!: { max: number; min: number }
 
-  constructor(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
+  protected constructor(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
     this.itemBase = itemBase
     this.stat = itemBase.statBase.createStat(type, value)
+  }
+
+  static create(itemBase: EnchantItem, type: StatNormalTypes, value: number): EnchantStat {
+    return new EnchantStat(itemBase, type, value)
   }
 
   get value(): number {
@@ -692,7 +708,7 @@ class EnchantStat {
   }
 
   clone() {
-    return new EnchantStat(this.itemBase, this.type, this.value)
+    return EnchantStat.create(this.itemBase, this.type, this.value)
   }
 
   /**
@@ -772,9 +788,23 @@ class EnchantStepStat extends EnchantStat {
 
   private _parent: EnchantStep
 
-  constructor(parent: EnchantStep, itemBase: EnchantItem, type: StatNormalTypes, value: number) {
+  private constructor(
+    parent: EnchantStep,
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    value: number
+  ) {
     super(itemBase, type, value)
     this._parent = parent
+  }
+
+  static createForStep(
+    parent: EnchantStep,
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    value: number
+  ): EnchantStepStat {
+    return new EnchantStepStat(parent, itemBase, type, value)
   }
 
   save(): EnchantStepStatSaveData {
@@ -796,7 +826,7 @@ class EnchantStepStat extends EnchantStat {
       return null
     }
     const type = EnchantStepStatTypesList[data.type]
-    return new EnchantStepStat(step, itemBase, type, data.value)
+    return EnchantStepStat.createForStep(step, itemBase, type, data.value)
   }
 
   override get value() {

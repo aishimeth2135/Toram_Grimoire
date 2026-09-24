@@ -21,11 +21,24 @@ import {
   type CharacterSimulatorSaveDataRoot,
   type CharacterStoreSaveSummary,
   type EquipmentSaveDataWithIndex,
+  type SkillOptionsSaveData,
 } from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import type { CharacterPureStatsResult } from './setup/context'
-import { getSkillBranchState } from './setup/getState'
+import {
+  createSkillBranchSaveData,
+  createSkillFormulaExtraSaveData,
+  createSkillStackSaveData,
+  getSkillBranchState,
+  getSkillFormulaExtraBranchState,
+  getSkillStackState,
+  loadSkillBranchSaveData,
+  loadSkillFormulaExtraSaveData,
+  loadSkillStackSaveData,
+  resetSkillBranchStates,
+  resetSkillStackStates,
+} from './setup/getState'
 import { prepareSetupCharacter } from './setup/setupCharacter'
 import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
 import {
@@ -88,6 +101,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     cloneCharacter,
   } = setupCharacters()
 
+  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
+  const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
+  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
+
   const { equipments, appendEquipment, appendEquipments, removeEquipment } =
     setupEquipments(currentCharacter)
 
@@ -95,6 +112,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     autoSaveDisabled.value = false
   }
 
+  const resetHandlers: (() => void)[] = []
   const reset = () => {
     skillStore.resetSkillBuilds()
     characters.value = []
@@ -104,6 +122,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
     buildLabelStore.resetBuildLabelStore()
+    resetSkillBranchStates()
+    resetSkillStackStates()
+    resetHandlers.forEach(handler => handler())
   }
 
   const deleteAllSavedData = () => {
@@ -112,6 +133,14 @@ export const useCharacterStore = defineStore('view-character', () => {
       throw result.error
     }
     closeAutoSave()
+  }
+
+  const createSkillOptionsSaveData = (): SkillOptionsSaveData => {
+    return {
+      skillBranchStates: createSkillBranchSaveData(),
+      stackValues: createSkillStackSaveData(),
+      formulaExtraValues: createSkillFormulaExtraSaveData(),
+    }
   }
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
@@ -148,12 +177,27 @@ export const useCharacterStore = defineStore('view-character', () => {
       potionBuilds: potionBuildsData,
       buildLabels: buildLabelsData,
       characterStates,
+      damageCalc: createDamageCalculationSelectionSaveData(),
+      skillOptions: createSkillOptionsSaveData(),
     }
+  }
+
+  const loadSkillOptionsSaveData = (data?: SkillOptionsSaveData) => {
+    loadSkillBranchSaveData(data?.skillBranchStates)
+    if (!data) {
+      return
+    }
+
+    loadSkillStackSaveData(data.stackValues)
+    loadSkillFormulaExtraSaveData(data.formulaExtraValues)
   }
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
 
-    return (saveData: CharacterSimulatorSaveData) => {
+    return (
+      saveData: CharacterSimulatorSaveData,
+      { loadDamageCalculationSelection = true } = {}
+    ) => {
       migrateCharacterSimulatorSaveData(saveData)
 
       _loadCount += 1
@@ -190,7 +234,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
       // character
       saveData.characters.forEach(charaRow => {
-        const chara = new Character()
+        const chara = Character.create()
         const loadSuccess = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (loadSuccess) {
           appendCharacter(chara, { updateIndex: false, source: 'load' })
@@ -205,7 +249,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       })
 
       saveData.foodBuilds.forEach(data => {
-        const build = new FoodsBuild(foodStore.foodsBase as FoodsBase)
+        const build = FoodsBuild.create(foodStore.foodsBase as FoodsBase)
         const load = build.load(loadedCategory, data)
         if (!load.error) {
           foodStore.appendFoodBuild(build, { updateIndex: false, source: 'load' })
@@ -250,6 +294,11 @@ export const useCharacterStore = defineStore('view-character', () => {
           )
         }
       })
+
+      if (loadDamageCalculationSelection) {
+        loadDamageCalculationSelectionSaveData(saveData.damageCalc)
+      }
+      loadSkillOptionsSaveData(saveData.skillOptions)
     }
   })()
 
@@ -265,8 +314,9 @@ export const useCharacterStore = defineStore('view-character', () => {
         logger.info('Datas version: v2')
         const { summary, datas } = result.value
 
-        loadCharacterSimulatorSaveData(datas)
+        loadCharacterSimulatorSaveData(datas, { loadDamageCalculationSelection: false })
         setCurrentCharacter(summary.characterIndex)
+        loadDamageCalculationSelectionSaveData(datas.damageCalc)
         CharacterPersistenceService.confirmLoaded()
       }
     } catch (error) {
@@ -298,8 +348,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
-  const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
   const currentCharacterRegistletBuild = computed(
     () => currentCharacterBuildsContext.value.registletBuild
   )
@@ -307,8 +355,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     () => currentCharacterBuildsContext.value.potionBuild
   )
   const currentCharacterFoodBuild = computed(() => currentCharacterBuildsContext.value.foodBuild)
-
-  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
   const { setupCharacterSkills, setupCharacterStats } = prepareSetupCharacter()
 
@@ -390,14 +436,20 @@ export const useCharacterStore = defineStore('view-character', () => {
   const calculationOptions: Ref<CalculationOptions> = ref({
     proration: 250,
     comboRate: 150,
-    armorBreakDisplay: false,
     forceCritical: false,
   })
 
   const {
     setupDamageCalculationExpectedResult,
-    getDamageCalculationSkillState,
+    setupDamageCalculationExpectedResultSweep,
+    isDamageCalculationSkillEnabled,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
+    isDamageCalculationSkillBranchEnabled,
+    createDamageCalculationSelectionSaveData: createDamageCalculationSelectionSaveDataFromState,
+    loadDamageCalculationSelectionSaveData: loadDamageCalculationSelectionSaveDataToState,
+    resetDamageCalculationSelectionStates,
   } = (() => {
     const allSkillResultStates = computed(() => [
       ...activeSkillResultStates.value,
@@ -426,6 +478,15 @@ export const useCharacterStore = defineStore('view-character', () => {
       getSkillLevel
     )
   })()
+  resetHandlers.push(resetDamageCalculationSelectionStates)
+
+  function createDamageCalculationSelectionSaveData() {
+    return createDamageCalculationSelectionSaveDataFromState()
+  }
+
+  function loadDamageCalculationSelectionSaveData(data: CharacterSimulatorSaveData['damageCalc']) {
+    loadDamageCalculationSelectionSaveDataToState(data)
+  }
 
   return {
     characters: characters,
@@ -453,6 +514,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     nextSkillResultStates,
     damageSkillResultStates,
     getSkillBranchState,
+    getSkillFormulaExtraBranchState,
+    getSkillStackState,
 
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
@@ -473,10 +536,14 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     // damage calculation
     setupDamageCalculationExpectedResult,
+    setupDamageCalculationExpectedResultSweep,
     targetProperties,
     calculationOptions,
-    getDamageCalculationSkillState,
+    isDamageCalculationSkillEnabled,
+    setDamageCalculationSkillEnabled,
+    damageCalculationSkillSelectionLimitReached,
     getDamageCalculationSkillBranchState,
+    isDamageCalculationSkillBranchEnabled,
 
     deleteAllSavedData,
     loadCharacterSimulator,

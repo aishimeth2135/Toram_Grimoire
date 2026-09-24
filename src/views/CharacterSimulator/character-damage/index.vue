@@ -16,30 +16,33 @@
       </div>
       <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto py-4">
         <CardRowsWrapper>
-          <CardRows>
-            <CharacterDamageSkillItem
-              v-for="skillResultsState in validResultStates"
-              :key="skillResultsState.skill.skillId"
-              :skill-results-state="skillResultsState"
-            />
-          </CardRows>
+          <CharacterDamageSkillGroup
+            v-for="group in validResultStateGroups"
+            :key="group.skillTree.skillTreeId"
+            :skill-tree="group.skillTree"
+            :skill-results-states="group.states"
+          />
         </CardRowsWrapper>
       </div>
       <cy-default-tips v-else>
         {{ t('character-simulator.character-damage.no-any-skill-tips') }}
       </cy-default-tips>
-      <div class="mt-4 space-y-1">
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
-            {{ t('character-simulator.character-damage.basic-tips.0') }}
-          </div>
+      <div class="mt-2 space-y-2">
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-1') }}
         </div>
-        <div>
-          <div class="gap-icon text-primary-50 inline-flex items-start text-sm">
-            <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
-            {{ t('character-simulator.character-damage.test-version-tips') }}
-          </div>
+        <div class="gap-icon text-red-60 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-red-40" />
+          {{ t('character-simulator.skill-build.skill-branch-state-save-tips-2') }}
+        </div>
+        <div class="gap-icon text-primary-50 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+          {{ t('character-simulator.character-damage.basic-tips.0') }}
+        </div>
+        <div class="gap-icon text-primary-50 flex items-start text-sm">
+          <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+          {{ t('character-simulator.character-damage.test-version-tips') }}
         </div>
       </div>
     </div>
@@ -58,12 +61,6 @@
           :title="t('damage-calculation.item-base-titles.combo_multiplier')"
           unit="%"
         />
-      </div>
-      <RenderSectionHeader :title="t('character-simulator.character-damage.options-other-title')" />
-      <div class="mt-3">
-        <cy-button-check v-model:selected="characterStore.calculationOptions.armorBreakDisplay">
-          {{ t('character-simulator.character-damage.armor-break-display') }}
-        </cy-button-check>
       </div>
       <RenderSectionHeader
         :title="t('character-simulator.character-damage.target-options-title')"
@@ -135,12 +132,12 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
+import type { SkillTree } from '@/lib/Skill/Skill'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
-import CardRows from '@/components/card/card-rows.vue'
 
-import CharacterDamageSkillItem from './character-damage-skill-item.vue'
+import CharacterDamageSkillGroup from './character-damage-skill-group.vue'
 
 interface Props {
   visible: boolean
@@ -161,15 +158,24 @@ const { t } = useI18n()
 
 const tabIndex = ref(0)
 
-const skillResultsStates = computed(
-  () => characterStore.damageSkillResultStates as SkillResultsState[]
-)
+const skillResultsStates = computed(() => characterStore.damageSkillResultStates)
 
 const skillBuildStore = useCharacterSkillBuildStore()
 const validResultStates = computed(() => {
   return skillResultsStates.value.filter(
     state => skillBuildStore.currentSkillBuild!.getSkillLevel(state.skill) > 0
   )
+})
+
+const validResultStateGroups = computed(() => {
+  const groups = new Map<SkillTree, SkillResultsState[]>()
+  validResultStates.value.forEach(state => {
+    const skillTree = state.skill.parent
+    const states = groups.get(skillTree) ?? []
+    states.push(state)
+    groups.set(skillTree, states)
+  })
+  return Array.from(groups, ([skillTree, states]) => ({ skillTree, states }))
 })
 
 const elementOptions: {

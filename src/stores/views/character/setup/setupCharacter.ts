@@ -95,7 +95,7 @@ export function prepareSetupCharacter() {
         if (!character.value) {
           return []
         }
-        if (additionalStats && additionalStats.value.length === 0 && resultsCache) {
+        if ((!additionalStats || additionalStats.value.length === 0) && resultsCache) {
           return resultsCache.characterPureStats.value
         }
         const allStats = new Map<string, StatRecorded>(
@@ -111,13 +111,13 @@ export function prepareSetupCharacter() {
         if (!character.value) {
           return []
         }
-        if (additionalStats && additionalStats.value.length === 0 && resultsCache) {
+        if ((!additionalStats || additionalStats.value.length === 0) && resultsCache) {
           return resultsCache.categoryResults.value
         }
 
         const categoryList = Grimoire.Character.characterStatCategoryList
         const pureStats = [...characterPureStats.value]
-        const vars = CharacterStat.prepareCalcResultVars(characterStatsBaseVars.value)
+        const vars = CharacterStat.prepareCalcResultVars(characterStatsBaseVars.value, categoryList)
 
         return categoryList
           .map(category => {
@@ -216,7 +216,7 @@ export function prepareSetupCharacter() {
           if (typeof value === 'number') {
             const resultValue = value * equipTrait.currentStack
             traitStats.push(
-              new StatRecorded(
+              StatRecorded.create(
                 traitStat.base,
                 traitStat.type,
                 resultValue,

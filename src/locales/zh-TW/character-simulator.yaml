@@ -16,7 +16,20 @@ character-basic:
   character-builds-tip: 技能配置、料理配置等其他配置皆是以角色為單位進行綁定，系統會紀錄每個角色綁定了哪些配置。
 character-dashboard:
   title: 總覽
+  character-build-title: 角色配置
   no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
+  damage-chart:
+    title: 傷害計算圖表
+    tabs:
+      low: 低防禦
+      medium: 中防禦
+      high: 高防禦
+    x-axis-title: 雙抗/雙防
+    y-axis-title: 傷害期望值 (m)
+    damage-title: 傷害量
+    comparison-title: 傷害比較
+    tips: 雙抗取0~30%，雙防取{min}~{max}。
+    no-data: 目前沒有可計算的傷害技能。
 character-equipments-manage:
   title: 管理所有裝備
   mode-selections-title: 選擇檢視模式
@@ -137,14 +150,15 @@ skill-build:
     - 以下為系統自動產生的技能技能圖片，按下按鈕可以直接進行下載。
     - 於IOS系統上使用此功能下載圖片時，一部分瀏覽器還不支援「設定檔名」的功能，因此下載圖片時可能會發生副檔名不為PNG的問題。若遇到此問題，請在下載圖片後自行將檔名改成「XXX.png」，該圖片就可以正常顯示。
     - 如果無法透過按鈕下載圖片，可使用瀏覽器預設的下載圖片的方式進行下載。例如：於電腦上操作時，通常是在圖片上點滑鼠右鍵接著按下儲存。
+  skill-branch-state-save-tips-1: 齒輪內設定的數值會自動保存。若該技能的資料大幅更新，其保存的數值可能會重置。
+  skill-branch-state-save-tips-2: 在更換裝備類型導致技能效果出現變化時，齒輪內設定的數值會分開儲存。
 character-damage:
   title: 傷害計算
+  damage-source:
+    additional: 追擊傷害
   target-options-title: 目標數值設定
   options-base-title: 基本設定
-  options-other-title: 其他設定
-  armor-break-display: 顯示降防時傷害
   force-critical: 傷害必定爆擊
-  armor-break: 降防
   element-none: 無設定
   no-result: 傷害公式待更新
   range-damage-title: 目標距離判定

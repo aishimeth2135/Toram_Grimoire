@@ -1,23 +1,13 @@
-import { shallowReactive } from 'vue'
-
-import type {
-  HandleFormulaMethods,
-  HandleFormulaTexts,
-  HandleFormulaVars,
-} from '@/shared/utils/data'
+import { markRaw, shallowReactive } from 'vue'
 
 import type { EquipmentRestrictions } from '@/lib/Character/Stat'
 
+import type { FormulaExtendedData } from '../Properties/FormulaExtended'
 import type { Skill } from '../Skill'
-import { SkillBranchItem } from './SkillBranchItem'
+import { SkillBranchItem, SkillBranchItemSuffix } from './SkillBranchItem'
 import { SkillEffectItem } from './SkillEffectItem'
 import { FormulaDisplayModes } from './enums'
-
-interface HandleFormulaExtends {
-  vars: HandleFormulaVars
-  texts: HandleFormulaTexts
-  methods?: HandleFormulaMethods
-}
+import type { SkillStackState } from './stackStates'
 
 interface SkillFormulaExtraProps {
   max: number | null
@@ -25,16 +15,20 @@ interface SkillFormulaExtraProps {
 }
 
 interface GetFormulaExtraValueHandler {
-  (branch: SkillBranchItem, id: string, props?: SkillFormulaExtraProps): number | null
+  (branch: SkillBranchItemSuffix, id: string, props?: SkillFormulaExtraProps): number | null
 }
 
 interface ComputeFormulaExtraValueHandler {
   (formula: string): number | null
 }
 
-/**
- * @vue-reactive-raw controller
- */
+interface SkillComputingConfig {
+  formulaDisplayMode: FormulaDisplayModes
+  getStackState: ((branch: SkillBranchItem) => SkillStackState | null) | null
+  getFormulaExtraValue: GetFormulaExtraValueHandler | null
+  computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
+}
+
 class SkillComputingContainer {
   readonly varGetters: {
     characterLevel: (() => number) | null
@@ -43,18 +37,14 @@ class SkillComputingContainer {
   }
 
   // The constant variables
-  readonly handleFormulaConstants: HandleFormulaExtends
+  readonly handleFormulaConstants: FormulaExtendedData
 
   // The extended callback may be affected by the reactive state
-  readonly handleFormulaExtends: (() => HandleFormulaExtends)[]
+  readonly handleFormulaExtends: (() => FormulaExtendedData)[]
 
-  readonly config: {
-    formulaDisplayMode: FormulaDisplayModes
-    getFormulaExtraValue: GetFormulaExtraValueHandler | null
-    computeFormulaExtraValue: ComputeFormulaExtraValueHandler | null
-  }
+  readonly config: SkillComputingConfig
 
-  constructor() {
+  private constructor(config: SkillComputingConfig) {
     this.varGetters = {
       characterLevel: null,
       skillLevel: null,
@@ -65,30 +55,38 @@ class SkillComputingContainer {
       texts: {},
     }
     this.handleFormulaExtends = []
-    this.config = shallowReactive({
+    this.config = config
+  }
+
+  static create(): SkillComputingContainer {
+    const config = shallowReactive<SkillComputingConfig>({
       formulaDisplayMode: FormulaDisplayModes.Normal,
+      getStackState: null,
       getFormulaExtraValue: null,
       computeFormulaExtraValue: null,
     })
+
+    return markRaw(new SkillComputingContainer(config))
   }
 }
 
-/**
- * @vue-reactive-raw
- */
 class SkillItem {
   readonly skill: Skill
   readonly effectItems: SkillEffectItem[]
 
-  constructor(skill: Skill) {
+  private constructor(skill: Skill) {
     this.skill = skill
 
     const defaultSef = skill.defaultEffect
     const otherSefs = skill.effects.filter(sef => sef !== defaultSef)
     this.effectItems = [
-      new SkillEffectItem(this, defaultSef),
-      ...otherSefs.map(sef => new SkillEffectItem(this, defaultSef, sef)),
+      SkillEffectItem.create(this, defaultSef),
+      ...otherSefs.map(sef => SkillEffectItem.create(this, defaultSef, sef)),
     ]
+  }
+
+  static create(skill: Skill): SkillItem {
+    return markRaw(new SkillItem(skill))
   }
 
   findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {

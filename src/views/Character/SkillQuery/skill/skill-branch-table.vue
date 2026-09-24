@@ -39,10 +39,9 @@
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
+import { TableHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
-
-import TableHandler from './branch-handlers/TableHandler'
 
 interface Props {
   computing: SkillComputingContainer
