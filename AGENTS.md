@@ -173,9 +173,12 @@ yarn exec prettier --check <file>
 2. 三個 interface，按照順序：`Props`、`Emits`、`Slots`。
 3. 按照順序：`defineProps`、`defineEmits`、`defineSlots`。
 
-### 建立響應式變數時
+### 其他
 
 - 使用`<element ref="xxx">`時，優先使用`useTemplateRef('xxx')`。
+
+## 響應式變數
+
 - 需要建立`Ref`時，如果對象為物件，應優先評估使用情境並確認是否能使用`shallowRef`。
 - 需要建立`Ref`或`ComputedRef`時，如果對象為物件，必須在函數泛型部分指定型別，例如`computed<SomeData>(() => xxx)`。
 

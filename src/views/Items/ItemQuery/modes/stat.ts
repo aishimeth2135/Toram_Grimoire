@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { type Raw, markRaw, reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { defineViewState } from '@/shared/composables/State'
@@ -20,10 +20,14 @@ function createStatOptions(): StatOption[] {
 }
 
 export const useStatSearchMode = defineViewState(ViewNames.ItemQuery, () => {
-  const state = reactive({
-    stats: createStatOptions(),
+  const state: {
+    stats: Raw<StatOption[]>
+    statSearchText: string
+    currentStats: StatOption[]
+  } = reactive({
+    stats: markRaw(createStatOptions()),
     statSearchText: '',
-    currentStats: [] as StatOption[],
+    currentStats: [],
   })
 
   function search(equipments: CharacterEquipment[]) {
