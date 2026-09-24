@@ -12,6 +12,8 @@ import {
   createSkillStackStates,
 } from '@/lib/Skill/SkillComputing'
 
+const SKILL_BRANCH_STATE_DEFAULT_ENABLED = true
+
 export interface SkillFormulaExtraVarState extends SkillFormulaExtraProps {
   effectBranchId: string
   id: string
@@ -45,7 +47,7 @@ export function getSkillBranchState(skillBranch: SkillBranch) {
   const branchId = skillBranch.branchId
 
   if (!skillBranchStates.has(branchId)) {
-    skillBranchStates.set(branchId, { enabled: true })
+    skillBranchStates.set(branchId, { enabled: SKILL_BRANCH_STATE_DEFAULT_ENABLED })
   }
   return skillBranchStates.get(branchId)!
 }
@@ -101,6 +103,24 @@ export function resetSkillBranchStates() {
 
 export function resetSkillStackStates() {
   useSkillStackStates().resetStackStates()
+}
+
+export function createSkillBranchSaveData(): Record<string, { enabled: boolean }> {
+  return Object.fromEntries(
+    Array.from(useSkillBranchStates().skillBranchStates)
+      .filter(([, state]) => state.enabled !== SKILL_BRANCH_STATE_DEFAULT_ENABLED)
+      .map(([branchId, state]) => [branchId, { enabled: state.enabled }])
+  )
+}
+
+export function loadSkillBranchSaveData(values?: Record<string, { enabled: boolean }>) {
+  const { skillBranchStates } = useSkillBranchStates()
+  skillBranchStates.clear()
+  Object.entries(values ?? {}).forEach(([branchId, state]) => {
+    if (typeof state?.enabled === 'boolean') {
+      skillBranchStates.set(branchId, { enabled: state.enabled })
+    }
+  })
 }
 
 export function createSkillStackSaveData(): Record<string, number> {

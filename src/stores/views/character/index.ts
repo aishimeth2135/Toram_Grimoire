@@ -27,11 +27,13 @@ import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import type { CharacterPureStatsResult } from './setup/context'
 import {
+  createSkillBranchSaveData,
   createSkillFormulaExtraSaveData,
   createSkillStackSaveData,
   getSkillBranchState,
   getSkillFormulaExtraBranchState,
   getSkillStackState,
+  loadSkillBranchSaveData,
   loadSkillFormulaExtraSaveData,
   loadSkillStackSaveData,
   resetSkillBranchStates,
@@ -135,6 +137,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const createSkillOptionsSaveData = (): SkillOptionsSaveData => {
     return {
+      skillBranchStates: createSkillBranchSaveData(),
       stackValues: createSkillStackSaveData(),
       formulaExtraValues: createSkillFormulaExtraSaveData(),
     }
@@ -180,6 +183,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 
   const loadSkillOptionsSaveData = (data?: SkillOptionsSaveData) => {
+    loadSkillBranchSaveData(data?.skillBranchStates)
     if (!data) {
       return
     }

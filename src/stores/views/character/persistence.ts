@@ -22,6 +22,7 @@ export interface DamageCalculationSelectionSaveData {
 }
 
 export interface SkillOptionsSaveData {
+  skillBranchStates?: Record<string, { enabled: boolean }>
   stackValues: Record<string, number>
   formulaExtraValues: Record<string, Record<string, number>>
 }
