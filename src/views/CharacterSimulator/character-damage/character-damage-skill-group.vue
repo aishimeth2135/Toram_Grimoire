@@ -24,7 +24,7 @@ const props = defineProps<Props>()
 const characterStore = useCharacterStore()
 const expanded = ref(
   props.skillResultsStates.some(state =>
-    characterStore.isDamageCalculationSkillEnabled(state.skill)
+    characterStore.currentCharacterState.skillBuild?.isDamageCalculationSkillEnabled(state.skill)
   )
 )
 </script>

@@ -39,7 +39,7 @@ const props = defineProps<Props>()
 const characterStore = useCharacterStore()
 
 const branchItemState = computed(() =>
-  characterStore.getSkillBranchState(props.container.branchItem.default)
+  characterStore.currentCharacterState.skillBuild!.getSkillBranchState(props.container.branchItem)
 )
 
 const toggleable = computed(() => props.container.branchItem.prop('condition') !== 'auto')

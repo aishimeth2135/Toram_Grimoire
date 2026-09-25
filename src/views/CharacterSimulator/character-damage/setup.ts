@@ -2,7 +2,6 @@ import { type Ref, computed, effectScope, onScopeDispose, shallowRef, watch } fr
 
 import { useCharacterStore } from '@/stores/views/character'
 import { type SkillResult } from '@/stores/views/character/setup'
-import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { isNumberString } from '@/shared/utils/string'
 
@@ -19,7 +18,7 @@ export function getContainerStats(
   container: DisplayDataContainer
 ) {
   const stats: StatRecorded[] = []
-  if (!store.isDamageCalculationSkillBranchEnabled(container.branchItem)) {
+  if (!store.currentCharacterState.skillBuild?.getSkillBranchState(container.branchItem).enabled) {
     return stats
   }
   container.statContainers.forEach(statContainer => {
@@ -60,7 +59,6 @@ export function setupStoreDamageCalculationExpectedResult(
 
 export function setupDamageSourceBonuses(target: Ref<SkillResult>) {
   const store = useCharacterStore()
-  const skillBuildStore = useCharacterSkillBuildStore()
   interface SourceCalculator {
     result: SkillResult
     valid: Ref<boolean>
@@ -69,15 +67,16 @@ export function setupDamageSourceBonuses(target: Ref<SkillResult>) {
   const calculators = shallowRef<SourceCalculator[]>([])
   const sources = computed<SkillResult[]>(() =>
     store.damageSkillResultStates.flatMap(state => {
+      const skillBuild = store.currentCharacterState.skillBuild
       if (
-        !skillBuildStore.currentSkillBuild?.getSkillLevel(state.skill) ||
-        !store.isDamageCalculationSkillEnabled(state.skill)
+        !skillBuild?.getSkillLevel(state.skill) ||
+        !skillBuild.isDamageCalculationSkillEnabled(state.skill)
       ) {
         return []
       }
       return state.results.filter(
         result =>
-          store.isDamageCalculationSkillBranchEnabled(result.container.branchItem) &&
+          skillBuild.getSkillBranchState(result.container.branchItem).enabled &&
           matchesDamageSource(
             result.container.branchItem,
             target.value.container.branchItem,
@@ -110,7 +109,11 @@ export function setupDamageSourceBonuses(target: Ref<SkillResult>) {
 
   return computed<{ id: SkillResult['container']['instanceId']; name: string; amount: number }[]>(
     () => {
-      if (!store.isDamageCalculationSkillBranchEnabled(target.value.container.branchItem)) {
+      if (
+        !store.currentCharacterState.skillBuild?.getSkillBranchState(
+          target.value.container.branchItem
+        ).enabled
+      ) {
         return []
       }
       return calculators.value

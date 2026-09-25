@@ -51,7 +51,13 @@ const formulaExtraStates = computed(() => {
       suffix.is(SkillBranchNames.FormulaExtra)
     )
     if (formulaExtra) {
-      const branchState = characterStore.getSkillFormulaExtraBranchState(formulaExtra)
+      const branchState =
+        characterStore.currentCharacterState.skillBuild?.getSkillFormulaExtraBranchState(
+          formulaExtra
+        )
+      if (!branchState) {
+        return
+      }
       states.push(...branchState.formulaExtraIds.map(id => branchState.getFormulaExtraState(id)))
     }
   })

@@ -21,24 +21,10 @@ import {
   type CharacterSimulatorSaveDataRoot,
   type CharacterStoreSaveSummary,
   type EquipmentSaveDataWithIndex,
-  type SkillOptionsSaveData,
 } from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import type { CharacterPureStatsResult } from './setup/context'
-import {
-  createSkillBranchSaveData,
-  createSkillFormulaExtraSaveData,
-  createSkillStackSaveData,
-  getSkillBranchState,
-  getSkillFormulaExtraBranchState,
-  getSkillStackState,
-  loadSkillBranchSaveData,
-  loadSkillFormulaExtraSaveData,
-  loadSkillStackSaveData,
-  resetSkillBranchStates,
-  resetSkillStackStates,
-} from './setup/getState'
 import { prepareSetupCharacter } from './setup/setupCharacter'
 import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
 import {
@@ -122,8 +108,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
     buildLabelStore.resetBuildLabelStore()
-    resetSkillBranchStates()
-    resetSkillStackStates()
     resetHandlers.forEach(handler => handler())
   }
 
@@ -133,14 +117,6 @@ export const useCharacterStore = defineStore('view-character', () => {
       throw result.error
     }
     closeAutoSave()
-  }
-
-  const createSkillOptionsSaveData = (): SkillOptionsSaveData => {
-    return {
-      skillBranchStates: createSkillBranchSaveData(),
-      stackValues: createSkillStackSaveData(),
-      formulaExtraValues: createSkillFormulaExtraSaveData(),
-    }
   }
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
@@ -177,27 +153,13 @@ export const useCharacterStore = defineStore('view-character', () => {
       potionBuilds: potionBuildsData,
       buildLabels: buildLabelsData,
       characterStates,
-      damageCalc: createDamageCalculationSelectionSaveData(),
-      skillOptions: createSkillOptionsSaveData(),
     }
   }
 
-  const loadSkillOptionsSaveData = (data?: SkillOptionsSaveData) => {
-    loadSkillBranchSaveData(data?.skillBranchStates)
-    if (!data) {
-      return
-    }
-
-    loadSkillStackSaveData(data.stackValues)
-    loadSkillFormulaExtraSaveData(data.formulaExtraValues)
-  }
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
 
-    return (
-      saveData: CharacterSimulatorSaveData,
-      { loadDamageCalculationSelection = true } = {}
-    ) => {
+    return (saveData: CharacterSimulatorSaveData) => {
       migrateCharacterSimulatorSaveData(saveData)
 
       _loadCount += 1
@@ -294,11 +256,6 @@ export const useCharacterStore = defineStore('view-character', () => {
           )
         }
       })
-
-      if (loadDamageCalculationSelection) {
-        loadDamageCalculationSelectionSaveData(saveData.damageCalc)
-      }
-      loadSkillOptionsSaveData(saveData.skillOptions)
     }
   })()
 
@@ -314,9 +271,8 @@ export const useCharacterStore = defineStore('view-character', () => {
         logger.info('Datas version: v2')
         const { summary, datas } = result.value
 
-        loadCharacterSimulatorSaveData(datas, { loadDamageCalculationSelection: false })
+        loadCharacterSimulatorSaveData(datas)
         setCurrentCharacter(summary.characterIndex)
-        loadDamageCalculationSelectionSaveData(datas.damageCalc)
         CharacterPersistenceService.confirmLoaded()
       }
     } catch (error) {
@@ -439,54 +395,36 @@ export const useCharacterStore = defineStore('view-character', () => {
     forceCritical: false,
   })
 
-  const {
-    setupDamageCalculationExpectedResult,
-    setupDamageCalculationExpectedResultSweep,
-    isDamageCalculationSkillEnabled,
-    setDamageCalculationSkillEnabled,
-    damageCalculationSkillSelectionLimitReached,
-    getDamageCalculationSkillBranchState,
-    isDamageCalculationSkillBranchEnabled,
-    createDamageCalculationSelectionSaveData: createDamageCalculationSelectionSaveDataFromState,
-    loadDamageCalculationSelectionSaveData: loadDamageCalculationSelectionSaveDataToState,
-    resetDamageCalculationSelectionStates,
-  } = (() => {
-    const allSkillResultStates = computed(() => [
-      ...activeSkillResultStates.value,
-      ...passiveSkillResultStates.value,
-      ...postponedActiveSkillResultStates.value,
-      ...postponedPassiveSkillResultStates.value,
-    ])
-    const getSkillLevel = (targetSkill: Skill) => {
-      if (!currentCharacterSkillBuild.value) {
+  const { setupDamageCalculationExpectedResult, setupDamageCalculationExpectedResultSweep } =
+    (() => {
+      const allSkillResultStates = computed(() => [
+        ...activeSkillResultStates.value,
+        ...passiveSkillResultStates.value,
+        ...postponedActiveSkillResultStates.value,
+        ...postponedPassiveSkillResultStates.value,
+      ])
+      const getSkillLevel = (targetSkill: Skill) => {
+        if (!currentCharacterSkillBuild.value) {
+          return {
+            valid: false,
+            level: 0,
+          }
+        }
         return {
-          valid: false,
-          level: 0,
+          valid: allSkillResultStates.value.some(
+            state => state.skill === targetSkill && state.results.length > 0
+          ),
+          level: currentCharacterSkillBuild.value.getSkillLevel(targetSkill),
         }
       }
-      return {
-        valid: allSkillResultStates.value.some(
-          state => state.skill === targetSkill && state.results.length > 0
-        ),
-        level: currentCharacterSkillBuild.value.getSkillLevel(targetSkill),
-      }
-    }
 
-    return setupDamageCalculation(
-      currentCharacter,
-      setupCharacterStatCategoryResultsExtended,
-      getSkillLevel
-    )
-  })()
-  resetHandlers.push(resetDamageCalculationSelectionStates)
-
-  function createDamageCalculationSelectionSaveData() {
-    return createDamageCalculationSelectionSaveDataFromState()
-  }
-
-  function loadDamageCalculationSelectionSaveData(data: CharacterSimulatorSaveData['damageCalc']) {
-    loadDamageCalculationSelectionSaveDataToState(data)
-  }
+      return setupDamageCalculation(
+        currentCharacter,
+        setupCharacterStatCategoryResultsExtended,
+        getSkillLevel,
+        currentCharacterSkillBuild
+      )
+    })()
 
   return {
     characters: characters,
@@ -513,9 +451,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     allPassiveSkillResultStatesMap,
     nextSkillResultStates,
     damageSkillResultStates,
-    getSkillBranchState,
-    getSkillFormulaExtraBranchState,
-    getSkillStackState,
 
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
@@ -539,11 +474,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupDamageCalculationExpectedResultSweep,
     targetProperties,
     calculationOptions,
-    isDamageCalculationSkillEnabled,
-    setDamageCalculationSkillEnabled,
-    damageCalculationSkillSelectionLimitReached,
-    getDamageCalculationSkillBranchState,
-    isDamageCalculationSkillBranchEnabled,
 
     deleteAllSavedData,
     loadCharacterSimulator,

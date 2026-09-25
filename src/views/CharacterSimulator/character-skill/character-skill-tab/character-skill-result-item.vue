@@ -55,6 +55,6 @@ const { t } = useI18n()
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  characterStore.getSkillBranchState(container.value.branchItem.default)
+  characterStore.currentCharacterState.skillBuild!.getSkillBranchState(container.value.branchItem)
 )
 </script>

@@ -1,10 +1,19 @@
+import { reactive, shallowReactive } from 'vue'
+
 import { type SkillBuildState } from '@/stores/views/character/skill'
 
 import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
 
-import { Skill, SkillTree } from '@/lib/Skill/Skill'
+import { Skill, SkillRoot, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill'
+import {
+  type SkillBranchItem,
+  type SkillBranchItemBaseChilds,
+  type SkillBranchItemSuffix,
+  type SkillFormulaExtraProps,
+  createSkillStackStates,
+} from '@/lib/Skill/SkillComputing'
 
 import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
@@ -24,6 +33,22 @@ interface SkillBuildSaveData {
   name: string
   skillStates: SkillSaveData[]
   selectedSkillTrees: string[]
+  skillBranchStates?: Record<string, { enabled: boolean }>
+  stackValues?: Record<string, number>
+  formulaExtraValues?: Record<string, Record<string, number>>
+  damageCalculationSkillStates?: Record<string, { enabled: boolean }>
+}
+
+export interface SkillFormulaExtraVarState extends SkillFormulaExtraProps {
+  effectBranchId: string
+  id: string
+  text: string
+  value: number
+}
+
+interface SkillFormulaExtraBranchState {
+  formulaExtraIds: string[]
+  getFormulaExtraState: (id: string, props?: SkillFormulaExtraProps) => SkillFormulaExtraVarState
 }
 
 interface EffectedSkillResult {
@@ -43,11 +68,17 @@ function skillTreeIdToInteger(skillTreeId: string): number {
   return n1 * 100 + n2
 }
 
+const DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT = 8
+
 export class SkillBuild implements CharacterBindingBuild {
   private static _idIncreasement = 0
 
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
+  protected _skillBranchStates: Map<string, { enabled: boolean }>
+  protected _skillStackStates: ReturnType<typeof createSkillStackStates>
+  protected _formulaExtraStates: Map<string, SkillFormulaExtraBranchState>
+  protected _damageCalculationSkillStates: Map<string, { enabled: boolean }>
 
   loadedId: string | null
   id: number
@@ -61,6 +92,10 @@ export class SkillBuild implements CharacterBindingBuild {
     this.name = name
     this._skillStatesMap = new Map()
     this._skillTreesSet = new Set()
+    this._skillBranchStates = reactive(new Map())
+    this._skillStackStates = createSkillStackStates()
+    this._formulaExtraStates = reactive(new Map())
+    this._damageCalculationSkillStates = reactive(new Map())
   }
 
   static create(name: string = ''): SkillBuild {
@@ -96,6 +131,87 @@ export class SkillBuild implements CharacterBindingBuild {
   getSkillLevel(skill: Skill): number {
     const state = this.getSkillState(skill)
     return Math.max(state.level, state.starGemLevel)
+  }
+
+  getSkillBranchState(branchItem: SkillBranchItemBaseChilds): { enabled: boolean } {
+    const branchId = branchItem.defaultBranchId
+    if (!this._skillBranchStates.has(branchId)) {
+      this._skillBranchStates.set(branchId, { enabled: true })
+    }
+    return this._skillBranchStates.get(branchId)!
+  }
+
+  getDamageCalculationSkillState(skill: Skill): { enabled: boolean } {
+    const skillId = skill.skillId
+    if (!this._damageCalculationSkillStates.has(skillId)) {
+      this._damageCalculationSkillStates.set(skillId, { enabled: false })
+    }
+    return this._damageCalculationSkillStates.get(skillId)!
+  }
+
+  isDamageCalculationSkillEnabled(skill: Skill): boolean {
+    return this._damageCalculationSkillStates.get(skill.skillId)?.enabled ?? false
+  }
+
+  get damageCalculationSkillSelectionLimitReached(): boolean {
+    return (
+      Array.from(this._damageCalculationSkillStates.values()).filter(state => state.enabled)
+        .length >= DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+    )
+  }
+
+  setDamageCalculationSkillEnabled(skill: Skill, enabled: boolean): boolean {
+    const state = this.getDamageCalculationSkillState(skill)
+    if (enabled && !state.enabled && this.damageCalculationSkillSelectionLimitReached) {
+      return false
+    }
+    state.enabled = enabled
+    return true
+  }
+
+  getSkillStackState(branchItem: SkillBranchItem) {
+    return this._skillStackStates.getStackState(branchItem)
+  }
+
+  getSkillFormulaExtraBranchState(branchItem: SkillBranchItemSuffix): SkillFormulaExtraBranchState {
+    return this.getSkillFormulaExtraBranchStateById(branchItem.effectBranchId)
+  }
+
+  private getSkillFormulaExtraBranchStateById(
+    effectBranchId: string
+  ): SkillFormulaExtraBranchState {
+    if (!this._formulaExtraStates.has(effectBranchId)) {
+      const variableStates = reactive(new Map<string, SkillFormulaExtraVarState>())
+      const formulaExtraIds = shallowReactive([] as string[])
+      const getFormulaExtraState = (id: string, props?: SkillFormulaExtraProps) => {
+        if (!variableStates.has(id)) {
+          variableStates.set(id, {
+            effectBranchId,
+            id,
+            text: id,
+            value: 0,
+            max: null,
+            min: null,
+          })
+          formulaExtraIds.push(id)
+        }
+        const state = variableStates.get(id)!
+        if (props) {
+          const { max, min } = props
+          state.max = max
+          state.min = min
+          if (max !== null) {
+            state.value = Math.min(max, state.value)
+          }
+          if (min !== null) {
+            state.value = Math.max(min, state.value)
+          }
+        }
+        return state
+      }
+      this._formulaExtraStates.set(effectBranchId, { formulaExtraIds, getFormulaExtraState })
+    }
+    return this._formulaExtraStates.get(effectBranchId)!
   }
 
   increaseSkillLevel(skill: Skill, level: number) {
@@ -319,23 +435,88 @@ export class SkillBuild implements CharacterBindingBuild {
       .filter(([, state]) => state.level !== 0 || state.starGemLevel !== 0)
       .map(([skill, state]) => ({
         skillId: skill.skillId,
-        enabled: state.enabled ?? true,
+        enabled: state.enabled,
         level: state.level,
         starGemLevel: state.starGemLevel,
       }))
+    const damageCalculationSkillStates = Object.fromEntries(
+      Array.from(this._damageCalculationSkillStates)
+        .filter(([, state]) => state.enabled)
+        .map(([skillId]) => [skillId, { enabled: true }])
+    )
+    const savedSkillIds = new Set([
+      ...skillStates.filter(state => state.enabled).map(state => state.skillId),
+      ...Object.keys(damageCalculationSkillStates),
+    ])
+    const isStateUsed = (id: string) => savedSkillIds.has(SkillRoot.getSkillIdFromEffectId(id))
     const selectedSkillTrees = [...this._skillTreesSet.keys()].map(
       skillTree => skillTree.skillTreeId
     )
+    const skillBranchStates = Object.fromEntries(
+      Array.from(this._skillBranchStates)
+        .filter(([branchId, state]) => !state.enabled && isStateUsed(branchId))
+        .map(([branchId, state]) => [branchId, { enabled: state.enabled }])
+    )
+    const stackValues = Object.fromEntries(
+      Array.from(this._skillStackStates.stackStates)
+        .filter(([id]) => isStateUsed(id))
+        .map(([id, state]) => [id, state.value])
+    )
+    const formulaExtraValues: Record<string, Record<string, number>> = {}
+    this._formulaExtraStates.forEach((state, effectBranchId) => {
+      if (state.formulaExtraIds.length > 0 && isStateUsed(effectBranchId)) {
+        formulaExtraValues[effectBranchId] = Object.fromEntries(
+          state.formulaExtraIds.map(id => [id, state.getFormulaExtraState(id).value])
+        )
+      }
+    })
     return {
       id: this.id,
       name: this.name,
       skillStates,
       selectedSkillTrees,
+      skillBranchStates,
+      stackValues,
+      formulaExtraValues,
+      damageCalculationSkillStates,
     }
   }
 
   static load(loadCategory: string | null, data: SkillBuildSaveData): SkillBuild {
     const newBuild = SkillBuild.create(data.name)
+    Object.entries(data.skillBranchStates ?? {}).forEach(([branchId, state]) => {
+      if (typeof state?.enabled === 'boolean') {
+        newBuild._skillBranchStates.set(branchId, { enabled: state.enabled })
+      }
+    })
+    Object.entries(data.stackValues ?? {}).forEach(([id, value]) => {
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        newBuild._skillStackStates.stackStates.set(id, { value })
+      }
+    })
+    Object.entries(data.formulaExtraValues ?? {}).forEach(([effectBranchId, variableValues]) => {
+      if (!variableValues || typeof variableValues !== 'object') {
+        return
+      }
+      Object.entries(variableValues).forEach(([id, value]) => {
+        if (typeof value === 'number' && Number.isFinite(value)) {
+          newBuild
+            .getSkillFormulaExtraBranchStateById(effectBranchId)
+            .getFormulaExtraState(id).value = value
+        }
+      })
+    })
+    let selectedSkillCount = 0
+    Object.entries(data.damageCalculationSkillStates ?? {}).forEach(([skillId, state]) => {
+      if (!Grimoire.Skill.skillRoot.findSkillById(skillId) || typeof state?.enabled !== 'boolean') {
+        return
+      }
+      const enabled = state.enabled && selectedSkillCount < DAMAGE_CALCULATION_SKILL_SELECTION_LIMIT
+      if (enabled) {
+        selectedSkillCount += 1
+      }
+      newBuild._damageCalculationSkillStates.set(skillId, { enabled })
+    })
     data.selectedSkillTrees.forEach(skillTreeId => {
       let skillTree: SkillTree | null = null
       Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
@@ -364,7 +545,7 @@ export class SkillBuild implements CharacterBindingBuild {
       })
       if (skill && newBuild._skillTreesSet.has(skill.parent)) {
         const _state = newBuild.getSkillState(skill)
-        _state.enabled = state.enabled
+        _state.enabled = state.enabled ?? true
         _state.level = state.level
         _state.starGemLevel = state.starGemLevel
       }

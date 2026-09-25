@@ -128,7 +128,6 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResultsState } from '@/stores/views/character/setup'
-import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { CalculationItemIds } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
@@ -160,11 +159,12 @@ const tabIndex = ref(0)
 
 const skillResultsStates = computed(() => characterStore.damageSkillResultStates)
 
-const skillBuildStore = useCharacterSkillBuildStore()
 const validResultStates = computed(() => {
-  return skillResultsStates.value.filter(
-    state => skillBuildStore.currentSkillBuild!.getSkillLevel(state.skill) > 0
-  )
+  const skillBuild = characterStore.currentCharacterState.skillBuild
+  if (!skillBuild) {
+    return []
+  }
+  return skillResultsStates.value.filter(state => skillBuild.getSkillLevel(state.skill) > 0)
 })
 
 const validResultStateGroups = computed(() => {

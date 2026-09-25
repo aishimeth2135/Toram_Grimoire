@@ -49,7 +49,9 @@ const characterStore = useCharacterStore()
 const { container } = toRefs(props)
 
 const stackState = computed(() => {
-  return characterStore.getSkillStackState(container.value.branchItem)
+  return characterStore.currentCharacterState.skillBuild?.getSkillStackState(
+    container.value.branchItem
+  )
 })
 
 const stackValue: WritableComputedRef<number> = computed({

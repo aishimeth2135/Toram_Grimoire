@@ -198,7 +198,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     indexId: number,
     historyEffect: SkillEffectHistory
   ) {
-    super(parent, `history-${indexId}-${parentEffect.effectId}` as SkillEffectItemId)
+    super(parent, `${parentEffect.effectId}-history-${indexId}-` as SkillEffectItemId)
 
     this.branchItems = historyEffect.branches.map(bch => SkillBranchItem.create(this, bch))
 

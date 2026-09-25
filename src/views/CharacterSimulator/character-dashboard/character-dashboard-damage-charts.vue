@@ -15,7 +15,6 @@ import { useI18n } from 'vue-i18n'
 import { useSettingStore } from '@/stores/app/setting'
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
-import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import type { InstanceId } from '@/shared/services/InstanceId'
 
@@ -91,7 +90,6 @@ const fallbackLineColors = [
 const { t } = useI18n()
 const settingStore = useSettingStore()
 const characterStore = useCharacterStore()
-const skillBuildStore = useCharacterSkillBuildStore()
 const { appNightMode } = storeToRefs(settingStore)
 
 const currentTab = ref<ChartTab>(ChartTabs.Low)
@@ -123,7 +121,7 @@ const tabs = computed(() => [
 ])
 
 const selectedSkillResults = computed<SelectedSkillResults[]>(() => {
-  const skillBuild = skillBuildStore.currentSkillBuild
+  const skillBuild = characterStore.currentCharacterState.skillBuild
   if (!skillBuild) {
     return []
   }
@@ -131,7 +129,7 @@ const selectedSkillResults = computed<SelectedSkillResults[]>(() => {
   return characterStore.damageSkillResultStates.flatMap(state => {
     if (
       skillBuild.getSkillLevel(state.skill) === 0 ||
-      !characterStore.isDamageCalculationSkillEnabled(state.skill)
+      !skillBuild.isDamageCalculationSkillEnabled(state.skill)
     ) {
       return []
     }
@@ -193,8 +191,11 @@ const setupDamageResultValues = (resultRef: Ref<SkillResult>): DamageResultValue
 
   return {
     result: resultRef,
-    enabled: computed(() =>
-      characterStore.isDamageCalculationSkillBranchEnabled(resultRef.value.container.branchItem)
+    enabled: computed(
+      () =>
+        characterStore.currentCharacterState.skillBuild?.getSkillBranchState(
+          resultRef.value.container.branchItem
+        ).enabled ?? false
     ),
     valid: calculator.valid,
     values: calculator.expectedResults,

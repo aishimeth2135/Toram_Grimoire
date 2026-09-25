@@ -1,9 +1,10 @@
-import { getSkillStackState } from '@/stores/views/character/setup/getState'
+import { useCharacterStore } from '@/stores/views/character'
 
 import type { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
 export function setStackValue(branchItem: SkillBranchItem, value: number) {
-  const stackState = getSkillStackState(branchItem)
+  const stackState =
+    useCharacterStore().currentCharacterState.skillBuild?.getSkillStackState(branchItem)
   if (stackState) {
     stackState.value = value
   }

@@ -25,6 +25,15 @@ abstract class SkillElement extends SkillNode {
 }
 
 class SkillRoot extends SkillNode {
+  // `effectId` 及其衍伸 id 目前都可以使用，例如 `effectBranchId`、`effectStackId`。
+  static getSkillIdFromEffectId(effectId: string) {
+    const parts = effectId.split('-')
+    if (parts.length < 3) {
+      return ''
+    }
+    return `${parts[0]}-${parts[1]}-${parts[2]}`
+  }
+
   readonly parent: null
   readonly skillTreeCategorys: SkillTreeCategory[]
 

@@ -25,11 +25,6 @@ import { StackHandler } from '@/lib/Skill/SkillDisplay'
 import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import type { CharacterBuildsContext } from './context'
-import {
-  getSkillBranchState,
-  getSkillFormulaExtraBranchState,
-  getSkillStackState,
-} from './getState'
 import type { SkillItemState } from './setupCharacterBuilds'
 import { useGetSkillLevel } from './setupCharacterBuilds'
 
@@ -225,7 +220,8 @@ export function setupCharacterSkills(
   )
 
   const computing = SkillComputingContainer.create()
-  computing.config.getStackState = getSkillStackState
+  computing.config.getStackState = branchItem =>
+    buildsContext.value.skillBuild?.getSkillStackState(branchItem) ?? null
   computing.varGetters.skillLevel = getSkillLevel
   computing.varGetters.characterLevel = () => character.value?.level ?? 0
   computing.varGetters.registletLevel = (() => {
@@ -292,7 +288,11 @@ export function setupCharacterSkills(
   }
 
   computing.config.getFormulaExtraValue = (branch, id, props) => {
-    return getSkillFormulaExtraBranchState(branch).getFormulaExtraState(id, props).value
+    return (
+      buildsContext.value.skillBuild
+        ?.getSkillFormulaExtraBranchState(branch)
+        .getFormulaExtraState(id, props).value ?? 0
+    )
   }
 
   const allSkills: Skill[] = []
@@ -543,7 +543,8 @@ export function setupCharacterSkills(
           resultBase.container.branchItem.suffixBranches.some(
             suffix =>
               suffix.is(SkillBranchNames.FormulaExtra) &&
-              getSkillFormulaExtraBranchState(suffix).formulaExtraIds.length > 0
+              (buildsContext.value.skillBuild?.getSkillFormulaExtraBranchState(suffix)
+                .formulaExtraIds.length ?? 0) > 0
           )
         )
       })
@@ -639,7 +640,11 @@ export function setupCharacterSkills(
       })
       .forEach(resultState => {
         resultState.results
-          .filter(result => getSkillBranchState(result.container.branchItem.default).enabled)
+          .filter(
+            result =>
+              buildsContext.value.skillBuild!.getSkillBranchState(result.container.branchItem)
+                .enabled
+          )
           .forEach(result => {
             result.container.statContainers.forEach(handleStatContainer)
             result.suffixContainers.forEach(suffix =>

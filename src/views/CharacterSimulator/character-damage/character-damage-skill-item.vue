@@ -55,15 +55,25 @@ const { t } = useI18n()
 
 const enabled = computed<boolean>({
   get() {
-    return characterStore.isDamageCalculationSkillEnabled(props.skillResultsState.skill)
+    return (
+      characterStore.currentCharacterState.skillBuild?.isDamageCalculationSkillEnabled(
+        props.skillResultsState.skill
+      ) ?? false
+    )
   },
   set(value) {
-    characterStore.setDamageCalculationSkillEnabled(props.skillResultsState.skill, value)
+    characterStore.currentCharacterState.skillBuild?.setDamageCalculationSkillEnabled(
+      props.skillResultsState.skill,
+      value
+    )
   },
 })
 
 const selectionDisabled = computed(
-  () => !enabled.value && characterStore.damageCalculationSkillSelectionLimitReached
+  () =>
+    !enabled.value &&
+    (characterStore.currentCharacterState.skillBuild?.damageCalculationSkillSelectionLimitReached ??
+      false)
 )
 
 const toggleEnabled = () => {

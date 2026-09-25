@@ -48,7 +48,9 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.getDamageCalculationSkillBranchState(extraContainer.branchItem).enabled
+            characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+              extraContainer.branchItem
+            ).enabled
           "
         />
         <CharacterSkillItemStats
@@ -126,12 +128,14 @@ const toggleDetailVisible = useToggle(detailVisible)
 
 const enabled = computed<boolean>({
   get() {
-    return characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem)
-      .enabled
+    return characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+      props.result.container.branchItem
+    ).enabled
   },
   set(value) {
-    characterStore.getDamageCalculationSkillBranchState(props.result.container.branchItem).enabled =
-      value
+    characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+      props.result.container.branchItem
+    ).enabled = value
   },
 })
 
