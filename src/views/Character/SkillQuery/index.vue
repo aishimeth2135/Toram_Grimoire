@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { type ComputedRef, computed, nextTick, ref, useTemplateRef } from 'vue'
+import { type ComputedRef, computed, nextTick, provide, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -114,6 +114,7 @@ import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
+import { SkillEffectNavigationInjectionKey } from './injection-keys'
 import { setupSkillQueryComputingContainer, useSkillQueryState } from './setup'
 
 defineOptions({
@@ -156,6 +157,8 @@ const {
   updateCurrentSkillTree,
   updateCurrentSkill,
 } = useSkillQueryState()
+
+provide(SkillEffectNavigationInjectionKey, skill => updateCurrentSkill(skill, true))
 
 const updateRouteParam = (skillId: string) => {
   router.replace({ name: AppRouteNames.SkillQuery, params: { skillId } })

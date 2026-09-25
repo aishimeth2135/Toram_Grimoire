@@ -1,5 +1,6 @@
 import type { InjectionKey, Ref } from 'vue'
 
+import type { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import { Skill } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -8,13 +9,19 @@ import {
   SkillItem,
 } from '@/lib/Skill/SkillComputing'
 
-import type { SkillRegistletItemState } from './setup'
+interface SkillRegistletItemState {
+  readonly item: RegistletItemBaseSkill
+  readonly level: number
+  readonly enabled: boolean
+  setLevel?: (level: number) => void
+  setEnabled?: (enabled: boolean) => void
+}
 
 interface ComputingContainerInjection {
   setStackValue: (branchItem: SkillBranchItem, value: number) => void
   rootComputingContainer: SkillComputingContainer
   currentSkillItem: Ref<SkillItem | null>
-  getSkillRegistletItemsState: (sklll: Skill) => SkillRegistletItemState[]
+  getSkillRegistletItemsState: (skill: Skill) => SkillRegistletItemState[]
 }
 
 const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> = Symbol(
@@ -26,6 +33,13 @@ interface SkillEffectInjection {
 }
 const SkillEffectInjectionKey: InjectionKey<SkillEffectInjection> = Symbol('skill-effect')
 
-export { ComputingContainerInjectionKey, SkillEffectInjectionKey }
+const SkillEffectNavigationInjectionKey: InjectionKey<(skill: Skill) => void> =
+  Symbol('skill-effect-navigation')
 
-export type { SkillEffectInjection, ComputingContainerInjection }
+export {
+  ComputingContainerInjectionKey,
+  SkillEffectInjectionKey,
+  SkillEffectNavigationInjectionKey,
+}
+
+export type { SkillEffectInjection, ComputingContainerInjection, SkillRegistletItemState }

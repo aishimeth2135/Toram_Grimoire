@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="skill-effect-wrapper">
     <cy-tabs v-if="tabVisible" v-model="currentTab" class="mb-4">
       <cy-tab :value="ContentTabs.Info">
         {{ t('skill-query.skill-info') }}

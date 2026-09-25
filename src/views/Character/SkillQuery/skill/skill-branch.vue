@@ -345,7 +345,7 @@ const subButtonAvailable = computed(() => {
 </style>
 
 <style>
-html.theme--night-mode .app--skill-query--wrapper .history-compare--mark {
+html.theme--night-mode .skill-effect-wrapper .history-compare--mark {
   background-color: --alpha(var(--app-violet-60) / 30%);
 }
 </style>
