@@ -114,6 +114,7 @@
           :icon="suffixData.icon"
           :title="suffixData.title"
           :result="suffixData.result"
+          :self-buff-results="suffixData.selfBuffResults"
           :stat-containers="suffixData.statContainers"
         />
       </div>

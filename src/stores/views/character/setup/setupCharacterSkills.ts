@@ -332,7 +332,11 @@ export function setupCharacterSkills(
       if (suf.propBoolean('display_only')) {
         return false
       }
-      return suf.stats.length !== 0 || suf.hasProp('dual_element')
+      return (
+        suf.stats.length !== 0 ||
+        suf.hasProp('dual_element') ||
+        (suf.mainBranch.isA(SkillBranchNames.Damage) && suf.hasProp('self_buffs'))
+      )
     }
 
     const handleComputingResults = (

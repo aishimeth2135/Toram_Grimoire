@@ -53,19 +53,28 @@
             ).enabled
           "
         />
-        <CharacterSkillItemStats
-          v-if="extraContainer.statContainers.length > 0"
-          :stat-containers="extraContainer.statContainers"
-        />
-        <div v-else-if="extraContainer.has('dual_element')" class="5 flex items-center py-0 pl-1">
-          <div v-if="extraContainer.has('condition')" class="text-primary-30 mr-3 text-sm">
-            {{ extraContainer.get('condition') }}
+        <div class="pl-1">
+          <div v-if="extraContainer.branchItem.hasProp('self_buffs')">
+            <SkillBranchPropValue
+              v-for="buff in parseSkillSelfBuffs(extraContainer.branchItem.prop('self_buffs'))"
+              :key="buff"
+              :result="extraContainer.result(`self_buffs/${buff}`)"
+            />
           </div>
-          <div class="text-orange-60 mr-2">
-            {{ t('skill-query.branch.dual-element-title') }}
-          </div>
-          <div class="text-violet-60">
-            {{ extraContainer.get('dual_element') }}
+          <CharacterSkillItemStats
+            v-if="extraContainer.statContainers.length > 0"
+            :stat-containers="extraContainer.statContainers"
+          />
+          <div v-else-if="extraContainer.has('dual_element')" class="5 flex items-center py-0">
+            <div v-if="extraContainer.has('condition')" class="text-primary-30 mr-3 text-sm">
+              {{ extraContainer.get('condition') }}
+            </div>
+            <div class="text-orange-60 mr-2">
+              {{ t('skill-query.branch.dual-element-title') }}
+            </div>
+            <div class="text-violet-60">
+              {{ extraContainer.get('dual_element') }}
+            </div>
           </div>
         </div>
       </div>
@@ -102,7 +111,7 @@ import type { SkillResult } from '@/stores/views/character/setup'
 import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
-import { getDamageHit } from '@/lib/Skill/Properties'
+import { getDamageHit, parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
@@ -163,7 +172,11 @@ const statExtraContainers = computed(() => {
     if (!suf.branchItem.isA(SkillBranchNames.Extra)) {
       return false
     }
-    return suf.statContainers.length > 0 || suf.has('dual_element')
+    return (
+      suf.statContainers.length > 0 ||
+      suf.has('dual_element') ||
+      suf.branchItem.hasProp('self_buffs')
+    )
   })
 })
 </script>

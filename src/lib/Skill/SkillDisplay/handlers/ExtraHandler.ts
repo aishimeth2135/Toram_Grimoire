@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
+import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItemSuffix, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 
@@ -20,7 +21,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
 
   const defaultCondition =
     branchItem.mainBranch.isA(SkillBranchNames.Damage) && branchItem.stats.length > 0
-      ? t('skill-query.branch.damage: extra.condition-default-value')
+      ? t('skill-query.branch.damage:extra.condition-default-value')
       : t('skill-query.branch.global-suffix.extra.condition-default-value')
   const props = cloneBranchProps(branchItem, {
     condition:
@@ -37,6 +38,11 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
   const pureValues = []
 
   if (mainBranch.isA(SkillBranchNames.Damage)) {
+    parseSkillSelfBuffs(branchItem.prop('self_buffs')).forEach(buff => {
+      const key = `self_buffs/${buff}`
+      props.set(key, t(`skill-query.branch.damage:extra.self_buffs.${buff}`))
+      textPropsMap.append(key)
+    })
     pureValues.push('ailment_name')
     valuePropsMap.set('ailment_chance', '%')
     filters.set('ailment_name', value => !!value)

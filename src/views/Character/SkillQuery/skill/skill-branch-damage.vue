@@ -127,7 +127,7 @@ import { useI18n } from 'vue-i18n'
 
 import { toInt } from '@/shared/utils/number'
 
-import { getDamageHit } from '@/lib/Skill/Properties'
+import { getDamageHit, parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
 import { DamageHandler, type DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
@@ -288,7 +288,7 @@ const extraSuffixBranchDatas = computed(() => {
       ) {
         return false
       }
-      return suffix.hasProp('caption') || suffix.stats.length > 0
+      return suffix.hasProp('self_buffs') || suffix.hasProp('caption') || suffix.stats.length > 0
     })
     .filter(suffix => !suffix.propBoolean('hidden'))
     .map((suffix, idx) => {
@@ -298,15 +298,16 @@ const extraSuffixBranchDatas = computed(() => {
         icon: 'ic:round-done',
         title: dataContainer.get('condition'),
         result: null,
+        selfBuffResults: parseSkillSelfBuffs(suffix.prop('self_buffs')).flatMap(buff => {
+          const result = dataContainer.result(`self_buffs/${buff}`)
+          return result ? [result] : []
+        }),
       }
       if (dataContainer.get('target')) {
         baseData.titleProps = [dataContainer.get('target')]
       }
-      if (dataContainer.get('caption')) {
-        baseData.result = dataContainer.result('caption')
-      } else {
-        baseData.statContainers = dataContainer.statContainers
-      }
+      baseData.result = dataContainer.result('caption')
+      baseData.statContainers = dataContainer.statContainers
       return baseData
     })
 })

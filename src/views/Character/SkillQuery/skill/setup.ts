@@ -68,6 +68,7 @@ export interface ExtraSuffixBranchData {
   title: string
   titleProps?: string[]
   result: SkillBranchResultBase | null
+  selfBuffResults?: SkillBranchResultBase[]
   statContainers?: SkillBranchStatResult[]
   otherResults?: Map<string, SkillBranchResultBase>
 }
