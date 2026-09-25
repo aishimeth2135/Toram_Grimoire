@@ -74,11 +74,11 @@ const chartData = computed<ChartData<'line'>>(() => ({
   datasets: props.series.map(series => ({
     label: series.label,
     data: series.values.map(value => value / MILLION),
-    borderColor: series.color,
-    backgroundColor: series.color,
+    borderColor: series.borderColor,
+    backgroundColor: series.backgroundColor,
     borderWidth: 2,
-    pointRadius: 3,
-    pointHoverRadius: 5,
+    pointRadius: 4,
+    pointHoverRadius: 6,
     tension: 0.15,
   })),
 }))

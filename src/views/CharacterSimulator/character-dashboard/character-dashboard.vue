@@ -73,8 +73,10 @@ const { setCurrentTab } = useCharacterSimulatorState()
     </div>
     <CharacterDashboardSection
       :title="t('character-simulator.character-dashboard.character-build-title')"
+      title-icon="ic:outline-space-dashboard"
+      default-hidden
     >
-      <div class="border-primary-10 wd:flex wd:items-stretch border-t">
+      <div class="wd:flex wd:items-stretch">
         <div class="wd:border-r wd:border-primary-10 relative w-full py-2">
           <cy-button-icon
             icon="mdi:square-edit-outline"

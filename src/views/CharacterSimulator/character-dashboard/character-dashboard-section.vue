@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 interface Props {
   title: string
+  titleIcon: string
   defaultHidden?: boolean
 }
 interface Slots {
@@ -21,15 +22,16 @@ const expanded = ref(!props.defaultHidden)
 
 <template>
   <section class="border-primary-20 shadow-xs border">
-    <div class="px-4 py-2.5">
+    <div class="border-primary-10 border-b">
       <button
         type="button"
-        class="flex w-full cursor-pointer items-center gap-2 text-left"
+        class="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left"
         @click="expanded = !expanded"
       >
-        <span class="text-primary-70">
+        <div class="text-primary-70 gap-icon flex items-center">
+          <cy-icon :icon="titleIcon" />
           {{ title }}
-        </span>
+        </div>
         <span class="gap-icon text-primary-30 ml-auto flex items-center text-sm">
           <cy-icon small :icon="expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'" />
           {{ t(expanded ? 'global.collapse' : 'global.expand') }}

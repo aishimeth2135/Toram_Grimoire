@@ -57,7 +57,8 @@ const options: ChartOptions<'bar'> = {
 const averageDamages = computed(() =>
   props.series
     .map(series => ({
-      color: series.color,
+      borderColor: series.borderColor,
+      backgroundColor: series.backgroundColor,
       label: series.label,
       value: series.values.reduce((sum, value) => sum + value, 0) / series.values.length,
     }))
@@ -75,8 +76,8 @@ const chartData = computed<ChartData<'bar'>>(() => ({
       data: averageDamages.value.map(damage =>
         highestAverageDamage.value === 0 ? 0 : (damage.value * 100) / highestAverageDamage.value
       ),
-      backgroundColor: averageDamages.value.map(damage => damage.color),
-      borderColor: averageDamages.value.map(damage => damage.color),
+      backgroundColor: averageDamages.value.map(damage => damage.backgroundColor),
+      borderColor: averageDamages.value.map(damage => damage.borderColor),
       borderWidth: 1,
       borderRadius: 4,
       borderSkipped: false,

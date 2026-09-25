@@ -1,5 +1,6 @@
 export interface DamageChartSeries {
   label: string
-  color: string
+  borderColor: string
+  backgroundColor: string
   values: number[]
 }

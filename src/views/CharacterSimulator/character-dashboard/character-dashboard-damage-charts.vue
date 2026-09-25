@@ -67,24 +67,24 @@ const RESISTANCE_MAX = 30
 const DEFENSE_RANGE = 2000
 
 const chartColorVariables = [
-  '--app-violet-60',
-  '--app-blue-60',
-  '--app-red-60',
-  '--app-orange-60',
-  '--app-emerald-60',
-  '--app-cyan-60',
-  '--app-fuchsia-60',
-  '--app-primary-60',
+  { borderColor: '--app-violet-60', backgroundColor: '--app-violet-30' },
+  { borderColor: '--app-blue-60', backgroundColor: '--app-blue-30' },
+  { borderColor: '--app-red-60', backgroundColor: '--app-red-30' },
+  { borderColor: '--app-orange-60', backgroundColor: '--app-orange-30' },
+  { borderColor: '--app-emerald-60', backgroundColor: '--app-emerald-30' },
+  { borderColor: '--app-cyan-60', backgroundColor: '--app-cyan-30' },
+  { borderColor: '--app-fuchsia-60', backgroundColor: '--app-fuchsia-30' },
+  { borderColor: '--app-primary-60', backgroundColor: '--app-primary-30' },
 ]
-const fallbackLineColors = [
-  '#7c3aed',
-  '#2563eb',
-  '#dc2626',
-  '#ea580c',
-  '#059669',
-  '#0891b2',
-  '#c026d3',
-  '#4f46e5',
+const fallbackChartColors = [
+  { borderColor: '#7c3aed', backgroundColor: '#c4b4ff' },
+  { borderColor: '#2563eb', backgroundColor: '#8ec5ff' },
+  { borderColor: '#dc2626', backgroundColor: '#ffa1ad' },
+  { borderColor: '#ea580c', backgroundColor: '#ffd230' },
+  { borderColor: '#059669', backgroundColor: '#5ee9b5' },
+  { borderColor: '#0891b2', backgroundColor: '#53eafd' },
+  { borderColor: '#c026d3', backgroundColor: '#f4a8ff' },
+  { borderColor: '#4f46e5', backgroundColor: '#ffa3c2' },
 ]
 
 const { t } = useI18n()
@@ -94,13 +94,18 @@ const { appNightMode } = storeToRefs(settingStore)
 
 const currentTab = ref<ChartTab>(ChartTabs.Low)
 const damageSkillLines = shallowRef<DamageSkillLine[]>([])
-const lineColors = shallowRef(fallbackLineColors)
+const chartColors = shallowRef(fallbackChartColors)
 
 const updateChartColors = () => {
   const styles = getComputedStyle(document.documentElement)
-  lineColors.value = chartColorVariables.map(
-    (variable, index) => styles.getPropertyValue(variable).trim() || fallbackLineColors[index]
-  )
+  chartColors.value = chartColorVariables.map((variables, index) => ({
+    borderColor:
+      styles.getPropertyValue(variables.borderColor).trim() ||
+      fallbackChartColors[index].borderColor,
+    backgroundColor:
+      styles.getPropertyValue(variables.backgroundColor).trim() ||
+      fallbackChartColors[index].backgroundColor,
+  }))
 }
 
 watch(appNightMode, updateChartColors, { immediate: true, flush: 'post' })
@@ -244,7 +249,7 @@ const damageChartSeries = computed<DamageChartSeries[]>(() =>
     return [
       {
         label: line.label,
-        color: lineColors.value[index % lineColors.value.length],
+        ...chartColors.value[index % chartColors.value.length],
         values: resistanceValues.map((_resistance, pointIndex) =>
           selectedResults.reduce((sum, result) => {
             const target = result.result.value
@@ -289,17 +294,18 @@ onBeforeUnmount(() => {
 <template>
   <CharacterDashboardSection
     :title="t('character-simulator.character-dashboard.damage-chart.title')"
+    title-icon="ic:baseline-insert-chart-outlined"
     default-hidden
   >
-    <div class="px-4">
-      <cy-tabs v-model="currentTab">
-        <cy-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
-          {{ tab.text }}
-        </cy-tab>
-      </cy-tabs>
-    </div>
-    <div class="border-primary-10 border-t p-4">
-      <template v-if="damageChartSeries.length > 0">
+    <template v-if="damageChartSeries.length > 0">
+      <div class="px-4">
+        <cy-tabs v-model="currentTab">
+          <cy-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
+            {{ tab.text }}
+          </cy-tab>
+        </cy-tabs>
+      </div>
+      <div class="border-primary-10 border-t p-4">
         <div class="gap-icon text-primary-30 mb-3 inline-flex items-start px-2 text-sm">
           <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
           {{ damageChartTips }}
@@ -312,7 +318,7 @@ onBeforeUnmount(() => {
           >
             <span
               class="h-1 w-6 rounded-full"
-              :style="{ backgroundColor: series.color }"
+              :style="{ backgroundColor: series.borderColor }"
               aria-hidden="true"
             ></span>
             <span class="text-primary-70">{{ series.label }}</span>
@@ -338,10 +344,10 @@ onBeforeUnmount(() => {
             <CharacterDashboardDamageRatioChart :series="damageChartSeries" />
           </div>
         </div>
-      </template>
-      <cy-default-tips v-else>
-        {{ t('character-simulator.character-dashboard.damage-chart.no-data') }}
-      </cy-default-tips>
+      </div>
+    </template>
+    <div v-else class="text-red-40 px-6 py-5 text-sm">
+      {{ t('character-simulator.character-dashboard.damage-chart.no-skill-tips') }}
     </div>
   </CharacterDashboardSection>
 </template>
