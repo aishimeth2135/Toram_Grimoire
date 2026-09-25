@@ -20,7 +20,7 @@ import {
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem, getDamageSource } from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillBuffs, getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
 import { createElementMap, getCharacterElement } from '../utils'
@@ -173,19 +173,22 @@ export function setupDamageCalculation(
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>
   ) => {
-    const selectedStats = computed<StatRecorded[]>(() => {
+    const selectedBuffResults = computed<SkillResult[]>(() => {
       if (getDamageSource(skillResult.value.container.branchItem)) {
-        return extraStats.value
+        return []
       }
 
       const selectedIds =
         skillBuild.value?.getSkillBranchState(skillResult.value.container.branchItem)
           .selectedBuffIds ?? []
+      return availableBuffResults.value.filter(result =>
+        selectedIds.includes(result.container.branchItem.defaultBranchId)
+      )
+    })
+
+    const selectedStats = computed<StatRecorded[]>(() => {
       const stats = [...extraStats.value]
-      availableBuffResults.value.forEach(result => {
-        if (!selectedIds.includes(result.container.branchItem.defaultBranchId)) {
-          return
-        }
+      selectedBuffResults.value.forEach(result => {
         const containers = [
           result.container,
           ...result.suffixContainers.filter(
@@ -209,16 +212,21 @@ export function setupDamageCalculation(
 
     const container = computed(() => skillResult.value.container)
     const expectedResultOptions = computed<CalcResultOptions>(() => {
-      const buffs = skillResult.value.suffixContainers
+      const selfBuffs = skillResult.value.suffixContainers
         .filter(suffix => skillBuild.value?.getSkillBranchState(suffix.branchItem).enabled)
         .flatMap(suffix => parseSkillSelfBuffs(suffix.branchItem.prop('self_buffs')))
+      const guaranteedCritical =
+        selfBuffs.includes('guaranteed_critical') ||
+        selectedBuffResults.value.some(result =>
+          result.container.branchItem.buffs?.has(SkillBuffs.GuaranteedCritical)
+        )
 
       return {
         containerResults: {
-          ...(buffs.includes('guaranteed_critical') && {
+          ...(guaranteedCritical && {
             [CalculationContainerIds.CriticalRate]: 100,
           }),
-          ...(buffs.includes('guaranteed_hit') && { [CalculationContainerIds.Accuracy]: 100 }),
+          ...(selfBuffs.includes('guaranteed_hit') && { [CalculationContainerIds.Accuracy]: 100 }),
         },
       }
     })

@@ -20,6 +20,16 @@
           v-else-if="container.statContainers.length !== 0"
           :stat-containers="container.statContainers"
         />
+        <SkillBranchPropValue
+          v-if="container.has('buffs/guaranteed_critical')"
+          class="block py-0.5"
+          :result="container.result('buffs/guaranteed_critical')"
+        />
+        <SkillBranchPropValue
+          v-if="container.has('buffs/mp_cost_half')"
+          class="block py-0.5"
+          :result="container.result('buffs/mp_cost_half')"
+        />
       </div>
     </SkillBranchLayoutNormal>
   </div>

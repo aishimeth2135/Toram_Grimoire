@@ -4,7 +4,9 @@
       <div class="mr-3 flex shrink-0">
         <cy-button-toggle
           v-model:selected="branchItemState.enabled"
-          :disabled="container.statContainers.length === 0"
+          :disabled="
+            container.statContainers.length === 0 && !container.has('buffs/guaranteed_critical')
+          "
         >
           {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
         </cy-button-toggle>

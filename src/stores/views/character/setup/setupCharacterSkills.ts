@@ -405,10 +405,7 @@ export function setupCharacterSkills(
           checkPostpone(bch) &&
           bch.isA(SkillBranchNames.Buff) &&
           !bch.propBoolean('display_only') &&
-          (bch.stats.length > 0 ||
-            bch.suffixBranches.some(
-              suffix => suffixBranchFilter(suffix) && suffix.stats.length > 0
-            ))
+          (bch.stats.length > 0 || !!bch.buffs?.has(SkillBuffs.GuaranteedCritical))
         )
       }
       const buffValid = skillItem.effectItems.some(effectItem =>

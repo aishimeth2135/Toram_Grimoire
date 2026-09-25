@@ -82,6 +82,14 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
       <div class="flex flex-col gap-1">
         <div class="text-primary-70">{{ option.name }}</div>
         <CharacterSkillItemStats :stat-containers="option.result.container.statContainers" />
+        <SkillBranchPropValue
+          v-if="option.result.container.has('buffs/guaranteed_critical')"
+          :result="option.result.container.result('buffs/guaranteed_critical')"
+        />
+        <SkillBranchPropValue
+          v-if="option.result.container.has('buffs/mp_cost_half')"
+          :result="option.result.container.result('buffs/mp_cost_half')"
+        />
         <div v-for="suffix in option.result.suffixContainers" :key="suffix.instanceId">
           <CharacterSkillItemStats :stat-containers="suffix.statContainers" />
           <SkillBranchPropValue :result="suffix.result('caption')" />

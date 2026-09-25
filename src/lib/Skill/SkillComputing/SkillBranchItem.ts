@@ -83,7 +83,7 @@ abstract class SkillBranchItemBase<
 
     this._props = new Map(branch instanceof SkillBranch ? branch.props : branch.allProps)
     this.stats = branch.stats.map(stat => stat.clone())
-    this.buffs = null
+    this.buffs = branch instanceof SkillBranch ? null : branch.buffs
 
     this.isEmpty = branch.isEmpty
 

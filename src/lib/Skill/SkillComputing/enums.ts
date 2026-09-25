@@ -6,5 +6,6 @@ export type FormulaDisplayModes = (typeof FormulaDisplayModes)[keyof typeof Form
 
 export const SkillBuffs = {
   MpCostHalf: 'mp_cost_half',
+  GuaranteedCritical: 'guaranteed_critical',
 } as const
 export type SkillBuffs = (typeof SkillBuffs)[keyof typeof SkillBuffs]

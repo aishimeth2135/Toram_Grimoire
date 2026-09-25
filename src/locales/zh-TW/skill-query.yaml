@@ -30,6 +30,8 @@ equipment:
 skill-buffs:
   mp_cost_half:
     title: MP消耗減半
+  guaranteed_critical:
+    title: 必定暴擊
 branch:
   duration-caption: '持續{duration}秒'
   ailment-title: 命中成功後
@@ -202,6 +204,9 @@ branch:
     base-name: 技能層數
   effect:
     base-name: 技能效果
+    buffs:
+      guaranteed_critical: '造成的傷害#[必定暴擊]。'
+      mp_cost_half: '附加#[MP消耗減半]。'
     condition:
       auto: 狀態期間
       hit: 命中成功後

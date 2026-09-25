@@ -36,6 +36,15 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(
     'condition',
     'end_condition',
   ])
+
+  if (branchItem.isA(SkillBranchNames.Buff)) {
+    branchItem.buffs?.items.forEach(buff => {
+      const key = `buffs/${buff}`
+      props.set(key, t(`skill-query.branch.effect.buffs.${buff}`))
+      textPropsMap.append(key)
+    })
+  }
+
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     caption: value => !!value,
     condition: value => value !== 'none',

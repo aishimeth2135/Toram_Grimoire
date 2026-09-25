@@ -3,7 +3,9 @@
     <div v-if="!hideName" class="flex shrink-0">
       <cy-button-check
         v-model:selected="branchItemState.enabled"
-        :disabled="container.statContainers.length === 0"
+        :disabled="
+          container.statContainers.length === 0 && !container.has('buffs/guaranteed_critical')
+        "
       />
     </div>
     <div class="grow">
@@ -16,6 +18,16 @@
           :result="container.result('caption')"
         />
         <CharacterSkillItemStats v-else :stat-containers="container.statContainers" />
+        <SkillBranchPropValue
+          v-if="container.has('buffs/guaranteed_critical')"
+          class="block"
+          :result="container.result('buffs/guaranteed_critical')"
+        />
+        <SkillBranchPropValue
+          v-if="container.has('buffs/mp_cost_half')"
+          class="block"
+          :result="container.result('buffs/mp_cost_half')"
+        />
       </div>
       <div class="pt-1">
         <CharacterSkillResultSuffixItem
