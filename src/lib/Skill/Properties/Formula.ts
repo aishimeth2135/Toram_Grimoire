@@ -204,7 +204,7 @@ function computedBranchHelper(
   }
 
   const formulaExtra =
-    mainBranchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
+    mainBranchItem.suffixBranches.find(suf => suf.isA(SkillBranchNames.FormulaExtra)) ?? null
 
   let extraTexts: string[] = []
   if (formulaExtra) {

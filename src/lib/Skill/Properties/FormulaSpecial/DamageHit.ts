@@ -6,7 +6,7 @@ interface DamageHitFormulaScope {
 }
 
 export function getDamageHit(branch: SkillBranchItem) {
-  return branch.suffixBranches.find(suffix => suffix.is(SkillBranchNames.DamageHit))
+  return branch.suffixBranches.find(suffix => suffix.isA(SkillBranchNames.DamageHit))
 }
 
 export function getDamageHitMultiplierFormula(branch: SkillBranchItem, currentHit: number) {

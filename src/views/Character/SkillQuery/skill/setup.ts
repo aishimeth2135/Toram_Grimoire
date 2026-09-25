@@ -80,7 +80,7 @@ export function setupCommonExtraSuffixBranches(
     return branchItem.value.suffixBranches
       .filter(
         suffix =>
-          suffix.is(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0)
+          suffix.isA(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0)
       )
       .map((suffix, idx) => {
         const dataContainer = ExtraHandler(computing, suffix)

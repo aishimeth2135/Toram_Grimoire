@@ -18,7 +18,7 @@ export default function TableHandler<BranchItem extends SkillBranchItem>(
 ) {
   const labels = parseListProperty(branchItem.prop('labels'))
   const rows = branchItem.suffixBranches
-    .filter(suf => suf.is(SkillBranchNames.Row))
+    .filter(suf => suf.isA(SkillBranchNames.Row))
     .map(suf => RowHandler(computing, suf, labels.length))
   return {
     labels,

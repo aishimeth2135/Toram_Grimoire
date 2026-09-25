@@ -51,7 +51,7 @@ export function handleOptionsProperties<PropertyMap extends OptionsPropertyMap>(
         isNumberString(computedValue) && parseFloat(computedValue) < 0 ? 'negative' : 'positive'
       const normalizedValue = sign === 'negative' ? -1 * parseFloat(computedValue) : computedValue
       displayValue = t(
-        `skill-query.branch.${rootKey ?? branchItem.name}.${String(propertyKey)}.${sign}`,
+        `skill-query.branch.${rootKey ?? branchItem.getTranslationKey()}.${String(propertyKey)}.${sign}`,
         { value: normalizedValue.toString() }
       )
       resultValue = computedValue
@@ -62,9 +62,9 @@ export function handleOptionsProperties<PropertyMap extends OptionsPropertyMap>(
       if (rootKey) {
         translationRoot = rootKey
       } else {
-        translationRoot = branchItem.name
+        translationRoot = branchItem.getTranslationKey()
         if (branchItem instanceof SkillBranchItemSuffix) {
-          translationRoot = branchItem.mainBranch.name + ': ' + translationRoot
+          translationRoot = branchItem.mainBranch.getTranslationKey() + ': ' + translationRoot
         }
       }
       const translatedValue = t(

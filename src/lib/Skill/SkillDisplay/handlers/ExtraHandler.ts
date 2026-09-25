@@ -19,7 +19,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
   const { t } = Grimoire.i18n
 
   const defaultCondition =
-    branchItem.mainBranch.is(SkillBranchNames.Damage) && branchItem.stats.length > 0
+    branchItem.mainBranch.isA(SkillBranchNames.Damage) && branchItem.stats.length > 0
       ? t('skill-query.branch.damage: extra.condition-default-value')
       : t('skill-query.branch.global-suffix.extra.condition-default-value')
   const props = cloneBranchProps(branchItem, {
@@ -36,7 +36,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
   const langPropsMap = new MapContainer<HandleBranchLangPropsMap>()
   const pureValues = []
 
-  if (mainBranch.is(SkillBranchNames.Damage)) {
+  if (mainBranch.isA(SkillBranchNames.Damage)) {
     pureValues.push('ailment_name')
     valuePropsMap.set('ailment_chance', '%')
     filters.set('ailment_name', value => !!value)
@@ -54,7 +54,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
       SkillBranchNames.Next,
       SkillBranchNames.Passive,
       SkillBranchNames.Heal,
-    ].some(name => name === mainBranch.name)
+    ].some(kind => mainBranch.isA(kind))
   ) {
     filters.set('caption', value => !!value)
     textPropsMap.append('caption', 'condition')

@@ -145,7 +145,7 @@ const usedStackIds = computed(() => {
 const stackBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(
-      bch => bch.is(SkillBranchNames.Stack) && usedStackIds.value.includes(bch.stackId as number)
+      bch => bch.isA(SkillBranchNames.Stack) && usedStackIds.value.includes(bch.stackId as number)
     )
     .map((bch, iid) => ({ branchItem: bch, iid }))
 })

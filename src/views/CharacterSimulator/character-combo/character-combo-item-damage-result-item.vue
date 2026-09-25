@@ -142,7 +142,7 @@ const frequencyVisible = computed(() => {
 
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers.filter(
-    suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0
+    suf => suf.branchItem.isA(SkillBranchNames.Extra) && suf.statContainers.length > 0
   )
 })
 

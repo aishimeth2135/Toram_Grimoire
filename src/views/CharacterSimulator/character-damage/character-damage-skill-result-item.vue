@@ -160,7 +160,7 @@ const frequencyVisible = computed(() => {
 
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers.filter(suf => {
-    if (!suf.branchItem.is(SkillBranchNames.Extra)) {
+    if (!suf.branchItem.isA(SkillBranchNames.Extra)) {
       return false
     }
     return suf.statContainers.length > 0 || suf.has('dual_element')

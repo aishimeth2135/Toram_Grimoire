@@ -1,7 +1,7 @@
 <template>
   <div class="text-content" :class="rootClassList" @click="rootClicked">
     <cy-icon
-      v-if="branchItem.is(SkillBranchNames.Tips)"
+      v-if="branchItem.isA(SkillBranchNames.Tips)"
       icon="ic:outline-tips-and-updates"
       class="ml-1 mr-2 mt-0.5"
     />
@@ -39,7 +39,7 @@ const rootClicked = () => {
 
 const rootClassList = computed(() => {
   return {
-    'is-tips': props.branchItem.is(SkillBranchNames.Tips),
+    'is-tips': props.branchItem.isA(SkillBranchNames.Tips),
     'is-mark': props.branchItem.propBoolean('is_mark'),
     'is-group': props.branchItem.isGroup,
     'group-active': props.branchItem.groupState.expanded,

@@ -22,7 +22,9 @@ import {
 } from './consts'
 
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
-  let basicBranch = effectItem.branchItems.find(branchItem => branchItem.is(SkillBranchNames.Basic))
+  let basicBranch = effectItem.branchItems.find(branchItem =>
+    branchItem.isA(SkillBranchNames.Basic)
+  )
   if (!basicBranch) {
     basicBranch = SkillBranchItem.create(effectItem, effectBasicPropsToBranch(origin))
     effectItem.branchItems.unshift(basicBranch)
@@ -88,10 +90,10 @@ function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBra
       return
     }
     /**
-     * If some `fromBranch.name === '' && fromBranch.isEmpty`.
+     * If some `fromBranch.isExactly(SkillBranchNames.None) && fromBranch.isEmpty`.
      * Remove branch which `id` is same as `fromBranch` in `toBranches`.
      */
-    if (fromBranch.name === '' && fromBranch.isEmpty) {
+    if (fromBranch.isExactly(SkillBranchNames.None) && fromBranch.isEmpty) {
       to.splice(idx, 1)
       return
     }
@@ -102,10 +104,10 @@ function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBra
 }
 
 function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchItem) {
-  // 如果 branch.id 一樣但 branch.name 不一樣，先清空所有屬性。
-  // branch.name 為空值時，默認兩者同名。
-  if (from.name !== SkillBranchNames.None && to.name !== from.name) {
-    to.name = from.name
+  // 相同 overrideId 的分支只有在實際類型改變時清空屬性。
+  // None 表示未指定類型，保留目標類型。
+  if (!from.isExactly(SkillBranchNames.None) && !to.isKindEquals(from)) {
+    to.copyKindFrom(from)
     to.clearProp()
   }
 
@@ -150,7 +152,7 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
 function initBranchSpecialProps(effectItem: SkillEffectItemBase) {
   effectItem.branchItems.forEach(bch => {
     if (
-      (bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) &&
+      (bch.isA(SkillBranchNames.Effect) || bch.isA(SkillBranchNames.Damage)) &&
       bch.hasProp('buffs')
     ) {
       bch.buffs = SkillBranchBuffs.create(bch.prop('buffs'))
@@ -232,7 +234,6 @@ function convertEffectEquipment(
 }
 
 function classifyBranches(effectItem: SkillEffectItemBase) {
-  type SuffixBranchListKey = SkillBranchNames | '@global'
   const suffixBranchList = {
     [SkillBranchNames.Damage]: [
       SkillBranchNames.Extra,
@@ -248,13 +249,13 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
     [SkillBranchNames.List]: [SkillBranchNames.List],
     [SkillBranchNames.Table]: [SkillBranchNames.Row],
     '@global': [SkillBranchNames.FormulaExtra, SkillBranchNames.Group],
-  } as Record<SuffixBranchListKey, SkillBranchNames[]>
+  } satisfies Partial<Record<SkillBranchNames | '@global', SkillBranchNames[]>>
 
   const searchSuffixList = (current: SkillBranchItem, bch: SkillBranchItem) => {
-    return ([current.name, '@global'] as SuffixBranchListKey[]).find(name => {
-      const suffixList = suffixBranchList[name]
-      return !!suffixList?.find(item => item === bch.name)
-    })
+    return [
+      ...current.collectKindConfigs<SkillBranchNames[]>(suffixBranchList).flat(),
+      ...suffixBranchList['@global'],
+    ].some(kind => bch.isA(kind))
   }
 
   const mainBranchNameList: SkillBranchNames[] = [
@@ -272,17 +273,18 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
     SkillBranchNames.Basic,
     SkillBranchNames.Table,
   ]
-  const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.includes(_bch.name)
+  const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.some(kind => _bch.isA(kind))
 
   const auxiliaryBranchNameList: SkillBranchNames[] = [SkillBranchNames.Equipment]
-  const isAuxiliaryBranch = (_bch: SkillBranchItem) => auxiliaryBranchNameList.includes(_bch.name)
+  const isAuxiliaryBranch = (_bch: SkillBranchItem) =>
+    auxiliaryBranchNameList.some(kind => _bch.isA(kind))
 
   const resBranches: SkillBranchItem[] = []
   const resAuxiliaryBranches: SkillBranchItem[] = []
   let spaceFlag = false
 
   effectItem.branchItems.forEach(branchItem => {
-    if (branchItem.is(SkillBranchNames.Space)) {
+    if (branchItem.isA(SkillBranchNames.Space)) {
       spaceFlag = true
       return
     }
@@ -299,7 +301,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
       return
     }
     if (mainBranch && !spaceFlag) {
-      if (branchItem.name === '') {
+      if (branchItem.isExactly(SkillBranchNames.None)) {
         mainBranch.emptySuffixBranches.push(branchItem.toSuffix(mainBranch))
         return
       }
@@ -321,7 +323,7 @@ function classifyBranches(effectItem: SkillEffectItemBase) {
 function handleVirtualBranches(effectItem: SkillEffectItemBase) {
   effectItem.branchItems.forEach(branchItem => {
     const filtered = branchItem.suffixBranches.filter(suffix => {
-      if (suffix.is(SkillBranchNames.Group)) {
+      if (suffix.isA(SkillBranchNames.Group)) {
         const newGroupState: BranchGroupState = {
           size: toInt(suffix.prop('size')) ?? 0,
           expandable: suffix.prop('expandable') === '1',
@@ -341,7 +343,7 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
 }
 
 export function initBranchesPostpone(effectItem: SkillEffectItem) {
-  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.is(SkillBranchNames.Stack))
+  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.isA(SkillBranchNames.Stack))
   const postponeVarList = ['$STR', '$INT', '$AGI', '$VIT', '$DEX', '$guard_power']
   const checkStatsContainsPostponeVar = (stats: StatComputed[]) =>
     stats.some(_stat => postponeVarList.some(stat => _stat.value.includes(stat)))
@@ -356,7 +358,7 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
       bch.suffixBranches.some(suf => checkStatsContainsPostponeVar(suf.stats))
     ) {
       bch.postpone = true
-    } else if (bch.is(SkillBranchNames.Damage)) {
+    } else if (bch.isA(SkillBranchNames.Damage)) {
       bch.postpone = true
     } else if (bch.stats.some(stat => bch.hasProp(stat.statId, 'conditionValue'))) {
       bch.postpone = true
@@ -420,7 +422,10 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
 
 function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   effectItem.branchItems.forEach(branchItem => {
-    const defaultValueList = BRANCH_PROPS_DEFAULT_VALUE[branchItem.name]
+    const defaultValueList: Record<string, string> = Object.assign(
+      {},
+      ...branchItem.collectKindConfigs(BRANCH_PROPS_DEFAULT_VALUE)
+    )
     if (defaultValueList) {
       Object.entries(defaultValueList).forEach(([key, value]) => {
         if (!branchItem.hasProp(key)) {
@@ -436,7 +441,7 @@ function resolveExtendBranches(effectItem: SkillEffectItemBase) {
   const resolved = new Map<SkillBranchItem, boolean>()
 
   const resolve = (branch: SkillBranchItem): boolean => {
-    if (!branch.is(SkillBranchNames.Extend)) {
+    if (!branch.isExactly(SkillBranchNames.Extend)) {
       return true
     }
     if (resolved.has(branch)) {
@@ -459,7 +464,7 @@ function resolveExtendBranches(effectItem: SkillEffectItemBase) {
 
     const ownProps = new Map(branch.allProps)
     const ownStats = branch.stats.map(stat => stat.clone())
-    branch.name = target.realName
+    branch.copyKindFrom(target)
     branch.clearProp()
     target.allProps.forEach((value, key) => branch.setProp(key, value))
     ownProps.forEach((value, key) => {

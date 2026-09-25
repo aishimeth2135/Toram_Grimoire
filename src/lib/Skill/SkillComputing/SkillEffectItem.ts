@@ -126,7 +126,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 
     const extraEquipments = (() => {
       const equipmentBranch = this.auxiliaryBranchItems.find(bch =>
-        bch.is(SkillBranchNames.Equipment)
+        bch.isA(SkillBranchNames.Equipment)
       )
 
       if (!equipmentBranch) {

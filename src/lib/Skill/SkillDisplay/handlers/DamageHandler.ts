@@ -93,7 +93,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
 
   if (props.get('base') === 'auto') {
     sources.base = [{ branch: branchItem, key: 'base' }]
-    const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
+    const baseSuffix = branchItem.suffixBranches.find(bch => bch.isA(SkillBranchNames.Base))
     if (baseSuffix) {
       sources.base.push({ branch: baseSuffix, key: 'type' }, { branch: baseSuffix, key: 'title' })
       sources['@custom-base-caption'] = [
@@ -145,7 +145,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
   })
 
   const prorationBranch = branchItem.suffixBranches.find(suffix =>
-    suffix.is(SkillBranchNames.Proration)
+    suffix.isA(SkillBranchNames.Proration)
   )
   if (prorationBranch) {
     const proration = ProrationHandler(computing, prorationBranch)

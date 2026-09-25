@@ -116,7 +116,7 @@ export function setupDamageCalculation(
         if (!(skillBuild.value?.getSkillBranchState(suf).enabled ?? true)) {
           return false
         }
-        return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
+        return suf.isA(SkillBranchNames.Extra) && suf.hasProp('dual_element')
       })
       if (extraBch) {
         skillDualElement = extraBch.prop('dual_element')
@@ -188,7 +188,7 @@ export function setupDamageCalculation(
       let idToSearch = id
       if (container.value.branchItem) {
         const damageStatSuf = container.value.branchItem.suffixBranches.find(suf => {
-          if (!suf.is(SkillBranchNames.DamageStat)) {
+          if (!suf.isA(SkillBranchNames.DamageStat)) {
             return false
           }
           return suf.hasProp('id') && suf.prop('id') === id
@@ -347,7 +347,7 @@ export function setupDamageCalculation(
     })
 
     const baseSuffixBranch = computed(() =>
-      container.value.branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Base))
+      container.value.branchItem.suffixBranches.find(suf => suf.isA(SkillBranchNames.Base))
     )
 
     const varsMap = computed(() => {

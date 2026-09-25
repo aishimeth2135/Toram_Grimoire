@@ -22,7 +22,7 @@ interface DamageSourceAmountFormulaScope {
 }
 
 export function getDamageSource(branch: SkillBranchItem) {
-  return branch.suffixBranches.find(suffix => suffix.is(SkillBranchNames.DamageSource))
+  return branch.suffixBranches.find(suffix => suffix.isA(SkillBranchNames.DamageSource))
 }
 
 export function matchesDamageSource(

@@ -282,7 +282,7 @@ const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
     .filter(suffix => {
       if (
-        !suffix.is(SkillBranchNames.Extra) ||
+        !suffix.isA(SkillBranchNames.Extra) ||
         suffix.hasProp('dual_element') ||
         suffix.hasProp('ailment_name')
       ) {
