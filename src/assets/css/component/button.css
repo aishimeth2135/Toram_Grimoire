@@ -50,7 +50,7 @@
   }
 
   &.theme-primary {
-    --button-color-text: var(--app-primary-70);
+    --button-color-main: var(--app-primary-70);
   }
 
   &.theme-bright {
@@ -206,8 +206,10 @@
 
 /* button plain */
 .cy-button-plain {
-  --button-color-text: var(--button-color-main-light);
+  --button-color-text: --alpha(var(--button-color-main) / 80%);
   --button-color-text-hover: var(--button-color-main);
+  --button-color-icon: --alpha(var(--button-color-main) / 80%);
+  --button-color-icon-hover: var(--button-color-main);
 
   &:hover,
   &.button-selected {

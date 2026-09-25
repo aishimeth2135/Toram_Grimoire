@@ -2,7 +2,7 @@
   <AppLayoutBottom>
     <template #default>
       <div class="flex items-center">
-        <div class="flex items-center space-x-2 px-2">
+        <div class="flex items-center space-x-4 px-2">
           <cy-button-plain icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
             {{ `Lv.${skillLevel}` }}
           </cy-button-plain>

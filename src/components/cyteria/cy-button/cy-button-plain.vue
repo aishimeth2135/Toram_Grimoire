@@ -6,6 +6,7 @@ import { type ButtonBaseProps, type ButtonIconProps } from './setup'
 
 interface Props extends ButtonBaseProps, ButtonIconProps {
   widthFull?: boolean
+  endIcon?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   widthFull: false,
@@ -28,13 +29,12 @@ const buttonClick = (evt: MouseEvent) => {
     :color="props.color"
     :selected="props.selected"
     :disabled="props.disabled"
-    class="cy-button-plain gap-icon m-1"
+    class="cy-button-plain gap-icon my-1"
     :class="{ 'button-width-full': widthFull }"
     @click="buttonClick"
   >
     <ButtonIcon :icon="props.icon" class="cy-button-base-icon" />
-    <span class="mr-1">
-      <slot />
-    </span>
+    <slot />
+    <ButtonIcon v-if="endIcon" :icon="endIcon" class="cy-button-base-icon" />
   </CyButtonBase>
 </template>

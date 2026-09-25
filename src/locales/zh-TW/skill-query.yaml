@@ -177,6 +177,9 @@ branch:
     'end_position_offsets: title': 終點位置
     duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害
     frequency-caption: 總傷害拆成{frequency}次
+    total-damage-caption: 總傷害被拆成{frequency}次，此公式為總傷害。
+    view-hit-damage: 查看每段傷害
+    hit-damage-label: 第{hit}段傷害
   'damage: extra':
     condition-default-value: 此傷害
   proration:

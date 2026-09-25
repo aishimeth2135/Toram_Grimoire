@@ -1,6 +1,16 @@
+import { isNumberString } from '@/shared/utils/string'
+
 export function numberToFixed(number: number, digits: number): number {
   const base = Math.pow(10, digits)
   return Math.floor(number * base) / base
+}
+
+export function numberStringToFixed(numberStr: string, digits: number): string {
+  if (!isNumberString(numberStr)) {
+    return numberStr
+  }
+  const base = Math.pow(10, digits)
+  return (Math.floor(parseFloat(numberStr) * base) / base).toString()
 }
 
 /**

@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import { numberToFixed } from '@/shared/utils/number'
+import { numberStringToFixed } from '@/shared/utils/number'
 import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
@@ -77,7 +77,6 @@ type SkillDisplayData = Map<string, string>
 
 const FORMULA_VALUE_TO_PERCENTAGE_PATTERN = /([$_a-zA-Z][$_a-zA-Z0-9]*)\*(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
-const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   computing: SkillComputingContainer,
@@ -196,9 +195,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
         )
         .replace(MUL_PATTERN, '×')
     })
-    container.handle(value =>
-      value.replace(FORMULA_FLOAT_TO_FIXED, (_match, m1, m2) => m1 + m2.slice(0, 4))
-    )
+    container.handle(value => numberStringToFixed(value, 2))
     container.handle(trimFloatStringZero)
   }
 
@@ -263,12 +260,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   statContainers.forEach(container => {
     handleContainerFormulaValue(container)
-    container.handle(value => {
-      if (isNumberString(value)) {
-        return numberToFixed(parseFloat(value), 2).toString()
-      }
-      return value
-    })
+    container.handle(value => numberStringToFixed(value, 2))
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
     container.handleDisplay(value => handleFunctionHighlight(value))
 
