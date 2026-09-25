@@ -79,6 +79,7 @@
         </div>
       </div>
     </div>
+    <CharacterDamageBuffs :result="result" />
     <div
       v-if="detailVisible"
       class="border-primary-20 mt-2 rounded-sm border-2 bg-white px-3 py-2 text-sm"
@@ -118,6 +119,7 @@ import { getDamageSource } from '@/lib/Skill/SkillComputing'
 import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
+import CharacterDamageBuffs from './character-damage-buffs.vue'
 
 import {
   setupDamageSourceBonuses,

@@ -317,6 +317,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const {
     skillComputingContainer,
     activeSkillResultStates,
+    buffSkillResultStates,
     allActiveSkillResultStatesMap,
     allPassiveSkillResultStatesMap,
     passiveSkillResultStates,
@@ -345,6 +346,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const {
     characterStatCategoryResults,
     postponedActiveSkillResultStates,
+    postponedBuffSkillResultStates,
     postponedPassiveSkillResultStates,
     damageSkillResultStates,
     setupCharacterStatCategoryResultsExtended,
@@ -395,12 +397,34 @@ export const useCharacterStore = defineStore('view-character', () => {
     forceCritical: false,
   })
 
+  const availableBuffResults = computed(() => {
+    const skillBuild = currentCharacterSkillBuild.value
+    if (!skillBuild) {
+      return []
+    }
+    if (!setupOptions.value.handleActiveSkill) {
+      return []
+    }
+    return [...buffSkillResultStates.value, ...postponedBuffSkillResultStates.value]
+      .filter(
+        state =>
+          skillBuild.getSkillLevel(state.skill) > 0 && skillBuild.getSkillState(state.skill).enabled
+      )
+      .flatMap(state =>
+        state.results.filter(
+          result => skillBuild.getSkillBranchState(result.container.branchItem).enabled
+        )
+      )
+  })
+
   const { setupDamageCalculationExpectedResult, setupDamageCalculationExpectedResultSweep } =
     (() => {
       const allSkillResultStates = computed(() => [
         ...activeSkillResultStates.value,
+        ...buffSkillResultStates.value,
         ...passiveSkillResultStates.value,
         ...postponedActiveSkillResultStates.value,
+        ...postponedBuffSkillResultStates.value,
         ...postponedPassiveSkillResultStates.value,
       ])
       const getSkillLevel = (targetSkill: Skill) => {
@@ -422,7 +446,8 @@ export const useCharacterStore = defineStore('view-character', () => {
         currentCharacter,
         setupCharacterStatCategoryResultsExtended,
         getSkillLevel,
-        currentCharacterSkillBuild
+        currentCharacterSkillBuild,
+        availableBuffResults
       )
     })()
 
@@ -446,13 +471,16 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     skillComputingContainer,
     activeSkillResultStates,
+    buffSkillResultStates,
     passiveSkillResultStates,
     allActiveSkillResultStatesMap,
     allPassiveSkillResultStatesMap,
     nextSkillResultStates,
     damageSkillResultStates,
+    availableBuffResults,
 
     postponedActiveSkillResultStates,
+    postponedBuffSkillResultStates,
     postponedPassiveSkillResultStates,
 
     reset,

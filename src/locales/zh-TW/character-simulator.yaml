@@ -121,6 +121,9 @@ skill-build:
   title: 技能
   passive-skills: 被動技能
   active-skills: 主動技能
+  buff-skills: 增益類技能
+  buff-skills-tips-1: 此處列出所有增益類技能，包含「下一招技能...」類的增益或其他類型的增益。
+  buff-skills-tips-2: 啟用的增益技能不會直接影響角色能力，選項會出現在畫面右下的傷害計算面板中。
   skills-preview: 技能一覽
   skill-trees-directory:
     title: 技能樹目錄
@@ -156,6 +159,7 @@ skill-build:
   skill-branch-state-save-tips-2: 在更換裝備類型導致技能效果出現變化時，齒輪內設定的數值會分開儲存。
 character-damage:
   title: 傷害計算
+  select-buffs: 選擇增益
   damage-source:
     additional: 追擊傷害
   target-options-title: 目標數值設定

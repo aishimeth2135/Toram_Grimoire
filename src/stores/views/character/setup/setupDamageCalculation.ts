@@ -20,7 +20,7 @@ import {
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
 import { createElementMap, getCharacterElement } from '../utils'
@@ -82,7 +82,8 @@ export function setupDamageCalculation(
   character: Ref<Character | null>,
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number },
-  skillBuild: Ref<SkillBuild | null>
+  skillBuild: Ref<SkillBuild | null>,
+  availableBuffResults: Ref<SkillResult[]>
 ) {
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
@@ -172,8 +173,37 @@ export function setupDamageCalculation(
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>
   ) => {
+    const selectedStats = computed<StatRecorded[]>(() => {
+      if (getDamageSource(skillResult.value.container.branchItem)) {
+        return extraStats.value
+      }
+
+      const selectedIds =
+        skillBuild.value?.getSkillBranchState(skillResult.value.container.branchItem)
+          .selectedBuffIds ?? []
+      const stats = [...extraStats.value]
+      availableBuffResults.value.forEach(result => {
+        if (!selectedIds.includes(result.container.branchItem.defaultBranchId)) {
+          return
+        }
+        const containers = [
+          result.container,
+          ...result.suffixContainers.filter(
+            suffix => skillBuild.value?.getSkillBranchState(suffix.branchItem).enabled
+          ),
+        ]
+        containers.forEach(container =>
+          container.statContainers.forEach(statContainer => {
+            if (isNumberString(statContainer.value)) {
+              stats.push(statContainer.toStatRecorded(parseFloat(statContainer.value)))
+            }
+          })
+        )
+      })
+      return stats
+    })
     const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(
-      extraStats,
+      selectedStats,
       skillResult
     )
 

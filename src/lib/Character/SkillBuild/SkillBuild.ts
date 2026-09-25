@@ -33,10 +33,15 @@ interface SkillBuildSaveData {
   name: string
   skillStates: SkillSaveData[]
   selectedSkillTrees: string[]
-  skillBranchStates?: Record<string, { enabled: boolean }>
+  skillBranchStates?: Record<string, SkillBranchState>
   stackValues?: Record<string, number>
   formulaExtraValues?: Record<string, Record<string, number>>
   damageCalculationSkillStates?: Record<string, { enabled: boolean }>
+}
+
+interface SkillBranchState {
+  enabled: boolean
+  selectedBuffIds?: string[]
 }
 
 export interface SkillFormulaExtraVarState extends SkillFormulaExtraProps {
@@ -75,7 +80,7 @@ export class SkillBuild implements CharacterBindingBuild {
 
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
-  protected _skillBranchStates: Map<string, { enabled: boolean }>
+  protected _skillBranchStates: Map<string, SkillBranchState>
   protected _skillStackStates: ReturnType<typeof createSkillStackStates>
   protected _formulaExtraStates: Map<string, SkillFormulaExtraBranchState>
   protected _damageCalculationSkillStates: Map<string, { enabled: boolean }>
@@ -133,7 +138,7 @@ export class SkillBuild implements CharacterBindingBuild {
     return Math.max(state.level, state.starGemLevel)
   }
 
-  getSkillBranchState(branchItem: SkillBranchItemBaseChilds): { enabled: boolean } {
+  getSkillBranchState(branchItem: SkillBranchItemBaseChilds): SkillBranchState {
     const branchId = branchItem.defaultBranchId
     if (!this._skillBranchStates.has(branchId)) {
       this._skillBranchStates.set(branchId, { enabled: true })
@@ -454,8 +459,17 @@ export class SkillBuild implements CharacterBindingBuild {
     )
     const skillBranchStates = Object.fromEntries(
       Array.from(this._skillBranchStates)
-        .filter(([branchId, state]) => !state.enabled && isStateUsed(branchId))
-        .map(([branchId, state]) => [branchId, { enabled: state.enabled }])
+        .filter(
+          ([branchId, state]) =>
+            (!state.enabled && isStateUsed(branchId)) || !!state.selectedBuffIds?.length
+        )
+        .map(([branchId, state]) => [
+          branchId,
+          {
+            enabled: state.enabled,
+            ...(state.selectedBuffIds?.length && { selectedBuffIds: state.selectedBuffIds }),
+          },
+        ])
     )
     const stackValues = Object.fromEntries(
       Array.from(this._skillStackStates.stackStates)
@@ -486,7 +500,12 @@ export class SkillBuild implements CharacterBindingBuild {
     const newBuild = SkillBuild.create(data.name)
     Object.entries(data.skillBranchStates ?? {}).forEach(([branchId, state]) => {
       if (typeof state?.enabled === 'boolean') {
-        newBuild._skillBranchStates.set(branchId, { enabled: state.enabled })
+        newBuild._skillBranchStates.set(branchId, {
+          enabled: state.enabled,
+          selectedBuffIds: Array.isArray(state.selectedBuffIds)
+            ? state.selectedBuffIds.filter((id): id is string => typeof id === 'string')
+            : undefined,
+        })
       }
     })
     Object.entries(data.stackValues ?? {}).forEach(([id, value]) => {
