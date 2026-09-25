@@ -56,9 +56,9 @@ import { SkillEffectItem } from '@/lib/Skill/SkillComputing'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
+import SkillRegistletInfo from './branch/layouts/skill-registlet-info.vue'
+import SkillBranch from './branch/skill-branch.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
-import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'
-import SkillBranch from './skill/skill-branch.vue'
 
 import { ComputingContainerInjectionKey, SkillEffectInjectionKey } from './injection-keys'
 

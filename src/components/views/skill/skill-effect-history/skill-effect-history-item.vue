@@ -110,7 +110,7 @@ import { instanceEquals } from '@/shared/services/InstanceId'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillComputingContainer, SkillEffectItemHistory } from '@/lib/Skill/SkillComputing'
 
-import SkillBranch from '../skill/skill-branch.vue'
+import SkillBranch from '../branch/skill-branch.vue'
 
 interface Props {
   computing: SkillComputingContainer

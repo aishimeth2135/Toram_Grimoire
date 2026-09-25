@@ -26,7 +26,7 @@ import { useCharacterStore } from '@/stores/views/character'
 import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputing'
 import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
-import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
+import SkillBranchPropValue from '@/components/views/skill/branch/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 

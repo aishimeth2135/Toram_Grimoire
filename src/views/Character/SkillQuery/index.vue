@@ -105,16 +105,16 @@ import { toInt } from '@/shared/utils/number'
 import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import { SkillEffectNavigationInjectionKey } from '@/components/views/skill/injection-keys'
+import SkillEffect from '@/components/views/skill/skill-effect.vue'
 import { AppRouteNames } from '@/router/enums'
 
-import SkillEffect from './skill-effect.vue'
+import SkillDevDetail from './skill-dev-detail.vue'
 import SkillQueryMenu from './skill-query-menu/index.vue'
 import SkillQuerySearch from './skill-query-search.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import SkillTreeDiagram from './skill-tree-diagram.vue'
-import SkillDevDetail from './skill/skill-dev-detail.vue'
 
-import { SkillEffectNavigationInjectionKey } from './injection-keys'
 import { setupSkillQueryComputingContainer, useSkillQueryState } from './setup'
 
 defineOptions({

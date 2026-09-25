@@ -13,7 +13,10 @@ import {
   createSkillStackStates,
 } from '@/lib/Skill/SkillComputing'
 
-import { ComputingContainerInjectionKey, type SkillRegistletItemState } from './injection-keys'
+import {
+  ComputingContainerInjectionKey,
+  type SkillRegistletItemState,
+} from '@/components/views/skill/injection-keys'
 
 export const useSkillQueryState = defineState(() => {
   const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)

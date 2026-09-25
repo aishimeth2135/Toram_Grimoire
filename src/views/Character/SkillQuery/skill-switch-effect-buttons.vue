@@ -15,7 +15,7 @@ import { computed } from 'vue'
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
 import { SkillItem } from '@/lib/Skill/SkillComputing'
 
-import SkillEquipmentButton from './skill/skill-equipment-button.vue'
+import SkillEquipmentButton from '@/components/views/skill/branch/skill-equipment-button.vue'
 
 interface Props {
   skillItem: SkillItem
