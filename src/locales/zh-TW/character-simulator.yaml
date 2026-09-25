@@ -164,7 +164,6 @@ character-damage:
     additional: 追擊傷害
   target-options-title: 目標數值設定
   options-base-title: 基本設定
-  force-critical: 傷害必定爆擊
   element-none: 無設定
   no-result: 傷害公式待更新
   range-damage-title: 目標距離判定

@@ -43,7 +43,6 @@ export interface TargetProperties {
 export interface CalculationOptions {
   proration: number
   comboRate: number
-  forceCritical: boolean
 }
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
@@ -542,7 +541,6 @@ export function setupDamageCalculation(
               EquipmentTypes.OneHandSword
             ),
         ],
-        [CalculationContainerIds.CriticalRate, calculationOptions.value.forceCritical],
         [CalculationContainerIds.StrongerAgainstElement, targetProperties.value.element === null],
         [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],

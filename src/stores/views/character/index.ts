@@ -394,7 +394,6 @@ export const useCharacterStore = defineStore('view-character', () => {
   const calculationOptions: Ref<CalculationOptions> = ref({
     proration: 250,
     comboRate: 150,
-    forceCritical: false,
   })
 
   const availableBuffResults = computed(() => {
