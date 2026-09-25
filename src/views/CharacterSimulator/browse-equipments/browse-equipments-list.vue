@@ -26,10 +26,12 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const equipmentsContainer = useTemplateRef('equipmentsContainer')
+const getEquipmentKey = (index: number) => props.equipments[index]!.id
 const equipmentsVirtualizer = useVirtualizer(
   computed(() => ({
     count: props.equipments.length,
     getScrollElement: () => equipmentsContainer.value,
+    getItemKey: getEquipmentKey,
     estimateSize: () => 72,
     overscan: 5,
   }))
@@ -62,7 +64,6 @@ onMounted(async () => {
         :ref="element => equipmentsVirtualizer.measureElement(element as Element)"
         :data-index="virtualItem.index"
         class="absolute left-0 top-0 w-full"
-        :class="{ 'bg-primary-5/50': virtualItem.index % 2 !== 0 }"
         :style="{ transform: `translateY(${virtualItem.start}px)` }"
       >
         <BrowseEquipmentsListItem

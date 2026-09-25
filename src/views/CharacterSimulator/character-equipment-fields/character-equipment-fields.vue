@@ -18,7 +18,7 @@ import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 const { t } = useI18n()
 const { device } = useDevice()
 
-const { currentCharacter } = storeToRefs(useCharacterStore())
+const { currentCharacter, equipments } = storeToRefs(useCharacterStore())
 
 const currentField = ref(currentCharacter.value.equipmentFields[0]) as Ref<EquipmentField>
 
@@ -33,6 +33,20 @@ const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
 watch(currentField, () => {
   selectedEquipment.value = null
 })
+
+watch(
+  () => equipments.value.length,
+  (value, oldValue) => {
+    if (value < oldValue && selectedEquipment.value) {
+      const find = equipments.value.some(
+        equip => equip.instanceId === selectedEquipment.value!.instanceId
+      )
+      if (!find) {
+        selectedEquipment.value = null
+      }
+    }
+  }
+)
 
 const applySelectedEquipment = (equip: CharacterEquipment | null) => {
   currentField.value.setEquipment(equip)

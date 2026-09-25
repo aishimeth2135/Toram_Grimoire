@@ -25,10 +25,8 @@ const secondCrystalClass = computed(() => getCrystalClasses(props.equipment.crys
 </script>
 
 <template>
-  <div class="p-1.5">
-    <BrowseEquipmentsItemWrapper
-      :equipment="equipment"
-      :equipped="equipped"
+  <BrowseEquipmentsItemWrapper :equipment="equipment" :equipped="equipped" class="p-1.5">
+    <div
       class="items-root"
       :class="{
         selected: selected,
@@ -69,8 +67,8 @@ const secondCrystalClass = computed(() => getCrystalClasses(props.equipment.crys
         :class="secondCrystalClass"
         class="absolute right-1.5 top-6 size-3 rounded-full"
       />
-    </BrowseEquipmentsItemWrapper>
-  </div>
+    </div>
+  </BrowseEquipmentsItemWrapper>
 </template>
 
 <style scoped>
