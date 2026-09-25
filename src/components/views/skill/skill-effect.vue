@@ -1,5 +1,5 @@
 <template>
-  <div v-if="effectItem">
+  <div class="skill-effect-wrapper">
     <cy-tabs v-if="tabVisible" v-model="currentTab" class="mb-4">
       <cy-tab :value="ContentTabs.Info">
         {{ t('skill-query.skill-info') }}
@@ -46,33 +46,19 @@
       </div>
     </div>
   </div>
-  <div v-else>
-    <cy-default-tips icon="uil:books">
-      <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
-      <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
-    </cy-default-tips>
-    <div v-if="currentSkillItem" class="mt-4 flex justify-center">
-      <SkillSwitchEffectButtons
-        :skill-item="currentSkillItem"
-        @select-equipment="emit('update:selected-equipment', $event)"
-      />
-    </div>
-  </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, ref, watch } from 'vue'
+import { computed, inject, provide, ref, toRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EquipmentRestrictions } from '@/lib/Character/Stat'
-import { Skill } from '@/lib/Skill/Skill'
+import { SkillEffectItem } from '@/lib/Skill/SkillComputing'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
+import SkillRegistletInfo from './branch/layouts/skill-registlet-info.vue'
+import SkillBranch from './branch/skill-branch.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
-import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
-import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'
-import SkillBranch from './skill/skill-branch.vue'
 
 import { ComputingContainerInjectionKey, SkillEffectInjectionKey } from './injection-keys'
 
@@ -81,33 +67,19 @@ defineOptions({
 })
 
 interface Props {
-  selectedEquipment: EquipmentRestrictions
-}
-
-interface Emits {
-  (evt: 'set-current-skill', skill: Skill): void
-  (evt: 'update:selected-equipment', value: EquipmentRestrictions): void
+  effectItem: SkillEffectItem
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
 
-const { rootComputingContainer, getSkillRegistletItemsState, currentSkillItem } = inject(
+const { rootComputingContainer, getSkillRegistletItemsState } = inject(
   ComputingContainerInjectionKey
 )!
 
-const effectItem = computed(() => {
-  if (!currentSkillItem.value) {
-    return null
-  }
-  return currentSkillItem.value.findEffectItem(props.selectedEquipment) || null
-})
+const effectItem = toRef(props, 'effectItem')
 
 const registletItemStates = computed(() => {
-  if (!currentSkillItem.value) {
-    return []
-  }
-  return getSkillRegistletItemsState(currentSkillItem.value.skill)
+  return getSkillRegistletItemsState(props.effectItem.parent.skill)
 })
 
 const { t } = useI18n()
@@ -125,7 +97,7 @@ const setTab = (tab: ContentTabs) => {
 }
 
 const tabVisible = computed(() => {
-  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false
+  return props.effectItem.parent.effectItems.some(item => item.historys.length > 0)
 })
 
 watch(

@@ -27,10 +27,14 @@
       <div v-show="registletItemState.enabled" class="border-emerald-20 border-t px-4 pb-3 pt-4">
         <div>
           <cy-input-counter
-            v-model:value="registletItemState.level /* eslint-disable-line vue/no-mutating-props */"
+            v-if="registletItemState.setLevel"
+            v-model:value="level"
             :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
+          <div v-else class="text-primary-50 text-sm">
+            {{ t('skill-query.registlet-level') }}: {{ level }}
+          </div>
           <div class="text-primary-30 mt-3 flex items-center pl-0.5 text-sm">
             <cy-icon icon="mdi:arrow-up-bold-outline" class="mr-1 text-inherit" small />
             {{ t('skill-query.registlet-max-level-title') }}
@@ -42,10 +46,8 @@
       </div>
     </cy-transition>
     <cy-button-toggle
-      v-model:selected="
-        // eslint-disable-next-line vue/no-mutating-props
-        registletItemState.enabled
-      "
+      v-if="registletItemState.setEnabled"
+      v-model:selected="enabled"
       color="emerald"
       class="absolute right-0 top-1.5"
     />
@@ -60,7 +62,7 @@ import RegistletCaptionValue from '@/components/common/registlet-caption-value.v
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 
-import type { SkillRegistletItemState } from '../../setup'
+import type { SkillRegistletItemState } from '../../injection-keys'
 
 interface Props {
   registletItemState: SkillRegistletItemState
@@ -69,6 +71,14 @@ interface Props {
 const props = defineProps<Props>()
 
 const item = computed(() => props.registletItemState.item)
+const level = computed<number>({
+  get: () => props.registletItemState.level,
+  set: value => props.registletItemState.setLevel?.(value),
+})
+const enabled = computed<boolean>({
+  get: () => props.registletItemState.enabled,
+  set: value => props.registletItemState.setEnabled?.(value),
+})
 
 const { t } = useI18n()
 

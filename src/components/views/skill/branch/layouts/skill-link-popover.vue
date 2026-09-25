@@ -13,9 +13,10 @@
       <div class="flex items-center px-5 py-1">
         <SkillTitle :skill="currentSkill" />
         <cy-button-plain
+          v-if="selectSkill"
           icon="carbon:location-current"
           class="ml-4"
-          @click="updateCurrentSkill(currentSkill, true)"
+          @click="selectSkill(currentSkill)"
         >
           {{ t('skill-query.go-to-skill') }}
         </cy-button-plain>
@@ -28,14 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import SkillTitle from './skill-title.vue'
 
-import { useSkillQueryState } from '../../setup'
+import { SkillEffectNavigationInjectionKey } from '../../injection-keys'
 
 interface Props {
   name: string
@@ -47,5 +48,5 @@ const { t } = useI18n()
 
 const currentSkill = computed(() => Grimoire.Skill.skillRoot.findSkillByName(props.name))
 
-const { updateCurrentSkill } = useSkillQueryState()
+const selectSkill = inject(SkillEffectNavigationInjectionKey, null)
 </script>

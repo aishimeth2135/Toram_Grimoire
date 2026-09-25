@@ -7,7 +7,7 @@ import type { SkillResult } from '@/stores/views/character/setup'
 
 import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
-import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
+import SkillBranchPropValue from '@/components/views/skill/branch/layouts/skill-branch-prop-value.vue'
 import CommonSearchableItems from '@/views/CharacterSimulator/common/common-searchable-items.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'

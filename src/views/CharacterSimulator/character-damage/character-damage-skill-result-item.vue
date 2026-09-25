@@ -116,7 +116,7 @@ import { getDamageHit, parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
-import SkillBranchPropValue from '@/views/Character/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
+import SkillBranchPropValue from '@/components/views/skill/branch/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 import CharacterDamageBuffs from './character-damage-buffs.vue'

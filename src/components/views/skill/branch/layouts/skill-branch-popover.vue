@@ -56,7 +56,7 @@ const currentBranchItem = computed(() => {
   if (!currentEffectItem) {
     return null
   }
-  const branchItem = currentEffectItem.value!.branchItems.find(
+  const branchItem = currentEffectItem.value.branchItems.find(
     bch => bch.prop('name') === props.branchName
   )
   return branchItem ?? null

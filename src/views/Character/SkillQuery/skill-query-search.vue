@@ -42,7 +42,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { Skill } from '@/lib/Skill/Skill'
 
-import SkillTitle from './skill/layouts/skill-title.vue'
+import SkillTitle from '@/components/views/skill/branch/layouts/skill-title.vue'
 
 interface Emits {
   (evt: 'submit', skill: Skill): void

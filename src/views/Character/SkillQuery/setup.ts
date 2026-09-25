@@ -1,11 +1,10 @@
-import { provide, reactive, ref, shallowReadonly, shallowRef, watch } from 'vue'
+import { provide, ref, shallowReadonly, shallowRef, watch } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { defineState } from '@/shared/composables/State'
 
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
-import { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -14,7 +13,10 @@ import {
   createSkillStackStates,
 } from '@/lib/Skill/SkillComputing'
 
-import { ComputingContainerInjectionKey } from './injection-keys'
+import {
+  ComputingContainerInjectionKey,
+  type SkillRegistletItemState,
+} from '@/components/views/skill/injection-keys'
 
 export const useSkillQueryState = defineState(() => {
   const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
@@ -59,24 +61,29 @@ export const useSkillQueryState = defineState(() => {
   }
 })
 
-export interface SkillRegistletItemState {
-  item: RegistletItemBaseSkill
-  level: number
-  enabled: boolean
-}
-
 export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   const skillRegistletItemsStates = new Map<Skill, SkillRegistletItemState[]>()
   const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] => {
     if (!skillRegistletItemsStates.has(skill)) {
       const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
       const registletItemStates = registletItems.map(registletItem => {
-        const maxLevel = registletItem.maxLevel
-        return reactive({
+        const level = ref(registletItem.maxLevel)
+        const enabled = ref(false)
+        return {
           item: registletItem,
-          level: ref(maxLevel),
-          enabled: false,
-        }) as SkillRegistletItemState
+          get level() {
+            return level.value
+          },
+          get enabled() {
+            return enabled.value
+          },
+          setLevel: (value: number) => {
+            level.value = value
+          },
+          setEnabled: (value: boolean) => {
+            enabled.value = value
+          },
+        }
       })
       skillRegistletItemsStates.set(skill, registletItemStates)
     }

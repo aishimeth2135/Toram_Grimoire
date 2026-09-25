@@ -49,10 +49,19 @@
       style="min-height: 50vh"
     >
       <div class="border-orange-60 border-t pt-4">
-        <SkillEffect
-          v-model:selected-equipment="currentEquipment"
-          @set-current-skill="selectCurrentSkill($event, true)"
-        />
+        <SkillEffect v-if="effectItem" :effect-item="effectItem" />
+        <div v-else>
+          <cy-default-tips icon="uil:books">
+            <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
+            <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
+          </cy-default-tips>
+          <div class="mt-4 flex justify-center">
+            <SkillSwitchEffectButtons
+              :skill-item="currentSkillItem"
+              @select-equipment="currentEquipment = $event"
+            />
+          </div>
+        </div>
       </div>
       <div v-if="mainStore.devMode" class="mt-4">
         <cy-button-circle
@@ -83,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { type ComputedRef, computed, nextTick, ref, useTemplateRef } from 'vue'
+import { type ComputedRef, computed, nextTick, provide, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -96,13 +105,15 @@ import { toInt } from '@/shared/utils/number'
 import { Skill, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import { SkillEffectNavigationInjectionKey } from '@/components/views/skill/injection-keys'
+import SkillEffect from '@/components/views/skill/skill-effect.vue'
 import { AppRouteNames } from '@/router/enums'
 
-import SkillEffect from './skill-effect.vue'
+import SkillDevDetail from './skill-dev-detail.vue'
 import SkillQueryMenu from './skill-query-menu/index.vue'
 import SkillQuerySearch from './skill-query-search.vue'
+import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import SkillTreeDiagram from './skill-tree-diagram.vue'
-import SkillDevDetail from './skill/skill-dev-detail.vue'
 
 import { setupSkillQueryComputingContainer, useSkillQueryState } from './setup'
 
@@ -146,6 +157,8 @@ const {
   updateCurrentSkillTree,
   updateCurrentSkill,
 } = useSkillQueryState()
+
+provide(SkillEffectNavigationInjectionKey, skill => updateCurrentSkill(skill, true))
 
 const updateRouteParam = (skillId: string) => {
   router.replace({ name: AppRouteNames.SkillQuery, params: { skillId } })
@@ -205,4 +218,7 @@ if (route.params.skillId) {
 }
 
 const { computingContainer, currentSkillItem } = setupSkillQueryComputingContainer(currentSkill)
+const effectItem = computed(
+  () => currentSkillItem.value?.findEffectItem(currentEquipment.value) ?? null
+)
 </script>

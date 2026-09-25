@@ -73,7 +73,7 @@ import { StatTypes } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputing'
 
-import SkillEquipmentButton from './skill-equipment-button.vue'
+import SkillEquipmentButton from '@/components/views/skill/branch/skill-equipment-button.vue'
 
 interface Props {
   skill: Skill
