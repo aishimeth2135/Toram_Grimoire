@@ -11,6 +11,35 @@
       :main-title="mainTitie"
     >
       <SkillDamageFormula :container="container" />
+      <template v-if="damageHit">
+        <i18n-t
+          keypath="skill-query.branch.damage.total-damage-caption"
+          tag="div"
+          scope="global"
+          class="text-primary-50 mt-3 text-sm"
+        >
+          <template #frequency>
+            <SkillBranchPropValue :result="container.result('frequency')" />
+          </template>
+        </i18n-t>
+        <cy-button-plain
+          v-if="hitCount > 0"
+          :selected="hitDamageVisible"
+          class="gap-icon-tight text-sm"
+          :end-icon="hitDamageVisible ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+          @click="hitDamageVisible = !hitDamageVisible"
+        >
+          {{ t('skill-query.branch.damage.view-hit-damage') }}
+        </cy-button-plain>
+        <div v-if="hitDamageVisible" class="mt-2 space-y-2">
+          <div v-for="(hitContainer, index) in hitContainers" :key="index">
+            <div class="text-primary-30 text-sm">
+              {{ t('skill-query.branch.damage.hit-damage-label', { hit: index + 1 }) }}
+            </div>
+            <SkillDamageFormula :container="hitContainer" hide-base-caption />
+          </div>
+        </div>
+      </template>
       <template #sub-content(frequency)>
         <i18n-t keypath="skill-query.branch.damage.frequency-caption" tag="span" scope="global">
           <template #frequency>
@@ -93,14 +122,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { toInt } from '@/shared/utils/number'
 
+import { getDamageHit } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import { DamageHandler } from '@/lib/Skill/SkillDisplay'
+import { DamageHandler, type DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
 
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
@@ -134,6 +164,17 @@ const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
 const container = computed(() => DamageHandler(props.computing, branchItem.value))
+const damageHit = computed(() => getDamageHit(branchItem.value))
+const hitDamageVisible = ref(false)
+const hitCount = computed(() => {
+  const frequency = Number(container.value.getValue('frequency'))
+  return Number.isSafeInteger(frequency) && frequency > 0 ? frequency : 0
+})
+const hitContainers = computed<DisplayDataContainer<SkillBranchItem>[]>(() =>
+  Array.from({ length: hitCount.value }, (_unused, index) =>
+    DamageHandler(props.computing, branchItem.value, index + 1)
+  )
+)
 
 const mainTitie = computed(() => {
   let res = container.value.get('damage_type')
@@ -208,7 +249,7 @@ const subContents = computed(() => {
       value: container.value.result('@proration/proration') ?? undefined,
     }
   )
-  if (branchItem.value.prop('title') !== 'each') {
+  if (branchItem.value.prop('title') !== 'each' && !damageHit.value) {
     result.push({
       key: 'frequency',
       icon: 'bi-circle-square',

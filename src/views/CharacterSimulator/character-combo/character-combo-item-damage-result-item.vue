@@ -73,6 +73,7 @@ import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
 import { StatRecorded } from '@/lib/Character/Stat'
+import { getDamageHit } from '@/lib/Skill/Properties'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 
@@ -135,7 +136,8 @@ const { valid, calculationSnapshot, calculationItems, expectedResult, evaluation
   )
 
 const frequencyVisible = computed(() => {
-  return valid.value && props.result.container.branchItem.prop('title') === 'each'
+  const branch = props.result.container.branchItem
+  return valid.value && branch.prop('title') === 'each' && !getDamageHit(branch)
 })
 
 const statExtraContainers = computed(() => {

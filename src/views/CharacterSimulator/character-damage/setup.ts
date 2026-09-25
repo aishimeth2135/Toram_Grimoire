@@ -6,6 +6,7 @@ import { type SkillResult } from '@/stores/views/character/setup'
 import { isNumberString } from '@/shared/utils/string'
 
 import { StatRecorded } from '@/lib/Character/Stat'
+import { getDamageFrequency } from '@/lib/Skill/Properties'
 import {
   computeDamageSourceAmount,
   getDamageSource,
@@ -126,7 +127,10 @@ export function setupDamageSourceBonuses(target: Ref<SkillResult>) {
           amount: computeDamageSourceAmount(
             getDamageSource(source.result.container.branchItem)!,
             source.expectedResult.value,
-            target.value.container.getValueSum('frequency')
+            getDamageFrequency(
+              target.value.container.branchItem,
+              target.value.container.getValueSum('frequency')
+            )
           ),
         }))
     }

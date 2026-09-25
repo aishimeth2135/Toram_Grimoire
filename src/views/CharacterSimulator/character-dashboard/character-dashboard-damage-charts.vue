@@ -19,6 +19,7 @@ import type { SkillResult } from '@/stores/views/character/setup'
 import type { InstanceId } from '@/shared/services/InstanceId'
 
 import { CalculationItemIds, type CalculationSweepDimension } from '@/lib/Damage/DamageCalculation'
+import { getDamageFrequency } from '@/lib/Skill/Properties'
 import {
   computeDamageSourceAmount,
   getDamageSource,
@@ -300,7 +301,10 @@ const damageChartSeries = computed<DamageChartSeries[]>(() =>
                   computeDamageSourceAmount(
                     getDamageSource(branch)!,
                     source.values.value[pointIndex] ?? 0,
-                    target.container.getValueSum('frequency')
+                    getDamageFrequency(
+                      target.container.branchItem,
+                      target.container.getValueSum('frequency')
+                    )
                   )
                 )
               }, 0)

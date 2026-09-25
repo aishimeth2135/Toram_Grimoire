@@ -102,6 +102,7 @@ import type { SkillResult } from '@/stores/views/character/setup'
 import { useToggle } from '@/shared/composables/State'
 import { markText } from '@/shared/utils/view'
 
+import { getDamageHit } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
@@ -153,7 +154,8 @@ const { valid, calculationItems, expectedResult } = setupStoreDamageCalculationE
 )
 
 const frequencyVisible = computed(() => {
-  return valid.value && props.result.container.branchItem.prop('title') === 'each'
+  const branch = props.result.container.branchItem
+  return valid.value && branch.prop('title') === 'each' && !getDamageHit(branch)
 })
 
 const statExtraContainers = computed(() => {

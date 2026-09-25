@@ -34,6 +34,7 @@ export const SkillBranchNames = {
 
   // main branch: @damage
   Base: 'base',
+  DamageHit: 'damage_hit',
   DamageStat: 'damage_stat',
   DamageSource: 'damage_source',
 

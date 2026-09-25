@@ -1,5 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
+import { getDamageHit, getDamageHitMultiplierFormula } from '@/lib/Skill/Properties'
 import { SkillBranchNames } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -19,20 +20,28 @@ import MapContainer from './handle/MapContainer'
 
 export default function DamageHandler<BranchItem extends SkillBranchItem>(
   computing: SkillComputingContainer,
-  branchItem: BranchItem
+  branchItem: BranchItem,
+  currentHit?: number
 ) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
     name: t('skill-query.branch.damage.base-name'),
   })
+  const damageHit = getDamageHit(branchItem)
+  if (currentHit !== undefined) {
+    const multiplier = getDamageHitMultiplierFormula(branchItem, currentHit)
+    if (multiplier !== null) {
+      props.set('multiplier', multiplier)
+    }
+  }
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     constant: value => value !== '0',
-    multiplier: value => value !== '0',
+    multiplier: value => currentHit !== undefined || value !== '0',
     extra_constant: value => value !== '0',
     is_place: value => value === '1',
-    frequency: value => value !== '1',
+    frequency: value => !!damageHit || value !== '1',
     base: value => value !== 'none',
     element: value => value !== 'none',
     dual_element: value => value !== 'none',
@@ -74,6 +83,13 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>([])
   const pureDatas = ['name', 'ailment_name', 'end_condition']
   const sources: Record<string, SkillBranchResultSource[]> = {}
+  if (
+    currentHit !== undefined &&
+    damageHit?.prop('mode') === 'multiplier' &&
+    damageHit.hasProp('multipliers')
+  ) {
+    sources.multiplier = [{ branch: damageHit, key: 'multipliers' }]
+  }
 
   if (props.get('base') === 'auto') {
     sources.base = [{ branch: branchItem, key: 'base' }]

@@ -29,7 +29,10 @@
         :result="container.result('frequency')"
       />
     </div>
-    <div v-if="container.has('@custom-base-caption')" class="mb-1.5 mt-1 text-sm">
+    <div
+      v-if="container.has('@custom-base-caption') && !hideBaseCaption"
+      class="mb-1.5 mt-1 text-sm"
+    >
       <div class="text-orange-60">
         {{ container.get('base') }}
       </div>
@@ -44,20 +47,28 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
+import { getDamageHit } from '@/lib/Skill/Properties'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 import { DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
   container: DisplayDataContainer
+  hideBaseCaption?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  hideBaseCaption: false,
+})
 
 const { container } = toRefs(props)
 
 const frequencyVisible = computed(() => {
-  return container.value.branchItem.prop('title') === 'each'
+  const branch = container.value.branchItem
+  return (
+    branch.prop('title') === 'each' && !(branch instanceof SkillBranchItem && getDamageHit(branch))
+  )
 })
 </script>
 
