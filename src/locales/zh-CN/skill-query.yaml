@@ -177,7 +177,7 @@ branch:
     'end_position_offsets: title': 终点位置
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害
     frequency-caption: 总伤害拆成{frequency}次
-  'damage: extra':
+  'damage:extra':
     condition-default-value: 此伤害
   proration:
     'damage: title': 伤害惯性

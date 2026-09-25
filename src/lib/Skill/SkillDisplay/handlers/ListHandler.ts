@@ -8,7 +8,7 @@ export default function ListHandler<BranchItem extends SkillBranchItem>(
   branchItem: BranchItem
 ) {
   const suffixList = branchItem.suffixBranches
-    .filter(suf => suf.is(SkillBranchNames.List))
+    .filter(suf => suf.isA(SkillBranchNames.List))
     .map(suf => TextHandler(computing, suf))
   return [TextHandler(computing, branchItem), ...suffixList]
 }

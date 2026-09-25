@@ -48,7 +48,7 @@ const formulaExtraStates = computed(() => {
   const states: SkillFormulaExtraVarState[] = []
   props.skillResultsState.results.forEach(result => {
     const formulaExtra = result.container.branchItem.suffixBranches.find(suffix =>
-      suffix.is(SkillBranchNames.FormulaExtra)
+      suffix.isA(SkillBranchNames.FormulaExtra)
     )
     if (formulaExtra) {
       const branchState =

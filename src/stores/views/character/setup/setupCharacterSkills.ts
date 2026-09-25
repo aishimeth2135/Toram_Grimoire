@@ -323,16 +323,20 @@ export function setupCharacterSkills(
       if (!checkPostpone(suf.mainBranch)) {
         return false
       }
-      if (suf.prop('type') === 'next' && suf.mainBranch.realName === SkillBranchNames.Effect) {
+      if (suf.prop('type') === 'next' && suf.mainBranch.isExactly(SkillBranchNames.Effect)) {
         return false
       }
-      if (!suf.is(SkillBranchNames.Extra)) {
+      if (!suf.isA(SkillBranchNames.Extra)) {
         return false
       }
       if (suf.propBoolean('display_only')) {
         return false
       }
-      return suf.stats.length !== 0 || suf.hasProp('dual_element')
+      return (
+        suf.stats.length !== 0 ||
+        suf.hasProp('dual_element') ||
+        (suf.mainBranch.isA(SkillBranchNames.Damage) && suf.hasProp('self_buffs'))
+      )
     }
 
     const handleComputingResults = (
@@ -343,7 +347,7 @@ export function setupCharacterSkills(
       return computed(() => {
         return target.value.map(bch => {
           const container = (
-            validBranchNames.some(name => bch.is(name))
+            validBranchNames.some(name => bch.isA(name))
               ? handler(computing, bch)
               : new DisplayDataContainer({ branchItem: bch })
           ) as DisplayDataContainerAlly // empty container
@@ -377,7 +381,7 @@ export function setupCharacterSkills(
         if (!checkPostpone(bch)) {
           return false
         }
-        if (bch.is(SkillBranchNames.Effect)) {
+        if (bch.isA(SkillBranchNames.Effect)) {
           if (bch.propBoolean('display_only')) {
             return false
           }
@@ -399,7 +403,7 @@ export function setupCharacterSkills(
         if (!checkPostpone(bch)) {
           return false
         }
-        if (bch.is(SkillBranchNames.Passive)) {
+        if (bch.isA(SkillBranchNames.Passive)) {
           return checkBranchStats(bch.stats) || bch.suffixBranches.some(suffixBranchFilter)
         }
         return false
@@ -418,7 +422,7 @@ export function setupCharacterSkills(
         if (!checkPostpone(bch)) {
           return false
         }
-        if (bch.is(SkillBranchNames.Next)) {
+        if (bch.isA(SkillBranchNames.Next)) {
           return (
             bch.stats.length !== 0 ||
             !!bch.buffs?.has(SkillBuffs.MpCostHalf) ||
@@ -440,7 +444,7 @@ export function setupCharacterSkills(
       if (isPostpone) {
         // damage
         const checkDamage: BranchItemArrayFilter = bch =>
-          bch.is(SkillBranchNames.Damage) && checkPostpone(bch)
+          bch.isA(SkillBranchNames.Damage) && checkPostpone(bch)
         const damageValid = skillItem.effectItems.some(effectItem =>
           effectItem.branchItems.some(checkDamage)
         )
@@ -488,7 +492,7 @@ export function setupCharacterSkills(
           computed(() => {
             return (
               currentEffectItem.value?.branchItems
-                .filter(_bch => _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value'))
+                .filter(_bch => _bch.isA(SkillBranchNames.Stack) && !_bch.hasProp('value'))
                 .map(_bch => StackHandler(computing, _bch)) ?? []
             )
           })
@@ -542,7 +546,7 @@ export function setupCharacterSkills(
         return resultBases.value.some(resultBase =>
           resultBase.container.branchItem.suffixBranches.some(
             suffix =>
-              suffix.is(SkillBranchNames.FormulaExtra) &&
+              suffix.isA(SkillBranchNames.FormulaExtra) &&
               (buildsContext.value.skillBuild?.getSkillFormulaExtraBranchState(suffix)
                 .formulaExtraIds.length ?? 0) > 0
           )

@@ -15,58 +15,7 @@
           </div>
           <SkillEquipmentButton :equipments="currentEffectEquipments" selected />
         </div>
-        <!-- <component :is="currentComponent" :branch-item="skillBranchItem" :computing="computing" /> -->
-        <SkillBranchDamage
-          v-if="branchItem.name === SkillBranchNames.Damage"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchEffect
-          v-else-if="branchItem.name === SkillBranchNames.Effect"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchHeal
-          v-else-if="branchItem.name === SkillBranchNames.Heal"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchPassive
-          v-else-if="branchItem.name === SkillBranchNames.Passive"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchStack
-          v-else-if="branchItem.name === SkillBranchNames.Stack"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchProration
-          v-else-if="branchItem.name === SkillBranchNames.Proration"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchList
-          v-else-if="branchItem.name === SkillBranchNames.List"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchBasic
-          v-else-if="branchItem.name === SkillBranchNames.Basic"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchReference
-          v-else-if="branchItem.name === SkillBranchNames.Reference"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <skillBranchTable
-          v-else-if="branchItem.name === SkillBranchNames.Table"
-          :branch-item="skillBranchItem"
-          :computing="computing"
-        />
-        <SkillBranchText v-else :branch-item="skillBranchItem" :computing="computing" />
+        <component :is="currentComponent" :branch-item="skillBranchItem" :computing="computing" />
         <cy-button-circle
           v-if="subButtonAvailable"
           icon="mdi:select-compare"
@@ -106,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
+import { type Component, computed, toRefs } from 'vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -156,32 +105,24 @@ const { t } = useI18n()
 const subContentVisible = ref(false)
 const toggleSubContent = useToggle(subContentVisible)
 
-// const currentComponent = computed(() => {
-//   switch (branchItem.value.name) {
-//     case SkillBranchNames.Damage:
-//       return SkillBranchDamage
-//     case SkillBranchNames.Effect:
-//       return SkillBranchEffect
-//     case SkillBranchNames.Heal:
-//       return SkillBranchHeal
-//     case SkillBranchNames.Passive:
-//       return SkillBranchPassive
-//     case SkillBranchNames.Stack:
-//       return SkillBranchStack
-//     case SkillBranchNames.Proration:
-//       return SkillBranchProration
-//     case SkillBranchNames.List:
-//       return SkillBranchList
-//     case SkillBranchNames.Basic:
-//       return SkillBranchBasic
-//     case SkillBranchNames.Reference:
-//       return SkillBranchReference
-//     case SkillBranchNames.Table:
-//       return skillBranchTable
-//     default:
-//       return SkillBranchText
-//   }
-// })
+const branchComponents: Partial<Record<SkillBranchNames, Component>> = {
+  [SkillBranchNames.Damage]: SkillBranchDamage,
+  [SkillBranchNames.Effect]: SkillBranchEffect,
+  [SkillBranchNames.Heal]: SkillBranchHeal,
+  [SkillBranchNames.Passive]: SkillBranchPassive,
+  [SkillBranchNames.Stack]: SkillBranchStack,
+  [SkillBranchNames.Proration]: SkillBranchProration,
+  [SkillBranchNames.List]: SkillBranchList,
+  [SkillBranchNames.Basic]: SkillBranchBasic,
+  [SkillBranchNames.Reference]: SkillBranchReference,
+  [SkillBranchNames.Table]: skillBranchTable,
+  [SkillBranchNames.Text]: SkillBranchText,
+  [SkillBranchNames.Tips]: SkillBranchText,
+}
+
+const currentComponent = computed<Component>(
+  () => branchItem.value.resolveKindConfig(branchComponents) ?? SkillBranchText
+)
 
 const paddingBottomClass = computed(() => {
   const curBch = branchItem.value
@@ -193,10 +134,7 @@ const paddingBottomClass = computed(() => {
   }
 
   const nextBch = branchItems[idx + 1]
-  const next = nextBch.name
-  const cur = curBch.name
-
-  const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next)
+  const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.some(kind => nextBch.isA(kind))
 
   if (curBch.isGroup && curBch.groupState.expanded) {
     return 'pb-1'
@@ -207,25 +145,25 @@ const paddingBottomClass = computed(() => {
   if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
-  if (next === SkillBranchNames.Tips) {
-    if (cur === SkillBranchNames.Text || cur === SkillBranchNames.List) {
+  if (nextBch.isA(SkillBranchNames.Tips)) {
+    if (curBch.isA(SkillBranchNames.Text) || curBch.isA(SkillBranchNames.List)) {
       return 'pb-2.5'
     }
-    if (cur === SkillBranchNames.Tips) {
+    if (curBch.isA(SkillBranchNames.Tips)) {
       return 'pb-0'
     }
   }
 
-  if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
+  if (curBch.isA(SkillBranchNames.Reference) && nextBch.isA(SkillBranchNames.Reference)) {
     return 'pb-2'
   }
-  if (next === SkillBranchNames.Reference) {
+  if (nextBch.isA(SkillBranchNames.Reference)) {
     return 'pb-5'
   }
-  if (next === SkillBranchNames.List) {
+  if (nextBch.isA(SkillBranchNames.List)) {
     return 'pb-5'
   }
-  if (next === SkillBranchNames.Proration) {
+  if (nextBch.isA(SkillBranchNames.Proration)) {
     return 'pb-5'
   }
   return nextNormalLayout ? 'pb-4' : 'pb-4'
@@ -257,7 +195,7 @@ const subButtonAvailable = computed(() => {
   if (otherEffectBranches.value.length === 0 || sub.value) {
     return false
   }
-  return NORMAL_LAYOUT_BRANCH_NAMES.includes(branchItem.value.name)
+  return NORMAL_LAYOUT_BRANCH_NAMES.some(kind => branchItem.value.isA(kind))
 })
 </script>
 

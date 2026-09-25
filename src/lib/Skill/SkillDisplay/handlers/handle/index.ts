@@ -271,7 +271,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   titles.forEach(key => {
-    titlesResult.set(key, t(`skill-query.branch.${branchItem.name}.${key}: title`))
+    titlesResult.set(key, t(`skill-query.branch.${branchItem.getTranslationKey()}.${key}: title`))
   })
 
   const containers = new Map([

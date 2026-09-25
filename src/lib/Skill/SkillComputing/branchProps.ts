@@ -19,7 +19,7 @@ export function resolveStackName(branch: SkillBranchItem, defaultName: string): 
     return name
   }
   const index = branch.parent.branchItems
-    .filter(item => item.is(SkillBranchNames.Stack))
+    .filter(item => item.isA(SkillBranchNames.Stack))
     .findIndex(item => item === branch || item.stackId === branch.stackId)
   return `${defaultName}${Math.max(index, 0) + 1}`
 }

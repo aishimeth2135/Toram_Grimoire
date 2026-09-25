@@ -129,7 +129,7 @@
 - `SkillDisplay` 提供查詢頁與角色模擬共用的 Handler、翻譯與顯示加工。請從其 `index.ts` 匯入，不要引用其他頁面的內部檔案。
 - Vue 元件負責版面與互動；輸入框寬度等顯示決策由 `SkillDisplay/presentation.ts` 提供。
 
-原本的 `views/Character/SkillQuery/skill/branch-handlers` 已移至 `SkillDisplay/handlers`。`Next` 沿用 `EffectHandler`，以 `realName` 判斷 Next 特有語意。
+原本的 `views/Character/SkillQuery/skill/branch-handlers` 已移至 `SkillDisplay/handlers`。`Next` 沿用 `EffectHandler`，以 `isExactly(SkillBranchNames.Next)` 判斷 Next 專用語意。
 
 ## 分支處理順序
 
@@ -141,7 +141,7 @@
 
 分類會消耗平面列表，每個效果僅執行一次。歷史還原前不能先分類；歷史比較的下一版本必須已經完成分類。歷史覆寫的空字串與刪除規則沿用既有行為，不在還原後重新填滿所有預設值。
 
-分支 clone 會重建 suffix 與空 suffix 的主分支關聯，保留 `realName`；覆寫紀錄則由歷史組裝流程建立，不直接沿用上一版本的紀錄。
+分支 clone 會重建 suffix 與空 suffix 的主分支關聯，保留實際類型；覆寫紀錄則由歷史組裝流程建立，不直接沿用上一版本的紀錄。
 
 ## Handler 與公式輸入
 
@@ -178,3 +178,15 @@ Heal 附加資料使用成對的 `HealExtraItem`。數值／標籤數量不一�
 - 確認角色模擬的技能面板與傷害計算仍能讀取數值；顯示覆寫不能改變計算值。
 
 公式引擎與遊戲公式保持原有設計。未加入跨狀態快取；效能調整應先量測，再決定如何追蹤技能等級、Stack、托環與語系等相依狀態。
+
+## 分支類型繼承
+
+`SkillBranchItemBase` 只儲存 private `kind`，原始資料層的 `SkillBranch.name` 仍表示資料所宣告的類型。兩者交接由分支內部處理，不再提供具有替代語意的 `name`／`realName`。
+
+- `isKindEquals(branch)` 比較實際類型，供覆蓋流程判斷是否清除 props；`copyKindFrom(branch)` 複製實際類型，呼叫端完成 props 更新後執行 `_initDatasByProp()`。
+- `isExactly(kind)` 判斷分支專用特性；`isA(kind)` 包含自身與所有祖先的特性。未指定類型一律使用 `SkillBranchNames.None`。
+- `getKindKey()` 取得實際類型的字串 key，供診斷使用；翻譯使用 `getTranslationKey()`，Next 預設沿用 Effect 的翻譯路徑。
+- `branchKinds.ts` 集中定義單一父類型，可串接多層繼承；翻譯 key 可明確覆寫，未指定時向父類型查找。繼承鏈遇到重複類型便停止，避免無限迴圈。
+- `resolveKindConfig()` 從自身向祖先尋找最近的設定，用於顯示元件選擇；`collectKindConfigs()` 從祖先到自身收集設定，用於合併預設 props 與累加 suffix 規則。預設 props 由子類型覆蓋父類型，分支明確提供的值優先於所有預設值。
+
+Extend 仍是分支實例的資料複製與覆寫，不屬於這份類型繼承表。clone、歷史覆蓋與 Extend 解析均保留或複製實際類型。

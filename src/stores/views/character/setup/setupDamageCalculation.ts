@@ -8,6 +8,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 import type { SkillBuild } from '@/lib/Character/SkillBuild'
 import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
 import {
+  type CalcResultOptions,
   CalculationContainerIds,
   type CalculationContainerSnapshot,
   CalculationItemIds,
@@ -17,6 +18,7 @@ import {
   evaluateCalculationExpectedValueZipSweep,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
+import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
 
@@ -116,7 +118,7 @@ export function setupDamageCalculation(
         if (!(skillBuild.value?.getSkillBranchState(suf).enabled ?? true)) {
           return false
         }
-        return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
+        return suf.isA(SkillBranchNames.Extra) && suf.hasProp('dual_element')
       })
       if (extraBch) {
         skillDualElement = extraBch.prop('dual_element')
@@ -176,6 +178,20 @@ export function setupDamageCalculation(
     )
 
     const container = computed(() => skillResult.value.container)
+    const expectedResultOptions = computed<CalcResultOptions>(() => {
+      const buffs = skillResult.value.suffixContainers
+        .filter(suffix => skillBuild.value?.getSkillBranchState(suffix.branchItem).enabled)
+        .flatMap(suffix => parseSkillSelfBuffs(suffix.branchItem.prop('self_buffs')))
+
+      return {
+        containerResults: {
+          ...(buffs.includes('guaranteed_critical') && {
+            [CalculationContainerIds.CriticalRate]: 100,
+          }),
+          ...(buffs.includes('guaranteed_hit') && { [CalculationContainerIds.Accuracy]: 100 }),
+        },
+      }
+    })
 
     const statResults = computed(() => {
       return categoryResults.value.map(category => category.stats).flat()
@@ -188,7 +204,7 @@ export function setupDamageCalculation(
       let idToSearch = id
       if (container.value.branchItem) {
         const damageStatSuf = container.value.branchItem.suffixBranches.find(suf => {
-          if (!suf.is(SkillBranchNames.DamageStat)) {
+          if (!suf.isA(SkillBranchNames.DamageStat)) {
             return false
           }
           return suf.hasProp('id') && suf.prop('id') === id
@@ -347,7 +363,7 @@ export function setupDamageCalculation(
     })
 
     const baseSuffixBranch = computed(() =>
-      container.value.branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Base))
+      container.value.branchItem.suffixBranches.find(suf => suf.isA(SkillBranchNames.Base))
     )
 
     const varsMap = computed(() => {
@@ -553,7 +569,8 @@ export function setupDamageCalculation(
 
     const { expectedResult, evaluation } = setupCalculationSnapshotExpectedResult(
       calculationBase,
-      calculationSnapshot
+      calculationSnapshot,
+      expectedResultOptions
     )
 
     return {
@@ -564,6 +581,7 @@ export function setupDamageCalculation(
       evaluation,
       extraStats,
       targetDefMultiplier,
+      expectedResultOptions,
     }
   }
 
@@ -598,7 +616,8 @@ export function setupDamageCalculation(
       return evaluateCalculationExpectedValueZipSweep(
         calculationBase,
         calculator.calculationSnapshot.value,
-        effectiveDimensions
+        effectiveDimensions,
+        calculator.expectedResultOptions.value
       )
     })
 

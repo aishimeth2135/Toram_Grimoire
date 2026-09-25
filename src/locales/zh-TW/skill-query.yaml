@@ -180,8 +180,11 @@ branch:
     total-damage-caption: 總傷害被拆成{frequency}次，此公式為總傷害。
     view-hit-damage: 查看每段傷害
     hit-damage-label: 第{hit}段傷害
-  'damage: extra':
+  'damage:extra':
     condition-default-value: 此傷害
+    self_buffs:
+      guaranteed_critical: '此傷害#[必定暴擊]。'
+      guaranteed_hit: '此傷害#[必定命中]。'
   proration:
     'damage: title': 傷害慣性
     'proration: title': 造成慣性

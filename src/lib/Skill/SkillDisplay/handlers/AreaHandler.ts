@@ -22,7 +22,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(
 ) {
   const props = cloneBranchProps(branchItem)
 
-  const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
+  const basicBranch = branchItem.parent.branchItems.find(bch => bch.isA(SkillBranchNames.Basic))
   props.set('@range', basicBranch?.prop('range') ?? '')
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({

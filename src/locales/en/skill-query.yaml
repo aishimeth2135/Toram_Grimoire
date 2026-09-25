@@ -164,7 +164,7 @@ branch:
       magic: Magic
       normal_attack: Normal Attack
       none: Does not inflict proration
-  'damage: extra':
+  'damage:extra':
     condition-default-value: This damage
   proration:
     'damage: title': Damage Proration

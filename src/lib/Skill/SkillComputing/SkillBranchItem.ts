@@ -16,6 +16,7 @@ import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
 import { SkillBranchBuffs } from './SkillBranchBuffs'
 import type { BranchGroupState, SkillEffectItem, SkillEffectItemBase } from './SkillEffectItem'
+import { getBranchKindChain, getBranchTranslationKey } from './branchKinds'
 
 type SkillBranchItemOverwriteRecord<T> = {
   overwrite: T[]
@@ -36,8 +37,7 @@ abstract class SkillBranchItemBase<
 
   private _props: Map<string, string>
 
-  private _name: SkillBranchNames
-  private _inherit: SkillBranchNames | null
+  private kind: SkillBranchNames
 
   // -1 means undefined
   readonly overrideId: number
@@ -79,9 +79,7 @@ abstract class SkillBranchItemBase<
     this.parent = parent
     this.overrideId = branch.overrideId
 
-    this._name = branch instanceof SkillBranch ? branch.name : branch.realName
-    this._inherit = null
-    this.name = this._name // init _inherit
+    this.kind = SkillBranchItemBase.sourceKind(branch)
 
     this._props = new Map(branch instanceof SkillBranch ? branch.props : branch.allProps)
     this.stats = branch.stats.map(stat => stat.clone())
@@ -115,20 +113,57 @@ abstract class SkillBranchItemBase<
     this.postpone = this._props.get('postpone') === '1'
   }
 
-  get name(): SkillBranchNames {
-    if (this._inherit !== null) {
-      return this._inherit
+  private static sourceKind(branch: SkillBranch | SkillBranchItemBase): SkillBranchNames {
+    return branch instanceof SkillBranch ? branch.name : branch.kind
+  }
+
+  /** Compare identity without considering inherited behavior. */
+  isKindEquals(branch: SkillBranch | SkillBranchItemBase): boolean {
+    return this.kind === SkillBranchItemBase.sourceKind(branch)
+  }
+
+  copyKindFrom(branch: SkillBranch | SkillBranchItemBase) {
+    this.kind = SkillBranchItemBase.sourceKind(branch)
+  }
+
+  /** Match only this kind's dedicated behavior. */
+  isExactly(kind: SkillBranchNames): boolean {
+    return this.kind === kind
+  }
+
+  /** Match this kind or any ancestor. */
+  isA(kind: SkillBranchNames): boolean {
+    return getBranchKindChain(this.kind).includes(kind)
+  }
+
+  /** Identity key for diagnostics; not an inherited behavior selector. */
+  getKindKey(): string {
+    return this.kind
+  }
+
+  getTranslationKey(): string {
+    return getBranchTranslationKey(this.kind)
+  }
+
+  /** Select the nearest definition, starting with this kind. */
+  resolveKindConfig<T>(definitions: Partial<Record<SkillBranchNames, T>>): T | undefined {
+    for (const kind of getBranchKindChain(this.kind)) {
+      const value = definitions[kind]
+      if (value !== undefined) {
+        return value
+      }
     }
-    return this._name
+    return undefined
   }
 
-  set name(value: SkillBranchNames) {
-    this._inherit = value === SkillBranchNames.Next ? SkillBranchNames.Effect : null
-    this._name = value
-  }
-
-  get realName(): SkillBranchNames {
-    return this._name
+  /** Collect definitions from the oldest ancestor to this kind. */
+  collectKindConfigs<T>(definitions: Partial<Record<SkillBranchNames, T>>): T[] {
+    return getBranchKindChain(this.kind)
+      .reverse()
+      .flatMap(kind => {
+        const value = definitions[kind]
+        return value === undefined ? [] : [value]
+      })
   }
 
   get allProps(): Map<string, string> {
@@ -173,10 +208,6 @@ abstract class SkillBranchItemBase<
 
   clearProp() {
     this._props.clear()
-  }
-
-  is(name: SkillBranchNames) {
-    return this.name === name || this._name === name
   }
 
   syncRecord(record: SkillBranchItemOverwriteRecords) {
@@ -245,7 +276,7 @@ class SkillBranchItem<
 
   _initDatasByProp() {
     this._initPostponeByProp()
-    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.stackId = this.isA(SkillBranchNames.Stack) ? this.propNumber('id') : null
     this.effectStackId = this.stackId === null ? null : `${this.parent.effectId}-${this.stackId}`
     this.linkedStackIds =
       this.stackId !== null

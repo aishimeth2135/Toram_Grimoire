@@ -384,6 +384,10 @@ class SkillBranch extends SkillNode {
     return this.props.size === 0 && this.stats.length === 0
   }
 
+  isExactly(kind: SkillBranchNames): boolean {
+    return this.name === kind
+  }
+
   // Get index ID from format in `generateBranchId`
   getIndexId(): string {
     return this.branchId.split('-').pop()!

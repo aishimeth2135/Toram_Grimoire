@@ -10,10 +10,15 @@
           </span>
         </div>
       </div>
-      <div class="flex min-h-8 flex-wrap">
+      <div class="min-h-8" :class="{ 'flex flex-wrap': !selfBuffResults?.length }">
+        <SkillBranchPropValue
+          v-for="selfBuffResult in selfBuffResults"
+          :key="selfBuffResult.key"
+          :result="selfBuffResult"
+        />
         <slot>
           <SkillBranchPropValue v-if="result" :result="result" />
-          <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />
+          <SkillBranchStats v-if="statContainers" :stat-containers="statContainers" />
         </slot>
       </div>
     </div>
@@ -32,6 +37,7 @@ interface Props {
   title: string
   titleProps?: string[]
   result?: SkillBranchResultBase | null
+  selfBuffResults?: SkillBranchResultBase[]
   statContainers?: SkillBranchStatResult[]
 }
 
