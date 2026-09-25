@@ -122,11 +122,11 @@ const postponedBuffSkillResultsStates = computed<SkillResultsState[]>(
 )
 
 const skillIds = computed(() => {
-  return skillResultsStates.value.map(state => state.skill.id)
+  return skillResultsStates.value.map(state => state.skill.skillId)
 })
 
 const postponedSkillIds = computed(() => {
-  return postponedSkillResultsStates.value.map(state => state.skill.id)
+  return postponedSkillResultsStates.value.map(state => state.skill.skillId)
 })
 
 const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
@@ -136,7 +136,7 @@ const validResultItem = computed(() => {
     .map(resultsState => {
       return {
         resultsState,
-        branchForceToggleable: postponedSkillIds.value.includes(resultsState.skill.id),
+        branchForceToggleable: postponedSkillIds.value.includes(resultsState.skill.skillId),
         skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
       }
     })
@@ -148,7 +148,7 @@ const postponedValidResultItem = computed(() => {
     .map(resultsState => {
       return {
         resultsState,
-        branchForceToggleable: skillIds.value.includes(resultsState.skill.id),
+        branchForceToggleable: skillIds.value.includes(resultsState.skill.skillId),
       }
     })
 })
@@ -159,7 +159,7 @@ const buffValidResultItem = computed(() =>
     .map(resultsState => ({
       resultsState,
       branchForceToggleable: postponedBuffSkillResultsStates.value.some(
-        state => state.skill.id === resultsState.skill.id
+        state => state.skill.skillId === resultsState.skill.skillId
       ),
       skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
     }))
@@ -171,7 +171,7 @@ const postponedBuffValidResultItem = computed(() =>
     .map(resultsState => ({
       resultsState,
       branchForceToggleable: buffSkillResultsStates.value.some(
-        state => state.skill.id === resultsState.skill.id
+        state => state.skill.skillId === resultsState.skill.skillId
       ),
     }))
 )
