@@ -1,12 +1,66 @@
 import { lastElement } from '@/shared/utils/array'
 import { numberToFixed } from '@/shared/utils/number'
 
-export function handleFunctionHighlight(result: string): string {
-  const FUNCTION_PATTERN = /Math\.(floor|min|max)\(([^()]+)\)/g
-
-  if (!result.match(/Math\.(?:floor|min|max)/)) {
+function replaceArrayLookups(result: string): string {
+  if (!result.includes('][')) {
     return result
   }
+
+  const findClosingBracket = (start: number): number => {
+    let depth = 0
+    for (let idx = start; idx < result.length; idx += 1) {
+      if (result[idx] === '[') {
+        depth += 1
+      } else if (result[idx] === ']') {
+        depth -= 1
+        if (depth === 0) {
+          return idx
+        }
+      }
+    }
+    return -1
+  }
+
+  let display = ''
+  let idx = 0
+  while (idx < result.length) {
+    const previous = result[idx - 1]
+    if (result[idx] !== '[' || (idx > 0 && !/[\s+\-*/%(,?:=<>!&|]/.test(previous))) {
+      display += result[idx]
+      idx += 1
+      continue
+    }
+
+    const itemsEnd = findClosingBracket(idx)
+    if (itemsEnd < 0 || result[itemsEnd + 1] !== '[') {
+      display += result[idx]
+      idx += 1
+      continue
+    }
+    const indexStart = itemsEnd + 1
+    const indexEnd = findClosingBracket(indexStart)
+    if (indexEnd < 0) {
+      display += result[idx]
+      idx += 1
+      continue
+    }
+
+    const arrayItems = result.slice(idx + 1, itemsEnd)
+    const arrayIndex = result.slice(indexStart + 1, indexEnd)
+    display += `<span class="skill-formula-array-wrapper"><span class="name">LIST</span><span class="items">${arrayItems}</span><span class="index">${arrayIndex}</span></span>`
+    idx = indexEnd + 1
+  }
+  return display
+}
+
+export function handleFunctionHighlight(result: string): string {
+  const FUNCTION_PATTERN = /Math\.(floor|min|max)\(([^()]+)\)/g
+  const arrayResult = replaceArrayLookups(result)
+
+  if (arrayResult === result && !result.match(/Math\.(?:floor|min|max)/)) {
+    return result
+  }
+  result = arrayResult
 
   const START = '<#--'
   const END = '--#>'

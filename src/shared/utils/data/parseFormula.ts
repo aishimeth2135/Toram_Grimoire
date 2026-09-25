@@ -120,6 +120,9 @@ function parseFormula(
       })
       .map(el => (typeof el === 'string' && isNumberString(el) ? parseFloat(el) : el))
   }
+  const formatArray = (values: unknown[]): string =>
+    `[${values.map(value => (Array.isArray(value) ? formatArray(value) : value)).join(', ')}]`
+
   function handle(
     node: jsep.Expression,
     parentNode: jsep.Expression | null
@@ -200,14 +203,26 @@ function parseFormula(
       const object = node.object
       const property = node.property
       const parent = handle(object, node) as ParseFormulaVars | string
+      const child = handle(property, node)
+      if (
+        jsepTypes.isArrayExpression(object) &&
+        node.computed &&
+        !jsepTypes.isLiteral(property) &&
+        typeof child === 'string' &&
+        !isNumberString(child)
+      ) {
+        // Keep the array lookup until display variables are restored to text.
+        const array = Array.isArray(parent) ? formatArray(parent) : parent
+        return `${array}[${trimBrackets(child)}]`
+      }
       if (typeof parent !== 'string') {
-        return parent[handle(property, node) as string]
+        return parent[child as string]
       }
-      const child = handle(property, node) + ''
-      if (isNumberString(child)) {
-        return `${parent}[${child}]`
+      const childText = child + ''
+      if (isNumberString(childText)) {
+        return `${parent}[${childText}]`
       }
-      return `${parent}${child.startsWith('[') ? '' : '.'}${child}`
+      return `${parent}${childText.startsWith('[') ? '' : '.'}${childText}`
     }
     if (jsepTypes.isCallExpression(node)) {
       const args = handleArray(node.arguments, node)

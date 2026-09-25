@@ -329,6 +329,44 @@ const subButtonAvailable = computed(() => {
       }
     }
   }
+
+  & :deep(.skill-formula-array-wrapper) {
+    display: inline-flex;
+    align-items: center;
+    margin-inline: --spacing(0.5);
+    border-radius: var(--radius-md);
+    background-color: var(--color-orange-30);
+    padding-right: --spacing(1);
+    padding-left: --spacing(1.5);
+
+    & > .name {
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+    }
+    & > .items,
+    & > .index {
+      display: inline-flex;
+      align-items: center;
+      margin-right: --spacing(1);
+      margin-left: --spacing(1.5);
+      background-color: --alpha(var(--color-white) / 75%);
+      padding-inline: --spacing(2);
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+
+      & > .param-separate {
+        display: inline-block;
+        margin-inline: --spacing(2);
+        margin-top: --spacing(0.5);
+        border-left-width: 0.1875rem;
+        background-color: transparent;
+        height: --spacing(4);
+      }
+    }
+    & > .index {
+      background-color: --alpha(var(--color-white) / 50%);
+    }
+  }
 }
 
 .toggle-sub-button {
