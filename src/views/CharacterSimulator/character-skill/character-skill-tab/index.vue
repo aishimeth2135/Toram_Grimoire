@@ -28,6 +28,48 @@
         :branch-force-toggleable="resultItem.branchForceToggleable"
       />
     </CardRows>
+    <div
+      v-if="
+        type === SkillTypes.Active &&
+        (buffValidResultItem.length > 0 || postponedBuffValidResultItem.length > 0)
+      "
+      class="border-primary-30 border-t px-3 pt-3"
+    >
+      <div class="text-primary-70 mb-1">
+        {{ t('character-simulator.skill-build.buff-skills') }}
+      </div>
+      <div class="text-primary-50 gap-x-icon-tight mb-0.5 flex items-start text-sm">
+        <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+        {{ t('character-simulator.skill-build.buff-skills-tips-1') }}
+      </div>
+      <div class="text-primary-50 gap-x-icon-tight mb-2 flex items-start text-sm">
+        <cy-icon icon="ic-outline-info" small class="icon-first-line text-primary-30" />
+        {{ t('character-simulator.skill-build.buff-skills-tips-2') }}
+      </div>
+    </div>
+    <CardRows
+      v-if="type === SkillTypes.Active && buffValidResultItem.length > 0"
+      :class="{ 'opacity-50': disableAll }"
+    >
+      <CharacterSkillItem
+        v-for="resultItem in buffValidResultItem"
+        :key="`${resultItem.resultsState.skill.skillId}-buff`"
+        :skill-results-state="resultItem.resultsState"
+        :branch-force-toggleable="resultItem.branchForceToggleable"
+      />
+    </CardRows>
+    <CardRows
+      v-if="type === SkillTypes.Active && postponedBuffValidResultItem.length > 0"
+      class="border-primary-30 border-t pt-0.5"
+      :class="{ 'opacity-50': disableAll }"
+    >
+      <CharacterSkillItem
+        v-for="resultItem in postponedBuffValidResultItem"
+        :key="`${resultItem.resultsState.skill.skillId}-postponed-buff`"
+        :skill-results-state="resultItem.resultsState"
+        :branch-force-toggleable="resultItem.branchForceToggleable"
+      />
+    </CardRows>
   </CardRowsWrapper>
 </template>
 
@@ -72,6 +114,13 @@ const postponedSkillResultsStates = computed<SkillResultsState[]>(() => {
     : characterStore.postponedPassiveSkillResultStates
 })
 
+const buffSkillResultsStates = computed<SkillResultsState[]>(
+  () => characterStore.buffSkillResultStates
+)
+const postponedBuffSkillResultsStates = computed<SkillResultsState[]>(
+  () => characterStore.postponedBuffSkillResultStates
+)
+
 const skillIds = computed(() => {
   return skillResultsStates.value.map(state => state.skill.id)
 })
@@ -104,12 +153,42 @@ const postponedValidResultItem = computed(() => {
     })
 })
 
+const buffValidResultItem = computed(() =>
+  buffSkillResultsStates.value
+    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .map(resultsState => ({
+      resultsState,
+      branchForceToggleable: postponedBuffSkillResultsStates.value.some(
+        state => state.skill.id === resultsState.skill.id
+      ),
+      skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
+    }))
+)
+
+const postponedBuffValidResultItem = computed(() =>
+  postponedBuffSkillResultsStates.value
+    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .map(resultsState => ({
+      resultsState,
+      branchForceToggleable: buffSkillResultsStates.value.some(
+        state => state.skill.id === resultsState.skill.id
+      ),
+    }))
+)
+
 const allSkillEnabled = computed<boolean>({
   get() {
-    return validResultItem.value.every(item => item.skillState.enabled)
+    const items =
+      props.type === SkillTypes.Active
+        ? [...validResultItem.value, ...buffValidResultItem.value]
+        : validResultItem.value
+    return items.every(item => item.skillState.enabled)
   },
   set(value) {
     validResultItem.value.forEach(item => (item.skillState.enabled = value))
+    if (props.type === SkillTypes.Active) {
+      buffValidResultItem.value.forEach(item => (item.skillState.enabled = value))
+    }
   },
 })
 

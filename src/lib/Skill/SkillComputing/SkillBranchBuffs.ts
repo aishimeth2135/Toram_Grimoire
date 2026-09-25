@@ -6,7 +6,7 @@ import { SkillBuffs } from './enums'
 class SkillBranchBuffs {
   private _buffs: Set<SkillBuffs>
 
-  static SkillBuffList: SkillBuffs[] = [SkillBuffs.MpCostHalf]
+  static SkillBuffList: SkillBuffs[] = [SkillBuffs.MpCostHalf, SkillBuffs.GuaranteedCritical]
 
   private constructor(str: string) {
     this._buffs = new Set()

@@ -5,7 +5,7 @@ collapse: 收合
 reset-steps: 重置所有步骤
 base: 选择基础颜色
 shade: 淡化/变深
-grayscale: 新增灰阶
+grayscale: 新增灰阶(黑白色)
 grayscale-tips: 新增灰阶也附带淡化或变深。
 narrow: 缩小范围
 mix: 混色
@@ -13,6 +13,7 @@ preview: 步骤预览
 pool: 颜色池
 empty: 请先选择基础颜色。
 result-title: 最终结果
+color-table-lock-tips: 因为使用了钻石，彩阶表已被锁定。(灰阶表不受影响)
 gems:
   ruby: 红宝石
   garnet: 石榴

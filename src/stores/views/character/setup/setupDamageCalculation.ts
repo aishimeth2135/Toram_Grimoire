@@ -20,7 +20,7 @@ import {
 import { EnemyElements } from '@/lib/Enemy/Enemy'
 import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputing'
+import { SkillBranchItem, SkillBuffs, getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import { setupCalculationSnapshotExpectedResult } from '../../damage-calculation/setup'
 import { createElementMap, getCharacterElement } from '../utils'
@@ -43,7 +43,6 @@ export interface TargetProperties {
 export interface CalculationOptions {
   proration: number
   comboRate: number
-  forceCritical: boolean
 }
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
@@ -82,7 +81,8 @@ export function setupDamageCalculation(
   character: Ref<Character | null>,
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number },
-  skillBuild: Ref<SkillBuild | null>
+  skillBuild: Ref<SkillBuild | null>,
+  availableBuffResults: Ref<SkillResult[]>
 ) {
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
@@ -172,23 +172,60 @@ export function setupDamageCalculation(
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>
   ) => {
+    const selectedBuffResults = computed<SkillResult[]>(() => {
+      if (getDamageSource(skillResult.value.container.branchItem)) {
+        return []
+      }
+
+      const selectedIds =
+        skillBuild.value?.getSkillBranchState(skillResult.value.container.branchItem)
+          .selectedBuffIds ?? []
+      return availableBuffResults.value.filter(result =>
+        selectedIds.includes(result.container.branchItem.defaultBranchId)
+      )
+    })
+
+    const selectedStats = computed<StatRecorded[]>(() => {
+      const stats = [...extraStats.value]
+      selectedBuffResults.value.forEach(result => {
+        const containers = [
+          result.container,
+          ...result.suffixContainers.filter(
+            suffix => skillBuild.value?.getSkillBranchState(suffix.branchItem).enabled
+          ),
+        ]
+        containers.forEach(container =>
+          container.statContainers.forEach(statContainer => {
+            if (isNumberString(statContainer.value)) {
+              stats.push(statContainer.toStatRecorded(parseFloat(statContainer.value)))
+            }
+          })
+        )
+      })
+      return stats
+    })
     const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(
-      extraStats,
+      selectedStats,
       skillResult
     )
 
     const container = computed(() => skillResult.value.container)
     const expectedResultOptions = computed<CalcResultOptions>(() => {
-      const buffs = skillResult.value.suffixContainers
+      const selfBuffs = skillResult.value.suffixContainers
         .filter(suffix => skillBuild.value?.getSkillBranchState(suffix.branchItem).enabled)
         .flatMap(suffix => parseSkillSelfBuffs(suffix.branchItem.prop('self_buffs')))
+      const guaranteedCritical =
+        selfBuffs.includes('guaranteed_critical') ||
+        selectedBuffResults.value.some(result =>
+          result.container.branchItem.buffs?.has(SkillBuffs.GuaranteedCritical)
+        )
 
       return {
         containerResults: {
-          ...(buffs.includes('guaranteed_critical') && {
+          ...(guaranteedCritical && {
             [CalculationContainerIds.CriticalRate]: 100,
           }),
-          ...(buffs.includes('guaranteed_hit') && { [CalculationContainerIds.Accuracy]: 100 }),
+          ...(selfBuffs.includes('guaranteed_hit') && { [CalculationContainerIds.Accuracy]: 100 }),
         },
       }
     })
@@ -504,7 +541,6 @@ export function setupDamageCalculation(
               EquipmentTypes.OneHandSword
             ),
         ],
-        [CalculationContainerIds.CriticalRate, calculationOptions.value.forceCritical],
         [CalculationContainerIds.StrongerAgainstElement, targetProperties.value.element === null],
         [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],

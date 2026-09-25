@@ -236,6 +236,7 @@ export function prepareSetupCharacter() {
       skillPureStats: postponedSkillPureStats,
       skillConditionalStatContainers,
       activeSkillResultStates: postponedActiveSkillResultStates,
+      buffSkillResultStates: postponedBuffSkillResultStates,
       passiveSkillResultStates: postponedPassiveSkillResultStates,
       damageSkillResultStates,
     } = setupCharacterSkills(character, buildsContext, skillItemStates, setupOptions, {
@@ -289,6 +290,7 @@ export function prepareSetupCharacter() {
       characterStatCategoryResults,
       characterPureStats,
       postponedActiveSkillResultStates,
+      postponedBuffSkillResultStates,
       postponedPassiveSkillResultStates,
       damageSkillResultStates,
       setupCharacterStatCategoryResultsExtended,

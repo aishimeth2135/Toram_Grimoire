@@ -8,6 +8,7 @@ export type SkillTypes = (typeof SkillTypes)[keyof typeof SkillTypes]
 export const SkillBranchNames = {
   Damage: 'damage',
   Effect: 'effect',
+  Buff: 'buff',
   Next: 'next',
   Heal: 'heal',
   Passive: 'passive',
@@ -29,7 +30,7 @@ export const SkillBranchNames = {
   //
   Basic: 'basic',
 
-  // main branch: @damage, @effect, @next, @passive
+  // main branch: @damage, @effect, @buff, @next, @passive
   Extra: 'extra',
 
   // main branch: @damage

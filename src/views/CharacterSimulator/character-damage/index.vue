@@ -9,11 +9,6 @@
       </cy-tab>
     </cy-tabs>
     <div v-if="tabIndex === 0" class="px-3">
-      <div class="mt-4">
-        <cy-button-check v-model:selected="characterStore.calculationOptions.forceCritical">
-          {{ t('character-simulator.character-damage.force-critical') }}
-        </cy-button-check>
-      </div>
       <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto py-4">
         <CardRowsWrapper>
           <CharacterDamageSkillGroup

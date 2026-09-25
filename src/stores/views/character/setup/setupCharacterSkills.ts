@@ -303,6 +303,7 @@ export function setupCharacterSkills(
   const {
     computingContainer,
     activeSkillResults,
+    buffSkillResults,
     passiveSkillResults,
     nextSkillResults,
     damageSkillResults,
@@ -311,6 +312,7 @@ export function setupCharacterSkills(
   } = (() => {
     type ComputingResultsMap = Map<Skill, ComputedRef<SkillResultBase[]>>
     const computingResultsActive: ComputingResultsMap = new Map()
+    const computingResultsBuff: ComputingResultsMap = new Map()
     const computingResultsPassive: ComputingResultsMap = new Map()
     const computingResultsDamage: ComputingResultsMap = new Map()
     const computingResultsNext: ComputingResultsMap = new Map()
@@ -381,7 +383,7 @@ export function setupCharacterSkills(
         if (!checkPostpone(bch)) {
           return false
         }
-        if (bch.isA(SkillBranchNames.Effect)) {
+        if (bch.isA(SkillBranchNames.Effect) && !bch.isA(SkillBranchNames.Buff)) {
           if (bch.propBoolean('display_only')) {
             return false
           }
@@ -397,6 +399,21 @@ export function setupCharacterSkills(
         : computed(() => {
             return currentEffectItem.value?.branchItems.filter(checkActive) ?? []
           })
+
+      const checkBuff: BranchItemArrayFilter = bch => {
+        return (
+          checkPostpone(bch) &&
+          bch.isA(SkillBranchNames.Buff) &&
+          !bch.propBoolean('display_only') &&
+          (bch.stats.length > 0 || !!bch.buffs?.has(SkillBuffs.GuaranteedCritical))
+        )
+      }
+      const buffValid = skillItem.effectItems.some(effectItem =>
+        effectItem.branchItems.some(checkBuff)
+      )
+      const buffSkillBranchItems = !buffValid
+        ? null
+        : computed(() => currentEffectItem.value?.branchItems.filter(checkBuff) ?? [])
 
       // passive
       const checkPassive: BranchItemArrayFilter = bch => {
@@ -461,6 +478,12 @@ export function setupCharacterSkills(
           handleComputingResults(activeSkillBranchItems, EffectHandler, [SkillBranchNames.Effect])
         )
       }
+      if (buffSkillBranchItems) {
+        computingResultsBuff.set(
+          skill,
+          handleComputingResults(buffSkillBranchItems, EffectHandler, [SkillBranchNames.Buff])
+        )
+      }
       if (passiveSkillBranchItems) {
         computingResultsPassive.set(
           skill,
@@ -485,7 +508,8 @@ export function setupCharacterSkills(
         activeSkillBranchItems ||
         passiveSkillBranchItems ||
         damageSkillBranchItems ||
-        nextSkillBranchItems
+        nextSkillBranchItems ||
+        buffSkillBranchItems
       ) {
         stackContainers.set(
           skill,
@@ -509,6 +533,7 @@ export function setupCharacterSkills(
     return {
       computingContainer: computing,
       activeSkillResults: computingResultsActive,
+      buffSkillResults: computingResultsBuff,
       passiveSkillResults: computingResultsPassive,
       nextSkillResults: computingResultsNext,
       damageSkillResults: computingResultsDamage,
@@ -594,6 +619,7 @@ export function setupCharacterSkills(
     allResultStatesMap: allPassiveSkillResultStatesMap,
     resultStates: passiveSkillResultStates,
   } = getSkillResultStatesComputed(passiveSkillResults)
+  const { resultStates: buffSkillResultStates } = getSkillResultStatesComputed(buffSkillResults)
   const { resultStates: nextSkillResultStates } = getSkillResultStatesComputed(nextSkillResults)
   const { resultStates: damageSkillResultStates } = getSkillResultStatesComputed(damageSkillResults)
 
@@ -666,6 +692,7 @@ export function setupCharacterSkills(
     skillComputingContainer: computingContainer,
 
     activeSkillResultStates,
+    buffSkillResultStates,
     passiveSkillResultStates,
     allActiveSkillResultStatesMap,
     allPassiveSkillResultStatesMap,

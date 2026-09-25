@@ -7,7 +7,8 @@ interface BranchKindDefinition {
 
 // An omitted translationKey inherits the parent's key; roots use their own key.
 const BRANCH_KIND_DEFINITIONS: Readonly<Partial<Record<SkillBranchNames, BranchKindDefinition>>> = {
-  [SkillBranchNames.Next]: { parent: SkillBranchNames.Effect },
+  [SkillBranchNames.Buff]: { parent: SkillBranchNames.Effect },
+  [SkillBranchNames.Next]: { parent: SkillBranchNames.Buff },
 }
 
 /** Ordered from the kind itself to its oldest ancestor. */

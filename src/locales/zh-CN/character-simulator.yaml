@@ -16,7 +16,22 @@ character-basic:
   character-builds-tip: 技能配置、料理配置等其他配置皆是以角色为单位进行绑定，系统会纪录每个角色绑定了哪些配置。
 character-dashboard:
   title: 总览
+  character-build-title: 角色配置
   no--any-equipment-tips: 还没有装备任何装备。点击右侧的按钮来编辑装备。
+  damage-chart:
+    title: 伤害计算图表
+    include-resistance: 计算双抗
+    tabs:
+      low: 低防御
+      medium: 中防御
+      high: 高防御
+    x-axis-title: 双抗/双防
+    y-axis-title: 伤害期望值 (m)
+    damage-title: 伤害量
+    comparison-title: 伤害比较
+    tips: 双抗取0~30%，双防取{min}~{max}。
+    tips-without-resistance: 双抗固定为0%，双防取{min}~{max}。
+    no-skill-tips: 目前没有可以计算的伤害技能，请到画面右下角的伤害计算面板中进行启用。
 character-equipments-manage:
   title: 管理所有装备
   mode-selections-title: 选择检视模式
@@ -106,6 +121,9 @@ skill-build:
   title: 技能
   passive-skills: 被动技能
   active-skills: 主动技能
+  buff-skills: 增益类技能
+  buff-skills-tips-1: 此处列出所有增益类技能，包含「下一招技能...」类的增益或其他类型的增益。
+  buff-skills-tips-2: 启用的增益技能不会直接影响角色能力，选项会出现在画面右下的伤害计算面板中。
   skills-preview: 技能一览
   skill-trees-directory:
     title: 技能树目录
@@ -137,11 +155,15 @@ skill-build:
     - 以下为系统自动产生的技能技能图片，按下按钮可以直接进行下载。
     - 于IOS系统上使用此功能下载图片时，一部分浏览器还不支援「设定档名」的功能，因此下载图片时可能会发生副档名不为PNG的问题。若遇到此问题，请在下载图片后自行将档名改成「XXX.png」，该图片就可以正常显示。
     - 如果无法透过按钮下载图片，可使用浏览器预设的下载图片的方式进行下载。例如：于电脑上操作时，通常是在图片上点滑鼠右键接着按下储存。
+  skill-branch-state-save-tips-1: 齿轮内设定的数值会自动保存。若该技能的资料大幅更新，其储存的数值可能会重置。
+  skill-branch-state-save-tips-2: 在更换装备类型导致技能效果出现变化时，齿轮内设定的数值会分开储存。
 character-damage:
   title: 伤害计算
+  select-buffs: 选择增益
+  damage-source:
+    additional: 追击伤害
   target-options-title: 目标数值设定
   options-base-title: 基本设定
-  force-critical: 伤害必定爆击
   element-none: 无设定
   no-result: 伤害公式待更新
   range-damage-title: 目标距离判定
