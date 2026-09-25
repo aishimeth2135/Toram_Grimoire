@@ -22,7 +22,7 @@ const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> 
 )
 
 interface SkillEffectInjection {
-  currentEffectItem: Ref<SkillEffectItem | null>
+  currentEffectItem: Ref<SkillEffectItem>
 }
 const SkillEffectInjectionKey: InjectionKey<SkillEffectInjection> = Symbol('skill-effect')
 
