@@ -30,6 +30,8 @@ equipment:
 skill-buffs:
   mp_cost_half:
     title: MP消耗减半
+  guaranteed_critical:
+    title: 必定暴击
 branch:
   duration-caption: '持续{duration}秒'
   ailment-title: 命中成功后
@@ -177,8 +179,14 @@ branch:
     'end_position_offsets: title': 终点位置
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害
     frequency-caption: 总伤害拆成{frequency}次
+    total-damage-caption: 总伤害被拆成{frequency}次，此公式为总伤害。
+    view-hit-damage: 查看每段伤害
+    hit-damage-label: 第{hit}段伤害
   'damage:extra':
     condition-default-value: 此伤害
+    self_buffs:
+      guaranteed_critical: '此伤害#[必定暴击]。'
+      guaranteed_hit: '此伤害#[必定命中]。'
   proration:
     'damage: title': 伤害惯性
     'proration: title': 造成惯性
@@ -196,6 +204,9 @@ branch:
     base-name: 技能层数
   effect:
     base-name: 技能效果
+    buffs:
+      guaranteed_critical: '造成的伤害#[必定暴击]。'
+      mp_cost_half: '附加#[MP消耗减半]。'
     condition:
       auto: 状态期间
       hit: 命中成功后

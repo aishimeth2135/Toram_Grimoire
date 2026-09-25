@@ -80,3 +80,4 @@ export-build:
   load-wrong-file-type-tips: 读取的档案必须为文字（.txt）档。
 tips:
   view-unknown-error-tips: 发生未知的错误，请点击下方的按钮尝试还原介面。
+  search-no-result: 努力寻找后发现没有东西。

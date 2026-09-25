@@ -2,6 +2,7 @@ loading-message:
   Stats: 载入角色能力清单
   CharacterStats: 载入角色模拟器资料
   Items: 载入装备资料
+  Crystals: 载入锻晶资料
   Skill: 载入技能资料
   Glossary: 载入名词解释
   Enchant: 载入附魔资料
@@ -118,6 +119,7 @@ settings:
     save: 备份
     load: 还原
     save-success-tips: 存档成功。
+    save-failed-tips: 存档失败。
     load-success-tips: 还原成功。
     load-failed-tips: 读取失败。
     wrong-file-type-tips: 读取的档案必须为文字（.txt）档。

@@ -22,3 +22,5 @@ all: 全部
 select-all: 全选
 apply: 套用
 next-step: 下一步
+expand: 展开
+collapse: 收合
