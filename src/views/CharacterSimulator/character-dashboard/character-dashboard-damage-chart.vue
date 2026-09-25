@@ -108,7 +108,18 @@ watch(chartData, data => {
     return
   }
 
-  chart.data = copyData(data)
+  const nextData = copyData(data)
+  const remainingDatasets = [...chart.data.datasets]
+  chart.data.labels = nextData.labels
+  chart.data.datasets = nextData.datasets.map(dataset => {
+    const previousIndex = remainingDatasets.findIndex(previous => previous.label === dataset.label)
+    if (previousIndex < 0) {
+      return dataset
+    }
+
+    const previous = remainingDatasets.splice(previousIndex, 1)[0]
+    return Object.assign(previous, dataset)
+  })
   chart.update()
 })
 

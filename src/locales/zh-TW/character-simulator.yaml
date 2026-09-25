@@ -20,6 +20,7 @@ character-dashboard:
   no--any-equipment-tips: 還沒有裝備任何裝備。點擊右側的按鈕來編輯裝備。
   damage-chart:
     title: 傷害計算圖表
+    include-resistance: 計算雙抗
     tabs:
       low: 低防禦
       medium: 中防禦
@@ -29,6 +30,7 @@ character-dashboard:
     damage-title: 傷害量
     comparison-title: 傷害比較
     tips: 雙抗取0~30%，雙防取{min}~{max}。
+    tips-without-resistance: 雙抗固定為0%，雙防取{min}~{max}。
     no-skill-tips: 目前沒有可以計算的傷害技能，請到畫面右下角的傷害計算面板中進行啟用。
 character-equipments-manage:
   title: 管理所有裝備

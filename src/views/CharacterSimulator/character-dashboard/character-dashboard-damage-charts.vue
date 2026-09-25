@@ -93,6 +93,7 @@ const characterStore = useCharacterStore()
 const { appNightMode } = storeToRefs(settingStore)
 
 const currentTab = ref<ChartTab>(ChartTabs.Low)
+const includeResistance = ref(true)
 const damageSkillLines = shallowRef<DamageSkillLine[]>([])
 const chartColors = shallowRef(fallbackChartColors)
 
@@ -146,6 +147,10 @@ const resistanceValues = Array.from(
   { length: SAMPLE_COUNT },
   (_value, index) => (RESISTANCE_MAX * index) / (SAMPLE_COUNT - 1)
 )
+const zeroResistanceValues = resistanceValues.map(() => 0)
+const chartResistanceValues = computed<number[]>(() =>
+  includeResistance.value ? resistanceValues : zeroResistanceValues
+)
 
 const defenseValues = computed(() =>
   Array.from(
@@ -156,42 +161,58 @@ const defenseValues = computed(() =>
 
 const targetProperties = computed(() => characterStore.targetProperties)
 const calculationOptions = computed(() => characterStore.calculationOptions)
-const sweepDimensions = computed<readonly CalculationSweepDimension[]>(() => [
-  {
-    itemId: CalculationItemIds.TargetPhysicalResistance,
-    values: resistanceValues,
-  },
-  {
-    itemId: CalculationItemIds.TargetMagicResistance,
-    values: resistanceValues,
-  },
-  {
-    itemId: CalculationItemIds.TargetDef,
-    values: defenseValues.value,
-  },
-  {
-    itemId: CalculationItemIds.TargetMdef,
-    values: defenseValues.value,
-  },
-])
+const createSweepDimensions = (physicalAndMagicResistanceValues: number[]) =>
+  computed<readonly CalculationSweepDimension[]>(() => [
+    {
+      itemId: CalculationItemIds.TargetPhysicalResistance,
+      values: physicalAndMagicResistanceValues,
+    },
+    {
+      itemId: CalculationItemIds.TargetMagicResistance,
+      values: physicalAndMagicResistanceValues,
+    },
+    {
+      itemId: CalculationItemIds.TargetDef,
+      values: defenseValues.value,
+    },
+    {
+      itemId: CalculationItemIds.TargetMdef,
+      values: defenseValues.value,
+    },
+  ])
+
+const sweepDimensionsWithResistance = createSweepDimensions(resistanceValues)
+const sweepDimensionsWithoutResistance = createSweepDimensions(zeroResistanceValues)
 
 const damageChartTips = computed(() =>
-  t('character-simulator.character-dashboard.damage-chart.tips', {
-    min: defenseValues.value[0],
-    max: defenseValues.value[defenseValues.value.length - 1],
-  })
+  t(
+    includeResistance.value
+      ? 'character-simulator.character-dashboard.damage-chart.tips'
+      : 'character-simulator.character-dashboard.damage-chart.tips-without-resistance',
+    {
+      min: defenseValues.value[0],
+      max: defenseValues.value[defenseValues.value.length - 1],
+    }
+  )
 )
 
 const calculators = new Map<InstanceId, DamageResultCalculator>()
 
 const setupDamageResultValues = (resultRef: Ref<SkillResult>): DamageResultValues => {
   const { extraStats } = setupSkilResultExtraStats(resultRef)
-  const calculator = characterStore.setupDamageCalculationExpectedResultSweep(
+  const withResistance = characterStore.setupDamageCalculationExpectedResultSweep(
     resultRef,
     extraStats,
     targetProperties,
     calculationOptions,
-    sweepDimensions
+    sweepDimensionsWithResistance
+  )
+  const withoutResistance = characterStore.setupDamageCalculationExpectedResultSweep(
+    resultRef,
+    extraStats,
+    targetProperties,
+    calculationOptions,
+    sweepDimensionsWithoutResistance
   )
 
   return {
@@ -202,8 +223,14 @@ const setupDamageResultValues = (resultRef: Ref<SkillResult>): DamageResultValue
           resultRef.value.container.branchItem
         ).enabled ?? false
     ),
-    valid: calculator.valid,
-    values: calculator.expectedResults,
+    valid: computed(() =>
+      includeResistance.value ? withResistance.valid.value : withoutResistance.valid.value
+    ),
+    values: computed<readonly number[]>(() =>
+      includeResistance.value
+        ? withResistance.expectedResults.value
+        : withoutResistance.expectedResults.value
+    ),
   }
 }
 
@@ -298,6 +325,11 @@ onBeforeUnmount(() => {
     default-hidden
   >
     <template v-if="damageChartSeries.length > 0">
+      <div class="px-4 pt-3">
+        <cy-button-toggle v-model:selected="includeResistance">
+          {{ t('character-simulator.character-dashboard.damage-chart.include-resistance') }}
+        </cy-button-toggle>
+      </div>
       <div class="px-4">
         <cy-tabs v-model="currentTab">
           <cy-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
@@ -331,7 +363,7 @@ onBeforeUnmount(() => {
             </div>
             <CharacterDashboardDamageChart
               :series="damageChartSeries"
-              :resistance-values="resistanceValues"
+              :resistance-values="chartResistanceValues"
               :defense-values="defenseValues"
               :x-axis-title="t('character-simulator.character-dashboard.damage-chart.x-axis-title')"
               :y-axis-title="t('character-simulator.character-dashboard.damage-chart.y-axis-title')"

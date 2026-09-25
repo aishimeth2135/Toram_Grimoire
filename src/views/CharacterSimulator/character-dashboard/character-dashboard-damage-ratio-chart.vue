@@ -111,7 +111,9 @@ watch(chartData, data => {
     return
   }
 
-  chart.data = copyData(data)
+  const nextData = copyData(data)
+  chart.data.labels = nextData.labels
+  Object.assign(chart.data.datasets[0], nextData.datasets[0])
   chart.update()
 })
 
