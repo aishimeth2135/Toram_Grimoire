@@ -164,7 +164,8 @@ skill-build:
   skill-branch-state-save-tips-2: 在更換裝備類型導致技能效果出現變化時，齒輪內設定的數值會分開儲存。
 character-damage:
   title: 傷害計算
-  select-buffs: 選擇增益
+  self-optional-buffs: 可選加成
+  select-buffs: 其他增益
   damage-source:
     additional: 追擊傷害
   target-options-title: 目標數值設定

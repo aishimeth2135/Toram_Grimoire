@@ -1,17 +1,14 @@
 <template>
   <CardRow :selected="enabled">
-    <div
-      class="hover:bg-primary-5 flex items-center py-2 pl-1.5 pr-2.5 duration-150"
-      :class="{
-        'cursor-pointer': !selectionDisabled,
-        'cursor-not-allowed opacity-50': selectionDisabled,
-      }"
+    <button
+      class="hover:bg-primary-5 flex w-full cursor-pointer items-center py-2.5 pl-1.5 pr-3 duration-150"
+      type="button"
+      :disabled="selectionDisabled"
       @click="toggleEnabled"
     >
-      <div class="mr-3 flex min-w-40 shrink-0 items-center">
-        <cy-button-check :selected="enabled" :disabled="selectionDisabled" />
-        <cy-icon :icon="skillIconPath" class="ml-1.5" />
-        <span class="text-primary-80 ml-2">
+      <div class="flex min-w-40 shrink-0 items-center px-2">
+        <cy-icon :icon="skillIconPath" />
+        <span class="text-primary-80 ml-2.5">
           {{ skillResultsState.skill.name }}
         </span>
         <div v-if="invalid" class="text-primary-30 ml-3">
@@ -21,9 +18,13 @@
       <div v-if="skillResultsState.hasOptions && enabled" class="ml-auto inline-flex">
         <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
       </div>
-    </div>
-    <div v-if="enabled && !invalid" class="pl-9.5 flex flex-col gap-2 pb-4 pr-3">
-      <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
+    </button>
+    <div v-if="enabled && !invalid" class="flex flex-col gap-2 pb-4">
+      <div
+        v-for="result in skillResultsState.results"
+        :key="result.container.instanceId"
+        class="border-primary-10 border-t pl-5 pr-3 pt-2"
+      >
         <CharacterDamageSkillResultItem :result="result" />
       </div>
     </div>

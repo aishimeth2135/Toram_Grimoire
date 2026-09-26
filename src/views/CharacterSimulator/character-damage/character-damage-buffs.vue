@@ -54,11 +54,17 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
 </script>
 
 <template>
-  <div v-if="!hasDamageSource && allOptions.length > 0" class="pl-2 pt-2">
+  <div v-if="!hasDamageSource && allOptions.length > 0" class="pl-5.5 pt-2">
     <cy-popover placement="top-start" custom>
-      <cy-button-plain icon="mdi:plus-circle-outline">
-        {{ t('character-simulator.character-damage.select-buffs') }}
-      </cy-button-plain>
+      <div>
+        <button
+          type="button"
+          class="text-primary-40 hover:text-primary-60 gap-icon-tight flex cursor-pointer items-center text-sm"
+        >
+          {{ t('character-simulator.character-damage.select-buffs') }}
+          <cy-icon icon="mdi:plus-circle-outline" small class="text-primary-60" />
+        </button>
+      </div>
       <template #popper>
         <div class="flex max-h-96 flex-col bg-white">
           <CommonSearchableItems
@@ -78,7 +84,7 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
       :key="option.id"
       class="flex items-start gap-2 py-1 text-sm"
     >
-      <cy-icon icon="mdi:creation" class="text-primary-40 mt-0.5 shrink-0" />
+      <cy-icon icon="ic:round-check-circle-outline" class="text-primary-40 mt-0.5 shrink-0" />
       <div class="flex flex-col gap-1">
         <div class="text-primary-70">{{ option.name }}</div>
         <CharacterSkillItemStats :stat-containers="option.result.container.statContainers" />
