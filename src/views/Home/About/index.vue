@@ -98,21 +98,36 @@
               </div>
             </div>
           </template>
-          <div v-if="column.title === 'author'" class="mt-3 px-3">
-            <a
-              href="https://github.com/aishimeth2135/Toram_Grimoire"
-              target="_blank"
-              class="text-cyan-60 inline-flex items-center opacity-75 duration-150 hover:opacity-100"
-            >
-              <cy-icon icon="mdi:github" width="2rem" class="text-cyan-60 mr-2.5" />
-              {{ t('app.about.author.github-message') }}
-              <span
-                class="border-cyan-60/50 ml-3 inline-flex items-center rounded-lg border-2 py-0.5 pl-2 pr-4"
+          <div v-if="column.title === 'author'" class="mt-3 flex flex-col space-y-2 px-3">
+            <div>
+              <a
+                href="https://github.com/aishimeth2135/Toram_Grimoire"
+                target="_blank"
+                class="text-cyan-60 inline-flex items-center opacity-75 duration-150 hover:opacity-100"
               >
-                <cy-icon icon="ic:round-star-border" width="1.375rem" class="text-cyan-60 mr-2" />
-                Star
-              </span>
-            </a>
+                <cy-icon icon="mdi:github" width="2rem" class="text-cyan-60 mr-2.5" />
+                {{ t('app.about.author.github-message') }}
+                <span
+                  class="border-cyan-60/50 gap-icon-tight ml-3 inline-flex items-center rounded-full border-2 py-0.5 pl-2 pr-4"
+                >
+                  <cy-icon icon="ic:round-star-border" width="1.375rem" class="text-cyan-60" />
+                  Star
+                </span>
+              </a>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 px-1.5">
+              <div class="gap-icon text-primary-30 flex items-center text-sm">
+                <cy-icon icon="ic:outline-coffee" />
+                小額贊助平台
+              </div>
+              <a
+                href="https://buymeacoffee.com/cyteria"
+                target="_blank"
+                class="bg-primary-50 hover:bg-primary-70 rounded-full py-2 pl-3 pr-3.5 text-sm text-white duration-300"
+              >
+                ☕ Buy Me A Coffee
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -191,27 +206,27 @@ const columns: {
         list: [
           {
             main: '藤邸',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '曼珠沙華',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '被世人遺忘的角落',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '奇鴉譜月',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '地下酒吧',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
         ],
       },
@@ -220,15 +235,15 @@ const columns: {
         list: [
           {
             main: '繆絢ゞ',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           {
             main: '憂子迷',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           {
             main: 'Miriam魚蔥',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
@@ -238,30 +253,30 @@ const columns: {
           '@line',
           {
             main: '律',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '曄痕/櫻雨痕',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           {
             main: '夜神散華 禮彌/（曄之妹）',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '✩cuxin',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           {
             main: '紺野木綿季、優紀',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
           '@line',
           {
             main: '梦月姬D、moon',
-            sub: '眾神幣',
+            sub: t('app.about.sponsor.spina'),
           },
         ],
       },
