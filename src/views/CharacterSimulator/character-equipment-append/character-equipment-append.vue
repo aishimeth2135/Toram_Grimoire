@@ -103,7 +103,7 @@ const selectStatOption = (option: StatOption) => {
         <div class="flex w-full max-w-sm items-center self-end">
           <div class="flex grow items-center">
             <div
-              class="border-primary-10 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pl-3 pr-2 duration-150"
+              class="border-primary-30 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pl-3 pr-2 duration-150"
               @click="
                 currentMode =
                   currentMode === EquipmentSearchMode.Normal
@@ -113,7 +113,7 @@ const selectStatOption = (option: StatOption) => {
             >
               <cy-icon icon="mdi:exchange" />
             </div>
-            <div class="border-primary-10 grow rounded-r-full border">
+            <div class="border-primary-30 grow rounded-r-full border">
               <div v-if="currentMode === EquipmentSearchMode.Normal">
                 <CommonSearchInput v-model="normalSearchText" behind />
               </div>

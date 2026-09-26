@@ -5,8 +5,6 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import type { CharacterBaseStat } from '@/lib/Character/Character'
-
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 
 import CharacterDashboardDamageCharts from './character-dashboard-damage-charts.vue'
@@ -29,9 +27,6 @@ const validBaseStats = computed(() => {
     .sort((item1, item2) => item2.value - item1.value)
 })
 
-const primaryBaseStat = computed(() => validBaseStats.value[0])
-const secondaryBaseStat = computed<CharacterBaseStat | null>(() => validBaseStats.value[1] ?? null)
-
 const characterState = computed(() => characterStore.getCharacterState(character.value))
 
 const { setCurrentTab } = useCharacterSimulatorState()
@@ -47,26 +42,18 @@ const { setCurrentTab } = useCharacterSimulatorState()
         <div class="text-primary-40 mt-3">{{ `Lv.${character.level}` }}</div>
       </div>
 
-      <div v-if="validBaseStats.length > 0" class="flex items-center px-8 py-5">
+      <div v-if="validBaseStats.length > 0" class="flex flex-wrap items-center gap-4 px-4 py-5">
         <div
-          class="mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2 border-red-50"
+          v-for="(baseStat, idx) in validBaseStats"
+          :key="baseStat.name"
+          :class="idx === 0 ? 'border-red-50' : 'border-primary-30'"
+          class="border-primary-30 size-18 flex flex-col items-center justify-center rounded-full border-2 leading-snug"
         >
-          <span class="text-primary-50 text-sm">
-            {{ primaryBaseStat.name }}
+          <span class="text-primary-50 text-sm leading-tight">
+            {{ baseStat.name }}
           </span>
-          <span class="text-primary-80 pb-1">
-            {{ primaryBaseStat.value }}
-          </span>
-        </div>
-        <div
-          v-if="secondaryBaseStat"
-          class="border-primary-30 mr-4 flex size-20 flex-col items-center justify-center rounded-full border-2"
-        >
-          <span class="text-primary-50 text-sm">
-            {{ secondaryBaseStat.name }}
-          </span>
-          <span class="text-primary-80 pb-1">
-            {{ secondaryBaseStat.value }}
+          <span class="text-primary-80">
+            {{ baseStat.value }}
           </span>
         </div>
       </div>

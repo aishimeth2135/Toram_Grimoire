@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
@@ -12,14 +13,34 @@ interface Props {
   stat: StatRecorded
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { t } = useI18n()
+
+const SOURCE_DISPLAY_ORDER: (StatValueSourceTypes | null)[] = [
+  StatValueSourceTypes.Equipment,
+  StatValueSourceTypes.Crystal,
+  StatValueSourceTypes.Trait,
+  StatValueSourceTypes.Skill,
+  StatValueSourceTypes.Food,
+  StatValueSourceTypes.Potion,
+]
+
+// If `indexOf()` returns `-1`, sort `-1` to the end
+const SOURCE_DISPLAY_ORDER_REVERSED = SOURCE_DISPLAY_ORDER.reverse()
+
+const displayedSources = computed(() => {
+  return props.stat.sources.slice().sort((item1, item2) => {
+    const order1 = SOURCE_DISPLAY_ORDER_REVERSED.indexOf(item1.type)
+    const order2 = SOURCE_DISPLAY_ORDER_REVERSED.indexOf(item2.type)
+    return order2 - order1
+  })
+})
 </script>
 
 <template>
   <div class="space-y-1 pl-0.5 pr-3 text-sm">
-    <div v-for="(src, idx) in stat.sources" :key="idx" class="flex items-center space-x-2">
+    <div v-for="(src, idx) in displayedSources" :key="idx" class="flex items-center space-x-2">
       <cy-icon icon="ic-round-add" small />
       <template v-if="src.type === StatValueSourceTypes.Skill">
         <div
