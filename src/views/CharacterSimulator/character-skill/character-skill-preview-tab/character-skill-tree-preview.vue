@@ -19,10 +19,14 @@ interface Props {
   skillTree: SkillTree
   defaultEditing?: boolean
 }
+interface Emits {
+  (evt: 'inspect', skill: Skill): void
+}
 
 const props = withDefaults(defineProps<Props>(), {
   defaultEditing: false,
 })
+const emit = defineEmits<Emits>()
 const { t } = useI18n()
 
 const isEditing = ref(props.defaultEditing)
@@ -84,6 +88,7 @@ const handleSkillClick = (skill: Skill) => {
           :skill="skill"
           :skill-level="level"
           :skill-build="skillBuild"
+          @inspect="emit('inspect', $event)"
         />
       </CardRows>
       <div v-else class="text-gray-40 px-3 pb-4 pt-1 text-sm">

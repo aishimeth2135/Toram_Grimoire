@@ -345,6 +345,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const {
     characterStatCategoryResults,
+    postponedSkillComputingContainer,
     postponedActiveSkillResultStates,
     postponedBuffSkillResultStates,
     postponedPassiveSkillResultStates,
@@ -469,6 +470,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     skillItemStates: skillItemStates,
 
     skillComputingContainer,
+    postponedSkillComputingContainer,
     activeSkillResultStates,
     buffSkillResultStates,
     passiveSkillResultStates,

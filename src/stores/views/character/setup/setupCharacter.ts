@@ -233,6 +233,7 @@ export function prepareSetupCharacter() {
     })
 
     const {
+      skillComputingContainer: postponedSkillComputingContainer,
       skillPureStats: postponedSkillPureStats,
       skillConditionalStatContainers,
       activeSkillResultStates: postponedActiveSkillResultStates,
@@ -289,6 +290,7 @@ export function prepareSetupCharacter() {
     return {
       characterStatCategoryResults,
       characterPureStats,
+      postponedSkillComputingContainer,
       postponedActiveSkillResultStates,
       postponedBuffSkillResultStates,
       postponedPassiveSkillResultStates,

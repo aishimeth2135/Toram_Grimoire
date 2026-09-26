@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, type ShallowReactive, computed } from 'vue'
+import { type ComputedRef, type Ref, type ShallowReactive, computed, shallowReactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -72,10 +72,13 @@ export function setupCharacterSkillItems(
     const currentEffectItem = computed(() =>
       skillItem.findEffectItem(currentCharacterEquipment.value, getSkillLevel)
     )
-    skillItemStates.set(skill, {
-      skillItem,
-      effectItem: currentEffectItem,
-    })
+    skillItemStates.set(
+      skill,
+      shallowReactive({
+        skillItem,
+        effectItem: currentEffectItem,
+      })
+    )
   })
 
   return { skillItemStates }

@@ -3,18 +3,21 @@ import { computed, provide, reactive } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
 
+import type { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { RegistletCategoryIds, RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import type { Skill } from '@/lib/Skill/Skill'
-import type { SkillItem } from '@/lib/Skill/SkillComputing'
+import type { SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputing'
+import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
 import { ComputingContainerInjectionKey } from '@/components/views/skill/injection-keys'
+import SkillEffect from '@/components/views/skill/skill-effect.vue'
 
 import { setStackValue } from './character-skill-tab/utils'
 
 interface Props {
   visible: boolean
-  skillItem: SkillItem
+  effectItem: SkillEffectItem
 }
 interface Emits {
   (evt: 'close'): void
@@ -23,9 +26,11 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { skillComputingContainer, currentCharacterState } = useCharacterStore()
+const characterStore = useCharacterStore()
 
-const currentRegistletBuild = computed(() => currentCharacterState.registletBuild)
+const currentRegistletBuild = computed<RegistletBuild | null>(
+  () => characterStore.currentCharacterState.registletBuild
+)
 
 interface SkillRegistletItemState {
   item: RegistletItemBaseSkill
@@ -59,13 +64,21 @@ const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] =>
 }
 
 provide(ComputingContainerInjectionKey, {
-  rootComputingContainer: skillComputingContainer,
+  rootComputingContainer: characterStore.postponedSkillComputingContainer,
   setStackValue,
   getSkillRegistletItemsState,
-  currentSkillItem: computed(() => props.skillItem),
+  currentSkillItem: computed<SkillItem>(() => props.effectItem.parent),
 })
 </script>
 
 <template>
-  <SideFloat :visible="visible" @close="emit('close')"> </SideFloat>
+  <SideFloat :visible="visible" content-class="px-3 pb-6 pt-2" size="lg" @close="emit('close')">
+    <div
+      class="text-primary-60 border-primary-20 gap-icon mb-4 flex items-center border-b px-3 pb-2"
+    >
+      <cy-icon :icon="getSkillIconPath(effectItem.parent.skill)" />
+      {{ effectItem.parent.skill.name }}
+    </div>
+    <SkillEffect :effect-item="effectItem" />
+  </SideFloat>
 </template>

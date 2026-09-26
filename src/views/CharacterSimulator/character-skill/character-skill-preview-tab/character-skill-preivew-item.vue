@@ -2,12 +2,25 @@
   <CardRow class="px-1 py-3">
     <div class="flex h-full items-center">
       <div class="shrink-0 self-stretch pl-2 pr-3">
-        <div class="border-primary-30 flex rounded-full border-2 bg-white p-1.5">
+        <button
+          type="button"
+          class="flex rounded-full border-2 bg-white p-1.5 duration-150"
+          :class="
+            !isCurrentSkillBuild
+              ? 'border-primary-20'
+              : invalid
+                ? 'border-gray-20'
+                : 'border-primary-30 hover:border-primary-40 cursor-pointer'
+          "
+          :disabled="!effectItem"
+          :aria-label="skill.name"
+          @click="emit('inspect', skill)"
+        >
           <cy-icon :icon="getSkillIconPath(skill)" width="1.5rem" />
-        </div>
+        </button>
       </div>
       <div class="w-full pr-3">
-        <div class="text-primary-80">
+        <div :class="invalid ? 'text-gray-50' : 'text-primary-80'">
           {{ skill.name }}
         </div>
         <div class="flex flex-wrap items-center">
@@ -90,8 +103,11 @@
 import { type Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { Skill } from '@/lib/Skill/Skill'
+import type { SkillEffectItem } from '@/lib/Skill/SkillComputing'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import CardRow from '@/components/card/card-row.vue'
@@ -100,10 +116,28 @@ interface Props {
   skillBuild: SkillBuild
   skill: Skill
 }
+interface Emits {
+  (evt: 'inspect', skill: Skill): void
+}
 
 const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const { t } = useI18n()
+
+const characterStore = useCharacterStore()
+const isCurrentSkillBuild = computed(
+  () =>
+    !!characterStore.currentCharacter &&
+    characterStore.currentCharacterState.skillBuild === props.skillBuild
+)
+const effectItem = computed<SkillEffectItem | null>(() =>
+  isCurrentSkillBuild.value
+    ? (characterStore.skillItemStates.get(props.skill)?.effectItem.value ?? null)
+    : null
+)
+
+const invalid = computed(() => !effectItem.value)
 
 const skillLevelInput: Ref<HTMLInputElement | null> = ref(null)
 

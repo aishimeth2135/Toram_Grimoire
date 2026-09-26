@@ -306,12 +306,26 @@
 
 .app-layout--side-float {
   background-color: var(--app-body-bg-color);
-  width: 80vw;
   height: 100%;
   overflow-y: auto;
 
+  &.side-float-md {
+    width: 90vw;
+  }
+
+  &.side-float-lg {
+    width: 100vw;
+  }
+
   @variant wd {
     width: 100%;
-    max-width: 40rem;
+
+    &.side-float-md {
+      max-width: 40rem;
+    }
+
+    &.side-float-lg {
+      max-width: 48rem;
+    }
   }
 }
