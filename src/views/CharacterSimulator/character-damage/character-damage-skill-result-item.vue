@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-button-check v-model:selected="enabled" />
+      <cy-button-toggle v-model:selected="enabled" />
       <div class="text-primary-80 mr-1.5">
         {{ result.container.get('name') }}
       </div>
@@ -33,27 +33,31 @@
     <div
       v-for="bonus in damageSourceBonuses"
       :key="bonus.id"
-      class="text-primary-50 flex items-center gap-2 pl-9 pt-1 text-sm"
+      class="text-primary-50 pl-5.5 flex items-center gap-2 pt-1 text-sm"
     >
+      <cy-icon icon="mdi:target" />
       <span class="text-primary-50">
         {{ bonus.name }}
       </span>
       +{{ bonus.amount }}
     </div>
-    <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-2 pt-2">
+    <div v-if="statExtraContainers.length > 0" class="space-y-1 pb-1 pl-3 pt-2">
+      <div class="text-gray-40 pl-2.5 pr-2 text-sm">
+        {{ t('character-simulator.character-damage.self-optional-buffs') }}
+      </div>
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
         class="flex items-center"
       >
-        <cy-button-toggle
+        <cy-button-check
           v-model:selected="
             characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
               extraContainer.branchItem
             ).enabled
           "
         />
-        <div class="pl-1">
+        <div class="flex flex-col gap-0.5 text-sm">
           <div v-if="extraContainer.branchItem.hasProp('self_buffs')">
             <SkillBranchPropValue
               v-for="buff in parseSkillSelfBuffs(extraContainer.branchItem.prop('self_buffs'))"
@@ -82,7 +86,7 @@
     <CharacterDamageBuffs :result="result" />
     <div
       v-if="detailVisible"
-      class="border-primary-20 mt-2 rounded-sm border-2 bg-white px-3 py-2 text-sm"
+      class="border-primary-30 ml-5 mt-3 rounded-sm border bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"

@@ -134,6 +134,11 @@ skill-build:
   stack-default-name: 技能层数
   skill-effect-default-name: 技能效果
   skill-invalid: 装备不符。
+  skill-inspect:
+    title: 技能清单
+    select-build-to-inspect: 目前没有使用此技能配置，所有技能都无法查看详细资讯。
+    inspect-caption-1: 点选技能图示可以直接查看详细技能效果。
+    inspect-caption-2: 灰色的技能表示当前装备不符，无法查看。
   skill-multiple-effects: 包含多个效果。
   formula-text:
     target_def: 目标防御

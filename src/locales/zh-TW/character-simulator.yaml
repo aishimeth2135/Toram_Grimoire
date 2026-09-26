@@ -134,6 +134,11 @@ skill-build:
   stack-default-name: 技能層數
   skill-effect-default-name: 技能效果
   skill-invalid: 裝備不符。
+  skill-inspect:
+    title: 技能清單
+    select-build-to-inspect: 目前沒有使用此技能配置，所有技能都無法查看詳細資訊。
+    inspect-caption-1: 點選技能圖示可以直接查看詳細技能效果。
+    inspect-caption-2: 灰色的技能表示當前裝備不符，無法查看。
   skill-multiple-effects: 包含多個效果。
   formula-text:
     target_def: 目標防禦
@@ -159,7 +164,8 @@ skill-build:
   skill-branch-state-save-tips-2: 在更換裝備類型導致技能效果出現變化時，齒輪內設定的數值會分開儲存。
 character-damage:
   title: 傷害計算
-  select-buffs: 選擇增益
+  self-optional-buffs: 可選加成
+  select-buffs: 其他增益
   damage-source:
     additional: 追擊傷害
   target-options-title: 目標數值設定
