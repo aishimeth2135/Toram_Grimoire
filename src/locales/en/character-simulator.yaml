@@ -1,0 +1,263 @@
+character-stats: Character stats
+character: Character
+custom-equipment:
+  button-title: Custom equipment
+character-basic:
+  title: Character settings
+  character-level: Character level
+  character-name: Character name
+  character-stat-points: Stat points
+  character-optional-base-stat: Personal stats
+  copy-character-success: '"{name}" copied successfully.'
+  remove-character-success: '"{name}" removed successfully.'
+  restore-character-success: Restored deleted character "{name}".
+  at-least-one-character: At least one character must remain.
+  character-builds-tip: Skill builds, food builds, and other builds are bound per character. The system records which builds are linked to each character.
+character-dashboard:
+  title: Overview
+  no--any-equipment-tips: No equipment equipped. Click the button on the right to edit equipment.
+character-equipments-manage:
+  title: Manage all equipment
+  mode-selections-title: Select view mode
+  mode-common: Normal mode
+  mode-common-caption: In this mode, you can drag equipment to reorder them.
+  mode-batch-move: Batch move mode
+  mode-batch-move-caption: This mode has two steps. First, select the equipment to move (multiple selections allowed). Then, select where to move them.
+  mode-batch-move-steps:
+    step-select-caption: Select equipment to move.
+    move-to-head-caption: Select destination. If nothing is selected, items will be moved to the front.
+    move-to-equipment-behind-caption: Select destination. Currently set to move behind {name}.
+  mode-label: Label edit mode
+  mode-label-caption: In this mode, select a label from the list, then click equipment to add or remove that label.
+  batch-sorting-title: Batch sort
+  batch-sorting-by-equipment-type: Sort by equipment type
+  batch-sorting-by-label: Sort by label (labeled items first)
+  batch-sorting-by-label-end: Sort by label (labeled items last)
+browse-equipments:
+  append-equipments: Add equipment
+  equip-label: Equip
+  equip-cancel-label: Unequip
+  select-equipment-tips: Selected equipment will appear here
+  remove-equipment-tips: Equipment "{name}" removed.
+  removed-equipment-restore-tips: Equipment "{name}" restored.
+  copy-equipment-tips: Equipment copied.
+  no-any-equipment-tips: Nothing here yet... Click the button in the top right to add equipment.
+  serach-no-equipment-tips: No equipment found.
+  double-click-to-select-tips: 'Tip: double-click to quickly swap equipment'
+  equipped: Equipped
+  click-edit-tips: Or click any section above to edit directly
+  auto-arrange-success-tips: Auto-arrange successful.
+  equipped-equipments-title: Currently equipped
+append-equipments:
+  title: Add equipment
+  search-equipment-placeholder: Search equipment name...
+  search-equipment-selected-text: '{num} equipment selected'
+  search-text-empty-tips: Search keyword must be at least one character.
+  append-equipments-success-tips: '{num} equipment added successfully.'
+  selected-equipments-cleared-tips: Selection cleared.
+  selected-equipments-default-tips: Selected equipment will appear here.
+  search-stat-tips: Click here to select a stat
+  current-selected-stat: Current stat
+create-custom-equipment:
+  equipment-default-name: Custom {type}
+  select-equipment-type-message: Select the type of custom equipment to add
+equipment-info:
+  equipment: Equipment
+  stability: Stability
+  refining: Refinement
+  stat-empty: This equipment has no stats
+  crystal-empty: This equipment has no crystals
+equipment-basic-editor:
+  title: Equipment settings
+  select-equipment-to-edit-tips: Select equipment to edit
+  clone-stats:
+    caption-1: This feature lets you copy stats from another equipment to the current one.
+    caption-2: After selecting an equipment, its stats will appear here. Check the ones you want to copy.
+  equipment-name: Equipment name
+  equipment-type: Equipment type
+  equipment-label: Equipment label
+  label-delete: Delete label
+  label-empty-caption: No labels yet. Click the button above to add one.
+  only-one-element-stat-tips: An equipment can only have one element stat. Please check the stat list being edited.
+select-crystals:
+  title: Select crystals
+  show-crystal-stats: Show crystal stats
+  filter-all-crystal: All crystals
+  filter-last-crystal: High-tier crystals
+  search-placeholder: Search crystals
+  selected-crystals: Selected crystals
+  category-title:
+    - Weapon
+    - Body armor
+    - Additional
+    - Special
+    - Universal
+  equipment-type-not-support-crystal-tips: This equipment type does not support crystals.
+skill-build:
+  title: Skills
+  passive-skills: Passive skills
+  active-skills: Active skills
+  skills-preview: Skills overview
+  skill-trees-directory:
+    title: Skill tree directory
+    caption: Click a skill tree name to quickly jump to it.
+  disable-skills: Disable {type}
+  display-stats-only: Show only effects that affect character stats
+  user-set-title: Parameter settings
+  stack-default-name: Skill stacks
+  skill-effect-default-name: Skill effect
+  skill-invalid: Incompatible equipment.
+  skill-multiple-effects: Contains multiple effects.
+  formula-text:
+    target_def: Target DEF
+    target_level: Target level
+  apply-skill-level-tips:
+    - Skill level changes have not been saved yet.
+    - When updating a skill level, the system will automatically update related skills on the same skill tree. Press the confirm button above to apply changes.
+  effected-skills-title: Affected skills
+  no-any-build-tips: No builds created yet. Go to Skill Simulator from the top-left menu to create a new skill build.
+  no-any-skill-tips:
+    - This build is empty.
+    - Click the button on the right to add skill trees.
+  skill-tree-empty-tips: This skill tree has no skills.
+  export-buile-title: Export build
+  export-text: Export text
+  export-text-caption: The skill list below is auto-generated. Press the button to copy it. You can edit it afterwards as needed.
+  export-image: Export image
+  export-image-caption:
+    - The skill image below is auto-generated. Press the button to download it directly.
+    - On iOS, some browsers do not support setting a filename when downloading images. If the downloaded file does not have a .png extension, please rename it to "XXX.png" manually.
+    - If you cannot download the image via the button, use your browser's default image saving method. For example, on desktop, right-click the image and select Save.
+character-damage:
+  title: Damage calculation
+  target-options-title: Target stat settings
+  options-base-title: Basic settings
+  options-other-title: Other settings
+  armor-break-display: Show damage with armor break
+  force-critical: Force critical hit
+  armor-break: Armor break
+  element-none: None
+  no-result: Damage formula pending update
+  range-damage-title: Target distance
+  no-any-skill-tips: No damage skills yet. Add damage skills in your skill build to use the damage calculator.
+  test-version-tips: This feature is still in testing. Some skill edge cases are still being added, which may cause inaccurate results.
+  basic-tips:
+    - Damage calculation results are expected values factoring in stability, accuracy, and critical rate.
+enemy-elements:
+  title: Target element
+  neutral: Neutral
+  fire: Fire
+  water: Water
+  wind: Wind
+  earth: Earth
+  light: Light
+  dark: Dark
+character-stat-detail:
+  show-detail-preview: Show simplified values
+  toggle-detail-visibility-caption: Click any stat to view its value breakdown.
+  base-value: Base value
+  init-value: Initial value
+  additional-value: Additional bonus
+  equipped-with-text: When equipped with {equip}
+  crystal: Crystal
+  food: Food
+  equipment-restriction-text:
+    1h_sword: Main | One-Handed Sword
+    2h_sword: Two-Handed Sword
+    bow: Bow
+    bowgun: Bowgun
+    staff: Staff
+    magic_device: Main | Magic Device
+    knuckle: Main | Knuckle
+    dual_sword: Dual Sword
+    halberd: Halberd
+    katana: Katana
+    main:
+      none: Main | Bare hands
+    sub:
+      magic_device: Sub | Magic Device
+      knuckle: Sub | Knuckle
+      arrow: Arrow
+      dagger: Dagger
+      shield: Shield
+    armor:
+      normal: Body armor | Normal
+      dodge: Body armor | Light
+      defense: Body armor | Heavy
+      none: Body armor | None
+build-common:
+  at-least-one-build-tips: At least one build must remain.
+  select-build-button: Use this build
+  build-selected-message: Currently selected build
+  move-tips: Drag to reorder
+food-build:
+  title: Food
+  disable-foods: Disable food
+  food-build: Food build
+  food-build-name: Food build name
+  food-list: Food list
+  copy-food-build-success-tips: Food build copied successfully.
+  remove-food-build-success-tips: Food build removed successfully.
+  restore-food-build-success-tips: Food build restored successfully.
+  selected-food-limit-reached: Maximum number of selected food reached.
+  introduction:
+    - Click the dot on the left to select up to 5 foods.
+    - Foods that start at level 0 will be automatically selected when their level is increased.
+registlet-build:
+  title: Registlet
+  disable-registlet: Disable registlets
+  registlet-build: Registlet build
+  edit-registlet: Edit registlets
+  show-detail: Show details
+  default-tips: Nothing here yet. Click "Edit registlets" above to add items.
+  main-tips-1: This is still in beta. Some registlet data may be incomplete, causing certain registlets to have no effect. If you notice any missing registlets, please report them to the dev team.
+  main-tips-2: Currently only stat-related registlets are supported, such as character stat bonuses, skill multipliers, and skill hit counts. Some registlets with complex conditions may not yet be supported.
+potion-build:
+  title: Consumables
+  disable-potion: Disable consumables
+  potion: Consumable
+  potion-build: Consumable build
+  edit-potion: Edit consumables
+  default-tips: Nothing here yet. Click "Edit consumables" above to add items.
+combo:
+  tags:
+    consecutive: Consecutive
+    smite: Smite
+    save: Save
+    minds-eye: Mind's Eye
+    tenacity: Tenacity
+    swift: Swift
+    invincible: Invincible
+    tough: Tough
+    reflection: Reflection
+    bloodsucker: Bloodsucker
+    none: None
+  damage-calc:
+    damage-sum-title: Total damage
+    previous-skill-next-title: Bonus effects from previous skill
+  tips:
+    - The combo damage calculation is for damage estimation only. Settings here are not saved.
+    - By default, all damage from each skill is added together. However, some skills have multiple damage types — for those, you will need to manually select which damage types to include in the calculation.
+save-load-control:
+  title: Save data
+  export-save-data-title: Export character simulator data
+  export-save-data-caption: Export your character simulator data to a file for backup or sharing. You can choose which characters, equipment, skill builds, or food builds to export.
+  export-save-data-tips:
+    - Importing data will not overwrite existing data.
+  auto-save-success-tips: Auto-save successful.
+  auto-load-success-tips: Auto-load successful.
+  manual-save-button-title: Manual save
+  manual-load-button-title: Manual load
+  manual-save-load-caption: Normally, the system auto-saves and auto-loads when you leave or enter the page. If needed, the buttons below allow you to save or load manually.
+  deleta-all-data-title: Delete all character simulator data
+  deleta-all-data-success-tips: All character simulator data deleted successfully. Auto-save has been disabled. Please refresh the page.
+  deleta-all-data-counter-title: Counter
+  deleta-all-data-caption:
+    - In some cases, character simulator data may become corrupted and prevent the system from working correctly. Use the button below to delete all character simulator data. Auto-save will be temporarily disabled, meaning current data will not be saved automatically.
+    - Set the counter below to 10 to reveal the delete button.
+    - After deleting data, refresh the page immediately to reinitialize the system.
+  export-build: Export build
+main-tips:
+  no-equipment-selected: This slot is empty
+  no-result: No results found.
+  character-stats-compare-no-result: No stat changes.

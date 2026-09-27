@@ -19,4 +19,6 @@ import: Import
 reset: Reset
 times: times
 all: All
+select-all: Select all
 apply: Apply
+next-step: Next step

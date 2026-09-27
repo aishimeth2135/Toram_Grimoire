@@ -32,8 +32,10 @@ page-title:
   damage-calculation: Damage Calculator
   enchant-simulator: Statting Simulator
   enchant-doll: Statting Calculator Doll
-  glossary-query: Glossary List
+  glossary-query: Glossary
   main-quest-calc: Main Quest Calculator
+  book-main: Book Template
+  book-preview: Book Template Preview
   home: Home
   about: About
 settings:
@@ -104,14 +106,26 @@ about:
     grimoire-email: Grimoire Email
     github-message: If you have time, you can click here to help me
   team:
+    title: Team
+    main: Core members
     equipment-data: Equipment Datas
     skill-data: Skill Datas
     sub-title: Thanks to the entire production team 0.0
   sponsor:
+    title: Sponsors
     personal: Personal Sponsorship
     sub-title: Thank you to everyone who is willing to sponsor within the game~
     group: Guild Sponsor
     spina: Spina
+  words:
+    title: Notes
+    sub-title: Just some random thoughts.
+    contents:
+      - If you need to contact the author, send an email to the Grimoire email address at the top of this page. You can also send a private message in game.
+      - Any feedback, questions, or suspected bugs are welcome.
+  disclaimer: Toram Online is a game operated by {link}. This website is just a small place to share information.
   partnership:
     title: Partnership
     join: Join
+notices:
+  enchant-refactor: Due to an enchant system update, if you encounter any errors please go to Settings and clear the cache. The enchant system will work correctly after the data is re-downloaded.
