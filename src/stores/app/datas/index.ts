@@ -186,9 +186,8 @@ export const useDatasStore = defineStore('app-datas', () => {
         }
       }
       case DataStoreIds.Food: {
-        const foodStore = useCharacterFoodStore()
         return async () => {
-          foodStore.initFoodsBase()
+          useCharacterFoodStore()
         }
       }
       case DataStoreIds.Enchant: {

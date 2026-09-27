@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
-import { StatBase } from '@/lib/Character/Stat'
 
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 
@@ -15,9 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const displayedItems = computed(() => {
-  return props.registletBuild.items.filter(
-    item => item.enabled && item.base.link instanceof StatBase
-  )
+  return props.registletBuild.items.filter(item => item.enabled && item.isStat())
 })
 </script>
 

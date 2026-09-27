@@ -236,7 +236,7 @@ export function setupCharacterSkills(
               return registletItems.map(() => 0)
             }
             return registletItems.map(itemBase => {
-              const item = buildsContext.value.registletBuild!.getItem(itemBase)
+              const item = buildsContext.value.registletBuild.getItem(itemBase)
               return item && item.enabled ? item.level : 0
             })
           })
@@ -665,14 +665,14 @@ export function setupCharacterSkills(
     }
     list
       .filter(resultState => {
-        const state = buildsContext.value.skillBuild!.getSkillState(resultState.skill)
+        const state = buildsContext.value.skillBuild.getSkillState(resultState.skill)
         return state.enabled && (state.level !== 0 || state.starGemLevel !== 0)
       })
       .forEach(resultState => {
         resultState.results
           .filter(
             result =>
-              buildsContext.value.skillBuild!.getSkillBranchState(result.container.branchItem)
+              buildsContext.value.skillBuild.getSkillBranchState(result.container.branchItem)
                 .enabled
           )
           .forEach(result => {

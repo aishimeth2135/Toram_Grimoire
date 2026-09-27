@@ -86,7 +86,7 @@ const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
 
 const currentSkillState = computed(() =>
-  currentSkillBuild.value!.getSkillState(props.skillResultsState.skill)
+  currentSkillBuild.value.getSkillState(props.skillResultsState.skill)
 )
 
 const enabled = computed<boolean>({

@@ -30,7 +30,7 @@
         <div class="mr-3 flex shrink-0">
           <cy-button-toggle
             v-model:selected="
-              characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+              characterStore.currentCharacterState.skillBuild.getSkillBranchState(
                 suffixContainer.branchItem
               ).enabled
             "
@@ -68,6 +68,6 @@ const { t } = useI18n()
 const container = computed(() => props.result.container)
 
 const branchItemState = computed(() =>
-  characterStore.currentCharacterState.skillBuild!.getSkillBranchState(container.value.branchItem)
+  characterStore.currentCharacterState.skillBuild.getSkillBranchState(container.value.branchItem)
 )
 </script>

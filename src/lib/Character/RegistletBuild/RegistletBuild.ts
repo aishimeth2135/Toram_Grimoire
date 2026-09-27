@@ -1,6 +1,13 @@
 import Grimoire from '@/shared/Grimoire'
+import { computeFormula } from '@/shared/utils/data'
 
-import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
+import { Stat } from '@/lib/Character/Stat'
+import {
+  RegistletItemBase,
+  type RegistletItemBaseSkill,
+  type RegistletItemBaseSpecial,
+  type RegistletItemBaseStat,
+} from '@/lib/Registlet/RegistletItem'
 
 import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
@@ -110,6 +117,29 @@ class RegistletItem {
 
   static create(build: RegistletBuild, base: RegistletItemBase): RegistletItem {
     return new RegistletItem(build, base)
+  }
+
+  isSkill(): this is RegistletItem & { base: RegistletItemBaseSkill } {
+    return this.base.isSkill()
+  }
+
+  isStat(): this is RegistletItem & { base: RegistletItemBaseStat } {
+    return this.base.isStat()
+  }
+
+  isSpecial(): this is RegistletItem & { base: RegistletItemBaseSpecial } {
+    return this.base.isSpecial()
+  }
+
+  getBuffStats(): Stat[] {
+    if (!this.isSpecial() || !this.base.buffStats) {
+      return []
+    }
+
+    return this.base.buffStats.flatMap(buffStat => {
+      const value = computeFormula(buffStat.value, { Lv: this.level })
+      return typeof value === 'number' && Number.isFinite(value) ? [buffStat.toStat(value)] : []
+    })
   }
 
   remove() {

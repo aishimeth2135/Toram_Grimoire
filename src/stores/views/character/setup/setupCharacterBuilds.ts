@@ -11,7 +11,6 @@ import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import {
   EquipmentRestrictions,
-  StatBase,
   StatRecorded,
   StatTypes,
   StatValueSourceTypes,
@@ -105,15 +104,14 @@ export function setupRegistletStats(registletBuild: Ref<RegistletBuild | null>) 
       return []
     }
     return registletBuild.value.items
-      .filter(item => item.base.link instanceof StatBase)
+      .filter(item => item.isStat())
       .map(item => {
-        const statBase = item.base.link as StatBase
         const value = computeFormula(item.base.rows[0].value, {
           Lv: item.level,
         }) as number
         return {
           stat: StatRecorded.from(
-            statBase.createStat(StatTypes.Constant, value),
+            item.base.statBase.createStat(StatTypes.Constant, value),
             item.base,
             StatValueSourceTypes.Registlet
           ),

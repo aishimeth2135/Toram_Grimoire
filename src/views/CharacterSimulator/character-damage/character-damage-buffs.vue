@@ -24,18 +24,25 @@ const searchText = ref('')
 const hasDamageSource = computed(() => !!getDamageSource(props.result.container.branchItem))
 
 const branchState = computed(() =>
-  characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+  characterStore.currentCharacterState.skillBuild.getSkillBranchState(
     props.result.container.branchItem
   )
 )
 const selectedIds = computed(() => branchState.value.selectedBuffIds ?? [])
-const allOptions = computed(() =>
-  characterStore.availableBuffResults.map(result => ({
+const allOptions = computed(() => [
+  ...characterStore.availableBuffResults.map(result => ({
     id: result.container.branchItem.defaultBranchId,
     name: `${result.root.skill.name} · ${result.container.get('name') || t('skill-query.branch.effect.base-name')}`,
+    kind: 'skill' as const,
     result,
-  }))
-)
+  })),
+  ...characterStore.availableRegistletBuffItems.map(item => ({
+    id: item.base.id,
+    name: item.base.name,
+    kind: 'registlet' as const,
+    item,
+  })),
+])
 const options = computed(() =>
   allOptions.value.filter(option =>
     option.name.toLowerCase().includes(searchText.value.toLowerCase())
@@ -71,10 +78,22 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
             v-model:search-text="searchText"
             :items="options"
             :selected-item-ids="selectedIds"
+            group-by="kind"
             class="max-h-none! min-h-0 grow"
             @select-item="toggleOption"
           >
-            <template #item="{ item }">{{ item.name }}</template>
+            <template #group="{ item }">
+              {{
+                item.kind === 'skill'
+                  ? t('character-simulator.skill-build.title')
+                  : t('character-simulator.registlet-build.title')
+              }}
+            </template>
+            <template #item="{ item }">
+              <span class="text-primary-80">
+                {{ item.name }}
+              </span>
+            </template>
           </CommonSearchableItems>
         </div>
       </template>
@@ -87,18 +106,25 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
       <cy-icon icon="ic:round-check-circle-outline" class="text-primary-40 mt-0.5 shrink-0" />
       <div class="flex flex-col gap-1">
         <div class="text-primary-70">{{ option.name }}</div>
-        <CharacterSkillItemStats :stat-containers="option.result.container.statContainers" />
-        <SkillBranchPropValue
-          v-if="option.result.container.has('buffs/guaranteed_critical')"
-          :result="option.result.container.result('buffs/guaranteed_critical')"
-        />
-        <SkillBranchPropValue
-          v-if="option.result.container.has('buffs/mp_cost_half')"
-          :result="option.result.container.result('buffs/mp_cost_half')"
-        />
-        <div v-for="suffix in option.result.suffixContainers" :key="suffix.instanceId">
-          <CharacterSkillItemStats :stat-containers="suffix.statContainers" />
-          <SkillBranchPropValue :result="suffix.result('caption')" />
+        <template v-if="option.kind === 'skill'">
+          <CharacterSkillItemStats :stat-containers="option.result.container.statContainers" />
+          <SkillBranchPropValue
+            v-if="option.result.container.has('buffs/guaranteed_critical')"
+            :result="option.result.container.result('buffs/guaranteed_critical')"
+          />
+          <SkillBranchPropValue
+            v-if="option.result.container.has('buffs/mp_cost_half')"
+            :result="option.result.container.result('buffs/mp_cost_half')"
+          />
+          <div v-for="suffix in option.result.suffixContainers" :key="suffix.instanceId">
+            <CharacterSkillItemStats :stat-containers="suffix.statContainers" />
+            <SkillBranchPropValue :result="suffix.result('caption')" />
+          </div>
+        </template>
+        <div v-else class="text-primary-30 flex flex-wrap gap-x-3">
+          <span v-for="stat in option.item.getBuffStats()" :key="stat.statId">
+            {{ stat.show() }}
+          </span>
         </div>
       </div>
     </div>

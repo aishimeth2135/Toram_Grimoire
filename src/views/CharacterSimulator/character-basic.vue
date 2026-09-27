@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { type Ref, h, ref } from 'vue'
+import { h, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -23,7 +23,7 @@ const optionalBaseStatRange = [0, 255]
 
 const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
 
-const selectedCharacter = ref(currentCharacter.value) as Ref<Character>
+const selectedCharacter = shallowRef<Character>(currentCharacter.value)
 
 const copySelectedCharacter = () => {
   characterStore.cloneCharacter(selectedCharacter.value)
@@ -34,7 +34,7 @@ const removeSelectedCharacter = () => {
     notify(t('character-simulator.character-basic.at-least-one-character'))
     return
   }
-  const from = selectedCharacter.value!
+  const from = selectedCharacter.value
   const nextIdx = characterStore.removeCharacter(from)
   selectedCharacter.value = characterStore.characters[nextIdx]
   notify.undo(
@@ -138,15 +138,15 @@ const RenderContentTitie = (attrs: { title: string }) => {
           <div class="flex flex-wrap items-center">
             <cy-button-radio
               :selected="!selectedCharacter.optionalBaseStat"
-              @click="selectedCharacter!.clearOptinalBaseStat()"
+              @click="selectedCharacter.clearOptinalBaseStat()"
             >
               {{ t('global.none') }}
             </cy-button-radio>
             <cy-button-radio
               v-for="option in characterOptionalBaseStatOptions"
               :key="option"
-              :selected="!!selectedCharacter!.baseStat(option)"
-              @click="selectedCharacter!.setOptionalBaseStat(option)"
+              :selected="!!selectedCharacter.baseStat(option)"
+              @click="selectedCharacter.setOptionalBaseStat(option)"
             >
               {{ option }}
             </cy-button-radio>

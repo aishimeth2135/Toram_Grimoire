@@ -14,7 +14,7 @@ import { type CommonItem } from '@/lib/common/Items'
 import { useI18n } from 'vue-i18n'
 
 interface Props {
-  currentBuild: Build | null
+  currentBuild: Build
   buildsReadonly?: boolean
 }
 interface Emits {
@@ -24,7 +24,7 @@ interface Emits {
   (evt: 'remove-build'): void
 }
 
-const selectedBuild = defineModel<Build | null>('selectedBuild', {
+const selectedBuild = defineModel<Build>('selectedBuild', {
   required: true,
 })
 const builds = defineModel<Build[]>('builds', { required: true })
@@ -36,7 +36,7 @@ const emit = defineEmits<Emits>()
 
 const { t } = useI18n()
 
-const innerCurrentBuild = computed<Build | null>(() => props.currentBuild)
+const innerCurrentBuild = computed<Build>(() => props.currentBuild)
 
 const buildName = computed<string>({
   get() {
@@ -108,7 +108,7 @@ const moveMode = ref(false)
       <CommonSelectBuildContent
         :selected-build="selectedBuild"
         :current-build="innerCurrentBuild"
-        @select-build="emit('select-build', selectedBuild!)"
+        @select-build="emit('select-build', selectedBuild)"
       />
       <div class="mt-4">
         <slot name="header" />

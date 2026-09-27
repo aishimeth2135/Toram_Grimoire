@@ -5,8 +5,9 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { Character, EquipmentFieldTypes } from '@/lib/Character/Character'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import type { RegistletItem } from '@/lib/Character/RegistletBuild'
 import type { SkillBuild } from '@/lib/Character/SkillBuild'
-import { StatRecorded, StatRestriction } from '@/lib/Character/Stat'
+import { StatRecorded, StatRestriction, StatValueSourceTypes } from '@/lib/Character/Stat'
 import {
   type CalcResultOptions,
   CalculationContainerIds,
@@ -82,7 +83,8 @@ export function setupDamageCalculation(
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number },
   skillBuild: Ref<SkillBuild | null>,
-  availableBuffResults: Ref<SkillResult[]>
+  availableBuffResults: Ref<SkillResult[]>,
+  availableRegistletBuffItems: Ref<RegistletItem[]>
 ) {
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
@@ -187,6 +189,23 @@ export function setupDamageCalculation(
 
     const selectedStats = computed<StatRecorded[]>(() => {
       const stats = [...extraStats.value]
+      if (!getDamageSource(skillResult.value.container.branchItem)) {
+        const selectedIds =
+          skillBuild.value?.getSkillBranchState(skillResult.value.container.branchItem)
+            .selectedBuffIds ?? []
+        availableRegistletBuffItems.value.forEach(item => {
+          if (!selectedIds.includes(item.base.id)) {
+            return
+          }
+
+          item
+            .getBuffStats()
+            .forEach(stat =>
+              stats.push(StatRecorded.from(stat, item.base, StatValueSourceTypes.Registlet))
+            )
+        })
+      }
+
       selectedBuffResults.value.forEach(result => {
         const containers = [
           result.container,

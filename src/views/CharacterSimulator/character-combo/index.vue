@@ -8,7 +8,7 @@
     />
     <div
       class="flex h-24 w-full cursor-pointer items-center justify-center"
-      @click="currentCharacter!.comboBuild.appendCombo()"
+      @click="currentCharacter.comboBuild.appendCombo()"
     >
       <cy-icon icon="ic-round-add-circle-outline" width="2.5rem" />
     </div>

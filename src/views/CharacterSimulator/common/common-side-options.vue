@@ -6,7 +6,7 @@ import Draggable from 'vuedraggable'
 import { type CommonItem } from '@/lib/common/Items'
 
 interface Props {
-  currentValue: Item | null
+  currentValue: Item
   addable?: boolean
   movable?: boolean
 }
@@ -14,7 +14,7 @@ interface Emits {
   (evt: 'add-item'): void
 }
 
-const innerValue = defineModel<Item | null>({ required: true })
+const innerValue = defineModel<Item>({ required: true })
 const options = defineModel<Item[]>('options', { required: true })
 
 withDefaults(defineProps<Props>(), {

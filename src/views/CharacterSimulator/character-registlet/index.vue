@@ -8,8 +8,6 @@ import { useCharacterRegistletBuildStore } from '@/stores/views/character/regist
 
 import { useNotify } from '@/shared/composables/Notify'
 
-import { RegistletBuild } from '@/lib/Character/RegistletBuild'
-
 import CommonBuildPage from '../common/common-build-page.vue'
 import CharacterRegistletList from './character-registlet-list.vue'
 import CharacterRegistletSettings from './character-registlet-settings.vue'
@@ -48,7 +46,7 @@ const removeSelectedBuild = () => {
     return
   }
   const idx = registletStore.removeRegistletBuild(selectedBuild.value)
-  selectedBuild.value = registletStore.registletBuilds[idx] as RegistletBuild
+  registletStore.setCurrentRegistletBuild(idx)
 }
 
 const addRegistletBuild = () => {
@@ -66,9 +64,7 @@ const addRegistletBuild = () => {
     :current-build="currentRegistletBuild"
     @select-build="characterStore.setCharacterRegistletBuild"
     @add-build="addRegistletBuild"
-    @copy-build="
-      registletStore.appendRegistletBuild(selectedBuild!.clone(), { updateIndex: false })
-    "
+    @copy-build="registletStore.appendRegistletBuild(selectedBuild.clone(), { updateIndex: false })"
     @remove-build="removeSelectedBuild"
   >
     <template #header>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
-import { StatBase } from '@/lib/Character/Stat'
 import type { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
 
 import RegistletCaptionValue from './registlet-caption-value.vue'
@@ -21,8 +20,8 @@ const handleValue = (str: string) =>
 
 <template>
   <div>
-    <div v-if="registletItem.link instanceof StatBase" class="flex items-center">
-      <div>{{ registletItem.link.text }}</div>
+    <div v-if="registletItem.isStat()" class="flex items-center">
+      <div>{{ registletItem.statBase.text }}</div>
       <div>+</div>
       <div class="border-primary-20 text-primary-60 ml-2 border-x px-2">
         {{ handleValue(registletItem.rows[0].value) }}

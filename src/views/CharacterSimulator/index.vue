@@ -74,16 +74,11 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { useCharacterFoodStore } from '@/stores/views/character/food-build'
-import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
-import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
-import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { useAppPageActions } from '@/shared/composables/App'
 import { useAutoSave } from '@/shared/composables/AutoSave'
@@ -119,14 +114,6 @@ const toggleMainContents = useToggleGroup([toggleCharacterStatsVisible, toggleDa
 const { scrollToPageTop } = useAppPageActions()
 
 const characterStore = useCharacterStore()
-const skillBuildStore = useCharacterSkillBuildStore()
-const foodStore = useCharacterFoodStore()
-const registletStore = useCharacterRegistletBuildStore()
-const potionStore = useCharacterPotionBuildStore()
-const { skillBuilds } = storeToRefs(skillBuildStore)
-const { registletBuilds } = storeToRefs(registletStore)
-const { potionBuilds } = storeToRefs(potionStore)
-
 const route = useRoute()
 
 const { editedCurrentEquipment, editedEquipmentEditMode } = useCharacterSimulatorState()
@@ -196,25 +183,6 @@ useAutoSave({
   },
   loadFirst: () => characterStore.loadCharacterSimulator(),
 })
-
-// init
-if (skillBuilds.value.length === 0) {
-  skillBuildStore.createSkillBuild()
-}
-if (foodStore.foodBuilds.length === 0 || !foodStore.currentFoodBuild) {
-  foodStore.createFoodBuild()
-}
-if (registletBuilds.value.length === 0 || !registletStore.currentRegistletBuild) {
-  registletStore.createRegistletBuild()
-}
-if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
-  potionStore.createPotionBuild()
-}
-
-// create the character at the end to make all builds bound automatically
-if (characterStore.characters.length === 0) {
-  characterStore.createCharacter()
-}
 
 registViewStatesCleaning(ViewNames.CharacterSimulator)
 </script>

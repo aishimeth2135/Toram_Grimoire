@@ -35,7 +35,7 @@
       >
         <cy-button-toggle
           v-model:selected="
-            characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+            characterStore.currentCharacterState.skillBuild.getSkillBranchState(
               extraContainer.branchItem
             ).enabled
           "

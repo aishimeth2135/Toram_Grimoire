@@ -4,7 +4,7 @@ import { computed, provide, reactive } from 'vue'
 import { useCharacterStore } from '@/stores/views/character'
 
 import type { RegistletBuild } from '@/lib/Character/RegistletBuild'
-import { RegistletCategoryIds, RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
+import type { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import type { Skill } from '@/lib/Skill/Skill'
 import type { SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputing'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
@@ -46,9 +46,9 @@ const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] =>
   const itemStates: SkillRegistletItemState[] = []
 
   currentRegistletBuild.value.items.forEach(registletItem => {
-    if (registletItem.base.category.id === RegistletCategoryIds.Skill) {
-      const base = registletItem.base as RegistletItemBaseSkill
-      if (base.link.includes(skill)) {
+    if (registletItem.isSkill()) {
+      const base = registletItem.base
+      if (base.skills.includes(skill)) {
         itemStates.push(
           reactive({
             item: computed(() => base),
