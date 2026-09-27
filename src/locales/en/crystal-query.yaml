@@ -1,0 +1,17 @@
+select-stat:
+  title: Select stat
+modes:
+  title: Search mode
+  normal: Normal
+  stat: Xtal stat
+crystal-category:
+  title: Xtal type
+  categorys:
+    - Weapon Xtal
+    - Armor Xtal
+    - Additional Xtal
+    - Special Xtal
+    - Universal Xtal
+no-results-tips: No results found.
+enhancer-prefix: Can enhance
+obtain-prefix: Dropped by

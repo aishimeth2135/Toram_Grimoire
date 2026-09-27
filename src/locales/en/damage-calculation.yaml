@@ -1,1 +1,77 @@
 build: Build
+create-custom-item: Add
+result:
+  title: Calculation result
+  modes:
+    expected: Expected damage
+    stability: Damage range
+    stability-with-graze: Damage range (with Graze)
+  modes-caption:
+    expected: Expected damage value factoring in critical rate, accuracy, and stability.
+    stability: Shows the maximum and minimum possible damage. Max is the highest damage on a critical hit, min is the lowest damage without a critical at minimum stability.
+    stability-with-graze: Similar to damage range, but the minimum also accounts for Graze.
+calc-mode:
+  title: Calculation formula
+  caption: Select which formula is displayed in the interface. The selected formula only affects the display, not the available fields or calculation results.
+  modes:
+    common: Basic formula
+    critical: Critical hit formula
+  modes-caption:
+    common: The basic damage formula. Suitable for most calculations.
+    critical: The critical hit damage formula, mainly used to display Two-Handed in the formula. Only shows critical hit damage — some fields are outside the formula.
+compare:
+  title: Build comparison
+  caption: Compare the current build against other builds.
+  select-build: Select builds to compare
+  introduction: Click the button above to select builds to compare.
+  at-least-two-builds-tips: At least two builds are required to use the comparison feature.
+tips:
+  at-least-one-build: At least one build must remain.
+  removed-build-success: Build "{name}" removed.
+item-base-titles:
+  physical: Physical damage
+  magic: Magic damage
+  atk: ATK
+  matk: MATK
+  atk_rate: ATK%
+  matk_rate: MATK%
+  sub_atk: Sub ATK
+  sub_stability: Sub stability
+  skill_level_two_handed: Two-Handed level
+  character_level: Character level
+  target_level: Target level
+  target_def: Target DEF
+  target_mdef: Target MDEF
+  physical_pierce: Physical pierce
+  magic_pierce: Magic pierce
+  skill_constant: Skill constant
+  unsheathe_attack_constant: Unsheathe attack
+  other_constant: Other constant
+  skill_multiplier: Skill multiplier
+  critical_damage: Critical damage
+  critical_rate: Critical rate
+  target_critical_rate_resistance: Target critical resistance
+  target_critical_rate_resistance_total: Target total critical resistance
+  magic_critical_rate_conversion_rate: Magic critical rate conversion
+  magic_critical_damage_conversion_rate: Magic critical damage conversion
+  short_range_damage: Short range damage
+  long_range_damage: Long range damage
+  unsheathe_attack_multiplier: Unsheathe attack%
+  stronger_against_neutral: vs Neutral
+  stronger_against_fire: vs Fire
+  stronger_against_water: vs Water
+  stronger_against_earth: vs Earth
+  stronger_against_wind: vs Wind
+  stronger_against_light: vs Light
+  stronger_against_dark: vs Dark
+  target_physical_resistance: Target physical resistance
+  target_magic_resistance: Target magic resistance
+  proration: Proration
+  stability: Stability
+  target_dodge: Target dodge
+  accuracy: Accuracy
+  skill_real_mp_cost: Skill MP cost
+  promised_accuracy_rate: Guaranteed accuracy rate
+  skill_level_long_range: Long Range level
+  combo_multiplier: Combo multiplier
+  other_multiplier: Other multiplier
