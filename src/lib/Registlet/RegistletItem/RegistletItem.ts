@@ -14,6 +14,12 @@ interface RegistletInfos {
   powderCostAdditional: number | null
 }
 
+interface RegistletCategoryItemMap {
+  [RegistletCategoryIds.Skill]: RegistletItemBaseSkill
+  [RegistletCategoryIds.Stat]: RegistletItemBaseStat
+  [RegistletCategoryIds.Special]: RegistletItemBaseSpecial
+}
+
 class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> {
   readonly id: RegistletCategoryIds
   readonly items: ItemBase[]
@@ -23,20 +29,30 @@ class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> 
     this.items = []
   }
 
-  static create<ItemBase extends RegistletItemBase = RegistletItemBase>(
-    id: RegistletCategoryIds
-  ): RegistletCategory<ItemBase> {
-    return new RegistletCategory<ItemBase>(id)
+  static create<Id extends RegistletCategoryIds>(
+    id: Id
+  ): RegistletCategory<RegistletCategoryItemMap[Id]> {
+    return new RegistletCategory<RegistletCategoryItemMap[Id]>(id)
   }
 
   appendItem(item: ItemBase): void {
     this.items.push(item)
   }
+
+  isSkill(): this is RegistletCategory<RegistletItemBaseSkill> {
+    return this.id === RegistletCategoryIds.Skill
+  }
+
+  isStat(): this is RegistletCategory<RegistletItemBaseStat> {
+    return this.id === RegistletCategoryIds.Stat
+  }
+
+  isSpecial(): this is RegistletCategory<RegistletItemBaseSpecial> {
+    return this.id === RegistletCategoryIds.Special
+  }
 }
 
 abstract class RegistletItemBase {
-  abstract link: any
-
   readonly category: RegistletCategory
   readonly id: string
   readonly name: string
@@ -56,10 +72,22 @@ abstract class RegistletItemBase {
     this.powderCostAdditional = infos.powderCostAdditional
     this.rows = []
   }
+
+  isSkill(): this is RegistletItemBaseSkill {
+    return this.category.isSkill()
+  }
+
+  isStat(): this is RegistletItemBaseStat {
+    return this.category.isStat()
+  }
+
+  isSpecial(): this is RegistletItemBaseSpecial {
+    return this.category.isSpecial()
+  }
 }
 
 class RegistletItemBaseSkill extends RegistletItemBase {
-  override link: Skill[]
+  skills: Skill[]
   declare category: RegistletCategory<RegistletItemBaseSkill>
 
   private constructor(
@@ -68,7 +96,7 @@ class RegistletItemBaseSkill extends RegistletItemBase {
     skills: Skill[]
   ) {
     super(category, infos)
-    this.link = skills
+    this.skills = skills
   }
 
   static create(
@@ -81,7 +109,7 @@ class RegistletItemBaseSkill extends RegistletItemBase {
 }
 
 class RegistletItemBaseStat extends RegistletItemBase {
-  override link: StatBase
+  statBase: StatBase
   declare category: RegistletCategory<RegistletItemBaseStat>
 
   private constructor(
@@ -90,7 +118,7 @@ class RegistletItemBaseStat extends RegistletItemBase {
     statBase: StatBase
   ) {
     super(category, infos)
-    this.link = statBase
+    this.statBase = statBase
   }
 
   static create(
@@ -103,7 +131,6 @@ class RegistletItemBaseStat extends RegistletItemBase {
 }
 
 class RegistletItemBaseSpecial extends RegistletItemBase {
-  override link: string
   declare category: RegistletCategory<RegistletItemBaseSpecial>
 
   private constructor(
@@ -111,7 +138,6 @@ class RegistletItemBaseSpecial extends RegistletItemBase {
     infos: RegistletInfos
   ) {
     super(category, infos)
-    this.link = ''
   }
 
   static create(

@@ -21,13 +21,9 @@ export default class RegistletSystem {
   private _allObtainLevelList!: number[]
 
   private constructor() {
-    this.skillCategory = RegistletCategory.create<RegistletItemBaseSkill>(
-      RegistletCategoryIds.Skill
-    )
-    this.statCategory = RegistletCategory.create<RegistletItemBaseStat>(RegistletCategoryIds.Stat)
-    this.specialCategory = RegistletCategory.create<RegistletItemBaseSpecial>(
-      RegistletCategoryIds.Special
-    )
+    this.skillCategory = RegistletCategory.create(RegistletCategoryIds.Skill)
+    this.statCategory = RegistletCategory.create(RegistletCategoryIds.Stat)
+    this.specialCategory = RegistletCategory.create(RegistletCategoryIds.Special)
   }
 
   static create(): RegistletSystem {
@@ -53,11 +49,11 @@ export default class RegistletSystem {
     if (!this._skillItemMap) {
       this._skillItemMap = new Map()
       this.skillCategory.items.forEach(item => {
-        item.link.forEach(link => {
-          if (!this._skillItemMap.has(link)) {
-            this._skillItemMap.set(link, [])
+        item.skills.forEach(linkedSkill => {
+          if (!this._skillItemMap.has(linkedSkill)) {
+            this._skillItemMap.set(linkedSkill, [])
           }
-          this._skillItemMap.get(link)!.push(item)
+          this._skillItemMap.get(linkedSkill)!.push(item)
         })
       })
     }

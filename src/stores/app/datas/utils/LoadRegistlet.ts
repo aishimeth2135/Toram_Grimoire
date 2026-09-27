@@ -82,34 +82,23 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
           : powderCost * 10,
       }
 
-      if (currentCategory.id === RegistletCategoryIds.Stat) {
+      if (currentCategory.isStat()) {
         const statBase = Grimoire.Character.findStatBase(row('link'))
         if (statBase) {
-          const newItem = RegistletItemBaseStat.create(
-            currentCategory as RegistletCategory<RegistletItemBaseStat>,
-            infos,
-            statBase
-          )
+          const newItem = RegistletItemBaseStat.create(currentCategory, infos, statBase)
           currentCategory.appendItem(newItem)
           currentItem = newItem
         }
-      } else if (currentCategory.id === RegistletCategoryIds.Skill) {
+      } else if (currentCategory.isSkill()) {
         const skills = splitComma(row('link'))
           .map(item => Grimoire.Skill.skillRoot.findSkillById(item))
           .filter(item => item) as Skill[]
         infos.id = `-${idPrefix}-${infos.id}`
-        const newItem = RegistletItemBaseSkill.create(
-          currentCategory as RegistletCategory<RegistletItemBaseSkill>,
-          infos,
-          skills
-        )
+        const newItem = RegistletItemBaseSkill.create(currentCategory, infos, skills)
         currentCategory.appendItem(newItem)
         currentItem = newItem
-      } else if (currentCategory.id === RegistletCategoryIds.Special) {
-        const newItem = RegistletItemBaseSpecial.create(
-          currentCategory as RegistletCategory<RegistletItemBaseSpecial>,
-          infos
-        )
+      } else if (currentCategory.isSpecial()) {
+        const newItem = RegistletItemBaseSpecial.create(currentCategory, infos)
         currentCategory.appendItem(newItem)
         currentItem = newItem
       }
@@ -123,7 +112,7 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
 
     if (row('value')) {
       let defaultRowType = 'caption'
-      if (currentItem instanceof RegistletItemBaseStat) {
+      if (currentItem.isStat()) {
         defaultRowType = 'value'
       }
       const rowType = row('type') || defaultRowType

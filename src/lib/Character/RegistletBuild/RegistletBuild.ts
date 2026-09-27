@@ -1,6 +1,11 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { RegistletItemBase } from '@/lib/Registlet/RegistletItem'
+import {
+  RegistletItemBase,
+  type RegistletItemBaseSkill,
+  type RegistletItemBaseSpecial,
+  type RegistletItemBaseStat,
+} from '@/lib/Registlet/RegistletItem'
 
 import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
@@ -110,6 +115,18 @@ class RegistletItem {
 
   static create(build: RegistletBuild, base: RegistletItemBase): RegistletItem {
     return new RegistletItem(build, base)
+  }
+
+  isSkill(): this is RegistletItem & { base: RegistletItemBaseSkill } {
+    return this.base.isSkill()
+  }
+
+  isStat(): this is RegistletItem & { base: RegistletItemBaseStat } {
+    return this.base.isStat()
+  }
+
+  isSpecial(): this is RegistletItem & { base: RegistletItemBaseSpecial } {
+    return this.base.isSpecial()
   }
 
   remove() {
