@@ -132,19 +132,19 @@ const postponedSkillIds = computed(() => {
 const { currentSkillBuild } = storeToRefs(useCharacterSkillBuildStore())
 const validResultItem = computed(() => {
   return skillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .filter(state => currentSkillBuild.value.getSkillLevel(state.skill) > 0)
     .map(resultsState => {
       return {
         resultsState,
         branchForceToggleable: postponedSkillIds.value.includes(resultsState.skill.skillId),
-        skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
+        skillState: currentSkillBuild.value.getSkillState(resultsState.skill),
       }
     })
 })
 
 const postponedValidResultItem = computed(() => {
   return postponedSkillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .filter(state => currentSkillBuild.value.getSkillLevel(state.skill) > 0)
     .map(resultsState => {
       return {
         resultsState,
@@ -155,19 +155,19 @@ const postponedValidResultItem = computed(() => {
 
 const buffValidResultItem = computed(() =>
   buffSkillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .filter(state => currentSkillBuild.value.getSkillLevel(state.skill) > 0)
     .map(resultsState => ({
       resultsState,
       branchForceToggleable: postponedBuffSkillResultsStates.value.some(
         state => state.skill.skillId === resultsState.skill.skillId
       ),
-      skillState: currentSkillBuild.value!.getSkillState(resultsState.skill),
+      skillState: currentSkillBuild.value.getSkillState(resultsState.skill),
     }))
 )
 
 const postponedBuffValidResultItem = computed(() =>
   postponedBuffSkillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+    .filter(state => currentSkillBuild.value.getSkillLevel(state.skill) > 0)
     .map(resultsState => ({
       resultsState,
       branchForceToggleable: buffSkillResultsStates.value.some(

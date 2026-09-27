@@ -11,13 +11,18 @@ export const useCharacterPotionBuildStore = defineStore('view-character-potion-b
 
   const {
     builds,
+    onBuildsChange,
+    replaceBuilds,
     currentBuildIndex,
     currentBuild,
     setCurrentBuild: setCurrentPotionBuild,
     appendBuild: appendPotionBuild,
     removeBuild: removePotionBuild,
     resetBuildStore: resetPotionBuildStore,
-  } = useCharacterBindingBuild<PotionBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
+  } = useCharacterBindingBuild<PotionBuild>(
+    () => PotionBuild.create(t('character-simulator.potion-build.potion-build') + ' 1'),
+    CHARACTER_SIMULATOR_BUILD_LIMIT
+  )
 
   const createPotionBuild = () => {
     const newBuild = PotionBuild.create(
@@ -40,6 +45,8 @@ export const useCharacterPotionBuildStore = defineStore('view-character-potion-b
   }
 
   return {
+    onBuildsChange,
+    replaceBuilds,
     potionBuilds: builds,
     currentPotionBuildIndex: currentBuildIndex,
     currentPotionBuild: currentBuild,

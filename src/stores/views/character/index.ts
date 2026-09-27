@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { type Ref, computed, readonly, ref } from 'vue'
 
+import Grimoire from '@/shared/Grimoire'
 import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
 
 import { Character, type CharacterBindingBuild } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { FoodsBase } from '@/lib/Character/Food'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
 import { PotionBuild } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
@@ -24,7 +24,7 @@ import {
 } from './persistence'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
-import type { CharacterPureStatsResult } from './setup/context'
+import type { CharacterBuildsContext, CharacterPureStatsResult } from './setup/context'
 import { prepareSetupCharacter } from './setup/setupCharacter'
 import { useCharacterBuildLabelStore } from './setup/setupCharacterBuildLabels'
 import {
@@ -85,9 +85,13 @@ export const useCharacterStore = defineStore('view-character', () => {
     appendCharacter,
     removeCharacter,
     cloneCharacter,
+    resetCharacters,
+    replaceCharacters,
   } = setupCharacters()
 
-  const currentCharacterBuildsContext = computed(() => getCharacterState(currentCharacter.value))
+  const currentCharacterBuildsContext = computed<CharacterBuildsContext>(() =>
+    getCharacterState(currentCharacter.value)
+  )
   const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
   const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
@@ -95,18 +99,18 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupEquipments(currentCharacter)
 
   const closeAutoSave = () => {
-    autoSaveDisabled.value = false
+    autoSaveDisabled.value = true
   }
 
   const resetHandlers: (() => void)[] = []
   const reset = () => {
     skillStore.resetSkillBuilds()
-    characters.value = []
     equipments.value = []
     skillBuildStore.reset()
     foodStore.resetFoodBuildStore()
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
+    resetCharacters()
     buildLabelStore.resetBuildLabelStore()
     resetHandlers.forEach(handler => handler())
   }
@@ -159,7 +163,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const loadCharacterSimulatorSaveData = (() => {
     let _loadCount = 0
 
-    return (saveData: CharacterSimulatorSaveData) => {
+    return (saveData: CharacterSimulatorSaveData, replace = false) => {
       migrateCharacterSimulatorSaveData(saveData)
 
       _loadCount += 1
@@ -194,38 +198,42 @@ export const useCharacterStore = defineStore('view-character', () => {
         allValidEquipments[data.idx] = equip
       })
 
+      const loadedCharacters: Character[] = []
+      const loadedSkillBuilds: SkillBuild[] = []
+      const loadedFoodBuilds: FoodsBuild[] = []
+      const loadedRegistletBuilds: RegistletBuild[] = []
+      const loadedPotionBuilds: PotionBuild[] = []
+
       // character
       saveData.characters.forEach(charaRow => {
         const chara = Character.create()
         const loadSuccess = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (loadSuccess) {
-          appendCharacter(chara, { updateIndex: false, source: 'load' })
+          loadedCharacters.push(chara)
         }
       })
 
-      appendEquipments(filterNullish(allValidEquipments), -1, false)
-
       saveData.skillBuilds.forEach(buildData => {
         const build = SkillBuild.load(loadedCategory, buildData)
-        skillBuildStore.appendSkillBuild(build, { updateIndex: false, source: 'load' })
+        loadedSkillBuilds.push(build)
       })
 
       saveData.foodBuilds.forEach(data => {
-        const build = FoodsBuild.create(foodStore.foodsBase as FoodsBase)
+        const build = FoodsBuild.create(foodStore.foodsBase)
         const load = build.load(loadedCategory, data)
         if (!load.error) {
-          foodStore.appendFoodBuild(build, { updateIndex: false, source: 'load' })
+          loadedFoodBuilds.push(build)
         }
       })
 
       saveData.registletBuilds.forEach(data => {
         const build = RegistletBuild.load(loadedCategory, data)
-        registletBuildStore.appendRegistletBuild(build, { updateIndex: false, source: 'load' })
+        loadedRegistletBuilds.push(build)
       })
 
       saveData.potionBuilds.forEach(data => {
         const build = PotionBuild.load(loadedCategory, data)
-        potionBuildStore.appendPotionBuild(build, { updateIndex: false, source: 'load' })
+        loadedPotionBuilds.push(build)
       })
 
       const getMatchedBuild = <Build extends CharacterBindingBuild>(
@@ -235,26 +243,106 @@ export const useCharacterStore = defineStore('view-character', () => {
         return builds.find(build => build.matchLoadedId(loadedCategory, id)) ?? null
       }
 
-      saveData.characterStates.forEach(item => {
-        const targetCharacter = getMatchedBuild(characters.value, item.id)
+      // Missing bindings use an empty build, never an unrelated configured build.
+      const missingSkillBuild = loadedCharacters.some(chara => {
+        const state = saveData.characterStates.find(item =>
+          chara.matchLoadedId(loadedCategory, item.id)
+        )
+        return !getMatchedBuild(loadedSkillBuilds, state?.skillBuildId ?? null)
+      })
+        ? SkillBuild.create(
+            Grimoire.i18n.t('skill-simulator.skill-build') + ' ' + (loadedSkillBuilds.length + 1)
+          )
+        : null
+      const missingFoodBuild = loadedCharacters.some(chara => {
+        const state = saveData.characterStates.find(item =>
+          chara.matchLoadedId(loadedCategory, item.id)
+        )
+        return !getMatchedBuild(loadedFoodBuilds, state?.foodBuildId ?? null)
+      })
+        ? FoodsBuild.create(
+            foodStore.foodsBase,
+            Grimoire.i18n.t('character-simulator.food-build.food-build') +
+              ' ' +
+              (loadedFoodBuilds.length + 1)
+          )
+        : null
+      const missingRegistletBuild = loadedCharacters.some(chara => {
+        const state = saveData.characterStates.find(item =>
+          chara.matchLoadedId(loadedCategory, item.id)
+        )
+        return !getMatchedBuild(loadedRegistletBuilds, state?.registletBuildId ?? null)
+      })
+        ? RegistletBuild.create(
+            Grimoire.i18n.t('character-simulator.registlet-build.registlet-build') +
+              ' ' +
+              (loadedRegistletBuilds.length + 1)
+          )
+        : null
+      const missingPotionBuild = loadedCharacters.some(chara => {
+        const state = saveData.characterStates.find(item =>
+          chara.matchLoadedId(loadedCategory, item.id)
+        )
+        return !getMatchedBuild(loadedPotionBuilds, state?.potionBuildId ?? null)
+      })
+        ? PotionBuild.create(
+            Grimoire.i18n.t('character-simulator.potion-build.potion-build') +
+              ' ' +
+              (loadedPotionBuilds.length + 1)
+          )
+        : null
 
-        if (targetCharacter) {
-          const characterState = getCharacterState(targetCharacter)
+      if (missingSkillBuild) loadedSkillBuilds.push(missingSkillBuild)
+      if (missingFoodBuild) loadedFoodBuilds.push(missingFoodBuild)
+      if (missingRegistletBuild) loadedRegistletBuilds.push(missingRegistletBuild)
+      if (missingPotionBuild) loadedPotionBuilds.push(missingPotionBuild)
 
-          characterState.skillBuild = getMatchedBuild(
-            skillBuildStore.skillBuilds,
-            item.skillBuildId
-          )
-          characterState.foodBuild = getMatchedBuild(foodStore.foodBuilds, item.foodBuildId)
-          characterState.registletBuild = getMatchedBuild(
-            registletBuildStore.registletBuilds,
-            item.registletBuildId
-          )
-          characterState.potionBuild = getMatchedBuild(
-            potionBuildStore.potionBuilds,
-            item.potionBuildId
-          )
-        }
+      skillBuildStore.replaceBuilds(
+        replace ? loadedSkillBuilds : [...skillBuildStore.skillBuilds, ...loadedSkillBuilds]
+      )
+      foodStore.replaceBuilds(
+        replace ? loadedFoodBuilds : [...foodStore.foodBuilds, ...loadedFoodBuilds]
+      )
+      registletBuildStore.replaceBuilds(
+        replace
+          ? loadedRegistletBuilds
+          : [...registletBuildStore.registletBuilds, ...loadedRegistletBuilds]
+      )
+      potionBuildStore.replaceBuilds(
+        replace ? loadedPotionBuilds : [...potionBuildStore.potionBuilds, ...loadedPotionBuilds]
+      )
+      appendEquipments(filterNullish(allValidEquipments), -1, false)
+      if (replace) {
+        replaceCharacters(loadedCharacters)
+      } else {
+        loadedCharacters.forEach(chara =>
+          appendCharacter(chara, { updateIndex: false, source: 'load' })
+        )
+      }
+
+      loadedCharacters.forEach(chara => {
+        const item = saveData.characterStates.find(state =>
+          chara.matchLoadedId(loadedCategory, state.id)
+        )
+        const state = getCharacterState(chara)
+        state.skillBuild =
+          getMatchedBuild(skillBuildStore.skillBuilds, item?.skillBuildId ?? null) ??
+          skillBuildStore.skillBuilds.find(build => build.id === missingSkillBuild?.id) ??
+          skillBuildStore.currentSkillBuild
+        state.foodBuild =
+          getMatchedBuild(foodStore.foodBuilds, item?.foodBuildId ?? null) ??
+          foodStore.foodBuilds.find(build => build.id === missingFoodBuild?.id) ??
+          foodStore.currentFoodBuild
+        state.registletBuild =
+          getMatchedBuild(registletBuildStore.registletBuilds, item?.registletBuildId ?? null) ??
+          registletBuildStore.registletBuilds.find(
+            build => build.id === missingRegistletBuild?.id
+          ) ??
+          registletBuildStore.currentRegistletBuild
+        state.potionBuild =
+          getMatchedBuild(potionBuildStore.potionBuilds, item?.potionBuildId ?? null) ??
+          potionBuildStore.potionBuilds.find(build => build.id === missingPotionBuild?.id) ??
+          potionBuildStore.currentPotionBuild
       })
     }
   })()
@@ -262,6 +350,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const loadCharacterSimulator = () => {
     try {
       reset()
+      autoSaveDisabled.value = false
 
       const result = CharacterPersistenceService.load()
       if (!result.success) {
@@ -271,16 +360,17 @@ export const useCharacterStore = defineStore('view-character', () => {
         logger.info('Datas version: v2')
         const { summary, datas } = result.value
 
-        loadCharacterSimulatorSaveData(datas)
+        loadCharacterSimulatorSaveData(datas, true)
         setCurrentCharacter(summary.characterIndex)
         CharacterPersistenceService.confirmLoaded()
       }
     } catch (error) {
       reset()
-      createCharacter()
       closeAutoSave()
       logger.addTitle('loadCharacterSimulator').start('Unexpected error occurs.').track(error).end()
       throw error
+    } finally {
+      characterSimulatorInitFinished()
     }
   }
 

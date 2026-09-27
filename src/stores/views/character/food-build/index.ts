@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import type { Ref } from 'vue'
+import { shallowRef } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -11,26 +10,29 @@ import { CHARACTER_SIMULATOR_BUILD_LIMIT } from '../consts'
 import { useCharacterBindingBuild } from '../setup/useCharacterBindingBuild'
 
 export const useCharacterFoodStore = defineStore('view-character-food', () => {
+  const foodsBase = shallowRef<FoodsBase>(FoodsBase.create())
   const {
     builds,
+    onBuildsChange,
+    replaceBuilds,
     currentBuildIndex,
     currentBuild,
     setCurrentBuild,
     appendBuild: appendFoodBuild,
     removeBuild: removeFoodBuild,
     resetBuildStore: resetFoodBuildStore,
-  } = useCharacterBindingBuild<FoodsBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
-
-  const foodsBase: Ref<FoodsBase | null> = ref(null)
-
-  const initFoodsBase = () => {
-    foodsBase.value = FoodsBase.create()
-  }
+  } = useCharacterBindingBuild<FoodsBuild>(
+    () =>
+      FoodsBuild.create(
+        foodsBase.value,
+        Grimoire.i18n.t('character-simulator.food-build.food-build') + ' 1'
+      ),
+    CHARACTER_SIMULATOR_BUILD_LIMIT
+  )
 
   const createFoodBuild = () => {
     const newBuild = FoodsBuild.create(
-      foodsBase.value!,
-
+      foodsBase.value,
       Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (builds.value.length + 1)
     )
     return appendFoodBuild(newBuild, { updateIndex: false })
@@ -42,7 +44,8 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     currentFoodBuildIndex: currentBuildIndex,
     currentFoodBuild: currentBuild,
 
-    initFoodsBase,
+    onBuildsChange,
+    replaceBuilds,
     setCurrentFoodBuild: setCurrentBuild,
     createFoodBuild,
     appendFoodBuild,

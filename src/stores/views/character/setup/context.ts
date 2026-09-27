@@ -18,10 +18,10 @@ import type { StatRecorded } from '@/lib/Character/Stat'
 import { createElementMap, getCharacterElement } from '../utils'
 
 export interface CharacterBuildsContext {
-  skillBuild: SkillBuild | null
-  registletBuild: RegistletBuild | null
-  potionBuild: PotionBuild | null
-  foodBuild: FoodsBuild | null
+  skillBuild: SkillBuild
+  registletBuild: RegistletBuild
+  potionBuild: PotionBuild
+  foodBuild: FoodsBuild
 }
 
 export interface CharacterPureStatsResult {

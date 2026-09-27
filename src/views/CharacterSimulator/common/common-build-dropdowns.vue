@@ -3,14 +3,14 @@ import { computed } from 'vue'
 
 interface Props {
   options: Item[]
-  currentValue: Item | null
+  currentValue: Item
   addable?: boolean
 }
 interface Emits {
   (evt: 'add-item'): void
 }
 
-const modelValue = defineModel<Item | null>({ required: true })
+const modelValue = defineModel<Item>({ required: true })
 
 const props = withDefaults(defineProps<Props>(), {
   addable: false,

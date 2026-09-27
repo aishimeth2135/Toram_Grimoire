@@ -1,5 +1,5 @@
 import { ref, shallowReactive } from 'vue'
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { useNotify } from '@/shared/composables/Notify'
@@ -29,129 +29,141 @@ export function setupCharacters() {
   const {
     builds: characters,
     currentBuildIndex: currentCharacterIndex,
-    currentBuild: _currentCharacter,
-    setCurrentBuild: _setCurrentCharacter,
-    appendBuild: appendCharacter,
+    currentBuild: currentCharacter,
+    setCurrentBuild: selectCharacter,
+    appendBuild,
     removeBuild,
-  } = useCharacterBindingBuild<Character>(CHARACTER_SIMULATOR_BUILD_LIMIT)
-
-  const currentCharacter = _currentCharacter as ComputedRef<Character>
+    replaceBuilds: replaceCharacters,
+    resetBuildStore,
+  } = useCharacterBindingBuild<Character>(
+    () => Character.create(Grimoire.i18n.t('character-simulator.character') + ' 1'),
+    CHARACTER_SIMULATOR_BUILD_LIMIT
+  )
 
   const characterStates = new Map<number, CharacterBuildsContext>()
   const getCharacterState = (chara: Character): CharacterBuildsContext => {
-    if (!characterStates.has(chara.id)) {
-      characterStates.set(
-        chara.id,
-        shallowReactive({
-          skillBuild: null,
-          foodBuild: null,
-          registletBuild: null,
-          potionBuild: null,
-        })
-      )
+    const existing = characterStates.get(chara.id)
+    if (existing) {
+      return existing
     }
-    return characterStates.get(chara.id)!
-  }
-  const removeCharacterState = (chara: Character) => {
-    if (characterStates.has(chara.id)) {
-      characterStates.delete(chara.id)
-    }
+
+    const state = shallowReactive<CharacterBuildsContext>({
+      skillBuild: skillBuildStore.currentSkillBuild,
+      foodBuild: foodStore.currentFoodBuild,
+      registletBuild: registletBuildStore.currentRegistletBuild,
+      potionBuild: potionBuildStore.currentPotionBuild,
+    })
+    characterStates.set(chara.id, state)
+    return state
   }
 
-  const setCurrentCharacter = (idx: number | Character) => {
-    const previou = getCharacterState(currentCharacter.value)
-    _setCurrentCharacter(idx)
-    if (!currentCharacter.value) {
-      _setCurrentCharacter(0)
-    }
+  const repairCharacterBuilds = () => {
+    characterStates.forEach(state => {
+      state.skillBuild =
+        skillBuildStore.skillBuilds.find(build => build.id === state.skillBuild.id) ??
+        skillBuildStore.currentSkillBuild
+      state.foodBuild =
+        foodStore.foodBuilds.find(build => build.id === state.foodBuild.id) ??
+        foodStore.currentFoodBuild
+      state.registletBuild =
+        registletBuildStore.registletBuilds.find(build => build.id === state.registletBuild.id) ??
+        registletBuildStore.currentRegistletBuild
+      state.potionBuild =
+        potionBuildStore.potionBuilds.find(build => build.id === state.potionBuild.id) ??
+        potionBuildStore.currentPotionBuild
+    })
+  }
+  skillBuildStore.onBuildsChange(repairCharacterBuilds)
+  foodStore.onBuildsChange(repairCharacterBuilds)
+  registletBuildStore.onBuildsChange(repairCharacterBuilds)
+  potionBuildStore.onBuildsChange(repairCharacterBuilds)
+
+  const setCurrentCharacter = (value: number | Character) => {
+    selectCharacter(value)
     const current = getCharacterState(currentCharacter.value)
-
-    if (current.skillBuild === null) {
-      current.skillBuild =
-        previou.skillBuild ?? (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
-    }
     skillBuildStore.setCurrentSkillBuild(current.skillBuild)
-
-    if (current.foodBuild === null) {
-      current.foodBuild = previou.foodBuild ?? foodStore.foodBuilds[0] ?? null
-    }
     foodStore.setCurrentFoodBuild(current.foodBuild)
-
-    if (current.registletBuild === null) {
-      current.registletBuild =
-        previou.registletBuild ?? (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
-    }
     registletBuildStore.setCurrentRegistletBuild(current.registletBuild)
-
-    if (current.potionBuild === null) {
-      current.potionBuild =
-        previou.potionBuild ?? (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
-    }
     potionBuildStore.setCurrentPotionBuild(current.potionBuild)
   }
 
   const setCharacterSkillBuild = (build: SkillBuild) => {
-    getCharacterState(currentCharacter.value).skillBuild = build
     skillBuildStore.setCurrentSkillBuild(build)
+    getCharacterState(currentCharacter.value).skillBuild = skillBuildStore.currentSkillBuild
   }
 
   const setCharacterFoodBuild = (build: FoodsBuild) => {
-    getCharacterState(currentCharacter.value).foodBuild = build
     foodStore.setCurrentFoodBuild(build)
+    getCharacterState(currentCharacter.value).foodBuild = foodStore.currentFoodBuild
   }
 
   const setCharacterRegistletBuild = (build: RegistletBuild) => {
-    getCharacterState(currentCharacter.value).registletBuild = build
     registletBuildStore.setCurrentRegistletBuild(build)
+    getCharacterState(currentCharacter.value).registletBuild =
+      registletBuildStore.currentRegistletBuild
   }
 
   const setCharacterPotionBuild = (build: PotionBuild) => {
-    getCharacterState(currentCharacter.value).potionBuild = build
     potionBuildStore.setCurrentPotionBuild(build)
+    getCharacterState(currentCharacter.value).potionBuild = potionBuildStore.currentPotionBuild
   }
 
-  const createCharacter = (updateIndex: boolean = true) => {
-    const newCharacter = Character.create(
+  const appendCharacter: typeof appendBuild = (character, options) => {
+    const appended = appendBuild(character, options)
+    if (appended) {
+      getCharacterState(appended)
+    }
+    return appended
+  }
+
+  const createCharacter = (updateIndex = true) => {
+    const character = Character.create(
       Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)
     )
-    if (!appendCharacter(newCharacter, { updateIndex })) {
-      return null
+    const appended = appendCharacter(character, { updateIndex })
+    if (appended) {
+      const state = getCharacterState(appended)
+      state.skillBuild = skillBuildStore.skillBuilds[0] ?? skillBuildStore.currentSkillBuild
+      state.foodBuild = foodStore.foodBuilds[0] ?? foodStore.currentFoodBuild
+      state.registletBuild =
+        registletBuildStore.registletBuilds[0] ?? registletBuildStore.currentRegistletBuild
+      state.potionBuild = potionBuildStore.potionBuilds[0] ?? potionBuildStore.currentPotionBuild
+      if (updateIndex) {
+        setCurrentCharacter(appended)
+      }
     }
-    const state = getCharacterState(newCharacter)
-    state.skillBuild = (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
-    state.foodBuild = (foodStore.foodBuilds[0] as FoodsBuild) ?? null
-    state.registletBuild = (registletBuildStore.registletBuilds[0] as RegistletBuild) ?? null
-    state.potionBuild = (potionBuildStore.potionBuilds[0] as PotionBuild) ?? null
-    return newCharacter
+    return appended
   }
 
   const cloneCharacter = (character: Character) => {
-    const newCharacter = character.clone()
-    if (!appendCharacter(newCharacter, { updateIndex: false })) {
-      return null
+    const appended = appendCharacter(character.clone(), { updateIndex: false })
+    if (appended) {
+      Object.assign(getCharacterState(appended), getCharacterState(character))
     }
-
-    const characterState = getCharacterState(character)
-    const newCharacterState = getCharacterState(newCharacter)
-    newCharacterState.skillBuild = characterState.skillBuild
-    newCharacterState.foodBuild = characterState.foodBuild
-    newCharacterState.registletBuild = characterState.registletBuild
-    newCharacterState.potionBuild = characterState.potionBuild
-    return newCharacter
+    return appended
   }
 
   const removeCharacter = (character: Character) => {
     const nextIdx = removeBuild(character)
-    removeCharacterState(character)
-    currentCharacterIndex.value = nextIdx
+    if (!characters.value.some(item => item.id === character.id)) {
+      characterStates.delete(character.id)
+    }
+    setCurrentCharacter(currentCharacter.value)
     return nextIdx
   }
+
+  const resetCharacters = () => {
+    characterStates.clear()
+    resetBuildStore()
+    setCurrentCharacter(0)
+  }
+
+  getCharacterState(currentCharacter.value)
 
   return {
     characters,
     currentCharacter,
     currentCharacterIndex,
-
     getCharacterState,
     setCurrentCharacter,
     setCharacterSkillBuild,
@@ -162,6 +174,12 @@ export function setupCharacters() {
     createCharacter,
     removeCharacter,
     cloneCharacter,
+    resetCharacters,
+    replaceCharacters: (values: Character[]) => {
+      characterStates.clear()
+      replaceCharacters(values)
+      characters.value.forEach(getCharacterState)
+    },
   }
 }
 

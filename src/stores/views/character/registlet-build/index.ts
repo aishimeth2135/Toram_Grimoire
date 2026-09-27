@@ -11,13 +11,18 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
 
   const {
     builds,
+    onBuildsChange,
+    replaceBuilds,
     currentBuildIndex,
     currentBuild,
     setCurrentBuild: setCurrentRegistletBuild,
     appendBuild: appendRegistletBuild,
     removeBuild: removeRegistletBuild,
     resetBuildStore: resetRegistletBuildStore,
-  } = useCharacterBindingBuild<RegistletBuild>(CHARACTER_SIMULATOR_BUILD_LIMIT)
+  } = useCharacterBindingBuild<RegistletBuild>(
+    () => RegistletBuild.create(t('character-simulator.registlet-build.registlet-build') + ' 1'),
+    CHARACTER_SIMULATOR_BUILD_LIMIT
+  )
 
   const createRegistletBuild = () => {
     const newBuild = RegistletBuild.create(
@@ -29,8 +34,7 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
   }
 
   const removeCurrentRegistletBuild = () => {
-    builds.value.splice(currentBuildIndex.value, 1)
-    currentBuildIndex.value = Math.max(0, currentBuildIndex.value - 1)
+    removeRegistletBuild(currentBuild.value)
   }
 
   const saveRegistletBuilds = () => {
@@ -38,6 +42,8 @@ export const useCharacterRegistletBuildStore = defineStore('view-character-regis
   }
 
   return {
+    onBuildsChange,
+    replaceBuilds,
     registletBuilds: builds,
     currentRegistletBuildIndex: currentBuildIndex,
     currentRegistletBuild: currentBuild,

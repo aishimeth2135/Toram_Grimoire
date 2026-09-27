@@ -52,7 +52,7 @@ const validSkills = computed(() => {
   return allSkills
     .filter(
       skill =>
-        currentSkillBuild.value!.getSkillLevel(skill) > 0 &&
+        currentSkillBuild.value.getSkillLevel(skill) > 0 &&
         !skill.types.includes(SkillTypes.Passive)
     )
     .filter(skill => characterStore.skillItemStates.has(skill))

@@ -24,7 +24,7 @@ const searchText = ref('')
 const hasDamageSource = computed(() => !!getDamageSource(props.result.container.branchItem))
 
 const branchState = computed(() =>
-  characterStore.currentCharacterState.skillBuild!.getSkillBranchState(
+  characterStore.currentCharacterState.skillBuild.getSkillBranchState(
     props.result.container.branchItem
   )
 )
