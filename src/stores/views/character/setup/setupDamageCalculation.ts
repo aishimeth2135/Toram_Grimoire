@@ -388,7 +388,10 @@ export function setupDamageCalculation(
         [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
         [
           CalculationItemIds.OtherMultiplier,
-          ((100 + statValue('total_damage_A')) * (100 + statValue('total_damage_B'))) / 100,
+          ((100 + statValue('total_damage_A')) *
+            (100 + statValue('total_damage_B')) *
+            (100 + statValue('total_damage_C'))) /
+            10000,
         ],
 
         // [CalculationItemIds.SkillRealMpCost, 0],
