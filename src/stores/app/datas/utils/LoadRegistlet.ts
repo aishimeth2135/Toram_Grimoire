@@ -2,6 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
+import { StatComputed } from '@/lib/Character/Stat'
 import RegistletSystem from '@/lib/Registlet'
 import {
   RegistletCategory,
@@ -16,7 +17,7 @@ import {
 import { Skill } from '@/lib/Skill/Skill'
 
 import type { CsvData } from './DownloadDatas'
-import { getCsvDataRowGetterHelper } from './utils'
+import { getCsvDataRowGetterHelper, parseStatValueDataRaw } from './utils'
 
 export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
   const { createRowGetter } = getCsvDataRowGetterHelper({
@@ -27,8 +28,9 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
     'powder-cost/base': 4,
     'powder-cost/additional': 5,
     'link': 6,
-    'type': 7,
-    'value': 8,
+    'row/category': 6,
+    'row/type': 7,
+    'row/value': 8,
 
     // category
     'category/id': 0,
@@ -110,13 +112,31 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
       return
     }
 
-    if (row('value')) {
+    if (row('row/value')) {
+      if (currentItem.isSpecial()) {
+        const rowCategory = row('row/category') || 'caption'
+        if (rowCategory === 'buff_stat') {
+          const statData = parseStatValueDataRaw(row('row/type'))
+          const statBase = Grimoire.Character.findStatBase(statData.value)
+          if (statBase) {
+            currentItem.buffStats ??= []
+            currentItem.buffStats.push(
+              StatComputed.create(statBase, statData.type, row('row/value'))
+            )
+          }
+          return
+        }
+        if (rowCategory !== 'caption') {
+          return
+        }
+      }
+
       let defaultRowType = 'caption'
       if (currentItem.isStat()) {
         defaultRowType = 'value'
       }
-      const rowType = row('type') || defaultRowType
-      const itemRow = RegistletItemRow.create(rowType, row('value'))
+      const rowType = row('row/type') || defaultRowType
+      const itemRow = RegistletItemRow.create(rowType, row('row/value'))
       currentItem.rows.push(itemRow)
     }
   })

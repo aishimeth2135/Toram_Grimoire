@@ -1,5 +1,7 @@
 import Grimoire from '@/shared/Grimoire'
+import { computeFormula } from '@/shared/utils/data'
 
+import { Stat } from '@/lib/Character/Stat'
 import {
   RegistletItemBase,
   type RegistletItemBaseSkill,
@@ -127,6 +129,17 @@ class RegistletItem {
 
   isSpecial(): this is RegistletItem & { base: RegistletItemBaseSpecial } {
     return this.base.isSpecial()
+  }
+
+  getBuffStats(): Stat[] {
+    if (!this.isSpecial() || !this.base.buffStats) {
+      return []
+    }
+
+    return this.base.buffStats.flatMap(buffStat => {
+      const value = computeFormula(buffStat.value, { Lv: this.level })
+      return typeof value === 'number' && Number.isFinite(value) ? [buffStat.toStat(value)] : []
+    })
   }
 
   remove() {

@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 
-import { StatBase } from '@/lib/Character/Stat'
+import { StatBase, type StatComputed } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
 import { RegistletCategoryIds } from './enums'
@@ -132,12 +132,14 @@ class RegistletItemBaseStat extends RegistletItemBase {
 
 class RegistletItemBaseSpecial extends RegistletItemBase {
   declare category: RegistletCategory<RegistletItemBaseSpecial>
+  buffStats: StatComputed[] | null
 
   private constructor(
     category: RegistletCategory<RegistletItemBaseSpecial>,
     infos: RegistletInfos
   ) {
     super(category, infos)
+    this.buffStats = null
   }
 
   static create(

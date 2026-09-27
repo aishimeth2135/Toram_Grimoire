@@ -507,6 +507,12 @@ export const useCharacterStore = defineStore('view-character', () => {
       )
   })
 
+  const availableRegistletBuffItems = computed(() =>
+    (currentCharacterRegistletBuild.value?.items ?? []).filter(
+      item => item.enabled && item.isSpecial() && !!item.base.buffStats?.length
+    )
+  )
+
   const { setupDamageCalculationExpectedResult, setupDamageCalculationExpectedResultSweep } =
     (() => {
       const allSkillResultStates = computed(() => [
@@ -537,7 +543,8 @@ export const useCharacterStore = defineStore('view-character', () => {
         setupCharacterStatCategoryResultsExtended,
         getSkillLevel,
         currentCharacterSkillBuild,
-        availableBuffResults
+        availableBuffResults,
+        availableRegistletBuffItems
       )
     })()
 
@@ -569,6 +576,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     nextSkillResultStates,
     damageSkillResultStates,
     availableBuffResults,
+    availableRegistletBuffItems,
 
     postponedActiveSkillResultStates,
     postponedBuffSkillResultStates,
