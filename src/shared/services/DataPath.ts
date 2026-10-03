@@ -1,16 +1,16 @@
 export const DataPathIds = {
-  Skill: 0,
-  SkillMain: 1,
-  Stats: 2,
-  CharacterStats: 3,
-  Glossary: 4,
-  Equipment: 5,
-  Crystal: 6,
-  Enchant: 7,
-  Registlet: 8,
-  Potion: 9,
-  Quest: 10,
-  EquipmentTrait: 11,
+  Skill: 'skill',
+  SkillMain: 'skill-main',
+  Stats: 'stats',
+  CharacterStats: 'character-stats',
+  Glossary: 'glossary',
+  Equipment: 'equipment',
+  Crystal: 'crystal',
+  Enchant: 'enchant',
+  Registlet: 'registlet',
+  Potion: 'potion',
+  Quest: 'quest',
+  EquipmentTrait: 'equipment-trait',
 } as const
 export type DataPathIds = (typeof DataPathIds)[keyof typeof DataPathIds]
 
@@ -43,17 +43,25 @@ function DataPath(id: DataPathIds): string {
   }
 }
 
-function DataPathLang(id: DataPathIds): (string | null)[] {
+function DataPathLang(id: DataPathIds, dataVersion?: string | null): (string | null)[] {
   /**
    * The order of languages: [en, zh_tw, ja, zh_cn]
    */
   switch (id) {
     case DataPathIds.Skill:
+      if (dataVersion !== 'v3') {
+        return [
+          'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=R:R',
+          null,
+          'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=S:S',
+          'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=T:T',
+        ]
+      }
       return [
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=R:R',
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=L:L',
         null,
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=S:S',
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=T:T',
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=M:M',
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=N:N',
       ]
     case DataPathIds.SkillMain:
       return [

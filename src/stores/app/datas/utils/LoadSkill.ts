@@ -3,7 +3,7 @@ import { getLanguageDataResult } from '@/shared/services/Locale'
 import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
-import SkillSystem from '@/lib/Skill'
+import SkillSystem, { type SkillDataVersion } from '@/lib/Skill'
 import {
   Skill,
   SkillBranch,
@@ -114,6 +114,8 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     return false
   }
 
+  const dataVersion = datas.dataVersion as SkillDataVersion
+
   csvData.forEach((rowData, index) => {
     try {
       if (index === 0 || rowData.every(item => item === '')) {
@@ -169,21 +171,23 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
             if (defaultSelected === 2 || defaultSelected === 3) {
               curSkillEffect.equipmentOperator = 1
             }
-            curSkillEffect.basicProps.mpCost = checkNull(row('mp-cost'), '')
-            curSkillEffect.basicProps.range = checkNull(row('range'), '')
-            curSkillEffect.basicProps.skillType = checkNull(
-              SKILL_TYPE_LIST.indexOf(row('skill-type')),
-              -1
-            )
-            curSkillEffect.basicProps.inCombo = checkNull(
-              IN_COMBO_LIST.indexOf(row('in-combo')),
-              -1
-            )
-            curSkillEffect.basicProps.actionTime = checkNull(
-              ACTION_TIME_LIST.indexOf(row('action-time')),
-              -1
-            )
-            curSkillEffect.basicProps.castingTime = checkNull(row('casting-time'), '')
+            if (dataVersion !== 'v3') {
+              curSkillEffect.basicProps.mpCost = checkNull(row('mp-cost'), '')
+              curSkillEffect.basicProps.range = checkNull(row('range'), '')
+              curSkillEffect.basicProps.skillType = checkNull(
+                SKILL_TYPE_LIST.indexOf(row('skill-type')),
+                -1
+              )
+              curSkillEffect.basicProps.inCombo = checkNull(
+                IN_COMBO_LIST.indexOf(row('in-combo')),
+                -1
+              )
+              curSkillEffect.basicProps.actionTime = checkNull(
+                ACTION_TIME_LIST.indexOf(row('action-time')),
+                -1
+              )
+              curSkillEffect.basicProps.castingTime = checkNull(row('casting-time'), '')
+            }
             if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
               return
             }

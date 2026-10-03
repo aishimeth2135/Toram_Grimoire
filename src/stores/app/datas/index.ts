@@ -176,6 +176,9 @@ export const useDatasStore = defineStore('app-datas', () => {
           { path: DataPathIds.Skill, lang: true },
           { path: DataPathIds.SkillMain, lang: true }
         )
+        if (skillData.dataVersion) {
+          skillSystem.setDataVersion(skillData.dataVersion)
+        }
         return async () => {
           LoadSkill(skillSystem, skillData)
           LoadSkillMain(skillSystem, skillMainData)

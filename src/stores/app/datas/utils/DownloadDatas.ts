@@ -12,6 +12,16 @@ interface LocaleCsvDatas {
   baseData: CsvData
   primaryLocaleData: CsvData | null
   secondaryLocaleData: CsvData | null
+  dataVersion: string | null
+}
+
+export function getDataVersion(pathId: DataPathIds, data: CsvData): string | null {
+  const rawRes = data.at(0)?.at(0) ?? ''
+  const res = rawRes.startsWith('v') ? rawRes : null
+  if (res !== null) {
+    CommonLogger.info(`DataVersion`, `${pathId}:`, res)
+  }
+  return res
 }
 
 export async function DownloadDatas(...paths: PathItem[]): Promise<LocaleCsvDatas[]> {
@@ -21,14 +31,17 @@ export async function DownloadDatas(...paths: PathItem[]): Promise<LocaleCsvData
       pathItem = { path: pathItem }
     }
     const { path: pathId, lang = false } = pathItem
-    const results: LocaleCsvDatas = lang
-      ? await downloadLocaleCsvDatas(pathId)
-      : {
-          baseData: await downloadCsvData(DataPath(pathId)),
-          primaryLocaleData: null,
-          secondaryLocaleData: null,
-        }
-    return results
+    if (lang) {
+      const results = await downloadLocaleCsvDatas(pathId)
+      return results
+    }
+    const baseData = await downloadCsvData(DataPath(pathId))
+    return {
+      baseData,
+      primaryLocaleData: null,
+      secondaryLocaleData: null,
+      dataVersion: getDataVersion(pathId, baseData),
+    }
   })
   const result = await Promise.all(promises)
 
@@ -72,31 +85,38 @@ async function downloadLocaleCsvDatas(pathId: DataPathIds): Promise<LocaleCsvDat
   const languageStore = useLocaleStore()
 
   const promises: Promise<CsvData>[] = []
-  const current = languageStore.primaryLang,
-    second = languageStore.secondaryLang
-  const dataList: (CsvData | null)[] = Array(3)
+  const primaryLocale = languageStore.primaryLang,
+    fallbackLocale = languageStore.secondaryLang
 
-  promises.push(downloadCsvData(DataPath(pathId)))
-  if (current !== DEFAULT_LANG) {
-    const path = DataPathLang(pathId)
-    if (path[current] !== null) {
-      promises.push(downloadCsvData(path[current] as string))
+  const resultData: LocaleCsvDatas = {
+    baseData: [[]],
+    primaryLocaleData: null,
+    secondaryLocaleData: null,
+    dataVersion: null,
+  }
+
+  const baseData = await downloadCsvData(DataPath(pathId))
+  resultData.baseData = baseData
+  const dataVersion = getDataVersion(pathId, baseData)
+  resultData.dataVersion = dataVersion
+
+  if (primaryLocale !== DEFAULT_LANG) {
+    const path = DataPathLang(pathId, dataVersion)
+    if (path[primaryLocale] !== null) {
+      promises.push(
+        downloadCsvData(path[primaryLocale]).then(res => (resultData.primaryLocaleData = res))
+      )
     }
-    if (current !== second && path[second] !== null) {
-      promises.push(downloadCsvData(path[second] as string))
+    if (primaryLocale !== fallbackLocale && path[fallbackLocale] !== null) {
+      promises.push(
+        downloadCsvData(path[fallbackLocale]).then(res => (resultData.secondaryLocaleData = res))
+      )
     }
   }
 
-  const results = await Promise.allSettled(promises)
-  results.map((item, idx) => {
-    dataList[idx] = item.status === 'fulfilled' ? item.value : null
-  })
+  await Promise.allSettled(promises)
 
-  return {
-    baseData: dataList[0] ?? [[]],
-    primaryLocaleData: dataList[1],
-    secondaryLocaleData: dataList[2],
-  } satisfies LocaleCsvDatas
+  return resultData
 }
 
 export type { CsvData, LocaleCsvDatas }
