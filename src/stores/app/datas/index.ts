@@ -19,7 +19,7 @@ import SkillSystem from '@/lib/Skill'
 
 import { DatasStoreBase } from './DatasStoreBase'
 import { DataStoreIds } from './enums'
-import { DownloadDatas } from './utils/DownloadDatas'
+import { DownloadDatas, DownloadDatasWithLocale } from './utils/DownloadDatas'
 import { LoadCharacterStats } from './utils/LoadCharacterStat'
 import { LoadCrystals } from './utils/LoadCrystals'
 import { LoadEnchant } from './utils/LoadEnchant'
@@ -126,7 +126,7 @@ export const useDatasStore = defineStore('app-datas', () => {
     switch (dataId) {
       case DataStoreIds.Items: {
         const itemSystem = initItemsInstance()
-        const [equipmentData] = await DownloadDatas({ path: DataPathIds.Equipment, lang: true })
+        const [equipmentData] = await DownloadDatasWithLocale(DataPathIds.Equipment)
         return async () => {
           LoadEquipments(itemSystem, equipmentData)
         }
@@ -141,10 +141,7 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
       case DataStoreIds.Stats: {
         const characterSystem = initCharacterInstance()
-        const [statsData] = await DownloadDatas({
-          path: DataPathIds.Stats,
-          lang: true,
-        })
+        const [statsData] = await DownloadDatasWithLocale(DataPathIds.Stats)
         return async () => {
           LoadStats(characterSystem, statsData)
           await InitEquipmentIcons()
@@ -152,29 +149,23 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
       case DataStoreIds.CharacterStats: {
         const characterSystem = initCharacterInstance()
-        const [characterStatsData] = await DownloadDatas({
-          path: DataPathIds.CharacterStats,
-          lang: true,
-        })
+        const [characterStatsData] = await DownloadDatasWithLocale(DataPathIds.CharacterStats)
         return async () => {
           LoadCharacterStats(characterSystem, characterStatsData)
         }
       }
       case DataStoreIds.Glossary: {
         const glossarySystem = initGlossaryInstance()
-        const [glossaryData] = await DownloadDatas({
-          path: DataPathIds.Glossary,
-          lang: true,
-        })
+        const [glossaryData] = await DownloadDatasWithLocale(DataPathIds.Glossary)
         return async () => {
           LoadGlossaryTag(glossarySystem, glossaryData)
         }
       }
       case DataStoreIds.Skill: {
         const skillSystem = initSkillInstance()
-        const [skillData, skillMainData] = await DownloadDatas(
-          { path: DataPathIds.Skill, lang: true },
-          { path: DataPathIds.SkillMain, lang: true }
+        const [skillData, skillMainData] = await DownloadDatasWithLocale(
+          DataPathIds.Skill,
+          DataPathIds.SkillMain
         )
         if (skillData.dataVersion) {
           skillSystem.setDataVersion(skillData.dataVersion)
@@ -227,9 +218,9 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
       case DataStoreIds.EquipmentTrait: {
         const equipmentTraitSystem = initEquipmentTraitInstance()
-        const [equipmentTraitData] = await DownloadDatas(DataPathIds.EquipmentTrait)
+        const [equipmentTraitData] = await DownloadDatasWithLocale(DataPathIds.EquipmentTrait)
         return async () => {
-          LoadEquipmentTraits(equipmentTraitSystem, equipmentTraitData.baseData)
+          LoadEquipmentTraits(equipmentTraitSystem, equipmentTraitData)
         }
       }
     }

@@ -19,19 +19,19 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
 export const useLocaleStore = defineStore('app-locale', () => {
   const localeLogger = new CommonLogger('Locale')
 
-  const primaryLang = ref(0)
-  const secondaryLang = ref(0)
+  const primaryLocaleIndex = ref(0)
+  const fallbackLocaleIndex = ref(0)
   const i18nMessageLoaded = ref(false)
   const i18n = computed(() => I18nStore.i18n)
   const i18nLoadedLocaleNamespaces = reactive(new Set<LocaleNamespaces>())
   const loadingLocalePromises = new Map<LocaleNamespaces, Promise<void>>()
 
   const primaryLocale = computed(() => {
-    return AppStorageService.LOCALE_LIST[primaryLang.value]
+    return AppStorageService.LOCALE_LIST[primaryLocaleIndex.value]
   })
 
   const fallbackLocale = computed(() => {
-    return AppStorageService.LOCALE_LIST[secondaryLang.value]
+    return AppStorageService.LOCALE_LIST[fallbackLocaleIndex.value]
   })
 
   const setI18nInstance = (i18nInstance: Composer) => {
@@ -46,7 +46,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
       'ja': 2,
       'zh-cn': 3,
     }
-    primaryLang.value = list[lang] ?? 0
+    primaryLocaleIndex.value = list[lang] ?? 0
   }
 
   const initLocale = () => {
@@ -54,9 +54,9 @@ export const useLocaleStore = defineStore('app-locale', () => {
     if (primaryLocaleSetting === AppStorageService.LOCALE_AUTO) {
       autoSetLang()
     } else {
-      primaryLang.value = primaryLocaleSetting
+      primaryLocaleIndex.value = primaryLocaleSetting
     }
-    secondaryLang.value = AppStorageService.getFallbackLocale()
+    fallbackLocaleIndex.value = AppStorageService.getFallbackLocale()
   }
 
   type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (
@@ -154,8 +154,8 @@ export const useLocaleStore = defineStore('app-locale', () => {
   }
 
   return {
-    primaryLang: readonly(primaryLang),
-    secondaryLang: readonly(secondaryLang),
+    primaryLocaleIndex: readonly(primaryLocaleIndex),
+    fallbackLocaleIndex: readonly(fallbackLocaleIndex),
     i18n: readonly(i18n),
     i18nMessageLoaded: readonly(i18nMessageLoaded),
     i18nLoadedLocaleNamespaces,

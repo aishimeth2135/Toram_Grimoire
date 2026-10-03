@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import { getLanguageDataResult } from '@/shared/services/Locale'
+import { getLocaleDataResult } from '@/shared/services/Locale'
 import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
@@ -88,7 +88,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
   let curSkillEffect: SkillEffectBase | void
   let curSkillBranch: SkillBranch | void
 
-  const csvData = getLanguageDataResult(
+  const csvData = getLocaleDataResult(
     datas,
     createLocaleMapping({
       'effect-branch/attr/value': 0,
@@ -96,7 +96,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
   )
 
   const checkNull = <T extends number | string>(value: T, nullValue: T) => {
-    return value === nullValue ? null : value
+    return value === null || value === undefined || value === nullValue ? null : value
   }
 
   /**
@@ -272,7 +272,7 @@ export function LoadSkillMain(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
   let curSkillTreeCategory: SkillTreeCategory
   let curSkillTree: SkillTree
 
-  const csvData = getLanguageDataResult(
+  const csvData = getLocaleDataResult(
     datas,
     createLocaleMapping({
       name: 0,

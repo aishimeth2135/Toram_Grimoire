@@ -14,7 +14,7 @@ export const DataPathIds = {
 } as const
 export type DataPathIds = (typeof DataPathIds)[keyof typeof DataPathIds]
 
-function DataPath(id: DataPathIds): string {
+export function getDataPath(id: DataPathIds): string {
   switch (id) {
     case DataPathIds.Skill:
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=A:Q'
@@ -43,7 +43,10 @@ function DataPath(id: DataPathIds): string {
   }
 }
 
-function DataPathLang(id: DataPathIds, dataVersion?: string | null): (string | null)[] {
+export function getLocaleDataPaths(
+  id: DataPathIds,
+  dataVersion?: string | null
+): (string | null)[] {
   /**
    * The order of languages: [en, zh_tw, ja, zh_cn]
    */
@@ -93,8 +96,13 @@ function DataPathLang(id: DataPathIds, dataVersion?: string | null): (string | n
         null,
         null,
       ]
+    case DataPathIds.EquipmentTrait:
+      return [
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1482085643&single=true&output=csv&range=G:H',
+        null,
+        null,
+        null,
+      ]
   }
   return []
 }
-
-export { DataPath, DataPathLang }

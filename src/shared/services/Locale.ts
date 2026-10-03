@@ -2,8 +2,11 @@ import type { CsvData, LocaleCsvDatas } from '@/stores/app/datas/utils/DownloadD
 
 import { toIndex } from '../utils/number'
 
-function getLocaleDataResult(datas: LocaleCsvDatas, mapping: Record<number, number>): CsvData {
-  const localeCsvDatas = [datas.primaryLocaleData, datas.secondaryLocaleData]
+export function getLocaleDataResult(
+  datas: LocaleCsvDatas,
+  mapping: Record<number, number>
+): CsvData {
+  const localeCsvDatas = [datas.primaryLocaleData, datas.fallbackLocaleData]
   Object.entries(mapping).forEach(([key, value]) => {
     const baseDataIdx = toIndex(key),
       localeDataIdx = value
@@ -12,7 +15,7 @@ function getLocaleDataResult(datas: LocaleCsvDatas, mapping: Record<number, numb
         .map(localeCsvData =>
           localeCsvData && localeCsvData[idx] ? localeCsvData[idx][localeDataIdx] : null
         )
-        .find(field => field !== '' && field !== null && field !== undefined)
+        .find(rawData => rawData !== '' && rawData !== null && rawData !== undefined)
       if (res) {
         data[baseDataIdx] = res
       }
@@ -21,5 +24,3 @@ function getLocaleDataResult(datas: LocaleCsvDatas, mapping: Record<number, numb
 
   return datas.baseData
 }
-
-export { getLocaleDataResult as getLanguageDataResult }

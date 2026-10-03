@@ -2,16 +2,15 @@ import Papa from 'papaparse'
 
 import { useLocaleStore } from '@/stores/app/locale'
 
-import { DataPath, DataPathIds, DataPathLang } from '@/shared/services/DataPath'
+import { DataPathIds, getDataPath, getLocaleDataPaths } from '@/shared/services/DataPath'
 import { CommonLogger } from '@/shared/services/Logger'
 
-type PathItem = DataPathIds | { path: DataPathIds; lang?: boolean }
 type CsvData = string[][]
 
 interface LocaleCsvDatas {
   baseData: CsvData
   primaryLocaleData: CsvData | null
-  secondaryLocaleData: CsvData | null
+  fallbackLocaleData: CsvData | null
   dataVersion: string | null
 }
 
@@ -24,27 +23,25 @@ export function getDataVersion(pathId: DataPathIds, data: CsvData): string | nul
   return res
 }
 
-export async function DownloadDatas(...paths: PathItem[]): Promise<LocaleCsvDatas[]> {
-  const isDataPathId = (value: any): value is DataPathIds => typeof value === 'number'
-  const promises = paths.map(async pathItem => {
-    if (isDataPathId(pathItem)) {
-      pathItem = { path: pathItem }
-    }
-    const { path: pathId, lang = false } = pathItem
-    if (lang) {
-      const results = await downloadLocaleCsvDatas(pathId)
-      return results
-    }
-    const baseData = await downloadCsvData(DataPath(pathId))
+export async function DownloadDatas(...pathIds: DataPathIds[]): Promise<LocaleCsvDatas[]> {
+  const promises = pathIds.map(async pathId => {
+    const baseData = await downloadCsvData(getDataPath(pathId))
     return {
       baseData,
       primaryLocaleData: null,
-      secondaryLocaleData: null,
+      fallbackLocaleData: null,
       dataVersion: getDataVersion(pathId, baseData),
-    }
+    } satisfies LocaleCsvDatas
   })
   const result = await Promise.all(promises)
+  return result
+}
 
+export async function DownloadDatasWithLocale(
+  ...pathIds: DataPathIds[]
+): Promise<LocaleCsvDatas[]> {
+  const promises = pathIds.map(pathId => downloadLocaleCsvDatas(pathId))
+  const result = await Promise.all(promises)
   return result
 }
 
@@ -80,36 +77,36 @@ export async function downloadCsvData(path: string): Promise<CsvData> {
   return [[]]
 }
 
-const DEFAULT_LANG = 1
+const DEFAULT_LOCALE_INDEX = 1
 async function downloadLocaleCsvDatas(pathId: DataPathIds): Promise<LocaleCsvDatas> {
-  const languageStore = useLocaleStore()
+  const localeStore = useLocaleStore()
 
   const promises: Promise<CsvData>[] = []
-  const primaryLocale = languageStore.primaryLang,
-    fallbackLocale = languageStore.secondaryLang
+  const primaryIndex = localeStore.primaryLocaleIndex,
+    fallbackIndex = localeStore.fallbackLocaleIndex
 
   const resultData: LocaleCsvDatas = {
     baseData: [[]],
     primaryLocaleData: null,
-    secondaryLocaleData: null,
+    fallbackLocaleData: null,
     dataVersion: null,
   }
 
-  const baseData = await downloadCsvData(DataPath(pathId))
+  const baseData = await downloadCsvData(getDataPath(pathId))
   resultData.baseData = baseData
   const dataVersion = getDataVersion(pathId, baseData)
   resultData.dataVersion = dataVersion
 
-  if (primaryLocale !== DEFAULT_LANG) {
-    const path = DataPathLang(pathId, dataVersion)
-    if (path[primaryLocale] !== null) {
+  if (primaryIndex !== DEFAULT_LOCALE_INDEX) {
+    const paths = getLocaleDataPaths(pathId, dataVersion)
+    if (paths[primaryIndex] !== null) {
       promises.push(
-        downloadCsvData(path[primaryLocale]).then(res => (resultData.primaryLocaleData = res))
+        downloadCsvData(paths[primaryIndex]).then(res => (resultData.primaryLocaleData = res))
       )
     }
-    if (primaryLocale !== fallbackLocale && path[fallbackLocale] !== null) {
+    if (primaryIndex !== fallbackIndex && paths[fallbackIndex] !== null) {
       promises.push(
-        downloadCsvData(path[fallbackLocale]).then(res => (resultData.secondaryLocaleData = res))
+        downloadCsvData(paths[fallbackIndex]).then(res => (resultData.fallbackLocaleData = res))
       )
     }
   }

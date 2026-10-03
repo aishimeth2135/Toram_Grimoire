@@ -1,4 +1,4 @@
-import { getLanguageDataResult } from '@/shared/services/Locale'
+import { getLocaleDataResult } from '@/shared/services/Locale'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
@@ -57,7 +57,7 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
     return materials
   }
 
-  const csvData = getLanguageDataResult(
+  const csvData = getLocaleDataResult(
     datas,
     createLocaleMapping({
       name: 0,

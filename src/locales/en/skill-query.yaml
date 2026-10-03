@@ -5,10 +5,10 @@ select-skill: Choose skills
 main-menu-title-common: General settings
 skill-level: Skill Level
 character-level: Character Level
-registlet-level: Registlet level
-registlet-level-abbreviation: Reg. level
+registlet-level: Registlet Level
+registlet-level-abbreviation: Registlet Level
 registlet-info-tip: For more details about Registlets, see {link}.
-registlet-max-level-title: Max level
+registlet-max-level-title: Max Level
 search-tips: Click here to search skills
 quick-switch-equipment-type-caption: You can quickly switch the equipment type of the current skill here.
 go-to-skill: View

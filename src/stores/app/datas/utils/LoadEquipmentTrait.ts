@@ -1,15 +1,16 @@
 import Grimoire from '@/shared/Grimoire'
+import { getLocaleDataResult } from '@/shared/services/Locale'
 
 import { StatComputed } from '@/lib/Character/Stat'
 import type EquipmentTraitSystem from '@/lib/EquipmentTrait'
 import type { EquipmentTraitItem } from '@/lib/EquipmentTrait'
 import { EquipmentTraitCategory } from '@/lib/EquipmentTrait/EquipmentTrait'
 
-import type { CsvData } from './DownloadDatas'
+import type { LocaleCsvDatas } from './DownloadDatas'
 import { getCsvDataRowGetterHelper, parseStatValueDataRaw } from './utils'
 
-export function LoadEquipmentTraits(root: EquipmentTraitSystem, csvData: CsvData): void {
-  const { createRowGetter } = getCsvDataRowGetterHelper({
+export function LoadEquipmentTraits(root: EquipmentTraitSystem, datas: LocaleCsvDatas): void {
+  const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
     'id': 0,
     'name': 1,
     'max-level': 2,
@@ -17,6 +18,14 @@ export function LoadEquipmentTraits(root: EquipmentTraitSystem, csvData: CsvData
     'attr/name': 4,
     'attr/value': 5,
   })
+
+  const csvData = getLocaleDataResult(
+    datas,
+    createLocaleMapping({
+      'name': 0,
+      'attr/value': 1,
+    })
+  )
 
   const CATEGORY_STAT_CHECK = '@stat'
   const CATEGORY_SPECIAL_CHECK = '@special'

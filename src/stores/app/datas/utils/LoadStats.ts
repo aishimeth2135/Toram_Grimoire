@@ -1,4 +1,4 @@
-import { getLanguageDataResult } from '@/shared/services/Locale'
+import { getLocaleDataResult } from '@/shared/services/Locale'
 import { toInt } from '@/shared/utils/number'
 
 import CharacterSystem from '@/lib/Character'
@@ -16,7 +16,7 @@ export function LoadStats(characterSystem: CharacterSystem, datas: LocaleCsvData
     'hidden': 5,
   })
 
-  const csvData = getLanguageDataResult(
+  const csvData = getLocaleDataResult(
     datas,
     createLocaleMapping({
       'caption': 0,

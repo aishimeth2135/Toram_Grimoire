@@ -1,4 +1,4 @@
-import { getLanguageDataResult } from '@/shared/services/Locale'
+import { getLocaleDataResult } from '@/shared/services/Locale'
 
 import GlossarySystem from '@/lib/Glossary'
 import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
@@ -13,7 +13,7 @@ export function LoadGlossaryTag(root: GlossarySystem, datas: LocaleCsvDatas) {
     'frame/value': 2,
   })
 
-  const data = getLanguageDataResult(
+  const data = getLocaleDataResult(
     datas,
     createLocaleMapping({
       'tag/name': 0,
