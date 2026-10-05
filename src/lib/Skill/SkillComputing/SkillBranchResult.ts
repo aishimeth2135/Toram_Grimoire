@@ -45,8 +45,8 @@ interface SkillBranchResultBase extends ResultContainerBase {
 }
 
 class SkillBranchResult extends ResultContainer implements SkillBranchResultBase {
-  branch: SkillBranchItemBaseChilds
-  key: string
+  readonly branch: SkillBranchItemBaseChilds
+  readonly key: string
   sources: readonly SkillBranchResultSource[]
 
   private displayResult: string | null
@@ -162,7 +162,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
 }
 
 class SkillBranchStatResult extends SkillBranchResult {
-  stat: StatComputed
+  readonly stat: StatComputed
 
   /**
    * The result data of stat will store the result that before handling by stat title.
@@ -315,8 +315,8 @@ interface SkillBranchTextResultParseResult {
   parts: SkillBranchTextResultPartValue[]
 }
 class SkillBranchTextResult extends TextResultContainer implements SkillBranchResultBase {
-  branch: SkillBranchItemBaseChilds
-  key: string
+  readonly branch: SkillBranchItemBaseChilds
+  readonly key: string
   sources: readonly SkillBranchResultSource[]
 
   declare containers: SkillBranchResult[]

@@ -176,9 +176,9 @@ abstract class SkillBase extends SkillElement {
 }
 
 class Skill extends SkillBase {
-  effects: SkillEffect[]
+  readonly effects: SkillEffect[]
   defaultEffect!: SkillEffect
-  types: SkillTypes[]
+  readonly types: SkillTypes[]
 
   readonly skillId: string
 
@@ -235,8 +235,8 @@ class Skill extends SkillBase {
 }
 
 abstract class SkillEffectBase extends SkillNode {
-  parent: Skill
-  branches: SkillBranch[]
+  readonly parent: Skill
+  readonly branches: SkillBranch[]
 
   protected constructor(skill: Skill, branches: SkillBranch[] = []) {
     super()
@@ -272,13 +272,13 @@ interface SkillEffectBasicProps {
   castingTime: string | null
 }
 class SkillEffect extends SkillEffectBase {
-  effectId: number
-  basicProps: SkillEffectBasicProps
-  historys: SkillEffectHistory[]
+  readonly effectId: number
+  readonly basicProps: SkillEffectBasicProps
+  readonly historys: SkillEffectHistory[]
 
-  mainWeapon: number
-  subWeapon: number
-  bodyArmor: number
+  readonly mainWeapon: number
+  readonly subWeapon: number
+  readonly bodyArmor: number
   // 0: or, 1: and
   equipmentOperator: 0 | 1
 
@@ -449,8 +449,8 @@ class SkillBranch extends SkillNode {
 }
 
 class LevelSkillTree {
-  base: SkillTree
-  levelSkills: LevelSkill[]
+  readonly base: SkillTree
+  readonly levelSkills: LevelSkill[]
 
   private constructor(st: SkillTree) {
     this.base = st
@@ -480,8 +480,8 @@ class LevelSkillTree {
 }
 
 class LevelSkill {
-  parent: LevelSkillTree
-  base: Skill
+  readonly parent: LevelSkillTree
+  readonly base: Skill
 
   private _level: number
   private _starGemLevel: number
