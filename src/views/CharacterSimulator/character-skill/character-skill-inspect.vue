@@ -6,7 +6,7 @@ import { useCharacterStore } from '@/stores/views/character'
 import type { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import type { RegistletItemBaseSkill } from '@/lib/Registlet/RegistletItem'
 import type { Skill } from '@/lib/Skill/Skill'
-import type { SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputing'
+import type { SkillBranchItem, SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputing'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
 import SideFloat from '@/components/app-layout/side-float/side-float.vue'
@@ -63,9 +63,39 @@ const getSkillRegistletItemsState = (skill: Skill): SkillRegistletItemState[] =>
   return itemStates
 }
 
+const editableStackIds = computed<Set<string>>(() => {
+  const skill = props.effectItem.parent.skill
+  const resultStates = [
+    ...characterStore.activeSkillResultStates,
+    ...characterStore.buffSkillResultStates,
+    ...characterStore.passiveSkillResultStates,
+    ...characterStore.nextSkillResultStates,
+    ...characterStore.damageSkillResultStates,
+    ...characterStore.postponedActiveSkillResultStates,
+    ...characterStore.postponedBuffSkillResultStates,
+    ...characterStore.postponedPassiveSkillResultStates,
+  ]
+  const ids = new Set<string>()
+  resultStates
+    .filter(state => state.skill === skill)
+    .forEach(state => {
+      state.stackContainers.forEach(container => {
+        const id = container.branchItem.effectStackId
+        if (id !== null) {
+          ids.add(id)
+        }
+      })
+    })
+  return ids
+})
+
+const isStackEditable = (branchItem: SkillBranchItem) =>
+  branchItem.effectStackId !== null && editableStackIds.value.has(branchItem.effectStackId)
+
 provide(ComputingContainerInjectionKey, {
   rootComputingContainer: characterStore.postponedSkillComputingContainer,
   setStackValue,
+  isStackEditable,
   getSkillRegistletItemsState,
   currentSkillItem: computed<SkillItem>(() => props.effectItem.parent),
 })

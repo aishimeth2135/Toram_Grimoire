@@ -19,6 +19,7 @@ interface SkillRegistletItemState {
 
 interface ComputingContainerInjection {
   setStackValue: (branchItem: SkillBranchItem, value: number) => void
+  isStackEditable?: (branchItem: SkillBranchItem) => boolean
   rootComputingContainer: SkillComputingContainer
   currentSkillItem: Ref<SkillItem | null>
   getSkillRegistletItemsState: (skill: Skill) => SkillRegistletItemState[]

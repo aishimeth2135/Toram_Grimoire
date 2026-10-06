@@ -2,6 +2,7 @@
   <div class="flex flex-wrap items-center p-1 pb-0.5 pr-3">
     <div class="mt-0.5">
       <cy-input-counter
+        v-if="stackEditable"
         v-model:value="stackValue"
         :range="stackValueRange"
         :input-width="getStackInputWidth(container)"
@@ -12,6 +13,17 @@
           <span class="text-primary-50">{{ container.get('unit') }}</span>
         </template>
       </cy-input-counter>
+      <div v-else class="border-primary-20 flex items-center gap-3.5 border px-3 py-1">
+        <div class="text-primary-80">
+          {{ container.get('name') }}
+        </div>
+        <div class="gap-icon-tight flex items-center">
+          <span class="text-primary-50">{{ stackValue }}</span>
+          <span v-if="container.get('unit')" class="text-primary-50">
+            {{ container.get('unit') }}
+          </span>
+        </div>
+      </div>
     </div>
     <div class="text-primary-30 ml-4 mt-0.5 flex items-center space-x-1">
       <cy-icon icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
@@ -40,10 +52,12 @@ interface Props {
   branchItem: SkillBranchItem
 }
 
-const { setStackValue } = inject(ComputingContainerInjectionKey)!
+const { setStackValue, isStackEditable } = inject(ComputingContainerInjectionKey)!
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
+
+const stackEditable = computed(() => isStackEditable?.(props.branchItem) ?? true)
 
 const container = computed(() => StackHandler(props.computing, branchItem.value))
 
@@ -53,9 +67,18 @@ const stackState = computed(() => {
 
 const stackValue: WritableComputedRef<number> = computed({
   set(value) {
-    setStackValue(branchItem.value, value)
+    if (stackEditable.value) {
+      setStackValue(branchItem.value, value)
+    }
   },
   get() {
+    if (!stackEditable.value && branchItem.value.hasProp('value')) {
+      return (
+        props.computing.config.computeFormulaExtraValue?.(branchItem.value.prop('value')) ??
+        stackState.value?.value ??
+        0
+      )
+    }
     return stackState.value?.value ?? 0
   },
 })
