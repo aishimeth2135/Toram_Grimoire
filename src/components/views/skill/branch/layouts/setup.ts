@@ -39,6 +39,18 @@ export interface NormalLayoutSubContent {
 
 const glossaryTagParseItem = getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag)
 
+const hoveredFormulaElements = new Set<HTMLElement>()
+
+function setFormulaHovered(element: HTMLElement, hovered: boolean) {
+  if (hovered) {
+    hoveredFormulaElements.add(element)
+  } else {
+    hoveredFormulaElements.delete(element)
+  }
+
+  document.body?.classList.toggle('skill-formula-hover', hoveredFormulaElements.size > 0)
+}
+
 function getContainerStatSign(container: SkillBranchResult, originalFormula: boolean) {
   if (!(container instanceof SkillBranchStatResult)) {
     return ''
@@ -117,7 +129,18 @@ function _renderContainerResult(
       tag: 'span',
       triggers: 'hover click',
       popperContentClass: 'skill-branch-formula-popper-content px-3 py-2',
-      class: 'skill-branch-formula-popover-wrapper hover:bg-primary-10 cursor-pointer rounded-sm',
+      class: 'skill-branch-formula-popover-wrapper cursor-pointer rounded-sm',
+      onMouseenter: (event: MouseEvent) => {
+        setFormulaHovered(event.currentTarget as HTMLElement, true)
+      },
+      onMouseleave: (event: MouseEvent) => {
+        setFormulaHovered(event.currentTarget as HTMLElement, false)
+      },
+      onVnodeBeforeUnmount: (vnode: VNode) => {
+        if (vnode.el instanceof HTMLElement) {
+          setFormulaHovered(vnode.el, false)
+        }
+      },
     },
     {
       default: () => renderResult(container.showOriginalFormula),

@@ -10,7 +10,7 @@
       {{ currentSkill.name }}
     </span>
     <template #popper>
-      <div class="flex items-center px-5 py-1">
+      <div class="flex min-h-10 items-center px-5 py-1">
         <SkillTitle :skill="currentSkill" />
         <cy-button-plain
           v-if="selectSkill"

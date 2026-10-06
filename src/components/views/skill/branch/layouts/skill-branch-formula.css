@@ -1,5 +1,13 @@
 @reference "@/tailwind.css";
 
+body.skill-formula-hover .skill-branch-formula-popover-wrapper {
+  background-color: --alpha(var(--color-primary-10) / 75%);
+
+  &:hover {
+    background-color: var(--color-primary-10);
+  }
+}
+
 .skill-branch-wrapper,
 .skill-branch-formula-popper-content {
   & .history-compare--mark {
