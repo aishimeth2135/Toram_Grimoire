@@ -7,6 +7,7 @@ import {
   SkillBranchResult,
   SkillBranchStatResult,
   SkillBranchTextResult,
+  computeBranchOriginalFormula,
   computeBranchStatResults,
   computeBranchValue,
   computeBranchValueResults,
@@ -20,7 +21,7 @@ function handleDisplayValue(
   const formula = helper.props.get(helper.branchItem.propKey(container.key, 'display'))
   if (formula !== undefined) {
     const displayValue = computeBranchValue(formula, helper)
-    container.initDisplayValue(displayValue)
+    container.initDisplayValue(displayValue, computeBranchOriginalFormula(formula, helper))
   }
 }
 

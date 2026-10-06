@@ -6,20 +6,27 @@ import { isNumberString } from '@/shared/utils/string'
 import {
   SkillBranchResult,
   type SkillBranchResultBase,
+  SkillBranchStatResult,
   SkillBranchTextResult,
   type SkillBranchTextResultPartValue,
 } from '@/lib/Skill/SkillComputing'
 import {
+  CommonTextParseItemIds,
   ResultContainerTypes,
   TextResultContainerPart,
   TextResultContainerPartTypes,
   type TextResultContainerPartValue,
+  getCommonTextParseItem,
+  handleParseText,
 } from '@/lib/common/ResultContainer'
 
+import CyPopover from '@/components/cyteria/cy-popover/cy-popover.vue'
 import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
 
 import SkillBranchPopover from './skill-branch-popover.vue'
 import SkillLinkPopover from './skill-link-popover.vue'
+
+import './skill-branch-formula.css'
 
 export interface NormalLayoutSubContent {
   key: string
@@ -30,9 +37,25 @@ export interface NormalLayoutSubContent {
   type?: 'primary' | 'normal' | 'cyan' | 'gray'
 }
 
-function _renderContainerResult(container: SkillBranchResult, displayResult?: string) {
-  const res = displayResult ?? container.result
+const glossaryTagParseItem = getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag)
 
+function getContainerStatSign(container: SkillBranchResult, originalFormula: boolean) {
+  if (!(container instanceof SkillBranchStatResult)) {
+    return ''
+  }
+
+  const value = originalFormula
+    ? (container.originalFormulaValue ?? container.value)
+    : container.value
+  return isNumberString(value) && parseFloat(value) < 0 ? '' : '+'
+}
+
+function renderContainerContent(
+  container: SkillBranchResult,
+  res: string,
+  originalFormula: boolean,
+  parseGlossaryTag: boolean
+) {
   const { classNames: _classNames = [], unit: _unit = '', message } = container.displayOptions ?? {}
 
   const classNames = _classNames.slice() ?? []
@@ -40,7 +63,10 @@ function _renderContainerResult(container: SkillBranchResult, displayResult?: st
   // ignore `end` if message exist
   const unit = message ? '' : _unit
 
-  const registletResult = container.subContainers.registlet?.result
+  const registlet = container.subContainers.registlet
+  const registletResult = originalFormula
+    ? (registlet?.originalFormulaResult ?? registlet?.result)
+    : registlet?.result
   const registletNode =
     registletResult && registletResult !== '0'
       ? h('span', {
@@ -49,24 +75,62 @@ function _renderContainerResult(container: SkillBranchResult, displayResult?: st
         })
       : null
 
-  if (container.type === ResultContainerTypes.Number) {
-    if (!isNumberString(res) || registletNode) {
-      const mainNode = registletNode
-        ? h('span', { class: 'cy--text-separate' }, [h('span', { innerHTML: res }), registletNode])
-        : h('span', {
-            innerHTML: res,
-            class: 'cy--text-separate',
-          })
-      return h('span', { class: classNames }, [mainNode, unit])
-    }
-  }
-  return h('span', {
-    innerHTML: res + unit,
-    class: classNames,
-  })
+  const valueNode = parseGlossaryTag
+    ? h('span', renderPlainTextParts(handleParseText(res, [glossaryTagParseItem]).parts))
+    : h('span', { innerHTML: res })
+  const mainNode =
+    container.type === ResultContainerTypes.Number && (!isNumberString(res) || registletNode)
+      ? h('span', { class: 'cy--text-separate' }, [valueNode, registletNode])
+      : valueNode
+  const sign = getContainerStatSign(container, originalFormula)
+  const statSign = sign ? h('span', { class: 'text-primary-50' }, sign) : null
+  return h('span', { class: classNames }, [statSign, mainNode, unit])
 }
 
-export function renderContainerResult(container: SkillBranchResult, displayResult?: string) {
+function _renderContainerResult(
+  container: SkillBranchResult,
+  displayResult?: string,
+  parseGlossaryTag = false
+) {
+  const computedResult = displayResult ?? container.result
+  const originalResult = container.originalFormulaResult
+  const renderResult = (originalFormula: boolean) =>
+    renderContainerContent(
+      container,
+      originalFormula ? (originalResult ?? computedResult) : computedResult,
+      originalFormula,
+      parseGlossaryTag
+    )
+  const registlet = container.subContainers.registlet
+  if (
+    originalResult === null ||
+    (originalResult === computedResult &&
+      getContainerStatSign(container, true) === getContainerStatSign(container, false) &&
+      (!registlet || registlet.originalFormulaResult === registlet.result))
+  ) {
+    return renderResult(originalResult !== null && container.showOriginalFormula)
+  }
+
+  return h(
+    CyPopover,
+    {
+      tag: 'span',
+      triggers: 'hover click',
+      popperContentClass: 'skill-branch-formula-popper-content px-3 py-2',
+      class: 'skill-branch-formula-popover-wrapper hover:bg-primary-10 cursor-pointer rounded-sm',
+    },
+    {
+      default: () => renderResult(container.showOriginalFormula),
+      popper: () => renderResult(!container.showOriginalFormula),
+    }
+  )
+}
+
+export function renderContainerResult(
+  container: SkillBranchResult,
+  displayResult?: string,
+  parseGlossaryTag = false
+) {
   const message = container.displayOptions?.message
   if (message) {
     const { id, param } = message
@@ -78,11 +142,11 @@ export function renderContainerResult(container: SkillBranchResult, displayResul
         scope: 'global',
       },
       {
-        [param]: () => _renderContainerResult(container),
+        [param]: () => _renderContainerResult(container, displayResult, parseGlossaryTag),
       }
     )
   }
-  return _renderContainerResult(container, displayResult)
+  return _renderContainerResult(container, displayResult, parseGlossaryTag)
 }
 
 export function renderTextParts(parts: SkillBranchTextResultPartValue[]) {
@@ -96,9 +160,7 @@ export function renderTextParts(parts: SkillBranchTextResultPartValue[]) {
       }
 
       if (part.type === TextResultContainerPartTypes.Separate) {
-        const childs = part.hasMultipleParts
-          ? renderTextParts(part.parts)
-          : h('span', part.value.replace(/\*/g, '×'))
+        const childs = renderTextParts(part.parts)
         const classNames = ['cy--text-separate']
         if (part.unit) {
           return h('span', { class: 'text-primary-50' }, [

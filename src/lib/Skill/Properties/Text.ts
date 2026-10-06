@@ -2,7 +2,11 @@ import {
   SkillBranchTextResult,
   type SkillBranchTextResultParseResult,
 } from '../SkillComputing/SkillBranchResult'
-import { type ComputedBranchHelperResult, computeBranchValue } from './Formula'
+import {
+  type ComputedBranchHelperResult,
+  computeBranchValue,
+  initializeBranchFormulaResult,
+} from './Formula'
 
 export function computeTextProperty(
   helper: ComputedBranchHelperResult,
@@ -29,7 +33,8 @@ export function computeTextProperty(
     helper.branchItem,
     propertyKey,
     propertyValue,
-    value => computeBranchValue(value, helper)
+    value => computeBranchValue(value, helper),
+    result => initializeBranchFormulaResult(result, helper)
   )
   return SkillBranchTextResult.createForBranch(
     helper.branchItem,

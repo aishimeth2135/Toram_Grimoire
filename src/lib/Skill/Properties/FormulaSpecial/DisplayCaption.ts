@@ -17,7 +17,17 @@ export function computeStatDisplayCaption(
     $value: Number.isFinite(value) ? value : 0,
   }
   return computeTextProperty(
-    { ...helper, vars: { ...helper.vars, ...scope } },
+    {
+      ...helper,
+      vars: { ...helper.vars, ...scope },
+      originalFormula: {
+        ...helper.originalFormula,
+        texts: {
+          ...helper.originalFormula.texts,
+          $value: `(${result.originalFormulaDisplayValue ?? result.result})`,
+        },
+      },
+    },
     propertyKey,
     propertyValue
   )

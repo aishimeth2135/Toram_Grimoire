@@ -5,6 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 import { defineState } from '@/shared/composables/State'
 
 import { EquipmentRestrictions } from '@/lib/Character/Stat'
+import { getFormulaReplacedTexts } from '@/lib/Skill/Properties'
 import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 import {
   SkillBranchItem,
@@ -93,32 +94,7 @@ export function setupSkillQueryComputingContainer(skillRef: Ref<Skill | null>) {
   const { skillLevel, characterLevel } = useSkillQueryState()
 
   const computingContainer = SkillComputingContainer.create()
-  const FORMULA_REPLACED_VARS = [
-    'BSTR',
-    'BINT',
-    'BAGI',
-    'BVIT',
-    'BDEX',
-    'TEC',
-    'CRT',
-    'LUK',
-    'MEN',
-    'STR',
-    'INT',
-    'AGI',
-    'VIT',
-    'DEX',
-    'shield_refining',
-    'dagger_atk',
-    'target_def',
-    'target_level',
-    'guard_power',
-  ]
-  FORMULA_REPLACED_VARS.forEach(varName => {
-    computingContainer.handleFormulaConstants.texts['$' + varName] = Grimoire.i18n.t(
-      `skill-query.branch.formula-replaced-text.${varName}`
-    )
-  })
+  Object.assign(computingContainer.handleFormulaConstants.texts, getFormulaReplacedTexts())
   computingContainer.varGetters.skillLevel = () => skillLevel.value
   computingContainer.varGetters.characterLevel = () => characterLevel.value
   computingContainer.varGetters.registletLevel = skill => {

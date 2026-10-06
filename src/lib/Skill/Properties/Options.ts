@@ -6,7 +6,11 @@ import { SkillBranchNames } from '../Skill'
 import { SkillBranchItemSuffix } from '../SkillComputing/SkillBranchItem'
 import { SkillBranchResult } from '../SkillComputing/SkillBranchResult'
 import { normalizeBooleanProperty } from './Boolean'
-import { type ComputedBranchHelperResult, computeBranchValue } from './Formula'
+import {
+  type ComputedBranchHelperResult,
+  computeBranchOriginalFormula,
+  computeBranchValue,
+} from './Formula'
 
 interface OptionsPropertyConfig {
   rootKey?: SkillBranchNames
@@ -45,16 +49,22 @@ export function handleOptionsProperties<PropertyMap extends OptionsPropertyMap>(
 
     let resultValue = value
     let displayValue: string
+    let originalFormulaValue: string | undefined
+    let originalFormulaDisplayValue: string | undefined
     if (type === 'value') {
-      const computedValue = computeBranchValue(value, helper)
-      const sign =
-        isNumberString(computedValue) && parseFloat(computedValue) < 0 ? 'negative' : 'positive'
-      const normalizedValue = sign === 'negative' ? -1 * parseFloat(computedValue) : computedValue
-      displayValue = t(
-        `skill-query.branch.${rootKey ?? branchItem.getTranslationKey()}.${String(propertyKey)}.${sign}`,
-        { value: normalizedValue.toString() }
-      )
-      resultValue = computedValue
+      const translateValue = (formulaValue: string) => {
+        const sign =
+          isNumberString(formulaValue) && parseFloat(formulaValue) < 0 ? 'negative' : 'positive'
+        const normalizedValue = sign === 'negative' ? -1 * parseFloat(formulaValue) : formulaValue
+        return t(
+          `skill-query.branch.${rootKey ?? branchItem.getTranslationKey()}.${String(propertyKey)}.${sign}`,
+          { value: normalizedValue.toString() }
+        )
+      }
+      resultValue = computeBranchValue(value, helper)
+      originalFormulaValue = computeBranchOriginalFormula(value, helper)
+      displayValue = translateValue(resultValue)
+      originalFormulaDisplayValue = translateValue(originalFormulaValue)
     } else {
       const normalizedValue =
         type === 'auto' || type === 'boolean' ? normalizeBooleanProperty(value) : value
@@ -80,7 +90,10 @@ export function handleOptionsProperties<PropertyMap extends OptionsPropertyMap>(
       value,
       resultValue
     )
-    result.initDisplayValue(displayValue)
+    if (originalFormulaValue !== undefined) {
+      result.initOriginalFormula(originalFormulaValue, helper.showOriginalFormula)
+    }
+    result.initDisplayValue(displayValue, originalFormulaDisplayValue)
     results[propertyKey] = result
   })
 

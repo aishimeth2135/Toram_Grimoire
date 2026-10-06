@@ -2,7 +2,6 @@
   <div class="flex flex-wrap items-center p-1 pb-0.5 pr-3">
     <div class="mt-0.5">
       <cy-input-counter
-        v-if="computing.config.formulaDisplayMode === FormulaDisplayModes.Normal"
         v-model:value="stackValue"
         :range="stackValueRange"
         :input-width="getStackInputWidth(container)"
@@ -13,9 +12,6 @@
           <span class="text-primary-50">{{ container.get('unit') }}</span>
         </template>
       </cy-input-counter>
-      <div v-else class="border-blue-30 text-blue-60 border px-3 py-1.5">
-        {{ container.get('name') }}
-      </div>
     </div>
     <div class="text-primary-30 ml-4 mt-0.5 flex items-center space-x-1">
       <cy-icon icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
@@ -33,7 +29,6 @@ import type { ComputedRef, WritableComputedRef } from 'vue'
 import { toInt } from '@/shared/utils/number'
 
 import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillComputing'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputing'
 import { StackHandler, getStackInputWidth } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'

@@ -15,6 +15,7 @@ interface RegistletFormulaContext {
   properties: ReadonlyMap<string, string>
   variables: RegistletFormulaVariables
   compute: (formula: string) => string
+  initializeResult: (result: SkillBranchResult) => void
 }
 
 export function getRegistletFormulaLevelCount(values: readonly string[]): number {
@@ -73,4 +74,5 @@ export function attachRegistletFormulaResult(
     formula,
     context.compute(formula)
   )
+  context.initializeResult(result.subContainers.registlet)
 }

@@ -50,6 +50,14 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
   sources: readonly SkillBranchResultSource[]
 
   private displayResult: string | null
+  private originalFormula: {
+    value: string
+    result: string
+    displayValue: string | null
+    displayResult: string | null
+  } | null
+
+  showOriginalFormula: boolean
 
   readonly subContainers: {
     registlet: SkillBranchResult | null
@@ -79,6 +87,8 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     this.key = key
     this.sources = [{ branch, key }]
     this.displayResult = null
+    this.originalFormula = null
+    this.showOriginalFormula = false
     this.subContainers = {
       registlet: null,
     }
@@ -104,6 +114,8 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     )
     result._result = this._result
     result.displayResult = this.displayResult
+    result.originalFormula = this.originalFormula ? { ...this.originalFormula } : null
+    result.showOriginalFormula = this.showOriginalFormula
     result.mergeDisplayOptions(this.displayOptions)
     result.subContainers.registlet = this.subContainers.registlet?.clone() ?? null
     result.setSources(this.sources)
@@ -123,6 +135,34 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
 
   get valueResult() {
     return this._result
+  }
+
+  get originalFormulaValue() {
+    return this.originalFormula?.value ?? null
+  }
+
+  get originalFormulaResult() {
+    return this.originalFormula?.displayResult ?? this.originalFormula?.result ?? null
+  }
+
+  get originalFormulaDisplayValue() {
+    return this.originalFormula?.displayValue ?? this.originalFormula?.value ?? null
+  }
+
+  initOriginalFormula(value: string, showOriginalFormula: boolean) {
+    this.originalFormula = { value, result: value, displayValue: null, displayResult: null }
+    this.showOriginalFormula = showOriginalFormula
+  }
+
+  handleOriginalFormula(handler: ResultHandler) {
+    if (!this.originalFormula) {
+      return
+    }
+
+    this.originalFormula.result = handler(this.originalFormula.result)
+    if (this.originalFormula.displayResult !== null) {
+      this.originalFormula.displayResult = handler(this.originalFormula.displayResult)
+    }
   }
 
   get valueSum() {
@@ -147,6 +187,7 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
     if (this.displayResult !== null) {
       this.displayResult = handler(this.displayResult)
     }
+    this.handleOriginalFormula(handler)
   }
 
   handleDisplay(handler: ResultHandler) {
@@ -154,10 +195,19 @@ class SkillBranchResult extends ResultContainer implements SkillBranchResultBase
       this.displayResult = this._result
     }
     this.displayResult = handler(this.displayResult)
+    if (this.originalFormula) {
+      this.originalFormula.displayResult = handler(
+        this.originalFormula.displayResult ?? this.originalFormula.result
+      )
+    }
   }
 
-  initDisplayValue(value: string) {
+  initDisplayValue(value: string, originalFormulaValue?: string) {
     this.displayResult = value
+    if (this.originalFormula && originalFormulaValue !== undefined) {
+      this.originalFormula.displayValue = originalFormulaValue
+      this.originalFormula.displayResult = originalFormulaValue
+    }
   }
 }
 
@@ -326,7 +376,8 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     branch: SkillBranchItemBaseChilds,
     key: string,
     rootValue: string,
-    computedValue: (value: string) => string
+    computedValue: (value: string) => string,
+    initializeResult?: (result: SkillBranchResult) => void
   ): SkillBranchTextResultParseResult {
     const valueParseHandlerBase = getCommonTextParseItemHandler(CommonTextParseItemIds.Value, {
       computedValue,
@@ -334,7 +385,9 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     const valueParseItem: TextParseItem = {
       ...getCommonTextParseItemBase(CommonTextParseItemIds.Value),
       handler(context) {
-        return SkillBranchResult.from(valueParseHandlerBase(context), branch, key)
+        const result = SkillBranchResult.from(valueParseHandlerBase(context), branch, key)
+        initializeResult?.(result)
+        return result
       },
     }
 

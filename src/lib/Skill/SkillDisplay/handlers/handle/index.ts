@@ -16,6 +16,7 @@ import {
   SkillBranchResult,
   type SkillBranchResultBase,
   type SkillBranchResultSource,
+  SkillBranchTextResult,
   SkillComputingContainer,
   SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputing'
@@ -102,7 +103,6 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     props
   )
 
-  const formulaDisplayMode = helper.formulaDisplayMode
   const computedValues = computeBranchValueResults(helper, props, Object.keys(values))
   const formulaKeys = [
     ...pureValues,
@@ -161,13 +161,24 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
   })
   const langDatas = handleOptionsProperties(helper, props, langs)
+  const translatedFormulaTexts: Record<string, SkillBranchTextResult> = {}
   handleAsTextLangKeys.forEach(key => {
     const result = langDatas[key]
     if (!result) {
       return
     }
-    props.set(key, result.result)
-    texts[key] = null
+    if (result.originalFormulaResult !== null) {
+      translatedFormulaTexts[key] = SkillBranchTextResult.createForBranch(
+        branchItem,
+        key,
+        result.origin,
+        result.result,
+        { parts: [result], containers: [result] }
+      )
+    } else {
+      props.set(key, result.result)
+      texts[key] = null
+    }
     delete langDatas[key]
   })
   if (handleAsTextLangKeys.length > 0) {
@@ -175,28 +186,42 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       computing,
       branchItem,
       collectBranchFormulaValues(branchItem, props),
-      formulaDisplayMode,
+      options.formulaDisplayMode,
       props
     )
   }
 
   const valueContainers = handleBranchValueProps(helper, props, values, computedValues)
-  const textContainers = handleBranchTextProps(helper, props, texts)
+  const textContainers = {
+    ...handleBranchTextProps(helper, props, texts),
+    ...translatedFormulaTexts,
+  }
   const statContainers = handleBranchStats(helper, branchItem.stats)
 
   const titlesResult: SkillDisplayData = new Map()
 
+  const formatFormulaValue = (value: string) => {
+    const formula = value
+      .replace(
+        FORMULA_VALUE_TO_PERCENTAGE_PATTERN,
+        (_match, p1, p2) => p1 + '*' + numberStringToPercentage(p2)
+      )
+      .replace(MUL_PATTERN, '×')
+    return trimFloatStringZero(numberStringToFixed(formula, 2))
+  }
+
   const handleContainerFormulaValue = (container: SkillBranchResultBase) => {
-    container.handle(value => {
-      return value
-        .replace(
-          FORMULA_VALUE_TO_PERCENTAGE_PATTERN,
-          (_match, p1, p2) => p1 + '*' + numberStringToPercentage(p2)
-        )
-        .replace(MUL_PATTERN, '×')
-    })
-    container.handle(value => numberStringToFixed(value, 2))
-    container.handle(trimFloatStringZero)
+    container.handle(formatFormulaValue)
+    if (container instanceof SkillBranchResult && container.subContainers.registlet) {
+      handleContainerFormulaValue(container.subContainers.registlet)
+    }
+  }
+
+  const highlightContainerFormula = (container: SkillBranchResult) => {
+    container.handleDisplay(handleFunctionHighlight)
+    if (container.subContainers.registlet) {
+      highlightContainerFormula(container.subContainers.registlet)
+    }
   }
 
   const branchRecordKeys = ['overwrite', 'append', 'remove'] as const
@@ -239,7 +264,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   Object.values(valueContainers).forEach(container => {
     handleContainerFormulaValue(container)
-    container.handleDisplay(str => handleFunctionHighlight(str))
+    highlightContainerFormula(container)
     handlePropHistoryHighlight(container)
   })
 
@@ -249,11 +274,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
     container.containers.forEach(ctner => {
       handlePropHistoryHighlight(ctner)
-      ctner.handleDisplay(str => handleFunctionHighlight(str))
+      highlightContainerFormula(ctner)
     })
   })
 
   Object.values(langDatas).forEach(container => {
+    container.handleOriginalFormula(formatFormulaValue)
+    highlightContainerFormula(container)
     applySource(container)
     handlePropHistoryHighlight(container)
   })
@@ -262,7 +289,16 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     handleContainerFormulaValue(container)
     container.handle(value => numberStringToFixed(value, 2))
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
-    container.handleDisplay(value => handleFunctionHighlight(value))
+    highlightContainerFormula(container)
+
+    ;[container.displayTitle, container.displayCaption].forEach(text => {
+      if (!text) {
+        return
+      }
+
+      handleContainerFormulaValue(text)
+      text.containers.forEach(highlightContainerFormula)
+    })
 
     const sign = isNumberString(container.value) && parseFloat(container.value) < 0 ? '' : '+'
     const showData = container.stat.getShowData()
@@ -283,11 +319,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   pureValues.forEach(key => {
     const container = computedValues[key].clone()
 
-    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
-      handleContainerFormulaValue(container)
-    }
-
-    container.handleDisplay(str => handleFunctionHighlight(str))
+    container.handleOriginalFormula(formatFormulaValue)
+    highlightContainerFormula(container)
 
     applySource(container)
     handlePropHistoryHighlight(container)

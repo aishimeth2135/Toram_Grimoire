@@ -129,6 +129,10 @@
 - `SkillDisplay` 提供查詢頁與角色模擬共用的 Handler、翻譯與顯示加工。請從其 `index.ts` 匯入，不要引用其他頁面的內部檔案。
 - Vue 元件負責版面與互動；輸入框寬度等顯示決策由 `SkillDisplay/presentation.ts` 提供。
 
+`computedBranchHelper` 同時建立數值與原始公式的 context，計算、篩選與托環啟用判斷固定使用數值 context。`SkillBranchResult` 的 `value`、`valueSum`、`result` 保留計算結果語意，原始公式另存於 `originalFormulaResult`，並同步處理顯示覆寫與格式化。
+
+`formulaDisplayMode` 僅轉為結果容器的 `showOriginalFormula` flag，由最後的 renderer 決定 popover 兩側：`Normal` 外觀顯示計算結果，hover 顯示原始公式；`OriginalFormula` 交換兩側。文字內嵌公式、Stat caption 的 `$value` 與托環子結果沿用相同機制。
+
 原本的 `views/Character/SkillQuery/skill/branch-handlers` 已移至 `SkillDisplay/handlers`。`Next` 沿用 `EffectHandler`，以 `isExactly(SkillBranchNames.Next)` 判斷 Next 專用語意。
 
 ## 分支處理順序

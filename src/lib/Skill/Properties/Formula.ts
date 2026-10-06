@@ -21,7 +21,7 @@ import { SkillBranchResult, SkillBranchStatResult } from '../SkillComputing/Skil
 import { SkillComputingContainer } from '../SkillComputing/SkillComputingContainer'
 import { resolveStackName } from '../SkillComputing/branchProps'
 import { FormulaDisplayModes } from '../SkillComputing/enums'
-import { mergeFormulaExtendedData } from './FormulaExtended'
+import { getFormulaReplacedTexts, mergeFormulaExtendedData } from './FormulaExtended'
 import {
   type RegistletFormulaVariables,
   attachRegistletFormulaResult,
@@ -31,7 +31,7 @@ import {
 } from './FormulaSpecial'
 import { parseFormulaListProperty, parseListProperty } from './List'
 
-function computeBranchFormulaValue(str: string, helper: ComputedBranchHelperResult): string {
+function computeBranchFormulaValue(str: string, helper: BranchFormulaContext): string {
   const { vars, texts, methods, handleFormulaExtra } = helper
   if (typeof str !== 'string') {
     console.warn('[computeBranchValue] unexpected value: ' + str, helper)
@@ -52,14 +52,18 @@ function computeBranchFormulaValue(str: string, helper: ComputedBranchHelperResu
 /**
  * generated from `computedBranchHelper()`
  */
-interface ComputedBranchHelperResult {
+interface BranchFormulaContext {
   vars: HandleFormulaVars
   texts: HandleFormulaTexts
   methods: HandleFormulaMethods
+  handleFormulaExtra: (formula: string) => string
+}
+
+interface ComputedBranchHelperResult extends BranchFormulaContext {
   branchItem: SkillBranchItemBaseChilds
   props: ReadonlyMap<string, string>
-  handleFormulaExtra: (formula: string) => string
-  formulaDisplayMode: FormulaDisplayModes
+  originalFormula: BranchFormulaContext
+  showOriginalFormula: boolean
   registletVariables: RegistletFormulaVariables
 }
 const HANDLE_FORMULA_EXTRA_PATTERN = /extra\[(\d+)\]/g
@@ -77,11 +81,7 @@ function computedBranchHelper(
   formulaDisplayMode?: FormulaDisplayModes,
   props: ReadonlyMap<string, string> = branchItem.allProps
 ): ComputedBranchHelperResult {
-  let vars: HandleFormulaVars
-  let texts: HandleFormulaTexts
-
-  formulaDisplayMode = formulaDisplayMode ?? computing.config.formulaDisplayMode
-
+  const { t } = Grimoire.i18n
   const branchItemStack: SkillBranchItem =
     branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem
   const stackIds = branchItemStack.linkedStackIds
@@ -103,95 +103,51 @@ function computedBranchHelper(
 
   const STACK_ACCESS_PATTERN = /stack\[(\d+)\]/g
 
-  if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
-    const { t } = Grimoire.i18n
+  const stack: number[] = []
+  const stackNames: string[] = []
+  const defaultStackName = t('skill-query.branch.stack.base-name')
+  stackIds.forEach((id, idx) => {
+    const stackBranch = branchItem.parent.branchItems.find(item => item.stackId === id)
+    stackNames[idx] = stackBranch
+      ? resolveStackName(stackBranch, defaultStackName)
+      : `${defaultStackName}${idx + 1}`
+    const stackState = stackBranch && computing.config.getStackState?.(stackBranch)
+    stack[idx] = stackState
+      ? ((stackBranch.hasProp('value')
+          ? computing.config.computeFormulaExtraValue?.(stackBranch.prop('value'))
+          : undefined) ?? stackState.value)
+      : 0
+  })
 
-    const stack: string[] = []
-    const RLvLength = getRegistletFormulaLevelCount(values)
-
-    if (stackIds.length > 0) {
-      const stackNames = stackIds.map((id, idx) => {
-        const stackBranch = branchItem.parent.branchItems.find(item => item.stackId === id)
-        const defaultName = t('skill-query.branch.stack.base-name')
-        return stackBranch ? resolveStackName(stackBranch, defaultName) : `${defaultName}${idx + 1}`
-      })
-      stack.push(...stackNames)
+  values.forEach(value => {
+    for (const match of value.matchAll(STACK_ACCESS_PATTERN)) {
+      const idx = toIndex(match[1])
+      stack[idx] ??= 0
+      stackNames[idx] ??= `${defaultStackName}${idx + 1}`
     }
+  })
+  stack[0] ??= 0
+  stackNames[0] ??= `${defaultStackName}1`
+  initializeRegistletFormulaLevels(RLv, values)
+  RLv[0] ??= 0
 
-    values.forEach(value => {
-      const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
-      stackMatches.forEach(match => {
-        const idxValue = toIndex(match[1])
-        if (stack[idxValue] === undefined) {
-          stack[idxValue] = `${t('skill-query.branch.stack.base-name')}${idxValue + 1}`
-        }
-      })
-    })
-
-    if (stack[0] === undefined) {
-      stack[0] = `${t('skill-query.branch.stack.base-name')}1`
-    }
-    vars = {
-      ...extendsDatas.vars,
-    } as HandleFormulaVars
-    texts = {
-      SLv: t('skill-query.skill-level'),
-      CLv: t('skill-query.character-level'),
-      RLv: Array(RLvLength).fill(t('skill-query.registlet-level-abbreviation')),
-      stack: stack,
-      ...extendsDatas.texts,
-    } as HandleFormulaTexts
-  } else {
-    const stack: number[] = []
-
-    if (stackIds.length > 0) {
-      const computeFormulaExtraValue = computing.config.computeFormulaExtraValue
-      const stackValues = stackIds.map(id => {
-        const stackBranch = branchItem.parent.branchItems.find(item => item.stackId === id)
-        if (!stackBranch) {
-          return 0
-        }
-        const stackState = computing.config.getStackState?.(stackBranch)
-        if (!stackState) {
-          return 0
-        }
-        if (!computeFormulaExtraValue || !stackBranch.hasProp('value')) {
-          return stackState.value
-        }
-        return computeFormulaExtraValue(stackBranch.prop('value')) ?? stackState.value
-      })
-      stack.push(...stackValues)
-    }
-
-    values.forEach(value => {
-      const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
-      stackMatches.forEach(match => {
-        const idxValue = toIndex(match[1])
-        if (stack[idxValue] === undefined) {
-          stack[idxValue] = 0
-        }
-      })
-    })
-
-    initializeRegistletFormulaLevels(RLv, values)
-
-    if (stack[0] === undefined) {
-      stack[0] = 0
-    }
-    if (RLv[0] === undefined) {
-      RLv[0] = 0
-    }
-
-    vars = {
-      ...extendsDatas.vars,
-      SLv: computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? 0,
-      CLv: computing.varGetters.characterLevel?.() ?? 0,
-      stack: stack,
-      RLv,
-    } as HandleFormulaVars
-    texts = {
-      ...extendsDatas.texts,
-    } as HandleFormulaTexts
+  const vars: HandleFormulaVars = {
+    ...extendsDatas.vars,
+    SLv: computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? 0,
+    CLv: computing.varGetters.characterLevel?.() ?? 0,
+    stack,
+    RLv,
+  }
+  const texts: HandleFormulaTexts = { ...extendsDatas.texts }
+  const originalTexts: HandleFormulaTexts = {
+    SLv: t('skill-query.skill-level'),
+    CLv: t('skill-query.character-level'),
+    RLv: Array(getRegistletFormulaLevelCount(values)).fill(
+      t('skill-query.registlet-level-abbreviation')
+    ),
+    stack: stackNames,
+    ...getFormulaReplacedTexts(),
+    ...extendsDatas.texts,
   }
 
   const getTextKey = (idx: number) => `__FORMULA_EXTRA_TEXT_${idx.toString()}__`
@@ -212,6 +168,7 @@ function computedBranchHelper(
     extraTexts.forEach((text, idx) => {
       const key = getTextKey(idx)
       texts[key] = text
+      originalTexts[key] = text
     })
   }
 
@@ -239,16 +196,23 @@ function computedBranchHelper(
     return getFormulaExtraValue?.(formulaExtra, extraTexts[idx], bounds)?.toString() ?? null
   }
 
-  const handleFormulaExtra = !formulaExtra
-    ? (str: string) => {
-        return str.replace(HANDLE_FORMULA_EXTRA_PATTERN, (_match, p1) => getTextKey(p1))
+  const extraValues = new Map<string, string | null>()
+  const handleFormulaExtra = (str: string) => {
+    return str.replace(HANDLE_FORMULA_EXTRA_PATTERN, (_match, index: string) => {
+      if (!extraValues.has(index)) {
+        extraValues.set(index, getValue(index))
       }
-    : (str: string) => {
-        return str.replace(
-          HANDLE_FORMULA_EXTRA_PATTERN,
-          (_match, p1) => getValue(p1) ?? getTextKey(p1)
-        )
-      }
+      return extraValues.get(index) ?? getTextKey(toIndex(index))
+    })
+  }
+
+  const handleOriginalFormulaExtra = (str: string) => {
+    return str.replace(HANDLE_FORMULA_EXTRA_PATTERN, (_match, index: string) => {
+      const key = getTextKey(toIndex(index))
+      originalTexts[key] ||= `extra[${index}]`
+      return key
+    })
+  }
 
   return {
     vars,
@@ -257,7 +221,15 @@ function computedBranchHelper(
     handleFormulaExtra,
     branchItem,
     props,
-    formulaDisplayMode,
+    originalFormula: {
+      vars: { ...extendsDatas.vars },
+      texts: originalTexts,
+      methods: extendsDatas.methods,
+      handleFormulaExtra: handleOriginalFormulaExtra,
+    },
+    showOriginalFormula:
+      (formulaDisplayMode ?? computing.config.formulaDisplayMode) ===
+      FormulaDisplayModes.OriginalFormula,
     registletVariables: { RLv },
   }
 }
@@ -309,6 +281,23 @@ export {
 }
 export type { ComputedBranchHelperResult }
 
+export function computeBranchOriginalFormula(
+  formula: string,
+  helper: ComputedBranchHelperResult
+): string {
+  return computeBranchFormulaValue(formula, helper.originalFormula)
+}
+
+export function initializeBranchFormulaResult(
+  result: SkillBranchResult,
+  helper: ComputedBranchHelperResult
+): void {
+  result.initOriginalFormula(
+    computeBranchOriginalFormula(result.origin, helper),
+    helper.showOriginalFormula
+  )
+}
+
 /** Numeric results, including registlet bonuses, without display overrides or styling. */
 export function computeBranchValueResults(
   helper: ComputedBranchHelperResult,
@@ -328,11 +317,13 @@ export function computeBranchValueResults(
     if (origin === undefined) {
       result.markEmpty()
     } else {
+      initializeBranchFormulaResult(result, helper)
       attachRegistletFormulaResult(result, {
         branchItem: helper.branchItem,
         properties: helper.props,
         variables: helper.registletVariables,
         compute: formula => computeBranchFormulaValue(formula, helper),
+        initializeResult: registlet => initializeBranchFormulaResult(registlet, helper),
       })
     }
     results[key] = result
@@ -346,11 +337,13 @@ export function computeBranchStatResults(
 ): SkillBranchStatResult[] {
   return computedBranchStats(helper, stats).map((stat, index) => {
     const result = SkillBranchStatResult.createForStat(helper.branchItem, stats[index], stat)
+    initializeBranchFormulaResult(result, helper)
     attachRegistletFormulaResult(result, {
       branchItem: helper.branchItem,
       properties: helper.props,
       variables: helper.registletVariables,
       compute: formula => computeBranchFormulaValue(formula, helper),
+      initializeResult: registlet => initializeBranchFormulaResult(registlet, helper),
     })
     attachStatConditionFormula(result, helper.branchItem, helper.props)
     return result

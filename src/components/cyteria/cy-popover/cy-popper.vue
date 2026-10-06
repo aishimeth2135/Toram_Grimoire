@@ -10,7 +10,7 @@
         v-bind="attrs"
         @cypopperhide="handlePopperHide"
       >
-        <div class="popper-content" :class="contentClass">
+        <div class="popper-content" :class="contentClass ?? 'p-0.5'">
           <slot :hide="() => togglePopper(false)" />
         </div>
       </div>
@@ -177,7 +177,6 @@ defineExpose({
       border-color: var(--color-primary-40);
       border-radius: var(--radius-sm);
       background-color: var(--color-white);
-      padding: --spacing(0.5);
     }
   }
 
