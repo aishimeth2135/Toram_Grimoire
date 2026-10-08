@@ -64,5 +64,13 @@ const { t } = useI18n()
     <div class="w-full max-w-xs">
       <CharacterEquipmentDetailsEditLabel :equipment="equipment" />
     </div>
+    <div class="pb-1">
+      <cy-button-check v-model:selected="equipment.isCustom">
+        {{ t('character-simulator.equipment-basic-editor.mark-as-custom-title') }}
+      </cy-button-check>
+      <div class="text-primary-30 px-2.5 text-sm">
+        {{ t('character-simulator.equipment-basic-editor.mark-as-custom-caption') }}
+      </div>
+    </div>
   </div>
 </template>

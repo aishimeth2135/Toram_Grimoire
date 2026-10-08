@@ -71,7 +71,7 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
       v-model="innerEditMode"
       direction="vertical"
       plain
-      class="z-5 border-primary-20 relative w-full border bg-white py-2"
+      class="z-5 border-primary-20 relative w-full border bg-white pb-3 pt-2"
     >
       <cy-icon
         v-if="equipped"
@@ -169,10 +169,14 @@ const goEdit = (mode: CharacterEquipmentEditModes) => {
       <CharacterEquipmentDetailsSelection
         v-if="equipment.supportTrait"
         :mode="CharacterEquipmentEditModes.Trait"
-        class="px-4 py-1.5"
+        class="px-4 py-1"
         @edit="goEdit"
       >
-        <CharacterEquipmentTraitTitle v-if="equipment.trait" :equipment-trait="equipment.trait" />
+        <CharacterEquipmentTraitTitle
+          v-if="equipment.trait"
+          :equipment-trait="equipment.trait"
+          class="py-0.5"
+        />
         <div v-else class="text-primary-30 text-sm">
           {{ t('character-simulator.equipment-info.trait-empty') }}
         </div>

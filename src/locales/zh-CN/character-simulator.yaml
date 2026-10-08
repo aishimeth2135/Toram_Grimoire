@@ -96,7 +96,14 @@ equipment-basic-editor:
   label-delete: 删除标签
   label-empty-caption: 目前还没有任何标签～点选上方的按扭来新增一个标签。
   only-one-element-stat-tips: 一件装备只能拥有一个属性，请确认编辑中的能力清单。
+  mark-as-custom-title: 此装备为自订装备
+  mark-as-custom-caption: 表示此装备是透过自订装备新增的装备，通常不用特别设定。在装备能力的「快速替换」功能中，只有自订装备的能力会被包含进去。
 select-stats:
+  select-tab: 选择能力
+  quick-replace-tab: 快速替换
+  quick-replace-positive: 快速替换正属
+  quick-replace-negative: 快速替换负属
+  quick-replace-success: 快速替换成功。
   stat-empty-tips: 此装备还没有能力，点选右上角的按钮来新增。
 select-crystals:
   title: 选择锻晶
@@ -164,7 +171,8 @@ skill-build:
   skill-branch-state-save-tips-2: 在更换装备类型导致技能效果出现变化时，齿轮内设定的数值会分开储存。
 character-damage:
   title: 伤害计算
-  select-buffs: 选择增益
+  self-optional-buffs: 可选加成
+  select-buffs: 其他增益
   damage-source:
     additional: 追击伤害
   target-options-title: 目标数值设定

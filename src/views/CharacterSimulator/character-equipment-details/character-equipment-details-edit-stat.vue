@@ -50,7 +50,7 @@ const getStatKey = (stat: StatRestriction) => stat.statId
 
 <template>
   <div class="flex size-full flex-col py-2">
-    <div class="mb-3 flex justify-end">
+    <div class="flex shrink-0 justify-end">
       <CommonEditModeButton v-model:is-editing="isEditing" />
     </div>
     <div v-if="!isEditing">
@@ -89,6 +89,6 @@ const getStatKey = (stat: StatRestriction) => stat.statId
         {{ t('character-simulator.select-stats.stat-empty-tips') }}
       </div>
     </div>
-    <CharacterEquipmentDetailsSelectStat v-else :equipment="equipment" />
+    <CharacterEquipmentDetailsSelectStat v-else :equipment="equipment" class="min-h-0 grow" />
   </div>
 </template>

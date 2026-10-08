@@ -96,7 +96,14 @@ equipment-basic-editor:
   label-delete: 刪除標籤
   label-empty-caption: 目前還沒有任何標籤～點選上方的按扭來新增一個標籤。
   only-one-element-stat-tips: 一件裝備只能擁有一個屬性，請確認編輯中的能力清單。
+  mark-as-custom-title: 此裝備為自訂裝備
+  mark-as-custom-caption: 表示此裝備是透過自訂裝備新增的裝備，通常不用特別設定。在裝備能力的「快速替換」功能中，只有自訂裝備的能力會被包含進去。
 select-stats:
+  select-tab: 選擇能力
+  quick-replace-tab: 快速替換
+  quick-replace-positive: 快速替換正屬
+  quick-replace-negative: 快速替換負屬
+  quick-replace-success: 快速替換成功。
   stat-empty-tips: 此裝備還沒有能力，點選右上角的按鈕來新增。
 select-crystals:
   title: 選擇鍛晶

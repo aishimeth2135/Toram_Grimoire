@@ -45,6 +45,7 @@ interface EquipmentSaveData {
   crystals?: string[]
   labels?: number[]
   trait?: CharacterEquipmentTraitSaveData
+  custom?: boolean
 }
 
 abstract class CharacterEquipment implements InstanceWithId {
@@ -66,6 +67,7 @@ abstract class CharacterEquipment implements InstanceWithId {
   loadedId: string | null
   readonly instanceId: InstanceId
   readonly origin: EquipmentOrigin
+  isCustom: boolean
   stats: StatRestriction[]
 
   basicValue: number
@@ -88,6 +90,7 @@ abstract class CharacterEquipment implements InstanceWithId {
     this.instanceId = CharacterEquipment._idGenerator.generate()
 
     this.origin = origin
+    this.isCustom = !origin
     this.stats = stats.map(stat => stat.clone())
     this._name = name
 
@@ -352,6 +355,7 @@ abstract class CharacterEquipment implements InstanceWithId {
 
     data.instance = instance
     data.type = this.type
+    data.custom = this.isCustom
 
     // [stats]
     data.stats = this.stats.map(stat => stat.save())
@@ -402,7 +406,9 @@ abstract class CharacterEquipment implements InstanceWithId {
         crystals,
         labels,
         trait,
+        custom = true,
       } = data
+
       const stats = data.stats
         .map(stat => StatRestriction.load(stat))
         .filter(stat => stat !== null && !stat.base.hidden) as StatRestriction[]
@@ -443,6 +449,8 @@ abstract class CharacterEquipment implements InstanceWithId {
       } else {
         eq = Avatar.create(null, name, stats)
       }
+
+      eq.isCustom = custom
 
       if (eq.supportRefining) {
         eq.refining = refining
