@@ -292,10 +292,18 @@ export const useCharacterStore = defineStore('view-character', () => {
           )
         : null
 
-      if (missingSkillBuild) loadedSkillBuilds.push(missingSkillBuild)
-      if (missingFoodBuild) loadedFoodBuilds.push(missingFoodBuild)
-      if (missingRegistletBuild) loadedRegistletBuilds.push(missingRegistletBuild)
-      if (missingPotionBuild) loadedPotionBuilds.push(missingPotionBuild)
+      if (missingSkillBuild) {
+        loadedSkillBuilds.push(missingSkillBuild)
+      }
+      if (missingFoodBuild) {
+        loadedFoodBuilds.push(missingFoodBuild)
+      }
+      if (missingRegistletBuild) {
+        loadedRegistletBuilds.push(missingRegistletBuild)
+      }
+      if (missingPotionBuild) {
+        loadedPotionBuilds.push(missingPotionBuild)
+      }
 
       skillBuildStore.replaceBuilds(
         replace ? loadedSkillBuilds : [...skillBuildStore.skillBuilds, ...loadedSkillBuilds]

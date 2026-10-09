@@ -45,6 +45,7 @@ export default defineConfigWithVueTs(
       'tailwindcss/no-custom-classname': 'off',
       'tailwindcss/classnames-order': 'off',
 
+      'curly': ['warn', 'all'],
       'no-var': 'error',
       'eqeqeq': 'error',
       'space-in-parens': ['error', 'never'],
