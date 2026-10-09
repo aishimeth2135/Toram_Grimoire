@@ -364,12 +364,12 @@ export function setupDamageCalculation(
         [CalculationItemIds.CriticalDamage, resultValue('critical_damage')],
         [
           CalculationItemIds.MagicCriticalDamageConversionRate,
-          50 + statValue('magic_cd_percentage'),
+          50 + statValue('magic_critical_damage_conversion_rate'),
         ],
         [CalculationItemIds.CriticalRate, resultValue('critical_rate')],
         [
           CalculationItemIds.MagicCriticalRateConversionRate,
-          statValue('magic_crt_percentage') + extraMagicCriticalRateConvertionRate,
+          statValue('magic_critical_rate_conversion_rate') + extraMagicCriticalRateConvertionRate,
         ],
         [CalculationItemIds.ShortRangeDamage, resultValue('short_range_damage')],
         [CalculationItemIds.LongRangeDamage, resultValue('long_range_damage')],
