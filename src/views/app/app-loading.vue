@@ -6,8 +6,8 @@
       @click.stop
     >
       <div class="main-container">
-        <cy-icon icon="@potum" class="custom-icon" />
-        <div class="mt-4 text-xl">
+        <cy-icon icon="@grimoire-cat" class="custom-icon" />
+        <div class="text-primary-80 mt-4 text-xl">
           {{ store.loadingText }}
         </div>
       </div>
