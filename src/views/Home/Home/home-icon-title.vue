@@ -9,15 +9,30 @@
     >
       <cy-icon icon="@grimoire-cat" width="2.5rem" />
     </div>
-    <teleport v-if="iconWrapperTouched" :to="rootEl">
-      <div
-        ref="appIconTouched"
-        class="title-icon title-icon-touched flex"
-        :style="appIconPositionStyle"
-      >
-        <cy-icon icon="@grimoire-cat" width="2.5rem" />
-      </div>
-    </teleport>
+    <template v-if="iconWrapperTouched">
+      <teleport :to="rootEl">
+        <div
+          ref="appIconTouched"
+          class="title-icon title-icon-touched flex"
+          :style="appIconPositionStyle"
+        >
+          <cy-icon icon="@grimoire-cat" width="2.5rem" />
+        </div>
+      </teleport>
+      <teleport :to="rootEl">
+        <div
+          v-for="textItem in touchedTextItems"
+          :key="textItem.id"
+          :style="{
+            left: `${textItem.leftP}%`,
+            top: `${textItem.topP}%`,
+          }"
+          class="icon-touched-text"
+        >
+          MISS
+        </div>
+      </teleport>
+    </template>
   </div>
 </template>
 
@@ -76,6 +91,26 @@ const unwatchTouchingIcon = watch(iconWrapperTouchedCount, newValue => {
   }
 })
 
+interface TouchedTextItem {
+  id: number
+  leftP: number
+  topP: number
+  life: number
+}
+const touchedTextItems = ref<TouchedTextItem[]>([])
+let removeTextTimer: number | undefined = undefined
+
+const createTouchedTextItem = (() => {
+  let incresementId = 0
+  return (payload: Omit<TouchedTextItem, 'id'>) => {
+    incresementId += 1
+    return {
+      id: incresementId,
+      ...payload,
+    } satisfies TouchedTextItem
+  }
+})()
+
 const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
   if (appIconTouchedEl && rootEl.value) {
     const BOUNDING = 8 // persentage
@@ -97,15 +132,26 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
     const getXP = (value: number) => (value * 100) / window.innerWidth
     const getYP = (value: number) => (value * 100) / window.innerHeight
 
-    const setRemoveText = (() => {
-      let removeTextTimer: any | null = null
-      return () => {
-        clearTimeout(removeTextTimer)
-        removeTextTimer = setTimeout(() => {
-          rootEl.value?.querySelectorAll('.icon-touched-text').forEach(el => el.remove())
-        }, 3000)
+    const setRemoveText = () => {
+      if (!removeTextTimer) {
+        removeTextTimer = window.setInterval(() => {
+          let shouldUpdate = false
+          touchedTextItems.value.forEach(item => {
+            item.life -= 1
+            if (item.life <= 0) {
+              shouldUpdate = true
+            }
+          })
+          if (shouldUpdate) {
+            touchedTextItems.value = touchedTextItems.value.filter(item => item.life > 0)
+            if (touchedTextItems.value.length === 0) {
+              clearInterval(removeTextTimer)
+              removeTextTimer = undefined
+            }
+          }
+        }, 1000)
       }
-    })()
+    }
 
     unwatchIconTouched()
     mouseTrackIconListener = debounce((evt: MouseEvent) => {
@@ -179,12 +225,13 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
           directionYRandomOffset += directionY * getRandomInt(1, 4)
           directionYExtra = 0
         }
-        const textEl = document.createElement('div')
-        textEl.innerHTML = 'MISS'
-        textEl.classList.add('icon-touched-text')
-        textEl.style.left = `${appIconPosition.value!.x + iconRadiusXP}%`
-        textEl.style.top = `${appIconPosition.value!.y - iconRadiusXP * 3}%`
-        rootEl.value!.append(textEl)
+        touchedTextItems.value.push(
+          createTouchedTextItem({
+            leftP: appIconPosition.value!.x + iconRadiusXP,
+            topP: appIconPosition.value!.y - iconRadiusXP,
+            life: 3,
+          })
+        )
         setRemoveText()
         appIconPosition.value = {
           x: newX,
