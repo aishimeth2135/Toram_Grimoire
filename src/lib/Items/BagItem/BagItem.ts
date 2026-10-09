@@ -9,6 +9,7 @@ import { StatTypes } from '@/lib/Character/Stat'
 
 interface BagItemObtain {
   name: string
+  nameSuffix?: string
   map?: string
   dye?: string
   type?: string

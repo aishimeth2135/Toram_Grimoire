@@ -28,8 +28,8 @@
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-6 pr-4 pt-2">
-        <div>
+      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-5 pr-4">
+        <div class="pl-0.5">
           <ShowStat
             v-for="stat in crystal.stats"
             :key="stat.statId"
@@ -37,16 +37,29 @@
             :negative-value="stat.value < 0"
           />
         </div>
-        <div v-if="crystal.origin.obtains.length > 0" class="mt-3 flex items-center">
-          <cy-icon class="text-gray-40" icon="mdi:treasure-chest-outline" small />
-          <span class="text-gray-40 ml-1 text-sm">
-            {{ t('crystal-query.obtain-prefix') }}
-          </span>
-          <span class="text-primary-60 ml-2 text-sm">
-            {{ crystal.origin.obtains[0].name }}
-          </span>
+        <div v-if="validObtains.length > 0" class="mt-3 gap-y-2">
+          <div
+            v-for="(obtain, idx) in crystal.origin.obtains"
+            :key="idx"
+            class="flex items-center text-sm"
+          >
+            <cy-icon class="text-gray-40" icon="mdi:treasure-chest-outline" small />
+            <span class="text-gray-40 ml-1">
+              {{ t('crystal-query.obtain-prefix') }}
+            </span>
+            <span class="text-primary-60 ml-2">
+              {{ obtain.name }}
+            </span>
+            <span v-if="obtain.nameSuffix" class="text-primary-40 ml-1">
+              {{ obtain.nameSuffix }}
+            </span>
+            <template v-if="obtain.map">
+              <cy-icon icon="ic-outline-map" small class="text-orange-30 ml-3" />
+              <span class="text-orange-60 ml-1">{{ obtain.map }}</span>
+            </template>
+          </div>
         </div>
-        <div v-if="crystal.origin.enhancer" class="mt-3 flex items-center">
+        <div v-if="crystal.origin.enhancer" class="mt-2 flex items-center">
           <cy-icon class="text-cyan-60" icon="mdi:arrow-up-bold-outline" small />
           <span class="ml-1 text-sm text-cyan-50">
             {{ t('crystal-query.enhancer-prefix') }}
@@ -93,6 +106,10 @@ const previewStats = computed(() => {
   return props.crystal.stats
     .filter(stat => stat.base === preview.origin && stat.type === preview.type)
     .sort((stat1, stat2) => stat2.value - stat1.value)
+})
+
+const validObtains = computed(() => {
+  return props.crystal.origin.obtains.filter(obtain => !!obtain.name)
 })
 
 watchEffect(() => {

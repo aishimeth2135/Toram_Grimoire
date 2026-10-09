@@ -61,8 +61,15 @@ export function LoadCrystals(root: ItemsSystem, csvData: CsvData) {
         const { type, value } = parseStatValueData(propValue)
         currentCrystal.appendStat(propName, value, type, row('attr/value2'))
       } else if (currentCategory === 'obtain') {
-        if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
-          currentObtain[propName as keyof BagItemObtain] = propValue
+        const obtainPropName = propName || 'name'
+        if (['name', 'map', 'dye', 'type', 'npc'].includes(obtainPropName)) {
+          if (obtainPropName === 'name') {
+            const [name, nameSuffix] = propValue.split('@')
+            currentObtain.name = name
+            currentObtain.nameSuffix = nameSuffix
+          } else {
+            currentObtain[obtainPropName as keyof BagItemObtain] = propValue
+          }
         }
       } else if (currentCategory === 'other') {
         if (propName === 'enhancer') {
