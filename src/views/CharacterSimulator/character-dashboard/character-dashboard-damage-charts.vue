@@ -326,7 +326,6 @@ onBeforeUnmount(() => {
   <CharacterDashboardSection
     :title="t('character-simulator.character-dashboard.damage-chart.title')"
     title-icon="ic:baseline-insert-chart-outlined"
-    default-hidden
   >
     <template v-if="damageChartSeries.length > 0">
       <div class="px-4 pt-3">

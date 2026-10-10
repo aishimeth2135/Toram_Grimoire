@@ -38,7 +38,7 @@ const buttonClick = (evt: MouseEvent) => {
       :icon="props.selected ? 'ic:round-check-box' : 'ic:round-check-box-outline-blank'"
       class="cy-button-base-icon"
     />
-    <div v-if="$slots.default" class="mr-1.5 flex">
+    <div v-if="$slots.default" class="mr-1 flex">
       <slot />
     </div>
   </CyButtonBase>

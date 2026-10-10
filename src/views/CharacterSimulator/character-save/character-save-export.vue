@@ -74,6 +74,7 @@ import {
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { type CharacterSaveData } from '@/lib/Character/Character'
+import type { CharacterComparisonTableSaveData } from '@/lib/Character/CharacterComparisonTable'
 import { type FoodsBuildSaveData } from '@/lib/Character/FoodBuild'
 import { type SkillBuildSaveData } from '@/lib/Character/SkillBuild'
 
@@ -114,6 +115,7 @@ const ExportDataItemIds = {
   Equipments: 'equipments',
   SkillBuilds: 'skillBuilds',
   FoodBuilds: 'foodBuilds',
+  ComparisonTables: 'comparisonTables',
 } as const
 export type ExportDataItemIds = (typeof ExportDataItemIds)[keyof typeof ExportDataItemIds]
 const exportDataItemCharacters: ExportDataItem<CharacterSaveData> = reactive({
@@ -144,11 +146,19 @@ const exportDataItemFoodBuilds: ExportDataItem<FoodsBuildSaveData> = reactive({
   items: new Set(),
   originalItems: [],
 })
+const exportDataItemComparisonTables: ExportDataItem<CharacterComparisonTableSaveData> = reactive({
+  id: ExportDataItemIds.ComparisonTables,
+  title: t('character-simulator.character-comparison.title'),
+  collapse: false,
+  items: new Set(),
+  originalItems: [],
+})
 const exportDatas: ExportDataItem[] = reactive([
   exportDataItemCharacters,
   exportDataItemEquipments,
   exportDataItemSkillBuilds,
   exportDataItemFoodBuilds,
+  exportDataItemComparisonTables,
 ])
 
 const exportDatasDisplay = computed(() =>
@@ -196,10 +206,29 @@ const submit = () => {
       .filter(_item => target.items.has(_item.id))
       .map(_item => _item.origin)
   }
-  const characters = getItems(exportDataItemCharacters)
+  const comparisonTables = getItems(exportDataItemComparisonTables)
+  const selectedCharacters = getItems(exportDataItemCharacters)
+  const characters = selectedCharacters.map(character => {
+    const data = { ...character }
+    if (data.comparison) {
+      const comparedCharacterIds = data.comparison.comparedCharacterIds.filter(id =>
+        selectedCharacters.some(item => item.id === id)
+      )
+      const tableIds = data.comparison.tableIds.filter(id =>
+        comparisonTables.some(table => table.id === id)
+      )
+      if (comparedCharacterIds.length || tableIds.length) {
+        data.comparison = { comparedCharacterIds, tableIds }
+      } else {
+        delete data.comparison
+      }
+    }
+    return data
+  })
   const datas: CharacterSimulatorSaveData = {
     version: 'v2',
     characters,
+    comparisonTables,
     equipments: getItems(exportDataItemEquipments),
     skillBuilds: getItems(exportDataItemSkillBuilds),
     foodBuilds: getItems(exportDataItemFoodBuilds),
@@ -233,6 +262,7 @@ watch(visible, newValue => {
     handle(exportDataItemEquipments, datas.equipments)
     handle(exportDataItemSkillBuilds, datas.skillBuilds)
     handle(exportDataItemFoodBuilds, datas.foodBuilds)
+    handle(exportDataItemComparisonTables, datas.comparisonTables ?? [])
     originalData.value = datas
     exportFileName.value = 'character-simulator-export.txt'
   }

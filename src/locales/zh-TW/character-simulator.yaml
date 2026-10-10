@@ -1,5 +1,19 @@
-character-stats: 角色面板
+character-stats: 角色能力
 character: 角色
+character-comparison:
+  title: 角色對照
+  overview: 表格一覽
+  select-tables: 選擇表格
+  physical: 物理輸出能力
+  magic: 魔法輸出能力
+  survival: 生存能力
+  new-table: 新對照表格
+  select-stats: 選擇角色面板能力
+  no-stats: 請在「選擇表格」編輯此表格的角色面板能力。
+  no-tables: 請到「選擇表格」選取要顯示的表格。
+  compare-characters: 除了當前角色，最多可選擇{num}個角色進行比較。
+  table-limits: 已選取 {selected}/{selectionLimit} 個表格，共 {total}/{totalLimit} 個表格。
+  shared-tables-tips: 表格由所有角色共用，編輯或刪除會套用到所有使用此表格的角色。
 build-limit-reached: 此配置數量不可以超過{num}。
 custom-equipment:
   button-title: 自訂裝備

@@ -7,6 +7,7 @@ import { useCharacterStore } from '@/stores/views/character'
 
 import { CharacterSimulatorRouteNames } from '@/router/Character'
 
+import CharacterComparison from '../character-comparison/character-comparison.vue'
 import CharacterDashboardDamageCharts from './character-dashboard-damage-charts.vue'
 import CharacterDashboardEquipmentField from './character-dashboard-equipment-field.vue'
 import CharacterDashboardFoodBuild from './character-dashboard-food-build.vue'
@@ -61,7 +62,6 @@ const { setCurrentTab } = useCharacterSimulatorState()
     <CharacterDashboardSection
       :title="t('character-simulator.character-dashboard.character-build-title')"
       title-icon="ic:outline-space-dashboard"
-      default-hidden
     >
       <div class="wd:flex wd:items-stretch">
         <div class="wd:border-r wd:border-primary-10 relative w-full py-2">
@@ -108,5 +108,6 @@ const { setCurrentTab } = useCharacterSimulatorState()
       </div>
     </CharacterDashboardSection>
     <CharacterDashboardDamageCharts />
+    <CharacterComparison />
   </div>
 </template>

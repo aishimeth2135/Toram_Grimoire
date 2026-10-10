@@ -6,6 +6,10 @@ import { CommonLogger } from '@/shared/services/Logger'
 import { filterNullish } from '@/shared/utils/array'
 
 import { Character, type CharacterBindingBuild } from '@/lib/Character/Character'
+import {
+  CHARACTER_COMPARISON_TABLE_LIMIT,
+  CharacterComparisonTable,
+} from '@/lib/Character/CharacterComparisonTable'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
 import { PotionBuild } from '@/lib/Character/PotionBuild'
@@ -33,6 +37,7 @@ import {
   setupPotionStats,
   setupRegistletStats,
 } from './setup/setupCharacterBuilds'
+import { setupCharacterComparisonTables } from './setup/setupCharacterComparison'
 import { setupCharacters, setupEquipments } from './setup/setupCharacterStates'
 import {
   type CalculationOptions,
@@ -92,6 +97,8 @@ export const useCharacterStore = defineStore('view-character', () => {
   const currentCharacterBuildsContext = computed<CharacterBuildsContext>(() =>
     getCharacterState(currentCharacter.value)
   )
+  const { comparisonTables, appendComparisonTable, removeComparisonTable, resetComparisonTables } =
+    setupCharacterComparisonTables(characters)
   const currentCharacterSkillBuild = computed(() => currentCharacterBuildsContext.value.skillBuild)
   const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentCharacterSkillBuild)
 
@@ -111,6 +118,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     registletBuildStore.resetRegistletBuildStore()
     potionBuildStore.resetPotionBuildStore()
     resetCharacters()
+    resetComparisonTables()
     buildLabelStore.resetBuildLabelStore()
     resetHandlers.forEach(handler => handler())
   }
@@ -157,6 +165,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       potionBuilds: potionBuildsData,
       buildLabels: buildLabelsData,
       characterStates,
+      comparisonTables: comparisonTables.value.map(table => table.save()),
     }
   }
 
@@ -199,6 +208,22 @@ export const useCharacterStore = defineStore('view-character', () => {
       })
 
       const loadedCharacters: Character[] = []
+      if (replace && saveData.comparisonTables === undefined) {
+        resetComparisonTables()
+      }
+      const tableCapacity =
+        CHARACTER_COMPARISON_TABLE_LIMIT - (replace ? 0 : comparisonTables.value.length)
+      const loadedComparisonTables =
+        saveData.comparisonTables === undefined
+          ? replace
+            ? comparisonTables.value
+            : []
+          : saveData.comparisonTables
+              .slice(0, tableCapacity)
+              .map(data => CharacterComparisonTable.load(loadedCategory, data))
+      comparisonTables.value = replace
+        ? loadedComparisonTables
+        : [...comparisonTables.value, ...loadedComparisonTables]
       const loadedSkillBuilds: SkillBuild[] = []
       const loadedFoodBuilds: FoodsBuild[] = []
       const loadedRegistletBuilds: RegistletBuild[] = []
@@ -329,6 +354,18 @@ export const useCharacterStore = defineStore('view-character', () => {
       }
 
       loadedCharacters.forEach(chara => {
+        const characterData = saveData.characters.find(data =>
+          chara.matchLoadedId(loadedCategory, data.id)
+        )
+        if (characterData?.comparison) {
+          chara.comparisonTableBuild.load(
+            loadedCategory,
+            characterData.comparison,
+            chara,
+            loadedCharacters,
+            loadedComparisonTables
+          )
+        }
         const item = saveData.characterStates.find(state =>
           chara.matchLoadedId(loadedCategory, state.id)
         )
@@ -457,25 +494,38 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupOptions
   )
 
-  // Not supported for current UI
-  // const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
-  //   const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(
-  //     comparedCharacter,
-  //     currentCharacterSkillBuild
-  //   )
-
-  //   const { characterStatCategoryResults: comparedCharacterStatCategoryResults } =
-  //     setupCharacterStats(
-  //       comparedCharacter,
-  //       currentCharacterBuildsContext,
-  //       allPureStatsResult,
-  //       _skillItemStates,
-  //       setupOptions
-  //     )
-  //   return {
-  //     comparedCharacterStatCategoryResults,
-  //   }
-  // }
+  const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character>) => {
+    const buildsContext = computed<CharacterBuildsContext>(() =>
+      getCharacterState(comparedCharacter.value)
+    )
+    const skillBuild = computed<SkillBuild>(() => buildsContext.value.skillBuild)
+    const { skillItemStates: comparedSkillItemStates } = setupCharacterSkillItems(
+      comparedCharacter,
+      skillBuild
+    )
+    const { skillPureStats: skillStats } = setupCharacterSkills(
+      comparedCharacter,
+      buildsContext,
+      comparedSkillItemStates,
+      setupOptions
+    )
+    const { allFoodBuildStats: foodStats } = setupFoodStats(
+      computed<FoodsBuild>(() => buildsContext.value.foodBuild)
+    )
+    const { allRegistletBuildStats: registletStats } = setupRegistletStats(
+      computed<RegistletBuild>(() => buildsContext.value.registletBuild)
+    )
+    const { allPotionBuildStats: potionStats } = setupPotionStats(
+      computed<PotionBuild>(() => buildsContext.value.potionBuild)
+    )
+    return setupCharacterStats(
+      comparedCharacter,
+      buildsContext,
+      { skillStats, foodStats, registletStats, potionStats },
+      comparedSkillItemStates,
+      setupOptions
+    ).characterStatCategoryResults
+  }
 
   const targetProperties: Ref<TargetProperties> = ref({
     physicalResistance: 0,
@@ -557,6 +607,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     })()
 
   return {
+    comparisonTables,
+    appendComparisonTable,
+    removeComparisonTable,
     characters: characters,
     equipments: equipments,
     currentCharacter: currentCharacter,
@@ -570,7 +623,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     characterSimulatorInitFinished,
 
     characterStatCategoryResults,
-    // setupCharacterComparedStatCategoryResults,
+    setupCharacterComparedStatCategoryResults,
 
     skillItemStates: skillItemStates,
 

@@ -2,6 +2,10 @@ import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/Charact
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
 import { CharacterComboBuild, type CharacterComboBuildSaveData } from '../CharacterComboBuild'
+import {
+  CharacterComparisonTableBuild,
+  type CharacterComparisonTableBuildSaveData,
+} from '../CharacterComparisonTable'
 import { type CharacterBindingBuild, checkLoadedId, getLoadedId } from './CharacterBuild'
 import { CharacterBaseStatTypes, EquipmentFieldTypes } from './enums'
 
@@ -14,6 +18,7 @@ class Character implements CharacterBindingBuild {
   name: string
   level: number
   comboBuild: CharacterComboBuild
+  readonly comparisonTableBuild: CharacterComparisonTableBuild
 
   readonly equipmentFields: EquipmentField[]
 
@@ -56,6 +61,7 @@ class Character implements CharacterBindingBuild {
     ]
 
     this.comboBuild = CharacterComboBuild.create()
+    this.comparisonTableBuild = new CharacterComparisonTableBuild()
   }
 
   static create(name = 'Potum'): Character {
@@ -161,6 +167,7 @@ class Character implements CharacterBindingBuild {
         find.setEquipment(field.equipment)
       })
 
+    chara.comparisonTableBuild.copyFrom(this.comparisonTableBuild)
     return chara
   }
 
@@ -214,6 +221,9 @@ class Character implements CharacterBindingBuild {
       .filter(field => field !== null) as CharacterSaveDataField[]
 
     data.combo = this.comboBuild.save()
+    if (!this.comparisonTableBuild.isEmpty) {
+      data.comparison = this.comparisonTableBuild.save()
+    }
 
     return data
   }
@@ -296,6 +306,7 @@ class Character implements CharacterBindingBuild {
 }
 
 interface CharacterSaveData {
+  comparison?: CharacterComparisonTableBuildSaveData
   id: number
   name: string
   level: number
