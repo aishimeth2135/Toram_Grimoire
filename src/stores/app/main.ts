@@ -6,7 +6,7 @@ import { AppStorageService } from '@/shared/services/AppStorageService'
 
 import { useLocaleStore } from './locale'
 
-const version = '5.5.11'
+const version = '5.5.13'
 
 export const useMainStore = defineStore('app-main', () => {
   type ServiceWorkerUpdateHandler = (reloadPage?: boolean) => Promise<void>

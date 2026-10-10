@@ -1,5 +1,19 @@
-character-stats: 角色面板
+character-stats: 角色能力
 character: 角色
+character-comparison:
+  title: 角色对照
+  overview: 表格一览
+  select-tables: 选择表格
+  physical: 物理输出能力
+  magic: 魔法输出能力
+  survival: 生存能力
+  new-table: 新对照表格
+  select-stats: 选择角色面板能力
+  no-stats: 请在「选择表格」编辑此表格的角色面板能力。
+  no-tables: 请到「选择表格」选取要显示的表格。
+  compare-characters: 除了当前角色，最多可选择{num}个角色进行比较。
+  table-limits: 已选取 {selected}/{selectionLimit} 个表格，共 {total}/{totalLimit} 个表格。
+  shared-tables-tips: 表格由所有角色共用，编辑或删除会套用到所有使用此表格的角色。
 build-limit-reached: 此配置数量不可以超过{num}。
 custom-equipment:
   button-title: 自订装备
@@ -184,6 +198,13 @@ character-damage:
   test-version-tips: 此功能目前还在测试阶段，某些技能的例外状况还在补齐资料中，可能导致计算结果有误。
   basic-tips:
     - 伤害计算的结果皆为考虑稳定度、命中率、暴击率等所计算出的伤害期望值。
+enemy-debuffs:
+  title: 目标异常状态
+  weaken: 衰弱
+  armor-break: 降防
+  captions:
+    weaken: 法术暴击转化率+50%
+    armor-break: 目标物理防御及魔法防御降低50%。
 enemy-elements:
   title: 目标属性
   neutral: 无属性
