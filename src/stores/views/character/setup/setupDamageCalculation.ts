@@ -311,9 +311,9 @@ export function setupDamageCalculation(
       character.value ? getCharacterElement(character.value) : null
     )
     const skillElementExtra = computed(() => {
-      const elementsRate = createElementMap()
+      const elementsRates = createElementMap()
       if (!currentCharacterElement.value) {
-        return elementsRate
+        return elementsRates
       }
       const skillElement = getSkillElement(container.value.branchItem)
       const isMagicWeapon = checkMagicWeapon()
@@ -329,7 +329,7 @@ export function setupDamageCalculation(
       const calcElementKeys = Object.keys(calcElement) as EnemyElements[]
       const isNotNeutral = calcElementKeys.some(key => {
         if (key === EnemyElements.Neutral) {
-          return
+          return false
         }
         return calcElement[key] === 1
       })
@@ -337,22 +337,22 @@ export function setupDamageCalculation(
       if (isNotNeutral) {
         calcElementKeys.forEach(key => {
           if (isMagicWeapon) {
-            elementsRate[key] = magicExtra
+            elementsRates[key] = magicExtra
           }
           if (key === EnemyElements.Neutral) {
             return
           }
           const againstKey = againstElementMap[key]
           if (calcElement[key] === 1) {
-            elementsRate[againstKey] += 25
+            elementsRates[againstKey] += 25
             if (!isMagicWeapon) {
-              elementsRate[againstKey] += magicExtra
+              elementsRates[againstKey] += magicExtra
             }
           }
         })
       }
 
-      return elementsRate
+      return elementsRates
     })
 
     const calculationVars = computed(() => {
@@ -361,7 +361,12 @@ export function setupDamageCalculation(
       }
 
       let extraMagicCriticalRateConvertionRate = 0
-      if (checkMagicWeapon()) {
+      if (
+        character.value.checkFieldEquipmentType(
+          EquipmentFieldTypes.MainWeapon,
+          EquipmentTypes.Staff
+        )
+      ) {
         const skillElement = getSkillElement(container.value.branchItem)
         if (skillElement?.neutral === 1 || currentCharacterElement.value?.neutral === 1) {
           extraMagicCriticalRateConvertionRate = 25
