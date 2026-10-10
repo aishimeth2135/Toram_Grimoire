@@ -72,13 +72,17 @@
                 @click="modeNormal.searchText = ''"
               />
             </div>
-            <div v-else-if="mode === 'stat'" class="min-w-68 border-primary-20 inline-flex p-0.5">
+            <div
+              v-else-if="mode === 'stat'"
+              class="min-w-68 border-primary-20 inline-flex sm:border-r"
+            >
               <CommonSearchableItemsPopover
                 v-model:search-text="modeStat.searchText"
                 :placeholder="t('crystal-query.select-stat.search-placeholder')"
                 :items="statSearchResult"
                 :selected-item-ids="modeStat.statItem ? [modeStat.statItem.id] : []"
                 placement="top"
+                class="pr-4.5 py-2 pl-3.5"
                 close-on-select
                 @select-item="selectStat"
               >

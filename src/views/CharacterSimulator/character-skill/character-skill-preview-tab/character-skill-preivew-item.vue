@@ -13,7 +13,6 @@
                 : 'border-primary-30 hover:border-primary-40 cursor-pointer'
           "
           :disabled="!effectItem"
-          :aria-label="skill.name"
           @click="emit('inspect', skill)"
         >
           <cy-icon :icon="getSkillIconPath(skill)" width="1.5rem" />

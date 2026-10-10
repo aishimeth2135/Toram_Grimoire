@@ -19,6 +19,7 @@ import {
   evaluateCalculationExpectedValueZipSweep,
 } from '@/lib/Damage/DamageCalculation'
 import { EnemyElements } from '@/lib/Enemy/Enemy'
+import EnemyDebuffService, { EnemyDebuffTypes } from '@/lib/EnemyDebuff'
 import { parseSkillSelfBuffs } from '@/lib/Skill/Properties'
 import { Skill, SkillBranchNames } from '@/lib/Skill/Skill'
 import { SkillBranchItem, SkillBuffs, getDamageSource } from '@/lib/Skill/SkillComputing'
@@ -86,6 +87,9 @@ export function setupDamageCalculation(
   availableBuffResults: Ref<SkillResult[]>,
   availableRegistletBuffItems: Ref<RegistletItem[]>
 ) {
+  const enemyDebuffService = EnemyDebuffService.create()
+  enemyDebuffService.init()
+
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
   const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')!
@@ -174,6 +178,17 @@ export function setupDamageCalculation(
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>
   ) => {
+    const selectedEnemyDebuffTypes = computed<EnemyDebuffTypes[]>(() => {
+      if (getDamageSource(skillResult.value.container.branchItem)) {
+        return []
+      }
+
+      const selectedIds =
+        skillBuild.value?.getSkillBranchState(skillResult.value.container.branchItem)
+          .selectedBuffIds ?? []
+      return Object.values(EnemyDebuffTypes).filter(type => selectedIds.includes(type))
+    })
+
     const selectedBuffResults = computed<SkillResult[]>(() => {
       if (getDamageSource(skillResult.value.container.branchItem)) {
         return []
@@ -255,7 +270,12 @@ export function setupDamageCalculation(
 
     const statValue = (baseId: string) =>
       characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
-    const targetDefMultiplier = computed(() => (100 - statValue('def_ignore')) / 100)
+    const targetDefMultiplier = computed(() => {
+      const debuffMultiplier = selectedEnemyDebuffTypes.value.includes(EnemyDebuffTypes.ArmorBreak)
+        ? 0.5
+        : 1
+      return ((100 - statValue('def_ignore')) / 100) * debuffMultiplier
+    })
     const resultValue = (id: string) => {
       let idToSearch = id
       if (container.value.branchItem) {
@@ -346,6 +366,10 @@ export function setupDamageCalculation(
         if (skillElement?.neutral === 1 || currentCharacterElement.value?.neutral === 1) {
           extraMagicCriticalRateConvertionRate = 25
         }
+      }
+
+      if (selectedEnemyDebuffTypes.value.includes(EnemyDebuffTypes.Weaken)) {
+        extraMagicCriticalRateConvertionRate += 50
       }
 
       const getElementExtra = (element: EnemyElements) => {
@@ -686,6 +710,7 @@ export function setupDamageCalculation(
   }
 
   return {
+    enemyDebuffService,
     setupDamageCalculationExpectedResult,
     setupDamageCalculationExpectedResultSweep,
   }

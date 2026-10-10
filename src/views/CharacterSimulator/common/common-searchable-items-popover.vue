@@ -46,11 +46,11 @@ const popoverPlacement = computed<string | undefined>(() => {
 
 <template>
   <cy-popover
-    class="text-primary-80 mr-2 flex grow cursor-pointer items-start text-ellipsis py-1.5 pl-3 pr-2"
+    class="text-primary-80 flex grow cursor-pointer items-start text-ellipsis"
     :placement="popoverPlacement"
     custom
   >
-    <div class="flex min-h-6 items-center truncate">
+    <div class="flex min-h-6 items-center truncate pr-1.5">
       <slot />
     </div>
     <cy-icon

@@ -122,6 +122,7 @@ const selectStatOption = (option: StatOption) => {
                 v-model:search-text="statSearchText"
                 :items="statOptionsSearchResults"
                 :selected-item-ids="selectedStatIds"
+                class="py-1.5 pl-3 pr-4"
                 close-on-select
                 @select-item="selectStatOption"
               >

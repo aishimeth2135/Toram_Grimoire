@@ -5,19 +5,19 @@ import { useI18n } from 'vue-i18n'
 interface Props {
   title: string
   titleIcon: string
-  defaultHidden?: boolean
+  level?: 'primary' | 'secondary'
 }
 interface Slots {
   default(): VNodeChild
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  defaultHidden: false,
+withDefaults(defineProps<Props>(), {
+  level: 'primary',
 })
 defineSlots<Slots>()
 
 const { t } = useI18n()
-const expanded = ref(!props.defaultHidden)
+const expanded = ref(false)
 </script>
 
 <template>
@@ -25,10 +25,14 @@ const expanded = ref(!props.defaultHidden)
     <div class="border-primary-10 border-b">
       <button
         type="button"
-        class="flex w-full cursor-pointer items-center gap-2 px-4 py-3 text-left"
+        class="flex w-full cursor-pointer items-center gap-2 text-left"
+        :class="level === 'primary' ? 'px-4 py-3' : 'px-3 py-2.5'"
         @click="expanded = !expanded"
       >
-        <div class="text-primary-70 gap-icon flex items-center">
+        <div
+          class="gap-icon text-primary-70 flex items-center"
+          :class="{ 'text-sm': level === 'secondary' }"
+        >
           <cy-icon :icon="titleIcon" />
           {{ title }}
         </div>

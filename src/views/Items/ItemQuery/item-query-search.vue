@@ -130,13 +130,14 @@ function selectMode(id: SearchMode) {
         </div>
       </template>
       <template v-else-if="state.currentMode === 'stat'">
-        <div class="min-w-68 border-primary-20 inline-flex p-0.5 sm:border-r">
+        <div class="min-w-68 border-primary-20 inline-flex sm:border-r">
           <CommonSearchableItemsPopover
             v-model:search-text="statMode.state.statSearchText"
             :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
             :items="statsSearchResult"
             :selected-item-ids="selectedStatIds"
             placement="top"
+            class="pr-4.5 py-2 pl-3.5"
             @select-item="selectStat"
           >
             <div v-if="statMode.state.currentStats.length === 0" class="text-primary-30 text-sm">

@@ -147,6 +147,12 @@ export function setupCharacters() {
     const nextIdx = removeBuild(character)
     if (!characters.value.some(item => item.id === character.id)) {
       characterStates.delete(character.id)
+      characters.value.forEach(item => {
+        item.comparisonTableBuild.comparedCharacters =
+          item.comparisonTableBuild.comparedCharacters.filter(
+            compared => compared.id !== character.id
+          )
+      })
     }
     setCurrentCharacter(currentCharacter.value)
     return nextIdx
