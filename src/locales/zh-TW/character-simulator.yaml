@@ -198,6 +198,13 @@ character-damage:
   test-version-tips: 此功能目前還在測試階段，某些技能的例外狀況還在補齊資料中，可能導致計算結果有誤。
   basic-tips:
     - 傷害計算的結果皆為考慮穩定度、命中率、暴擊率等所計算出的傷害期望值。
+enemy-debuffs:
+  title: 目標異常狀態
+  weaken: 衰弱
+  armor-break: 降防
+  captions:
+    weaken: 法術暴擊轉化率+50%
+    armor-break: 目標物理防禦及魔法防禦降低50%。
 enemy-elements:
   title: 目標屬性
   neutral: 無屬性

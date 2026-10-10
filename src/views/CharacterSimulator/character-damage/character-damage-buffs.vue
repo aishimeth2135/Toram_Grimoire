@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
 
+import type { RegistletItem } from '@/lib/Character/RegistletBuild'
 import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from '@/components/views/skill/branch/layouts/skill-branch-prop-value.vue'
@@ -18,6 +19,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
+type BuffOption = {
+  id: string
+  name: string
+} & (
+  | { kind: 'skill'; result: SkillResult }
+  | { kind: 'registlet'; item: RegistletItem }
+  | { kind: 'enemy-debuff'; caption: string }
+)
+
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 const searchText = ref('')
@@ -28,8 +38,8 @@ const branchState = computed(() =>
     props.result.container.branchItem
   )
 )
-const selectedIds = computed(() => branchState.value.selectedBuffIds ?? [])
-const allOptions = computed(() => [
+const selectedIds = computed<string[]>(() => branchState.value.selectedBuffIds ?? [])
+const allOptions = computed<BuffOption[]>(() => [
   ...characterStore.availableBuffResults.map(result => ({
     id: result.container.branchItem.defaultBranchId,
     name: `${result.root.skill.name} · ${result.container.get('name') || t('skill-query.branch.effect.base-name')}`,
@@ -42,17 +52,23 @@ const allOptions = computed(() => [
     kind: 'registlet' as const,
     item,
   })),
+  ...characterStore.enemyDebuffService.allEnemyDebuffList.map(debuff => ({
+    id: debuff.type,
+    name: debuff.name,
+    kind: 'enemy-debuff' as const,
+    caption: debuff.caption,
+  })),
 ])
-const options = computed(() =>
+const options = computed<BuffOption[]>(() =>
   allOptions.value.filter(option =>
     option.name.toLowerCase().includes(searchText.value.toLowerCase())
   )
 )
-const selectedOptions = computed(() =>
+const selectedOptions = computed<BuffOption[]>(() =>
   allOptions.value.filter(option => selectedIds.value.includes(option.id))
 )
 
-const toggleOption = (option: (typeof allOptions.value)[number]) => {
+const toggleOption = (option: BuffOption) => {
   const ids = selectedIds.value
   branchState.value.selectedBuffIds = ids.includes(option.id)
     ? ids.filter(id => id !== option.id)
@@ -86,7 +102,9 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
               {{
                 item.kind === 'skill'
                   ? t('character-simulator.skill-build.title')
-                  : t('character-simulator.registlet-build.title')
+                  : item.kind === 'registlet'
+                    ? t('character-simulator.registlet-build.title')
+                    : t('character-simulator.enemy-debuffs.title')
               }}
             </template>
             <template #item="{ item }">
@@ -121,10 +139,13 @@ const toggleOption = (option: (typeof allOptions.value)[number]) => {
             <SkillBranchPropValue :result="suffix.result('caption')" />
           </div>
         </template>
-        <div v-else class="text-primary-30 flex flex-wrap gap-x-3">
+        <div v-else-if="option.kind === 'registlet'" class="text-primary-30 flex flex-wrap gap-x-3">
           <span v-for="stat in option.item.getBuffStats()" :key="stat.statId">
             {{ stat.show() }}
           </span>
+        </div>
+        <div v-else-if="option.kind === 'enemy-debuff'" class="text-primary-30">
+          {{ option.caption }}
         </div>
       </div>
     </div>

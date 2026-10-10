@@ -130,6 +130,21 @@ yarn exec prettier --check <file>
 - 避免使用`Object.freeze`，在型別上約束即可。如果要避免 vue 的狀態監聽，可以優先考慮`markRaw`。
 - 建立類別(class)時，成員變數的初始化都寫在`constructor`，`constructor`外僅宣告型別。
 
+目前`src/lib`下的類別，其`constructor`一律採用下列形式：
+
+```typescript
+class SomeClass {
+  private constructor() {
+    // ...
+  }
+  static create(): SomeClass {
+    return new SomeClass()
+  }
+}
+```
+
+目的是讓 vue 中的`markRaw`、`reactive`等響應式管理可以集中在`create()`內處理。
+
 ## 錯誤處理
 
 - 因為值可能不合法而需要錯誤處理時，優先考慮給定預設值，throw error 為最後手段。

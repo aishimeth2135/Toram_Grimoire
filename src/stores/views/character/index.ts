@@ -571,40 +571,43 @@ export const useCharacterStore = defineStore('view-character', () => {
     )
   )
 
-  const { setupDamageCalculationExpectedResult, setupDamageCalculationExpectedResultSweep } =
-    (() => {
-      const allSkillResultStates = computed(() => [
-        ...activeSkillResultStates.value,
-        ...buffSkillResultStates.value,
-        ...passiveSkillResultStates.value,
-        ...postponedActiveSkillResultStates.value,
-        ...postponedBuffSkillResultStates.value,
-        ...postponedPassiveSkillResultStates.value,
-      ])
-      const getSkillLevel = (targetSkill: Skill) => {
-        if (!currentCharacterSkillBuild.value) {
-          return {
-            valid: false,
-            level: 0,
-          }
-        }
+  const {
+    enemyDebuffService,
+    setupDamageCalculationExpectedResult,
+    setupDamageCalculationExpectedResultSweep,
+  } = (() => {
+    const allSkillResultStates = computed(() => [
+      ...activeSkillResultStates.value,
+      ...buffSkillResultStates.value,
+      ...passiveSkillResultStates.value,
+      ...postponedActiveSkillResultStates.value,
+      ...postponedBuffSkillResultStates.value,
+      ...postponedPassiveSkillResultStates.value,
+    ])
+    const getSkillLevel = (targetSkill: Skill) => {
+      if (!currentCharacterSkillBuild.value) {
         return {
-          valid: allSkillResultStates.value.some(
-            state => state.skill === targetSkill && state.results.length > 0
-          ),
-          level: currentCharacterSkillBuild.value.getSkillLevel(targetSkill),
+          valid: false,
+          level: 0,
         }
       }
+      return {
+        valid: allSkillResultStates.value.some(
+          state => state.skill === targetSkill && state.results.length > 0
+        ),
+        level: currentCharacterSkillBuild.value.getSkillLevel(targetSkill),
+      }
+    }
 
-      return setupDamageCalculation(
-        currentCharacter,
-        setupCharacterStatCategoryResultsExtended,
-        getSkillLevel,
-        currentCharacterSkillBuild,
-        availableBuffResults,
-        availableRegistletBuffItems
-      )
-    })()
+    return setupDamageCalculation(
+      currentCharacter,
+      setupCharacterStatCategoryResultsExtended,
+      getSkillLevel,
+      currentCharacterSkillBuild,
+      availableBuffResults,
+      availableRegistletBuffItems
+    )
+  })()
 
   return {
     comparisonTables,
@@ -658,6 +661,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     removeEquipment,
 
     // damage calculation
+    enemyDebuffService,
     setupDamageCalculationExpectedResult,
     setupDamageCalculationExpectedResultSweep,
     targetProperties,
