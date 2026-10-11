@@ -146,7 +146,7 @@ registerRoute(
         }),
       ],
     },
-    7200
+    14400
   )
   const handler: RouteHandler = async params => {
     try {
