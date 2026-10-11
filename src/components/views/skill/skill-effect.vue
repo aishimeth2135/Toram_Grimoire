@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 
 import { SkillEffectItem } from '@/lib/Skill/SkillComputing'
 
-import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+import GlossaryTagPopover from '@/components/views/glossary/glossary-tag-popover.vue'
 
 import SkillRegistletInfo from './branch/layouts/skill-registlet-info.vue'
 import SkillBranch from './branch/skill-branch.vue'

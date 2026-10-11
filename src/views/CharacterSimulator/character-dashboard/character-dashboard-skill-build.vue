@@ -6,7 +6,7 @@ import { useCharacterStore } from '@/stores/views/character'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
 import { getSkillIconPath } from '@/lib/Skill/drawSkillTree'
 
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 

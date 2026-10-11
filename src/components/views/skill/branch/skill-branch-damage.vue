@@ -133,7 +133,7 @@ import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillCompu
 import { DamageHandler, type DisplayDataContainer } from '@/lib/Skill/SkillDisplay'
 import { ExtraHandler } from '@/lib/Skill/SkillDisplay'
 
-import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+import GlossaryTagPopover from '@/components/views/glossary/glossary-tag-popover.vue'
 
 import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue'
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'

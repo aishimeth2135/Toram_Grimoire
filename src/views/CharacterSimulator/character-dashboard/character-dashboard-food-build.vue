@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { FoodsBuild } from '@/lib/Character/FoodBuild'
 
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 

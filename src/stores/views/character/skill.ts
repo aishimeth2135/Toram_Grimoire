@@ -5,7 +5,12 @@ import type { Ref } from 'vue'
 
 import { toInt } from '@/shared/utils/number'
 
-import { LevelSkillTree, SkillRoot, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
+import type {
+  SkillBuildState,
+  SkillTreeCategoryState,
+  SkillTreeState,
+} from '@/lib/Character/SkillBuild'
+import { LevelSkillTree, SkillRoot } from '@/lib/Skill/Skill'
 
 const CsvSkillElementTypes = {
   TypeSkillRoot: 'skillRoot',
@@ -39,25 +44,6 @@ const SAVE_CSV_CONFIG = {
       starGemLevel: 3,
     },
   },
-}
-
-interface SkillBuildState {
-  stateId: number
-  name: string
-  origin: SkillRoot
-  skillTreeCategoryStates: SkillTreeCategoryState[]
-}
-
-interface SkillTreeCategoryState {
-  origin: SkillTreeCategory
-  visible: boolean
-  skillTreeStates: SkillTreeState[]
-}
-
-interface SkillTreeState {
-  origin: SkillTree
-  levelSkillTree: LevelSkillTree
-  visible: boolean
 }
 
 export const useCharacterSkillStore = defineStore('view-character-skill', () => {

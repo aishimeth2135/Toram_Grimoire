@@ -1,8 +1,7 @@
 import { DataPersistenceService } from '@/shared/services/DataPersistenceService'
 
 import type { EnchantBuildSaveData } from '@/lib/Enchant/Enchant'
-
-import type { EnchantStoreConfig } from './config'
+import type { EnchantStoreConfig } from '@/lib/Enchant/config'
 
 export interface EnchantStoreSaveData {
   builds: EnchantBuildSaveData[]

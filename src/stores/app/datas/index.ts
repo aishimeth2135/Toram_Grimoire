@@ -1,38 +1,31 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { useCharacterFoodStore } from '@/stores/views/character/food-build'
-import { useCharacterSkillStore } from '@/stores/views/character/skill'
-
-import { DataPathIds } from '@/shared/services/DataPath'
-import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
-
-import CharacterSystem from '@/lib/Character'
-import DamageCalculationSystem from '@/lib/Damage'
-import EnchantSystem from '@/lib/Enchant'
-import EquipmentTraitSystem from '@/lib/EquipmentTrait'
-import GlossarySystem from '@/lib/Glossary'
-import ItemsSystem from '@/lib/Items'
-import QuestSystem from '@/lib/Quest'
-import RegistletSystem from '@/lib/Registlet'
-import SkillSystem from '@/lib/Skill'
-
-import { DatasStoreBase } from './DatasStoreBase'
 import { DataStoreIds } from './enums'
-import { DownloadDatas, DownloadDatasWithLocale } from './utils/DownloadDatas'
-import { LoadCharacterStats } from './utils/LoadCharacterStat'
-import { LoadCrystals } from './utils/LoadCrystals'
-import { LoadEnchant } from './utils/LoadEnchant'
-import { LoadEquipmentTraits } from './utils/LoadEquipmentTrait'
-import { LoadEquipments } from './utils/LoadEquipments'
-import { LoadGlossaryTag } from './utils/LoadGlossary'
-import { LoadPotions } from './utils/LoadPotions'
-import { LoadQuests } from './utils/LoadQuests'
-import { LoadRegistlet } from './utils/LoadRegistlet'
-import { LoadSkill, LoadSkillMain } from './utils/LoadSkill'
-import { LoadStats } from './utils/LoadStats'
 
 export { DataStoreIds } from './enums'
+
+const dataStoreLoaders: Record<DataStoreIds, () => Promise<() => Promise<void>>> = {
+  [DataStoreIds.Items]: () => import('./loaders/items').then(module => module.prepareItems()),
+  [DataStoreIds.Crystals]: () => import('./loaders/items').then(module => module.prepareCrystals()),
+  [DataStoreIds.ItemsPotion]: () =>
+    import('./loaders/items').then(module => module.prepareItemsPotion()),
+  [DataStoreIds.Stats]: () => import('./loaders/character').then(module => module.prepareStats()),
+  [DataStoreIds.CharacterStats]: () =>
+    import('./loaders/character').then(module => module.prepareCharacterStats()),
+  [DataStoreIds.Glossary]: () =>
+    import('./loaders/glossary').then(module => module.prepareGlossary()),
+  [DataStoreIds.Skill]: () => import('./loaders/skill').then(module => module.prepareSkill()),
+  [DataStoreIds.Food]: () => import('./loaders/food').then(module => module.prepareFood()),
+  [DataStoreIds.Enchant]: () => import('./loaders/enchant').then(module => module.prepareEnchant()),
+  [DataStoreIds.DamageCalculation]: () =>
+    import('./loaders/damage').then(module => module.prepareDamageCalculation()),
+  [DataStoreIds.Registlet]: () =>
+    import('./loaders/registlet').then(module => module.prepareRegistlet()),
+  [DataStoreIds.Quest]: () => import('./loaders/quest').then(module => module.prepareQuest()),
+  [DataStoreIds.EquipmentTrait]: () =>
+    import('./loaders/equipment-trait').then(module => module.prepareEquipmentTrait()),
+}
 
 export const useDatasStore = defineStore('app-datas', () => {
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
@@ -57,173 +50,6 @@ export const useDatasStore = defineStore('app-datas', () => {
     loaded.value.set(id, true)
     waitLoadedTicks.value.get(id)?.forEach(ticks => ticks(true))
     waitLoadedTicks.value.delete(id)
-  }
-
-  const initItemsInstance = () => {
-    if (DatasStoreBase.Items === null) {
-      DatasStoreBase.Items = ItemsSystem.create()
-    }
-    return DatasStoreBase.Items
-  }
-
-  const initCharacterInstance = () => {
-    if (DatasStoreBase.Character === null) {
-      DatasStoreBase.Character = CharacterSystem.create()
-    }
-    return DatasStoreBase.Character
-  }
-
-  const initGlossaryInstance = () => {
-    if (DatasStoreBase.Glossary === null) {
-      DatasStoreBase.Glossary = GlossarySystem.create()
-    }
-    return DatasStoreBase.Glossary
-  }
-
-  const initSkillInstance = () => {
-    if (DatasStoreBase.Skill === null) {
-      DatasStoreBase.Skill = SkillSystem.create()
-    }
-    return DatasStoreBase.Skill
-  }
-
-  const initEnchantInstance = () => {
-    if (DatasStoreBase.Enchant === null) {
-      DatasStoreBase.Enchant = EnchantSystem.create()
-    }
-    return DatasStoreBase.Enchant
-  }
-
-  const initDamageCalculationInstance = () => {
-    if (DatasStoreBase.DamageCalculation === null) {
-      DatasStoreBase.DamageCalculation = DamageCalculationSystem.create()
-    }
-    return DatasStoreBase.DamageCalculation
-  }
-
-  const initRegistletInstance = () => {
-    if (DatasStoreBase.Registlet === null) {
-      DatasStoreBase.Registlet = RegistletSystem.create()
-    }
-    return DatasStoreBase.Registlet
-  }
-
-  const initQuestInstance = () => {
-    if (DatasStoreBase.Quest === null) {
-      DatasStoreBase.Quest = QuestSystem.create()
-    }
-    return DatasStoreBase.Quest
-  }
-
-  const initEquipmentTraitInstance = () => {
-    if (DatasStoreBase.EquipmentTrait === null) {
-      DatasStoreBase.EquipmentTrait = EquipmentTraitSystem.create()
-    }
-    return DatasStoreBase.EquipmentTrait
-  }
-
-  const prepareDataStore = async (dataId: DataStoreIds): Promise<() => Promise<void>> => {
-    switch (dataId) {
-      case DataStoreIds.Items: {
-        const itemSystem = initItemsInstance()
-        const [equipmentData] = await DownloadDatasWithLocale(DataPathIds.Equipment)
-        return async () => {
-          LoadEquipments(itemSystem, equipmentData)
-        }
-      }
-      case DataStoreIds.Crystals: {
-        const itemSystem = initItemsInstance()
-        const [crystalData] = await DownloadDatas(DataPathIds.Crystal)
-        return async () => {
-          LoadCrystals(itemSystem, crystalData.baseData)
-          await InitCrystalIcons()
-        }
-      }
-      case DataStoreIds.Stats: {
-        const characterSystem = initCharacterInstance()
-        const [statsData] = await DownloadDatasWithLocale(DataPathIds.Stats)
-        return async () => {
-          LoadStats(characterSystem, statsData)
-          await InitEquipmentIcons()
-        }
-      }
-      case DataStoreIds.CharacterStats: {
-        const characterSystem = initCharacterInstance()
-        const [characterStatsData] = await DownloadDatasWithLocale(DataPathIds.CharacterStats)
-        return async () => {
-          LoadCharacterStats(characterSystem, characterStatsData)
-        }
-      }
-      case DataStoreIds.Glossary: {
-        const glossarySystem = initGlossaryInstance()
-        const [glossaryData] = await DownloadDatasWithLocale(DataPathIds.Glossary)
-        return async () => {
-          LoadGlossaryTag(glossarySystem, glossaryData)
-        }
-      }
-      case DataStoreIds.Skill: {
-        const skillSystem = initSkillInstance()
-        const [skillData, skillMainData] = await DownloadDatasWithLocale(
-          DataPathIds.Skill,
-          DataPathIds.SkillMain
-        )
-        if (skillData.dataVersion) {
-          skillSystem.setDataVersion(skillData.dataVersion)
-        }
-        return async () => {
-          LoadSkill(skillSystem, skillData)
-          LoadSkillMain(skillSystem, skillMainData)
-          const skillStore = useCharacterSkillStore()
-          skillStore.initSkillRoot(skillSystem.skillRoot)
-
-          await InitSkillIcons()
-        }
-      }
-      case DataStoreIds.Food: {
-        return async () => {
-          useCharacterFoodStore()
-        }
-      }
-      case DataStoreIds.Enchant: {
-        const enchantSystem = initEnchantInstance()
-        const [enchantData] = await DownloadDatas(DataPathIds.Enchant)
-        return async () => {
-          LoadEnchant(enchantSystem, enchantData.baseData)
-        }
-      }
-      case DataStoreIds.DamageCalculation: {
-        initDamageCalculationInstance()
-        return () => Promise.resolve()
-      }
-      case DataStoreIds.Registlet: {
-        const registSystem = initRegistletInstance()
-        const [registletData] = await DownloadDatas(DataPathIds.Registlet)
-        return async () => {
-          LoadRegistlet(registSystem, registletData.baseData)
-        }
-      }
-      case DataStoreIds.ItemsPotion: {
-        const itemsSystem = initItemsInstance()
-        const [potionData] = await DownloadDatas(DataPathIds.Potion)
-        return async () => {
-          LoadPotions(itemsSystem.potionsRoot, potionData.baseData)
-        }
-      }
-      case DataStoreIds.Quest: {
-        const questSystem = initQuestInstance()
-        const [mainQuestData] = await DownloadDatas(DataPathIds.Quest)
-        return async () => {
-          LoadQuests(questSystem, mainQuestData.baseData)
-        }
-      }
-      case DataStoreIds.EquipmentTrait: {
-        const equipmentTraitSystem = initEquipmentTraitInstance()
-        const [equipmentTraitData] = await DownloadDatasWithLocale(DataPathIds.EquipmentTrait)
-        return async () => {
-          LoadEquipmentTraits(equipmentTraitSystem, equipmentTraitData)
-        }
-      }
-    }
   }
 
   const ensureLoaded = async (ids: DataStoreIds[], onPrepared?: (id: DataStoreIds) => void) => {
@@ -263,7 +89,7 @@ export const useDatasStore = defineStore('app-datas', () => {
         owned: true,
         resolve: resolve!,
         reject: reject!,
-        preparePromise: prepareDataStore(id).then(init => {
+        preparePromise: dataStoreLoaders[id]().then(init => {
           onPrepared?.(id)
           return init
         }),

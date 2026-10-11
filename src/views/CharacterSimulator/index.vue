@@ -88,7 +88,7 @@ import { ViewNames } from '@/shared/consts/view'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutTopSticky from '@/components/app-layout/app-layout-top-sticky.vue'
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import CharacterDamage from './character-damage/index.vue'
 import CharacterEquipmentDetailsFloat from './character-equipment-details/character-equipment-details-float.vue'

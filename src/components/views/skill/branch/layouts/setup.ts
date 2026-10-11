@@ -1,4 +1,4 @@
-import { type VNode, h } from 'vue'
+import { type VNode, defineAsyncComponent, h } from 'vue'
 import { Translation } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
@@ -21,9 +21,8 @@ import {
 } from '@/lib/common/ResultContainer'
 
 import CyPopover from '@/components/cyteria/cy-popover/cy-popover.vue'
-import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+import GlossaryTagPopover from '@/components/views/glossary/glossary-tag-popover.vue'
 
-import SkillBranchPopover from './skill-branch-popover.vue'
 import SkillLinkPopover from './skill-link-popover.vue'
 
 import './skill-branch-formula.css'
@@ -36,6 +35,8 @@ export interface NormalLayoutSubContent {
   custom?: boolean
   type?: 'primary' | 'normal' | 'cyan' | 'gray'
 }
+
+const SkillBranchPopover = defineAsyncComponent(() => import('./skill-branch-popover.vue'))
 
 const glossaryTagParseItem = getCommonTextParseItem(CommonTextParseItemIds.GlossaryTag)
 

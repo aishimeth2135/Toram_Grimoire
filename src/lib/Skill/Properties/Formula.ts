@@ -22,13 +22,13 @@ import { SkillComputingContainer } from '../SkillComputing/SkillComputingContain
 import { resolveStackName } from '../SkillComputing/branchProps'
 import { FormulaDisplayModes } from '../SkillComputing/enums'
 import { getFormulaReplacedTexts, mergeFormulaExtendedData } from './FormulaExtended'
+import { attachStatConditionFormula } from './FormulaSpecial/ConditionValue'
 import {
   type RegistletFormulaVariables,
   attachRegistletFormulaResult,
-  attachStatConditionFormula,
   getRegistletFormulaLevelCount,
   initializeRegistletFormulaLevels,
-} from './FormulaSpecial'
+} from './FormulaSpecial/Registlet'
 import { parseFormulaListProperty, parseListProperty } from './List'
 
 function computeBranchFormulaValue(str: string, helper: BranchFormulaContext): string {

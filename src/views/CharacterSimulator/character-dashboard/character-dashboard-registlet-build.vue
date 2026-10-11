@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import CharacterDashboardSideWrapper from './character-dashboard-side-wrapper.vue'
 
