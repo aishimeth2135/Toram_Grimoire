@@ -1,7 +1,10 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { CharacterPersistenceService, V2_AUTO_SAVE_STORAGE_KEY } from '@/stores/views/character'
+import {
+  CharacterPersistenceService,
+  V2_AUTO_SAVE_STORAGE_KEY,
+} from '@/stores/views/character/persistence'
 
 import { LocalStorageService } from '@/shared/services/Storage'
 

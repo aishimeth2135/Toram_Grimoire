@@ -1,4 +1,4 @@
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 import { AppRouteNames } from '@/router/enums'
 
 export interface RouteLinkData {

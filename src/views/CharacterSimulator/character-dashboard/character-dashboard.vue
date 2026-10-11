@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import CharacterComparison from '../character-comparison/character-comparison.vue'
 import CharacterDashboardDamageCharts from './character-dashboard-damage-charts.vue'

@@ -1,7 +1,5 @@
 import { reactive, shallowReactive } from 'vue'
 
-import { type SkillBuildState } from '@/stores/views/character/skill'
-
 import Grimoire from '@/shared/Grimoire'
 import { toInt } from '@/shared/utils/number'
 
@@ -17,6 +15,7 @@ import {
 
 import { type CharacterBindingBuild } from '../Character'
 import { checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
+import type { SkillBuildState } from './types'
 
 interface SkillState {
   level: number

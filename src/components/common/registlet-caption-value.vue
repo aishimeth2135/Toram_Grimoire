@@ -5,7 +5,7 @@ import { CommonTextParseItemIds, ResultContainer } from '@/lib/common/ResultCont
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer'
 import { getCommonTextParseItem, handleParseText } from '@/lib/common/ResultContainer'
 
-import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+import GlossaryTagPopover from '@/components/views/glossary/glossary-tag-popover.vue'
 
 interface Props {
   text: string

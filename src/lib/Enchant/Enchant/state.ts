@@ -1,4 +1,4 @@
-import { enchantConfig } from '@/stores/views/enchant/config'
+import { enchantConfig } from '@/lib/Enchant/config'
 
 import { type MaterialPointTypeRange } from './EnchantBase'
 

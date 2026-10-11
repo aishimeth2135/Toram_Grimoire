@@ -6,7 +6,7 @@ import type EnchantSystem from '@/lib/Enchant'
 import type EquipmentTraitSystem from '@/lib/EquipmentTrait'
 import type GlossarySystem from '@/lib/Glossary'
 import type ItemsSystem from '@/lib/Items'
-import QuestSystem from '@/lib/Quest'
+import type QuestSystem from '@/lib/Quest'
 import type RegistletSystem from '@/lib/Registlet'
 import type SkillSystem from '@/lib/Skill'
 

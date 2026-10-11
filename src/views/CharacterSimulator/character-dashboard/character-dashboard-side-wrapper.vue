@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CharacterSimulatorRouteNames } from '@/router/Character'
+import { CharacterSimulatorRouteNames } from '@/router/Character/enums'
 
 import { useCharacterSimulatorState } from '../setup'
 

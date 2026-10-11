@@ -44,8 +44,7 @@ import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
 
 import CardRow from '@/components/card/card-row.vue'
 import CardRows from '@/components/card/card-rows.vue'
-
-import GlossaryTagContentRows from './glossary-tag-content-rows.vue'
+import GlossaryTagContentRows from '@/components/views/glossary/glossary-tag-content-rows.vue'
 
 interface Props {
   tag: GlossaryTag

@@ -8,8 +8,12 @@ import { useNotify } from '@/shared/composables/Notify'
 import { LocalStorageService } from '@/shared/services/Storage'
 
 import { EnchantBuild } from '@/lib/Enchant/Enchant'
+import {
+  type EnchantStoreConfig,
+  enchantConfig,
+  updateCharacterMaxLevel,
+} from '@/lib/Enchant/config'
 
-import { type EnchantStoreConfig, enchantConfig, updateCharacterMaxLevel } from './config'
 import { EnchantPersistenceService, type EnchantStoreSaveData } from './persistence'
 
 export const useEnchantStore = defineStore('view-enchant', () => {
