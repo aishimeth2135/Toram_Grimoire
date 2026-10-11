@@ -6,18 +6,20 @@ interface Props {
   title: string
   titleIcon: string
   level?: 'primary' | 'secondary'
+  defaultExpanded?: boolean
 }
 interface Slots {
   default(): VNodeChild
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   level: 'primary',
+  defaultExpanded: false,
 })
 defineSlots<Slots>()
 
 const { t } = useI18n()
-const expanded = ref(false)
+const expanded = ref(props.defaultExpanded)
 </script>
 
 <template>

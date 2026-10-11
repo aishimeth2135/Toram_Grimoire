@@ -32,7 +32,12 @@ const displayValue = (column: CharacterComparisonColumn, id: string) => {
 </script>
 
 <template>
-  <CharacterDashboardSection :title="table.name" title-icon="mdi:table" level="secondary">
+  <CharacterDashboardSection
+    :title="table.name"
+    title-icon="mdi:table"
+    level="secondary"
+    default-expanded
+  >
     <div v-if="stats.length" class="w-full overflow-x-auto px-2 py-3">
       <table
         class="w-full table-fixed border-0"
