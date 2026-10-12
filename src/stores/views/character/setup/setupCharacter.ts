@@ -87,16 +87,21 @@ export function prepareSetupCharacter() {
       characterPureStats: ComputedRef<StatRecorded[]>
     }
 
-    const setupResults = (
-      additionalStats?: Ref<StatRecorded[]>,
-      resultsCache?: CharacterStatSetupResults
-    ): CharacterStatSetupResults => {
+    interface SetupCharacterStatResultsOptions {
+      additionalStats?: Ref<StatRecorded[]>
+      fallbackResults?: CharacterStatSetupResults
+    }
+
+    const setupCharacterStatResults = ({
+      additionalStats,
+      fallbackResults,
+    }: SetupCharacterStatResultsOptions = {}): CharacterStatSetupResults => {
       const characterPureStats = computed(() => {
         if (!character.value) {
           return []
         }
-        if ((!additionalStats || additionalStats.value.length === 0) && resultsCache) {
-          return resultsCache.characterPureStats.value
+        if ((!additionalStats || additionalStats.value.length === 0) && fallbackResults) {
+          return fallbackResults.characterPureStats.value
         }
         const allStats = new Map<string, StatRecorded>(
           basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()])
@@ -111,8 +116,8 @@ export function prepareSetupCharacter() {
         if (!character.value) {
           return []
         }
-        if ((!additionalStats || additionalStats.value.length === 0) && resultsCache) {
-          return resultsCache.categoryResults.value
+        if ((!additionalStats || additionalStats.value.length === 0) && fallbackResults) {
+          return fallbackResults.categoryResults.value
         }
 
         const categoryList = Grimoire.Character.characterStatCategoryList
@@ -142,7 +147,7 @@ export function prepareSetupCharacter() {
       }
     }
 
-    const baseResults = setupResults()
+    const baseResults = setupCharacterStatResults()
     const {
       categoryResults: _characterStatCategoryResults,
       characterPureStats: _characterPureStats,
@@ -251,7 +256,10 @@ export function prepareSetupCharacter() {
       mergeStatRecordeds(tmpMap, postponedSkillPureStats.value)
       return [...tmpMap.values()]
     })
-    const finalResults = setupResults(allPostponedPureStats, baseResults)
+    const finalResults = setupCharacterStatResults({
+      additionalStats: allPostponedPureStats,
+      fallbackResults: baseResults,
+    })
     const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
     // Pass the additional stats and compute character-stat-category results (for damage-calc currently)
@@ -280,11 +288,11 @@ export function prepareSetupCharacter() {
         }
         const allStats = new Map<string, StatRecorded>()
         mergeStatRecordeds(allStats, otherStats.value)
-        mergeStatRecordeds(allStats, postponedSkillPureStats.value)
+        mergeStatRecordeds(allStats, allPostponedPureStats.value)
         mergeStatRecordeds(allStats, conditionalStats.value)
         return [...allStats.values()]
       })
-      return setupResults(stats, finalResults)
+      return setupCharacterStatResults({ additionalStats: stats, fallbackResults: finalResults })
     }
 
     return {
