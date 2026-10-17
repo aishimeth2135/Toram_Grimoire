@@ -1,0 +1,146 @@
+,遊戲內名稱,公式,倍率,顯示順序,自訂能力隱藏
+str,STR,,1,4,
+dex,DEX,,1,4,
+int,INT,,1,4,
+agi,AGI,,1,4,
+vit,VIT,,1,4,
+max_hp,HP上限,,1,4,
+max_mp,MP上限,$t$s$v,無,4,
+natural_hp_regen,HP自然回復,,1,4,
+natural_hp_regen_s,HP自然回復,,1,4,1
+natural_hp_regen_b,戰時HP回復,,無,4,1
+natural_mp_regen,MP自然回復,,1,4,
+natural_mp_regen_s,MP自然回復,,1,4,1
+natural_mp_regen_b,戰時MP回復,,無,4,1
+attack_mp_recovery,攻擊MP回復,,1,4,
+atk,ATK,,1,4,
+atk_sub,(雙劍)副手ATK,,1,4,1
+matk,MATK,,1,4,
+weapon_atk,武器ATK,,1,4,
+weapon_base_atk,武器基礎ATK,,1,4,1
+weapon_range,武器攻擊距離,$t$s$1dm,無,1,
+physical_pierce,物理貫穿,,無,4,
+magic_pierce,魔法貫穿,,無,4,
+def_ignore,DEF忽略,,無,4,1
+def,DEF,,1,4,
+mdef,MDEF,,1,4,
+stability,穩定率,,無,4,
+stability_main,穩定率,,無,4,1
+stability_magic,魔法穩定率,,無,4,1
+physical_resistance,物理抗性,,無,4,
+magic_resistance,魔法抗性,,無,4,
+accuracy,命中,,1,4,
+dodge,迴避,,1,4,
+aspd,攻擊速度,,1,4,
+cspd,詠唱速度,,1,4,
+critical_rate,暴擊率,,1,4,
+critical_damage,暴擊傷害,,1,4,
+critical_damage_skill,暴擊傷害,,1,4,1
+motion_speed,行動速度,,無,5,
+movement_speed,移動速度,,無,5,1
+unsheathe_attack,拔刀攻擊,$t$s$v,無,5,
+unsheathe_attack_multiplier,拔刀攻擊,,無,5,
+short_range_damage,近距離威力,,無,5,
+long_range_damage,遠距離威力,,無,5,
+total_damage_A,總傷害,,無,11,dev
+total_damage_B,最終傷害,,無,11,dev
+total_damage_C,傷害加成,,無,11,dev
+ailment_resistance,異常抗性,,無,5,
+guard_rate,阻擋率,,無,5,1
+guard_regenerate,阻擋回復,,無,5,
+guard_power,阻擋力,,無,5,
+evasion_rate,閃躲率,,無,5,1
+evasion_regenerate,閃躲回復,,無,5,
+evasion_count,閃躲次數上限,$t$s$v,無,5,1
+aggro,恨意值,,無,4,
+revive_time,復活時間,,無,10,
+drop_rate,掉寶率,,無,10,
+stronger_against_neutral,對無屬性傷害,,無,3,
+stronger_against_fire,對火屬性傷害,,無,3,
+stronger_against_water,對水屬性傷害,,無,3,
+stronger_against_earth,對地屬性傷害,,無,3,
+stronger_against_wind,對風屬性傷害,,無,3,
+stronger_against_light,對光屬性傷害,,無,3,
+stronger_against_dark,對暗屬性傷害,,無,3,
+stronger_against_weaker_element,對弱點屬性傷害,,無,3,1
+neutral_resistance,抗無屬性,,無,4,
+fire_resistance,抗火屬性,,無,4,
+water_resistance,抗水屬性,,無,4,
+earth_resistance,抗地屬性,,無,4,
+wind_resistance,抗風屬性,,無,4,
+light_resistance,抗光屬性,,無,4,
+dark_resistance,抗暗屬性,,無,4,
+physical_barrier,物理屏障,$t$s$v,無,5,
+magical_barrier,魔法屏障,$t$s$v,無,5,
+fractional_barrier,百分比屏障,,無,5,
+barrier_cooldown,屏障速度,,無,5,
+reflect,反彈傷害,,無,5,
+additional_meele,物理追擊,$t$v$u,無,5,
+additional_magic,魔法追擊,$t$v$u,無,5,
+anticipate,看穿,$t$v$u,無,5,
+guard_break,破防,$t$v$u,無,5,
+flinch_unavailable,封印膽怯,$t,無,10,
+tumble_unavailable,封印翻覆,$t,無,10,
+stun_unavailable,封印昏厥,$t,無,10,
+recoil_damage,反作用傷害,$t$s$2d$u,無,10,
+exp_rate,獲得EXP,,無,10,
+element_fire,火屬性,$t,無,2,
+element_water,水屬性,$t,無,2,
+element_earth,地屬性,$t,無,2,
+element_wind,風屬性,$t,無,2,
+element_light,光屬性,$t,無,2,
+element_dark,暗屬性,$t,無,2,
+element_mana,魔屬性,$t,無,2,
+absolute_dodge,絕對迴避,,無,10,
+absolute_accuracy,絕對命中,,無,10,
+reduce_dmg_floor,地面傷害減輕,,無,8,
+reduce_dmg_meteor,隕石傷害減輕,,無,8,
+reduce_player_epicenter,範圍傷害減輕,,無,8,
+reduce_dmg_foe_epicenter,敵方周圍傷害減輕,,無,8,
+reduce_dmg_bowling,貼地傷害減輕,,無,8,
+reduce_dmg_bullet,子彈傷害減輕,,無,8,
+reduce_dmg_straight_line,直線傷害減輕,,無,8,
+reduce_dmg_charge,衝撞傷害減輕,,無,8,
+reduce_explosion,爆炸減輕,,無,8,
+reduce_gravity,吸引減輕,,無,8,
+reduce_emission,放射減輕,,無,8,
+atk_up_str,ATK提升 (STR),ATK提升(STR$v%),無,5,
+atk_up_dex,ATK提升 (DEX),ATK提升(DEX$v%),無,5,
+atk_up_int,ATK提升 (INT),ATK提升(INT$v%),無,5,
+atk_up_agi,ATK提升 (AGI),ATK提升(AGI$v%),無,5,
+atk_up_vit,ATK提升 (VIT),ATK提升(VIT$v%),無,5,
+matk_up_str,MATK提升 (STR),MATK提升(STR$v%),無,5,
+matk_up_dex,MATK提升 (DEX),MATK提升(DEX$v%),無,5,
+matk_up_int,MATK提升 (INT),MATK提升(INT$v%),無,5,
+matk_up_agi,MATK提升 (AGI),MATK提升(AGI$v%),無,5,
+matk_up_vit,MATK提升 (VIT),MATK提升(VIT$v%),無,5,
+atk_down_str,ATK下降 (STR),ATK下降(STR$v%),無,5,
+atk_down_dex,ATK下降 (DEX),ATK下降(DEX$v%),無,5,
+atk_down_int,ATK下降 (INT),ATK下降(INT$v%),無,5,
+atk_down_agi,ATK下降 (AGI),ATK下降(AGI$v%),無,5,
+atk_down_vit,ATK下降 (VIT),ATK下降(VIT$v%),無,5,
+matk_down_str,MATK下降 (STR),MATK下降(STR$v%),無,5,
+matk_down_dex,MATK下降 (DEX),MATK下降(DEX$v%),無,5,
+matk_down_int,MATK下降 (INT),MATK下降(INT$v%),無,5,
+matk_down_agi,MATK下降 (AGI),MATK下降(AGI$v%),無,5,
+matk_down_vit,MATK下降 (VIT),MATK下降(VIT$v%),無,5,
+invincible_aid_sec,無敵急救 (s),無敵急救 ($vs),無,10,
+pet_exp,寵物獲得EXP,,無,10,
+item_cooldown,道具冷卻,$t$1-d秒::$t+$1-d秒,無,10,
+skill_constant_extra,技能常數,$t$s$v,無,11,1
+magic_critical_rate_conversion_rate,法術暴擊轉化率,$t$v$u,無,11,
+magic_critical_damage_conversion_rate,法術暴傷轉化率,$t$v$u,無,11,
+normal_attack_multiplier,普通攻擊倍率,$t$v$u,無,11,1
+normal_attack_constant,普通攻擊常數,$t$s$v,無,11,1
+gempowder_drop_add,晶石粉末掉落量,$t+$v$u,無,10,1
+total_skill_multiplier,總技能倍率,,無,11,1
+skill_multiplier_extra,技能倍率,,無,11,1
+graze_penalty_mitigation,擦傷懲罰緩和,,1,11,1
+magic_stronger_against_element,法術額外屬性傷害,,無,11,1
+ailment_avoid,異常閃躲,,無,5,1
+base_guard_power,阻擋性能基礎值,$t$s$v,無,5,dev
+base_guard_regenerate,阻擋回復基礎值,$t$s$v,無,5,dev
+base_evasion_regenerate,閃躲回復基礎值,$t$s$v,無,5,dev
+,,,,,
+dual_bringer_efficiency,雙重提供技能效率,$t$v$u,無,11,1
+dual_bringer_penalty,雙重提供懲罰係數,$t$v$u,無,11,1

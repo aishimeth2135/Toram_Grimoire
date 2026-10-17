@@ -105,6 +105,8 @@ yarn exec prettier --check <file>
 ## 遊戲公式與資料
 
 - 牽涉到遊戲資料流處理及公式處理的相關流程，應以不更動到邏輯為優先。
+- 目前本專案的遊戲外部資料皆採用 CSV 格式，解析 CSV 的入口函數都位於 `src/stores/app/datas/utils` 料夾底下。可以直接以函數的內部實作去理解對應 CSV 資料的格式。
+- 開發時可直接讀取並用於參考的遊戲外部資料 CSV 檔，都放置於 `src/dev/assets/dev-data` 資料夾底下，例如 `LoadCharacterStats.ts` 對應 `character-stats-data.csv`。當沒有對應的 CSV 檔可以取用時，可以向開發者提出要求。
 
 ## 遊戲名詞解釋
 
@@ -127,10 +129,10 @@ yarn exec prettier --check <file>
 
 ## TypeScript
 
-- 避免使用`Object.freeze`，在型別上約束即可。如果要避免 vue 的狀態監聽，可以優先考慮`markRaw`。
-- 建立類別(class)時，成員變數的初始化都寫在`constructor`，`constructor`外僅宣告型別。
+- 避免使用 `Object.freeze`，在型別上約束即可。如果要避免 vue 的狀態監聽，可以優先考慮 `markRaw`。
+- 建立類別(class)時，成員變數的初始化都寫在 `constructor`，`constructor` 外僅宣告型別。
 
-目前`src/lib`下的類別，其`constructor`一律採用下列形式：
+目前 `src/lib` 下的類別，其 `constructor` 一律採用下列形式：
 
 ```typescript
 class SomeClass {
@@ -143,7 +145,7 @@ class SomeClass {
 }
 ```
 
-目的是讓 vue 中的`markRaw`、`reactive`等響應式管理可以集中在`create()`內處理。
+目的是讓 vue 中的 `markRaw`、`reactive` 等 Reactivity 可以集中在 `create()` 內處理。
 
 ## 錯誤處理
 
@@ -152,33 +154,33 @@ class SomeClass {
 ## 元件
 
 - 優先重用現有元件、樣式與互動模式。
-- `<script>`內考慮可讀性，需要將部分邏輯分離出去時，於元件同目錄下建立`setup.ts`檔案。
-- 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的`defineState`，`provide/inject`為最後手段。
-- 建立新元件時，`<script>`標籤應在最前面，`<template>`及`<style>`在後方。這部分舊有元件則不必特別檢查及更動。
+- `<script>`內考慮可讀性，需要將部分邏輯分離出去時，於元件同目錄下建立 `setup.ts` 檔案。
+- 頁面的元件樹較深，需要建立共用的狀態時，優先考慮此專案自訂的 `defineState`，`provide/inject` 為最後手段。
+- 建立新元件時，`<script>` 標籤應在最前面，`<template>` 及 `<style>` 在後方。這部分舊有元件則不必特別檢查及更動。
 
 ### Props
 
 #### 使用`defineProps`時
 
-- 一律先宣告一個`interface Props`再傳入。
-- 如果要宣告變數，命名一律為`props`。
-- 要處理預設值一律用`withDefaults`。
-- 定義 optional prop 時，若遇到型別為`boolean`的 prop，一律先設定其預設值為`false`，再思考其命名。
+- 一律先宣告一個 `interface Props`再傳入。
+- 如果要宣告變數，命名一律為 `props`。
+- 要處理預設值一律用 `withDefaults`。
+- 定義 optional prop 時，若遇到型別為 `boolean` 的 prop，一律先設定其預設值為 `false`，再思考其命名。
 
 #### 存取`props`時
 
-- 取用 prop 時，一律直接存取`props`，非必要情況下一律不要使用`toRefs`。
-- `<template>`內使用`props.xxx`時，省略前面的`props.`。
+- 取用 prop 時，一律直接存取 `props`，非必要情況下一律不要使用 `toRefs`。
+- `<template>` 內使用 `props.xxx` 時，省略前面的 `props.`。
 
 ### Events
 
-- 使用`defineEmits`時，一律先宣告一個`interface Emits`再傳入，變數命名一律為`emit`。
+- 使用 `defineEmits` 時，一律先宣告一個 `interface Emits` 再傳入，變數命名一律為 `emit`。
 
 ### Slots
 
-- 新增 slot 時，需使用`defineSlots`明確定義。
-- 使用`defineSlots`時，一律先宣告一個`interface Slots`再傳入，如果要宣告變數，命名一律為`slots`。
-- `Slots`內各項的回傳值的型別，應優先使用 vue 提供的`VNodeChild`，避免使用`any`。
+- 新增 slot 時，需使用 `defineSlots` 明確定義。
+- 使用 `defineSlots` 時，一律先宣告一個 `interface Slots` 再傳入，如果要宣告變數，命名一律為 `slots`。
+- `Slots` 內各項的回傳值的型別，應優先使用 vue 提供的 `VNodeChild`，避免使用 `any`。
 
 ### Defines Order
 
@@ -190,12 +192,12 @@ class SomeClass {
 
 ### 其他
 
-- 使用`<element ref="xxx">`時，優先使用`useTemplateRef('xxx')`。
+- 使用 `<element ref="xxx">` 時，優先使用 `useTemplateRef('xxx')`。
 
 ## 響應式變數
 
-- 需要建立`Ref`時，如果對象為物件，應優先評估使用情境並確認是否能使用`shallowRef`。
-- 需要建立`Ref`或`ComputedRef`時，如果對象為物件，必須在函數泛型部分指定型別，例如`computed<SomeData>(() => xxx)`。
+- 需要建立 `Ref` 時，如果對象為物件，應優先評估使用情境並確認是否能使用`shallowRef`。
+- 需要建立 `Ref` 或 `ComputedRef` 時，如果對象為物件，必須在函數泛型部分指定型別，例如 `computed<SomeData>(() => xxx)`。
 
 ## 多語系
 
@@ -203,19 +205,19 @@ class SomeClass {
 
 新增翻譯 key 時，按照下列原則處理：
 
-1. 以`zh-tw`語系為主，其他語系在開發時皆可忽略。
-2. 優先搜尋`global.yaml`有沒有可用的字串。
-3. 一些專案特有的名詞存放在`common.yaml`內。
-4. 需要新增字串時，直接進入`zh-tw`語系資料夾，於該頁面對應的檔案內新增字串，字串 ID 命名及結構可參考其他字串檔。
-5. 新增字串時，`zh-tw`以外的語系皆可忽略。
+1. 以 `zh-tw` 語系為主，其他語系在開發時皆可忽略。
+2. 優先搜尋 `global.yaml` 有沒有可用的字串。
+3. 一些專案特有的名詞存放在 `common.yaml` 內。
+4. 需要新增字串時，直接進入 `zh-tw` 語系資料夾，於該頁面對應的檔案內新增字串，字串 ID 命名及結構可參考其他字串檔。
+5. 新增字串時，`zh-tw` 以外的語系皆可忽略。
 
 ## 無障礙 (Accessible)
 
-此專案目前不支援無障礙，例如`aria-`開頭等 Accessible 屬性，實作時皆不必考慮。
+此專案目前不支援無障礙，例如 `aria-` 開頭等 Accessible 屬性，實作時皆不必考慮。
 
-## 測試
+## Unit Test
 
-- 目前專案未導入任何 unit test 機制，一律忽略並且不要嘗試新增。
+- 目前專案未導入任何 unit test 配置，一律忽略並且不要嘗試新增。
 
 ## 驗證與交付
 
@@ -225,4 +227,9 @@ class SomeClass {
 - Vue／TypeScript 變更：執行相關檔案的 ESLint 與型別檢查。
 - 影響打包、資源或執行行為的變更：執行建置。
 - 計算邏輯變更：驗證具體輸入與預期結果。
-- 不需要嘗試運行 dev server 或 build，功能皆採用人工確認。
+- 不要主動運行 dev server 或 build，目前功能優先採用人工確認。
+
+## Runtime 測試
+
+- 當要求 Runtime 測試時，優先使用 Chrome 進入 `localhost:9039` 進行測試。
+- 如果測試需要實際的存檔資料，優先向開發者要求可用於在 `app-settings.vue` 元件內匯入的存檔資料，不要自己嘗試建立。
