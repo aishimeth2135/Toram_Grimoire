@@ -1,0 +1,392 @@
+id,名稱,顯示公式,連結/條件式,選項,基本公式/條件公式,數值範圍,隱藏選項,文字說明
+0,能力點數,,,,,,,
+str,STR,,str,,@str,,,力量
+dex,DEX,,dex,,@dex,,,靈巧
+int,INT,,int,,@int,,,智力
+agi,AGI,,agi,,@agi,,,敏捷
+vit,VIT,,vit,,@vit,,,耐力
+tec,TEC,,,,@tec,1~255,計算結果為0時,技巧
+men,MEN,,,,@men,1~255,計算結果為0時,抗性
+crt,CRT,,,,@crt,1~255,計算結果為0時,暴擊
+luk,LUK,,,,@luk,1~255,計算結果為0時,幸運
+0,HP、MP,,,,,,,
+max_hp,HP上限,,max_hp,,Math.floor(93+@clv*(127/17+$vit/3)),~99999,,
+max_mp,MP上限,,max_mp,,99+@clv+$int/10+@tec,0~2000,,
+natural_hp_regen_0,基礎HP自回,,natural_hp_regen,,10+$max_hp*0.04,,永久,
+natural_hp_regen,HP自然回復,,natural_hp_regen_s,,$natural_hp_regen_0,,,未處於戰鬥狀態時，每3秒自動回復的HP。坐下時，總回復量加倍。
+natural_hp_regen_b,戰時HP回復,,natural_hp_regen_b,,$natural_hp_regen_0,,變數值為0時,戰鬥時，每3秒自動回復的HP，只有點了相關技能才有此效果。
+,,,#,"#mul, ""技能加成""",(0+#cvalue)/100,,,
+natural_mp_regen_0,基礎MP自回,,natural_mp_regen,,1+$max_mp*0.01,,永久,
+natural_mp_regen,MP自然回復,,natural_mp_regen_s,,$natural_mp_regen_0,,,未處於戰鬥狀態時，每3秒自動回復的MP。坐下時，總回復量加倍。
+natural_mp_regen_b,戰時MP回復,,natural_mp_regen_b,,$natural_mp_regen_0,,變數值為0時,戰鬥時，每3秒自動回復的MP，只有點了相關技能才有此效果。
+,,,#,"#mul, ""技能加成""",(0+#cvalue)/100,,,
+attack_mp_recovery,攻擊MP回復,,attack_mp_recovery,,10+Math.floor($max_mp*0.01),,,每次普通攻擊回復的MP量。
+,,,@dual_sword,#tvalue,100,,,
+equivalenthp_physical,等效HP(物理),,,,"$max_hp/resultValue(""reduce_dmg_physical"")*100",,,該角色能承受的最大物理傷害值，用以評估角色的物理承傷能力。僅考慮DEF、物理抗性、精鍊減傷。
+equivalenthp_magic,等效HP(魔法),,,,"$max_hp/resultValue(""reduce_dmg_magic"")*100",,,該角色能承受的最大魔法傷害值，用以評估角色的魔法承傷能力。僅考慮MDEF、魔法抗性、精鍊減傷。
+,,,,,,,,
+,,,,,,,,
+0,物理攻擊,,,,,,,
+atk,ATK,,atk,,,,,面板上顯示的ATK。當拔刀劍發動技能「雙手合持」所述的「暴擊傷害提升」時，此項數值變為1.5倍（不顯示於面板）。
+,,,#,"""裝備能力""",$atk_up_str+$atk_up_dex+$atk_up_int+$atk_up_agi+$atk_up_vit-$atk_down_str-$atk_down_dex-$atk_down_int-$atk_down_agi-$atk_down_vit,,,
+,,,@sub.magic_device,#mvalue,-15,,,
+,,,@1h_sword,"""STR×2+DEX×2""",2*$dex+2*$str,,,
+,,,@2h_sword,"""STR×3+DEX×1""",$dex+3*$str,,,
+,,,@bow,"""DEX×3+STR×1""",3*$dex+$str,,,
+,,,@bow,"""箭矢攻擊力""",@arrow.atk,,,
+,,,@bowgun,"""DEX×4""",4*$dex,,,
+,,,@bowgun,"""箭矢攻擊力""",@arrow.atk/2,,,
+,,,@staff,"""STR×3+INT×1""",$int+3*$str,,,
+,,,@magic_device,"""INT×2+AGI×2""",2*$int+2*$agi,,,
+,,,@knuckle,"""AGI×2+DEX×0.5""",0.5*$dex+2*$agi,,,
+,,,@dual_sword,"""DEX×2+STR+AGI""",2*$dex+$str+$agi,,,
+,,,@halberd,"""STR×2.5+AGI×1.5""",1.5*$agi+2.5*$str,,,
+,,,@katana,"""DEX×2.5+STR×1.5""",2.5*$dex+1.5*$str,,,
+,,,@main.none,"""1+STR""",1+$str,,,
+,,,#,"""武器攻擊力""",$weapon_atk,,,
+,,,#,"""角色等級""",@clv,,,
+,,,@sub.magic_device,"#cvalue, ""雙重提供""","Math.max(Math.min(Math.max(0,$matk_0-$atk_0)*stat('dual_bringer_efficiency'),1)*(($matk_0-$atk_0)*stat('dual_bringer_efficiency')*stat('dual_bringer_penalty')/10000-$atk_0*(1-stat('dual_bringer_penalty')/100)),0)",,,
+atk_0,計算用ATK,,atk,,,,永久,魔劍atk計算用
+,,,#,"""裝備能力""",$atk_up_str+$atk_up_dex+$atk_up_int+$atk_up_agi+$atk_up_vit-$atk_down_str-$atk_down_dex-$atk_down_int-$atk_down_agi-$atk_down_vit,,,
+,,,@sub.magic_device,#mvalue,-15,,,
+,,,@1h_sword,"""STR×2+DEX×2""",2*$dex+2*$str,,,
+,,,@2h_sword,"""STR×3+DEX×1""",$dex+3*$str,,,
+,,,@bow,"""DEX×3+STR×1""",3*$dex+$str,,,
+,,,@bow,"""箭矢攻擊力""",@arrow.atk,,,
+,,,@bowgun,"""DEX×4""",4*$dex,,,
+,,,@bowgun,"""箭矢攻擊力""",@arrow.atk/2,,,
+,,,@staff,"""STR×3+INT×1""",$int+3*$str,,,
+,,,@magic_device,"""INT×2+AGI×2""",2*$int+2*$agi,,,
+,,,@knuckle,"""AGI×2+DEX×0.5""",0.5*$dex+2*$agi,,,
+,,,@dual_sword,"""DEX×2+STR+AGI""",2*$dex+$str+$agi,,,
+,,,@halberd,"""STR×2.5+AGI×1.5""",1.5*$agi+2.5*$str,,,
+,,,@katana,"""DEX×2.5+STR×1.5""",2.5*$dex+1.5*$str,,,
+,,,@main.none,"""1+STR""",1+$str,,,
+,,,#,"""武器攻擊力""",$weapon_atk,,,
+,,,#,"""角色等級""",@clv,,,
+,,,,,,,,
+sub_atk,副手ATK,,atk,,0,,計算結果為0時,雙劍特有。副手ATK會乘上副手倍率後，加入技能ATK的計算。
+,,,@dual_sword,#base,,,,
+,,,,,,,,
+,,,@dual_sword,"""副手武器攻擊力""",$sub_weapon_atk,,,
+,,,@dual_sword,"""AGI×3+STR×1""",3*$agi+$str,,,
+,,,@dual_sword,"""角色等級""",@clv,,,
+,,,,,,,,
+sub_stability,副手倍率,%,stability,,0,0~100,計算結果為0時,雙劍特有。會影響副手ATK反映到技能ATK的比例。
+,,,@dual_sword,#base,,,,
+,,,@dual_sword,"""STR×0.06+AGI×0.04""",$str*0.06+$agi*0.04,,,
+,,,@dual_sword,"""副手基礎穩定÷2""",@sub.stability/2,,,
+dual_sword_skill_atk,雙劍技能ATK,,,,0,,計算結果為0時,雙劍特有。雙劍技能中的攻擊技能在計算傷害時，公式中的ATK會用此項目進行計算。
+,,,@dual_sword,#base,,,,
+,,,@dual_sword,"""主手ATK""",$atk,,,
+,,,@dual_sword,"""副手ATK×副手倍率""",Math.floor($sub_atk*$sub_stability/100),,,
+weapon_atk,武器攻擊力,,weapon_atk,,Math.floor($weapon_base_atk*(100+#mvalue)/100)+Math.floor($weapon_base_atk*(@main.refining*@main.refining)/100)+@main.refining+#cvalue,0~,,
+weapon_base_atk,主手武器基礎攻擊力,,weapon_base_atk,,"@main.atk*(100+Math.min(50,#mvalue))/100+#cvalue",0~,永久,
+sub_weapon_atk,副手武器攻擊力,,weapon_atk,,,,永久,*主動技能的武器攻擊力加成不影響副手，程式已應對。
+,,,@dual_sword,,Math.floor(@sub.atk*(100+#mvalue)/100)+Math.floor(@sub.atk*(@sub.refining*@sub.refining)/200)+@sub.refining+#cvalue,,,
+physical_pierce,物理貫穿,%,physical_pierce,,#cvalue,~100,變數值為0時,可無視對手一定比例的DEF，數值為負時將增加對手防禦。
+stability_main,穩定率(隱藏),%,stability_main,,#cvalue,,永久,計算用能力。
+stability,穩定率,%,stability,,,1~100,,最終物理傷害將在（100%~穩定%）之間，以1%為間距浮動，超出100%的部分無效。
+,,,#,"#cvalue, ""狂戰士之怒""",$stability_main,,,
+,,,@1h_sword,"""DEX×0.075+STR×0.025""",$dex*0.075+$str*0.025,,,
+,,,@2h_sword,"""DEX×0.1""",$dex*0.1,,,
+,,,@bow,"""DEX×0.05+STR×0.05""",$dex*0.05+$str*0.05,,,
+,,,@bow,"#cvalue, ""箭矢穩定""",@arrow.stability,,,
+,,,@bowgun,"""STR×0.05""",$str*0.05,,,
+,,,@bowgun,"#cvalue, ""箭矢穩定÷2""",@arrow.stability/2,,,
+,,,@staff,"""STR×0.05""",$str*0.05,,,
+,,,@magic_device,"""DEX×0.1""",$dex*0.1,,,
+,,,@knuckle,"""DEX×0.025""",$dex*0.025,,,
+,,,@dual_sword,"""DEX×0.075+STR×0.025""",$dex*0.075+$str*0.025,,,
+,,,@halberd,"""DEX×0.05+STR×0.05""",$dex*0.05+$str*0.05,,,
+,,,@katana,"""STR×0.075+DEX×0.025""",$dex*0.025+$str*0.075,,,
+,,,@main.none,"""1+DEX÷2.85""",$dex/2.85+1,,,
+,,,#,"""武器基礎穩定""",@main.stability,,,
+critical_rate,暴擊率,,critical_rate,,25+Math.floor(@crt/3.4),0~,,發生暴擊的機率。超過100的部分可抵消部分BOSS的抗暴擊能力。
+,,,@dual_sword,#mvalue,-55,,,
+critical_damage_0,(暴傷計算用),%,critical_damage,,"Math.max(150+$str/5,150+($str+$agi)/10)",0~,永久,
+critical_damage_skill,(不受衰減影響的暴傷),%,critical_damage_skill,,,,永久,
+critical_damage,暴擊傷害,%,critical_damage,,"Math.max(150+$str/5,150+($str+$agi)/10)",0~,,發生暴擊時的傷害倍率。當暴擊傷害達到300%後，後續增加的暴擊傷害效果將減半，總AGI>STR時，計算公式將納入AGI。
+,,,#,"#cvalue, ""暴傷300以上效果減損""","-Math.max(0,($critical_damage_0-300)/2)",,,
+,,,#,"#cvalue, ""特殊技能提供爆傷""",$critical_damage_skill,,,
+0,魔法攻擊,,,,,,,
+matk,MATK,,matk,,,,,面板上顯示的MATK。
+,,,#,"""裝備能力""",$matk_up_str+$matk_up_dex+$matk_up_int+$matk_up_agi+$matk_up_vit-$matk_down_str-$matk_down_dex-$matk_down_int-$matk_down_agi-$matk_down_vit,,,
+,,,@sub.knuckle,#mvalue,-15,,,
+,,,@1h_sword,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@1h_sword,"""轉化技能效果，額外INT加成""",$int*@skill.Conversion/10,,,
+,,,@1h_sword,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@2h_sword,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@2h_sword,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@2h_sword,"""轉化技能效果，額外INT加成""",$int*@skill.Conversion/10,,,
+,,,@bow,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@bowgun,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@bowgun,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@bowgun,"""轉化技能效果，額外INT加成""",$int*@skill.Conversion/10,,,
+,,,@staff,"""INT×4+DEX×1""",$dex+4*$int,,,
+,,,@staff,"""武器攻擊力""",$weapon_atk,,,
+,,,@magic_device,"""INT×4+DEX×1""",$dex+4*$int,,,
+,,,@magic_device,"""武器攻擊力""",$weapon_atk,,,
+,,,@knuckle,"""INT×4+DEX×1""",$dex+4*$int,,,
+,,,@knuckle,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/200,,,
+,,,@knuckle,"""武器攻擊力""",$weapon_atk*0.5,,,
+,,,@dual_sword,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@dual_sword,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@dual_sword,"""轉化技能效果，額外INT加成""",$int*@skill.Conversion/10,,,
+,,,@halberd,"""INT×2+DEX+AGI""",$dex+2*$int+$agi,,,
+,,,,,,,,
+,,,@katana,"""INT×1.5+DEX×1""",$dex+1.5*$int,,,
+,,,@main.none,"""INT×3+DEX×1""",$dex+3*$int+1,,,
+,,,#,"""角色等級""",@clv,,,
+,,,@sub.magic_device,"#cvalue, ""雙重提供""","Math.max(Math.min(Math.max(0,$atk_0-$matk_0)*stat('dual_bringer_efficiency'),1)*(($atk_0-$matk_0)*stat('dual_bringer_efficiency')*stat('dual_bringer_penalty')/10000-$matk_0*(1-stat('dual_bringer_penalty')/100)),0)",,,
+matk_0,計算用MATK,,matk,,,,永久,魔劍matk計算用
+,,,#,"""裝備能力""",$matk_up_str+$matk_up_dex+$matk_up_int+$matk_up_agi+$matk_up_vit-$matk_down_str-$matk_down_dex-$matk_down_int-$matk_down_agi-$matk_down_vit,,,
+,,,@sub.knuckle,#mvalue,-15,,,
+,,,@1h_sword,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@1h_sword,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@bowgun,"""INT×3+DEX×1""",$dex+3*$int,,,
+,,,@bowgun,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/100,,,
+,,,@staff,"""INT×4+DEX×1""",$dex+4*$int,,,
+,,,@staff,"""武器攻擊力""",$weapon_atk,,,
+,,,@knuckle,"""INT×4+DEX×1""",$dex+4*$int,,,
+,,,@knuckle,"#cvalue, ""武器攻擊力轉化""",$weapon_atk*@skill.Conversion*@skill.Conversion/200,,,
+,,,@knuckle,"""武器攻擊力""",$weapon_atk*0.5,,,
+,,,@main.none,"""INT×3+DEX×1""",$dex+3*$int+1,,,
+,,,#,"""角色等級""",@clv,,,
+thunder_matk,雷槍MATK,,matk,,,,計算結果為0時,斧槍技能專用的基礎MATK，只有點了相關技能時才會顯示。
+,,,#,"""INT×4+DEX×1+AGI×1""",$int*4+$dex+$agi,,,
+,,,#,"""角色等級""",@clv,,,
+,,,#,"""武器攻擊力""",$weapon_atk*5/8,,,
+,,,#,#tvalue,"Math.min(getSkillLevel('0-5-19')+getSkillLevel('0-5-15'),1)*100-100",,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+magic_pierce,魔法貫穿,%,magic_pierce,,#cvalue,~100,變數值為0時,可無視對手一定比例的MDEF，數值為負時將增加對手防禦。
+magic_stability,魔法穩定率,%,stability_magic,,50,1~,,最終魔法傷害將在（魔穩浮動下限%~魔穩浮動上限%）之間，以1%為間距浮動。但當此項超過100%時，浮動上限雖不再增加，卻會提升打出上限值的機率。
+,,,#,"""物理穩定率÷2""",$stability/2,,,
+magic_stability_min,魔穩浮動下限,%,,,$magic_stability,~90,,因穩定造成魔法傷害浮動時，傷害可能獲得的倍率修正最小值，此項最大為90%。
+,,,,,,,,
+magic_stability_max,魔穩浮動上限,%,stability_magic,,,100~110,,因穩定造成魔法傷害浮動時，傷害可能獲得的倍率修正最大值，基礎為100%。當魔法穩定率達到90%後，每超出1%將使此數值提升1%，最大為110%或120%。
+,,,#,"""魔法穩定率溢出""","Math.floor(Math.max(0,$stability+#cvalue*2-80)/2)",,,
+,,,#,"""基礎值""",100,,,
+,,,,,,,,
+magic_critical_rate,魔法暴擊率,,magic_critical_rate_conversion_rate,,$critical_rate,0~,變數值為0時,發生魔法暴擊的機率。超過100%的部分可抵消部分BOSS的抗暴擊能力。
+,,,#,"#mul, ""法術暴擊轉化率""","Math.min(1,#cvalue/100)",,,
+magic_critical_rate_neutral,無屬性魔法暴擊率,,magic_critical_rate_conversion_rate,,$critical_rate,0~,計算結果為0時,僅限主手法杖，使用無屬性的魔法攻擊時，可獲得更高的魔法暴擊率。
+,,,@staff,"#mul, ""法術暴擊轉化率""","Math.min(1,#cvalue/100)+0.25",,,
+,,,@1h_sword,#mul,0,,,
+,,,@2h_sword,#mul,0,,,
+,,,@bow,#mul,0,,,
+,,,@bowgun,#mul,0,,,
+,,,@magic_device,#mul,0,,,
+,,,@knuckle,#mul,0,,,
+,,,@dual_sword,#mul,0,,,
+,,,@halberd,#mul,0,,,
+,,,@katana,#mul,0,,,
+,,,@main.none,#mul,0,,,
+magic_critical_damage,魔法暴擊傷害,%,magic_critical_damage_conversion_rate,,"100+($critical_damage-100)*(Math.min(100,#cvalue)+50)/100",0~,變數值為0時,發生魔法暴擊時的傷害倍率。
+0,防禦,,,,,,,
+def,DEF,,def,,,,,DEF越高，受到物理傷害時的損傷越輕。
+,,,#,"""裝備防禦""",@armor.def+@additional.def+@special.def+@shield.def,,,
+,,,@armor.normal,"""角色等級×1+VIT×1""",Math.floor(@clv+$vit),,,
+,,,@armor.defense,"""角色等級×1.2+VIT×2""",Math.floor($vit*2+@clv*1.2),,,
+,,,@armor.dodge,"""角色等級×0.8+VIT÷4""",Math.floor($vit*0.25+@clv*0.8),,,
+,,,@armor.none,"""角色等級×0.4+VIT÷10""",Math.floor($vit*0.1+@clv*0.4),,,
+,,,@sub.arrow,#mvalue,-25,,,
+mdef,MDEF,,mdef,,,,,MDEF越高，受到魔法傷害時的損傷越輕。
+,,,#,"""裝備防禦""",@armor.def+@additional.def+@special.def+@shield.def,,,
+,,,@armor.normal,"""角色等級×1+INT×1""",Math.floor(@clv+$int),,,
+,,,@armor.defense,"""角色等級×1.2+INT×2""",Math.floor($int*2+@clv*1.2),,,
+,,,@armor.dodge,"""角色等級×0.8+INT÷4""",Math.floor($int*0.25+@clv*0.8),,,
+,,,@armor.none,"""角色等級×0.4+INT÷10""",Math.floor($int*0.1+@clv*0.4),,,
+,,,@sub.arrow,#mvalue,-25,,,
+physical_resistance,物理抗性,%,physical_resistance,,#cvalue,,,物理抗性越高，受到物理傷害時的損傷越輕。物理抗性若超過50%，計算減傷時需先將數值以每50%為單位拆分，再全部相乘。
+magic_resistance,魔法抗性,%,magic_resistance,,#cvalue,,,魔法抗性越高，受到魔法傷害時的損傷越輕。魔法抗性若超過50%，計算減傷時需先將數值以每50%為單位拆分，再全部相乘。
+reduce_dmg_physical,受到物理傷害,$.2v%,,,100,0~,,計算DEF、裝備精鍊、與物理抗性作用下，所收到物理傷害的比率（此處顯示到小數後二位，實際精度未知）。注意仍有其他減傷能力會作用，因此並非最終減傷值。
+,,,#,"#mul, ""物理抗性""",(100-reduceValue($physical_resistance))/100,,,
+,,,#,"#mul, ""精煉值""",(100-@armor.refining-@additional.refining-@shield.refining)/100,,,
+,,,#,"#mul, ""DEF""","(100-Math.floor(Math.min(20,$def*0.08)+Math.max(0,Math.min(10,($def-250)*0.01))+Math.max(0,($def-1250)*0.003)))/100",,,
+reduce_dmg_magic,受到魔法傷害,$.2v%,,,100,0~,,計算MDEF、裝備精鍊、與魔法抗性作用下，所收到魔法傷害的比率（此處顯示到小數後二位，實際精度未知）。注意仍有其他減傷能力會作用，因此並非最終減傷值。
+,,,#,"#mul, ""魔法抗性""",(100-reduceValue($magic_resistance))/100,,,
+,,,#,"#mul, ""精煉值""",(100-@armor.refining-@additional.refining-@shield.refining)/100,,,
+,,,#,"#mul, ""MDEF""","(100-Math.floor(Math.min(20,$mdef*0.08)+Math.max(0,Math.min(10,($mdef-250)*0.01))+Math.max(0,($mdef-1250)*0.003)))/100",,,
+reduce_dmg_percentage,受到百分比傷害,%,,,100-@armor.refining-@additional.refining-@shield.refining,,,計算裝備精鍊作用下，所收到百分比傷害的比率。注意仍有其他減傷能力會作用，因此並非最終減傷值。
+,,,@armor.defense,#cvalue,-@armor.refining,,,
+base_guard_power,基礎阻擋性能,,base_guard_power,,,0~10000,永久,基礎阻擋力不可超過10000
+,,,@armor.defense,#cvalue,5000,,,
+,,,@2h_sword,#cvalue,5000,,,
+,,,@halberd,#cvalue,2500,,,
+,,,@sub.shield,#cvalue,7500,,,
+guard_power,阻擋性能,,guard_power,,#base*(1+#cvalue/100),0~,計算結果為0時,影響阻擋可輕減的傷害量與減傷幅度。阻擋性能越高，進行阻擋時減免的傷害就越多；受到攻擊時，阻擋性能會根據傷害與HP的比例而降低。
+,,,#,"""基礎阻擋性能""",$base_guard_power,,,
+,,,,,,,,
+guard_regenerate,阻擋回復,點/每秒,guard_regenerate,,#base*(1+#cvalue/100),0~,計算結果為0時,阻擋性能的回復速度，遊戲中會將此值除以阻擋性能，以「% /s」為單位顯示。
+,,,@armor.defense,,25,,,
+,,,@2h_sword,,50,,,
+,,,@halberd,,25,,,
+,,,@sub.shield,,75,,,
+,,,#,"""技能加成""","stat(""base_guard_regenerate"")",,,
+evasion_number,閃躲次數,,evasion_count,,,0~,計算結果為0時,閃躲次數的上限。閃躲可進行短距離的快速移動以脫離攻擊範圍，且若抓準時機使用可將單體攻擊無效化。閃躲次數會逐漸回復。
+,,,@armor.dodge,,6,,,
+,,,@sub.dagger,,4,,,
+,,,@magic_device || @sub.magic_device,,8,,,
+,,,@knuckle || @sub.knuckle,,2,,,
+,,,@dual_sword,,2,,,
+evasion_regenerate,閃躲回復,$.2v次/每秒,evasion_regenerate,,#base*(100+#cvalue)/100,0~1,計算結果為0時,閃躲次數的回復速度，遊戲內會將此處的計算結果做倒數，以（X秒/回復一次）為單位顯示。當1秒內連續使用閃躲後，閃躲回復數值會下降至最低1(即10秒/次)，可藉由消費MP及普通攻擊回復至原數值。詳細下降規則未知。
+,,,@armor.dodge,,0.2,,,
+,,,@sub.dagger,,0.3,,,
+,,,@magic_device || @sub.magic_device,,0.1,,,
+,,,@knuckle || @sub.knuckle,,0.4,,,
+,,,@dual_sword,,0.1,,,
+,,,#,"""技能加成""","stat(""base_evasion_regenerate"")",,,
+ailment_resistance,異常抗性,%,ailment_resistance,,@men/3.4,~100,計算結果為0時,能使異常狀態無效化的機率，對於紅字異常無效。
+0,命中、迴避、速度,,,,,,,
+accuracy,命中,,accuracy,,,,,命中目標的能力，影響攻擊時MISS、擦傷的機率。魔法傷害將無視此數值，必定命中目標。
+,,,#,"""角色等級""",@clv,,,
+,,,#,"""DEX提供""",$dex,,,
+,,,@dual_sword,#mvalue,-55,,,
+dodge,迴避,,dodge,,,,,迴避傷害的能力，影響被攻擊時發生MISS的機率。魔法傷害無法被迴避。
+,,,@armor.normal,"""角色等級×1+AGI×1""",Math.floor($agi+@clv),,,
+,,,@armor.dodge,"""角色等級×1.25+AGI×1.75+30""",Math.floor(30+$agi*1.75+@clv*1.25),,,
+,,,@armor.defense,"""角色等級×0.5+AGI×0.75-15""",Math.floor(-15+$agi*0.75+@clv*0.5),,,
+,,,@armor.none,"""角色等級×1.5+AGI×2+75""",Math.floor(75+$agi*2+@clv*1.5),,,
+absolute_accuracy,絕對命中,%,absolute_accuracy,,,0~,變數值為0時,無視雙方迴避與命中的差距，攻擊時必定使之命中的機率（判定為HIT或Critical）。但無法阻止閃躲的發生。
+absolute_dodge,絕對迴避,%,absolute_dodge,,,0~,變數值為0時,無視雙方迴避與命中的差距，被攻擊時必定使之MISS的機率。
+aspd,攻擊速度,,aspd,,,,,提升攻擊速度，可縮短普通攻擊冷卻時間，達到1100後普通攻擊將沒有間隔。超過1000後會增加行動速度。
+,,,@sub.shield,#mvalue,-50,,,
+,,,@armor.defense,#mvalue,-50,,,
+,,,@armor.dodge,#mvalue,50,,,
+,,,#,"""角色等級""",@clv,,,
+,,,@1h_sword,"""100+AGI×4.2+STR×0.2""",100+$agi*4.2+$str*0.2,,,
+,,,@2h_sword,"""50+AGI×2.1+STR×0.2""",50+$agi*2.1+$str*0.2,,,
+,,,@bow,"""75+AGI×3.1+DEX×0.2""",75+$agi*3.1+$dex*0.2,,,
+,,,@bowgun,"""30+AGI×2.2+DEX×0.2""",30+$agi*2.2+$dex*0.2,,,
+,,,@staff,"""60+AGI×1.8+INT×0.2""",60+$agi*1.8+$int*0.2,,,
+,,,@magic_device,"""90+AGI×4+INT×0.2""",90+$agi*4+$int*0.2,,,
+,,,@knuckle,"""120+AGI×4.6+DEX×0.1+STR×0.1""",120+$agi*4.6+$dex*0.1+$str*0.1,,,
+,,,@dual_sword,"""100+AGI×4.2+STR×0.2""",100+$agi*4.2+$str*0.2,,,
+,,,@halberd,"""25+AGI×3.5+STR×0.2""",25+$agi*3.5+$str*0.2,,,
+,,,@katana,"""200+AGI×3.9+STR×0.3""",200+$agi*3.9+$str*0.3,,,
+,,,@main.none,"""1000+AGI×9.6""",1000+$agi*9.6,,,
+cspd,詠唱速度,,cspd,,,,,提升詠唱速度，可縮短蓄力與詠唱時間，對部分技能無效。
+,,,#,"""角色等級""",@clv,,,
+,,,#,"""DEX×2.94+AGI×1.16""",Math.floor($agi*1.16+$dex*2.94),,,
+motion_time,動作時間,%,motion_speed,,100-#cvalue,50~100,,進行行動（技能、普通攻擊等）的花費時間，例如50%表示只需一半時間即完成動作，對部分技能無效。另外，此項能力與角色的移動速度沒有任何關係。
+,,,#,"""攻擊速度轉化""","-Math.max(0,Math.floor(($aspd-1000)/180))",,,
+cast_time,詠唱時間,%,,,100-#cvalue,0~,,蓄力與詠唱時間的最終倍率，對部分技能無效。
+,,,#,"""詠唱速度轉化""","-Math.floor(Math.min(50,$cspd/20)+Math.max(0,($cspd-1000)/180))",,,
+0,傷害修正項目,,,,,,,
+unsheathe_attack_multiplier,拔刀攻擊倍率,%,unsheathe_attack_multiplier,,100+#cvalue,,,發生拔刀攻擊時，攻擊傷害將乘上此倍率。
+unsheathe_attack,拔刀攻擊常數,,unsheathe_attack,,,,變數值為0時,發生拔刀攻擊時，在傷害常數部分得到的加成。
+short_range_damage,近距離威力,%,short_range_damage,,100+#cvalue,0~,,在近距離（0~8米未滿）攻擊時，攻擊傷害將乘上此倍率。
+long_range_damage,遠距離威力,%,long_range_damage,,100+#cvalue,0~,,在遠距離（8米以上）攻擊時，攻擊傷害將乘上此倍率。
+total_multiplier,傷害倍率,%,,,100,0~,,用以快速確認當前配置下，所有倍率項的最高效益。計算公式為：「暴擊傷害（計入機率）×近/遠距離威力×拔刀攻擊倍率×對屬性增傷×穩定率期望」，其中近/遠距離威力與屬性增傷將取最高加成者、拔刀倍率高於50%時納入計算公式、角色的MATK大於ATK時，暴擊率、暴擊傷害與穩定率應用魔法計算公式。
+,,,#,"#mul, ""暴擊傷害（計入機率）""","Math.max(Math.min(1,($atk-$matk))*($critical_damage/100-1)*Math.min(100,$critical_rate)/100+1,Math.min(1,($matk-$atk))*($magic_critical_damage/100-1)*Math.min(100,$magic_critical_rate)/100+1)",,,
+,,,#,"#mul, ""距離威力""","Math.max($short_range_damage,$long_range_damage)/100",,,
+,,,#,"#mul, ""拔刀攻擊倍率""","($unsheathe_attack_multiplier-($unsheathe_attack_multiplier-100)*Math.max(0,Math.min(1,150-$unsheathe_attack_multiplier)))/100",,,
+,,,@1h_sword,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@2h_sword,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@bow,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@bowgun,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@knuckle,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@dual_sword,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@halberd,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@katana,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@main.none,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_against_damage/100",,,
+,,,@staff,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_extra_damage/100",,,
+,,,@magic_device,"#mul, ""屬性增傷""","Math.max($stronger_against_neutral,$stronger_against_fire,$stronger_against_water,$stronger_against_earth,$stronger_against_wind,$stronger_against_light,$stronger_against_dark)/100+Math.max(0,Math.min(1,$matk-$atk))*$magic_element_extra_damage/100",,,
+,,,,,,,,
+,,,#,"#mul, ""穩定率期望值""","Math.max(Math.min(1,($atk-$matk))*($stability+100)/200,Math.min(1,($matk-$atk))*($stability/2+150)/200)",,,
+0,特殊加成,,,,,,,
+aggro,仇恨值,%,aggro,,100,0~,,造成的仇恨值將乘上此倍率，對部分技能無效。
+anticipate,看穿,%,anticipate,,,0~100,變數值為0時,當攻擊被閃躲時，可無效化此次閃躲的機率。
+guard_break,破防,%,guard_break,,,0~100,變數值為0時,當攻擊被阻擋時，可無效化此次阻擋的機率。
+additional_meele,物理追擊,%,additional_meele,,,0~,變數值為0時,發生物理追擊時，追擊的傷害倍率。不影響追擊發生機率。
+additional_magic,魔法追擊,%,additional_magic,,,0~,變數值為0時,發生魔法追擊時，追擊的傷害倍率。不影響追擊發生機率。
+physical_barrier,物理屏障,,physical_barrier,,,0~,變數值為0時,可減輕一次物理傷害，減輕量等同物理屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。
+magical_barrier,魔法屏障,,magical_barrier,,,0~,變數值為0時,可減輕一次魔法傷害，減輕量等同魔法屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。
+fractional_barrier,百分比屏障,%,fractional_barrier,,,0~,變數值為0時,可減輕一次百分比傷害，使該次傷害倍率降低百分比屏障值。屏障使用過一次就會失效，需等待重新展開（基礎重生時間30秒）。
+barrier_cooldown,屏障重生速度,秒,barrier_cooldown,,3000/(100+#cvalue),0~,變數值為0時,屏障消失後，需等待多久方可重新展開。
+reflect,反彈傷害,%,reflect,,,0~,變數值為0時,自身受到傷害時，依據反彈傷害倍率對攻擊者造成傷害。反彈無視防禦、受慣性、抗性影響，單次反彈傷害上限為99999，不會減輕受到的傷害。
+recoil_damage,反作用傷害,%,recoil_damage,,,0~,變數值為0時,自身攻擊造成的傷害，將乘上反作用傷害比例，削減自身HP。
+0,其他,,,,,,,
+drop_rate,掉寶率,%,drop_rate,,(100+@luk/5)+#cvalue,0~,,掉寶率的加成。
+revive_time,復活時間,秒,revive_time,,"Math.max(15,300*((100+#cvalue)/100))*((100+#tvalue)/100)",7~,,死亡後重返戰場所需的秒數，基礎值為300秒，復活時間最少為15秒。
+,,,,,,,,
+exp_rate,獲得EXP,%,exp_rate,,100+#cvalue,0~,變數值為0時,角色獲得的經驗值的加成。
+pet_exp,寵物獲得EXP,%,pet_exp,,100+#cvalue,,變數值為0時,自己的寵物的經驗值加成。
+item_cooldown,道具冷卻,秒,item_cooldown,,10+#cvalue,0~,變數值為0時,使用道具後的冷卻時間。
+invincible_aid_sec,無敵急救,秒,invincible_aid_sec,,,0~,變數值為0時,使用急救後，給予自身一定時間的無敵效果。
+flinch_unavailable,封印膽怯,,flinch_unavailable,,,,變數值為0時,使自身技能造成的膽怯效果無效化，並非使自身免疫敵方的膽怯。
+tumble_unavailable,封印翻覆,,tumble_unavailable,,,,變數值為0時,使自身技能造成的翻覆效果無效化，並非使自身免疫敵方的翻覆。
+stun_unavailable,封印昏厥,,stun_unavailable,,,,變數值為0時,使自身技能造成的昏厥效果無效化，並非使自身免疫敵方的昏厥。
+0,屬性增傷,,,,,,,
+element_fire,火屬性,,element_fire,,#base+@element.fire,,計算結果為0時,攻擊附帶火屬性，對地屬性目標傷害提升。部分技能不受屬性影響。
+element_water,水屬性,,element_water,,#base+@element.water,,計算結果為0時,攻擊附帶水屬性，對火屬性目標傷害提升。部分技能不受屬性影響。
+element_earth,地屬性,,element_earth,,#base+@element.earth,,計算結果為0時,攻擊附帶地屬性，對風屬性目標傷害提升。部分技能不受屬性影響。
+element_wind,風屬性,,element_wind,,#base+@element.wind,,計算結果為0時,攻擊附帶風屬性，對水屬性目標傷害提升。部分技能不受屬性影響。
+element_light,光屬性,,element_light,,#base+@element.light,,計算結果為0時,攻擊附帶光屬性，對暗屬性目標傷害提升。部分技能不受屬性影響。
+element_dark,暗屬性,,element_dark,,#base+@element.dark,,計算結果為0時,攻擊附帶暗屬性，對光屬性目標傷害提升。部分技能不受屬性影響。
+element_mana,魔屬性,,element_mana,,,,計算結果為0時,攻擊附帶魔屬性，可獲得等同法術剋屬額外傷害的傷害加成，但本身無法造成屬性剋制；部分技能不受屬性影響。
+magic_element_against_damage,法術剋屬額外傷害,%,,,Math.floor(@int/10),,計算結果為0時,僅限傷害類型為魔法的技能，在技能屬性克制目標屬性時，除基礎的25%加成外還可獲得額外的對屬性傷害加成，與其他屬性傷害加成效果為疊加。
+,,,@staff,#mul,0,,,
+,,,@magic_device,#mul,0,,,
+magic_element_extra_damage,法術額外屬性傷害,%,magic_stronger_against_element,#base,,,計算結果為0時,僅限主手杖/魔導具，帶有任意元素屬性（無屬性除外）的魔法攻擊，皆會獲得額外的對屬性傷害，無須屬性克制。與其他屬性傷害加成效果為疊加。
+,,,@staff,"#cvalue, ""基礎INT÷10""",Math.floor(@int/10),,,
+,,,@magic_device,"#cvalue, ""基礎INT÷10""",Math.floor(@int/10),,,
+stronger_against_neutral,對無屬性傷害,%,stronger_against_neutral,,100,0~,變數值為0時,對無屬性目標獲得的額外傷害加成。
+stronger_against_fire,對火屬性傷害,%,stronger_against_fire,,100,0~,變數值為0時,對火屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""水屬性""",@element.water*$stronger_against_weaker_element,,,
+stronger_against_water,對水屬性傷害,%,stronger_against_water,,100,0~,變數值為0時,對水屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""風屬性""",@element.wind*$stronger_against_weaker_element,,,
+stronger_against_earth,對地屬性傷害,%,stronger_against_earth,,100,0~,變數值為0時,對地屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""火屬性""",@element.fire*$stronger_against_weaker_element,,,
+stronger_against_wind,對風屬性傷害,%,stronger_against_wind,,100,0~,變數值為0時,對風屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""地屬性""",@element.earth*$stronger_against_weaker_element,,,
+stronger_against_light,對光屬性傷害,%,stronger_against_light,,100,0~,變數值為0時,對光屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""暗屬性""",@element.dark*$stronger_against_weaker_element,,,
+stronger_against_dark,對暗屬性傷害,%,stronger_against_dark,,100,0~,變數值為0時,對暗屬性目標獲得的額外傷害加成。
+,,,#,"#cvalue, ""光屬性""",@element.light*$stronger_against_weaker_element,,,
+stronger_against_weaker_element,對弱點屬性傷害,%,stronger_against_weaker_element,,25,,變數值為0時,
+0,屬性、類型減傷,,,,,,,
+neutral_resistance,受到無屬性傷害,%,neutral_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到無屬性的傷害時，損傷會乘上此倍率。
+fire_resistance,受到火屬性傷害,%,fire_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到火屬性的傷害時，損傷會乘上此倍率。
+water_resistance,受到水屬性傷害,%,water_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到水屬性的傷害時，損傷會乘上此倍率。
+earth_resistance,受到地屬性傷害,%,earth_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到地屬性的傷害時，損傷會乘上此倍率。
+wind_resistance,受到風屬性傷害,%,wind_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到風屬性的傷害時，損傷會乘上此倍率。
+light_resistance,受到光屬性傷害,%,light_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到光屬性的傷害時，損傷會乘上此倍率。
+dark_resistance,受到暗屬性傷害,%,dark_resistance,,100-reduceValue(#cvalue),,變數值為0時,自身受到暗屬性的傷害時，損傷會乘上此倍率。
+,,,,,,,,
+reduce_player_epicenter,範圍傷害減輕,%,reduce_player_epicenter,,,,變數值為0時,範圍傷害：以我方角色為中心的技能，警告範圍為紅色。
+reduce_dmg_foe_epicenter,敵方周圍傷害減輕,%,reduce_dmg_foe_epicenter,,,,變數值為0時,敵方周圍傷害：以敵方為中心的技能，警告範圍為紅色。
+reduce_dmg_straight_line,直線傷害減輕,%,reduce_dmg_straight_line,,,,變數值為0時,直線傷害：自敵方正面發出的直線狀攻擊，警告範圍為紅色。
+reduce_dmg_charge,衝撞傷害減輕,%,reduce_dmg_charge,,,,變數值為0時,衝撞傷害：直線狀且敵方會沿攻擊範圍移動之技能，警告範圍為紅色。
+reduce_dmg_bowling,貼地傷害減輕,%,reduce_dmg_bowling,,,,變數值為0時,貼地傷害：貼地移動之傷害，會受地形阻擋，表現形式通常為劍氣、射刃。警告範圍為藍色。
+reduce_dmg_bullet,子彈傷害減輕,%,reduce_dmg_bullet,,,,變數值為0時,子彈傷害：向我方角色射出球狀投射物之技能，警告範圍為藍色。
+reduce_dmg_floor,地面傷害減輕,%,reduce_dmg_floor,,,,變數值為0時,地面傷害：放置於地面上的固定傷害領域，表現形式為地刺，警告範圍為藍色。
+reduce_dmg_meteor,隕石傷害減輕,%,reduce_dmg_meteor,,,,變數值為0時,隕石傷害：自空中落下之技能，表現形式為隕石，警告範圍為藍色。
+reduce_explosion,爆炸減輕,%,reduce_explosion,,,,變數值為0時,爆炸傷害：警告範圍為藍色
+reduce_gravity,吸引減輕,%,reduce_gravity,,,,變數值為0時,吸引傷害：會對範圍內造成持續傷害並把玩家向技能中心拉入的攻擊，表現形式為暴風、漩渦，警告範圍為藍色。
+reduce_emission,放射減輕,%,reduce_emission,,,,變數值為0時,
+,,,,,,,,
+atk_up_str,ATK提升 (STR),,atk_up_str,,#cvalue*@str/100,,永久,
+atk_up_dex,ATK提升 (DEX),,atk_up_dex,,#cvalue*@dex/100,,永久,
+atk_up_int,ATK提升 (INT),,atk_up_int,,#cvalue*@int/100,,永久,
+atk_up_agi,ATK提升 (AGI),,atk_up_agi,,#cvalue*@agi/100,,永久,
+atk_up_vit,ATK提升 (VIT),,atk_up_vit,,#cvalue*@vit/100,,永久,
+matk_up_str,MATK提升 (STR),,matk_up_str,,#cvalue*@str/100,,永久,
+matk_up_dex,MATK提升 (DEX),,matk_up_dex,,#cvalue*@dex/100,,永久,
+matk_up_int,MATK提升 (INT),,matk_up_int,,#cvalue*@int/100,,永久,
+matk_up_agi,MATK提升 (AGI),,matk_up_agi,,#cvalue*@agi/100,,永久,
+matk_up_vit,MATK提升 (VIT),,matk_up_vit,,#cvalue*@vit/100,,永久,
+atk_down_str,ATK下降 (STR),,atk_down_str,,#cvalue*@str/100,,永久,
+atk_down_dex,ATK下降 (DEX),,atk_down_dex,,#cvalue*@dex/100,,永久,
+atk_down_int,ATK下降 (INT),,atk_down_int,,#cvalue*@int/100,,永久,
+atk_down_agi,ATK下降 (AGI),,atk_down_agi,,#cvalue*@agi/100,,永久,
+atk_down_vit,ATK下降 (VIT),,atk_down_vit,,#cvalue*@vit/100,,永久,
+matk_down_str,MATK下降 (STR),,matk_down_str,,#cvalue*@str/100,,永久,
+matk_down_dex,MATK下降 (DEX),,matk_down_dex,,#cvalue*@dex/100,,永久,
+matk_down_int,MATK下降 (INT),,matk_down_int,,#cvalue*@int/100,,永久,
+matk_down_agi,MATK下降 (AGI),,matk_down_agi,,#cvalue*@agi/100,,永久,
+matk_down_vit,MATK下降 (VIT),,matk_down_vit,,#cvalue*@vit/100,,永久,

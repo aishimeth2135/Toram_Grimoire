@@ -124,6 +124,7 @@ export interface CharacterStatResultInputVars {
 
 interface CharacterStatResultVars extends CharacterStatResultInputVars {
   readonly allCharacterStatMap: Readonly<Record<string, CharacterStat>>
+  readonly pureStatsByBaseId: ReadonlyMap<string, Partial<Record<StatTypes, StatRecorded>>>
   getterResults: {
     [key: string]: number
   }
@@ -210,6 +211,7 @@ class CharacterStat {
     }
 
     const formula = this._formula
+    let result: CharacterStatResult
     try {
       const res = formula.calc(currentStats, vars)
       let value = res.value
@@ -243,7 +245,7 @@ class CharacterStat {
 
       const resultValue = parseFloat(displayValue.replace(/[^\-\d.]/g, ''))
 
-      return {
+      result = {
         origin: this,
         value,
         valueInt: res.valueInt,
@@ -264,7 +266,7 @@ class CharacterStat {
       }
     } catch (error) {
       console.warn(error)
-      return {
+      result = {
         origin: this,
         value: 0,
         valueInt: 0,
@@ -309,11 +311,15 @@ class CharacterStat {
         hidden: true,
       }
     }
+
+    vars.getterOriginalResults[this.id] = result
+    return result
   }
 
   static prepareCalcResultVars(
     input: CharacterStatResultInputVars,
-    categories: readonly CharacterStatCategory[]
+    categories: readonly CharacterStatCategory[],
+    pureStats: readonly StatRecorded[]
   ): CharacterStatResultVars {
     const allCharacterStatMap: Record<string, CharacterStat> = {}
     categories.forEach(category => {
@@ -322,9 +328,20 @@ class CharacterStat {
       })
     })
 
+    const pureStatsByBaseId = new Map<string, Partial<Record<StatTypes, StatRecorded>>>()
+    pureStats.forEach(stat => {
+      let stats = pureStatsByBaseId.get(stat.baseId)
+      if (!stats) {
+        stats = {}
+        pureStatsByBaseId.set(stat.baseId, stats)
+      }
+      stats[stat.type] = stat
+    })
+
     return {
       ...input,
       allCharacterStatMap,
+      pureStatsByBaseId,
       getterResults: {},
       getterOriginalResults: {},
     }
@@ -333,6 +350,7 @@ class CharacterStat {
 
 class CharacterStatFormula {
   private _parent: CharacterStat
+  private _referencedStatKeys: Set<string>
 
   readonly formula: string
   conditionValues: CharacterStatFormulaConditionalItem[]
@@ -343,6 +361,7 @@ class CharacterStatFormula {
     conditionValues: CharacterStatFormulaConditionalItem[]
   ) {
     this._parent = parent
+    this._referencedStatKeys = new Set(str.match(/\$[\w$]+/g))
     this.formula = str
     this.conditionValues = conditionValues
   }
@@ -359,6 +378,7 @@ class CharacterStatFormula {
     const optionList = splitComma(options)
     const item = CharacterStatFormulaConditionalItem.create(conditional, formula, optionList)
     this.conditionValues.push(item)
+    formula.match(/\$[\w$]+/g)?.forEach(key => this._referencedStatKeys.add(key))
   }
 
   /**
@@ -367,9 +387,8 @@ class CharacterStatFormula {
   calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const { allCharacterStatMap } = vars
 
-    const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
     const getStatByType = (type: StatTypes): StatRecorded | null => {
-      return pureStats.find(stat => checkBaseId(stat) && stat.type === type)?.clone() ?? null
+      return vars.pureStatsByBaseId.get(this.belongCharacterStat.link)?.[type]?.clone() ?? null
     }
     let cstat = getStatByType(StatTypes.Constant),
       mstat = getStatByType(StatTypes.Multiplier),
@@ -391,18 +410,11 @@ class CharacterStatFormula {
         query = query.slice(0, -1)
         statType = StatTypes.Multiplier
       }
-      return pureStats.find(stat => stat.baseId === query && stat.type === statType) ?? null
+      return vars.pureStatsByBaseId.get(query)?.[statType] ?? null
     }
 
     const getOriginalResult = (id: string) => {
-      if (!vars.getterOriginalResults[id]) {
-        const stat = allCharacterStatMap[id]
-        if (!stat) {
-          return null
-        }
-        vars.getterOriginalResults[id] = stat.result(pureStats, vars)
-      }
-      return vars.getterOriginalResults[id]
+      return allCharacterStatMap[id]?.result(pureStats, vars) ?? null
     }
 
     const getOriginalResultValue = (id: string) => {
@@ -459,8 +471,6 @@ class CharacterStatFormula {
     }
     const handlerVars = {
       ...vars.value,
-      ...vars.getterResults,
-
       ...vars.methods,
 
       reduceValue: (value: number) => {
@@ -498,9 +508,12 @@ class CharacterStatFormula {
         return statValueVars[key]
       })
     })
-    Object.keys(allCharacterStatMap).forEach(key => {
-      const originalKey = key
-      key = '$' + key
+    this._referencedStatKeys.forEach(key => {
+      const originalKey = key.slice(1)
+      if (!(originalKey in allCharacterStatMap)) {
+        return
+      }
+
       appendGetter(key, () => {
         if (originalKey === this._parent.id) {
           console.warn('[CharacterStatFormula.calc] Infinite loop detected.')
