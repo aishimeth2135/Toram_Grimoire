@@ -489,57 +489,5 @@ function computeFormula(
   }
 }
 
-// console.log(handleFormula('test.a.c(123)', {
-//   methods: {
-//     test: {
-//       a: {
-//         c: (value: number) => value * 100,
-//       },
-//     },
-//   },
-// }));
-
-// setTimeout(() => {
-//   console.log(handleFormula('300*reduceValue(-#test)/100', {
-//     vars: {
-//       '#test': '-100',
-//     },
-//     methods: {
-//       reduceValue: (value: number) => {
-//         const neg = value < 0;
-//         value = Math.abs(value);
-//         let rate = 1, res = neg ? 100 : 0;
-//         while (value !== 0) {
-//           const fixedValue = Math.min(value, 50);
-//           res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate;
-//           value -= fixedValue;
-//           rate *= 2;
-//         }
-
-//         return neg ? -1 * (res - 100) : res;
-//       },
-//     },
-//   }));
-// }, 3000);
-
-// setTimeout(() => {
-//   // const vars = {
-//   //   foo: {
-//   //     bar: {
-//   //       test: (value: number) => value * 100,
-//   //     },
-//   //   },
-//   //   test: {
-//   //     aa: {
-//   //       bb: {
-//   //         cc: 100,
-//   //       },
-//   //       cc: 23,
-//   //     },
-//   //   },
-//   // }
-//   console.log(parseFormula('foo.bar.test(10) + Math.floor(123) + test.aa.bb.cc + 50 + test.aa.cc', {}, { compile: '__VARS__' }))
-// }, 1000)
-
 export { handleFormula, computeFormula }
 export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters, HandleFormulaMethods }

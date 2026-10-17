@@ -9,6 +9,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -27,6 +29,6 @@ const currentUrl = computed(() => {
 
 watch(currentUrl, value => {
   const data = downloadCsvData(value)
-  console.log(data)
+  CommonLogger.info('BookView', 'Data:', data)
 })
 </script>

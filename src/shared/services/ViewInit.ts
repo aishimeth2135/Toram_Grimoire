@@ -22,7 +22,7 @@ async function initializeSilently(dataStoreIds: DataStoreIds[]) {
   const results = await datasStore.ensureLoaded(dataStoreIds)
   results.forEach(result => {
     if (!result.success) {
-      console.error(result.error)
+      CommonLogger.warn('initializeSilently', 'Unexpected error.', result.error)
     }
   })
 }
@@ -79,7 +79,7 @@ export async function initializePage(options: PageInitOptions = {}) {
         initializeStore.updateInitItemStatus(id, InitItemStatus.Success)
         initLogger.addTitle(id).info('Loading finished.')
       } else {
-        console.error(result.error)
+        CommonLogger.warn('run', 'Unexpected error.', result.error)
         initializeStore.updateInitItemStatus(id, InitItemStatus.Error)
       }
     })
@@ -88,7 +88,7 @@ export async function initializePage(options: PageInitOptions = {}) {
     initializeStore.startInitLocale()
     const localeResult = await localeResultPromise
     if (!localeResult.success) {
-      console.error(localeResult.error)
+      CommonLogger.warn('run', 'Unexpected error.', localeResult.error)
     } else {
       initializeStore.finishInitLocale()
     }

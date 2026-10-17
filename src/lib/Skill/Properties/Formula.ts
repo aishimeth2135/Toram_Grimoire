@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import {
   type HandleFormulaMethods,
   type HandleFormulaTexts,
@@ -34,7 +35,7 @@ import { parseFormulaListProperty, parseListProperty } from './List'
 function computeBranchFormulaValue(str: string, helper: BranchFormulaContext): string {
   const { vars, texts, methods, handleFormulaExtra } = helper
   if (typeof str !== 'string') {
-    console.warn('[computeBranchValue] unexpected value: ' + str, helper)
+    CommonLogger.warn('computeBranchFormulaValue', 'unexpected value: ' + str, helper)
     return '0'
   }
   // convert "A,,B" to "(A)+(B)"

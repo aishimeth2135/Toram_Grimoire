@@ -1,3 +1,4 @@
+import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
 import ItemsSystem from '@/lib/Items'
@@ -77,9 +78,7 @@ export function LoadCrystals(root: ItemsSystem, csvData: CsvData) {
         }
       }
     } catch (error) {
-      console.warn('[LoadCrystal] unknown error')
-      console.log(row, index)
-      console.log(error)
+      CommonLogger.start('LoadCrystals', 'unknown error').log(row, index).warn(error).end()
     }
   })
 }

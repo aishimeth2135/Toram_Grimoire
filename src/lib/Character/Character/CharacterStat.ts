@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import { computeFormula } from '@/shared/utils/data'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
@@ -175,7 +176,7 @@ class CharacterStat {
     if (this.link) {
       const base = Grimoire.Character.findStatBase(this.link)
       if (!base) {
-        console.warn(`[CharacterStat] link: ${this.link} is not found.`)
+        CommonLogger.warn('CharacterStat.constructor', `link: ${this.link} is not found.`)
       } else {
         this.isBoolStat = base.checkBoolStat()
         this.linkedStatBase = base
@@ -219,8 +220,9 @@ class CharacterStat {
         value = parseFloat(value)
       }
       if (Number.isNaN(value) || !Number.isFinite(value)) {
-        console.warn(
-          '[CharacterStatFormula.calc] unexpected reslut:',
+        CommonLogger.warn(
+          'CharacterStat.result',
+          'unexpected reslut:',
           value,
           '\nid:',
           this.id,
@@ -265,7 +267,7 @@ class CharacterStat {
           (hiddenOption === 2 && originalValue === 0),
       }
     } catch (error) {
-      console.warn(error)
+      CommonLogger.warn('CharacterStat.result', 'Unexpected error.', error)
       result = {
         origin: this,
         value: 0,
@@ -475,7 +477,7 @@ class CharacterStatFormula {
 
       reduceValue: (value: number) => {
         if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
-          console.warn('[CharacterStatFormula.calc] unexpected value: ' + value)
+          CommonLogger.warn('reduceValue', 'unexpected value: ' + value)
           return 0
         }
         const neg = value < 0
@@ -516,7 +518,7 @@ class CharacterStatFormula {
 
       appendGetter(key, () => {
         if (originalKey === this._parent.id) {
-          console.warn('[CharacterStatFormula.calc] Infinite loop detected.')
+          CommonLogger.warn('CharacterStatFormula.calc', 'Infinite loop detected.')
           return 0
         }
         const src = vars.getterResults

@@ -1,6 +1,8 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import jsep from 'jsep'
 
+import { CommonLogger } from '@/shared/services/Logger'
+
 import type { HandleFormulaGetters, HandleFormulaVars } from './index'
 
 type HandledVars = HandleFormulaVars
@@ -37,7 +39,7 @@ function getVarsMap<T>(vars: HandledVars): Map<string, T> {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`
       if (value === null || value === undefined) {
         varsMap.set(mapKey, 0)
-        console.warn(`[handle formula] vars: ${mapKey} is null or undefined`)
+        CommonLogger.warn('handleVarsMapping', `vars: ${mapKey} is null or undefined`)
       } else if (typeof value === 'object') {
         if (Array.isArray(value)) {
           value.forEach((el, idx) => varsMap.set(`${mapKey}[${idx}]`, el))
@@ -60,14 +62,14 @@ function getGettersMap<T>(getters: HandledGetters): Map<string, () => T> {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`
       if (value === null || value === undefined) {
         gettersMap.set(mapKey, () => 0)
-        console.warn(`[handle formula] vars: ${mapKey} is null or undefined`)
+        CommonLogger.warn('handleGettersMapping', `vars: ${mapKey} is null or undefined`)
       } else if (typeof value === 'object') {
         handleGettersMapping(mapKey, value)
       } else if (typeof value === 'function') {
         gettersMap.set(mapKey, value)
       } else {
         gettersMap.set(mapKey, () => 0)
-        console.warn(`[handle formula] getter: ${mapKey} is not function`)
+        CommonLogger.warn('handleGettersMapping', `getter: ${mapKey} is not function`)
       }
     })
   }

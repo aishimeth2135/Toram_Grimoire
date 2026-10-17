@@ -1,4 +1,5 @@
 import { getLocaleDataResult } from '@/shared/services/Locale'
+import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 import { splitComma } from '@/shared/utils/string'
 
@@ -127,9 +128,7 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
         }
       }
     } catch (error) {
-      console.warn('[LoadEquipment] unknown error')
-      console.warn(row, index)
-      console.warn(error)
+      CommonLogger.start('LoadEquipments', 'unknown error').warn(row, index).warn(error).end()
     }
   })
 }

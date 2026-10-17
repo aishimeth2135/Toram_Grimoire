@@ -1,3 +1,5 @@
+import { CommonLogger } from '@/shared/services/Logger'
+
 import {
   type BagItemObtain,
   BagPotion,
@@ -68,9 +70,7 @@ export function LoadPotions(root: BagPotionsRoot, csvData: CsvData) {
         }
       }
     } catch (error) {
-      console.warn('[LoadPotion] unknown error')
-      console.log(row, rowIndex)
-      console.log(error)
+      CommonLogger.start('LoadPotions', 'unknown error').log(row, rowIndex).warn(error).end()
     }
   })
 }

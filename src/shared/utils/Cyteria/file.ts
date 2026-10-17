@@ -1,5 +1,7 @@
 import sanitize from 'sanitize-filename'
 
+import { CommonLogger } from '@/shared/services/Logger'
+
 type FileSaveOptions = {
   data?: string
   fileType?: string
@@ -17,7 +19,7 @@ function save({
 }: FileSaveOptions): void {
   if (!dataUrl) {
     if (!data) {
-      console.warn('[file.save] data and dataUrl must give at least one.')
+      CommonLogger.warn('save', 'data and dataUrl must give at least one.')
       return
     }
     const blob = new Blob([data], { type: `${fileType};charset=${encoding}` })

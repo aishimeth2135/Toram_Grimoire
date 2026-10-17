@@ -143,7 +143,7 @@ export const useLocaleStore = defineStore('app-locale', () => {
     try {
       await loadLocaleMessages(LOCALE_GLOBAL_NAMESPACE_LIST)
     } catch (err) {
-      console.error(err)
+      CommonLogger.warn('updateLocaleGlobalMessages', 'Unexpected error.', err)
       const notify = useNotify()
       notify(
         'An unexpected error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.'

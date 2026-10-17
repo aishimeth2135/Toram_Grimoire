@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import { numberToFixed, toInt } from '@/shared/utils/number'
 import { isNumberString, lastChar } from '@/shared/utils/string'
 
@@ -59,7 +60,7 @@ class StatBase {
     if (type === StatTypes.Multiplier || type === StatTypes.Total) {
       return this.text + '%'
     }
-    console.warn('[StatBase.title] invalid type')
+    CommonLogger.warn('StatBase.title', 'invalid type')
     return this.text
   }
 

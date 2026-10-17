@@ -1,3 +1,5 @@
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { CalcItemContainer, Calculation } from './Calculation'
 import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 
@@ -159,7 +161,7 @@ class CalculationBase {
       const containerBase = this.containers.get(id)
       const container = snapshot.containers.get(id)
       if (!containerBase || !container) {
-        console.warn('[DamageCalculation.evaluate] unknown container id:', id)
+        CommonLogger.warn('evaluateContainer', 'unknown container id:', id)
         return 0
       }
 
@@ -193,7 +195,7 @@ class CalculationBase {
           const result = evaluateContainer(item)
           return containerBase.isMultiplier ? result / 100 : result
         }
-        console.warn('[DamageCalculation.result] unknown container id:', item)
+        CommonLogger.warn('handle', 'unknown container id:', item)
         return 0
       }
       if (item.operator === '+') {
@@ -216,7 +218,7 @@ class CalculationBase {
           return cur
         }, 1)
       }
-      console.warn('[DamageCalculation.result] Invalid CalcItem:', item)
+      CommonLogger.warn('handle', 'Invalid CalcItem:', item)
       return 0
     }
 
@@ -385,8 +387,9 @@ class CalcItemContainerBase {
 
   setVirtual(referenceContainerIds: CalculationContainerIds[]) {
     if (this.items.size > 0) {
-      console.warn(
-        '[CalcItemContainerBase.setVirtual] Unable to set container to virtual if container already have item'
+      CommonLogger.warn(
+        'CalcItemContainerBase.setVirtual',
+        'Unable to set container to virtual if container already have item'
       )
       return
     }
@@ -400,7 +403,10 @@ class CalcItemContainerBase {
       item.setRange(0, null).setDefaultValue(100).setUnit('%')
     }
     if (this.isVirtual) {
-      console.warn('[CalcItemContainerBase.appendItem] Unable to append item to virtual container')
+      CommonLogger.warn(
+        'CalcItemContainerBase.appendItem',
+        'Unable to append item to virtual container'
+      )
       return item
     }
     this.items.set(id, item)

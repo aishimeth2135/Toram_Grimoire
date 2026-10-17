@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import { Stat } from '@/lib/Character/Stat'
 import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
@@ -822,7 +823,10 @@ class EnchantStepStat extends EnchantStat {
       return itemBase
     })
     if (!itemBase) {
-      console.warn(`can not find the EnchantItem "${data.base}" when load EnchantStepStat`)
+      CommonLogger.warn(
+        'EnchantStepStat.load',
+        `can not find the EnchantItem "${data.base}" when load EnchantStepStat`
+      )
       return null
     }
     const type = EnchantStepStatTypesList[data.type]

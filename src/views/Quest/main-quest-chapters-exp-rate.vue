@@ -67,8 +67,6 @@ const displayDatas = computed(() => {
     })
   })
 
-  console.log(props.selectedQuestSections, chapterSections)
-
   return results
 })
 </script>

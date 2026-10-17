@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import type { FoodsBase } from './index'
 import type { FoodAmount } from './index'
@@ -51,7 +52,7 @@ function initFoodsBase(foodsBase: FoodsBase) {
     const value = foodList[key]
     const base = Grimoire.Character.findStatBase(key)
     if (!base) {
-      console.warn('Can not find Statbase which base-name: ' + key)
+      CommonLogger.warn('initFoodsBase', 'Can not find Statbase which base-name: ' + key)
       return
     }
     if (Array.isArray(value)) {
