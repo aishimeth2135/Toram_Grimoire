@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed, ref, watch } from 'vue'
+import { type ComputedRef, type Ref, computed } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -49,7 +49,7 @@ export function prepareSetupCharacter() {
     skillItemStates: Map<Skill, SkillItemState>,
     setupOptions: Ref<CharacterSetupOptions>
   ) => {
-    const allEquipmentStats = computed(() => {
+    const allEquipmentStats = computed<StatRecorded[]>(() => {
       if (!character.value) {
         return []
       }
@@ -66,7 +66,7 @@ export function prepareSetupCharacter() {
 
     const { characterStatsBaseVars } = useCharacterStatsBaseVars(character, buildsContext)
 
-    const basePureStatsEntries = computed(() => {
+    const basePureStatsEntries = computed<[string, StatRecorded][]>(() => {
       const allStats = new Map<string, StatRecorded>()
       mergeStatRecordeds(allStats, allEquipmentStats.value)
       mergeStatRecordeds(allStats, statsResult.skillStats.value)
@@ -96,7 +96,7 @@ export function prepareSetupCharacter() {
       additionalStats,
       fallbackResults,
     }: SetupCharacterStatResultsOptions = {}): CharacterStatSetupResults => {
-      const characterPureStats = computed(() => {
+      const characterPureStats = computed<StatRecorded[]>(() => {
         if (!character.value) {
           return []
         }
@@ -112,7 +112,7 @@ export function prepareSetupCharacter() {
         return [...allStats.values()]
       })
 
-      const categoryResults = computed(() => {
+      const categoryResults = computed<CharacterStatCategoryResult[]>(() => {
         if (!character.value) {
           return []
         }
@@ -121,8 +121,12 @@ export function prepareSetupCharacter() {
         }
 
         const categoryList = Grimoire.Character.characterStatCategoryList
-        const pureStats = [...characterPureStats.value]
-        const vars = CharacterStat.prepareCalcResultVars(characterStatsBaseVars.value, categoryList)
+        const pureStats = characterPureStats.value
+        const vars = CharacterStat.prepareCalcResultVars(
+          characterStatsBaseVars.value,
+          categoryList,
+          pureStats
+        )
 
         return categoryList
           .map(category => {
@@ -153,44 +157,44 @@ export function prepareSetupCharacter() {
       characterPureStats: _characterPureStats,
     } = baseResults
 
-    const baseCharacterStatCategoryResultsMap = ref(undefined as unknown as Map<string, number>)
-    watch(
-      _characterStatCategoryResults,
-      newValue => {
-        const newMap = new Map<string, number>()
-        newValue.forEach(categoryResult => {
-          categoryResult.stats.forEach(stat => {
-            newMap.set(stat.id, stat.resultValue)
-          })
+    const baseCharacterStatCategoryResultsMap = computed<Map<string, number>>(() => {
+      const results = new Map<string, number>()
+      _characterStatCategoryResults.value.forEach(categoryResult => {
+        categoryResult.stats.forEach(stat => {
+          results.set(stat.id, stat.resultValue)
         })
-        baseCharacterStatCategoryResultsMap.value = newMap
-      },
-      { immediate: true }
-    )
+      })
+      return results
+    })
 
-    const baseCharacterPureStats = ref(undefined as unknown as Map<string, number>)
-    watch(
-      _characterPureStats,
-      newValue => {
-        const newMap = new Map<string, number>()
-        newValue.forEach(stat => {
-          newMap.set(stat.statId, stat.value)
-        })
-        baseCharacterPureStats.value = newMap
-      },
-      { immediate: true }
-    )
+    const baseCharacterPureStats = computed<Map<string, number>>(() => {
+      return new Map(_characterPureStats.value.map(stat => [stat.statId, stat.value]))
+    })
+
+    const createStatValueGetter = (stats: ComputedRef<Map<string, number>>) => {
+      const values = new Map<string, ComputedRef<number>>()
+      return (id: string): number => {
+        let value = values.get(id)
+        if (!value) {
+          value = computed(() => stats.value.get(id) ?? 0)
+          values.set(id, value)
+        }
+        return value.value
+      }
+    }
+    const getBaseCharacterStatValue = createStatValueGetter(baseCharacterStatCategoryResultsMap)
+    const getBaseCharacterPureStatValue = createStatValueGetter(baseCharacterPureStats)
 
     const traitPureStats = computed<StatRecorded[]>(() => {
       if (!character.value) {
         return []
       }
       const vars = {
-        STR: baseCharacterStatCategoryResultsMap.value.get('str'),
-        DEX: baseCharacterStatCategoryResultsMap.value.get('dex'),
-        INT: baseCharacterStatCategoryResultsMap.value.get('int'),
-        AGI: baseCharacterStatCategoryResultsMap.value.get('agi'),
-        VIT: baseCharacterStatCategoryResultsMap.value.get('vit'),
+        STR: getBaseCharacterStatValue('str'),
+        DEX: getBaseCharacterStatValue('dex'),
+        INT: getBaseCharacterStatValue('int'),
+        AGI: getBaseCharacterStatValue('agi'),
+        VIT: getBaseCharacterStatValue('vit'),
         BSTR: character.value.baseStatValue(CharacterBaseStatTypes.STR),
         BDEX: character.value.baseStatValue(CharacterBaseStatTypes.DEX),
         BINT: character.value.baseStatValue(CharacterBaseStatTypes.INT),
@@ -246,11 +250,11 @@ export function prepareSetupCharacter() {
       passiveSkillResultStates: postponedPassiveSkillResultStates,
       damageSkillResultStates,
     } = setupCharacterSkills(character, buildsContext, skillItemStates, setupOptions, {
-      getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
-      getCharacterPureStatValue: id => baseCharacterPureStats.value.get(id) ?? 0,
+      getCharacterStatValue: getBaseCharacterStatValue,
+      getCharacterPureStatValue: getBaseCharacterPureStatValue,
     })
 
-    const allPostponedPureStats = computed(() => {
+    const allPostponedPureStats = computed<StatRecorded[]>(() => {
       const tmpMap = new Map<string, StatRecorded>()
       mergeStatRecordeds(tmpMap, traitPureStats.value)
       mergeStatRecordeds(tmpMap, postponedSkillPureStats.value)
@@ -267,7 +271,7 @@ export function prepareSetupCharacter() {
       otherStats,
       skillResult
     ) => {
-      const conditionalStats = computed(() => {
+      const conditionalStats = computed<StatRecorded[]>(() => {
         if (!skillResult.value.root.basicContainer) {
           return []
         }
@@ -282,7 +286,7 @@ export function prepareSetupCharacter() {
         mergeStatRecordeds(statsMap, stats)
         return [...statsMap.values()]
       })
-      const stats = computed(() => {
+      const stats = computed<StatRecorded[]>(() => {
         if (otherStats.value.length === 0 && conditionalStats.value.length === 0) {
           return []
         }
