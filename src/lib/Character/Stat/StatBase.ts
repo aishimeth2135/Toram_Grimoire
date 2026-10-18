@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import { numberToFixed, toInt } from '@/shared/utils/number'
 import { isNumberString, lastChar } from '@/shared/utils/string'
 
@@ -59,7 +60,7 @@ class StatBase {
     if (type === StatTypes.Multiplier || type === StatTypes.Total) {
       return this.text + '%'
     }
-    console.warn('[StatBase.title] invalid type')
+    CommonLogger.warn('StatBase.title', 'invalid type')
     return this.text
   }
 
@@ -70,14 +71,24 @@ class StatBase {
     }
     const handleFormula = (formula: string, unit: string) => {
       const isPos = typeof value !== 'number' || value >= 0
-      const sign = isPos ? '+' : ''
-      formula = formula.split('::')[isPos ? 0 : 1] || formula
+
+      let reversed = formula.startsWith('$r')
+      if (reversed) {
+        formula = formula.slice(2)
+        reversed = true
+      }
+
+      let sign = isPos ? '+' : ''
+      if (reversed) {
+        sign = sign === '+' ? '' : '+'
+      }
+
       let res = formula.replace('$t', this.text).replace('$u', unit).replace('$s', sign)
       if (typeof value === 'number') {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)(-?)d/, (_match, p1, p2) =>
-            (value * (p2 === '-' ? -1 : 1)).toFixed(toInt(p1) ?? 0)
+          .replace(/\$(\d+)d/, (_match, p1) =>
+            (value * (reversed ? -1 : 1)).toFixed(toInt(p1) ?? 0)
           )
       }
       return res

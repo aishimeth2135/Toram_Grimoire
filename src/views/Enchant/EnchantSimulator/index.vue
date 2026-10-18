@@ -420,13 +420,6 @@ provide(EnchantSimulatorInjectionKey, {
   openSelectItem,
   rootState: state,
 })
-
-// optimizeSteps() {
-//   /** @type {EnchantEquipment} */
-//   const eq = this.currentEquipment;
-//   console.log('=====================================');
-//   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
-// }
 </script>
 
 <style scoped>

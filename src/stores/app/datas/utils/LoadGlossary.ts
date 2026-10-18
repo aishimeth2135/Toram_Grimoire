@@ -1,4 +1,5 @@
 import { getLocaleDataResult } from '@/shared/services/Locale'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import GlossarySystem from '@/lib/Glossary'
 import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
@@ -43,9 +44,7 @@ export function LoadGlossaryTag(root: GlossarySystem, datas: LocaleCsvDatas) {
         curRow?.appendValue(frameValue)
       }
     } catch (err) {
-      console.warn('[LoadTag] unknown error')
-      console.error(err)
-      console.log(row)
+      CommonLogger.start('LoadGlossaryTag', 'unknown error').warn(err).log(row).end()
     }
   })
 }

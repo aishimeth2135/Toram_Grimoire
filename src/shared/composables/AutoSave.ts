@@ -1,6 +1,8 @@
 import { onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { useNotify } from './Notify'
 
 type AutoSaveOptions = {
@@ -23,7 +25,7 @@ export function useAutoSave({ save, loadFirst }: AutoSaveOptions): void {
       save()
     } catch (error) {
       notify(t('common.auto-save.save-unknown-error-tips'))
-      console.error(error)
+      CommonLogger.warn('saveHandler', 'Unexpected error.', error)
     }
   }
   const beforeunload = () => saveHandler()

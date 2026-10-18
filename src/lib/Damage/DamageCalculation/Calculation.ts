@@ -1,3 +1,5 @@
+import { CommonLogger } from '@/shared/services/Logger'
+
 import type {
   CalcItemBase,
   CalcItemContainerBase,
@@ -178,8 +180,9 @@ class Calculation {
     itemId: CalculationItemIds
   ): CalcItemCustom | null {
     if (!this.containerCustomItems.has(containerId)) {
-      console.warn(
-        `[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`
+      CommonLogger.warn(
+        'Calculation.appendCustomItem',
+        `container with id ${containerId} is not exist in additional list.`
       )
       return null
     }
@@ -195,8 +198,9 @@ class Calculation {
 
   removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom): boolean {
     if (!this.containerCustomItems.has(containerId)) {
-      console.warn(
-        `[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`
+      CommonLogger.warn(
+        'Calculation.removeCustomItem',
+        `container with id ${containerId} is not exist in additional list.`
       )
       return false
     }
@@ -274,7 +278,7 @@ class Calculation {
     data.items.forEach(itemData => {
       const item = this.items.get(itemData.id)
       if (!item) {
-        console.warn(`[DamageCalculation.load] Item.id: ${itemData.id} is not exist`)
+        CommonLogger.warn('Calculation.load', `Item.id: ${itemData.id} is not exist`)
         return
       }
       item.value = itemData.value
@@ -282,7 +286,7 @@ class Calculation {
     data.containers.forEach(containerData => {
       const container = this.containers.get(containerData.id)
       if (!container) {
-        console.warn(`[DamageCalculation.load] Container.id: ${containerData.id} is not exist`)
+        CommonLogger.warn('Calculation.load', `Container.id: ${containerData.id} is not exist`)
         return
       }
       // enabled will always be true if container is virtual
@@ -421,7 +425,7 @@ class CalcItemContainer implements CalcItemContainerContext {
    */
   getItemValue(id: CalculationItemIds): number {
     if (!this.items.has(id)) {
-      console.warn('[CalcItemContainer.getItemValue] unknown item id: ' + id)
+      CommonLogger.warn('CalcItemContainer.getItemValue', 'unknown item id: ' + id)
       return 0
     }
     return (this.items.get(id) as CalcItem).value

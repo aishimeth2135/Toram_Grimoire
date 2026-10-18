@@ -192,7 +192,7 @@ class StatRestriction extends Stat {
       return StatRestriction.from(stat, restriction)
     }
 
-    console.warn('[CharacterEquipment.load] can not find stat which id: ' + data.id)
+    CommonLogger.warn('StatRestriction.load', 'can not find stat which id: ' + data.id)
     return null
   }
 }

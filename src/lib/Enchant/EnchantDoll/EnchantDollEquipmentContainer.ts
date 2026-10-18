@@ -1,3 +1,4 @@
+import { CommonLogger } from '@/shared/services/Logger'
 import { lastElement } from '@/shared/utils/array'
 
 import {
@@ -855,18 +856,14 @@ export default class EnchantDollEquipmentContainer {
 
   log(errorOnly = false) {
     const steps = this.equipment.steps()
-    if (!errorOnly) {
-      console.group(`[ ${this.cloneId} ]`)
-    } else {
-      if (steps.some(step => step.remainingPotential < 1)) {
-        console.group(`[ ${this.cloneId} ]`)
-      } else {
-        console.groupCollapsed(`[ ${this.cloneId} ]`)
-      }
-    }
-    steps.forEach(step => console.log(step.toString()))
-    console.log('  [pos] ' + this.positiveStats.map(stat => stat.show()).join('|'))
-    console.log('  [neg] ' + this.negativeStats.map(stat => stat.show()).join('|'))
-    console.groupEnd()
+    const logger = CommonLogger.start(
+      'EnchantDollEquipmentContainer.log',
+      `[ ${this.cloneId} ]`,
+      errorOnly && !steps.some(step => step.remainingPotential < 1)
+    )
+    steps.forEach(step => logger.log(step.toString()))
+    logger.log('  [pos] ' + this.positiveStats.map(stat => stat.show()).join('|'))
+    logger.log('  [neg] ' + this.negativeStats.map(stat => stat.show()).join('|'))
+    logger.end()
   }
 }

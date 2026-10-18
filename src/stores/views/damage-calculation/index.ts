@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { type Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import { Calculation } from '@/lib/Damage/DamageCalculation'
 
@@ -78,8 +79,7 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
   const load = () => {
     const result = DamageCalculationPersistenceService.load()
     if (!result.success) {
-      console.warn('[store/damage-calculation/load] unknown error')
-      console.log(result.error)
+      CommonLogger.start('damage-calculation-store/load', 'unknown error').warn(result.error).end()
       throw result.error
     }
     if (result.value === null) {
@@ -105,8 +105,7 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
       })
       DamageCalculationPersistenceService.confirmLoaded()
     } catch (error) {
-      console.warn('[store/damage-calculation/load] unknown error')
-      console.log(error)
+      CommonLogger.start('damage-calculation-store/load', 'unknown error').warn(error).end()
       throw error
     }
   }

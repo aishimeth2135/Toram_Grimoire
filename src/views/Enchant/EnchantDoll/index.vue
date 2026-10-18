@@ -74,6 +74,7 @@ import { useAutoSave } from '@/shared/composables/AutoSave'
 import { useConfirm } from '@/shared/composables/Confirm'
 import { useLoading, useNotify } from '@/shared/composables/Notify'
 import { useToggle } from '@/shared/composables/State'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import { EnchantEquipment, EnchantEquipmentTypes, EnchantStat } from '@/lib/Enchant/Enchant'
 import {
@@ -197,8 +198,9 @@ const autoFindNegaitveStats = async (
         autoNegativeStatsResult.value = doll.value.autoFindNegaitveStats(manuallyStats)
       }
     } catch (err) {
-      console.warn('[enchant-doll] unknown error when auto find negative stats')
-      console.log(err)
+      CommonLogger.start('autoFindNegaitveStats', 'unknown error when auto find negative stats')
+        .warn(err)
+        .end()
       notify(t('enchant-doll.tips.unknown-error-when-calc'))
     } finally {
       nextTick(() => loading.hide())
@@ -296,8 +298,9 @@ const nextStep = async () => {
         await nextTick()
         currentStep.value += 1
       } catch (err) {
-        console.warn('[enchant-doll] some error when auto find potential minimum')
-        console.log(err)
+        CommonLogger.start('nextStep', 'some error when auto find potential minimum')
+          .warn(err)
+          .end()
         notify(t('enchant-doll.tips.unknown-error-when-calc'))
       } finally {
         await nextTick()

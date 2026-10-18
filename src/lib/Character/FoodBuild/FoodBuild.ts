@@ -1,3 +1,5 @@
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { type CharacterBindingBuild, checkLoadedId, getLoadedId } from '../Character/CharacterBuild'
 import type { FoodBase, FoodsBase } from '../Food'
 
@@ -108,8 +110,9 @@ class FoodsBuild implements CharacterBindingBuild {
           }
         } else {
           success = false
-          console.warn(
-            `[FoodBuild.load] Can not find Food which stat-base-name: ${food.statId}, negative: ${food.negative}`
+          CommonLogger.warn(
+            'FoodsBuild.load',
+            `Can not find Food which stat-base-name: ${food.statId}, negative: ${food.negative}`
           )
         }
       })
@@ -122,7 +125,7 @@ class FoodsBuild implements CharacterBindingBuild {
         success,
       }
     } catch (error) {
-      console.warn(error)
+      CommonLogger.warn('FoodsBuild.load', 'Unexpected error.', error)
       return {
         error: true,
       }

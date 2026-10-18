@@ -1,3 +1,5 @@
+import { CommonLogger } from '@/shared/services/Logger'
+
 import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
 
@@ -208,7 +210,7 @@ class Character implements CharacterBindingBuild {
         if (field.equipment !== null) {
           idx = equipments.indexOf(field.equipment)
           if (idx === -1) {
-            console.warn('[Character.save] Can not find equipment in list.')
+            CommonLogger.warn('Character.save', 'Can not find equipment in list.')
             return null
           }
         }
@@ -245,7 +247,10 @@ class Character implements CharacterBindingBuild {
         if (find) {
           find.value = bstat.value
         } else {
-          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
+          CommonLogger.warn(
+            'Character.load',
+            'Can not find CharacterBaseStat which name: ' + bstat.name
+          )
         }
       })
       if (optionalBaseStat) {
@@ -253,9 +258,9 @@ class Character implements CharacterBindingBuild {
         if (this.optionalBaseStat) {
           this.optionalBaseStat.value = optionalBaseStat.value
         } else {
-          console.warn(
-            '[Character.save] Can not find Optional-CharacterBaseStat which name: ' +
-              optionalBaseStat.name
+          CommonLogger.warn(
+            'Character.load',
+            'Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name
           )
         }
       }
@@ -278,8 +283,9 @@ class Character implements CharacterBindingBuild {
               find.equipment = eq
             }
           } else {
-            console.warn(
-              `[Character.load] Can not find equipment field of character which type: ${fieldData.type}, index: ${fieldData.index}`
+            CommonLogger.warn(
+              'Character.load',
+              `Can not find equipment field of character which type: ${fieldData.type}, index: ${fieldData.index}`
             )
           }
         }
@@ -294,8 +300,7 @@ class Character implements CharacterBindingBuild {
 
       return true
     } catch (err) {
-      console.warn('[Character.load] An unexpected error occurred.')
-      console.error(err)
+      CommonLogger.start('Character.load', 'An unexpected error occurred.').warn(err).end()
       return false
     }
   }

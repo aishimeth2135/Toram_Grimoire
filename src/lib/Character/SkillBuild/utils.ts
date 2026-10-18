@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import Cyteria from '@/shared/utils/Cyteria'
 import { toInt } from '@/shared/utils/number'
 
@@ -374,8 +375,7 @@ export async function getSkillBuildImageDataURL(skillBuild: SkillBuild) {
     // finale
     return finalCanvas.toDataURL('image/png', 1)
   } catch (err) {
-    console.warn('[exportSkillBuildImage] unknown error')
-    console.error(err)
+    CommonLogger.start('getSkillBuildImageDataURL', 'unknown error').warn(err).end()
     return null
   }
 }

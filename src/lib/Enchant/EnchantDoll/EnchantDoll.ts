@@ -1,4 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 import { lastElement } from '@/shared/utils/array'
 
 import { type StatNormalTypes, StatTypes } from '@/lib/Character/Stat'
@@ -90,11 +91,11 @@ class EnchantDoll {
       negativeStats.find(stat => stat.value === 0) ||
       positiveStats.find(stat => stat.value === 0)
     ) {
-      console.warn('[enchant-doll] value of some given stats is zero.')
+      CommonLogger.warn('EnchantDoll.calc', 'value of some given stats is zero.')
       return null
     }
     if (negativeStats.length > 7) {
-      console.warn('[enchant-doll] number given negative stats cannot exceed 7.')
+      CommonLogger.warn('EnchantDoll.calc', 'number given negative stats cannot exceed 7.')
       return null
     }
 

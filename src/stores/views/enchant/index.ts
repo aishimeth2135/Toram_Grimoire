@@ -5,6 +5,7 @@ import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
 import { useNotify } from '@/shared/composables/Notify'
+import { CommonLogger } from '@/shared/services/Logger'
 import { LocalStorageService } from '@/shared/services/Storage'
 
 import { EnchantBuild } from '@/lib/Enchant/Enchant'
@@ -106,7 +107,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
         throw result.error
       }
       if (result.value === null) {
-        console.warn('[enchant-simulator] data not found')
+        CommonLogger.warn('enchant-store/load', 'loaded data not found')
         return
       }
       const data = result.value
@@ -118,8 +119,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       hasFirstLoaded = true
       EnchantPersistenceService.confirmLoaded()
     } catch (err) {
-      console.warn('[enchant-simulator] load failed')
-      console.log(err)
+      CommonLogger.start('enchant-store/load', 'load failed').warn(err).end()
       enchantBuilds.value = origin.builds
       currentBuildIndex.value = origin.index
       resetConfig(origin.config)

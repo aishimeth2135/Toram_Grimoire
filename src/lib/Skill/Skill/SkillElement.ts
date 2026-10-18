@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { CommonLogger } from '@/shared/services/Logger'
 
 import { StatComputed } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
@@ -219,8 +220,9 @@ class Skill extends SkillBase {
   appendSkillEffectHistory(effectId: number, date: string): SkillEffectHistory | void {
     const effect = this.effects.find(eft => eft.effectId === effectId)
     if (!effect) {
-      console.warn(
-        `[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`,
+      CommonLogger.warn(
+        'Skill.appendSkillEffectHistory',
+        `can not find target effect with id: ${effectId}.`,
         this.effects
       )
       return

@@ -1,4 +1,5 @@
 import { getLocaleDataResult } from '@/shared/services/Locale'
+import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
 import CharacterSystem from '@/lib/Character'
@@ -52,9 +53,7 @@ export function LoadStats(characterSystem: CharacterSystem, datas: LocaleCsvData
       stat.hidden = row('hidden') === '1'
       stat.devOnly = row('hidden') === 'dev'
     } catch (err) {
-      console.warn('[LoadStats] unknown error')
-      console.error(err)
-      console.log(row)
+      CommonLogger.start('LoadStats', 'unknown error').warn(err).log(row).end()
     }
   })
 }
