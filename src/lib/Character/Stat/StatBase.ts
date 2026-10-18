@@ -64,42 +64,59 @@ class StatBase {
     return this.text
   }
 
-  show(type: StatTypes, value: StatValue): string {
-    const calc = (typeof value === 'string' && isNumberString(value)) || typeof value === 'number'
-    if (typeof value !== 'number' && calc) {
-      value = parseFloat(value)
+  private handleFormula(formula: string, value: StatValue, unit: string, isNumber: boolean) {
+    const isPos = typeof value !== 'number' || value >= 0
+
+    let reversed = formula.startsWith('$r')
+    if (reversed) {
+      formula = formula.slice(2)
+      reversed = true
     }
-    const handleFormula = (formula: string, unit: string) => {
-      const isPos = typeof value !== 'number' || value >= 0
 
-      let reversed = formula.startsWith('$r')
-      if (reversed) {
-        formula = formula.slice(2)
-        reversed = true
-      }
+    let sign = isPos ? '+' : ''
+    let res = formula.replace('$t', this.text).replace('$u', unit)
 
-      let sign = isPos ? '+' : ''
+    if (typeof value === 'number') {
       if (reversed) {
         sign = sign === '+' ? '' : '+'
+        value = value * -1
       }
+      res = res
+        .replace('$s', sign)
+        .replace('$v', () => {
+          return (isNumber ? Math.floor(value as number) : value).toString()
+        })
+        .replace(/\$(\d+)d/, (_match, p1) => (value as number).toFixed(toInt(p1) ?? 0))
+    } else {
+      res = res.replace('$s', sign)
+    }
 
-      let res = formula.replace('$t', this.text).replace('$u', unit).replace('$s', sign)
-      if (typeof value === 'number') {
-        res = res
-          .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)d/, (_match, p1) =>
-            (value * (reversed ? -1 : 1)).toFixed(toInt(p1) ?? 0)
-          )
-      }
-      return res
+    return res
+  }
+
+  show(type: StatTypes, value: StatValue): string {
+    const isNumber =
+      (typeof value === 'string' && isNumberString(value)) || typeof value === 'number'
+    if (typeof value !== 'number' && isNumber) {
+      value = parseFloat(value)
     }
     switch (type) {
       case StatTypes.Constant:
-        return handleFormula(this.constantDisplayFormat, this.hasMultiplier ? '' : '%')
+        return this.handleFormula(
+          this.constantDisplayFormat,
+          value,
+          this.hasMultiplier ? '' : '%',
+          isNumber
+        )
       case StatTypes.Multiplier:
-        return handleFormula(this.multiplierDisplayFormat, '%')
+        return this.handleFormula(this.multiplierDisplayFormat, value, '%', isNumber)
       case StatTypes.Total:
-        return handleFormula(Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }), '%')
+        return this.handleFormula(
+          Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }),
+          value,
+          '%',
+          isNumber
+        )
     }
   }
 
