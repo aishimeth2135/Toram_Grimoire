@@ -101,7 +101,11 @@ class StatRestriction extends Stat {
     return StatRestriction.create(stat.base, stat.type, stat.value, restriction)
   }
 
-  static fromOrigin(stat: Stat, originRestriction: string): StatRestriction {
+  static fromOrigin(
+    stat: Stat,
+    originRestriction: string,
+    parentEquipmentType: EquipmentTypes = EquipmentTypes.Empty
+  ): StatRestriction {
     const restrictionMapping: Record<string, EquipmentTypes> = {
       '1h_sword': EquipmentTypes.OneHandSword,
       '2h_sword': EquipmentTypes.TwoHandSword,
@@ -128,14 +132,25 @@ class StatRestriction extends Stat {
 
     splitComma(originRestriction).forEach(item => {
       let [_eqType, _restriction] = item.split('.')
-      if (!_restriction) {
+      const hasEquipmentCategory = !!_restriction
+      if (!hasEquipmentCategory) {
         _restriction = _eqType
         _eqType = 'main'
       }
-      const eqType = _eqType as 'main' | 'sub' | 'body'
       const restriction = restrictionList.includes(_restriction)
         ? _restriction
         : restrictionMapping[_restriction]
+      let eqType = _eqType as 'main' | 'sub' | 'body'
+      if (
+        !hasEquipmentCategory &&
+        (SubWeaponTypeList.includes(restriction as EquipmentTypes) ||
+          SubArmorTypeList.includes(restriction as EquipmentTypes) ||
+          (MainWeaponTypeList.includes(parentEquipmentType) &&
+            MainWeaponTypeList.includes(restriction as EquipmentTypes)))
+      ) {
+        eqType = 'sub'
+      }
+
       if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
           CommonLogger.start('StatRestriction.fromOrigin', 'unknown restriction of stat')

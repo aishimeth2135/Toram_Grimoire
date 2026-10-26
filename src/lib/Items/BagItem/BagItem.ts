@@ -4,6 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import { CommonLogger } from '@/shared/services/Logger'
 
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 
@@ -68,7 +69,11 @@ abstract class BagItem {
       return
     }
     const stat = statBase.createStat(type, value)
-    const statr = StatRestriction.fromOrigin(stat, restriction)
+    const parentEquipmentType =
+      this instanceof BagEquipment
+        ? CharacterEquipment.convertOriginalCategory(this.category)
+        : undefined
+    const statr = StatRestriction.fromOrigin(stat, restriction, parentEquipmentType)
     this.stats.push(statr)
   }
 
