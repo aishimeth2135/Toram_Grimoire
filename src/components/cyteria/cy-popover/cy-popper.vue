@@ -89,8 +89,10 @@ const baseMiddlewares: Middleware[] = [
     apply({ availableWidth, availableHeight }) {
       popperStyle.value = {
         ...popperStyle.value,
-        maxWidth: `${Math.min(availableWidth, 512)}px`,
-        maxHeight: `${availableHeight}px`,
+        'maxWidth': `${Math.min(availableWidth, 512)}px`,
+        'maxHeight': `${availableHeight}px`,
+        '--cy-popper-available-height': `${availableHeight}px`,
+        '--cy-popper-viewport-padding': `${overFlowOptions.padding}px`,
       }
     },
     ...overFlowOptions,

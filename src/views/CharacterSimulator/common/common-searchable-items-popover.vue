@@ -12,6 +12,7 @@ interface Props {
   selectedItemIds: any[]
   placement?: 'top' | 'bottom'
   closeOnSelect?: boolean
+  expandToViewport?: boolean
 }
 interface Emits {
   (evt: 'update:search-text', value: string): void
@@ -25,6 +26,7 @@ interface Slots {
 const props = withDefaults(defineProps<Props>(), {
   placement: 'bottom',
   closeOnSelect: false,
+  expandToViewport: false,
 })
 const emit = defineEmits<Emits>()
 defineSlots<Slots>()
@@ -62,7 +64,17 @@ const popoverPlacement = computed<string | undefined>(() => {
       "
     />
     <template #popper="{ hide }">
-      <div class="flex max-h-96 flex-col bg-white">
+      <div
+        class="flex max-h-96 flex-col bg-white"
+        :style="
+          expandToViewport
+            ? {
+                maxHeight:
+                  'calc(var(--cy-popper-available-height) + var(--cy-popper-viewport-padding) - 1rem - 0.25rem)',
+              }
+            : undefined
+        "
+      >
         <CommonSearchableItems
           :search-text="searchText"
           :placeholder="placeholder"

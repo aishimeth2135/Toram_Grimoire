@@ -137,6 +137,7 @@ function selectMode(id: SearchMode) {
             :items="statsSearchResult"
             :selected-item-ids="selectedStatIds"
             placement="top"
+            expand-to-viewport
             class="pr-4.5 py-2 pl-3.5"
             @select-item="selectStat"
           >

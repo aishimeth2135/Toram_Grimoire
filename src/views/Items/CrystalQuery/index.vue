@@ -82,6 +82,7 @@
                 :items="statSearchResult"
                 :selected-item-ids="modeStat.statItem ? [modeStat.statItem.id] : []"
                 placement="top"
+                expand-to-viewport
                 class="pr-4.5 py-2 pl-3.5"
                 close-on-select
                 @select-item="selectStat"
