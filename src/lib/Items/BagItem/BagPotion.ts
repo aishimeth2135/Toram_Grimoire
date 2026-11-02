@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 
-import { BagItem } from './BagItem'
+import { BagItem, type BagItemRecipe } from './BagItem'
 
 class BagPotionsRoot {
   readonly categorys: BagPotionsCategory[]
@@ -85,14 +85,19 @@ class BagPotionsObtainCategory {
   }
 }
 
+interface PotionHealInfo {
+  type: 'hp' | 'mp'
+  amount: string
+}
+
 class BagPotion extends BagItem {
   private readonly _parent: BagPotionsObtainCategory
-  healType: 'hp' | 'mp' | null
+  healInfo: PotionHealInfo | null
 
   private constructor(parent: BagPotionsObtainCategory, id: string, name: string) {
     super(id, name)
     this._parent = parent
-    this.healType = null
+    this.healInfo = null
   }
 
   static create(parent: BagPotionsObtainCategory, id: string, name: string): BagPotion {
@@ -101,6 +106,15 @@ class BagPotion extends BagItem {
 
   get belongCategory() {
     return this._parent.belongCategory
+  }
+
+  setHealInfo(healInfo: PotionHealInfo) {
+    this.healInfo = healInfo
+  }
+
+  setRecipe(): BagItemRecipe {
+    this.recipe = {}
+    return this.recipe
   }
 }
 

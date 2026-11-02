@@ -1,0 +1,24 @@
+select-stat:
+  title: 選擇能力
+  search-placeholder: 搜尋能力
+modes:
+  normal: 一般
+  stat: 消耗品能力
+category:
+  title: 消耗品類型
+no-results-tips: 找不到任何結果0.0
+obtain-prefix: 取得自
+content-titles:
+  stats: 消耗品能力
+  obtains: 取得方式
+no-any-stat-tips: 此消耗品沒有任何能力。
+no-any-obtain-tips: 尚無取得方式資料。
+heal:
+  hp: HP回復
+  mp: MP回復
+recipe:
+  title: 製作配方
+  item_level: 道具等級
+  item_difficulty: 難易度
+  potential: 潛力值
+  cost: 眾神幣

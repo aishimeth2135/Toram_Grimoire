@@ -1,7 +1,11 @@
 import { CommonLogger } from '@/shared/services/Logger'
+import { toInt } from '@/shared/utils/number'
+import { splitComma } from '@/shared/utils/string'
 
 import {
   type BagItemObtain,
+  type BagItemRecipe,
+  BagItemRecipeMaterial,
   BagPotion,
   type BagPotionsCategory,
   type BagPotionsObtainCategory,
@@ -23,6 +27,7 @@ export function LoadPotions(root: BagPotionsRoot, csvData: CsvData) {
   })
 
   let currentObtain: BagItemObtain
+  let currentRecipe: BagItemRecipe
   let currentCategory: BagPotionsCategory
   let currentObtainCategory: BagPotionsObtainCategory
   let currentPotion: BagPotion
@@ -57,6 +62,8 @@ export function LoadPotions(root: BagPotionsRoot, csvData: CsvData) {
         currentAttrCategory = row('attr/category')
         if (currentAttrCategory === 'obtain') {
           currentObtain = currentPotion.appendObtain()
+        } else if (currentAttrCategory === 'recipe') {
+          currentRecipe = currentPotion.setRecipe()
         }
       }
       const propName = row('attr/name')
@@ -67,6 +74,27 @@ export function LoadPotions(root: BagPotionsRoot, csvData: CsvData) {
       } else if (currentAttrCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof BagItemObtain] = propValue
+        }
+      } else if (currentAttrCategory === 'recipe') {
+        const keys = ['item_level', 'item_difficulty', 'cost', 'potential'] as const
+        if (keys.includes(propName as (typeof keys)[number])) {
+          currentRecipe[propName as (typeof keys)[number]] = toInt(propValue) ?? 0
+        } else if (propName === 'materials') {
+          const materials: BagItemRecipeMaterial[] = []
+          splitComma(propValue).forEach(item => {
+            const [materialName, value] = item.split('#')
+            if (materialName && value) {
+              materials.push(BagItemRecipeMaterial.create(materialName, toInt(value) ?? 0))
+            }
+          })
+          currentRecipe.materials = materials
+        }
+      } else if (currentAttrCategory === 'heal') {
+        if (propName === 'hp' || propName === 'mp') {
+          currentPotion.setHealInfo({
+            type: propName,
+            amount: propValue,
+          })
         }
       }
     } catch (error) {

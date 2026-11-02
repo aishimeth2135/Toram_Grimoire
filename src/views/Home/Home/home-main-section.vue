@@ -45,6 +45,7 @@ const groups = (() => {
         AppRouteNames.SkillQuery,
         AppRouteNames.ItemQuery,
         AppRouteNames.CrystalQuery,
+        AppRouteNames.PotionQuery,
         AppRouteNames.RegistletQuery,
         AppRouteNames.TraitQuery,
       ]),

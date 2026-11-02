@@ -14,6 +14,7 @@ export const LocaleViewNamespaces = {
   EnchantSimulator: 'enchant-simulator',
   EnchantDoll: 'enchant-doll',
   CrystalQuery: 'crystal-query',
+  PotionQuery: 'potion-query',
   ItemQuery: 'item-query',
   ChromaticTransSimulator: 'chromatic-trans-simulator',
   RegistletQuery: 'registlet-query',

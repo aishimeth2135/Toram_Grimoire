@@ -9,6 +9,11 @@ export interface RouteLinkData {
 
 export const ROUTE_LINK_DATAS: RouteLinkData[] = [
   {
+    name: 'potion-query',
+    icon: 'hugeicons:potion',
+    pathName: AppRouteNames.PotionQuery,
+  },
+  {
     name: 'chromatic-trans-simulator',
     icon: 'ic-outline-palette',
     pathName: AppRouteNames.ChromaticTransSimulator,

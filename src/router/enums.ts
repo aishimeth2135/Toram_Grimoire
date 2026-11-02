@@ -9,6 +9,7 @@ export const AppRouteNames = {
   Items: 'items',
   ItemQuery: 'ItemQuery',
   CrystalQuery: 'CrystalQuery',
+  PotionQuery: 'PotionQuery',
   ChromaticTransSimulator: 'ChromaticTransSimulator',
 
   Enchant: 'Enchant',

@@ -12,6 +12,7 @@ const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
 const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
 const ChromaticTransSimulatorView = () => import('@/views/Items/ChromaticTransSimulator/index.vue')
 const TraitQueryView = () => import('@/views/Items/TraitQuery/index.vue')
+const PotionQueryView = () => import('@/views/Items/PotionQuery/index.vue')
 
 const createItemsViewInitGuard = createCategoryViewInitGuard(AppRouteNames.Items)
 
@@ -30,6 +31,11 @@ export default {
         title: 'app.page-title.crystal-query',
         icon: 'bx-bx-cube-alt',
         pathName: AppRouteNames.CrystalQuery,
+      },
+      {
+        title: 'app.page-title.potion-query',
+        icon: 'hugeicons:potion',
+        pathName: AppRouteNames.PotionQuery,
       },
       {
         title: 'app.page-title.trait-query',
@@ -90,6 +96,19 @@ export default {
         [LocaleViewNamespaces.TraitQuery, LocaleViewNamespaces.EquipmentTrait],
         DataStoreIds.Stats,
         DataStoreIds.EquipmentTrait
+      ),
+    },
+    {
+      name: AppRouteNames.PotionQuery,
+      path: 'potion',
+      component: PotionQueryView,
+      meta: {
+        title: 'app.page-title.potion-query',
+      },
+      beforeEnter: createItemsViewInitGuard(
+        [LocaleViewNamespaces.PotionQuery],
+        DataStoreIds.Stats,
+        DataStoreIds.ItemsPotion
       ),
     },
   ],
