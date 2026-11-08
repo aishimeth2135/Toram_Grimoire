@@ -12,7 +12,7 @@ const isTop = defineModel<boolean>('isTop', { required: true })
 <template>
   <div class="flex cursor-pointer flex-col items-center" @click="isTop = !isTop">
     <div
-      class="border-primary-10 pt-1.75 flex items-center rounded-t-full border-2 px-1.5 pb-1 duration-150"
+      class="border-primary-10 py-1.25 flex items-center rounded-t-md border-2 px-1.5 duration-150"
       :class="{
         'border-primary-30': isTop,
         'border-b-0': !isTop,
@@ -22,7 +22,7 @@ const isTop = defineModel<boolean>('isTop', { required: true })
       <cy-icon :icon="topIcon" width="1rem" />
     </div>
     <div
-      class="border-primary-10 pb-1.75 flex items-center rounded-b-full border-2 px-1.5 pt-1 duration-150"
+      class="border-primary-10 py-1.25 flex items-center rounded-b-md border-2 px-1.5 duration-150"
       :class="{
         'border-primary-30': !isTop,
         'border-t-0': isTop,
