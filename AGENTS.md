@@ -233,3 +233,14 @@ class SomeClass {
 
 - 當要求 Runtime 測試時，優先使用 Chrome 進入 `localhost:9039` 進行測試。
 - 如果測試需要實際的存檔資料，優先向開發者要求可用於在 `app-settings.vue` 元件內匯入的存檔資料，不要自己嘗試建立。
+
+<!-- CODEGRAPH_START -->
+## CodeGraph
+
+In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
+
+- **MCP tool** (when available): `codegraph_explore` answers most code questions in one call — the relevant symbols' verbatim source plus the call paths between them, including dynamic-dispatch hops grep can't follow. Name a file or symbol in the query to read its current line-numbered source. If it's listed but deferred, load it by name via tool search.
+- **Shell** (always works): `codegraph explore "<symbol names or question>"` prints the same output.
+
+If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
+<!-- CODEGRAPH_END -->
