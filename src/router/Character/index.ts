@@ -66,14 +66,14 @@ export default {
         {
           name: CharacterSimulatorRouteNames.Basic,
           path: 'basic',
-          component: () => import('@/views/CharacterSimulator/character-basic.vue'),
+          component: () => import('@/views/CharacterSimulator/character-basic/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Equipment,
           path: 'equipment',
           meta: { fillHeightLayout: true },
           component: () =>
-            import('@/views/CharacterSimulator/character-equipment-fields/character-equipment-fields.vue'),
+            import('@/views/CharacterSimulator/character-equipment-fields/index.vue'),
         },
         {
           name: CharacterSimulatorRouteNames.Skill,
@@ -103,8 +103,7 @@ export default {
         {
           name: CharacterSimulatorRouteNames.Dashboard,
           path: 'dashboard',
-          component: () =>
-            import('@/views/CharacterSimulator/character-dashboard/character-dashboard.vue'),
+          component: () => import('@/views/CharacterSimulator/character-dashboard/index.vue'),
         },
       ],
     },

@@ -2,10 +2,10 @@
   <teleport to="#app-loading">
     <div
       v-show="store.active"
-      class="app--loading z-100 fixed left-0 top-0 flex size-full justify-center p-4"
+      class="z-100 fixed left-0 top-0 flex size-full justify-center bg-white/60 p-4"
       @click.stop
     >
-      <div class="main-container">
+      <div class="mt-[15vh]">
         <cy-icon icon="@grimoire-cat" class="custom-icon" />
         <div class="text-primary-80 mt-4 text-xl">
           {{ store.loadingText }}
@@ -22,17 +22,11 @@ const store = useLoadingStore()
 </script>
 
 <style scoped>
-.app--loading {
-  background-color: --alpha(var(--app-white) / 60%);
-}
 .custom-icon {
   animation: loading-page-main-icon ease 4s infinite;
   width: 6rem;
   height: 6rem;
   color: #f7a8d3;
-}
-.main-container {
-  margin-top: 15vh;
 }
 @keyframes loading-page-main-icon {
   0% {

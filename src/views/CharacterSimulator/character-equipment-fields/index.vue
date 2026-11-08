@@ -15,6 +15,10 @@ import CharacterEquipmentDetails from '../character-equipment-details/character-
 import CharacterEquipmentsManage from '../character-equipments-manage/character-equipments-manage.vue'
 import CommonEquipmentIcon from '../common/common-equipment-icon.vue'
 
+defineOptions({
+  name: 'CharacterEquipmentFields',
+})
+
 const { t } = useI18n()
 const { device } = useDevice()
 
