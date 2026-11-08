@@ -71,6 +71,7 @@ export default {
         {
           name: CharacterSimulatorRouteNames.Equipment,
           path: 'equipment',
+          meta: { fillHeightLayout: true },
           component: () =>
             import('@/views/CharacterSimulator/character-equipment-fields/character-equipment-fields.vue'),
         },

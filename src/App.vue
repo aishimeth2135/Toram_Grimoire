@@ -7,6 +7,7 @@
       'overscroll-none': mainStore.routerGuiding,
       'page-wide': layout.wide && !device.isMobile,
       'page-has-aside': device.hasAside,
+      'flex flex-col': layout.fillHeight,
     }"
   >
     <template v-if="languageStore.i18nMessageLoaded">
@@ -15,7 +16,7 @@
       <div
         id="app-top-sticky"
         ref="appSticky"
-        class="app-layout-container-root"
+        class="app-layout-container-root shrink-0"
         :style="`top: ${sideMenuButtonVisible ? 0 : -1 * appStickyHeight}px`"
       />
       <router-view />

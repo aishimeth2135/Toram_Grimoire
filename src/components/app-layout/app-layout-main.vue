@@ -8,7 +8,10 @@ const { device } = useDevice()
 </script>
 
 <template>
-  <main class="app-layout-container-root min-h-full">
+  <main
+    class="app-layout-container-root"
+    :class="layout.fillHeight ? 'shrink-0 grow' : 'min-h-full'"
+  >
     <div
       class="app-layout-main--container app-layout-horizontal-container"
       :class="{

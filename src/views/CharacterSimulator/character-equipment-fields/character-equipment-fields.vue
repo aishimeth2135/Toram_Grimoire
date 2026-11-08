@@ -76,9 +76,9 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
 </script>
 
 <template>
-  <div class="flex grow flex-col items-center justify-center">
-    <div class="wd-lg:flex-nowrap flex w-full flex-wrap px-2">
-      <div class="wd:flex-nowrap flex flex-wrap items-start">
+  <div class="flex grow flex-col">
+    <div class="wd-lg:flex-row flex w-full grow flex-col px-2">
+      <div class="wd:flex-nowrap flex shrink-0 flex-wrap items-start">
         <cy-tabs
           v-model="currentField"
           :direction="device.isWide ? 'vertical' : 'horizontal'"
@@ -94,6 +94,7 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
             :key="field.fieldId"
             :value="field"
             class="hover:bg-primary-10 px-5 py-3"
+            :class="{ 'bg-primary-10': currentField === field }"
           >
             <CommonEquipmentIcon
               v-if="field.equipment"
@@ -113,9 +114,10 @@ const getFieldDefaultIcon = (field: EquipmentField): string => {
           />
         </div>
       </div>
+      <!-- Keep the virtual list's size out of the page's intrinsic height. -->
       <div
         :class="device.isMobile ? 'border-primary-10 mt-5 border-t' : 'pl-4'"
-        class="h-180 min-w-xs flex grow flex-col pt-4"
+        class="min-w-xs contain-[size] min-h-144 flex grow flex-col pt-4"
       >
         <BrowseEquipmentsMain
           :selected-equipment="selectedEquipment"

@@ -43,7 +43,6 @@ yarn exec prettier --check <file>
 
 - `yarn lint` 會執行 `eslint . --fix`，可能修改整個專案。
 - `yarn pretty` 與 `yarn format` 會格式化 src。
-- 一般任務優先檢查或格式化本次修改的檔案。
 
 ## 目錄分工
 
@@ -76,6 +75,7 @@ yarn exec prettier --check <file>
 - 新增 Vue 元件時，沿用鄰近元件的 API、命名與區塊順序。
 - 優先使用明確型別；需要寬鬆型別時，將影響限制在必要範圍。
 - 共用計算邏輯放在適當的領域模組，避免在 UI 元件中重複公式。
+- 處理 CSS 樣式時，優先採用 Tailwind utilities。單一元件內有大於三個元素複用同一個樣式時，才另外建立 scoped class。
 
 如果撰寫程式時需要知道此專案的程式格式風格，可參考以下幾點：
 
@@ -115,17 +115,17 @@ yarn exec prettier --check <file>
 - Character(角色)
 - Skill(技能)、Skill Tree(技能樹)、Skill Tree Category(技能樹類別)
 - Equipment(裝備)
-- Crystal(鍛晶，綁定在裝備上)
+- Crystal(鍛晶)：綁定在角色裝備上。
 - Potion(藥劑/消耗品)
 - Enchant(裝備附魔)
 - Trait(特性)
 - Food(料理)
 - Registlet(雷吉斯托環，簡稱托環)
-- Stat(能力，由裝備、技能、料理等各方面的配置提供)
-- Character Stat(角色面板能力，為各方面的 Stat 數值加總後，再經由固定的公式，最後計算出來實際運用於角色身上的能力)
-- Damage(傷害值，為角色發動攻擊時會對敵人造成的傷害數值)
+- Stat(能力)：由裝備、技能、料理等各方面的配置提供。
+- Character Stat(角色面板能力)：為各方面的 Stat 數值加總後，再經由固定的公式，最後計算出來實際運用於角色身上的能力。
+- Damage(傷害值)：為角色發動攻擊時會對敵人造成的傷害數值。
 - Quest(任務)、Main Quest(主線任務)
-- Glossary(遊戲專用名詞，其結構包含名詞的詳細解釋)
+- Glossary(遊戲專用名詞)：其結構中包含遊戲專有名詞的詳細解釋。
 
 ## TypeScript
 
@@ -232,9 +232,10 @@ class SomeClass {
 ## Runtime 測試
 
 - 當要求 Runtime 測試時，優先使用 Chrome 進入 `localhost:9039` 進行測試。
-- 如果測試需要實際的存檔資料，優先向開發者要求可用於在 `app-settings.vue` 元件內匯入的存檔資料，不要自己嘗試建立。
+- 如果測試需要實際的存檔資料，優先向開發者要求可用於在 `app-settings.vue` 元件內的 `loadLocalStorage` 匯入的存檔資料，不要自己嘗試建立。
 
 <!-- CODEGRAPH_START -->
+
 ## CodeGraph
 
 In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
@@ -244,3 +245,23 @@ In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the re
 
 If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
 <!-- CODEGRAPH_END -->
+
+## Context Optimization
+
+- Prefer CodeGraph for:
+  - Project architecture exploration
+  - Cross-file dependency analysis
+  - Function callers and callees
+  - Change impact analysis
+
+- Prefer LeanCTX for:
+  - Focused file reading
+  - Large test/build command outputs
+  - Repeated reads and context recovery
+  - Cross-session knowledge retrieval
+
+- Avoid redundant tool calls:
+  - Do not repeat searches already answered by CodeGraph.
+  - Do not reread source already supplied in sufficient detail.
+  - Retrieve exact implementation when necessary for editing.
+  - Preserve test failures, diagnostics and command exit codes.
