@@ -9,10 +9,12 @@ export const usePageLayout = defineState(() => {
 
   const isTwoColumnsLayout = computed(() => currentRoute.value.meta.twoColumnsLayout === true)
   const isWideLayout = computed(() => currentRoute.value.meta.wideLayout === true)
+  const isFillHeightLayout = computed(() => currentRoute.value.meta.fillHeightLayout === true)
 
   const layout = reactive({
     twoColumns: isTwoColumnsLayout,
     wide: isWideLayout,
+    fillHeight: isFillHeightLayout,
   })
 
   return { layout }

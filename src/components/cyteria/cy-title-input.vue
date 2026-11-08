@@ -1,7 +1,7 @@
 <template>
   <span class="mx-1 my-2 flex flex-wrap items-center">
     <div
-      class="flex w-full items-center rounded-3xl border-2 border-solid bg-white py-0.5 pl-3 pr-2 duration-300"
+      class="flex w-full items-center rounded-md border border-solid bg-white py-1 pl-3 pr-2 duration-150"
       :class="{
         'border-primary-50': inputFocus,
         'border-primary-20': !inputFocus,
@@ -9,7 +9,7 @@
     >
       <cy-icon
         :icon="icon"
-        class="mr-2"
+        class="mr-2 duration-150"
         :class="inputFocus ? 'text-primary-50' : 'text-primary-20'"
       />
       <div class="w-full">
@@ -20,7 +20,7 @@
           v-model="innerValue"
           type="text"
           :placeholder="placeholder"
-          class="w-full border-0 p-0.5 duration-200"
+          class="w-full border-0 p-0.5 duration-150"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
           @keyup="emit('keyup', $event)"

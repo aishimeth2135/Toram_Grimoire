@@ -18,6 +18,10 @@ import CharacterDashboardSkillBuild from './character-dashboard-skill-build.vue'
 
 import { useCharacterSimulatorState } from '../setup'
 
+defineOptions({
+  name: 'CharacterDashboard',
+})
+
 const { t } = useI18n()
 const characterStore = useCharacterStore()
 const { currentCharacter: character } = storeToRefs(characterStore)

@@ -9,8 +9,12 @@ import { useNotify } from '@/shared/composables/Notify'
 
 import { Character } from '@/lib/Character/Character'
 
-import CommonBuildPage from './common/common-build-page.vue'
-import CommonPropNumberInput from './common/common-prop-number-input.vue'
+import CommonBuildPage from '../common/common-build-page.vue'
+import CommonPropNumberInput from '../common/common-prop-number-input.vue'
+
+defineOptions({
+  name: 'CharacterBasic',
+})
 
 const characterStore = useCharacterStore()
 const { characters, currentCharacter } = storeToRefs(characterStore)
