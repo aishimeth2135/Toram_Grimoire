@@ -33,6 +33,7 @@ export function computeTextProperty(
     helper.branchItem,
     propertyKey,
     propertyValue,
+    helper.props,
     value => computeBranchValue(value, helper),
     result => initializeBranchFormulaResult(result, helper)
   )

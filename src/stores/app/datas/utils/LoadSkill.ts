@@ -225,7 +225,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
         attrValue = row('effect-branch/attr/value')
       if (attrName !== '') {
         if (!Grimoire.Character.findStatBase(attrName)) {
-          curSkillBranch.appendProp(attrName, attrValue, row('effect-branch/attr/extra'))
+          curSkillBranch.appendProp(attrName, attrValue)
         } else {
           curSkillBranch.appendStat(attrName, attrValue, row('effect-branch/attr/extra'))
         }

@@ -95,6 +95,24 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const pureDatas = [...(options.pureDatas ?? [])]
   const titles = [...(options.titles ?? [])]
 
+  Object.keys(texts).forEach(key => {
+    const sources = options.sources?.[key]
+    if (sources?.length !== 1) {
+      return
+    }
+
+    const source = sources[0]
+    const prefix = `${source.key}.value.`
+    for (const [sourceKey, value] of source.branch.allProps) {
+      if (sourceKey.startsWith(prefix)) {
+        const resultKey = `${key}.value.${sourceKey.slice(prefix.length)}`
+        if (!props.has(resultKey)) {
+          props.set(resultKey, value)
+        }
+      }
+    }
+  })
+
   let helper = computedBranchHelper(
     computing,
     branchItem,
@@ -297,7 +315,10 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       }
 
       handleContainerFormulaValue(text)
-      text.containers.forEach(highlightContainerFormula)
+      text.containers.forEach(ctner => {
+        handlePropHistoryHighlight(ctner)
+        highlightContainerFormula(ctner)
+      })
     })
 
     const sign = isNumberString(container.value) && parseFloat(container.value) < 0 ? '' : '+'

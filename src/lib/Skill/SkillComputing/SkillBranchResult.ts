@@ -343,10 +343,14 @@ const useTextResultBaseParseItems = defineState(() => {
     handler: getSkillQueryMarkHandler('branch'),
   }
 
-  const getParseItems = (valueParseItem: TextParseItem): TextParseItem[] => {
+  const getParseItems = (
+    valueParseItem: TextParseItem,
+    indexedValueParseItem: TextParseItem
+  ): TextParseItem[] => {
     return [
       glossaryTagItem,
       valueParseItem,
+      indexedValueParseItem,
       separateItem,
       skillMark,
       skillBranchMark,
@@ -376,23 +380,37 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
     branch: SkillBranchItemBaseChilds,
     key: string,
     rootValue: string,
+    props: ReadonlyMap<string, string>,
     computedValue: (value: string) => string,
     initializeResult?: (result: SkillBranchResult) => void
   ): SkillBranchTextResultParseResult {
     const valueParseHandlerBase = getCommonTextParseItemHandler(CommonTextParseItemIds.Value, {
       computedValue,
     })
+    const createFormulaResult = (context: Parameters<TextParseHandler>[0], resultKey: string) => {
+      const result = SkillBranchResult.from(valueParseHandlerBase(context), branch, resultKey)
+      initializeResult?.(result)
+      return result
+    }
     const valueParseItem: TextParseItem = {
       ...getCommonTextParseItemBase(CommonTextParseItemIds.Value),
       handler(context) {
-        const result = SkillBranchResult.from(valueParseHandlerBase(context), branch, key)
-        initializeResult?.(result)
-        return result
+        return createFormulaResult(context, key)
+      },
+    }
+    const indexedValueParseItem: TextParseItem = {
+      id: '@indexed-value',
+      pattern: /#\{(\d+)\}/,
+      units: ['%', 'm'],
+      handler(context) {
+        const resultKey = branch.propKey(key, 'value', context.values[0])
+        const formula = props.get(resultKey) ?? ''
+        return createFormulaResult({ ...context, values: [formula] }, resultKey)
       },
     }
 
     const { getParseItems } = useTextResultBaseParseItems()
-    const parseItems = getParseItems(valueParseItem)
+    const parseItems = getParseItems(valueParseItem, indexedValueParseItem)
 
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
@@ -445,7 +463,17 @@ class SkillBranchTextResult extends TextResultContainer implements SkillBranchRe
 
   setSources(sources: readonly SkillBranchResultSource[]): void {
     this.sources = [...sources]
-    this.containers.forEach(container => container.setSources(sources))
+    const indexedValuePrefix = `${this.key}.value.`
+    this.containers.forEach(container => {
+      const index = container.key.startsWith(indexedValuePrefix)
+        ? container.key.slice(indexedValuePrefix.length)
+        : null
+      container.setSources(
+        index === null
+          ? sources
+          : sources.map(source => ({ ...source, key: `${source.key}.value.${index}` }))
+      )
+    })
   }
 
   static createForBranch(

@@ -6,7 +6,6 @@ import { CommonLogger } from '@/shared/services/Logger'
 import { StatComputed } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat'
 
-import { appendIterablePropertyIndex } from '../Properties/Iterable'
 import { SkillBranchNames, SkillTypes } from './enums'
 
 abstract class SkillNode {
@@ -399,10 +398,7 @@ class SkillBranch extends SkillNode {
     return this.overrideId !== -1
   }
 
-  appendProp(name: string, value: string, valueSub?: string) {
-    if (valueSub) {
-      name = appendIterablePropertyIndex(name, valueSub)
-    }
+  appendProp(name: string, value: string) {
     this.props.set(name, value)
     return this
   }

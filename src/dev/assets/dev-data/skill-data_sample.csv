@@ -1,0 +1,699 @@
+v3,技能名稱,預設,主手裝備,副手裝備,身體裝備,分支ID,分支名稱,屬性名稱,屬性值,屬性追加,屬性值-英文,屬性值-日文,屬性值-簡中(唯讀),屬性值-簡中(可編輯),屬性值-簡中(自動產生)
+0,0,武器技能,,,,,,,,,,,,,
+0,1,劍術技能,,,,,,,,,,,,,
+0,威力攻擊,預設,單手劍,,,-,basic,mp_cost,100,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,constant,50+5*SLv,,,,,,
+,,,,,,,,multiplier,100+5*SLv,,,,,,
+,,,,,,,,multiplier.registlet,5*RLv,,,,,,
+,,,,,,,,ailment_name,膽怯,,Flinch,怯み,胆怯,,胆怯
+,,,,,,,,ailment_chance,50+5*SLv,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+0,,非預設,雙劍,,,,,,,,,,,,
+0,,非預設,雙手劍,,,1,,multiplier,150+5*SLv,,,,,,
+,,,,,,,,ailment_chance,5*SLv,,,,,,
+1,迅捷攻擊,預設,單手劍,,,139,basic,mp_cost,100,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,constant,150+5*SLv,,,,,,
+,,,,,,,,multiplier,150+10*SLv,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,-,extra,motion_speed,5*SLv,~,,,,,
+,,,,,,2,effect,duration,5+5*Math.floor(SLv/6),,,,,,
+,,,,,,,,condition,hit,,,,hit,,hit
+,,,,,,,,critical_rate,25,,,,,,
+1,,非預設,雙劍,,,,,,,,,,,,
+1,,非預設,雙手劍,,,139,,mp_cost,200,,,,,,
+,,,,,,1,,multiplier,200+10*SLv,,,,,,
+,,,,,,2,,critical_rate,50,,,,,,
+2,橫掃千軍,預設,單手劍,,,-,basic,mp_cost,100*(3-Math.floor(SLv/6)),,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,constant,200+10*SLv,,,,,,
+,,,,,,,,multiplier,150+5*SLv,,,,,,
+,,,,,,,,element,fire,,,,,,
+,,,,,,,,element.registlet,none,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,2,extra,self_buffs,guaranteed_hit,,#[Perfect Aim].,,,,
+,,,,,,-,text,text,施放成功後，獲得![迅速]效果。,,Gains Buff: ![Motion Speed Boost] after casting.,,施放成功后，获得![迅速]效果。,,施放成功后，获得![迅速]效果。
+,,,,,,-,effect,attack_mp_recovery,2*SLv,,,,,,
+,,,,,,,,condition,施放下個技能前,,before casting next skill,,施放下个技能前,,施放下个技能前
+,,,,,,,,name,迅速,,Motion Speed Boost,,迅速,,迅速
+,,,,,,-,extra,caption,動作時間減少50%,,Motion time decreases by 50%,,动作时间减少50%,,动作时间减少50%
+,,,,,,,,type,next,,,,,,
+,,,,,,-,tips,text,![迅速]效果會覆蓋所有會影響動作時間的加成。,,![Motion Speed Boost] overrides any other Motion Speed effects.,,![迅速]效果会覆盖所有会影响动作时间的加成。,,![迅速]效果会覆盖所有会影响动作时间的加成。
+2,,非預設,雙劍,,,,,,,,,,,,
+2,,非預設,雙手劍,,,1,,multiplier,250+5*SLv,,,,,,
+,,,,,,2,,caption,,,,,,,
+3,爆氣斬,預設,單手劍,,,-,basic,mp_cost,500,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,text,text,施放成功後，進入!B[爆氣]狀態，強化接下來的11次一般攻擊。無法與其他改變普攻動作類的技能並存。,,Gains buff: !B[Rampage State] after casting. Enhance next 11 normal attacks.,,施放成功后，进入!B[爆气]状态，强化接下来的11次一般攻击。无法与其他改变普攻动作类的技能并存。,,施放成功后，进入!B[爆气]状态，强化接下来的11次一般攻击。无法与其他改变普攻动作类的技能并存。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,-,effect,name,爆氣,,Rampage State,,爆气,,爆气
+,,,,,,,,caption,前10次一般攻擊變為!B[強化攻擊]；第11次一般攻擊變為發動!B[二連閃擊]及!B[劍光一閃]，並結束狀態。,,"The former 10 normal attacks convert into !B[Enhanced Attack]; the 11th normal attack converts into !B[Double Slit] and !B[Lightning Slash], also ending the state.",,前10次一般攻击变为!B[强化攻击]；第11次一般攻击变为发动!B[二连闪击]及!B[剑光一闪]，并结束状态。,,前10次一般攻击变为!B[强化攻击]；第11次一般攻击变为发动!B[二连闪击]及!B[剑光一闪]，并结束状态。
+,,,,,,,,end_condition,下11次一般攻擊,,The upcoming 11 auto attacks,,下11次一般攻击,,下11次一般攻击
+,,,,,,,,duration,600,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,2,extra,attack_mp_recovery,2.5*SLv,,,,,,
+,,,,,,-,list,text,受到任意異常狀態時，會使![爆氣]立刻結束。若處於!S[狂戰士之怒]狀態，可免疫此效果。(自身所附加的異常狀態不在此列),,The ![Rampage State] would be removed if getting inflicted by any ailments.,,受到任意异常状态时，会使![爆气]立刻结束。若处于!S[狂战士之怒]状态，可免疫此效果。 (自身所附加的异常状态不在此列),,受到任意异常状态时，会使![爆气]立刻结束。若处于!S[狂战士之怒]状态，可免疫此效果。 (自身所附加的异常状态不在此列)
+,,,,,,-,list,text,攻擊被miss或閃躲時，技能剩餘次數則不會減少。,,The remaining times would not decrease if the attack was evaded or missed.,,攻击被miss或闪躲时，技能剩余次数则不会减少。,,攻击被miss或闪躲时，技能剩余次数则不会减少。
+,,,,,,1,effect,name,強化攻擊,,Enhanced Attack,,强化攻击,,强化攻击
+,,,,,,,,normal_attack_constant,10*SLv,,,,,,
+,,,,,,,,normal_attack_multiplier,10+9*SLv,,,,,,
+,,,,,,,,condition,狀態期間,,During Buff,,状态期间,,状态期间
+,,,,,,5,extra,caption,改變攻擊動作，單次傷害被分成4次斬擊。,,Change attack and single damage is split into 4 slashes.,,改变攻击动作，单次伤害被分成4次斩击。,,改变攻击动作，单次伤害被分成4次斩击。
+,,,,,,,,,,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,3,damage,name,二連閃擊,,Double Slit,,二连闪击,,二连闪击
+,,,,,,,,title,each,,,,,,
+,,,,,,,,judgment,separate,,,,,,
+,,,,,,,,constant,300+20*SLv,,,,,,
+,,,,,,,,multiplier,100+10*SLv,,,,,,
+,,,,,,,,frequency,2 ,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,combo_rate,0,,,,,,
+,,,,,,,,action_frame,~30,,,,,,
+,,,,,,4,damage,name,劍光一閃,,Lightning Slash,,剑光一闪,,剑光一闪
+,,,,,,,,constant,300+20*SLv,,,,,,
+,,,,,,,,multiplier,300+30*SLv,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,combo_rate,0,,,,,,
+,,,,,,,,action_frame,~65,,,,,,
+,,,,,,-,extra,condition,動作期間,,,,动作期间,,动作期间
+,,,,,,,,caption,"受到的所有傷害減輕${[10,13,17,22,28,36,45,57,72,90][SLv-1]}%。",,,,"受到的所有伤害减轻${[10,13,17,22,28,36,45,57,72,90][SLv-1]}%。",,"受到的所有伤害减轻${[10,13,17,22,28,36,45,57,72,90][SLv-1]}%。"
+,,,,,,-,list,text,第11段攻擊視作一次技能攻擊，被分成![二連閃擊]及![劍光一閃]共三次傷害，這三次傷害皆為#[必定命中]。,,#[Perfect Aim].,,第11段攻击视作一次技能攻击，被分成![二连闪击]及![剑光一闪]共三次伤害，这三次伤害皆为#[必定命中]。,,第11段攻击视作一次技能攻击，被分成![二连闪击]及![剑光一闪]共三次伤害，这三次伤害皆为#[必定命中]。
+,,,,,,-,tips,text,![二連閃擊]及![劍光一閃]共用一次慣性判定、會受「下個技能受益」類的效果加成，也會令持續時間到下個技能的狀態消失。,,"![Double Slit] and ![Lightning Slash] shares 1 proration check. They consume buffs that apply to the next skill, also end up the buff that sustains until the next skill casted.",,![二连闪击]及![剑光一闪]共用一次惯性判定、会受「下个技能受益」类的效果加成，也会令持续时间到下个技能的状态消失。,,![二连闪击]及![剑光一闪]共用一次惯性判定、会受「下个技能受益」类的效果加成，也会令持续时间到下个技能的状态消失。
+,,,,,,-,list,text,![劍光一閃]不受行動速度影響、也不受!S[大師級劍術]加成。,,![Lightning Slash] is not affected by motion speed nor !S[Sword Techniques].,,![剑光一闪]不受行动速度影响、也不受!S[大师级剑术]加成。,,![剑光一闪]不受行动速度影响、也不受!S[大师级剑术]加成。
+,,,,,,-,list,text,連擊效果不會影響此技能的傷害。,,The combo effects do not affect this skill's damage. ,,连击效果不会影响此技能的伤害。,,连击效果不会影响此技能的伤害。
+,,,,,,-,list,text,效果持續期間，此技能無法再次使用。,,"Under the Rampage State, this skill cannot be casted again.",,效果持续期间，此技能无法再次使用。,,效果持续期间，此技能无法再次使用。
+,,,,,,-,list,text,雙劍使用時，只加成主手ATK計算的部分。,,Only Mainhand ATK will be multiplied when using dual swords,,双剑使用时，只加成主手ATK计算的部分。,,双剑使用时，只加成主手ATK计算的部分。
+3,,非預設,雙手劍,,,1,,normal_attack_multiplier,10+4*SLv,,,,,,
+,,,,,,3,,multiplier,200+10*SLv,,,,,,
+,,,,,,4,,multiplier,600+30*SLv,,,,,,
+3,,非預設,雙劍,,,2,,attack_mp_recovery,1.25*SLv,,,,,,
+,,,,,,5,extra,caption,改變攻擊動作，單次傷害被分成4次斬擊。(雙劍僅普攻的第一擊受影響被分為4次，故總段數為6~7次),,,,改变攻击动作，单次伤害被分成4次斩击。 (双剑仅普攻的第一击受影响被分为4次，故总段数为6~7次),,改变攻击动作，单次伤害被分成4次斩击。 (双剑仅普攻的第一击受影响被分为4次，故总段数为6~7次)
+3,,歷史紀錄,0,2026/4/30,,2,extra,caption,DEF、MDEF、迴避值強制固定為0。,,,,DEF、MDEF、回避值强制固定为0。,,DEF、MDEF、回避值强制固定为0。
+,,,,,,,list,text,受到任意異常狀態時，會使![爆氣]立刻結束。若處於!S[狂戰士之怒]狀態，可免疫此效果。,,,,受到任意异常状态时，会使![爆气]立刻结束。若处于!S[狂战士之怒]状态，可免疫此效果。,,受到任意异常状态时，会使![爆气]立刻结束。若处于!S[狂战士之怒]状态，可免疫此效果。
+,,,,,,3,,multiplier,50+5*SLv,,,,,,
+,,,,,,4,,multiplier,250+5*SLv,,,,,,
+,,,,,,,,,,,"Change attack action and single damage is split into 4 slashes. (Only the first hit will be split into 4, so a total of 6~7 hits for dual swords)",,,,
+4,流星墜擊,預設,單手劍,,,-,basic,mp_cost,600,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,normal,,,,,,
+,,,,,,-,text,text,發動全身力量躍向空中，對目標發動!B[流星一擊]，墜地時產生!B[星流爆破]造成範圍傷害。,,"Using whole body's strength jump into the sky, and cast Meteor Smash to the target. While landing on the floor casts Meteor Burst , dealing area damage.",,发动全身力量跃向空中，对目标发动!B[流星一击]，坠地时产生!B[星流爆破]造成范围伤害。,,发动全身力量跃向空中，对目标发动!B[流星一击]，坠地时产生!B[星流爆破]造成范围伤害。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,name,流星一擊,,Meteor Smash,,流星一击,,流星一击
+,,,,,,,,constant,400+20*SLv,,,,,,
+,,,,,,,,multiplier,400+20*SLv,,,,,,
+,,,,,,,,ailment_name,眩暈,,Dizzy,,眩晕,,眩晕
+,,,,,,,,ailment_chance,75+2.5*SLv,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,122~66,,,,,,
+,,,,,,2,damage,name,星流爆破,,Meteor Burst,,星流爆破,,星流爆破
+,,,,,,,,multiplier,100+50*SLv+$BDEX*0.5,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,end_position,target,,,,,,
+,,,,,,,,radius,2+Math.floor((SLv-1)/3)*0.5,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,extra,caption,自身處於#[無敵]狀態。,,player is under #[Invincible] state.,,自身处于#[无敌]状态。,,自身处于#[无敌]状态。
+,,,,,,,,condition,滯空期間,,While in the air,,滞空期间,,滞空期间
+,,,,,,-,tips,text,!B[星流爆破]的中心位置為技能發動時目標的位置，因此會因目標移動導致無傷害。,,"Meteor Burst's center is the target's position while casting, so it may not deal damage if the target moved. ",,!B[星流爆破]的中心位置为技能发动时目标的位置，因此会因目标移动导致无伤害。,,!B[星流爆破]的中心位置为技能发动时目标的位置，因此会因目标移动导致无伤害。
+4,,非預設,雙手劍,,,1,,multiplier,600+20*SLv+$BSTR*0.1,,,,,,
+,,,,,,,,ailment_chance,2.5*SLv,,,,,,
+,,,,,,2,,multiplier,100+50*SLv,,,,,,
+4,,非預設,雙劍,,,2,,multiplier,100+50*SLv,,,,,,
+4,,歷史紀錄,0,2020/07/16,,2,,multiplier,100+50*SLv,,,,,,
+4,,歷史紀錄,1,2020/07/16,,1,,multiplier,600+20*SLv,,,,,,
+4,,歷史紀錄,2,2020/07/16,,2,,multiplier,100+50*SLv,,,,,,
+5,音速斬切,預設,單手劍,,,139,basic,mp_cost,200,,,,,,
+,,,,,,,,range,12+4*Math.floor((SLv-1)/3),,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,text,text,衝刺到目標跟前，並對路徑上的所有敵人給予傷害，施展後會獲得!B[蓄勢待發]。,,Dash towards the target and deal damage to every enemies on the path. Gains buff: Charged Blade after casted.,,冲刺到目标跟前，并对路径上的所有敌人给予伤害，施展后会获得!B[蓄势待发]。,,冲刺到目标跟前，并对路径上的所有敌人给予伤害，施展后会获得!B[蓄势待发]。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,1,damage,constant,100+5*SLv,,,,,,
+,,,,,,,,multiplier,100+5*SLv,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,effective_area,line,,,,,,
+,,,,,,,,radius,1,,,,,,
+,,,,,,,,end_position,self,,,,,,
+,,,,,,,,end_position_offsets,-1,,,,,,
+,,,,,,,,name,音速斬切,,Sonic Blade,,音速斩切,,音速斩切
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,66~45,,,,,,
+,,,,,,2,extra,critical_rate,10*SLv,,,,,,
+,,,,,,-,effect,name,蓄勢待發,,Charged Blade,,蓄势待发,,蓄势待发
+,,,,,,,,condition,none,,,,none,,none
+,,,,,,,,caption,若再次使用此技能，此技能將強化為!B[超音速斬切]。,,"if the player cast this skill again, this skill  would be enhanced into Supersonic Blade.",,若再次使用此技能，此技能将强化为!B[超音速斩切]。,,若再次使用此技能，此技能将强化为!B[超音速斩切]。
+,,,,,,,,duration,5,,,,,,
+,,,,,,,,duration.registlet,RLv,,,,,,
+,,,,,,3,damage,name,超音速斬切,,Supersonic Blade,,超音速斩切,,超音速斩切
+,,,,,,,,constant,100+5*SLv,,,,,,
+,,,,,,,,multiplier,200+10*SLv,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,effective_area,line,,,,,,
+,,,,,,,,radius,2,,,,,,
+,,,,,,,,end_position,self,,,,,,
+,,,,,,,,end_position_offsets,1,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,66~45,,,,,,
+,,,,,,4,extra,critical_rate,10*SLv,,,,,,
+,,,,,,-,list,text,施放!B[超音速斬切]一樣會獲得!B[蓄勢待發]的效果。,,Casting Supersonic Blade also gains buff: Charged Blade.,,施放!B[超音速斩切]一样会获得!B[蓄势待发]的效果。,,施放!B[超音速斩切]一样会获得!B[蓄势待发]的效果。
+,,,,,,-,extra,condition,當此技能由遠距離（8m及以上）發動時,,,,当此技能由远距离（8m及以上）发动时,,当此技能由远距离（8m及以上）发动时
+,,,,,,,,caption,"造成傷害增加${5×(距离 -7)}%,當技能等級為10且20m發動時，最高傷害為原傷害的${1.65}倍",,,,"造成伤害增加${5×(距离 -7)}%,当技能等级为10且20m发动时，最高伤害为原伤害的${1.65}倍",,"造成伤害增加${5×(距离 -7)}%,当技能等级为10且20m发动时，最高伤害为原伤害的${1.65}倍"
+5,,非預設,雙劍,,,,,,,,,,,,
+5,,非預設,雙手劍,,,139,,range,8+4*Math.floor((SLv-1)/3),,,,,,
+,,,,,,1,,multiplier,150+5*SLv,,,,,,
+,,,,,,,,radius,3,,,,,,
+,,,,,,2,,critical_rate,SLv,,,,,,
+,,,,,,3,,multiplier,300+10*SLv,,,,,,
+,,,,,,4,,critical_rate,SLv,,,,,,
+,,,,,,,,,,,,,,,
+6,真空刃,預設,單手劍,,,-,basic,mp_cost,300,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,constant,30,,,,,,
+,,,,,,,,multiplier,50+SLv*3,,,,,,
+,,,,,,,,multiplier.registlet,2*RLv,,,,,,
+,,,,,,,,frequency,10,,,,,,
+,,,,,,,,title,each,,,,,,
+,,,,,,,,is_place,1,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,66~45,,,,,,
+,,,,,,2,effect,condition,hit,,,,hit,,hit
+,,,,,,,,critical_damage,"Math.max(1,Math.min(10,0.5+SLv*0.5+$DEX*0.02))",,,,,,
+,,,,,,,,critical_damage.display,0.5+SLv*0.5+$DEX*0.02,,,,,,
+,,,,,,,,duration,2+SLv,,,,,,
+,,,,,,3,list,text,暴擊傷害加成量，最少為![1]，最多為![10]。,,Critical damage bonus is at least ![1] and at most ![10].,,暴击伤害加成量，最少为![1]，最多为![10]。,,暴击伤害加成量，最少为![1]，最多为![10]。
+,,,,,,-,list,text,將根據命中次數增加本技能的物理貫穿，每hit增加5%，最高50%,,,,将根据命中次数增加本技能的物理贯穿，每hit增加5%，最高50%,,将根据命中次数增加本技能的物理贯穿，每hit增加5%，最高50%
+6,,非預設,雙手劍,,,1,,multiplier,55+SLv*3,,,,,,
+,,,,,,,,action_frame,66~37,,,,,,
+,,,,,,2,,critical_damage.display,(SLv+1)*0.25+$DEX*0.01,,,,,,
+,,,,,,,,critical_damage,"Math.max(1,Math.min(5,0.5+SLv*0.25+$DEX*0.01))",,,,,,
+,,,,,,3,list,text,暴擊傷害加成量，最少為![1]，最多為![5]。,,Critical damage bonus is at least ![1] and at most ![5].,,暴击伤害加成量，最少为![1]，最多为![5]。,,暴击伤害加成量，最少为![1]，最多为![5]。
+6,,非預設,雙劍,,,2,,critical_damage.display,(SLv+1)*0.25+$DEX*0.01,,,,,,
+,,,,,,,,critical_damage,"Math.max(1,Math.min(5,0.5+SLv*0.25+$DEX*0.01))",,,,,,
+,,,,,,3,list,text,暴擊傷害加成量，最少為![1]，最多為![5]。,,Critical damage bonus is at least ![1] and at most ![5].,,暴击伤害加成量，最少为![1]，最多为![5]。,,暴击伤害加成量，最少为![1]，最多为![5]。
+6,,歷史紀錄,0,2026/4/30,,1,extra,caption,此技能必定不暴擊,,,,此技能必定不暴击,,此技能必定不暴击
+,,,,,,,,,,,,,,,
+7,風暴氣流,預設,單手劍,,,-,basic,mp_cost,400,,,,,,
+,,,,,,,,range,12,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_slow,,,,,,
+,,,,,,-,text,text,向目標發射一道!B[刃風]，!B[刃風]將在造成傷害後消失，並隨即於目標位置產生!B[風刃氣旋]。,,"Shoots a Blade Wind at the target. The Blade Wind disappears after dealing damage, and creates a Tempest at the target's position.",,向目标发射一道!B[刃风]，!B[刃风]将在造成伤害后消失，并随即于目标位置产生!B[风刃气旋]。,,向目标发射一道!B[刃风]，!B[刃风]将在造成伤害后消失，并随即于目标位置产生!B[风刃气旋]。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,,,proration,magic,,,,,,
+,,,,,,1,damage,name,刃風,,Blade Wind,,刃风,,刃风
+,,,,,,,,constant,0,,,,,,
+,,,,,,,,multiplier,150+10*SLv,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,radius,Math.floor(SLv/3)+3,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,~66,,,,,,
+,,,,,,2,damage,name,風刃氣旋,,Tempest,,风刃气旋,,风刃气旋
+,,,,,,,,constant,80,,,,,,
+,,,,,,,,multiplier,50+5*SLv+$BDEX*0.2,,,,,,
+,,,,,,,,is_place,1,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,title,each,,,,,,
+,,,,,,,,judgment,separate,,,,,,
+,,,,,,,,radius,Math.floor(SLv/3)+3,,,,,,
+,,,,,,,,frequency,2+Math.floor((SLv-1)/2),,,,,,
+,,,,,,,,cycle,0.5,,,,,,
+,,,,,,,,duration,3,,,,,,
+,,,,,,,,duration.registlet,RLv/2,,,,,,
+,,,,,,,,range_damage,0,,,,,,
+,,,,,,-,tips,text,!B[風刃氣旋]的中心位置為!B[刃風]擊中目標時的位置。,,The center of the Tempest is the place where Blade Wind hits the target.,,!B[风刃气旋]的中心位置为!B[刃风]击中目标时的位置。,,!B[风刃气旋]的中心位置为!B[刃风]击中目标时的位置。
+7,,非預設,雙手劍,,,1,,multiplier,250+10*SLv+$BSTR*0.2,,,,,,
+,,,,,,2,,multiplier,50+5*SLv,,,,,,
+7,,非預設,雙劍,,,,,,,,,,,,
+7,,歷史紀錄,0,2020/07/16,,1,,range_damage,0,,,,,,
+,,,,,,2,,multiplier,75+5*SLv,,,,,,
+7,,歷史紀錄,1,2020/07/16,,1,,multiplier,275+10*SLv,,,,,,
+,,,,,,,,range_damage,0,,,,,,
+7,,歷史紀錄,2,2020/07/16,,1,,range_damage,0,,,,,,
+,,,,,,2,,multiplier,75+5*SLv,,,,,,
+,,,,,,,,,,,,,,,
+8,破壞之刃,預設/and,單手劍,盾牌,,-,basic,mp_cost,300,,,,,,
+,,,,,,,,range,7,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,constant,SLv*30,,,,,,
+,,,,,,,,multiplier,"SLv*75+stack*20+$BDEX*(0.5+0.5*Math.min(1,stack))",,,,,,
+,,,,,,,,frequency,3,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,92~52,,,,,,
+,,,,,,-,extra,self_buffs,guaranteed_critical,,absolute crit,,,,
+,,,,,,-,text,text,若沒有處於!B[劍芒]狀態，將獲得!B[劍芒]狀態。,,"If the player isn't under Sword Tip state, then gains buff: Sword Tip.",,若没有处于!B[剑芒]状态，将获得!B[剑芒]状态。,,若没有处于!B[剑芒]状态，将获得!B[剑芒]状态。
+,,,,,,4,effect,weapon_atk,SLv+$shield_refining,%,,,,,
+,,,,,,,,duration,10,,,,,,
+,,,,,,,,name,劍芒,,Sword Tip,,剑芒,,剑芒
+,,,,,,,,condition,尚未持有此效果時,,When not having Sword Tip,,尚未持有此效果时,,尚未持有此效果时
+,,,,,,-,extra,caption,再獲得振奮效果。,,Gains buff: Encourage.,,再获得振奋效果。,,再获得振奋效果。
+,,,,,,,,condition,獲得狀態時,,While gaining buff,,获得状态时,,获得状态时
+,,,,,,,,branch,振奮,,Encourage,,振奋,,振奋
+,,,,,,3,heal,type,hp,,,,,,
+,,,,,,,,constant,1000,,,,,,
+,,,,,,,,extra_text,"角色基礎VIT, 盾牌def",,"Base VIT, Shield DEF",,"角色基础VIT, 盾牌def",,"角色基础VIT, 盾牌def"
+,,,,,,,,extra_value,2,,,,,,
+,,,,,,,,name,振奮,,Encourage,,振奋,,振奋
+,,,,,,-,text,text,僅限主手單手劍且非雙劍，此技能倍率將受!S[靈氣之刃]技能等級加成（被動效果）。,,,,仅限主手单手剑且非双剑，此技能倍率将受!S[灵气之刃]技能等级加成（被动效果）。,,仅限主手单手剑且非双剑，此技能倍率将受!S[灵气之刃]技能等级加成（被动效果）。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,-,stack,name,靈氣之刃技能等級,,,,灵气之刃技能等级,,灵气之刃技能等级
+,,,,,,,,id,1,,,,,,
+,,,,,,,,min,0,,,,,,
+,,,,,,,,max,10,,,,,,
+,,,,,,,,value,getSkillLevel('0-0-17'),,,,,,
+8,,非預設,單手劍,,,4,effect,weapon_atk,getSkillLevel('0-0-17'),%,,,,,
+,,,,,,3,heal,extra_text,角色基礎VIT,,Base VIT,,角色基础VIT,,角色基础VIT
+,,,,,,,,extra_value,2,,,,,,
+8,,非預設,雙手劍,,,1,,multiplier,SLv*75+$BSTR*1,,,,,,
+,,,,,,3,heal,extra_text,,,,,,,
+,,,,,,,,extra_value,,,,,,,
+,,,,,,4,effect,weapon_atk,SLv,%,,,,,
+8,,非預設,雙劍,,,1,,multiplier,SLv*75,,,,,,
+,,,,,,3,heal,extra_text,角色基礎VIT,,Base VIT,,角色基础VIT,,角色基础VIT
+,,,,,,,,extra_value,2,,,,,,
+,,,,,,4,effect,weapon_atk,SLv,%,,,,,
+8,,歷史紀錄,0,2020/07/16,,1,,multiplier,SLv*75,,,,,,
+,,,,,,3,,extra_text,角色基礎VIT,,Base VIT,,角色基础VIT,,角色基础VIT
+,,,,,,,,extra_value,2,,,,,,
+,,,,,,4,,weapon_atk,SLv,%,,,,,
+8,,歷史紀錄,1,2020/07/16,,1,,multiplier,SLv*75,,,,,,
+8,,歷史紀錄,0,2024/04/18,,1,,multiplier,SLv*75+$BDEX*0.5,,,,,,
+8,,歷史紀錄,1,2024/04/18,,1,,multiplier,SLv*75+$BDEX*0.5,,,,,,
+9,劍術要領,預設,單手劍,,,-,basic,skill_type,passive,,,,,,
+,,,,,,-,passive,atk,Math.floor((SLv-3)/5)+2,%,,,,,
+,,,,,,,,weapon_atk,3*SLv,%,,,,,
+9,,非預設,雙劍,,,,,,,,,,,,
+9,,非預設,雙手劍,,,,,,,,,,,,
+10,劍速提升,預設,單手劍,,,-,basic,skill_type,passive,,,,,,
+,,,,,,-,passive,aspd,10*SLv,,,,,,
+,,,,,,,,aspd,SLv,%,,,,,
+10,,非預設,雙劍,,,,,,,,,,,,
+10,,非預設,雙手劍,,,,,,,,,,,,
+11,大師級劍術,預設,單手劍,,,-,basic,skill_type,passive,,,,,,
+,,,,,,-,passive,total_damage_A.displayTitle,劍術技能中的攻擊技能，總傷害,,Increase damage for all attack skills in Blade Skills,,剑术技能中的攻击技能，总伤害,,剑术技能中的攻击技能，总伤害
+,,,,,,,,total_damage_A,2*SLv,,All Blade Skills,,,,
+,,,,,,,,total_damage_A.conditionValue,$skill.id.startsWith('0-0-') && $skill.id != '0-0-3' && $skill.id != '0-0-21',,,,,,
+,,,,,,-,list,text,對!S[爆氣斬]與!S[風暴烈焰]無效。,,,,对!S[爆气斩]与!S[风暴烈焰]无效。,,对!S[爆气斩]与!S[风暴烈焰]无效。
+11,,非預設,雙劍,,,,,,,,,,,,
+11,,非預設,雙手劍,,,,,,,,,,,,
+12,戰吼,預設,單手劍,,,-,basic,mp_cost,300,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,1,effect,type,party,,,,,,
+,,,,,,,,atk,SLv,%,,,,,
+,,,,,,,,duration,65+SLv,,,,,,
+,,,,,,,,name,戰吼,,,,战吼,,战吼
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,-,extra,caption,消除所有友方的#[畏懼]狀態。,,Remove teammate's ailment: #[Fear] .,,消除所有友方的#[畏惧]状态。,,消除所有友方的#[畏惧]状态。
+,,,,,,,,condition,施放成功後,,after casting,,施放成功后,,施放成功后
+,,,,,,-,list,text,學習騎士精神中的騎士勇姿後，戰吼狀態追加一定機率抵抗#[畏懼]的效果，最大機率100%。,,"If Knight's Stance is learned, War Cry have a maximum chance of 100% to give resistance to ailment #[Fear]",,学习骑士精神中的骑士勇姿后，战吼状态追加一定机率抵抗#[畏惧]的效果，最大机率100%。,,学习骑士精神中的骑士勇姿后，战吼状态追加一定机率抵抗#[畏惧]的效果，最大机率100%。
+,,,,,,,,skill,騎士勇姿,,Knight's Stance,,骑士勇姿,,骑士勇姿
+,,,,,,-,list,text,不同玩家施放戰吼，狀態覆蓋的原則是：技能等級高者優先於技能等級低者；若技能等級相同，則持續時間較長者優先。,,"The overriding rule of War Cry within teammates: The higher skill lv one overrides the lower skill lv; if the skill lv is same, then longer sustaining time overrides shorter sustaining time.",,不同玩家施放战吼，状态覆盖的原则是：技能等级高者优先于技能等级低者；若技能等级相同，则持续时间较长者优先。,,不同玩家施放战吼，状态覆盖的原则是：技能等级高者优先于技能等级低者；若技能等级相同，则持续时间较长者优先。
+,,,,,,,,mark,戰吼,,War Cry,,战吼,,战吼
+12,,非預設,雙劍,,,,,,,,,,,,
+12,,非預設,雙手劍,,,1,,atk,5+SLv,%,,,,,
+,,,,,,,,duration,15+SLv,,,,,,
+12,,非預設,,,,1,,duration,15+SLv,,,,,,
+13,狂戰士之怒,預設,單手劍,,,-,basic,mp_cost,500 ,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,text,text,使自身狂暴化，並且一般攻擊獲得強化。,,"Gains buff: Berserking, and enhance the normal attacks.",,使自身狂暴化，并且一般攻击获得强化。,,使自身狂暴化，并且一般攻击获得强化。
+,,,,,,,,branch,狂暴化,,Berserking,,狂暴化,,狂暴化
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,1,effect,name,狂暴化,,Berserking,,狂暴化,,狂暴化
+,,,,,,,,aspd,SLv*100,,,,,,
+,,,,,,,,aspd,SLv*10,%,,,,,
+,,,,,,,,critical_rate,SLv*2.5,,,,,,
+,,,,,,,,stability_main,-50+SLv*2.5,,,,,,
+,,,,,,,,def,-50+SLv/2,%,,,,,
+,,,,,,,,mdef,-50+SLv/2,%,,,,,
+,,,,,,,,duration,30,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,-,extra,caption,狀態期間獲得斬擊強化。,,Gains buff: Normal Attack Boost under the state.,,状态期间获得斩击强化。,,状态期间获得斩击强化。
+,,,,,,,,branch,斬擊強化,,Normal Attack Boost,,斩击强化,,斩击强化
+,,,,,,2,extra,caption,使爆氣斬的狀態不會因為受到異常狀態而解除。,,Rampage State wouldn't be removed while getting inflicted by ailments.,,使爆气斩的状态不会因为受到异常状态而解除。,,使爆气斩的状态不会因为受到异常状态而解除。
+,,,,,,,,skill,爆氣斬,,Rampage State,,爆气斩,,爆气斩
+,,,,,,-,effect,normal_attack_multiplier,10*SLv,,,,,,
+,,,,,,,,condition,狀態期間,,During buff,,状态期间,,状态期间
+,,,,,,,,name,斬擊強化,,Normal Attack Boost,,斩击强化,,斩击强化
+13,,非預設,雙手劍,,,1,effect,critical_rate,SLv*5,,,,,,
+,,,,,,,,def,-100+SLv,%,,,,,
+,,,,,,,,mdef,-100+SLv,%,,,,,
+13,,非預設,雙劍,,,1,effect,def,-100+SLv,%,,,,,
+,,,,,,,,mdef,-100+SLv,%,,,,,
+13,,非預設,,,,1,effect,def,-100+SLv,%,,,,,
+,,,,,,,,mdef,-100+SLv,%,,,,,
+,,,,,,,,stability_main,-100+SLv*5,,,,,,
+,,,,,,,,duration,10,,,,,,
+,,,,,,2,,,,,,,,,
+14,快速蹴擊,預設,單手劍,,,139,basic,mp_cost,300 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,1,proration,damage,normal_attack,,,,,,
+,,,,,,2,damage,constant,"Math.min(3*(SLv+1)*(SLv+1),300)",,,,,,
+,,,,,,,,multiplier,"Math.min(30+5*SLv,75)",,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,3,next,condition,技能等級10時,,When skill Lv10,,技能等级10时,,技能等级10时
+,,,,,,,,caption,下一招技能#[MP消耗減半]。,,next skill #[MP cost halves].,,下一招技能#[MP消耗减半]。,,下一招技能#[MP消耗减半]。
+,,,,,,4,,,,,,,,,
+14,,非預設,雙手劍,,,,,,,,,,,,
+14,,非預設,雙劍,,,139,,mp_cost,200 ,,,,,,
+,,,,,,2,,ailment_name,翻覆,,Tumble,,翻覆,,翻覆
+,,,,,,,,ailment_chance,10*SLv,,,,,,
+,,,,,,4,text,text,2020/10/22技能調整：雙劍可使用本技能。,,2020/10/22 Skill adjustment: Dual sword can use this skill.,,2020/10/22技能调整：双剑可使用本技能。,,2020/10/22技能调整：双剑可使用本技能。
+15,完封,預設,單手劍,,,139,basic,mp_cost,100 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,normal,,,,,,
+,,,,,,1,text,text,對目標造成完封。若目標處於#[膽怯]/#[翻覆]/#[昏厥]任一狀態中，且未處於#[出血]，則完封將改為完全比賽。,,"Shutout to your target. If target is afflicted by #[Flinch]/#[Tumble]/#[Stun], and not #[Bleed], Shutout will be changed to Perfect Game",,对目标造成完封。若目标处于#[胆怯]/#[翻覆]/#[昏厥]任一状态中，且未处于#[出血]，则完封将改为完全比赛。,,对目标造成完封。若目标处于#[胆怯]/#[翻覆]/#[昏厥]任一状态中，且未处于#[出血]，则完封将改为完全比赛。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,"完封,完全比賽",,"Shutout, Perfect Game",,"完封,完全比赛",,"完封,完全比赛"
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,2,damage,name,完封,,Shutout,,完封,,完封
+,,,,,,,,constant,100,,,,,,
+,,,,,,,,multiplier,500+$BDEX*0.5,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,122~66,,,,,,
+,,,,,,3,damage,name,完全比賽,,Perfect Game,,完全比赛,,完全比赛
+,,,,,,,,constant,100,,,,,,
+,,,,,,,,multiplier,1000+150*SLv+$BDEX,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,ailment_name,出血,,Bleed,,出血,,出血
+,,,,,,,,ailment_chance,100,,,,,,
+,,,,,,5,extra,physical_pierce,300,~,,,,,
+,,,,,,-,list,text,本技能的出血狀態，持續10秒，抵抗10秒。,,Bleed will last 10 seconds and have a 10 seconds resistance for this skill.,,本技能的出血状态，持续10秒，抵抗10秒。,,本技能的出血状态，持续10秒，抵抗10秒。
+,,,,,,4,,,,,,,,,
+,,,,,,-,tips,text,完封與完全比賽,,Shutout and Perfect Game,,完封与完全比赛,,完封与完全比赛
+,,,,,,-,group,size,2,,,,,,
+,,,,,,-,reference,url,https://zh.wikipedia.org/wiki/%E5%AE%8C%E5%B0%81,,,,,,
+,,,,,,,,url_text,完封,,Shutout,,完封,,完封
+,,,,,,,,,,,,,,,
+,,,,,,-,reference,url,https://zh.wikipedia.org/wiki/%E5%AE%8C%E5%85%A8%E6%AF%94%E8%B3%BD,,,,,,
+,,,,,,,,url_text,完全比賽,,Perfect Game,,完全比赛,,完全比赛
+15,,非預設,雙手劍,,,139,,action_time,very_slow,,,,,,
+,,,,,,2,,multiplier,500+100*SLv,,,,,,
+,,,,,,,,action_frame,122~122,,,,,,
+,,,,,,3,,multiplier,1000+100*SLv,,,,,,
+,,,,,,4,list,text,雙手劍使用時，本技能不受行動速度影響。,,Skill is not affect by motion speed if used by Two-Handed Sword.,,双手剑使用时，本技能不受行动速度影响。,,双手剑使用时，本技能不受行动速度影响。
+,,,,,,5,,,,,,,,,
+15,,非預設,雙劍,,,2,,constant,200,,,,,,
+,,,,,,,,multiplier,500+$BAGI*0.25,,,,,,
+,,,,,,3,,constant,200,,,,,,
+,,,,,,,,multiplier,1000+150*SLv+$BAGI*0.5,,,,,,
+,,,,,,5,,,,,,,,,
+,,,,,,,,,,,,,,,
+15,,歷史紀錄,0,2022/04/07,,2,,multiplier,500,,,,,,
+15,,歷史紀錄,0,2022/06/23,,-,text,text,變更異常狀態#[出血]對怪物的效果。,,Change effect on target of ailment #[Bleed],,变更异常状态#[出血]对怪物的效果。,,变更异常状态#[出血]对怪物的效果。
+15,,歷史紀錄,1,2022/06/23,,-,text,text,變更異常狀態#[出血]對怪物的效果。,,Change effect on target of ailment #[Bleed],,变更异常状态#[出血]对怪物的效果。,,变更异常状态#[出血]对怪物的效果。
+15,,歷史紀錄,2,2022/06/23,,-,text,text,"隨等級250開放，雙劍始可使用此技能。
+變更異常狀態#[出血]對怪物的效果。",,"Upon level cap 250's release, dual swords can now use this skill.
+Change effect on target of ailment #[Bleed].",,"随等级250开放，双剑始可使用此技能。
+变更异常状态#[出血]对怪物的效果。",,"随等级250开放，双剑始可使用此技能。
+变更异常状态#[出血]对怪物的效果。"
+16,月弧斬,預設,雙手劍,,,-,basic,mp_cost,400 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,text,text,以月弧斬向上劈砍對象，並以月之刃追加攻擊。,,"Slash your target upwards with Lunar Slash, and additional attack with Magic Blade",,以月弧斩向上劈砍对象，并以月之刃追加攻击。,,以月弧斩向上劈砍对象，并以月之刃追加攻击。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,branch,"月弧斬, 月之刃",,"Lunar Slash, Magic Blade",,"月弧斩, 月之刃",,"月弧斩, 月之刃"
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,damage,name,月弧斬,,Lunar Slash,,月弧斩,,月弧斩
+,,,,,,,,constant,400,,,,,,
+,,,,,,,,multiplier,1000,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,mark,"月弧斬, 月之刃",,"Lunar Slash, Magic Blade",,"月弧斩, 月之刃",,"月弧斩, 月之刃"
+,,,,,,,,action_frame,92~52,,,,,,
+,,,,,,-,space,#,,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,,,proration,none,,,,,,
+,,,,,,-,damage,name,月之刃,,Magic Blade,,月之刃,,月之刃
+,,,,,,,,constant,$BINT/2,,,,,,
+,,,,,,,,multiplier,$STR*0.1*SLv,,,,,,
+,,,,,,,,ailment_name,疲勞,,Fatigue,,疲劳,,疲劳
+,,,,,,,,ailment_chance,6*SLv,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,1,text,text,雙手劍使用後，將累積月之刃層數。該層數會在其他攻擊技能命中敵人時，進行月之刃(追擊)。,,"When used by 2-Handed Sword, Magic Blade will gain stacks. The stacks will be used to perform Magic Blade when other attack skills hit any target.",,双手剑使用后，将累积月之刃层数。该层数会在其他攻击技能命中敌人时，进行月之刃(追击)。,,双手剑使用后，将累积月之刃层数。该层数会在其他攻击技能命中敌人时，进行月之刃(追击)。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,"其他攻擊技能,月之刃層數,月之刃(追擊)",,"Other attack skill, Magic Blade stacks, Magic Blade(Additional Attack)",,"其他攻击技能,月之刃层数,月之刃(追击)",,"其他攻击技能,月之刃层数,月之刃(追击)"
+,,,,,,-,list,text,至少能獲得1層月之刃層數。當置於連擊中且非起始技時，給予的月之刃層數變為((#[連擊位置]-1))層。,,"At least 1 stack of Magic Blade will be gained. When placed not the first skill in a combo, stacks gained will be changed to ((#[Combo Position]-1)).",,至少能获得1层月之刃层数。当置于连击中且非起始技时，给予的月之刃层数变为((#[连击位置]-1))层。,,至少能获得1层月之刃层数。当置于连击中且非起始技时，给予的月之刃层数变为((#[连击位置]-1))层。
+,,,,,,,,mark,"月之刃層數,月之刃(追擊)",,"Magic Blade stacks, Magic Blade(Additional Attack)",,"月之刃层数,月之刃(追击)",,"月之刃层数,月之刃(追击)"
+,,,,,,-,list,text,月之刃層數最高可累積9層，每次發動月之刃(追擊)時消耗一層。,,"Magic Blade can be up to 9 stacks, each Magic Blade will consume one stack.",,月之刃层数最高可累积9层，每次发动月之刃(追击)时消耗一层。,,月之刃层数最高可累积9层，每次发动月之刃(追击)时消耗一层。
+,,,,,,,,mark,"月之刃層數,月之刃(追擊)",,"Magic Blade stacks, Magic Blade(Additional Attack)",,"月之刃层数,月之刃(追击)",,"月之刃层数,月之刃(追击)"
+,,,,,,-,list,text,與傷害段數無關，每個技能對單個目標最多造成一次追擊；當目標被其他技能擊殺時，月之刃不會追擊；若是範圍技能命中多個目標，則每次追擊均會扣減層數。,,"Regardless of the hit count, each skill will cause at most one additional attack to a single target; When target is killed by other skills, Magic Blade will not be performed; If multiple targets are hit by AOE skills, then each additional attack will consume one stack.",,与伤害段数无关，每个技能对单个目标最多造成一次追击；当目标被其他技能击杀时，月之刃不会追击；若是范围技能命中多个目标，则每次追击均会扣减层数。,,与伤害段数无关，每个技能对单个目标最多造成一次追击；当目标被其他技能击杀时，月之刃不会追击；若是范围技能命中多个目标，则每次追击均会扣减层数。
+,,,,,,,,mark,"月之刃層數, 月之刃",,"Magic Blade stacks, Magic Blade",,"月之刃层数, 月之刃",,"月之刃层数, 月之刃"
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,,,proration,none,,,,,,
+,,,,,,-,damage,name,月之刃(追擊),,Magic Blade(Additional Attack),,月之刃(追击),,月之刃(追击)
+,,,,,,,,constant,$BINT,,,,,,
+,,,,,,,,multiplier,$STR*0.1*SLv,,,,,,
+,,,,,,,,combo_rate,0,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,extra,caption,此傷害的暴擊率為((${10*SLv}+角色CRT))%，不受裝備或其他狀態影響（但會受怪物的抵抗暴擊能力影響）。,,"Crit chance of this damage is ((${10*SLv}+Character CRT))%, not affected by armour or any other buffs(but is affected by mob's crit resistance).",,此伤害的暴击率为((${10*SLv}+角色CRT))%，不受装备或其他状态影响（但会受怪物的抵抗暴击能力影响）。,,此伤害的暴击率为((${10*SLv}+角色CRT))%，不受装备或其他状态影响（但会受怪物的抵抗暴击能力影响）。
+,,,,,,-,extra,caption,此傷害不受連擊效果影響。,,This damage is not affected by combo effects,,此伤害不受连击效果影响。,,此伤害不受连击效果影响。
+16,,非預設,單手劍,,,1,text,text,（以下效果僅限雙手劍）使用後，將累積月之刃層數。該層數會在其他攻擊技能命中敵人時，進行月之刃(追擊)。,,"(Only applies to 2-Handed Swords)Gain Magic Blade stacks after casting, The stacks will be used to performed Magic Blade(Additional Attack) when other attack skills hit any enemies",,（以下效果仅限双手剑）使用后，将累积月之刃层数。该层数会在其他攻击技能命中敌人时，进行月之刃(追击)。,,（以下效果仅限双手剑）使用后，将累积月之刃层数。该层数会在其他攻击技能命中敌人时，进行月之刃(追击)。
+17,靈氣之刃,預設,單手劍,,,-,basic,mp_cost,200 ,,,,,,
+,,,,,,,,range,no_limit,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,slow,,,,,,
+,,,,,,-,text,text,以靈氣之刃向周圍斬擊，並獲得靈氣狀態。,,"Slash your surroundings with Aura Blade, and gain Aura buff",,以灵气之刃向周围斩击，并获得灵气状态。,,以灵气之刃向周围斩击，并获得灵气状态。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,branch,"靈氣之刃, 靈氣",,"Aura Blade, Aura",,"灵气之刃, 灵气",,"灵气之刃, 灵气"
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,1,damage,name,靈氣之刃,,Aura Blade,,灵气之刃,,灵气之刃
+,,,,,,,,constant,200,,,,,,
+,,,,,,,,multiplier,500+100*SLv,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,radius,3.5,,,,,,
+,,,,,,,,end_position,self,,,,,,
+,,,,,,,,frequency,2,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,action_frame,182~97,,,,,,
+,,,,,,2,effect,name,靈氣,,Aura,,灵气,,灵气
+,,,,,,,,additional_meele,10*SLv,,,,,,
+,,,,,,,,duration,40,,,,,,
+,,,,,,3,extra,total_damage_B,20,,,,,,
+,,,,,,,,,,,"All skills, next skill",,,,
+,,,,,,,,condition,所有技能,,All skills,,所有技能,,所有技能
+,,,,,,4,extra,caption,延長此狀態效果10秒,,Buff duration increased for 10 seconds,,延长此状态效果10秒,,延长此状态效果10秒
+,,,,,,,,condition,獲得破壞之刃的劍芒狀態時,,When Sword Tip is present,,获得破坏之刃的剑芒状态时,,获得破坏之刃的剑芒状态时
+,,,,,,-,list,text,靈氣效果對本技能自身無效。,,Aura will have no effect on the skill itself,,灵气效果对本技能自身无效。,,灵气效果对本技能自身无效。
+,,,,,,5,,,,,,,,,
+,,,,,,6,text,text,（僅限單手劍、雙劍除外）習得此技能後，獲得破壞之刃的被動威力提升效果。效果量為:技能倍率+${20*SLv+$BDEX*0.5}%。,,,,（仅限单手剑、双剑除外）习得此技能后，获得破坏之刃的被动威力提升效果。效果量为:技能倍率+${20*SLv+$BDEX*0.5}%。,,（仅限单手剑、双剑除外）习得此技能后，获得破坏之刃的被动威力提升效果。效果量为:技能倍率+${20*SLv+$BDEX*0.5}%。
+,,,,,,,,skill,破壞之刃,,,,破坏之刃,,破坏之刃
+,,,,,,,,is_mark,1,,,,,,
+17,,非預設,雙劍,,,3,,total_damage_B,10,,,,,,
+,,,,,,,,condition,下一招技能,,Next skill,,下一招技能,,下一招技能
+,,,,,,2,,end_condition,直到下一招技能,,Unitl the next skill,,直到下一招技能,,直到下一招技能
+,,,,,,4,,,,,,,,,
+,,,,,,5,list,text,使用任意技能後，即使不是攻擊技能，靈氣狀態都會消失。,,"If any skills is casted, even if it is not attack skills, Aura will end",,使用任意技能后，即使不是攻击技能，灵气状态都会消失。,,使用任意技能后，即使不是攻击技能，灵气状态都会消失。
+,,,,,,6,,,,,,,,,
+17,,非預設,雙手劍,,,1,,frequency,1,,,,,,
+,,,,,,2,,additional_meele,"Math.max(0,10*SLv-50)",,,,,,
+,,,,,,,,end_condition,直到下一招技能,,Until the next skill,,直到下一招技能,,直到下一招技能
+,,,,,,3,,total_damage_B,30,,,,,,
+,,,,,,,,condition,下一招技能,,Next skill,,下一招技能,,下一招技能
+,,,,,,4,,,,,,,,,
+,,,,,,5,list,text,使用任意技能後，即使不是攻擊技能，靈氣狀態都會消失。,,"If any skills is casted, even if it is not attack skills, Aura will end",,使用任意技能后，即使不是攻击技能，灵气状态都会消失。,,使用任意技能后，即使不是攻击技能，灵气状态都会消失。
+,,,,,,6,,,,,,,,,
+17,,歷史紀錄,0,2024/04/18,,-,text,text,增加單手劍限定的被動效果。,,,,增加单手剑限定的被动效果。,,增加单手剑限定的被动效果。
+,,,,,,6,,text,無此效果,,,,无此效果,,无此效果
+18,劍斗,預設/and,單手劍,盾牌,,-,basic,mp_cost,0 ,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,not_lead,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,1,effect,name,劍斗,,Gladiate,,剑斗,,剑斗
+,,,,,,,,end_condition,${SLv}次,,,,${SLv}次,,${SLv}次
+,,,,,,,,duration,10,,,,,,
+,,,,,,,,caption,受到的傷害減輕${SLv*2}%，減傷的同時回復((總攻擊MP回復×${SLv/10}))的MP。,,"Reduce incoming damage by ${SLv}%, and recover ((Total AMPR×${SLv/10}))MP when hit.",,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。,,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。
+,,,,,,,,action_frame,61~37,,,,,,
+,,,,,,-,extra,condition,持續時間結束時,,When buff ends,,持续时间结束时,,持续时间结束时
+,,,,,,,,caption,若減傷次數尚有剩餘，回復((剩餘次數×10))的MP。,,"If there are remaining damage reduction counts left, recover ((remaining counts×10))MP.",,若减伤次数尚有剩余，回复((剩余次数×10))的MP。,,若减伤次数尚有剩余，回复((剩余次数×10))的MP。
+,,,,,,2,,,,,,,,,
+18,,非預設,單手劍,,,1,,caption,受到的傷害減輕${SLv}%，減傷的同時回復((總攻擊MP回復×${SLv/10}))的MP。,,,,受到的伤害减轻${SLv}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。,,受到的伤害减轻${SLv}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。
+18,,非預設,雙劍,,,1,,caption,受到的傷害減輕${SLv*2}%，減傷的同時回復((總攻擊MP回復×${SLv/40}))的MP。,,"Reduce incoming damage by ${SLv}%, and recover ((Total AMPR×${SLv/10}))MP when hit.",,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${SLv/40}))的MP。,,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${SLv/40}))的MP。
+,,,,,,2,tips,text,注意，雙劍的總攻擊MP回復是普通的兩倍。請看#[雙劍特性說明]。,,"Be noted, ampr of dual swords is double the normal amount. Please refer to #[Dual Sword Characteristics Description].",,注意，双剑的总攻击MP回复是普通的两倍。请看#[双剑特性说明]。,,注意，双剑的总攻击MP回复是普通的两倍。请看#[双剑特性说明]。
+18,,非預設,雙手劍,,,1,,caption,受到的傷害減輕${SLv*2}%，減傷的同時回復((總攻擊MP回復×${75*SLv/1000}))的MP。,,"Reduce incoming damage by ${SLv}%, and recover ((Total AMPR×${SLv/10}))MP when hit.",,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${75*SLv/1000}))的MP。,,受到的伤害减轻${SLv*2}%，减伤的同时回复((总攻击MP回复×${75*SLv/1000}))的MP。
+18,,歷史紀錄,0,2025/04/24,,1,,caption,受到的傷害減輕${SLv}%，減傷的同時回復((總攻擊MP回復×${SLv/10}))的MP。,,,,受到的伤害减轻${SLv}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。,,受到的伤害减轻${SLv}%，减伤的同时回复((总攻击MP回复×${SLv/10}))的MP。
+19,錘擊,預設,雙手劍,,,-,basic,mp_cost,100 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,damage,name,錘擊,,,,锤击,,锤击
+,,,,,,,,constant,100,,,,,,
+,,,,,,,,multiplier,100+5*SLv+$VIT+$BSTR*0.2,,,,,,
+,,,,,,,,radius,3,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,extra,condition,對處於#[控制類異常]的目標,,,,对处于#[控制类异常]的目标,,对处于#[控制类异常]的目标
+,,,,,,,,self_buffs,guaranteed_critical,,,,,,
+,,,,,,-,extra,condition,連續使用此技能時,,,,连续使用此技能时,,连续使用此技能时
+,,,,,,,,caption,MP消耗變為0、使慣性類型變為一般攻擊、無法於連擊開頭使用。,,,,MP消耗变为0、使惯性类型变为一般攻击、无法于连击开头使用。,,MP消耗变为0、使惯性类型变为一般攻击、无法于连击开头使用。
+,,,,,,-,list,text,使用任意技能，都會使MP消耗為0的狀態中斷。,,,,使用任意技能，都会使MP消耗为0的状态中断。,,使用任意技能，都会使MP消耗为0的状态中断。
+20,橫斬披靡,預設,雙手劍,,,-,basic,mp_cost,300 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,text,text,以自身為中心施展橫斬披靡，捲入越多敵人時威力越強，並能回復MP。,,,,以自身为中心施展横斩披靡，卷入越多敌人时威力越强，并能回复MP。,,以自身为中心施展横斩披靡，卷入越多敌人时威力越强，并能回复MP。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,橫斬披靡,,,,横斩披靡,,横斩披靡
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,damage,name,橫斬披靡,,,,横斩披靡,,横斩披靡
+,,,,,,,,constant,150+15*SLv+$VIT,,,,,,
+,,,,,,,,multiplier,150+10*SLv+$STR*0.5*extra[0],,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,radius,3,,,,,,
+,,,,,,,,end_position,self,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,formula_extra,texts,(命中的敵人數量-1),,,,(命中的敌人数量-1),,(命中的敌人数量-1)
+,,,,,,-,extra,caption,MP回復((100×(命中的敵人數量-1) )),,,,MP回复((100×(命中的敌人数量-1) )),,MP回复((100×(命中的敌人数量-1) ))
+,,,,,,,,condition,命中多個敵人時,,,,命中多个敌人时,,命中多个敌人时
+,,,,,,-,list,text,公式中的命中敵人數量，最大為4。,,,,公式中的命中敌人数量，最大为4。,,公式中的命中敌人数量，最大为4。
+,,,,,,-,list,text,回復的MP量不可超過施展時的實際消費MP。,,,,回复的MP量不可超过施展时的实际消费MP。,,回复的MP量不可超过施展时的实际消费MP。
+,,,,,,,,mark,實際消費MP,,,,实际消费MP,,实际消费MP
+21,風暴烈焰,預設,雙手劍,,,-,basic,mp_cost,200 ,,,,,,
+,,,,,,,,range,16 ,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_fast,,,,,,
+,,,,,,-,text,text,習得此技能後，每次一般攻擊命中都會累積風之力層數。發動此技能時，消耗風之力層數提高技能倍率、攻擊範圍、MP回復量。,,,,习得此技能后，每次一般攻击命中都会累积风之力层数。发动此技能时，消耗风之力层数提高技能倍率、攻击范围、MP回复量。,,习得此技能后，每次一般攻击命中都会累积风之力层数。发动此技能时，消耗风之力层数提高技能倍率、攻击范围、MP回复量。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,-,list,text,風之力層數的上限為((10+角色基礎DEX÷25))，單次技能最多消耗10層。,,,,风之力层数的上限为((10+角色基础DEX÷25))，单次技能最多消耗10层。,,风之力层数的上限为((10+角色基础DEX÷25))，单次技能最多消耗10层。
+,,,,,,,,mark,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,-,list,text,爆氣斬的一般攻擊動作可以增加2層風之力層數。,,,,爆气斩的一般攻击动作可以增加2层风之力层数。,,爆气斩的一般攻击动作可以增加2层风之力层数。
+,,,,,,,,mark,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,,,skill,爆氣斬,,,,爆气斩,,爆气斩
+,,,,,,-,list,text,錘擊在消耗MP為0時也可以提升風之力層數（一次技能+1層，與命中數無關）。,,,,锤击在消耗MP为0时也可以提升风之力层数（一次技能+1层，与命中数无关）。,,锤击在消耗MP为0时也可以提升风之力层数（一次技能+1层，与命中数无关）。
+,,,,,,,,skill,錘擊,,,,锤击,,锤击
+,,,,,,,,mark,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,-,list,text,至少要有一層風之力層數才能施展本技能，否則會白白浪費MP。,,,,至少要有一层风之力层数才能施展本技能，否则会白白浪费MP。,,至少要有一层风之力层数才能施展本技能，否则会白白浪费MP。
+,,,,,,,,mark,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,-,stack,id,1,,,,,,
+,,,,,,,,min,1,,,,,,
+,,,,,,,,max,10,,,,,,
+,,,,,,,,name,風之力層數,,,,风之力层数,,风之力层数
+,,,,,,,,default,1,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,damage,name,風暴烈焰,,,,风暴烈焰,,风暴烈焰
+,,,,,,,,constant,100+10*SLv+$VIT,,,,,,
+,,,,,,,,multiplier,(50+5*SLv)*stack,,,,,,
+,,,,,,,,stack_id,1,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,,,effective_area,line,,,,,,
+,,,,,,,,radius,2+0.4*stack,,,,,,
+,,,,,,,,move_distance,16,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,extra,caption,MP回復${4*stack*stack},,,,MP回复${4*stack*stack},,MP回复${4*stack*stack}
+,,,,,,,,,,,,,,,
+,,,,,,-,list,text,此技能傷害不受大師級劍術影響。,,,,此技能伤害不受大师级剑术影响。,,此技能伤害不受大师级剑术影响。
+,,,,,,,,skill,大師級劍術,,,,大师级剑术,,大师级剑术
+22,守護之刃,預設,雙手劍,,,-,basic,range,300 ,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,fast,,,,,,
+,,,,,,-,text,text,自身獲得守護之刃狀態，強化自身的防禦能力。,,,,自身获得守护之刃状态，强化自身的防御能力。,,自身获得守护之刃状态，强化自身的防御能力。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,守護之刃,,,,守护之刃,,守护之刃
+,,,,,,-,effect,name,守護之刃,,,,守护之刃,,守护之刃
+,,,,,,,,duration,70,,,,,,
+,,,,,,,,physical_resistance,SLv,,,,,,
+,,,,,,,,magic_resistance,SLv,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,-,extra,condition,新獲得狀態時（覆蓋狀態不算）,,,,新获得状态时（覆盖状态不算）,,新获得状态时（覆盖状态不算）
+,,,,,,,,caption,當前阻擋力回復((${2.5*SLv}+角色總VIT×0.1))%。,,,,当前阻挡力回复((${2.5*SLv}+角色总VIT×0.1))%。,,当前阻挡力回复((${2.5*SLv}+角色总VIT×0.1))%。
+,,,,,,-,extra,caption,使武器精煉值如同防具精煉值般作用（即所有傷害減輕((武器精煉值))%）,,,,使武器精炼值如同防具精炼值般作用（即所有伤害减轻((武器精炼值))%）,,使武器精炼值如同防具精炼值般作用（即所有伤害减轻((武器精炼值))%）
+,,,,,,,,mark,武器精煉值,,,,武器精炼值,,武器精炼值
+,,,,,,-,extra,caption,使該次傷害附帶的#[控制類異常]無效化。,,,,使该次伤害附带的#[控制类异常]无效化。,,使该次伤害附带的#[控制类异常]无效化。
+,,,,,,,,condition,發生精準阻擋時,,,,发生精准阻挡时,,发生精准阻挡时
+,,,,,,-,list,text,當阻擋力歸零，此狀態將立即結束，並且在阻擋功能可用之前將無法再次使用本技能。,,,,当阻挡力归零，此状态将立即结束，并且在阻挡功能可用之前将无法再次使用本技能。,,当阻挡力归零，此状态将立即结束，并且在阻挡功能可用之前将无法再次使用本技能。
+,,,,,,-,list,text,#[控制類異常]無效化的效果，對紅字異常亦適用。,,,,#[控制类异常]无效化的效果，对红字异常亦适用。,,#[控制类异常]无效化的效果，对红字异常亦适用。
+23,魔怪斬,預設,雙手劍,,,-,basic,mp_cost,500 ,,,,,,
+,,,,,,,,range,main,,,,,,
+,,,,,,,,skill_type,instant,,,,,,
+,,,,,,,,in_combo,1,,,,,,
+,,,,,,,,action_time,little_slow,,,,,,
+,,,,,,-,text,text,對目標進行魔怪斬，並在目標當前位置腳下放置鬼力，鬼力會在4秒後對範圍內敵人造成鬼力爆發傷害。,,,,对目标进行魔怪斩，并在目标当前位置脚下放置鬼力，鬼力会在4秒后对范围内敌人造成鬼力爆发伤害。,,对目标进行魔怪斩，并在目标当前位置脚下放置鬼力，鬼力会在4秒后对范围内敌人造成鬼力爆发伤害。
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,,,mark,"鬼力爆發,魔怪斬",,,,"鬼力爆发,魔怪斩",,"鬼力爆发,魔怪斩"
+,,,,,,-,list,text,鬼力為可疊層狀態，最高可累積20層，單次技能最多消耗10層。,,,,鬼力为可叠层状态，最高可累积20层，单次技能最多消耗10层。,,鬼力为可叠层状态，最高可累积20层，单次技能最多消耗10层。
+,,,,,,,,mark,鬼力,,,,鬼力,,鬼力
+,,,,,,-,list,text,進入戰鬥時，會立即獲得${Math.floor(SLv/2)}鬼力層數，此外每次進行以下行動都會使層數+1：踩到攻擊警告範圍、受到傷害、精準阻擋成功。,,,,进入战斗时，会立即获得${Math.floor(SLv/2)}鬼力层数，此外每次进行以下行动都会使层数+1：踩到攻击警告范围、受到伤害、精准阻挡成功。,,进入战斗时，会立即获得${Math.floor(SLv/2)}鬼力层数，此外每次进行以下行动都会使层数+1：踩到攻击警告范围、受到伤害、精准阻挡成功。
+,,,,,,,,mark,鬼力,,,,鬼力,,鬼力
+,,,,,,-,stack,id,1,,,,,,
+,,,,,,,,min,0,,,,,,
+,,,,,,,,max,10,,,,,,
+,,,,,,,,name,消耗鬼力層數,,,,消耗鬼力层数,,消耗鬼力层数
+,,,,,,,,default,10,,,,,,
+,,,,,,-,proration,damage,physical,,,,,,
+,,,,,,-,damage,name,魔怪斬,,,,魔怪斩,,魔怪斩
+,,,,,,,,constant,$DEX,,,,,,
+,,,,,,,,multiplier,$BSTR+$BVIT,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,-,damage,name,鬼力爆發,,,,鬼力爆发,,鬼力爆发
+,,,,,,,,constant,500,,,,,,
+,,,,,,,,multiplier,200*stack,,,,,,
+,,,,,,,,range_damage,1,,,,,,
+,,,,,,,,stack_id,1,,,,,,
+,,,,,,,,radius,2,,,,,,
+,,,,,,,,type,AOE,,,,,,
+,,,,,,-,extra,physical_pierce,SLv*stack,,,,,,
+,,,,,,-,extra,condition,動作期間,,,,动作期间,,动作期间
+,,,,,,,,caption,免疫#[控制類異常]。,,,,免疫#[控制类异常]。,,免疫#[控制类异常]。
+,,,,,,-,list,text,算上此技能的加成，角色物理貫穿超出100的部分會提升魔怪斬(第一段傷害)的倍率：每1點物理貫穿使魔怪斬的傷害倍率+1。,,,,算上此技能的加成，角色物理贯穿超出100的部分会提升魔怪斩(第一段伤害)的倍率：每1点物理贯穿使魔怪斩的伤害倍率+1。,,算上此技能的加成，角色物理贯穿超出100的部分会提升魔怪斩(第一段伤害)的倍率：每1点物理贯穿使魔怪斩的伤害倍率+1。
+,,,,,,,,mark,"物理貫穿,魔怪斬",,,,"物理贯穿,魔怪斩",,"物理贯穿,魔怪斩"
+,,,,,,-,text,text,魔怪斬施展後，獲得鬼力附身效果。,,,,魔怪斩施展后，获得鬼力附身效果。,,魔怪斩施展后，获得鬼力附身效果。
+,,,,,,,,mark,"鬼力附身,魔怪斬",,,,"鬼力附身,魔怪斩",,"鬼力附身,魔怪斩"
+,,,,,,,,is_mark,1,,,,,,
+,,,,,,1,effect,name,鬼力附身,,,,鬼力附身,,鬼力附身
+,,,,,,,,duration,10+5*SLv,,,,,,
+,,,,,,,,caption,每次消耗MP都將回復HP，回復量為((消費MP量的平方÷100))。,,,,每次消耗MP都将回复HP，回复量为((消费MP量的平方÷100))。,,每次消耗MP都将回复HP，回复量为((消费MP量的平方÷100))。
+,,,,,,,,stack_id,1,,,,,,
+,,,,,,-,extra,condition,強化爆氣斬,,,,强化爆气斩,,强化爆气斩
+,,,,,,,,caption,所有傷害倍率變為2倍、並附帶${stack*SLv}%的物理貫穿、DEF/MDEF懲罰減半。,,,,所有伤害倍率变为2倍、并附带${stack*SLv}%的物理贯穿、DEF/MDEF惩罚减半。,,所有伤害倍率变为2倍、并附带${stack*SLv}%的物理贯穿、DEF/MDEF惩罚减半。
+,,,,,,-,extra,condition,狂戰士之怒狀態,,,,狂战士之怒状态,,狂战士之怒状态
+,,,,,,,,caption,穩定率下降效果減半（例如-25%變成-12%）。,,,,稳定率下降效果减半（例如-25%变成-12%）。,,稳定率下降效果减半（例如-25%变成-12%）。
+,,,,,,-,list,text,雖然鬼力爆發傷害在第一段許久後才造成，但計算傷害公式中的慣性值時，兩者取值相同。,,,,虽然鬼力爆发伤害在第一段许久后才造成，但计算伤害公式中的惯性值时，两者取值相同。,,虽然鬼力爆发伤害在第一段许久后才造成，但计算伤害公式中的惯性值时，两者取值相同。
+,,,,,,,,,,,,,,,
+23,,歷史紀錄,0,2025/04/23,,1,,duration,3+2*SLv,,,,,,

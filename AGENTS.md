@@ -106,7 +106,10 @@ yarn exec prettier --check <file>
 
 - 牽涉到遊戲資料流處理及公式處理的相關流程，應以不更動到邏輯為優先。
 - 目前本專案的遊戲外部資料皆採用 CSV 格式，解析 CSV 的入口函數都位於 `src/stores/app/datas/utils` 料夾底下。可以直接以函數的內部實作去理解對應 CSV 資料的格式。
-- 開發時可直接讀取並用於參考的遊戲外部資料 CSV 檔，都放置於 `src/dev/assets/dev-data` 資料夾底下，例如 `LoadCharacterStats.ts` 對應 `character-stats-data.csv`。當沒有對應的 CSV 檔可以取用時，可以向開發者提出要求。
+- 開發時可直接讀取並用於參考的遊戲外部資料 CSV 檔，都放置於 `src/dev/assets/dev-data` 資料夾底下。
+  - 例如 `LoadCharacterStats.ts` 對應 `character-stats-data.csv`。
+  - 以 `_sample` 結尾的表示非完整資料，但足夠用於進行測試。非 `_sample` 結尾的則可以直接假設是和 runtime 資料相同的完整資料。
+  - 當沒有對應的 CSV 檔可以取用時，可以向開發者提出要求。
 
 ## 遊戲名詞解釋
 
