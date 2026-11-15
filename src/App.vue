@@ -19,6 +19,7 @@
         class="app-layout-container-root shrink-0"
         :style="`top: ${sideMenuButtonVisible ? 0 : -1 * appStickyHeight}px`"
       />
+      <AppSkillDatasetStatus />
       <router-view />
       <AppSetting />
       <AppInitialize />
@@ -58,6 +59,7 @@ import AppNotify from '@/views/app/app-notify.vue'
 import AppSetting from '@/views/app/app-settings/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
+import AppSkillDatasetStatus from '@/views/app/app-skill-dataset-status.vue'
 
 import { useDevice } from './shared/composables/Device'
 import { useResizeObserver } from './shared/composables/ElementObserver'

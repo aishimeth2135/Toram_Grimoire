@@ -1,9 +1,9 @@
 /// <reference lib="webworker" />
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import { type RouteHandler, setCacheNameDetails } from 'workbox-core'
+import { type RouteHandler, clientsClaim, setCacheNameDetails } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
-import { precacheAndRoute } from 'workbox-precaching'
-import { registerRoute } from 'workbox-routing'
+import { createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
+import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { CacheFirst, Strategy, StrategyHandler, type StrategyOptions } from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope
@@ -192,3 +192,18 @@ self.addEventListener('message', event => {
 precacheAndRoute(self.__WB_MANIFEST, {
   ignoreURLParametersMatching: [/source/],
 })
+clientsClaim()
+
+const appShell = createHandlerBoundToURL('/index.html')
+registerRoute(
+  new NavigationRoute(
+    async options => {
+      try {
+        return await fetch(options.request)
+      } catch {
+        return appShell(options)
+      }
+    },
+    { denylist: [/^\/assets\//, /\/[^/?]+\.[^/?]+(?:\?|$)/] }
+  )
+)

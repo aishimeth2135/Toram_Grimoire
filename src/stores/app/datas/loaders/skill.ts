@@ -7,30 +7,45 @@ import SkillSystem from '@/lib/Skill'
 
 import { DatasStoreBase } from '../DatasStoreBase'
 import { DownloadDatasWithLocale } from '../utils/DownloadDatas'
+import {
+  downloadSkillDataset,
+  hasSkillDatasetSource,
+  recoverSkillDatasetModel,
+} from '../utils/DownloadSkillDataset'
 import { LoadSkill, LoadSkillMain } from '../utils/LoadSkill'
 
-const initSkillInstance = () => {
-  if (DatasStoreBase.Skill === null) {
-    DatasStoreBase.Skill = SkillSystem.create()
-  }
-  return DatasStoreBase.Skill
-}
-
 export async function prepareSkill(): Promise<() => Promise<void>> {
-  const skillSystem = initSkillInstance()
-  const [skillData, skillMainData] = await DownloadDatasWithLocale(
-    DataPathIds.Skill,
-    DataPathIds.SkillMain
-  )
-  if (skillData.dataVersion) {
-    skillSystem.setDataVersion(skillData.dataVersion)
+  const cloud = hasSkillDatasetSource()
+  const data = cloud
+    ? await downloadSkillDataset()
+    : await DownloadDatasWithLocale(DataPathIds.Skill, DataPathIds.SkillMain)
+  const build = ([skillData, skillMainData]: typeof data) => {
+    const skillSystem = SkillSystem.create()
+    if (skillData.dataVersion) {
+      skillSystem.setDataVersion(skillData.dataVersion)
+    }
+    LoadSkill(skillSystem, skillData, cloud)
+    LoadSkillMain(skillSystem, skillMainData, cloud)
+    return skillSystem
   }
-  return async () => {
-    LoadSkill(skillSystem, skillData)
-    LoadSkillMain(skillSystem, skillMainData)
-    const skillStore = useCharacterSkillStore()
-    skillStore.initSkillRoot(skillSystem.skillRoot)
 
+  return async () => {
+    let skillSystem: SkillSystem
+    try {
+      skillSystem = build(data)
+    } catch (error) {
+      if (!cloud || !(await recoverSkillDatasetModel())) {
+        throw error
+      }
+      try {
+        skillSystem = build(await downloadSkillDataset())
+      } catch (previousError) {
+        await recoverSkillDatasetModel()
+        throw previousError
+      }
+    }
     await InitSkillIcons()
+    useCharacterSkillStore().initSkillRoot(skillSystem.skillRoot)
+    DatasStoreBase.Skill = skillSystem
   }
 }

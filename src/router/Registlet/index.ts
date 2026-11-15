@@ -17,7 +17,7 @@ export default {
   component: ViewWrapper,
   beforeEnter() {
     return initializePage({
-      data: [DataStoreIds.Skill, DataStoreIds.Stats, DataStoreIds.Registlet, DataStoreIds.Glossary],
+      data: [DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Registlet, DataStoreIds.Glossary],
       locales: [LocaleViewNamespaces.RegistletQuery],
     })
   },

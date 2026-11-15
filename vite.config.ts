@@ -4,8 +4,9 @@ import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import fs from 'fs'
+import path from 'node:path'
 import { URL, fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { type PluginOption, defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa'
 import vueDevTools from 'vite-plugin-vue-devtools'
@@ -15,8 +16,10 @@ export default defineConfig(({ mode }) => {
   const useLagacy = false
 
   const useExternal = mode === 'production'
+  const workersAssets = process.env.WORKERS_STATIC_ASSETS === '1'
+  const siteOrigin = workersAssets ? 'https://cy-grimoire.com' : 'https://cy-grimoire.netlify.app'
   const base = '/'
-  const plugins = [
+  const plugins: PluginOption[] = [
     vue(),
     vueJsx(),
     vueDevTools(),
@@ -27,7 +30,7 @@ export default defineConfig(({ mode }) => {
       strategies: 'injectManifest',
       injectManifest: {
         swSrc: './src/sw.ts',
-        globIgnores: ['node_modules/**', '_redirects'],
+        globIgnores: ['node_modules/**', '_headers', '_redirects'],
       },
       srcDir: 'src',
       filename: 'sw.ts',
@@ -39,6 +42,7 @@ export default defineConfig(({ mode }) => {
       inject: {
         data: {
           envBaseUrl: base,
+          siteOrigin,
           externalScripts: !useExternal
             ? ''
             : '<script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0"></script>',
@@ -47,6 +51,21 @@ export default defineConfig(({ mode }) => {
     }),
     ViteYaml(),
   ]
+
+  if (workersAssets) {
+    plugins.push({
+      name: 'workers-static-assets',
+      writeBundle({ dir }) {
+        if (!dir) return
+        fs.rmSync(path.join(dir, '_redirects'), { force: true })
+        fs.writeFileSync(
+          path.join(dir, 'sitemap.xml'),
+          `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${siteOrigin}/</loc></url></urlset>\n`
+        )
+        fs.appendFileSync(path.join(dir, 'robots.txt'), `\nSitemap: ${siteOrigin}/sitemap.xml\n`)
+      },
+    })
+  }
 
   if (useLagacy) {
     const packageJsonBuffer = fs.readFileSync('package.json')

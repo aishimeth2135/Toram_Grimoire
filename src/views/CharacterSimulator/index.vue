@@ -35,6 +35,7 @@
         <cy-button-circle
           :selected="damageVisible"
           icon="ic:outline-calculate"
+          :aria-label="t('character-simulator.character-damage.title')"
           color="orange"
           float
           toggle

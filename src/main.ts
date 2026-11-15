@@ -11,6 +11,7 @@ import initPackages from './app/initPackages'
 import registGlobalComponents from './app/registGlobalComponents'
 import registerServiceWorker from './app/registerServiceWorker'
 import createAppRouter from './router'
+import { checkSkillDataset } from './stores/app/datas/utils/DownloadSkillDataset'
 import { useSettingStore } from './stores/app/setting'
 import './tailwind.css'
 
@@ -27,6 +28,7 @@ registGlobalComponents(app)
 registerServiceWorker()
 initPackages()
 initI18n(app)
+void checkSkillDataset()
 
 useSettingStore().initDocumentElementClassList()
 

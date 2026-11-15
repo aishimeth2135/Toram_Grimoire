@@ -2,6 +2,11 @@ import { nextTick } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas'
+import {
+  hasSkillDatasetSource,
+  retrySkillDataset,
+  skillDatasetStatus,
+} from '@/stores/app/datas/utils/DownloadSkillDataset'
 import { useInitializeStore } from '@/stores/app/initialize'
 import { InitItemStatus } from '@/stores/app/initialize/enums'
 import { useLocaleStore } from '@/stores/app/locale'
@@ -105,14 +110,30 @@ export async function initializePage(options: PageInitOptions = {}) {
     return
   }
 
-  await new Promise<void>(resolve => {
+  return new Promise<false | undefined>(resolve => {
+    const cancelSkillLoad =
+      hasSkillDatasetSource() &&
+      dataStoreIds.includes(DataStoreIds.Skill) &&
+      !datasStore.checkLoaded(DataStoreIds.Skill)
+        ? () => {
+            initializeStore.emitInitSkipped()
+            resolve(false)
+          }
+        : undefined
     const retry = async () => {
+      if (
+        hasSkillDatasetSource() &&
+        (dataStoreIds.includes(DataStoreIds.Skill) || dataStoreIds.includes(DataStoreIds.Stats)) &&
+        skillDatasetStatus.value.state === 'unavailable'
+      ) {
+        await retrySkillDataset().catch(() => undefined)
+      }
       if (await run()) {
-        resolve()
+        resolve(undefined)
       } else {
-        initializeStore.emitInitError(retry)
+        initializeStore.emitInitError(retry, cancelSkillLoad)
       }
     }
-    initializeStore.emitInitError(retry)
+    initializeStore.emitInitError(retry, cancelSkillLoad)
   })
 }

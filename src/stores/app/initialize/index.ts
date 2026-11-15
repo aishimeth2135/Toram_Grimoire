@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { readonly, ref } from 'vue'
+import { computed, readonly, ref } from 'vue'
 
 import { DataStoreIds } from '../datas'
 import { InitItemStatus, InitializeStatus } from './enums'
@@ -16,11 +16,13 @@ export const useInitializeStore = defineStore('app-initialize', () => {
   const isDeferred = ref(false)
   const retrying = ref(false)
   let retryHandler: (() => Promise<void>) | null = null
+  const cancelHandler = ref<(() => void) | undefined>()
 
   const startInit = (dataStoreIds: DataStoreIds[], deferred: boolean) => {
     status.value = InitializeStatus.ViewLoading
     isDeferred.value = deferred
     retryHandler = null
+    cancelHandler.value = undefined
     initItems.value = dataStoreIds.map(id => ({
       id,
       message: 'app.loading-message.' + id,
@@ -47,8 +49,9 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     status.value = InitializeStatus.LocaleSuccess
   }
 
-  const emitInitError = (handler: () => Promise<void>) => {
+  const emitInitError = (handler: () => Promise<void>, cancel?: () => void) => {
     retryHandler = handler
+    cancelHandler.value = cancel
     status.value = InitializeStatus.Error
   }
 
@@ -77,6 +80,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
 
   const emitInitSkipped = () => {
     retryHandler = null
+    cancelHandler.value = undefined
     status.value = InitializeStatus.Finished
     initItems.value = []
     isDeferred.value = false
@@ -87,6 +91,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     status: readonly(status),
     isDeferred: readonly(isDeferred),
     retrying: readonly(retrying),
+    canCancel: computed(() => !!cancelHandler.value),
 
     startInit,
     updateInitItemStatus,
@@ -95,6 +100,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     finishInitLocale,
     emitInitError,
     retryInit,
+    cancelInit: () => cancelHandler.value?.(),
     emitInitBeforeFinished,
     emitInitFinished,
     emitInitSkipped,

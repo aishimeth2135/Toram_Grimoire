@@ -53,6 +53,8 @@ export default function createAppRouter() {
   const mainStore = useMainStore()
   const navStore = useNavStore()
   const leftMenuStore = useLeftMenuStore()
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+  const canonicalBase = canonical?.href
 
   router.beforeEach(() => {
     mainStore.startRouting()
@@ -60,6 +62,15 @@ export default function createAppRouter() {
 
   router.afterEach(to => {
     if (to) {
+      if (canonical && canonicalBase) {
+        if (to.name === AppRouteNames.UnrecognizedPath) {
+          canonical.removeAttribute('href')
+        } else {
+          const url = new URL(canonicalBase)
+          url.pathname = to.path
+          canonical.href = url.href
+        }
+      }
       {
         // set title and meta tags
         const data = to.matched

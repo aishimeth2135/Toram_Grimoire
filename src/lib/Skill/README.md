@@ -95,7 +95,7 @@
 
 | 類型              | 模組                            | 責任                                                             |
 | ----------------- | ------------------------------- | ---------------------------------------------------------------- |
-| `Formula`         | `Properties/Formula.ts`         | 建立公式變數、解析一般公式、計算屬性與 Stat 結果                 |
+| `Formula`         | `Properties/Formula.ts`         | 建立公式變數、解析一般公式、計算屬性與角色能力結果                 |
 | `FormulaExtended` | `Properties/FormulaExtended.ts` | 定義並合併角色模擬器追加的公式變數、文字與方法                   |
 | `FormulaSpecial`  | `Properties/FormulaSpecial/`    | 依屬性拆分具有獨立變數範圍與計算時機的專用公式                   |
 | `Text`            | `Properties/Text.ts`            | 解析文字標記及文字內的公式                                       |
@@ -114,15 +114,15 @@
 
 | 屬性                                  | 模組                | 變數與計算時機                                                                                          |
 | ------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
-| `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或 Stat 結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值                 |
-| `conditionValue`                      | `ConditionValue.ts` | 僅供 Stat 使用；保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷                          |
-| `displayCaption`                      | `DisplayCaption.ts` | 供所有 Stat 使用；以 Text 解析，公式可使用 `$value` 取得主屬性的計算結果，僅覆寫介面顯示                |
+| `registlet`                           | `Registlet.ts`      | 疊加在 `Formula` 或角色能力結果上，使用 `RLv`，於一般公式結果建立時檢查托環等級並計算加值                 |
+| `conditionValue`                      | `ConditionValue.ts` | 僅供角色能力使用。保存公式至角色模擬器取得 `$skill`、`$self`、`$branch` 後才判斷                          |
+| `displayCaption`                      | `DisplayCaption.ts` | 供所有角色能力使用。以 Text 解析，公式可使用 `$value` 取得主屬性的計算結果，僅覆寫介面顯示                |
 | 傷害來源的 `conditionValue`、`amount` | `DamageSource.ts`   | 分別使用傷害來源所需的 `$skill`、`$branch.from_normal_attack`，以及 `$self.damage`、`$branch.frequency` |
 | `damage_hit` 的 `multipliers`         | `DamageHit.ts`      | 技能查詢展開每段傷害時，以從 1 開始的 `$currentHit` 代入倍率公式                                        |
 
 新增其他 `FormulaSpecial` 屬性時，應建立獨立檔案並明確定義其 scope，不應直接擴充一般 `Formula` 的共用變數。
 
-`(Stat ID).displayCaption` 可填入完整句子，例如 `造成 ${$value*2} 點效果`。有值時，它會取代原本的 Stat 標題、正負號與數值顯示，優先於 `displayTitle`；`$value` 取自該 Stat 的 `SkillBranchStatResult.result`，不更動 Stat 的計算結果。
+`(Stat ID).displayCaption` 可填入完整句子，例如 `造成 ${$value*2} 點效果`。有值時，它會取代原本的角色能力標題、正負號與數值顯示，優先於 `displayTitle`。`$value` 取自該角色能力的 `SkillBranchStatResult.result`。顯示覆寫只用於介面。
 
 ## 模組邊界
 
@@ -134,7 +134,7 @@
 
 `computedBranchHelper` 同時建立數值與原始公式的 context，計算、篩選與托環啟用判斷固定使用數值 context。`SkillBranchResult` 的 `value`、`valueSum`、`result` 保留計算結果語意，原始公式另存於 `originalFormulaResult`，並同步處理顯示覆寫與格式化。
 
-`formulaDisplayMode` 僅轉為結果容器的 `showOriginalFormula` flag，由最後的 renderer 決定 popover 兩側：`Normal` 外觀顯示計算結果，hover 顯示原始公式；`OriginalFormula` 交換兩側。文字內嵌公式、Stat caption 的 `$value` 與托環子結果沿用相同機制。
+`formulaDisplayMode` 僅轉為結果容器的 `showOriginalFormula` flag，由最後的 renderer 決定 popover 兩側：`Normal` 外觀顯示計算結果，hover 顯示原始公式；`OriginalFormula` 交換兩側。文字內嵌公式、角色能力標題中的 `$value` 與托環子結果沿用相同機制。
 
 原本的 `views/Character/SkillQuery/skill/branch-handlers` 已移至 `SkillDisplay/handlers`。`Next` 沿用 `EffectHandler`，以 `isExactly(SkillBranchNames.Next)` 判斷 Next 專用語意。
 
@@ -152,7 +152,7 @@
 
 ## Handler 與公式輸入
 
-Handler 在屬性副本上解析衍生資料，再交給 `handleDisplayData`。`collectBranchFormulaValues` 收集有效屬性與 Stat 公式，包含 `@range`、`@extra_value[n]`、`.display`、`.registlet` 等欄位。
+Handler 在屬性副本上解析衍生資料，再交給 `handleDisplayData`。`collectBranchFormulaValues` 收集有效屬性與角色能力公式，包含 `@range`、`@extra_value[n]`、`.display`、`.registlet` 等欄位。
 
 公式 helper 與後續計算使用同一份有效屬性。翻譯後還需要文字公式解析的 caption，會在翻譯後重新準備相依變數。RLv 陣列會複製，不修改呼叫端的響應式資料。
 
@@ -167,7 +167,7 @@ Handler 可以使用既有的 values、texts、langs 等設定表組裝動態欄
 - `result`、`get`、`has` 表示可見的顯示結果。
 - `getValue`、`getValueSum` 優先讀取獨立的數值計算結果，即使數值欄位被顯示 filter 隱藏，也保留其數值與托環加值。
 - `getOrigin` 仍讀取顯示欄位的 origin。衍生欄位的真正來源請使用結果的 `sources`。
-- `computeBranchValueResults` 的缺值結果為 `0` 並標記 empty；Stat 合計沿用小數、一般數值合計沿用整數的既有規則。
+- `computeBranchValueResults` 的缺值結果為 `0` 並標記 empty；角色能力合計沿用小數、一般數值合計沿用整數的既有規則。
 
 衍生欄位在 `sources` 指定原始 branch、key，必要時加上 index。歷史標記依來源欄位比對；文字公式子結果會繼承來源。組合其他 Handler 時，使用 `setResult` 保留子結果、來源與顯示 metadata，不先轉成字串再包裝。
 

@@ -18,7 +18,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill'
 import type { LocaleCsvDatas } from './DownloadDatas'
 import { getCsvDataRowGetterHelper } from './utils'
 
-export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
+export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas, strict = false) {
   const skillRoot = skillSystem.skillRoot
 
   const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
@@ -224,6 +224,9 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
       const attrName = row('effect-branch/attr/name'),
         attrValue = row('effect-branch/attr/value')
       if (attrName !== '') {
+        if (strict && !curSkillEffect.branches.includes(curSkillBranch)) {
+          throw new Error('Skill attribute has no branch in the current effect')
+        }
         if (!Grimoire.Character.findStatBase(attrName)) {
           curSkillBranch.appendProp(attrName, attrValue)
         } else {
@@ -231,6 +234,9 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
         }
       }
     } catch (err) {
+      if (strict) {
+        throw err
+      }
       CommonLogger.warn('LoadSkill', 'Unable to parse row:', rowData)
       CommonLogger.track(err)
     }
@@ -249,7 +255,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
   })
 }
 
-export function LoadSkillMain(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
+export function LoadSkillMain(skillSystem: SkillSystem, datas: LocaleCsvDatas, strict = false) {
   const sr = skillSystem.skillRoot
 
   const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
@@ -324,6 +330,9 @@ export function LoadSkillMain(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
         }
       }
     } catch (error) {
+      if (strict) {
+        throw error
+      }
       CommonLogger.start('LoadSkillMain', 'Unexpected error').track(error).log(rowData).end()
     }
   })
