@@ -131,3 +131,6 @@ about:
     join: Join
 notices:
   enchant-refactor: Due to an enchant system update, if you encounter any errors please go to Settings and clear the cache. The enchant system will work correctly after the data is re-downloaded.
+migrate-info:
+  caption-1: This website has moved to a new site {link}. Back up your archive in the settings and restore it on the new site to use the original features directly.
+  caption-2: The original website will no longer be updated.

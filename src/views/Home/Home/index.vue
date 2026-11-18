@@ -6,6 +6,16 @@
       <div class="flex size-full min-h-0" style="max-width: 1024px">
         <div class="size-full overflow-hidden">
           <div class="ml-5 flex size-full flex-col overflow-y-auto py-5 pr-11">
+            <div class="border-orange-60 bg-orange-5 z-1 mb-4 mt-8 rounded-sm border px-5 py-3">
+              <i18n-t keypath="app.migrate-info.caption-1">
+                <template #link>
+                  <a href="https://cy-grimoire.com" class="text-primary-90 m-1 underline"
+                    >cy-grimoire.com</a
+                  >
+                </template>
+              </i18n-t>
+              <div>{{ t('app.migrate-info.caption-2') }}</div>
+            </div>
             <HomeMainSection class="my-auto" />
             <div v-if="!device.hasAside" class="z-1 relative mt-3">
               <div class="flex w-full items-center justify-center space-x-4 py-6">
@@ -51,6 +61,7 @@
 
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 // import { useBookmarkStore } from '@/stores/app/bookmark'
 import { useMainStore } from '@/stores/app/main'
@@ -72,6 +83,7 @@ defineOptions({
   name: 'AppHome',
 })
 
+const { t } = useI18n()
 const storageAvailable = LocalStorageService.isAvailable()
 
 if (storageAvailable) {

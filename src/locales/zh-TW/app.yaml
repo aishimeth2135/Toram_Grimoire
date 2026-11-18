@@ -130,3 +130,6 @@ features:
   copy-to-clipboard-success-tips: 已複製文本至剪貼簿。
   copy-url-to-clipboard-success-tips: 已複製網址至剪貼簿。
   localStorage-inavailable-tips: 此瀏覽器版本無法使用內建儲存功能。
+migrate-info:
+  caption-1: 此網站已遷移至新站點{link}。於設定中備份存檔並在新站點還原，就可以直接在新站點使用原有的功能。
+  caption-2: 原網站未來不會再更新。
