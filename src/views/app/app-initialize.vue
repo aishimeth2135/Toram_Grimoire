@@ -50,6 +50,9 @@
                 >
                   {{ t(retrying ? 'app.loading-message.retrying' : 'app.loading-message.retry') }}
                 </cy-button-plain>
+                <cy-button-plain v-if="canCancel" :disabled="retrying" @click="leaveSkillPage">
+                  {{ t('app.skill-dataset.home') }}
+                </cy-button-plain>
               </div>
             </template>
             <template v-else>
@@ -87,17 +90,25 @@
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 import { useInitializeStore } from '@/stores/app/initialize'
 import { InitItemStatus, InitializeStatus } from '@/stores/app/initialize/enums'
 
+import { AppRouteNames } from '@/router/enums'
 import HomeBackgroud from '@/views/Home/Home/home-backgroud.vue'
 
 import AppInitializeLogo from './app-initialize-logo.vue'
 
 const initializeStore = useInitializeStore()
 
-const { initItems, status, isDeferred, retrying } = storeToRefs(initializeStore)
+const { initItems, status, isDeferred, retrying, canCancel } = storeToRefs(initializeStore)
+const router = useRouter()
+
+const leaveSkillPage = () => {
+  initializeStore.cancelInit()
+  void router.push({ name: AppRouteNames.Home })
+}
 
 const { t } = useI18n()
 const contentVisible = computed(

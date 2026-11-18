@@ -65,7 +65,11 @@ export const useDatasStore = defineStore('app-datas', () => {
       prepareError?: unknown
     }
 
-    const tasks = ids.map<LoadTask>(id => {
+    // Skill properties resolve their Stat definitions while building the model.
+    const orderedIds = ids.includes(DataStoreIds.Skill)
+      ? [DataStoreIds.Stats, ...ids.filter(id => id !== DataStoreIds.Stats)]
+      : ids
+    const tasks = orderedIds.map<LoadTask>(id => {
       if (checkLoaded(id)) {
         return { id, promise: Promise.resolve(), owned: false }
       }
@@ -97,7 +101,8 @@ export const useDatasStore = defineStore('app-datas', () => {
     })
 
     const resultsPromise = Promise.all(
-      tasks.map(async task => {
+      ids.map(async id => {
+        const task = tasks.find(item => item.id === id)!
         try {
           await task.promise
           return { success: true as const }
@@ -121,7 +126,9 @@ export const useDatasStore = defineStore('app-datas', () => {
       })
     )
 
-    const failedPrepareTask = tasks.find(task => task.owned && task.prepareFailed)
+    const failedPrepareTask = tasks.find(
+      task => task.owned && task.prepareFailed && task.id !== DataStoreIds.Skill
+    )
     if (failedPrepareTask) {
       tasks.forEach(task => {
         if (!task.owned) {
@@ -141,6 +148,15 @@ export const useDatasStore = defineStore('app-datas', () => {
       }
 
       try {
+        if (task.prepareFailed) {
+          throw task.prepareError
+        }
+        if (task.id === DataStoreIds.Skill) {
+          await tasks[0].promise
+        }
+        if (task.id === DataStoreIds.Registlet) {
+          await tasks.find(item => item.id === DataStoreIds.Skill)?.promise
+        }
         await task.init!()
         loadFinished(task.id)
         task.resolve!()

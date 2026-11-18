@@ -1,36 +1,39 @@
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
-import { DataPathIds } from '@/shared/services/DataPath'
 import { InitSkillIcons } from '@/shared/services/Images'
 
 import SkillSystem from '@/lib/Skill'
 
 import { DatasStoreBase } from '../DatasStoreBase'
-import { DownloadDatasWithLocale } from '../utils/DownloadDatas'
+import { downloadSkillDataset, recoverSkillDatasetModel } from '../utils/DownloadSkillDataset'
 import { LoadSkill, LoadSkillMain } from '../utils/LoadSkill'
 
-const initSkillInstance = () => {
-  if (DatasStoreBase.Skill === null) {
-    DatasStoreBase.Skill = SkillSystem.create()
-  }
-  return DatasStoreBase.Skill
-}
-
 export async function prepareSkill(): Promise<() => Promise<void>> {
-  const skillSystem = initSkillInstance()
-  const [skillData, skillMainData] = await DownloadDatasWithLocale(
-    DataPathIds.Skill,
-    DataPathIds.SkillMain
-  )
-  if (skillData.dataVersion) {
-    skillSystem.setDataVersion(skillData.dataVersion)
-  }
-  return async () => {
+  const data = await downloadSkillDataset()
+  const build = ([skillData, skillMainData]: typeof data) => {
+    const skillSystem = SkillSystem.create()
     LoadSkill(skillSystem, skillData)
     LoadSkillMain(skillSystem, skillMainData)
-    const skillStore = useCharacterSkillStore()
-    skillStore.initSkillRoot(skillSystem.skillRoot)
+    return skillSystem
+  }
 
+  return async () => {
+    let skillSystem: SkillSystem
+    try {
+      skillSystem = build(data)
+    } catch (error) {
+      if (!(await recoverSkillDatasetModel())) {
+        throw error
+      }
+      try {
+        skillSystem = build(await downloadSkillDataset())
+      } catch (previousError) {
+        await recoverSkillDatasetModel()
+        throw previousError
+      }
+    }
     await InitSkillIcons()
+    useCharacterSkillStore().initSkillRoot(skillSystem.skillRoot)
+    DatasStoreBase.Skill = skillSystem
   }
 }

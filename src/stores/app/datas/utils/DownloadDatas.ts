@@ -98,7 +98,7 @@ async function downloadLocaleCsvDatas(pathId: DataPathIds): Promise<LocaleCsvDat
   resultData.dataVersion = dataVersion
 
   if (primaryIndex !== DEFAULT_LOCALE_INDEX) {
-    const paths = getLocaleDataPaths(pathId, dataVersion)
+    const paths = getLocaleDataPaths(pathId)
     if (paths[primaryIndex] !== null) {
       promises.push(
         downloadCsvData(paths[primaryIndex]).then(res => (resultData.primaryLocaleData = res))

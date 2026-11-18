@@ -1,9 +1,8 @@
 import Grimoire from '@/shared/Grimoire'
 import { getLocaleDataResult } from '@/shared/services/Locale'
-import { CommonLogger } from '@/shared/services/Logger'
 import { toInt } from '@/shared/utils/number'
 
-import SkillSystem, { type SkillDataVersion } from '@/lib/Skill'
+import SkillSystem from '@/lib/Skill'
 import {
   Skill,
   SkillBranch,
@@ -33,12 +32,6 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     'effect-branch/attr/name': 8,
     'effect-branch/attr/value': 9,
     'effect-branch/attr/extra': 10,
-    'mp-cost': 11,
-    'range': 12,
-    'skill-type': 13,
-    'in-combo': 14,
-    'action-time': 15,
-    'casting-time': 16,
 
     'skill-tree-category/confirm': 1,
     'skill-tree-category/name': 2,
@@ -67,9 +60,6 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     ],
     SUB_WEAPON_LIST = ['無裝備', '箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '忍術卷軸'],
     BODY_ARMOR_LIST = ['無裝備', '輕量化', '重量化', '一般'],
-    SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動', 'EX技能'],
-    IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
-    ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
     SKILL_TREE_CATEGORY_CHECKING_NAME = '0',
     SKILL_TREE_CHECKING_NAME = '1'
 
@@ -95,10 +85,6 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     })
   )
 
-  const checkNull = <T extends number | string>(value: T, nullValue: T) => {
-    return value === null || value === undefined || value === nullValue ? null : value
-  }
-
   /**
    * If branch id is empty, clone branches from previous effect
    */
@@ -114,125 +100,98 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
     return false
   }
 
-  const dataVersion = datas.dataVersion as SkillDataVersion
-
   csvData.forEach((rowData, index) => {
-    try {
-      if (index === 0 || rowData.every(item => item === '')) {
-        return
-      }
+    if (index === 0 || rowData.every(item => item === '')) {
+      return
+    }
 
-      const { row } = createRowGetter(rowData)
+    const { row } = createRowGetter(rowData)
 
-      const id = toInt(row('id'))
-      if (id !== null) {
-        const nameChecking = row('name')
+    const id = toInt(row('id'))
+    if (id !== null) {
+      const nameChecking = row('name')
 
-        if (nameChecking === SKILL_TREE_CATEGORY_CHECKING_NAME) {
-          const name = row('skill-tree-category/name')
-          curSkillTreeCategory = skillRoot.appendSkillTreeCategory(id, name)
-          curElement = SkillElementType.TypeSkillTreeCategory
-        } else if (nameChecking === SKILL_TREE_CHECKING_NAME) {
-          const name = row('skill-tree/name')
-          curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
-          curElement = SkillElementType.TypeSkillTree
-          if (row('skill-tree/simulator-flag')) {
-            curSkillTree.attrs.simulatorFlag = true
-          }
-        } else {
-          if (nameChecking !== '') {
-            const name = nameChecking
-            curSkill = curSkillTree.appendSkill(id, name)
-            curElement = SkillElementType.TypeSkill
-          }
-
-          const mainWeapon = MAIN_WEAPON_LIST.indexOf(row('main-weapon')),
-            subWeapon = SUB_WEAPON_LIST.indexOf(row('sub-weapon')),
-            bodyArmor = BODY_ARMOR_LIST.indexOf(row('body-armor')),
-            defaultSelected = DEFAULT_SET_LIST.indexOf(row('default-set'))
-          if (defaultSelected === -1) {
-            return
-          }
-          const previousEffect = curSkillEffect
-          if (defaultSelected !== 4) {
-            curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor)
-          } else {
-            const targetEffectId = toInt(row('history-effect/target-effect-id')) ?? -1
-            curSkillEffect = curSkill.appendSkillEffectHistory(
-              targetEffectId,
-              row('history-effect/date')
-            )
-          }
-          curElement = SkillElementType.TypeSkillEffect
-          if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
-            if (defaultSelected === 0 || defaultSelected === 2) {
-              curSkill.setDefaultEffect(curSkillEffect)
-            }
-            if (defaultSelected === 2 || defaultSelected === 3) {
-              curSkillEffect.equipmentOperator = 1
-            }
-            if (dataVersion !== 'v3') {
-              curSkillEffect.basicProps.mpCost = checkNull(row('mp-cost'), '')
-              curSkillEffect.basicProps.range = checkNull(row('range'), '')
-              curSkillEffect.basicProps.skillType = checkNull(
-                SKILL_TYPE_LIST.indexOf(row('skill-type')),
-                -1
-              )
-              curSkillEffect.basicProps.inCombo = checkNull(
-                IN_COMBO_LIST.indexOf(row('in-combo')),
-                -1
-              )
-              curSkillEffect.basicProps.actionTime = checkNull(
-                ACTION_TIME_LIST.indexOf(row('action-time')),
-                -1
-              )
-              curSkillEffect.basicProps.castingTime = checkNull(row('casting-time'), '')
-            }
-            if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
-              return
-            }
-          }
+      if (nameChecking === SKILL_TREE_CATEGORY_CHECKING_NAME) {
+        const name = row('skill-tree-category/name')
+        curSkillTreeCategory = skillRoot.appendSkillTreeCategory(id, name)
+        curElement = SkillElementType.TypeSkillTreeCategory
+      } else if (nameChecking === SKILL_TREE_CHECKING_NAME) {
+        const name = row('skill-tree/name')
+        curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
+        curElement = SkillElementType.TypeSkillTree
+        if (row('skill-tree/simulator-flag')) {
+          curSkillTree.attrs.simulatorFlag = true
         }
-      } else if (
-        curSkillEffect instanceof SkillEffectHistory &&
-        row('history-effect/date') !== ''
-      ) {
-        const previousEffect = curSkillEffect
-        curSkillEffect = curSkill.appendSkillEffectHistory(
-          curSkillEffect.parentEffect.effectId,
-          row('history-effect/date')
-        )
-        if (checkEffectEmpty(row, previousEffect, curSkillEffect!)) {
+      } else {
+        if (nameChecking !== '') {
+          const name = nameChecking
+          curSkill = curSkillTree.appendSkill(id, name)
+          curElement = SkillElementType.TypeSkill
+        }
+
+        const mainWeapon = MAIN_WEAPON_LIST.indexOf(row('main-weapon')),
+          subWeapon = SUB_WEAPON_LIST.indexOf(row('sub-weapon')),
+          bodyArmor = BODY_ARMOR_LIST.indexOf(row('body-armor')),
+          defaultSelected = DEFAULT_SET_LIST.indexOf(row('default-set'))
+        if (defaultSelected === -1) {
           return
         }
-      }
-      if (curElement !== SkillElementType.TypeSkillEffect || !curSkillEffect) {
-        return
-      }
-      const branchId = row('effect-branch/id') || null
-      if (branchId !== null) {
-        const branchIdNum = branchId === '-' ? -1 : (toInt(row('effect-branch/id')) ?? -1)
-        const branchName = row('effect-branch/name')
-        curSkillBranch = curSkillEffect.appendSkillBranch(
-          branchIdNum,
-          branchName as SkillBranchNames
-        )
-      }
-      if (!curSkillBranch) {
-        return
-      }
-      const attrName = row('effect-branch/attr/name'),
-        attrValue = row('effect-branch/attr/value')
-      if (attrName !== '') {
-        if (!Grimoire.Character.findStatBase(attrName)) {
-          curSkillBranch.appendProp(attrName, attrValue)
+        const previousEffect = curSkillEffect
+        if (defaultSelected !== 4) {
+          curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor)
         } else {
-          curSkillBranch.appendStat(attrName, attrValue, row('effect-branch/attr/extra'))
+          const targetEffectId = toInt(row('history-effect/target-effect-id')) ?? -1
+          curSkillEffect = curSkill.appendSkillEffectHistory(
+            targetEffectId,
+            row('history-effect/date')
+          )
+        }
+        curElement = SkillElementType.TypeSkillEffect
+        if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
+          if (defaultSelected === 0 || defaultSelected === 2) {
+            curSkill.setDefaultEffect(curSkillEffect)
+          }
+          if (defaultSelected === 2 || defaultSelected === 3) {
+            curSkillEffect.equipmentOperator = 1
+          }
+          if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
+            return
+          }
         }
       }
-    } catch (err) {
-      CommonLogger.warn('LoadSkill', 'Unable to parse row:', rowData)
-      CommonLogger.track(err)
+    } else if (curSkillEffect instanceof SkillEffectHistory && row('history-effect/date') !== '') {
+      const previousEffect = curSkillEffect
+      curSkillEffect = curSkill.appendSkillEffectHistory(
+        curSkillEffect.parentEffect.effectId,
+        row('history-effect/date')
+      )
+      if (checkEffectEmpty(row, previousEffect, curSkillEffect!)) {
+        return
+      }
+    }
+    if (curElement !== SkillElementType.TypeSkillEffect || !curSkillEffect) {
+      return
+    }
+    const branchId = row('effect-branch/id') || null
+    if (branchId !== null) {
+      const branchIdNum = branchId === '-' ? -1 : (toInt(row('effect-branch/id')) ?? -1)
+      const branchName = row('effect-branch/name')
+      curSkillBranch = curSkillEffect.appendSkillBranch(branchIdNum, branchName as SkillBranchNames)
+    }
+    if (!curSkillBranch) {
+      return
+    }
+    const attrName = row('effect-branch/attr/name'),
+      attrValue = row('effect-branch/attr/value')
+    if (attrName !== '') {
+      if (!curSkillEffect.branches.includes(curSkillBranch)) {
+        throw new Error('Skill attribute has no branch in the current effect')
+      }
+      if (!Grimoire.Character.findStatBase(attrName)) {
+        curSkillBranch.appendProp(attrName, attrValue)
+      } else {
+        curSkillBranch.appendStat(attrName, attrValue, row('effect-branch/attr/extra'))
+      }
     }
   })
 
@@ -290,41 +249,37 @@ export function LoadSkillMain(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
       return
     }
 
-    try {
-      const typeChecking = row('type-checking'),
-        idToSearch = toInt(row('id')),
-        name = row('name')
-      if (typeChecking === SKILL_TREE_CATEGORY_CHECKING) {
-        const skillTreeCategory = sr.skillTreeCategorys.find(item => item.id === idToSearch)
-        if (skillTreeCategory) {
-          curSkillTreeCategory = skillTreeCategory
-          if (name) {
-            skillTreeCategory.name = name
-          }
-        }
-      } else if (typeChecking === SKILL_TREE_CHECKING) {
-        const skillTree = curSkillTreeCategory.skillTrees.find(item => item.id === idToSearch)
-        if (skillTree) {
-          curSkillTree = skillTree
-          curSkillTree.init(row('skill-tree/draw-tree-code'))
-          if (name) {
-            skillTree.name = name
-          }
-        }
-      } else if (typeChecking === '') {
-        const skill = curSkillTree.skills.find(item => item.id === idToSearch)
-        if (skill) {
-          skill.init(
-            row('previous-skill') === '-' ? -1 : (toInt(row('previous-skill')) ?? -1),
-            toInt(row('skill/draw-tree-order')) ?? -1
-          )
-          if (name) {
-            skill.name = name
-          }
+    const typeChecking = row('type-checking'),
+      idToSearch = toInt(row('id')),
+      name = row('name')
+    if (typeChecking === SKILL_TREE_CATEGORY_CHECKING) {
+      const skillTreeCategory = sr.skillTreeCategorys.find(item => item.id === idToSearch)
+      if (skillTreeCategory) {
+        curSkillTreeCategory = skillTreeCategory
+        if (name) {
+          skillTreeCategory.name = name
         }
       }
-    } catch (error) {
-      CommonLogger.start('LoadSkillMain', 'Unexpected error').track(error).log(rowData).end()
+    } else if (typeChecking === SKILL_TREE_CHECKING) {
+      const skillTree = curSkillTreeCategory.skillTrees.find(item => item.id === idToSearch)
+      if (skillTree) {
+        curSkillTree = skillTree
+        curSkillTree.init(row('skill-tree/draw-tree-code'))
+        if (name) {
+          skillTree.name = name
+        }
+      }
+    } else if (typeChecking === '') {
+      const skill = curSkillTree.skills.find(item => item.id === idToSearch)
+      if (skill) {
+        skill.init(
+          row('previous-skill') === '-' ? -1 : (toInt(row('previous-skill')) ?? -1),
+          toInt(row('skill/draw-tree-order')) ?? -1
+        )
+        if (name) {
+          skill.name = name
+        }
+      }
     }
   })
 }

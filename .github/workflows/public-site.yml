@@ -1,0 +1,92 @@
+name: Public site
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    name: Validate public site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - name: Install dependencies
+        run: node .yarn/releases/yarn-4.14.1.cjs install --immutable
+      - name: Check types
+        run: node .yarn/releases/yarn-4.14.1.cjs type-check
+      - name: Build public site
+        run: node .yarn/releases/yarn-4.14.1.cjs build
+        env:
+          WORKERS_STATIC_ASSETS: '1'
+          VITE_SKILL_DATA_ORIGIN: https://data.cy-grimoire.com
+      - name: Validate Worker deployment
+        run: node .yarn/releases/yarn-4.14.1.cjs upload:public --dry-run
+      - name: Upload validated assets
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: public-site
+          path: dist/
+          if-no-files-found: error
+          include-hidden-files: true
+          overwrite: true
+
+  deploy:
+    name: Deploy public site
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://cy-grimoire.com
+    concurrency:
+      group: toram-grimoire-public-production
+      queue: max
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - name: Install dependencies
+        run: node .yarn/releases/yarn-4.14.1.cjs install --immutable
+      - name: Download validated assets
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: public-site
+          path: dist/
+      - name: Check latest main commit
+        id: main
+        run: |
+          latest="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          if [[ "$latest" == "$GITHUB_SHA" ]]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::A newer commit is on main. Skipping this deployment."
+          fi
+      - name: Deploy to Cloudflare
+        if: steps.main.outputs.current == 'true'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          : "${CLOUDFLARE_ACCOUNT_ID:?Set CLOUDFLARE_ACCOUNT_ID in the production environment}"
+          : "${CLOUDFLARE_API_TOKEN:?Set CLOUDFLARE_API_TOKEN in the production environment}"
+          tag="github-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          node .yarn/releases/yarn-4.14.1.cjs upload:public --tag "$tag" --message "GitHub commit $GITHUB_SHA"
+          node .yarn/releases/yarn-4.14.1.cjs deploy:public --version-tag "$tag" --percentage 100 --yes

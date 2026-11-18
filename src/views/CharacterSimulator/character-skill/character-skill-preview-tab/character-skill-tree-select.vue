@@ -24,7 +24,12 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(ca
 <template>
   <cy-popover placement="bottom-end">
     <template #default="{ shown }">
-      <cy-button-circle small icon="mdi:edit" :selected="shown" />
+      <cy-button-circle
+        small
+        icon="mdi:edit"
+        :selected="shown"
+        :aria-label="$t('character-simulator.skill-build.no-any-skill-tips.1')"
+      />
     </template>
     <template #popper>
       <div class="px-3 py-2">

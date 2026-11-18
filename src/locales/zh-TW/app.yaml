@@ -20,6 +20,12 @@ loading-message:
   load-failed: 載入失敗，請稍後重試。
   retry: 重新載入
   retrying: 重新載入中
+skill-dataset:
+  stale: 目前的技能資料可能不是最新版。
+  no-offline: 此頁的技能資料尚未儲存供離線使用。
+  update: 已有新版技能資料。請先儲存進度，再重新載入頁面。
+  retry: 重試技能資料
+  home: 返回首頁
 page-title:
   chromatic-trans-simulator: 色彩煉成模擬
   trait-query: 特性查詢

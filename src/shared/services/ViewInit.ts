@@ -105,14 +105,21 @@ export async function initializePage(options: PageInitOptions = {}) {
     return
   }
 
-  await new Promise<void>(resolve => {
+  return new Promise<false | undefined>(resolve => {
+    const cancelSkillLoad =
+      dataStoreIds.includes(DataStoreIds.Skill) && !datasStore.checkLoaded(DataStoreIds.Skill)
+        ? () => {
+            initializeStore.emitInitSkipped()
+            resolve(false)
+          }
+        : undefined
     const retry = async () => {
       if (await run()) {
-        resolve()
+        resolve(undefined)
       } else {
-        initializeStore.emitInitError(retry)
+        initializeStore.emitInitError(retry, cancelSkillLoad)
       }
     }
-    initializeStore.emitInitError(retry)
+    initializeStore.emitInitError(retry, cancelSkillLoad)
   })
 }
