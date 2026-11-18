@@ -56,7 +56,9 @@ export default defineConfig(({ mode }) => {
     plugins.push({
       name: 'workers-static-assets',
       writeBundle({ dir }) {
-        if (!dir) return
+        if (!dir) {
+          return
+        }
         fs.rmSync(path.join(dir, '_redirects'), { force: true })
         fs.writeFileSync(
           path.join(dir, 'sitemap.xml'),
