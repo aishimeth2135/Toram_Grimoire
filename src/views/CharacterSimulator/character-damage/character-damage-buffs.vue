@@ -6,7 +6,6 @@ import { useCharacterStore } from '@/stores/views/character'
 import type { SkillResult } from '@/stores/views/character/setup'
 
 import type { RegistletItem } from '@/lib/Character/RegistletBuild'
-import { getDamageSource } from '@/lib/Skill/SkillComputing'
 
 import SkillBranchPropValue from '@/components/views/skill/branch/layouts/skill-branch-prop-value.vue'
 import CommonSearchableItems from '@/views/CharacterSimulator/common/common-searchable-items.vue'
@@ -31,7 +30,6 @@ type BuffOption = {
 const characterStore = useCharacterStore()
 const { t } = useI18n()
 const searchText = ref('')
-const hasDamageSource = computed(() => !!getDamageSource(props.result.container.branchItem))
 
 const branchState = computed(() =>
   characterStore.currentCharacterState.skillBuild.getSkillBranchState(
@@ -77,7 +75,7 @@ const toggleOption = (option: BuffOption) => {
 </script>
 
 <template>
-  <div v-if="!hasDamageSource && allOptions.length > 0" class="pl-5.5 pt-2">
+  <div v-if="allOptions.length > 0" class="pt-2 pl-5.5">
     <cy-popover placement="top-start" custom>
       <div>
         <button
