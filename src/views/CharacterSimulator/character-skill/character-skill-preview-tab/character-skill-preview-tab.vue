@@ -119,10 +119,10 @@ const skillTreesDefaultEditing = ref(false)
     <div class="flex flex-wrap px-2 pt-2">
       <div v-if="displayedSkillTrees.length > 0" class="pb-2">
         <div class="text-primary-70">
-          {{ $t('character-simulator.skill-build.skill-trees-directory.title') }}
+          {{ t('character-simulator.skill-build.skill-trees-directory.title') }}
         </div>
         <div class="text-gray-40 mt-2 text-sm">
-          {{ $t('character-simulator.skill-build.skill-trees-directory.caption') }}
+          {{ t('character-simulator.skill-build.skill-trees-directory.caption') }}
         </div>
       </div>
       <div v-else class="text-primary-60 space-y-1 text-sm">

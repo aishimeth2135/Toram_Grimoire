@@ -1,7 +1,9 @@
-const path = require('path')
-const fs = require('fs').promises
-const finder = require('findit2')(process.argv[2] || path.join(__dirname, '..', '..'))
-const conv = require('chinese-conv')
+import { sify } from 'chinese-conv'
+import findit2 from 'findit2'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
+const finder = findit2(process.argv[2] || path.join(import.meta.dirname, '..', '..'))
 
 console.log('start...')
 
@@ -17,7 +19,7 @@ finder.on('end', async function () {
   console.log(files)
   for (const file of files) {
     const text = await fs.readFile(file, { encoding: 'utf8' })
-    const data = conv.sify(text)
+    const data = sify(text)
     console.log('handle: ' + file)
     await fs.writeFile(path.dirname(file) + '/' + 'zh_cn.js', data)
     console.log('...success')

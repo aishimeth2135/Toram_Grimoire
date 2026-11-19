@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBuild } from '@/lib/Character/SkillBuild'
@@ -12,6 +14,8 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const { t } = useI18n()
 
 const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(category => {
   return {
@@ -28,7 +32,7 @@ const allSkillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys.map(ca
         small
         icon="mdi:edit"
         :selected="shown"
-        :aria-label="$t('character-simulator.skill-build.no-any-skill-tips.1')"
+        :aria-label="t('character-simulator.skill-build.no-any-skill-tips.1')"
       />
     </template>
     <template #popper>

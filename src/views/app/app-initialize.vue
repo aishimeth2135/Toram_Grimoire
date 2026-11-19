@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="status !== InitializeStatus.Finished"
-    class="z-100 fixed left-0 top-0 flex size-full items-center justify-center bg-white py-4"
+    class="fixed top-0 left-0 z-100 flex size-full items-center justify-center bg-white py-4"
     :class="{ 'bg-white/50': isDeferred }"
   >
     <HomeBackgroud :class="{ 'opacity-50': isDeferred }" />
@@ -39,8 +39,8 @@
                   {{ t(item.message) }}
                 </span>
               </div>
-              <div v-if="status === InitializeStatus.Error" class="mt-4 text-center">
-                <div class="text-orange-60 mb-2">
+              <div v-if="status === InitializeStatus.Error" class="flex flex-col text-center">
+                <div class="text-orange-60 mb-2 text-sm">
                   {{ t('app.loading-message.load-failed') }}
                 </div>
                 <cy-button-plain
@@ -50,7 +50,12 @@
                 >
                   {{ t(retrying ? 'app.loading-message.retrying' : 'app.loading-message.retry') }}
                 </cy-button-plain>
-                <cy-button-plain v-if="canCancel" :disabled="retrying" @click="leaveSkillPage">
+                <cy-button-plain
+                  v-if="canCancel"
+                  icon="ic:round-arrow-back"
+                  :disabled="retrying"
+                  @click="leaveSkillPage"
+                >
                   {{ t('app.skill-dataset.home') }}
                 </cy-button-plain>
               </div>
@@ -79,7 +84,7 @@
         </div>
       </div>
     </div>
-    <div class="absolute bottom-4 right-4 text-sm">
+    <div class="absolute right-4 bottom-4 text-sm">
       <div>{{ t('app.loading-message.bottom-tips.0') }}</div>
       <div>{{ t('app.loading-message.bottom-tips.1') }}</div>
     </div>

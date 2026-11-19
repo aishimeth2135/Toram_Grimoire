@@ -1,5 +1,6 @@
 import jsep from 'jsep'
-import { marked } from 'marked'
+import { type TokenizerAndRendererExtension, marked } from 'marked'
+import { gfmHeadingId } from 'marked-gfm-heading-id'
 
 import { LocalStorageService } from '@/shared/services/Storage'
 
@@ -10,7 +11,7 @@ export default function () {
   jsep.addBinaryOp('^', 11, true)
 
   // marked
-  const cyBracket: marked.TokenizerExtension & marked.RendererExtension = {
+  const cyBracket: TokenizerAndRendererExtension = {
     name: 'cyBracket',
     level: 'inline',
     start(src) {
@@ -33,9 +34,9 @@ export default function () {
       )}</span>`
     },
   }
-  marked.use({
+  marked.use(gfmHeadingId(), {
     renderer: {
-      checkbox(checked) {
+      checkbox({ checked }) {
         const path = checked
           ? 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.29 13.29a.996.996 0 0 1-1.41 0L5.71 12.7a.996.996 0 1 1 1.41-1.41L10 14.17l6.88-6.88a.996.996 0 1 1 1.41 1.41l-7.58 7.59z'
           : 'M18 19H6c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h12c.55 0 1 .45 1 1v12c0 .55-.45 1-1 1zm1-16H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z'

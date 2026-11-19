@@ -13,8 +13,6 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const useLagacy = false
-
   const useExternal = mode === 'production'
   const workersAssets = process.env.WORKERS_STATIC_ASSETS === '1'
   const siteOrigin = workersAssets ? 'https://cy-grimoire.com' : 'https://cy-grimoire.netlify.app'
@@ -50,6 +48,7 @@ export default defineConfig(({ mode }) => {
       },
     }),
     ViteYaml(),
+    legacy(),
   ]
 
   if (workersAssets) {
@@ -64,21 +63,13 @@ export default defineConfig(({ mode }) => {
           path.join(dir, 'sitemap.xml'),
           `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${siteOrigin}/</loc></url></urlset>\n`
         )
-        fs.appendFileSync(path.join(dir, 'robots.txt'), `\nSitemap: ${siteOrigin}/sitemap.xml\n`)
+        const robotsPath = path.join(dir, 'robots.txt')
+        const sitemapDirective = `Sitemap: ${siteOrigin}/sitemap.xml`
+        if (!fs.readFileSync(robotsPath, 'utf8').split(/\r?\n/).includes(sitemapDirective)) {
+          fs.appendFileSync(robotsPath, `\n${sitemapDirective}\n`)
+        }
       },
     })
-  }
-
-  if (useLagacy) {
-    const packageJsonBuffer = fs.readFileSync('package.json')
-    const packageJson = JSON.parse(packageJsonBuffer.toString())
-    const browserslist = packageJson.browserslist
-
-    plugins.push(
-      legacy({
-        targets: browserslist,
-      })
-    )
   }
 
   return {
@@ -91,11 +82,16 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 9039,
+      proxy: {
+        '/public/skills/': {
+          target: 'https://data.cy-grimoire.com',
+          changeOrigin: true,
+        },
+      },
     },
     build: {
       assetsInlineLimit: 8192,
       chunkSizeWarningLimit: 900,
-      target: 'ios11',
     },
     plugins,
   }

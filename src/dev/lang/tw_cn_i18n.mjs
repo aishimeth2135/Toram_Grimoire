@@ -1,4 +1,4 @@
-import conv from 'chinese-conv'
+import { sify } from 'chinese-conv'
 import findit2 from 'findit2'
 import fs from 'fs/promises'
 import path from 'path'
@@ -26,7 +26,7 @@ finder.on('end', async function () {
   console.log('-- [Start handle] --')
   for (const file of files) {
     const text = await fs.readFile(file, { encoding: 'utf8' })
-    const data = conv.sify(text)
+    const data = sify(text)
     const fileName = path.basename(file)
     console.log(`[handle] ${fileName}`)
     const toPath = path.join(localesPath, 'zh-CN', path.basename(file))
