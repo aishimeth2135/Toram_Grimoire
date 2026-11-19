@@ -17,7 +17,7 @@ const statIdentity = (manifest: SkillManifest) => JSON.stringify(manifest.files.
 
 const dataset = createCdnDataset({
   origin: import.meta.env.VITE_SKILL_DATA_ORIGIN || 'https://data.cy-grimoire.com',
-  path: '/public/skills/',
+  path: '/public/data/',
   cacheName: 'toram-grimoire-skill-files',
   indexName: 'toram-grimoire-skill-datasets',
   parseManifest: parseSkillManifest,
