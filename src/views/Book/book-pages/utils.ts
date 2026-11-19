@@ -4,7 +4,12 @@ import { marked } from 'marked'
 import { BookPageSection } from '../setup/Book'
 
 export function getSectionContentMd(section: BookPageSection) {
-  return marked.parse(DOMPurify.sanitize(section.cells[0][0]))
+  if (!DOMPurify.isSupported) {
+    return ''
+  }
+
+  const html = marked.parse(section.cells[0]?.[0] ?? '', { async: false })
+  return DOMPurify.sanitize(html)
 }
 
 export function getSectionCellMap(section: BookPageSection) {

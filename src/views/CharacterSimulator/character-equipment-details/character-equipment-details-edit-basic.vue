@@ -45,7 +45,7 @@ const { t } = useI18n()
       <CommonPropNumberInput
         v-if="equipment.supportStability"
         v-model:value="equipment.stability"
-        :title="$t('character-simulator.equipment-info.stability')"
+        :title="t('character-simulator.equipment-info.stability')"
         unit="%"
         range="0~100"
       />

@@ -25,16 +25,16 @@ jobs:
         with:
           node-version-file: .node-version
       - name: Install dependencies
-        run: node .yarn/releases/yarn-4.14.1.cjs install --immutable
+        run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
       - name: Check types
-        run: node .yarn/releases/yarn-4.14.1.cjs type-check
+        run: node .yarn/releases/yarn-4.18.1.cjs type-check
       - name: Build public site
-        run: node .yarn/releases/yarn-4.14.1.cjs build
+        run: node .yarn/releases/yarn-4.18.1.cjs build
         env:
           WORKERS_STATIC_ASSETS: '1'
           VITE_SKILL_DATA_ORIGIN: https://data.cy-grimoire.com
       - name: Validate Worker deployment
-        run: node .yarn/releases/yarn-4.14.1.cjs upload:public --dry-run
+        run: node .yarn/releases/yarn-4.18.1.cjs upload:public --dry-run
       - name: Upload validated assets
         if: github.event_name == 'push'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -64,7 +64,7 @@ jobs:
         with:
           node-version-file: .node-version
       - name: Install dependencies
-        run: node .yarn/releases/yarn-4.14.1.cjs install --immutable
+        run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
       - name: Download validated assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
@@ -88,5 +88,5 @@ jobs:
           : "${CLOUDFLARE_ACCOUNT_ID:?Set CLOUDFLARE_ACCOUNT_ID in the production environment}"
           : "${CLOUDFLARE_API_TOKEN:?Set CLOUDFLARE_API_TOKEN in the production environment}"
           tag="github-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          node .yarn/releases/yarn-4.14.1.cjs upload:public --tag "$tag" --message "GitHub commit $GITHUB_SHA"
-          node .yarn/releases/yarn-4.14.1.cjs deploy:public --version-tag "$tag" --percentage 100 --yes
+          node .yarn/releases/yarn-4.18.1.cjs upload:public --tag "$tag" --message "GitHub commit $GITHUB_SHA"
+          node .yarn/releases/yarn-4.18.1.cjs deploy:public --version-tag "$tag" --percentage 100 --yes
