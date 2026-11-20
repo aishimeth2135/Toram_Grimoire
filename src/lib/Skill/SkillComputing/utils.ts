@@ -37,7 +37,7 @@ function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
   if (!fromBranches.some(bch => bch.name === SkillBranchNames.Basic)) {
     fromBranches.unshift(effectBasicPropsToBranch(from))
   }
-  branchesOverwrite(to.branchItems, fromBranches)
+  branchesOverwrite(to.branchItems, fromBranches, true)
 }
 
 function effectBasicPropsToBranch(origin: SkillEffect) {
@@ -80,7 +80,11 @@ function effectBasicPropsToBranch(origin: SkillEffect) {
   return branch
 }
 
-function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBranchItem[]) {
+function branchesOverwrite(
+  to: SkillBranchItem[],
+  from: SkillBranch[] | SkillBranchItem[],
+  removeSameKind = false
+) {
   from.forEach(fromBranch => {
     if (fromBranch.overrideId === -1) {
       return
@@ -89,16 +93,16 @@ function branchesOverwrite(to: SkillBranchItem[], from: SkillBranch[] | SkillBra
     if (idx === -1) {
       return
     }
-    /**
-     * If some `fromBranch.isExactly(SkillBranchNames.None) && fromBranch.isEmpty`.
-     * Remove branch which `id` is same as `fromBranch` in `toBranches`.
-     */
-    if (fromBranch.isExactly(SkillBranchNames.None) && fromBranch.isEmpty) {
+    const toBranch = to[idx]
+    if (
+      fromBranch.isEmpty &&
+      (fromBranch.isExactly(SkillBranchNames.None) ||
+        (removeSameKind && toBranch.isKindEquals(fromBranch)))
+    ) {
       to.splice(idx, 1)
       return
     }
 
-    const toBranch = to[idx]
     branchOverwrite(toBranch, fromBranch)
   })
 }
