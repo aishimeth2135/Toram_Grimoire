@@ -13,6 +13,7 @@ import {
   computeBranchValueResults,
 } from '@/lib/Skill/SkillComputing'
 import type { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
+import { getStatMainKey } from '../Properties/Stat'
 
 function handleDisplayValue(
   container: SkillBranchResult,
@@ -120,8 +121,14 @@ function handleBranchStats(
   return computeBranchStatResults(helper, stats).map(container => {
     handleDisplayValue(container, helper)
 
-    const displayCaptionKey = helper.branchItem.propKey(container.key, 'displayCaption')
-    const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
+    const displayCaptionKey = helper.branchItem.propKey(
+      getStatMainKey(container.stat),
+      'displayCaption'
+    )
+    const displayTitleKey = helper.branchItem.propKey(
+      getStatMainKey(container.stat),
+      'displayTitle'
+    )
 
     if (helper.props.has(displayCaptionKey)) {
       const displayCaption = helper.props.get(displayCaptionKey)!

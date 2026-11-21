@@ -31,6 +31,7 @@ import {
   initializeRegistletFormulaLevels,
 } from './FormulaSpecial/Registlet'
 import { parseFormulaListProperty, parseListProperty } from './List'
+import { getIterablePropertyKey, getIterableSubPropertyKey } from '@/lib/Skill/Properties'
 
 function computeBranchFormulaValue(str: string, helper: BranchFormulaContext): string {
   const { vars, texts, methods, handleFormulaExtra } = helper
@@ -179,19 +180,22 @@ function computedBranchHelper(
     if (!formulaExtra) {
       return null
     }
-    if (formulaExtra.hasProp('values', index)) {
-      return computeFormulaExtraValue?.(formulaExtra.prop('values', index))?.toString() ?? null
+    const valueKey = getIterablePropertyKey('values', index)
+    if (formulaExtra.hasProp(valueKey)) {
+      return computeFormulaExtraValue?.(formulaExtra.prop(valueKey))?.toString() ?? null
     }
     const idx = toInt(index)
     if (idx === null) {
       return null
     }
+    const valueMaxKey = getIterableSubPropertyKey('values', index, 'max')
+    const valueMinKey = getIterableSubPropertyKey('values', index, 'min')
     const bounds = {
-      max: formulaExtra.hasProp('values', index, 'max')
-        ? (computeFormula(formulaExtra.prop('values', index, 'max'), vars, 0) as number)
+      max: formulaExtra.hasProp(valueMaxKey)
+        ? (computeFormula(formulaExtra.prop(valueMaxKey), vars, 0) as number)
         : null,
-      min: formulaExtra.hasProp('values', index, 'min')
-        ? (computeFormula(formulaExtra.prop('values', index, 'min'), vars, 0) as number)
+      min: formulaExtra.hasProp(valueMinKey)
+        ? (computeFormula(formulaExtra.prop(valueMinKey), vars, 0) as number)
         : null,
     }
     return getFormulaExtraValue?.(formulaExtra, extraTexts[idx], bounds)?.toString() ?? null

@@ -27,7 +27,9 @@
               'pr-5': num === datas.labels.length,
             }"
           >
-            <SkillBranchPropValue :result="container.result(`cell.${num - 1}`)" />
+            <SkillBranchPropValue
+              :result="container.result(getIterablePropertyKey('cell', num - 1))"
+            />
           </td>
         </tr>
       </tbody>
@@ -42,6 +44,7 @@ import { SkillBranchItem, SkillComputingContainer } from '@/lib/Skill/SkillCompu
 import { TableHandler } from '@/lib/Skill/SkillDisplay'
 
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
+import { getIterablePropertyKey } from '@/lib/Skill/Properties'
 
 interface Props {
   computing: SkillComputingContainer

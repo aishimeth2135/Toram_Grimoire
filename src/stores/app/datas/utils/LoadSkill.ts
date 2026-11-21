@@ -188,7 +188,7 @@ export function LoadSkill(skillSystem: SkillSystem, datas: LocaleCsvDatas) {
         throw new Error('Skill attribute has no branch in the current effect')
       }
       if (!Grimoire.Character.findStatBase(attrName)) {
-        curSkillBranch.appendProp(attrName, attrValue)
+        curSkillBranch.appendProp(attrName, attrValue, row('effect-branch/attr/extra'))
       } else {
         curSkillBranch.appendStat(attrName, attrValue, row('effect-branch/attr/extra'))
       }

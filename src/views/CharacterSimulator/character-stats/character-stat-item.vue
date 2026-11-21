@@ -32,7 +32,7 @@
         class="border-primary-10 text-primary-50 flex flex-wrap items-center border-b px-3 py-1 text-sm"
       >
         <cy-icon icon="mdi:label-outline" class="text-primary-20 mr-2" />
-        {{ statResult.originalValue }}
+        {{ numberToFixed(statResult.originalValue, 4) }}
         <div
           v-if="statResult.origin.min || statResult.origin.max"
           class="ml-auto flex items-center space-x-2.5"
@@ -268,7 +268,7 @@ const showStatDetailDatas = computed(() => {
         hasInit = true
       }
       const addsLines = adds
-        .sort(addItem => (addItem.isMul ? 1 : -1))
+        .sort(addItem => (addItem.isMul ? 1 : 0))
         .map((addItem, idx) => {
           let resValue = '0'
           if (addItem.isMul) {

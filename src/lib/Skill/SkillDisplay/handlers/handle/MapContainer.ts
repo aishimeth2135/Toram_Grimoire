@@ -1,3 +1,5 @@
+import { getIterablePropertyKey } from '@/lib/Skill/Properties'
+
 export default class MapContainer<AttrMap extends Record<string, unknown>> {
   private _attrMap: AttrMap
 
@@ -19,7 +21,8 @@ export default class MapContainer<AttrMap extends Record<string, unknown>> {
     Array(length)
       .fill(0)
       .forEach((_value, idx) => {
-        this._attrMap[`${String(key)}.${idx}` as keyof AttrMap] = null as AttrMap[keyof AttrMap]
+        this._attrMap[getIterablePropertyKey(key as string, idx) as keyof AttrMap] =
+          null as AttrMap[keyof AttrMap]
       })
   }
 

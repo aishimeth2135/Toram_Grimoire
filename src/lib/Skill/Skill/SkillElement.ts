@@ -398,7 +398,13 @@ class SkillBranch extends SkillNode {
     return this.overrideId !== -1
   }
 
-  appendProp(name: string, value: string) {
+  appendProp(name: string, value: string, valueExtra: string = '') {
+    if (valueExtra) {
+      name = name
+        .split('.')
+        .map((item, idx) => (idx === 0 ? item + valueExtra : item))
+        .join('.')
+    }
     this.props.set(name, value)
     return this
   }

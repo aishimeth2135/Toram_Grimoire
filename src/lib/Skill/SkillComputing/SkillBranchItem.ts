@@ -10,7 +10,6 @@ import { toInt } from '@/shared/utils/number'
 import { StatComputed, StatTypes } from '@/lib/Character/Stat'
 
 import { parseBooleanProperty } from '../Properties/Boolean'
-import { createIterablePropertyKey } from '../Properties/Iterable'
 import { parseListProperty } from '../Properties/List'
 import { SkillBranch } from '../Skill/SkillElement'
 import { SkillBranchNames } from '../Skill/enums'
@@ -179,7 +178,7 @@ abstract class SkillBranchItemBase<
   }
 
   propKey(...keys: string[]) {
-    return createIterablePropertyKey(...keys)
+    return keys.join('.')
   }
 
   prop(...keys: string[]): string {
