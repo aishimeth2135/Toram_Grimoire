@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div v-if="detailVisible" class="border-primary-10 mb-4 mt-2 border">
+    <div v-if="detailVisible" class="border-primary-10 mt-2 mb-4 border">
       <div
         class="border-primary-10 text-primary-50 flex flex-wrap items-center border-b px-3 py-1 text-sm"
       >
@@ -199,7 +199,7 @@ const showStatDetailDatas = computed(() => {
   type DisplayedPartKeys = 'base' | SubDisplayedPartKeys
 
   const valueFix = (value: number) => numberToFixed(value, 3).toString()
-  const getStatTypeByPartKey = (partKey: DisplayedPartKeys) => {
+  const getStatTypeByPartKey = (partKey: SubDisplayedPartKeys) => {
     switch (partKey) {
       case 'multiplier':
         return StatTypes.Multiplier
@@ -236,7 +236,7 @@ const showStatDetailDatas = computed(() => {
     } else {
       const statType = getStatTypeByPartKey(key)
       title = {
-        text: linkedBaseStat!.show(statType!, value),
+        text: linkedBaseStat?.show(statType, value) ?? '',
         value: null,
       }
       if (result.isDefaultFormula) {
@@ -244,10 +244,12 @@ const showStatDetailDatas = computed(() => {
           const displayedValue = valueFix((value * result.statValueParts.base) / 100)
           title.value = (displayedValue.startsWith('-') ? '' : '+') + displayedValue
         } else {
-          title.value = linkedBaseStat!.showValue(statType!, value, false)
+          title.value = linkedBaseStat?.showValue(statType, value, false) ?? null
         }
       }
     }
+
+    title.text = title.text || t('character-simulator.character-stat-detail.additional-value')
 
     const displayedLines: DetailLine[] = []
     const adds = result.statPartsDetail.additionalValues[key].filter(add => add.value !== 0)
