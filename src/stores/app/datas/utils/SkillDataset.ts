@@ -52,17 +52,25 @@ export type SkillManifest = {
   format: 'csv'
   revision: number
   generatedAt: string
-  files: FilePair & { locales: Record<Locale, FilePair>; stats: StatFiles }
+  files: FilePair & { locales: Record<Locale, FilePair> }
+}
+
+type CombinedSkillManifest = Omit<SkillManifest, 'files'> & {
+  files: SkillManifest['files'] & { stats: StatFiles }
+}
+type StatManifest = {
+  schemaVersion: 1
+  csvSchemaVersion: 1
+  format: 'csv'
+  revision: number
+  generatedAt: string
+  files: StatFiles
 }
 
 export function skillManifestFiles({ files }: SkillManifest) {
-  return [
-    ...[files, ...Object.values(files.locales)].flatMap(pair =>
-      skillFileKinds.map(kind => pair[kind])
-    ),
-    files.stats.statsData,
-    files.stats.statsLocaleData,
-  ]
+  return [files, ...Object.values(files.locales)].flatMap(pair =>
+    skillFileKinds.map(kind => pair[kind])
+  )
 }
 
 function parsePair(value: unknown, suffix = ''): FilePair {
@@ -73,12 +81,12 @@ function parsePair(value: unknown, suffix = ''): FilePair {
   }
 }
 
-export function parseSkillManifest(value: unknown): SkillManifest {
+function parseMetadata(value: unknown, version: number) {
   const { schemaVersion, csvSchemaVersion, format, revision, generatedAt, files } =
     manifestObject(value)
   if (
-    schemaVersion !== 2 ||
-    csvSchemaVersion !== 2 ||
+    schemaVersion !== version ||
+    csvSchemaVersion !== version ||
     format !== 'csv' ||
     !positiveInt(revision) ||
     typeof generatedAt !== 'string' ||
@@ -86,11 +94,15 @@ export function parseSkillManifest(value: unknown): SkillManifest {
     !Number.isFinite(Date.parse(generatedAt)) ||
     new Date(generatedAt).toISOString().slice(0, 19) !== generatedAt.slice(0, 19)
   ) {
-    throw new Error('Invalid skill manifest')
+    throw new Error('Invalid dataset manifest')
   }
+  return { format, revision, generatedAt, files } as const
+}
 
+function parseSkillFiles(value: unknown): SkillManifest {
+  const { files, ...metadata } = parseMetadata(value, 2)
   const base = parsePair(files)
-  const { locales: rawLocales, stats: rawStats } = manifestObject(files)
+  const { locales: rawLocales } = manifestObject(files)
   const translations = manifestObject(rawLocales)
   const localizedPair = (locale: Locale) => {
     const pair = parsePair(translations[locale], '-' + locale.toLowerCase())
@@ -104,20 +116,36 @@ export function parseSkillManifest(value: unknown): SkillManifest {
     'ja': localizedPair('ja'),
     'zh-CN': localizedPair('zh-CN'),
   }
-  const stats = manifestObject(rawStats)
+  return { ...metadata, schemaVersion: 2, csvSchemaVersion: 2, files: { ...base, locales } }
+}
+
+function parseStatFiles(value: unknown): StatFiles {
+  const stats = manifestObject(value)
   const statsData = parseCsvFile(stats.statsData, 'stats-data')
   const statsLocaleData = parseCsvFile(stats.statsLocaleData, 'stats-locale-data')
   if (!statsData.recordCount || statsData.recordCount !== statsLocaleData.recordCount) {
     throw new Error('Stat translation record count differs from its base')
   }
-  return {
-    schemaVersion,
-    csvSchemaVersion,
-    format,
-    revision,
-    generatedAt,
-    files: { ...base, locales, stats: { statsData, statsLocaleData } },
+  return { statsData, statsLocaleData }
+}
+
+// The legacy data tools still validate the combined public/data manifest.
+export function parseSkillManifest(value: unknown): CombinedSkillManifest {
+  const manifest = parseSkillFiles(value)
+  const stats = parseStatFiles(manifestObject(manifestObject(value).files).stats)
+  return { ...manifest, files: { ...manifest.files, stats } }
+}
+
+export function parseStandaloneSkillManifest(value: unknown): SkillManifest {
+  if (Object.hasOwn(manifestObject(manifestObject(value).files), 'stats')) {
+    throw new Error('Invalid standalone skill manifest')
   }
+  return parseSkillFiles(value)
+}
+
+export function parseStatManifest(value: unknown): StatManifest {
+  const { files, ...metadata } = parseMetadata(value, 1)
+  return { ...metadata, schemaVersion: 1, csvSchemaVersion: 1, files: parseStatFiles(files) }
 }
 
 export function decodeSkillManifest(bytes: ArrayBuffer) {

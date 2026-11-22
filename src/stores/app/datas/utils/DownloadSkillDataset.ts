@@ -4,44 +4,50 @@ import { createCdnDataset } from '@/shared/services/CdnDataset'
 
 import type { LocaleCsvDatas } from './DownloadDatas'
 import {
-  type SkillManifest,
   getSkillDatasetLocales,
-  parseSkillManifest,
+  parseStandaloneSkillManifest,
+  parseStatManifest,
   readSkillDataset,
   readStatDataset,
   skillManifestFiles,
 } from './SkillDataset'
 
-let selectedStats: string | undefined
-const statIdentity = (manifest: SkillManifest) => JSON.stringify(manifest.files.stats)
+const origin = import.meta.env.VITE_SKILL_DATA_ORIGIN || 'https://data.cy-grimoire.com'
+const context = () => {
+  const { primaryLocale, fallbackLocale } = useLocaleStore()
+  return getSkillDatasetLocales(primaryLocale, fallbackLocale)
+}
+const contextKey = ({ primary, fallback }: ReturnType<typeof context>) =>
+  (primary ?? 'zh-TW') + ':' + (fallback ?? '')
 
-const dataset = createCdnDataset({
-  origin: import.meta.env.VITE_SKILL_DATA_ORIGIN || 'https://data.cy-grimoire.com',
-  path: '/public/data/',
+const skillDataset = createCdnDataset({
+  origin,
+  path: '/public/skill/',
   cacheName: 'toram-grimoire-skill-files',
   indexName: 'toram-grimoire-skill-datasets',
-  parseManifest: parseSkillManifest,
+  parseManifest: parseStandaloneSkillManifest,
   files: skillManifestFiles,
-  context: () => {
-    const { primaryLocale, fallbackLocale } = useLocaleStore()
-    return getSkillDatasetLocales(primaryLocale, fallbackLocale)
-  },
-  contextKey: ({ primary, fallback }) => (primary ?? 'zh-TW') + ':' + (fallback ?? ''),
-  // A recovered skill model must use the Stat definitions already loaded in this document.
-  canActivate: manifest => selectedStats === undefined || selectedStats === statIdentity(manifest),
-  async load(manifest, locales, readCsv) {
-    const [skills, stats] = await Promise.all([
-      readSkillDataset(manifest, locales, readCsv),
-      readStatDataset(manifest.files.stats, locales, readCsv),
-    ])
-    return { skills, stats }
-  },
+  context,
+  contextKey,
+  load: readSkillDataset,
 })
 
-export const checkSkillDataset = dataset.check
-export const retrySkillDataset = dataset.retry
-export const recoverSkillDatasetModel = dataset.recover
-export const skillDatasetStatus = dataset.status
+const statDataset = createCdnDataset({
+  origin: import.meta.env.VITE_STAT_DATA_ORIGIN || origin,
+  path: '/public/stat/',
+  cacheName: 'toram-grimoire-stat-files',
+  indexName: 'toram-grimoire-stat-datasets',
+  parseManifest: parseStatManifest,
+  files: ({ files }) => [files.statsData, files.statsLocaleData],
+  context,
+  contextKey,
+  load: ({ files }, locales, readCsv) => readStatDataset(files, locales, readCsv),
+})
+
+export const checkSkillDataset = skillDataset.check
+export const retrySkillDataset = skillDataset.retry
+export const recoverSkillDatasetModel = skillDataset.recover
+export const skillDatasetStatus = skillDataset.status
 
 // The existing loaders apply locale values in place.
 function copyLocaleCsv(data: LocaleCsvDatas): LocaleCsvDatas {
@@ -55,18 +61,12 @@ function copyLocaleCsv(data: LocaleCsvDatas): LocaleCsvDatas {
 
 export async function downloadSkillDataset() {
   const {
-    data: {
-      skills: [skill, layout],
-    },
-  } = await dataset.load()
+    data: [skill, layout],
+  } = await skillDataset.load()
   return [copyLocaleCsv(skill), copyLocaleCsv(layout)] as const
 }
 
 export async function downloadStatDataset() {
-  const {
-    data: { stats },
-    manifest,
-  } = await dataset.load()
-  selectedStats = statIdentity(manifest)
+  const { data: stats } = await statDataset.load()
   return copyLocaleCsv(stats)
 }
