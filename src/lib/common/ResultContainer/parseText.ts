@@ -225,7 +225,7 @@ export function getCommonTextParseItemBase(
       }
     case CommonTextParseItemIds.BreakLine:
       return {
-        id: CommonTextParseItemIds.Underline,
+        id: CommonTextParseItemIds.BreakLine,
         pattern: /((?:<br>)|\n)/,
       }
   }

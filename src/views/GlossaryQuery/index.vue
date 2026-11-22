@@ -58,6 +58,7 @@ const currentTags = computed(() => {
   return allTags.filter(tag => {
     return (
       tag.name.toLowerCase().includes(text) ||
+      tag.categoryText.toLowerCase().includes(text) ||
       tag.rows.some(row => row.value.some(item => item.toLowerCase().includes(text)))
     )
   })

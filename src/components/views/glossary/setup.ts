@@ -24,6 +24,7 @@ export const getTextParseItems = (() => {
         lagacyGlossaryTagParseItem,
         getCommonTextParseItem(CommonTextParseItemIds.Mark),
         getCommonTextParseItem(CommonTextParseItemIds.Underline),
+        getCommonTextParseItem(CommonTextParseItemIds.BreakLine),
         getCommonTextParseItem(CommonTextParseItemIds.Separate),
       ]
     }

@@ -36,15 +36,15 @@ export default class GlossarySystem {
     const resMap = new Map<string, GlossaryTag>()
     const search = (tag: GlossaryTag) => {
       const set = new Set<string>()
-      tag.rows.forEach(row => {
-        row.value.forEach(item => {
-          searchTagValueTags(item).forEach(_item => {
-            if (!resMap.has(_item) && _item !== rootTag.name) {
-              set.add(_item)
-            }
-          })
+      const collectNames = (value: string) => {
+        searchTagValueTags(value).forEach(name => {
+          if (!resMap.has(name) && name !== rootTag.name) {
+            set.add(name)
+          }
         })
-      })
+      }
+      collectNames(tag.categoryText)
+      tag.rows.forEach(row => row.value.forEach(collectNames))
       if (set.size === 0) {
         return
       }

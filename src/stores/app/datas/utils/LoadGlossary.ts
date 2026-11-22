@@ -22,8 +22,8 @@ export function LoadGlossaryTag(root: GlossarySystem, datas: LocaleCsvDatas) {
     })
   )
 
-  let curTag: GlossaryTag
-  let curRow: GlossaryTagRow
+  let curTag: GlossaryTag | undefined
+  let curRow: GlossaryTagRow | undefined
   data.forEach((rowData, idx) => {
     if (idx === 0) {
       return
@@ -33,15 +33,30 @@ export function LoadGlossaryTag(root: GlossarySystem, datas: LocaleCsvDatas) {
 
     try {
       const tagName = row('tag/name')
-      if (tagName !== '') {
+      if (tagName) {
         curTag = root.appendTag(tagName)
+        curRow = undefined
       }
-      const frameName = row('frame/name'),
-        frameValue = row('frame/value')
-      if (frameName !== '') {
-        curRow = curTag.appendRow(frameName, frameValue)
-      } else {
-        curRow?.appendValue(frameValue)
+      if (!curTag) {
+        return
+      }
+
+      const frameName = row('frame/name') ?? ''
+      const frameValue = row('frame/value') ?? ''
+      switch (frameName) {
+        case 'category':
+          curTag.categoryText = frameValue
+          curRow = undefined
+          break
+        case 'caption':
+        case 'list':
+          curRow = curTag.appendRow(frameName, frameValue)
+          break
+        case '':
+          curRow?.appendValue(frameValue)
+          break
+        default:
+          curRow = undefined
       }
     } catch (err) {
       CommonLogger.start('LoadGlossaryTag', 'unknown error').warn(err).log(row).end()

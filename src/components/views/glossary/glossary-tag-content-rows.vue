@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-3">
-    <template v-for="row in infoRows" :key="row.type + row.value.join(',')">
+    <template v-for="row in tag.rows" :key="row.type + row.value.join(',')">
       <RenderText v-if="row.type === 'caption'" :text="row.value[0]" />
       <div v-else-if="row.type === 'list'" class="pl-2">
         <div v-for="rowValue in row.value" :key="rowValue" class="relative py-0.5 pl-5">
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h } from 'vue'
+import { h } from 'vue'
 import { type VNode } from 'vue'
 
 import { GlossaryTag } from '@/lib/Glossary/GlossaryTag'
@@ -29,18 +29,17 @@ interface Props {
   tag: GlossaryTag
 }
 
-const props = defineProps<Props>()
-
-const infoRows = computed(() =>
-  props.tag.rows.filter(row => row.type === 'caption' || row.type === 'list')
-)
+defineProps<Props>()
 
 const textParseItems = getTextParseItems()
 
 const RenderParts = (parts: TextResultContainerPartValue[]): (VNode | string)[] => {
   return parts.map(part => {
     if (typeof part === 'string') {
-      return h('span', { innerHTML: part })
+      return h('span', part)
+    }
+    if (part.type === TextResultContainerPartTypes.BreakLine) {
+      return h('br')
     }
     if (part.type === TextResultContainerPartTypes.Separate) {
       return h('span', { class: 'cy--text-separate text-primary-50' }, RenderParts(part.parts))

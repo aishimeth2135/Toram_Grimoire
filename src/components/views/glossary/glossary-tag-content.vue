@@ -7,8 +7,8 @@
         @click="detailVisible = !detailVisible"
       >
         <span>{{ tag.name }}</span>
-        <span v-if="categoryRow" class="text-primary-30 ml-3 text-sm">
-          {{ categoryRow.value[0] }}
+        <span v-if="tag.categoryText" class="text-primary-30 ml-3 text-sm">
+          {{ tag.categoryText }}
         </span>
         <cy-icon
           v-if="sub"
@@ -56,8 +56,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const detailVisible = ref(false)
-
-const categoryRow = computed(() => props.tag.rows.find(row => row.type === 'category'))
 
 const includedTags = computed(() => (props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)))
 </script>

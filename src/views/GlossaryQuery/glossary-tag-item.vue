@@ -11,10 +11,8 @@
         <cy-icon icon="mdi:tag-outline" class="text-primary-30" />
         {{ tag.name }}
       </div>
-      <div class="text-primary-30 ml-3 flex items-center space-x-1.5 text-sm">
-        <div v-for="row in categoryRows" :key="row.value.join(',')">
-          {{ row.value[0] }}
-        </div>
+      <div v-if="tag.categoryText" class="text-primary-30 ml-3 text-sm">
+        {{ tag.categoryText }}
       </div>
     </div>
     <cy-transition>
@@ -56,8 +54,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const detailVisible = ref(false)
-
-const categoryRows = computed(() => props.tag.rows.filter(row => row.type === 'category'))
 
 const includedTags = computed(() => (props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)))
 </script>
