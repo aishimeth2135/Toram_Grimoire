@@ -1,22 +1,27 @@
-import { DataPathIds } from '@/shared/services/DataPath'
-
 import GlossarySystem from '@/lib/Glossary'
 
 import { DatasStoreBase } from '../DatasStoreBase'
-import { DownloadDatasWithLocale } from '../utils/DownloadDatas'
+import {
+  downloadGlossaryDataset,
+  recoverGlossaryDatasetModel,
+} from '../utils/DownloadGlossaryDataset'
 import { LoadGlossaryTag } from '../utils/LoadGlossary'
 
-const initGlossaryInstance = () => {
-  if (DatasStoreBase.Glossary === null) {
-    DatasStoreBase.Glossary = GlossarySystem.create()
-  }
-  return DatasStoreBase.Glossary
-}
-
 export async function prepareGlossary(): Promise<() => Promise<void>> {
-  const glossarySystem = initGlossaryInstance()
-  const [glossaryData] = await DownloadDatasWithLocale(DataPathIds.Glossary)
+  const data = await downloadGlossaryDataset()
+  const build = (source: typeof data) => {
+    const glossary = GlossarySystem.create()
+    LoadGlossaryTag(glossary, source)
+    return glossary
+  }
   return async () => {
-    LoadGlossaryTag(glossarySystem, glossaryData)
+    try {
+      DatasStoreBase.Glossary = build(data)
+    } catch (error) {
+      if (!(await recoverGlossaryDatasetModel())) {
+        throw error
+      }
+      DatasStoreBase.Glossary = build(await downloadGlossaryDataset())
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 ## 資料來源與語系
 
-`useDatasStore().ensureLoaded()` 透過 `prepareGlossary()` 準備 `DataStoreIds.Glossary`。`prepareGlossary()` 建立或重用 `DatasStoreBase.Glossary`，由 `DownloadDatasWithLocale()` 下載並解析基礎 CSV 與可用的翻譯 CSV，最後呼叫 `LoadGlossaryTag()` 建立條目。使用端透過 `Grimoire.Glossary` 存取同一個 `GlossarySystem`。
+`useDatasStore().ensureLoaded()` 透過 `prepareGlossary()` 準備 `DataStoreIds.Glossary`。`DownloadGlossaryDataset` 從 `/public/glossary/manifest.json` 載入並驗證同一版本的四語 CSV，重用 `createCdnDataset` 管理已驗證與上一版的離線快照。基礎 A:C 與各語系兩欄投影為新陣列並交給 `LoadGlossaryTag()`。完成模型後掛載至 `DatasStoreBase.Glossary`，使用端透過 `Grimoire.Glossary` 存取同一個 `GlossarySystem`。
 
 基礎 CSV 為繁體中文。首列由載入器略過，資料列依欄位位置讀取。
 
