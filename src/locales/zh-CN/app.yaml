@@ -20,11 +20,6 @@ loading-message:
   load-failed: 载入失败，请稍后重试。
   retry: 重新载入
   retrying: 重新载入中
-glossary-dataset:
-  stale: 当前的名词资料可能不是最新版。
-  no-offline: 此页的名词资料尚未保存供离线使用。
-  update: 已有新版名词资料。请先保存进度，再重新载入页面。
-  retry: 重试名词资料
 page-title:
   chromatic-trans-simulator: 色彩炼成模拟
   trait-query: 特性查询

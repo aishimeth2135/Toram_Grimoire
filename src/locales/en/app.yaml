@@ -19,11 +19,6 @@ loading-message:
   load-failed: Loading failed. Please try again later.
   retry: Retry
   retrying: Retrying
-glossary-dataset:
-  stale: The glossary may be out of date.
-  no-offline: The glossary has not been saved for offline use.
-  update: An updated glossary is available. Save your progress, then reload this page.
-  retry: Retry glossary data
 page-title:
   base: "Cy's Grimoire"
   chromatic-trans-simulator: Chromatic Trans
