@@ -175,18 +175,20 @@ function computedBranchHelper(
   }
 
   const { getFormulaExtraValue, computeFormulaExtraValue } = computing.config
+  const missingExtraValue = getFormulaExtraValue ? '0' : null
 
   const getValue = (index: string): string | null => {
     if (!formulaExtra) {
-      return null
+      return missingExtraValue
     }
     const valueKey = getIterablePropertyKey('values', index)
     if (formulaExtra.hasProp(valueKey)) {
       return computeFormulaExtraValue?.(formulaExtra.prop(valueKey))?.toString() ?? null
     }
     const idx = toInt(index)
-    if (idx === null) {
-      return null
+    const id = idx === null ? undefined : extraTexts[idx]
+    if (!id) {
+      return missingExtraValue
     }
     const valueMaxKey = getIterableSubPropertyKey('values', index, 'max')
     const valueMinKey = getIterableSubPropertyKey('values', index, 'min')
@@ -198,7 +200,7 @@ function computedBranchHelper(
         ? (computeFormula(formulaExtra.prop(valueMinKey), vars, 0) as number)
         : null,
     }
-    return getFormulaExtraValue?.(formulaExtra, extraTexts[idx], bounds)?.toString() ?? null
+    return getFormulaExtraValue?.(formulaExtra, id, bounds)?.toString() ?? null
   }
 
   const extraValues = new Map<string, string | null>()

@@ -126,7 +126,8 @@ export class SkillBuild implements CharacterBindingBuild {
 
     // 忍術表中技能的等級跟隨「忍術」
     if (skill.skillId.startsWith('5-2-')) {
-      state.level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
+      const ninjutsu = skill.parent.parent.parent.findSkillById('4-5-0')
+      state.level = ninjutsu ? this.getSkillState(ninjutsu).level : 0
     }
 
     return state

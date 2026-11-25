@@ -92,7 +92,10 @@ export function setupDamageCalculation(
 
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
-  const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')!
+  const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')
+  const twoHandedLevel = computed(() =>
+    skillTwoHanded ? getSkillLevel(skillTwoHanded) : { valid: false, level: 0 }
+  )
 
   const promisedAccuracyRate = computed(() => {
     if (!character.value) {
@@ -414,7 +417,7 @@ export function setupDamageCalculation(
         [CalculationItemIds.StrongerAgainstDark, 100 + getElementExtra(EnemyElements.Dark)],
 
         [CalculationItemIds.CharacterLevel, character.value.level],
-        [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
+        [CalculationItemIds.SkillLevelTwoHanded, twoHandedLevel.value.level],
         [
           CalculationItemIds.OtherMultiplier,
           ((100 + statValue('total_damage_A')) *
@@ -598,7 +601,7 @@ export function setupDamageCalculation(
         [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') === '0'],
         [
           CalculationContainerIds.BaseTwoHanded,
-          !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana,
+          !twoHandedLevel.value.valid || mainType !== EquipmentTypes.Katana,
         ],
 
         [
