@@ -20,6 +20,7 @@ interface RegistletBuildSaveData {
 
 interface RegistletItemSaveData {
   id: string
+  uid?: string
   level: number
   enabled: boolean
 }
@@ -33,6 +34,7 @@ class RegistletBuild implements CharacterBindingBuild {
   name: string
   loadedId: string | null
   items: RegistletItem[]
+  readonly missingItems: RegistletItemSaveData[]
 
   private constructor(name: string = '') {
     this.id = RegistletBuild._autoIncrement
@@ -42,6 +44,7 @@ class RegistletBuild implements CharacterBindingBuild {
     this.name = name
     this._itemsMap = new Map()
     this.items = []
+    this.missingItems = []
   }
 
   static create(name: string = ''): RegistletBuild {
@@ -75,13 +78,14 @@ class RegistletBuild implements CharacterBindingBuild {
     return {
       id: this.id,
       name: this.name,
-      items: this.items.map(item => item.save()),
+      items: [...this.items.map(item => item.save()), ...this.missingItems],
     }
   }
 
   clone(): RegistletBuild {
     const newBuild = RegistletBuild.create(this.name + ' *')
     newBuild.items = this.items.map(item => item.clone())
+    newBuild.missingItems.push(...this.missingItems.map(item => ({ ...item })))
     return newBuild
   }
 
@@ -96,6 +100,8 @@ class RegistletBuild implements CharacterBindingBuild {
       const newItem = RegistletItem.load(newBuild, item)
       if (newItem) {
         newBuild._appendItem(newItem)
+      } else {
+        newBuild.missingItems.push({ ...item })
       }
     })
     return newBuild
@@ -149,6 +155,7 @@ class RegistletItem {
   save(): RegistletItemSaveData {
     return {
       id: this.base.id,
+      uid: this.base.uid,
       level: this.level,
       enabled: this.enabled,
     }
@@ -162,7 +169,7 @@ class RegistletItem {
   }
 
   static load(build: RegistletBuild, data: RegistletItemSaveData) {
-    const base = Grimoire.Registlet.getRegistletItemById(data.id)
+    const base = Grimoire.Registlet.getSavedRegistlet(data.id, data.uid)
     if (base) {
       const newItem = RegistletItem.create(build, base)
       newItem.level = data.level

@@ -7,6 +7,9 @@ import { RegistletCategoryIds } from './enums'
 
 interface RegistletInfos {
   id: string
+  publicId?: string
+  uid?: string
+  legacyId?: string | null
   name: string
   obtainLevels: number[]
   maxLevel: number
@@ -55,6 +58,8 @@ class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> 
 abstract class RegistletItemBase {
   readonly category: RegistletCategory
   readonly id: string
+  readonly uid: string | undefined
+  readonly legacyId: string | null
   readonly name: string
   readonly obtainLevels: number[]
   readonly maxLevel: number
@@ -64,7 +69,9 @@ abstract class RegistletItemBase {
 
   protected constructor(category: RegistletCategory, infos: RegistletInfos) {
     this.category = category
-    this.id = `${category.id}-${infos.id}`
+    this.id = infos.publicId ?? `${category.id}-${infos.id}`
+    this.uid = infos.uid
+    this.legacyId = infos.legacyId === undefined ? this.id : infos.legacyId
     this.name = infos.name
     this.obtainLevels = infos.obtainLevels
     this.maxLevel = infos.maxLevel

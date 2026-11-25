@@ -60,6 +60,15 @@ export default class RegistletSystem {
     return this._skillItemMap.get(skill) ?? []
   }
 
+  getSavedRegistlet(id: string, uid?: string): RegistletItemBase | null {
+    const items = [
+      ...this.statCategory.items,
+      ...this.specialCategory.items,
+      ...this.skillCategory.items,
+    ]
+    return items.find(item => (uid === undefined ? item.legacyId === id : item.uid === uid)) ?? null
+  }
+
   getAllObtainLevelList() {
     if (!this._allObtainLevelList) {
       const tmpSet = new Set<number>()
