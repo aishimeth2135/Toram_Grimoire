@@ -2,8 +2,6 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { computeFormula } from '@/shared/utils/data/parseFormula.ts'
-
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import EquipmentTraitCaption from '@/components/common/equipment-trait-caption.vue'
@@ -21,28 +19,15 @@ const props = defineProps<Props>()
 
 const { t } = useI18n()
 
-const isEditing = ref(!props.equipment.trait)
+const isEditing = ref(!props.equipment.trait && !props.equipment.missingTrait)
 watch(
   () => props.equipment,
   () => {
-    isEditing.value = !props.equipment.trait
+    isEditing.value = !props.equipment.trait && !props.equipment.missingTrait
   }
 )
 
-const maxStack = computed(() => {
-  if (!props.equipment.trait) {
-    return 0
-  }
-  const raw = props.equipment.trait.base.getStackInfo('max')
-  if (raw === '') {
-    return 1
-  }
-  const resultMaxStack = computeFormula(raw, { Lv: props.equipment.trait.level }) as number
-  if (typeof resultMaxStack === 'number') {
-    return resultMaxStack
-  }
-  return 1
-})
+const maxStack = computed(() => props.equipment.trait?.getMaxStack() ?? 1)
 </script>
 
 <template>
@@ -50,6 +35,18 @@ const maxStack = computed(() => {
     <template v-if="equipment.supportTrait">
       <div class="mb-3 flex justify-end">
         <CommonEditModeButton v-model:is-editing="isEditing" />
+      </div>
+      <div v-if="equipment.missingTrait" class="mb-3 flex items-center gap-2 text-sm" role="status">
+        <span>{{
+          t('equipment-trait.saved-trait-missing', { id: equipment.missingTrait.id })
+        }}</span>
+        <cy-button-icon
+          icon="mdi:close-circle-outline"
+          color="gray"
+          class="ml-auto"
+          :aria-label="t('equipment-trait.remove-saved-trait')"
+          @click="equipment.removeTrait()"
+        />
       </div>
       <template v-if="!isEditing">
         <div v-if="equipment.trait">
@@ -81,7 +78,7 @@ const maxStack = computed(() => {
             />
           </div>
         </div>
-        <div v-else class="text-primary-60 py-2 text-sm">
+        <div v-else-if="!equipment.missingTrait" class="text-primary-60 py-2 text-sm">
           {{ t('character-simulator.select-trait.trait-empty-tips') }}
         </div>
       </template>

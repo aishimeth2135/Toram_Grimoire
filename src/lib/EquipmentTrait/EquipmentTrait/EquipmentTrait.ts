@@ -16,6 +16,7 @@ type TextFormulaReplaceTexts = {
 
 class EquipmentTraitItem {
   id: string
+  readonly uid?: string
   category: EquipmentTraitCategory
   name: string
   maxLevel: number
@@ -30,8 +31,9 @@ class EquipmentTraitItem {
     return category + id
   }
 
-  private constructor(id: string, category: EquipmentTraitCategory, name: string) {
+  private constructor(id: string, category: EquipmentTraitCategory, name: string, uid?: string) {
     this.id = id
+    this.uid = uid
     this.category = category
     this.name = name
     this.maxLevel = 1
@@ -43,8 +45,13 @@ class EquipmentTraitItem {
     this._stackInfo = null
   }
 
-  static create(id: string, category: EquipmentTraitCategory, name: string): EquipmentTraitItem {
-    return markRaw(new EquipmentTraitItem(id, category, name))
+  static create(
+    id: string,
+    category: EquipmentTraitCategory,
+    name: string,
+    uid?: string
+  ): EquipmentTraitItem {
+    return markRaw(new EquipmentTraitItem(id, category, name, uid))
   }
 
   appendStat(stat: StatComputed): void {

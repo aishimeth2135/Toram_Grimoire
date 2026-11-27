@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed } from 'vue'
+import { type ComputedRef, type Ref, computed, watchEffect } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
@@ -185,26 +185,39 @@ export function prepareSetupCharacter() {
     const getBaseCharacterStatValue = createStatValueGetter(baseCharacterStatCategoryResultsMap)
     const getBaseCharacterPureStatValue = createStatValueGetter(baseCharacterPureStats)
 
-    const traitPureStats = computed<StatRecorded[]>(() => {
-      if (!character.value) {
-        return []
+    const traitVars = computed((): Record<string, number> => {
+      const current = character.value
+      if (!current) {
+        return {}
       }
-      const vars = {
+      return {
         STR: getBaseCharacterStatValue('str'),
         DEX: getBaseCharacterStatValue('dex'),
         INT: getBaseCharacterStatValue('int'),
         AGI: getBaseCharacterStatValue('agi'),
         VIT: getBaseCharacterStatValue('vit'),
-        BSTR: character.value.baseStatValue(CharacterBaseStatTypes.STR),
-        BDEX: character.value.baseStatValue(CharacterBaseStatTypes.DEX),
-        BINT: character.value.baseStatValue(CharacterBaseStatTypes.INT),
-        BAGI: character.value.baseStatValue(CharacterBaseStatTypes.AGI),
-        BVIT: character.value.baseStatValue(CharacterBaseStatTypes.VIT),
-        TEC: character.value.baseStatValue(CharacterBaseStatTypes.TEC),
-        CRT: character.value.baseStatValue(CharacterBaseStatTypes.CRT),
-        MEN: character.value.baseStatValue(CharacterBaseStatTypes.MEN),
-        LUK: character.value.baseStatValue(CharacterBaseStatTypes.LUK),
+        BSTR: current.baseStatValue(CharacterBaseStatTypes.STR),
+        BDEX: current.baseStatValue(CharacterBaseStatTypes.DEX),
+        BINT: current.baseStatValue(CharacterBaseStatTypes.INT),
+        BAGI: current.baseStatValue(CharacterBaseStatTypes.AGI),
+        BVIT: current.baseStatValue(CharacterBaseStatTypes.VIT),
+        TEC: current.baseStatValue(CharacterBaseStatTypes.TEC),
+        CRT: current.baseStatValue(CharacterBaseStatTypes.CRT),
+        MEN: current.baseStatValue(CharacterBaseStatTypes.MEN),
+        LUK: current.baseStatValue(CharacterBaseStatTypes.LUK),
       }
+    })
+    watchEffect(() => {
+      character.value?.equipmentFields.forEach(field => {
+        field.equipment?.trait?.resolvePendingStackLimit(() => traitVars.value)
+      })
+    })
+
+    const traitPureStats = computed<StatRecorded[]>(() => {
+      if (!character.value) {
+        return []
+      }
+      const vars = traitVars.value
       const stats = new Map<string, StatRecorded>()
       character.value.equipmentFields.forEach(field => {
         if (field.isEmpty || field.statsDisabled()) {

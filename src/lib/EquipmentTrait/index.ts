@@ -17,16 +17,21 @@ export default class EquipmentTraitSystem {
   appendEquipmentTraitItem(
     id: string,
     category: EquipmentTraitCategory,
-    name: string
+    name: string,
+    uid?: string
   ): EquipmentTraitItem {
     const newId = EquipmentTraitItem.generateId(id, category)
-    const newItem = EquipmentTraitItem.create(newId, category, name)
+    const newItem = EquipmentTraitItem.create(newId, category, name, uid)
     this.equipmentTraitItems.push(newItem)
     return newItem
   }
 
-  findEquipmentTraitItemById(id: string): EquipmentTraitItem | null {
-    return this.equipmentTraitItems.find(item => item.id === id) ?? null
+  findEquipmentTraitItemById(id: string, uid?: string): EquipmentTraitItem | null {
+    return (
+      this.equipmentTraitItems.find(item =>
+        uid === undefined ? item.id === id : item.uid === uid
+      ) ?? null
+    )
   }
 }
 

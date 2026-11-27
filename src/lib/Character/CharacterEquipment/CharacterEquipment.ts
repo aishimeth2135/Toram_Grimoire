@@ -78,6 +78,7 @@ abstract class CharacterEquipment implements InstanceWithId {
   labels: CharacterBuildLabel[]
 
   trait: CharacterEquipmentTrait | null
+  missingTrait: CharacterEquipmentTraitSaveData | null = null
 
   readonly customTypeList?: EquipmentTypes[]
 
@@ -272,10 +273,12 @@ abstract class CharacterEquipment implements InstanceWithId {
   setTrait(item: EquipmentTraitItem, level?: number): void {
     level = typeof level === 'number' ? level : item.maxLevel
     this.trait = CharacterEquipmentTrait.create(item, level)
+    this.missingTrait = null
   }
 
   removeTrait(): void {
     this.trait = null
+    this.missingTrait = null
   }
 
   clone(): CharacterEquipment {
@@ -383,6 +386,8 @@ abstract class CharacterEquipment implements InstanceWithId {
     // [trait]
     if (this.trait) {
       data.trait = this.trait.save()
+    } else if (this.missingTrait) {
+      data.trait = { ...this.missingTrait }
     }
 
     return data
@@ -482,6 +487,8 @@ abstract class CharacterEquipment implements InstanceWithId {
         const newTrait = CharacterEquipmentTrait.fromLoad(trait)
         if (newTrait) {
           eq.trait = newTrait
+        } else {
+          eq.missingTrait = { ...trait }
         }
       }
 

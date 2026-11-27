@@ -86,26 +86,30 @@ export function LoadEquipmentTraits(root: EquipmentTraitSystem, datas: LocaleCsv
       }
     }
 
-    if (currentAttrCategory) {
-      if (currentAttrCategory === 'text') {
-        if (attrName === 'caption') {
-          currentItem.caption.description = row('attr/value')
-        } else if (attrName === 'tips') {
-          currentItem.caption.tips.push(row('attr/value'))
-        }
-      } else if (currentAttrCategory === 'stack') {
-        if (attrName === 'max') {
-          currentItem.setStackInfo('max', row('attr/value'))
-        }
-      } else if (currentAttrCategory === 'stat') {
-        const statBaseData = parseStatValueDataRaw(attrName)
-        const statBase = Grimoire.Character.findStatBase(statBaseData.value)
-        if (statBase) {
-          currentItem.appendStat(
-            StatComputed.create(statBase, statBaseData.type, row('attr/value'))
-          )
-        }
-      }
-    }
+    applyEquipmentTraitRow(currentItem, currentAttrCategory, attrName, row('attr/value'))
   })
+}
+
+export function applyEquipmentTraitRow(
+  item: EquipmentTraitItem,
+  group: string,
+  key: string,
+  value: string
+) {
+  if (group === 'text') {
+    if (key === 'caption') {
+      item.caption.description = value
+    }
+    if (key === 'tips') {
+      item.caption.tips.push(value)
+    }
+  } else if (group === 'stack' && key === 'max') {
+    item.setStackInfo('max', value)
+  } else if (group === 'stat') {
+    const { value: statId, type } = parseStatValueDataRaw(key)
+    const base = Grimoire.Character.findStatBase(statId)
+    if (base) {
+      item.appendStat(StatComputed.create(base, type, value))
+    }
+  }
 }

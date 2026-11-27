@@ -14,3 +14,5 @@ trait-var-texts:
   BINT: 基礎INT
   BAGI: 基礎AGI
   BVIT: 基礎VIT
+saved-trait-missing: 找不到存檔中的裝備特性（{id}）。
+remove-saved-trait: 移除存檔中的裝備特性
