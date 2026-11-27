@@ -161,7 +161,7 @@ export function parseRegistletRows(rows: string[][]) {
 }
 
 const dataset = createCdnDataset({
-  origin: import.meta.env.VITE_REGISTLET_DATA_ORIGIN || 'https://data.cy-grimoire.com',
+  origin: import.meta.env.VITE_REGISTLET_DATA_ORIGIN,
   path: '/public/registlet/',
   cacheName: 'toram-grimoire-registlet-files',
   indexName: 'toram-grimoire-registlet-datasets',

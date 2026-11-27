@@ -23,9 +23,14 @@ export function buildRegistletDataset(records: RegistletDatasetItem[]) {
     const infos = { ...record, publicId: record.id }
     if (record.category === 'stat') {
       const row = record.groups.find(({ key }) => key === 'stat')?.rows[0]
-      const stat = row && Grimoire.Character.findStatBase(row.key)
-      if (row && stat) {
-        const item = RegistletItemBaseStat.create(root.statCategory, infos, stat)
+      if (!row) {
+        continue
+      }
+
+      const { value: id, type } = parseStatValueDataRaw(row.key)
+      const stat = Grimoire.Character.findStatBase(id)
+      if (stat) {
+        const item = RegistletItemBaseStat.create(root.statCategory, infos, stat, type)
         item.rows.push(RegistletItemRow.create('value', row.value))
         root.statCategory.appendItem(item)
       }

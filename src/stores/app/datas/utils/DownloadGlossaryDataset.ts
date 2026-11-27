@@ -67,7 +67,7 @@ function validateRows(rows: string[][]) {
 }
 
 const dataset = createCdnDataset({
-  origin: import.meta.env.VITE_GLOSSARY_DATA_ORIGIN || 'https://data.cy-grimoire.com',
+  origin: import.meta.env.VITE_GLOSSARY_DATA_ORIGIN,
   path: '/public/glossary/',
   cacheName: 'toram-grimoire-glossary-files',
   indexName: 'toram-grimoire-glossary-datasets',

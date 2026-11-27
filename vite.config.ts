@@ -83,7 +83,7 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 9039,
       proxy: {
-        '^/public/(skill|stat|glossary|data)/': {
+        '/public/': {
           target: 'https://data.cy-grimoire.com',
           changeOrigin: true,
         },

@@ -9,12 +9,7 @@ import { FoodsBuild } from '@/lib/Character/FoodBuild'
 import { PotionBuild, type PotionItem } from '@/lib/Character/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild'
-import {
-  EquipmentRestrictions,
-  StatRecorded,
-  StatTypes,
-  StatValueSourceTypes,
-} from '@/lib/Character/Stat'
+import { EquipmentRestrictions, StatRecorded, StatValueSourceTypes } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 import { SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputing'
 
@@ -111,7 +106,7 @@ export function setupRegistletStats(registletBuild: Ref<RegistletBuild | null>) 
         }) as number
         return {
           stat: StatRecorded.from(
-            item.base.statBase.createStat(StatTypes.Constant, value),
+            item.base.createStat(value),
             item.base,
             StatValueSourceTypes.Registlet
           ),

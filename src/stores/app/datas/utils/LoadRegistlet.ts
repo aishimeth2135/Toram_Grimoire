@@ -85,9 +85,10 @@ export function LoadRegistlet(root: RegistletSystem, csvData: CsvData) {
       }
 
       if (currentCategory.isStat()) {
-        const statBase = Grimoire.Character.findStatBase(row('link'))
+        const { value: id, type } = parseStatValueDataRaw(row('link'))
+        const statBase = Grimoire.Character.findStatBase(id)
         if (statBase) {
-          const newItem = RegistletItemBaseStat.create(currentCategory, infos, statBase)
+          const newItem = RegistletItemBaseStat.create(currentCategory, infos, statBase, type)
           currentCategory.appendItem(newItem)
           currentItem = newItem
         }

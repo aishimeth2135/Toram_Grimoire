@@ -27,7 +27,7 @@ type DatasetStatus =
     }
 
 type DatasetOptions<Manifest, Context, Data> = {
-  origin: string
+  origin?: string
   path: string
   cacheName: string
   indexName: string
@@ -42,8 +42,14 @@ type DatasetOptions<Manifest, Context, Data> = {
 type CachedFile = { url: string; bytes: ArrayBuffer; cached: boolean }
 type LoadMode = 'startup' | 'refresh' | 'offline'
 
-function getDatasetUrl(origin: string, path: string) {
-  const url = new URL(origin)
+function getDatasetUrl(origin: string | undefined, path: string) {
+  const url = new URL(
+    import.meta.env.VITE_PUBLIC_DATA_ORIGIN ||
+      origin ||
+      (import.meta.env.DEV && window.location.hostname === 'localhost'
+        ? window.location.origin
+        : 'https://data.cy-grimoire.com')
+  )
   if (
     (url.protocol !== 'https:' &&
       !(import.meta.env.DEV && url.protocol === 'http:' && url.hostname === 'localhost')) ||

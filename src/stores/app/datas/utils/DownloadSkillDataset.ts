@@ -12,7 +12,7 @@ import {
   skillManifestFiles,
 } from './SkillDataset'
 
-const origin = import.meta.env.VITE_SKILL_DATA_ORIGIN || 'https://data.cy-grimoire.com'
+const origin = import.meta.env.VITE_SKILL_DATA_ORIGIN
 const context = () => {
   const { primaryLocale, fallbackLocale } = useLocaleStore()
   return getSkillDatasetLocales(primaryLocale, fallbackLocale)
