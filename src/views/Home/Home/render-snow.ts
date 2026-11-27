@@ -7,35 +7,33 @@ type MessageData =
       canvas: OffscreenCanvas
       width: number
       height: number
+      hidden: boolean
     }
   | {
-      type: 'viewport-changed'
-      width: number
-      height: number
+      type: 'visibility'
+      hidden: boolean
     }
+
+const FRAME_INTERVAL = 1000 / 60
+const MAX_FRAME_DELTA = 50
+const MAX_SNOW_COUNT = 240
+
+let setHidden: ((hidden: boolean) => void) | undefined
 
 self.addEventListener('message', function (evt) {
   const data = evt.data as MessageData
   if (data.type === 'start') {
-    const offscreenCanvas = data.canvas
-    const ctx = offscreenCanvas.getContext('2d')!
-    startDraw(ctx, {
-      width: data.width,
-      height: data.height,
-    })
+    setHidden?.(true)
+    const ctx = data.canvas.getContext('2d')
+    setHidden = ctx ? createDrawLoop(ctx, data) : undefined
   }
+  setHidden?.(data.hidden)
 })
 
-let currentHandle: number
-
-function startDraw(
+function createDrawLoop(
   ctx: OffscreenCanvasRenderingContext2D,
   viewport: { width: number; height: number }
 ) {
-  if (typeof currentHandle === 'number') {
-    cancelAnimationFrame(currentHandle)
-  }
-
   interface SnowItem {
     x: number
     y: number
@@ -44,49 +42,41 @@ function startDraw(
     radius: number
   }
 
-  const getRandomSnow = (randowY: boolean, frames: number = 1): SnowItem => {
-    let snowY = -6
-    const speed = getRandomInt(2, 5) / 8
-    if (randowY) {
-      snowY = Math.floor((viewport.height * getRandomInt(20, 950)) / 1000)
-    } else if (frames > 1) {
-      snowY += speed * (frames - 1)
-    }
+  const getRandomSnow = (randomY: boolean): SnowItem => {
     return {
       x: Math.floor((viewport.width * getRandomInt(20, 981)) / 1000),
-      y: snowY,
-      speed,
+      y: randomY ? Math.floor((viewport.height * getRandomInt(20, 950)) / 1000) : -6,
+      speed: getRandomInt(2, 5) / 8,
       opacity: getRandomInt(65, 101) / 100,
       radius: getRandomInt(2, 6),
     }
   }
 
-  let lastTime = 0
+  let frameHandle: number | undefined
+  let lastTime: number | undefined
+  let frameTime = FRAME_INTERVAL
+  let framesUntilSnow = 1
   let snows: SnowItem[] = createEmptyArray(60).map(() => getRandomSnow(true))
-  let count = 0
 
-  const draw = () => {
-    const now = Date.now()
-    let frames = 1
-    const timeOffset = now - lastTime
-    if (lastTime === 0) {
-      lastTime = now
-    } else if (timeOffset > 16) {
-      frames = Math.max(Math.floor(timeOffset / 16), 1)
-      lastTime = now
-    } else {
-      currentHandle = requestAnimationFrame(draw)
+  const draw = (timestamp: number) => {
+    frameHandle = requestAnimationFrame(draw)
+    frameTime += Math.min(timestamp - (lastTime ?? timestamp), MAX_FRAME_DELTA)
+    lastTime = timestamp
+    const frames = Math.floor((frameTime + 0.1) / FRAME_INTERVAL)
+    if (frames === 0) {
       return
     }
+    frameTime -= frames * FRAME_INTERVAL
 
-    if (count === 0) {
-      const newSnows = createEmptyArray(frames).map((_item, idx) => getRandomSnow(false, idx + 1))
-      snows.push(...newSnows)
-      count = 30
-    }
-    count -= 1
     ctx.clearRect(0, 0, viewport.width, viewport.height)
     snows = snows.filter(snow => snow.y < viewport.height)
+    framesUntilSnow -= frames
+    if (framesUntilSnow <= 0) {
+      framesUntilSnow += 30
+      if (snows.length < MAX_SNOW_COUNT) {
+        snows.push(getRandomSnow(false))
+      }
+    }
     snows.forEach(snow => {
       snow.y += snow.speed * frames
       ctx.fillStyle = `rgba(255, 255, 255, ${snow.opacity.toFixed(2)})`
@@ -94,9 +84,18 @@ function startDraw(
       ctx.arc(snow.x, snow.y, snow.radius, 0, 2 * Math.PI)
       ctx.fill()
     })
-
-    currentHandle = requestAnimationFrame(draw)
   }
 
-  draw()
+  return (hidden: boolean) => {
+    if (hidden) {
+      if (frameHandle !== undefined) {
+        cancelAnimationFrame(frameHandle)
+        frameHandle = undefined
+      }
+      lastTime = undefined
+      frameTime = FRAME_INTERVAL
+    } else if (frameHandle === undefined) {
+      frameHandle = requestAnimationFrame(draw)
+    }
+  }
 }

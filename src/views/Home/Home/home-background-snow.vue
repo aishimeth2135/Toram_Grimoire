@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="supportOffscreenCanvas"
-    class="pointer-events-none absolute left-0 top-0 size-full overflow-hidden opacity-100 duration-500"
+    class="pointer-events-none absolute top-0 left-0 size-full overflow-hidden opacity-100 duration-500"
     :class="{ ['opacity-0!']: !ready }"
   >
     <canvas
@@ -10,15 +10,14 @@
       :width="canvasViewport.width"
       :height="canvasViewport.height"
     />
-    <div class="absolute left-0 top-0 size-full" style="backdrop-filter: blur(1px)" />
+    <div class="absolute top-0 left-0 size-full" style="backdrop-filter: blur(1px)" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { type Ref, ref, watch } from 'vue'
+import { type Ref, onUnmounted, ref, watch } from 'vue'
 
 import { useViewport } from '@/shared/composables/Device'
-import { debounce } from '@/shared/utils/function'
 
 import RenderSnowWorker from './render-snow?worker'
 
@@ -37,36 +36,52 @@ const canvasViewport = ref({
 
 if (supportOffscreenCanvas) {
   const worker = new RenderSnowWorker()
+  let readyTimer: number | undefined
+  let viewportTimer: number | undefined
+
+  const updateVisibility = () => {
+    worker.postMessage({ type: 'visibility', hidden: document.hidden })
+  }
+  document.addEventListener('visibilitychange', updateVisibility)
+
+  onUnmounted(() => {
+    document.removeEventListener('visibilitychange', updateVisibility)
+    window.clearTimeout(readyTimer)
+    window.clearTimeout(viewportTimer)
+    worker.terminate()
+  })
 
   watch(mainCanvas, canvas => {
     if (canvas) {
+      window.clearTimeout(readyTimer)
       ready.value = false
       const offscreenCanvas = canvas.transferControlToOffscreen()
       worker.postMessage(
         {
           type: 'start',
           canvas: offscreenCanvas,
-          width: viewport.width,
-          height: viewport.height,
+          width: canvasViewport.value.width,
+          height: canvasViewport.value.height,
+          hidden: document.hidden,
         },
         [offscreenCanvas]
       )
 
-      setTimeout(() => (ready.value = true), 1000)
+      readyTimer = window.setTimeout(() => (ready.value = true), 1000)
     }
   })
 
-  const updateViewport = debounce((newViewport: typeof viewport) => {
-    canvasKey.value += 1
-    canvasViewport.value = {
-      width: newViewport.width,
-      height: newViewport.height,
-    }
-  }, 1000)
-
   watch(viewport, newViewport => {
+    window.clearTimeout(readyTimer)
+    window.clearTimeout(viewportTimer)
     ready.value = false
-    updateViewport(newViewport)
+    viewportTimer = window.setTimeout(() => {
+      canvasKey.value += 1
+      canvasViewport.value = {
+        width: newViewport.width,
+        height: newViewport.height,
+      }
+    }, 1000)
   })
 }
 </script>
