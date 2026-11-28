@@ -1,7 +1,7 @@
 import { CommonLogger } from '@/shared/services/Logger'
 
 import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { EquipmentTypes, isSubWeaponCompatible } from '@/lib/Character/CharacterEquipment'
 
 import { CharacterComboBuild, type CharacterComboBuildSaveData } from '../CharacterComboBuild'
 import {
@@ -117,35 +117,10 @@ class Character implements CharacterBindingBuild {
     return eqType === null || this.equipmentField(fieldType).equipmentType === eqType
   }
   subWeaponValid(subType: EquipmentTypes, mainType?: EquipmentTypes): boolean {
-    const validSubs: EquipmentTypes[] = []
-    mainType = mainType ?? this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
-    switch (mainType) {
-      case EquipmentTypes.OneHandSword:
-        validSubs.push(EquipmentTypes.OneHandSword)
-      // fall through
-      case EquipmentTypes.Empty:
-      case EquipmentTypes.Staff:
-        validSubs.push(EquipmentTypes.NinjutsuScroll)
-      // fall through
-      case EquipmentTypes.Bowgun:
-        validSubs.push(EquipmentTypes.Knuckle)
-      // fall through
-      case EquipmentTypes.Knuckle:
-        validSubs.push(EquipmentTypes.MagicDevice, EquipmentTypes.Shield)
-      // fall through
-      case EquipmentTypes.Halberd:
-        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger)
-        break
-      case EquipmentTypes.Katana:
-        validSubs.push(EquipmentTypes.Dagger)
-      // fall through
-      case EquipmentTypes.MagicDevice:
-        validSubs.push(EquipmentTypes.NinjutsuScroll)
-        break
-      case EquipmentTypes.Bow:
-        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Katana)
-    }
-    return validSubs.includes(subType)
+    return isSubWeaponCompatible(
+      mainType ?? this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType,
+      subType
+    )
   }
 
   clone(): Character {

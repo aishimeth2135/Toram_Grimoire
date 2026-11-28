@@ -88,7 +88,7 @@ class BagEquipment extends BagItem {
   baseValue: number
   baseStability: number
   caption: string
-  unknowCategory: null | string
+  unknownCategory: null | string
 
   private constructor(
     id: string,
@@ -107,7 +107,7 @@ class BagEquipment extends BagItem {
 
     this.caption = caption
 
-    this.unknowCategory = null
+    this.unknownCategory = null
   }
 
   static create(

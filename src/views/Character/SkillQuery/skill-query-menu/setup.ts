@@ -3,7 +3,7 @@ import { type Ref, computed, ref, watch } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment'
+import { EquipmentTypes, isSubWeaponCompatible } from '@/lib/Character/CharacterEquipment'
 import { EquipmentRestrictions, type EquipmentRestrictionsBaseKeys } from '@/lib/Character/Stat'
 import { SkillTree } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputing'
@@ -70,42 +70,15 @@ function setupEquipmentSelect(
 
   function confirmWeaponConflict(target: 'main' | 'sub') {
     const check = () => {
-      const main = currentEquipment.value.main,
-        sub = currentEquipment.value.sub
-      if (main === null || sub === null) {
+      const { main, sub } = currentEquipment.value
+      if (main === null || sub === null || sub === EquipmentTypes.Empty) {
         return true
       }
-      const validSubs: Set<EquipmentTypes | null> = new Set()
-      switch (main) {
-        case EquipmentTypes.Empty:
-        case EquipmentTypes.OneHandSword:
-        case EquipmentTypes.Staff:
-          validSubs.add(EquipmentTypes.NinjutsuScroll)
-        /* falls through */
-        case EquipmentTypes.Bowgun:
-          validSubs.add(EquipmentTypes.Knuckle)
-        /* falls through */
-        case EquipmentTypes.Knuckle:
-          validSubs
-            .add(EquipmentTypes.Arrow)
-            .add(EquipmentTypes.Shield)
-            .add(EquipmentTypes.Dagger)
-            .add(EquipmentTypes.MagicDevice)
-          break
-        case EquipmentTypes.Katana:
-          validSubs.add(EquipmentTypes.Dagger).add(EquipmentTypes.NinjutsuScroll)
-          break
-        case EquipmentTypes.Halberd:
-          validSubs.add(EquipmentTypes.Arrow).add(EquipmentTypes.Dagger)
-          break
-        case EquipmentTypes.Bow:
-          validSubs.add(EquipmentTypes.Arrow).add(EquipmentTypes.Katana)
-          break
-        case EquipmentTypes.MagicDevice:
-          validSubs.add(EquipmentTypes.NinjutsuScroll)
+      // Skill Query represents dual swords as a main weapon type.
+      if (sub === EquipmentTypes.OneHandSword) {
+        return false
       }
-      validSubs.add(EquipmentTypes.Empty)
-      return validSubs.has(sub)
+      return isSubWeaponCompatible(main, sub)
     }
     while (!check()) {
       handleToggleCurrentEquipment(target === 'main' ? 'sub' : 'main', false)

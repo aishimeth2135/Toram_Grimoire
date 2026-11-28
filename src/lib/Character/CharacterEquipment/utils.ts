@@ -57,3 +57,34 @@ export function equipmentOriginalCategoryToType(item: BagEquipment) {
 
   return EquipmentTypes.Avatar
 }
+
+export function isSubWeaponCompatible(mainType: EquipmentTypes, subType: EquipmentTypes): boolean {
+  const validSubs: EquipmentTypes[] = []
+  switch (mainType) {
+    case EquipmentTypes.OneHandSword:
+      validSubs.push(EquipmentTypes.OneHandSword)
+    // fall through
+    case EquipmentTypes.Empty:
+    case EquipmentTypes.Staff:
+      validSubs.push(EquipmentTypes.NinjutsuScroll)
+    // fall through
+    case EquipmentTypes.Bowgun:
+      validSubs.push(EquipmentTypes.Knuckle)
+    // fall through
+    case EquipmentTypes.Knuckle:
+      validSubs.push(EquipmentTypes.MagicDevice)
+    // fall through
+    case EquipmentTypes.Halberd:
+      validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.Shield)
+      break
+    case EquipmentTypes.Katana:
+      validSubs.push(EquipmentTypes.Dagger)
+    // fall through
+    case EquipmentTypes.MagicDevice:
+      validSubs.push(EquipmentTypes.NinjutsuScroll)
+      break
+    case EquipmentTypes.Bow:
+      validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Katana)
+  }
+  return validSubs.includes(subType)
+}

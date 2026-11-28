@@ -103,7 +103,7 @@ const selectStatOption = (option: StatOption) => {
         <div class="flex w-full max-w-sm items-center self-end">
           <div class="flex grow items-center">
             <div
-              class="border-primary-30 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pl-3 pr-2 duration-150"
+              class="border-primary-30 hover:bg-primary-10 flex shrink-0 cursor-pointer items-center self-stretch rounded-l-full border border-r-0 pr-2 pl-3 duration-150"
               @click="
                 currentMode =
                   currentMode === EquipmentSearchMode.Normal
@@ -122,7 +122,7 @@ const selectStatOption = (option: StatOption) => {
                 v-model:search-text="statSearchText"
                 :items="statOptionsSearchResults"
                 :selected-item-ids="selectedStatIds"
-                class="py-1.5 pl-3 pr-4"
+                class="py-1.5 pr-4 pl-3"
                 close-on-select
                 @select-item="selectStatOption"
               >
@@ -198,7 +198,7 @@ const selectStatOption = (option: StatOption) => {
               @click="toggleAppendedEquipments(equip)"
             >
               <cy-icon icon="ic:round-close" class="mr-3.5" />
-              <cy-icon v-if="!equip.origin!.unknowCategory" :icon="equip.getCategoryImagePath()" />
+              <cy-icon v-if="!equip.origin!.unknownCategory" :icon="equip.getCategoryImagePath()" />
               <cy-icon v-else icon="eva-star-outline" />
               <div class="ml-2 w-40">
                 {{ equip.name }}

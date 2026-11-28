@@ -33,22 +33,22 @@ const { t } = useI18n()
 
 <template>
   <CardRow class="py-2.5">
-    <div class="z-1 sticky top-0 min-w-max pr-3.5">
+    <div class="sticky top-0 z-1 min-w-max pr-3.5">
       <div class="flex items-center">
         <div
           class="mr-3 flex cursor-pointer items-center pl-3.5"
           @click="emit('submit', equipment)"
         >
           <cy-icon icon="ic:round-add" class="mr-3.5" />
-          <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" />
+          <cy-icon v-if="!equipment.unknownCategory" :icon="equimentImage" />
           <cy-icon v-else icon="eva-star-outline" />
-          <div class="ml-2 mr-2.5 w-32 truncate">
+          <div class="mr-2.5 ml-2 w-32 truncate">
             {{ equipment.name }}
           </div>
           <div v-if="previewStat" :class="previewStat.value > 0 ? 'text-cyan-70' : 'text-red-40'">
             {{ previewStat.showValue() }}
           </div>
-          <div v-else-if="!equipment.unknowCategory" class="flex items-center">
+          <div v-else-if="!equipment.unknownCategory" class="flex items-center">
             <cy-icon :icon="equipment.isWeapon() ? 'mdi:sword' : 'mdi:shield-outline'" />
             <span class="text-primary-80 ml-1.5">
               {{ equipment.baseValue }}
@@ -64,10 +64,10 @@ const { t } = useI18n()
     </div>
     <div
       v-if="showDetail"
-      class="bg-orange-20/5 shadow-xs relative mt-2.5 max-w-max overscroll-none py-3 pl-6 pr-4"
+      class="bg-orange-20/5 relative mt-2.5 max-w-max overscroll-none py-3 pr-4 pl-6 shadow-xs"
     >
       <div class="mb-1 flex items-center text-sm">
-        <cy-icon v-if="!equipment.unknowCategory" :icon="equimentImage" small />
+        <cy-icon v-if="!equipment.unknownCategory" :icon="equimentImage" small />
         <cy-icon v-else icon="eva-star-outline" small />
         <div class="ml-1.5">
           {{ equipment.name }}

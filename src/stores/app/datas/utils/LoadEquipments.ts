@@ -90,7 +90,7 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas, strict 
           row('caption')
         )
         if (type === -1) {
-          currentEquipment.unknowCategory = row('category')
+          currentEquipment.unknownCategory = row('category')
         }
       }
       if (row('attr/category') !== '') {

@@ -1,6 +1,6 @@
 <template>
   <CardRow :selected="detailVisible">
-    <div class="z-1 sticky top-0 min-w-max">
+    <div class="sticky top-0 z-1 min-w-max">
       <div
         class="hover:bg-primary-5 flex cursor-pointer items-center px-3.5 py-2.5 duration-150"
         :class="{ 'bg-white': detailVisible }"
@@ -42,10 +42,10 @@
               <cy-icon icon="mdi:shield-outline" small />
               <span class="text-primary-70">{{ equipment.basicValue }}</span>
             </template>
-            <template v-else-if="originEquipment.unknowCategory">
+            <template v-else-if="originEquipment.unknownCategory">
               <div class="gap-icon text-primary-30 inline-flex items-center">
                 <cy-icon icon="mdi-ghost" class="text-primary-30" small />
-                {{ originEquipment.unknowCategory }}
+                {{ originEquipment.unknownCategory }}
               </div>
             </template>
           </div>
@@ -78,7 +78,7 @@
     <cy-transition>
       <div
         v-if="detailVisible"
-        class="relative max-w-full overscroll-none bg-white pb-3 pl-4 pr-3 pt-2"
+        class="relative max-w-full overscroll-none bg-white pt-2 pr-3 pb-3 pl-4"
       >
         <div v-if="originEquipment.extra" class="mb-2">
           <div
@@ -108,12 +108,14 @@
               <span class="ml-2 flex items-center">
                 <cy-icon
                   :icon="
-                    !originEquipment.unknowCategory ? equipment.getCategoryImagePath() : 'mdi-ghost'
+                    !originEquipment.unknownCategory
+                      ? equipment.getCategoryImagePath()
+                      : 'mdi-ghost'
                   "
                   small
                 />
                 <span class="text-primary-50 ml-1">
-                  {{ originEquipment.unknowCategory || equipment.typeText }}
+                  {{ originEquipment.unknownCategory || equipment.typeText }}
                 </span>
               </span>
             </div>
@@ -232,7 +234,7 @@
           </div>
           <div class="py-1.5 pl-4">
             <div v-if="obtainsDatas.length !== 0" class="divide-primary-20 -my-1 divide-y">
-              <div v-for="data in obtainsDatas" :key="data.iid" class="px-1 pb-2 pt-1.5">
+              <div v-for="data in obtainsDatas" :key="data.iid" class="px-1 pt-1.5 pb-2">
                 <div class="flex items-center">
                   <div class="gap-icon text-primary-60 mr-2 inline-flex items-center text-sm">
                     <cy-icon :icon="data.icon" small class="text-primary-30" />
@@ -260,10 +262,10 @@
       </div>
       <div
         v-else-if="state.currentMode === 'dye'"
-        class="ml-5.5 border-primary-60 mb-2 border-l pl-2"
+        class="border-primary-60 mb-2 ml-5.5 border-l pl-2"
       >
         <div class="divide-primary-20 divide-y">
-          <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pb-2 pt-1.5">
+          <div v-for="item in dyeObtains" :key="item.iid" class="px-1 pt-1.5 pb-2">
             <div class="flex items-center">
               <div class="gap-icon text-primary-60 mr-2 inline-flex items-center text-sm">
                 <cy-icon :icon="item.icon" small class="text-primary-30" />
