@@ -10,7 +10,7 @@ import type { BagItemExtra, BagItemObtain, BagItemRecipe } from '@/lib/Items/Bag
 import type { LocaleCsvDatas } from './DownloadDatas'
 import { getCsvDataRowGetterHelper, parseStatValueData } from './utils'
 
-export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
+export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas, strict = false): void {
   const { createRowGetter, createLocaleMapping } = getCsvDataRowGetterHelper({
     'name': 0,
     'category': 1,
@@ -79,6 +79,7 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
 
     try {
       if (row('name') !== '' && row('category') !== '') {
+        currentCategory = ''
         const category = row('category')
         const type = CATEGORY_LIST[category] ?? -1
         currentEquipment = root.appendEquipment(
@@ -107,6 +108,9 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
       }
 
       const propName = row('attr/name')
+      if (!propName) {
+        return
+      }
       const propValue = row('attr/value1')
       if (currentCategory === 'stats') {
         const { value, type } = parseStatValueData(row('attr/value1'))
@@ -128,6 +132,9 @@ export function LoadEquipments(root: ItemsSystem, datas: LocaleCsvDatas): void {
         }
       }
     } catch (error) {
+      if (strict) {
+        throw error
+      }
       CommonLogger.start('LoadEquipments', 'unknown error').warn(row, index).warn(error).end()
     }
   })
